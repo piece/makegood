@@ -6,6 +6,8 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: com.piece_framework.stagehand_testrunner.Activator
 Bundle-Vendor: Piece Project
 Require-Bundle: org.eclipse.ui,
- org.eclipse.core.runtime
+ org.eclipse.core.runtime,
+ org.eclipse.debug.core;bundle-version="3.5.0",
+ org.eclipse.debug.ui;bundle-version="3.5.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy

@@ -34,5 +34,34 @@
             file="contexts.xml">
       </contexts>
    </extension>
+   <extension
+         point="org.eclipse.debug.core.launchConfigurationTypes">
+      <launchConfigurationType
+            delegate="com.piece_framework.stagehand_testrunner.StagehandTestRunnerLaunchConfigurationDelegate"
+            id="com.piece_framework.stagehand_testrunner.launchConfigurationTypework"
+            modes="run,debug"
+            name="Stagehand_TestRunner">
+         <fileExtension
+               default="true"
+               extension="php">
+         </fileExtension>
+      </launchConfigurationType>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchShortcuts">
+      <shortcut
+            class="com.piece_framework.stagehand_testrunner.StagehandTestRunnerLaunchShortcut"
+            id="com.piece_framework.stagehand_testrunner.shortcut"
+            label="Stagehand_TestRunner"
+            modes="run, debug">
+         <contextualLaunch>
+            <enablement>
+               <count
+                     value="*">
+               </count>
+            </enablement>
+         </contextualLaunch>
+      </shortcut>
+   </extension>
 
 </plugin>
