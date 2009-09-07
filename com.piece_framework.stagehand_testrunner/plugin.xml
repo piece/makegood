@@ -61,6 +61,9 @@
                </count>
             </enablement>
          </contextualLaunch>
+         <configurationType
+               id="org.eclipse.php.debug.core.launching.PHPExeLaunchConfigurationType">
+         </configurationType>
       </shortcut>
    </extension>
 
