@@ -38,9 +38,10 @@
          point="org.eclipse.debug.core.launchConfigurationTypes">
       <launchConfigurationType
             delegate="com.piece_framework.stagehand_testrunner.StagehandTestRunnerLaunchConfigurationDelegate"
-            id="com.piece_framework.stagehand_testrunner.launchConfigurationTypework"
+            id="com.piece_framework.stagehand_testrunner.launchConfigurationType"
             modes="run,debug"
-            name="Stagehand_TestRunner">
+            name="Stagehand_TestRunner"
+            public="false">
          <fileExtension
                default="true"
                extension="php">
@@ -62,7 +63,7 @@
             </enablement>
          </contextualLaunch>
          <configurationType
-               id="org.eclipse.php.debug.core.launching.PHPExeLaunchConfigurationType">
+               id="com.piece_framework.stagehand_testrunner.launchConfigurationType">
          </configurationType>
       </shortcut>
    </extension>

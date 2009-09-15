@@ -3,20 +3,18 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.debug.core.model.LaunchConfigurationDelegate;
+import org.eclipse.debug.core.model.ILaunchConfigurationDelegate2;
+import org.eclipse.php.internal.debug.core.launching.PHPLaunchDelegateProxy;
 
 
 public class StagehandTestRunnerLaunchConfigurationDelegate extends
-        LaunchConfigurationDelegate {
+        PHPLaunchDelegateProxy {
 
     @Override
-    public void launch(ILaunchConfiguration configuration,
-                         String mode,
-                         ILaunch launch,
-                         IProgressMonitor monitor
-                         ) throws CoreException {
-        System.out.println(mode);
-        System.out.println(launch.getDebugTargets());
+    protected ILaunchConfigurationDelegate2 getConfigurationDelegate(
+            ILaunchConfiguration configuration) throws CoreException {
+        ILaunchConfigurationDelegate2 delegate = super.getConfigurationDelegate(configuration);
+        System.out.println(delegate);
+        return delegate;
     }
-
 }
