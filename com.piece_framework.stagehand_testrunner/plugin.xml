@@ -15,6 +15,12 @@
             class="com.piece_framework.stagehand_testrunner.views.SampleView"
             id="com.piece_framework.stagehand_testrunner.views.SampleView">
       </view>
+      <view
+            class="com.piece_framework.stagehand_testrunner.views.ResultView"
+            id="com.piece_framework.stagehand_testrunner.view1"
+            name="Stagehand_TestRunner"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.perspectiveExtensions">
