@@ -51,21 +51,6 @@ public class StagehandTestRunnerLaunchConfigurationDelegate extends
                                      " " + testResource.getLocation().toString()
                                  );
 
-        IDebugEventSetListener listener = new IDebugEventSetListener() {
-            @Override
-            public void handleDebugEvents(DebugEvent[] events) {
-                for (DebugEvent event: events) {
-                    if (event.getKind() == DebugEvent.TERMINATE
-                        && event.getSource() instanceof IPHPDebugTarget
-                        ) {
-                        IPHPDebugTarget debugTarget = (IPHPDebugTarget) event.getSource();
-                        System.out.println(debugTarget.getOutputBuffer().toString());
-                    }
-                }
-            }
-        };
-        DebugPlugin.getDefault().addDebugEventListener(listener);
-
         ILaunch launchForWorkingCopy = new Launch(workingCopy,
                                                   launch.getLaunchMode(),
                                                   launch.getSourceLocator()
