@@ -67,13 +67,5 @@
          </configurationType>
       </shortcut>
    </extension>
-   <extension
-         point="org.eclipse.debug.ui.consoleLineTrackers">
-      <consoleLineTracker
-            class="com.piece_framework.stagehand_testrunner.ConsoleLineTracker"
-            id="com.piece_framework.stagehand_testrunner.consoleLineTracker3"
-            processType="php5">
-      </consoleLineTracker>
-   </extension>
 
 </plugin>
