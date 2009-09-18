@@ -2,14 +2,15 @@ package com.piece_framework.stagehand_testrunner;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.debug.core.DebugEvent;
 import org.eclipse.debug.core.DebugPlugin;
+import org.eclipse.debug.core.IDebugEventSetListener;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationType;
@@ -17,7 +18,9 @@ import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchDelegate;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.Launch;
+import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.debug.core.model.LaunchConfigurationDelegate;
+import org.eclipse.php.internal.debug.core.model.IPHPDebugTarget;
 
 
 public class StagehandTestRunnerLaunchConfigurationDelegate extends
@@ -47,6 +50,21 @@ public class StagehandTestRunnerLaunchConfigurationDelegate extends
                                  "-p " + prepareResource.getLocation().toString() +
                                      " " + testResource.getLocation().toString()
                                  );
+
+        IDebugEventSetListener listener = new IDebugEventSetListener() {
+            @Override
+            public void handleDebugEvents(DebugEvent[] events) {
+                for (DebugEvent event: events) {
+                    if (event.getKind() == DebugEvent.TERMINATE
+                        && event.getSource() instanceof IPHPDebugTarget
+                        ) {
+                        IPHPDebugTarget debugTarget = (IPHPDebugTarget) event.getSource();
+                        System.out.println(debugTarget.getOutputBuffer().toString());
+                    }
+                }
+            }
+        };
+        DebugPlugin.getDefault().addDebugEventListener(listener);
 
         ILaunch launchForWorkingCopy = new Launch(workingCopy,
                                                   launch.getLaunchMode(),
