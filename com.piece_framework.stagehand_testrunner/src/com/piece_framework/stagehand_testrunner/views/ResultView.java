@@ -1,9 +1,14 @@
 package com.piece_framework.stagehand_testrunner.views;
 
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.ui.forms.widgets.Form;
+import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.part.ViewPart;
 
 public class ResultView extends ViewPart {
+    private Label resultLabel;
 
     public ResultView() {
         // TODO Auto-generated constructor stub
@@ -11,8 +16,11 @@ public class ResultView extends ViewPart {
 
     @Override
     public void createPartControl(Composite parent) {
-        // TODO Auto-generated method stub
+        FormToolkit toolkit = new FormToolkit(parent.getDisplay());
+        Form root = toolkit.createForm(parent);
+        root.getBody().setLayout(new FillLayout());
 
+        resultLabel = toolkit.createLabel(parent, "");
     }
 
     @Override
