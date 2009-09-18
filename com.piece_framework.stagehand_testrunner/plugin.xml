@@ -5,20 +5,15 @@
    <extension
          point="org.eclipse.ui.views">
       <category
-            name="Sample Category"
+            name="Stagehand_TestRunner"
             id="com.piece_framework.stagehand_testrunner">
       </category>
       <view
-            name="Sample View"
-            icon="icons/sample.gif"
             category="com.piece_framework.stagehand_testrunner"
-            class="com.piece_framework.stagehand_testrunner.views.SampleView"
-            id="com.piece_framework.stagehand_testrunner.views.SampleView">
-      </view>
-      <view
             class="com.piece_framework.stagehand_testrunner.views.ResultView"
-            id="com.piece_framework.stagehand_testrunner.view1"
-            name="Stagehand_TestRunner"
+            icon="icons/Stagehand_TestRunner.gif"
+            id="com.piece_framework.stagehand_testrunner.views.resultView"
+            name="Result View"
             restorable="true">
       </view>
    </extension>
