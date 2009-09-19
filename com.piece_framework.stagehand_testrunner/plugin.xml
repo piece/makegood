@@ -5,13 +5,13 @@
    <extension
          point="org.eclipse.ui.views">
       <category
-            name="Stagehand_TestRunner"
+            name="MakeGood"
             id="com.piece_framework.makegood">
       </category>
       <view
             category="com.piece_framework.makegood"
             class="com.piece_framework.makegood.views.ResultView"
-            icon="icons/Stagehand_TestRunner.gif"
+            icon="icons/MakeGood.gif"
             id="com.piece_framework.makegood.views.resultView"
             name="Result View"
             restorable="true">
@@ -41,7 +41,7 @@
             delegate="com.piece_framework.makegood.StagehandTestRunnerLaunchConfigurationDelegate"
             id="com.piece_framework.makegood.launchConfigurationType"
             modes="run,debug"
-            name="Stagehand_TestRunner"
+            name="MakeGood"
             public="false">
          <fileExtension
                default="true"
@@ -54,7 +54,7 @@
       <shortcut
             class="com.piece_framework.makegood.StagehandTestRunnerLaunchShortcut"
             id="com.piece_framework.makegood.shortcut"
-            label="Stagehand_TestRunner"
+            label="MakeGood"
             modes="run, debug">
          <contextualLaunch>
             <enablement>

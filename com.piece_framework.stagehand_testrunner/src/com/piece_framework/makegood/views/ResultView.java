@@ -39,7 +39,7 @@ public class ResultView extends ViewPart {
                         ) {
                         final IPHPDebugTarget debugTarget = (IPHPDebugTarget) event.getSource();
 
-                        Job job = new UIJob("Stagehand_TestRunner result parse") {
+                        Job job = new UIJob("MakeGood result parse") {
                             public IStatus runInUIThread(IProgressMonitor monitor) {
                                 String[] results = debugTarget.getOutputBuffer().toString().split("\n");
                                 int lastLine = results.length - 1;
