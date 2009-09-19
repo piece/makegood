@@ -1,4 +1,4 @@
-package com.piece_framework.stagehand_testrunner;
+package com.piece_framework.makegood;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -10,7 +10,7 @@ import org.osgi.framework.BundleContext;
 public class Activator extends AbstractUIPlugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "com.piece_framework.stagehand_testrunner";
+	public static final String PLUGIN_ID = "com.piece_framework.makegood";
 
 	// The shared instance
 	private static Activator plugin;

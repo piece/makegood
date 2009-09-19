@@ -1,4 +1,4 @@
-package com.piece_framework.stagehand_testrunner.views;
+package com.piece_framework.makegood.views;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;

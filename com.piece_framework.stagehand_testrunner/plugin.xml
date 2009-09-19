@@ -6,13 +6,13 @@
          point="org.eclipse.ui.views">
       <category
             name="Stagehand_TestRunner"
-            id="com.piece_framework.stagehand_testrunner">
+            id="com.piece_framework.makegood">
       </category>
       <view
-            category="com.piece_framework.stagehand_testrunner"
-            class="com.piece_framework.stagehand_testrunner.views.ResultView"
+            category="com.piece_framework.makegood"
+            class="com.piece_framework.makegood.views.ResultView"
             icon="icons/Stagehand_TestRunner.gif"
-            id="com.piece_framework.stagehand_testrunner.views.resultView"
+            id="com.piece_framework.makegood.views.resultView"
             name="Result View"
             restorable="true">
       </view>
@@ -25,7 +25,7 @@
                ratio="0.5"
                relative="org.eclipse.ui.views.TaskList"
                relationship="right"
-               id="com.piece_framework.stagehand_testrunner.views.SampleView">
+               id="com.piece_framework.makegood.views.SampleView">
          </view>
       </perspectiveExtension>
    </extension>
@@ -38,8 +38,8 @@
    <extension
          point="org.eclipse.debug.core.launchConfigurationTypes">
       <launchConfigurationType
-            delegate="com.piece_framework.stagehand_testrunner.StagehandTestRunnerLaunchConfigurationDelegate"
-            id="com.piece_framework.stagehand_testrunner.launchConfigurationType"
+            delegate="com.piece_framework.makegood.StagehandTestRunnerLaunchConfigurationDelegate"
+            id="com.piece_framework.makegood.launchConfigurationType"
             modes="run,debug"
             name="Stagehand_TestRunner"
             public="false">
@@ -52,8 +52,8 @@
    <extension
          point="org.eclipse.debug.ui.launchShortcuts">
       <shortcut
-            class="com.piece_framework.stagehand_testrunner.StagehandTestRunnerLaunchShortcut"
-            id="com.piece_framework.stagehand_testrunner.shortcut"
+            class="com.piece_framework.makegood.StagehandTestRunnerLaunchShortcut"
+            id="com.piece_framework.makegood.shortcut"
             label="Stagehand_TestRunner"
             modes="run, debug">
          <contextualLaunch>
@@ -64,7 +64,7 @@
             </enablement>
          </contextualLaunch>
          <configurationType
-               id="com.piece_framework.stagehand_testrunner.launchConfigurationType">
+               id="com.piece_framework.makegood.launchConfigurationType">
          </configurationType>
       </shortcut>
    </extension>

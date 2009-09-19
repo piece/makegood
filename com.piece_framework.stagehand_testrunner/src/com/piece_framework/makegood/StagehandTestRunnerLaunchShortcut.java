@@ -1,4 +1,4 @@
-package com.piece_framework.stagehand_testrunner;
+package com.piece_framework.makegood;
 
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfigurationType;
@@ -10,6 +10,6 @@ public class StagehandTestRunnerLaunchShortcut extends PHPExeLaunchShortcut {
     @Override
     protected ILaunchConfigurationType getPHPExeLaunchConfigType() {
         ILaunchManager lm = DebugPlugin.getDefault().getLaunchManager();
-        return lm.getLaunchConfigurationType("com.piece_framework.stagehand_testrunner.launchConfigurationType");
+        return lm.getLaunchConfigurationType("com.piece_framework.makegood.launchConfigurationType");
     }
 }
