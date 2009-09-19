@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            id="com.piece_framework.makegood.ui.category"
+            name="MakeGood">
+      </category>
+      <view
+            category="com.piece_framework.makegood.ui.category"
+            class="com.piece_framework.makegood.ui.views.ResultView"
+            icon="icons/MakeGood.gif"
+            id="com.piece_framework.makegood.ui.views.resultView"
+            name="Result View"
+            restorable="true">
+      </view>
+   </extension>
+
+</plugin>

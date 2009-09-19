@@ -1,4 +1,4 @@
-package com.piece_framework.makegood.views;
+package com.piece_framework.makegood.ui.views;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
