@@ -8,9 +8,7 @@ import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.debug.core.DebugEvent;
 import org.eclipse.debug.core.DebugPlugin;
-import org.eclipse.debug.core.IDebugEventSetListener;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationType;
@@ -18,14 +16,10 @@ import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchDelegate;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.Launch;
-import org.eclipse.debug.core.model.IDebugTarget;
-import org.eclipse.debug.core.model.LaunchConfigurationDelegate;
-import org.eclipse.php.internal.debug.core.model.IPHPDebugTarget;
+import org.eclipse.debug.core.model.ILaunchConfigurationDelegate;
 
 
-public class MakeGoodLaunchConfigurationDelegate extends
-        LaunchConfigurationDelegate {
-    @Override
+public class MakeGoodLaunchConfigurationDelegate implements ILaunchConfigurationDelegate {
     public void launch(ILaunchConfiguration configuration,
                          String mode,
                          ILaunch launch,
