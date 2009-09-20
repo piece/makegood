@@ -23,7 +23,7 @@ import org.eclipse.debug.core.model.LaunchConfigurationDelegate;
 import org.eclipse.php.internal.debug.core.model.IPHPDebugTarget;
 
 
-public class StagehandTestRunnerLaunchConfigurationDelegate extends
+public class MakeGoodLaunchConfigurationDelegate extends
         LaunchConfigurationDelegate {
     @Override
     public void launch(ILaunchConfiguration configuration,

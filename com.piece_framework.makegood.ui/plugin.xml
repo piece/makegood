@@ -19,7 +19,7 @@
    <extension
          point="org.eclipse.debug.ui.launchShortcuts">
       <shortcut
-            class="com.piece_framework.makegood.ui.launch.StagehandTestRunnerLaunchShortcut"
+            class="com.piece_framework.makegood.ui.launch.MakeGoodLaunchShortcut"
             id="com.piece_framework.makegood.ui.launchShortcut"
             label="MakeGood"
             modes="run, debug">

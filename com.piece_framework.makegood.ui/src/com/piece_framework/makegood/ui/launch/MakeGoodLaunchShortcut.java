@@ -5,7 +5,7 @@ import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.php.internal.debug.ui.launching.PHPExeLaunchShortcut;
 
-public class StagehandTestRunnerLaunchShortcut extends PHPExeLaunchShortcut {
+public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
 
     @Override
     protected ILaunchConfigurationType getPHPExeLaunchConfigType() {
