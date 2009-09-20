@@ -1,4 +1,4 @@
-package com.piece_framework.makegood;
+package com.piece_framework.makegood.launch;
 import java.util.HashSet;
 import java.util.Set;
 

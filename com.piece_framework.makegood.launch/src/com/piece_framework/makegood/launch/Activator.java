@@ -1,4 +1,4 @@
-package com.piece_framework.makegood;
+package com.piece_framework.makegood.launch;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;

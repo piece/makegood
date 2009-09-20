@@ -30,7 +30,7 @@
                </count></enablement>
          </contextualLaunch>
          <configurationType
-               id="com.piece_framework.makegood.launchConfigurationType">
+               id="com.piece_framework.makegood.launch.launchConfigurationType">
          </configurationType>
       </shortcut>
    </extension>

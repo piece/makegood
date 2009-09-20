@@ -23,8 +23,8 @@
    <extension
          point="org.eclipse.debug.core.launchConfigurationTypes">
       <launchConfigurationType
-            delegate="com.piece_framework.makegood.MakeGoodLaunchConfigurationDelegate"
-            id="com.piece_framework.makegood.launchConfigurationType"
+            delegate="com.piece_framework.makegood.launch.MakeGoodLaunchConfigurationDelegate"
+            id="com.piece_framework.makegood.launch.launchConfigurationType"
             modes="run,debug"
             name="MakeGood"
             public="false">
