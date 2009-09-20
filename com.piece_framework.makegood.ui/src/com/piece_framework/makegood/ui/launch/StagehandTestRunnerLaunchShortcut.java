@@ -1,4 +1,4 @@
-package com.piece_framework.makegood;
+package com.piece_framework.makegood.ui.launch;
 
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfigurationType;

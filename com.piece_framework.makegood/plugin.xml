@@ -34,24 +34,5 @@
          </fileExtension>
       </launchConfigurationType>
    </extension>
-   <extension
-         point="org.eclipse.debug.ui.launchShortcuts">
-      <shortcut
-            class="com.piece_framework.makegood.StagehandTestRunnerLaunchShortcut"
-            id="com.piece_framework.makegood.shortcut"
-            label="MakeGood"
-            modes="run, debug">
-         <contextualLaunch>
-            <enablement>
-               <count
-                     value="*">
-               </count>
-            </enablement>
-         </contextualLaunch>
-         <configurationType
-               id="com.piece_framework.makegood.launchConfigurationType">
-         </configurationType>
-      </shortcut>
-   </extension>
 
 </plugin>

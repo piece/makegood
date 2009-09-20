@@ -16,5 +16,23 @@
             restorable="true">
       </view>
    </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchShortcuts">
+      <shortcut
+            class="com.piece_framework.makegood.ui.launch.StagehandTestRunnerLaunchShortcut"
+            id="com.piece_framework.makegood.ui.launchShortcut"
+            label="MakeGood"
+            modes="run, debug">
+         <contextualLaunch>
+            <enablement>
+               <count
+                     value="*">
+               </count></enablement>
+         </contextualLaunch>
+         <configurationType
+               id="com.piece_framework.makegood.launchConfigurationType">
+         </configurationType>
+      </shortcut>
+   </extension>
 
 </plugin>
