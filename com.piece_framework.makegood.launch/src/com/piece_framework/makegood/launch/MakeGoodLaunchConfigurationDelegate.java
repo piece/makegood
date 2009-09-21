@@ -31,27 +31,19 @@ public class MakeGoodLaunchConfigurationDelegate implements ILaunchConfiguration
         ILaunchConfiguration stagehandTestRunnerLaunchConfiguration = 
             createStagehandTestRunnerLaunchConfiguration(configuration);
 
-        ILaunch launchForWorkingCopy = new Launch(stagehandTestRunnerLaunchConfiguration,
-                                                  launch.getLaunchMode(),
-                                                  launch.getSourceLocator()
-                                                  );
-        launchForWorkingCopy.setAttribute(DebugPlugin.ATTR_CAPTURE_OUTPUT,
-                                          launch.getAttribute(DebugPlugin.ATTR_CAPTURE_OUTPUT)
-                                          );
-        launchForWorkingCopy.setAttribute(DebugPlugin.ATTR_CONSOLE_ENCODING,
-                                          launch.getAttribute(DebugPlugin.ATTR_CONSOLE_ENCODING)
-                                          );
-
-        ILaunchManager manager = DebugPlugin.getDefault().getLaunchManager();
-        manager.removeLaunch(launch);
-        manager.addLaunch(launchForWorkingCopy);
+        ILaunch stagehandTestRunnerLaunch = replaceLaunch(launch, stagehandTestRunnerLaunchConfiguration);
 
         Set modes = new HashSet();
         modes.add(mode);
-        ILaunchConfigurationType configurationType = manager.getLaunchConfigurationType("org.eclipse.php.debug.core.launching.PHPExeLaunchConfigurationType");
+        ILaunchConfigurationType configurationType =
+            DebugPlugin.getDefault().getLaunchManager().getLaunchConfigurationType("org.eclipse.php.debug.core.launching.PHPExeLaunchConfigurationType");
         ILaunchDelegate delegate = configurationType.getDelegates(modes)[0];
 
-        delegate.getDelegate().launch(stagehandTestRunnerLaunchConfiguration, mode, launchForWorkingCopy, monitor);
+        delegate.getDelegate().launch(stagehandTestRunnerLaunchConfiguration,
+                                      mode,
+                                      stagehandTestRunnerLaunch,
+                                      monitor
+                                      );
     }
 
     private ILaunchConfiguration createStagehandTestRunnerLaunchConfiguration(ILaunchConfiguration configuration) throws CoreException {
@@ -76,7 +68,6 @@ public class MakeGoodLaunchConfigurationDelegate implements ILaunchConfiguration
         }
 
         ILaunchConfigurationWorkingCopy workingCopy = configuration.copy(Long.toString(System.currentTimeMillis()));
-
         workingCopy.setAttribute("ATTR_FILE",
                                  testFile
                                  );
@@ -87,7 +78,25 @@ public class MakeGoodLaunchConfigurationDelegate implements ILaunchConfiguration
                                  "-p " + prepareResource.getLocation().toString() +
                                      " " + testResource.getLocation().toString()
                                  );
-
         return workingCopy;
+    }
+
+    private ILaunch replaceLaunch(ILaunch launch, ILaunchConfiguration configuration) {
+        ILaunch newLaunch = new Launch(configuration,
+                                       launch.getLaunchMode(),
+                                       launch.getSourceLocator()
+                                       );
+        newLaunch.setAttribute(DebugPlugin.ATTR_CAPTURE_OUTPUT,
+                               launch.getAttribute(DebugPlugin.ATTR_CAPTURE_OUTPUT)
+                               );
+        newLaunch.setAttribute(DebugPlugin.ATTR_CONSOLE_ENCODING,
+                               launch.getAttribute(DebugPlugin.ATTR_CONSOLE_ENCODING)
+                               );
+
+        ILaunchManager manager = DebugPlugin.getDefault().getLaunchManager();
+        manager.removeLaunch(launch);
+        manager.addLaunch(newLaunch);
+
+        return newLaunch;
     }
 }
