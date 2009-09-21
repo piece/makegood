@@ -36,7 +36,7 @@ public class MakeGoodLaunchConfigurationDelegate implements ILaunchConfiguration
         if (!tempDir.exists()) {
             tempDir.mkdir();
 
-            URL scriptsURL = Platform.getBundle(Activator.PLUGIN_ID).getEntry("scripts");
+            URL scriptsURL = Platform.getBundle(Activator.PLUGIN_ID).getEntry("launchers");
             File scriptsDirectory = null;
             try {
                 scriptsDirectory = new File(FileLocator.toFileURL(scriptsURL).getPath());
