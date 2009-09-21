@@ -1,4 +1,5 @@
 package com.piece_framework.makegood.launch;
+
 import java.io.FileNotFoundException;
 import java.util.HashSet;
 import java.util.Set;
@@ -21,14 +22,13 @@ import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.Launch;
 import org.eclipse.debug.core.model.ILaunchConfigurationDelegate;
 
-
 public class MakeGoodLaunchConfigurationDelegate implements ILaunchConfigurationDelegate {
     public void launch(ILaunchConfiguration configuration,
                          String mode,
                          ILaunch launch,
                          IProgressMonitor monitor
                          ) throws CoreException {
-        ILaunchConfiguration stagehandTestRunnerLaunchConfiguration = 
+        ILaunchConfiguration stagehandTestRunnerLaunchConfiguration =
             createStagehandTestRunnerLaunchConfiguration(configuration);
 
         ILaunch stagehandTestRunnerLaunch = replaceLaunch(launch, stagehandTestRunnerLaunchConfiguration);
