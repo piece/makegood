@@ -17,13 +17,13 @@ public class MakeGoodLauncherRegistry {
 
     static {
         launcherScripts.put(TestingFramework.PHPUnit,
-                            registry.getAbsolutePath() + "/testrunner"
+                            registry.getAbsolutePath() + String.valueOf(File.separatorChar) + "testrunner"
                             );
         launcherScripts.put(TestingFramework.SimpleTest,
-                            registry.getAbsolutePath() + "/testrunner-st"
+                            registry.getAbsolutePath() + String.valueOf(File.separatorChar) + "testrunner-st"
                             );
         launcherScripts.put(TestingFramework.PHPSpec,
-                            registry.getAbsolutePath() + "/specrunner"
+                            registry.getAbsolutePath() + String.valueOf(File.separatorChar) + "specrunner"
                             );
     }
 
@@ -51,7 +51,10 @@ public class MakeGoodLauncherRegistry {
 
         for (TestingFramework testingFramework: TestingFramework.values()) {
             File launcherScript = new File(launcherScripts.get(testingFramework));
-            File sourceLauncherScript = new File(launcherScriptsDirectory.getAbsoluteFile() + "/" + launcherScript.getName());
+            File sourceLauncherScript = new File(launcherScriptsDirectory.getAbsoluteFile() +
+                                                  String.valueOf(File.separatorChar) +
+                                                  launcherScript.getName()
+                                                  );
 
             if (!sourceLauncherScript.exists()) {
                 continue;

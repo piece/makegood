@@ -15,7 +15,10 @@ public class MakeGoodLauncherRegistryTest {
 
     @Before
     public void setUp() throws Exception {
-        File launcherScriptsDirectory = new File(System.getProperty("user.dir") + File.separatorChar + "launchers");
+        File launcherScriptsDirectory = new File(System.getProperty("user.dir") +
+                                                 String.valueOf(File.separatorChar) +
+                                                 "launchers"
+                                                 );
         try {
             MakeGoodLauncherRegistry.createRegistry(launcherScriptsDirectory);
         } catch (IOException e) {
@@ -38,6 +41,8 @@ public class MakeGoodLauncherRegistryTest {
             fail(e.getMessage());
         }
 
-        assertEquals(MakeGoodLauncherRegistry.getRegistry().getAbsolutePath() + "/testrunner", launcher.getScript());
+        assertEquals(MakeGoodLauncherRegistry.getRegistry().getAbsolutePath() + String.valueOf(File.separatorChar) + "testrunner",
+                     launcher.getScript()
+                     );
     }
 }
