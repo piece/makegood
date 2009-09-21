@@ -1,5 +1,11 @@
 package com.piece_framework.makegood.launch;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+
+import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
@@ -28,6 +34,14 @@ public class Activator extends AbstractUIPlugin {
     public void start(BundleContext context) throws Exception {
         super.start(context);
         plugin = this;
+
+        try {
+            URL launchersURL = Platform.getBundle(PLUGIN_ID).getEntry("launchers");
+            File launchersDirectory = new File(FileLocator.toFileURL(launchersURL).getPath());
+            MakeGoodLauncherRegistry.createRegistry(launchersDirectory);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /*
@@ -37,6 +51,8 @@ public class Activator extends AbstractUIPlugin {
     public void stop(BundleContext context) throws Exception {
         plugin = null;
         super.stop(context);
+
+        MakeGoodLauncherRegistry.deleteRegistry();
     }
 
     /**
