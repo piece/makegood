@@ -71,4 +71,11 @@ public class MakeGoodLauncherRegistry {
             input.close();
         }
     }
+
+    public static void deleteRegistry() {
+        for (File file: registry.listFiles()) {
+            file.delete();
+        }
+        registry.delete();
+    }
 }

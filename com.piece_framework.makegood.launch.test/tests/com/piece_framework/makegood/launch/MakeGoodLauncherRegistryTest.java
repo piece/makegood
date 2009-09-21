@@ -25,11 +25,7 @@ public class MakeGoodLauncherRegistryTest {
 
     @After
     public void tearDown() {
-        File registryDirectory = MakeGoodLauncherRegistry.getRegistry();
-        for (File file: registryDirectory.listFiles()) {
-            file.delete();
-        }
-        registryDirectory.delete();
+        MakeGoodLauncherRegistry.deleteRegistry();
     }
 
     @Test
