@@ -3,8 +3,11 @@ package com.piece_framework.makegood.launch;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -12,6 +15,21 @@ public class MakeGoodLauncherRegistryTest {
 
     @Before
     public void setUp() throws Exception {
+        File launcherScriptsDirectory = new File(System.getProperty("user.dir") + File.separatorChar + "launchers");
+        try {
+            MakeGoodLauncherRegistry.createRegistry(launcherScriptsDirectory);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @After
+    public void tearDown() {
+        File registryDirectory = MakeGoodLauncherRegistry.getRegistry();
+        for (File file: registryDirectory.listFiles()) {
+            file.delete();
+        }
+        registryDirectory.delete();
     }
 
     @Test
