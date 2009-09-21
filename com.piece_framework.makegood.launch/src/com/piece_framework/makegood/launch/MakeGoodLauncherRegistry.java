@@ -1,6 +1,7 @@
 package com.piece_framework.makegood.launch;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,10 +24,15 @@ public class MakeGoodLauncherRegistry {
                             );
     }
 
-    public MakeGoodLauncher getLauncher(TestingFramework testingFramework) {
+    public MakeGoodLauncher getLauncher(TestingFramework testingFramework) throws FileNotFoundException {
+        File launcherScript = new File(launcherScripts.get(testingFramework));
+        if (!launcherScript.exists()) {
+            throw new FileNotFoundException(testingFramework.toString() + " launcher script is not found.");
+        }
+
         return new MakeGoodLauncher(testingFramework,
-                             launcherScripts.get(testingFramework)
-                             );
+                                     launcherScript.getAbsolutePath()
+                                     );
     }
 
     public static File getRegistry() {

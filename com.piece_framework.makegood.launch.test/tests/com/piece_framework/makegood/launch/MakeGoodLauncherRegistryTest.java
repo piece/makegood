@@ -1,8 +1,9 @@
 package com.piece_framework.makegood.launch;
 
-import java.io.File;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
-import static org.junit.Assert.*;
+import java.io.FileNotFoundException;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -16,7 +17,12 @@ public class MakeGoodLauncherRegistryTest {
     @Test
     public void returnLauncherOfPHPUnit() {
         MakeGoodLauncherRegistry registry = new MakeGoodLauncherRegistry();
-        MakeGoodLauncher launcher = registry.getLauncher(TestingFramework.PHPUnit);
+        MakeGoodLauncher launcher = null;
+        try {
+            launcher = registry.getLauncher(TestingFramework.PHPUnit);
+        } catch (FileNotFoundException e) {
+            fail(e.getMessage());
+        }
 
         assertEquals(MakeGoodLauncherRegistry.getRegistry().getAbsolutePath() + "/testrunner", launcher.getScript());
     }
