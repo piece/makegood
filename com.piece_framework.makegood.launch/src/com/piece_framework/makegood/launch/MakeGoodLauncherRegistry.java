@@ -1,7 +1,10 @@
 package com.piece_framework.makegood.launch;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,7 +15,7 @@ public class MakeGoodLauncherRegistry {
                                                Activator.PLUGIN_ID
                                                );
 
-    {
+    static {
         launcherScripts.put(TestingFramework.PHPUnit,
                             registry.getAbsolutePath() + "/testrunner"
                             );
@@ -37,5 +40,35 @@ public class MakeGoodLauncherRegistry {
 
     public static File getRegistry() {
         return registry;
+    }
+
+    public static void createRegistry(File launcherScriptsDirectory) throws IOException {
+        if (registry.exists()) {
+            registry.delete();
+        }
+
+        registry.mkdirs();
+
+        for (TestingFramework testingFramework: TestingFramework.values()) {
+            File launcherScript = new File(launcherScripts.get(testingFramework));
+            File sourceLauncherScript = new File(launcherScriptsDirectory.getAbsoluteFile() + "/" + launcherScript.getName());
+
+            if (!sourceLauncherScript.exists()) {
+                continue;
+            }
+
+            launcherScript.createNewFile();
+
+            FileOutputStream output = new FileOutputStream(launcherScript);
+            FileInputStream input = new FileInputStream(sourceLauncherScript);
+
+            int data = 0;
+            while ((data = input.read()) > 0) {
+                output.write(data);
+            }
+
+            output.close();
+            input.close();
+        }
     }
 }
