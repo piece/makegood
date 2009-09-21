@@ -28,40 +28,10 @@ public class MakeGoodLaunchConfigurationDelegate implements ILaunchConfiguration
                          ILaunch launch,
                          IProgressMonitor monitor
                          ) throws CoreException {
-        MakeGoodLauncher launcher = null;
-        try {
-            MakeGoodLauncherRegistry registry = new MakeGoodLauncherRegistry();
-            launcher = registry.getLauncher(TestingFramework.PHPUnit);
-        } catch (FileNotFoundException e) {
-            throw new CoreException(new Status(IStatus.ERROR,
-                                                 Activator.PLUGIN_ID,
-                                                 0,
-                                                 e.getMessage(),
-                                                 e
-                                                 ));
-        }
+        ILaunchConfiguration stagehandTestRunnerLaunchConfiguration = 
+            createStagehandTestRunnerLaunchConfiguration(configuration);
 
-        String testFile = configuration.getAttribute("ATTR_FILE", (String) null);
-
-        IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
-        IResource testResource = workspaceRoot.findMember(testFile);
-        IProject project = testResource.getProject();
-        IResource prepareResource = project.findMember("/tests/prepare.php");
-
-        ILaunchConfigurationWorkingCopy workingCopy = configuration.copy(Long.toString(System.currentTimeMillis()));
-
-        workingCopy.setAttribute("ATTR_FILE",
-                                 testFile
-                                 );
-        workingCopy.setAttribute("ATTR_FILE_FULL_PATH",
-                                 launcher.getScript()
-                                 );
-        workingCopy.setAttribute("exeDebugArguments",
-                                 "-p " + prepareResource.getLocation().toString() +
-                                     " " + testResource.getLocation().toString()
-                                 );
-
-        ILaunch launchForWorkingCopy = new Launch(workingCopy,
+        ILaunch launchForWorkingCopy = new Launch(stagehandTestRunnerLaunchConfiguration,
                                                   launch.getLaunchMode(),
                                                   launch.getSourceLocator()
                                                   );
@@ -81,6 +51,43 @@ public class MakeGoodLaunchConfigurationDelegate implements ILaunchConfiguration
         ILaunchConfigurationType configurationType = manager.getLaunchConfigurationType("org.eclipse.php.debug.core.launching.PHPExeLaunchConfigurationType");
         ILaunchDelegate delegate = configurationType.getDelegates(modes)[0];
 
-        delegate.getDelegate().launch(workingCopy, mode, launchForWorkingCopy, monitor);
+        delegate.getDelegate().launch(stagehandTestRunnerLaunchConfiguration, mode, launchForWorkingCopy, monitor);
+    }
+
+    private ILaunchConfiguration createStagehandTestRunnerLaunchConfiguration(ILaunchConfiguration configuration) throws CoreException {
+        String testFile = configuration.getAttribute("ATTR_FILE", (String) null);
+
+        IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
+        IResource testResource = workspaceRoot.findMember(testFile);
+        IProject project = testResource.getProject();
+        IResource prepareResource = project.findMember("/tests/prepare.php");
+
+        MakeGoodLauncher launcher = null;
+        try {
+            MakeGoodLauncherRegistry registry = new MakeGoodLauncherRegistry();
+            launcher = registry.getLauncher(TestingFramework.PHPUnit);
+        } catch (FileNotFoundException e) {
+            throw new CoreException(new Status(IStatus.ERROR,
+                                                 Activator.PLUGIN_ID,
+                                                 0,
+                                                 e.getMessage(),
+                                                 e
+                                                 ));
+        }
+
+        ILaunchConfigurationWorkingCopy workingCopy = configuration.copy(Long.toString(System.currentTimeMillis()));
+
+        workingCopy.setAttribute("ATTR_FILE",
+                                 testFile
+                                 );
+        workingCopy.setAttribute("ATTR_FILE_FULL_PATH",
+                                 launcher.getScript()
+                                 );
+        workingCopy.setAttribute("exeDebugArguments",
+                                 "-p " + prepareResource.getLocation().toString() +
+                                     " " + testResource.getLocation().toString()
+                                 );
+
+        return workingCopy;
     }
 }
