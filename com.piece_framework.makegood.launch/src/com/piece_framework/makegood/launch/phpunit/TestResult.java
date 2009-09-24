@@ -14,7 +14,7 @@ public abstract class TestResult {
 
     public List<TestResult> getTestResults() {
         if (results == null) {
-            return null;
+            results = new ArrayList<TestResult>();
         }
         return Collections.unmodifiableList(results);
     }
