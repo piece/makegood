@@ -53,7 +53,7 @@ public class TestResultConverter {
             return null;
         }
 
-        if (node.getNodeName().equals("testsuite")) {
+        if (isTestSuiteNode(node)) {
             TestSuite suite = new TestSuite(createAttributesMap(node));
 
             NodeList childNodes = node.getChildNodes();
@@ -65,12 +65,12 @@ public class TestResultConverter {
             }
 
             return suite;
-        } else if (node.getNodeName().equals("testcase")) {
+        } else if (isTestCaseNode(node)) {
             TestCase testCase = new TestCase(createAttributesMap(node));
 
             NodeList childNodes = node.getChildNodes();
             for (int i = 0, count = childNodes.getLength(); i < count; ++i) {
-                if (childNodes.item(i).getNodeName().equals("failure")) {
+                if (isFailureNode(childNodes.item(i))) {
                     Map<String, String> attributes = createAttributesMap(childNodes.item(i));
                     attributes.put("content", childNodes.item(i).getTextContent());
                     testCase.failure = new Failure(attributes);
@@ -90,5 +90,17 @@ public class TestResultConverter {
                            );
         }
         return attributes;
+    }
+
+    private static boolean isTestSuiteNode(Node node) {
+        return node.getNodeName().equals("testsuite");
+    }
+
+    private static boolean isTestCaseNode(Node node) {
+        return node.getNodeName().equals("testcase");
+    }
+
+    private static boolean isFailureNode(Node node) {
+        return node.getNodeName().equals("failure");
     }
 }
