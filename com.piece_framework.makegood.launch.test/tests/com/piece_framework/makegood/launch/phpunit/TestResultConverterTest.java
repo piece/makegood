@@ -288,4 +288,61 @@ public class TestResultConverterTest {
                      );
 
     }
+
+    @Test
+    public void convertPassResult() {
+        List<TestSuite> testResults = TestResultConverter.convert(new File(System.getProperty("user.dir") +
+                                                                            String.valueOf(File.separatorChar) +
+                                                                            "phpunit-results/pass.log"
+                                                                            ));
+
+        assertEquals(1, testResults.size());
+
+        TestSuite rootSuite = testResults.get(0);
+        assertEquals("Stagehand_TestRunner_PHPUnitPassTest", rootSuite.getName());
+        assertEquals("/home/iteman/GITREPOS/stagehand-testrunner/tests/Stagehand/TestRunner/PHPUnitPassTest.php",
+                     rootSuite.getFile()
+                     );
+        assertEquals("Stagehand_TestRunner", rootSuite.getFullPackage());
+        assertEquals("Stagehand_TestRunner", rootSuite.getPackageName());
+        assertEquals(3, rootSuite.getTestCount());
+        assertEquals(3, rootSuite.getAssertionCount());
+        assertEquals(0, rootSuite.getErrorCount());
+        assertEquals(0, rootSuite.getFailureCount());
+        assertEquals(0.022199, rootSuite.getTime(), 0.001);
+
+        assertEquals(3, rootSuite.getTestResults().size());
+        TestCase testCase1 = (TestCase) rootSuite.findTestResult("testTestShouldPass1");
+        assertEquals("testTestShouldPass1", testCase1.getName());
+        assertEquals("Stagehand_TestRunner_PHPUnitPassTest", testCase1.getClassName());
+        assertEquals("/home/iteman/GITREPOS/stagehand-testrunner/tests/Stagehand/TestRunner/PHPUnitPassTest.php",
+                     testCase1.getFile()
+                     );
+        assertEquals(80, testCase1.getLine());
+        assertEquals(1, testCase1.getAssertionCount());
+        assertEquals(0.003642, testCase1.getTime(), 0.001);
+        assertNull(testCase1.getFailure());
+
+        TestCase testCase2 = (TestCase) rootSuite.findTestResult("testTestShouldPass2");
+        assertEquals("testTestShouldPass2", testCase2.getName());
+        assertEquals("Stagehand_TestRunner_PHPUnitPassTest", testCase2.getClassName());
+        assertEquals("/home/iteman/GITREPOS/stagehand-testrunner/tests/Stagehand/TestRunner/PHPUnitPassTest.php",
+                     testCase2.getFile()
+                     );
+        assertEquals(85, testCase2.getLine());
+        assertEquals(1, testCase2.getAssertionCount());
+        assertEquals(0.015340, testCase2.getTime(), 0.001);
+        assertNull(testCase2.getFailure());
+
+        TestCase testCase3 = (TestCase) rootSuite.findTestResult("test日本語を使用できること");
+        assertEquals("test日本語を使用できること", testCase3.getName());
+        assertEquals("Stagehand_TestRunner_PHPUnitPassTest", testCase3.getClassName());
+        assertEquals("/home/iteman/GITREPOS/stagehand-testrunner/tests/Stagehand/TestRunner/PHPUnitPassTest.php",
+                     testCase3.getFile()
+                     );
+        assertEquals(90, testCase3.getLine());
+        assertEquals(1, testCase3.getAssertionCount());
+        assertEquals(0.003217, testCase3.getTime(), 0.001);
+        assertNull(testCase3.getFailure());
+    }
 }
