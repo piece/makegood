@@ -56,18 +56,7 @@ public class TestResultConverter {
         if (isTestSuiteNode(node)) {
             return convertTestSuite(node);
         } else if (isTestCaseNode(node)) {
-            TestCase testCase = new TestCase(createAttributesMap(node));
-
-            NodeList childNodes = node.getChildNodes();
-            for (int i = 0, count = childNodes.getLength(); i < count; ++i) {
-                if (isFailureNode(childNodes.item(i))) {
-                    Map<String, String> attributes = createAttributesMap(childNodes.item(i));
-                    attributes.put("content", childNodes.item(i).getTextContent());
-                    testCase.failure = new Failure(attributes);
-                }
-            }
-
-            return testCase;
+            return convertTestCase(node);
         }
         return null;
     }
@@ -81,6 +70,21 @@ public class TestResultConverter {
         }
 
         return suite;
+    }
+
+    private static TestResult convertTestCase(Node node) {
+        TestCase testCase = new TestCase(createAttributesMap(node));
+
+        NodeList childNodes = node.getChildNodes();
+        for (int i = 0, count = childNodes.getLength(); i < count; ++i) {
+            if (isFailureNode(childNodes.item(i))) {
+                Map<String, String> attributes = createAttributesMap(childNodes.item(i));
+                attributes.put("content", childNodes.item(i).getTextContent());
+                testCase.failure = new Failure(attributes);
+            }
+        }
+
+        return testCase;
     }
 
     private static Map<String, String> createAttributesMap(Node node) {
