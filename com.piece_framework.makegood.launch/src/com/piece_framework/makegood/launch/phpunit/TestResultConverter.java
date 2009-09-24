@@ -53,15 +53,8 @@ public class TestResultConverter {
             return null;
         }
 
-        Map<String, String> attributes = new HashMap<String, String>();
-        for (int i = 0, count = node.getAttributes().getLength(); i < count; ++i) {
-            attributes.put(node.getAttributes().item(i).getNodeName(),
-                           node.getAttributes().item(i).getNodeValue()
-                           );
-        }
-
         if (node.getNodeName().equals("testsuite")) {
-            TestSuite suite = new TestSuite(attributes);
+            TestSuite suite = new TestSuite(createAttributesMap(node));
 
             NodeList childNodes = node.getChildNodes();
             for (int i = 0, count = childNodes.getLength(); i < count; ++i) {
@@ -73,7 +66,7 @@ public class TestResultConverter {
 
             return suite;
         } else if (node.getNodeName().equals("testcase")) {
-            TestCase testCase = new TestCase(attributes);
+            TestCase testCase = new TestCase(createAttributesMap(node));
 
             NodeList childNodes = node.getChildNodes();
             for (int i = 0, count = childNodes.getLength(); i < count; ++i) {
@@ -93,5 +86,15 @@ public class TestResultConverter {
             return testCase;
         }
         return null;
+    }
+
+    private static Map<String, String> createAttributesMap(Node node) {
+        Map<String, String> attributes = new HashMap<String, String>();
+        for (int i = 0, count = node.getAttributes().getLength(); i < count; ++i) {
+            attributes.put(node.getAttributes().item(i).getNodeName(),
+                           node.getAttributes().item(i).getNodeValue()
+                           );
+        }
+        return attributes;
     }
 }
