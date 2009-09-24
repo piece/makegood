@@ -77,6 +77,14 @@ public class TestResultConverter {
                 suite.time = Double.parseDouble(attributes.getNamedItem("time").getNodeValue());
             }
 
+            NodeList childNodes = node.getChildNodes();
+            for (int i = 0, count = childNodes.getLength(); i < count; ++i) {
+                TestResult result = scanNode(childNodes.item(i));
+                if (result != null) {
+                    suite.addTestResult(result);
+                }
+            }
+
             return suite;
         }
         return null;
