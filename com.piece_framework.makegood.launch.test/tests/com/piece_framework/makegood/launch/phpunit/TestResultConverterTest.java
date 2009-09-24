@@ -345,4 +345,46 @@ public class TestResultConverterTest {
         assertEquals(0.003217, testCase3.getTime(), 0.001);
         assertNull(testCase3.getFailure());
     }
+
+    @Test
+    public void convertResultThatOneTestClassIsFailure() {
+        List<TestSuite> testResults = TestResultConverter.convert(new File(System.getProperty("user.dir") +
+                                                                            String.valueOf(File.separatorChar) +
+                                                                            "phpunit-results/failure.log"
+                                                                            ));
+
+        assertEquals(1, testResults.size());
+
+        TestSuite rootSuite = testResults.get(0);
+        assertEquals("Stagehand_TestRunner_PHPUnitFailureTest", rootSuite.getName());
+        assertEquals("/home/iteman/GITREPOS/stagehand-testrunner/tests/Stagehand/TestRunner/PHPUnitFailureTest.php",
+                     rootSuite.getFile()
+                     );
+        assertEquals("Stagehand_TestRunner", rootSuite.getFullPackage());
+        assertEquals("Stagehand_TestRunner", rootSuite.getPackageName());
+        assertEquals(1, rootSuite.getTestCount());
+        assertEquals(1, rootSuite.getAssertionCount());
+        assertEquals(0, rootSuite.getErrorCount());
+        assertEquals(1, rootSuite.getFailureCount());
+        assertEquals(0.003905, rootSuite.getTime(), 0.001);
+
+        assertEquals(1, rootSuite.getTestResults().size());
+        TestCase testCase1 = (TestCase) rootSuite.findTestResult("testTestShouldBeFailure");
+        assertEquals("testTestShouldBeFailure", testCase1.getName());
+        assertEquals("Stagehand_TestRunner_PHPUnitFailureTest", testCase1.getClassName());
+        assertEquals("/home/iteman/GITREPOS/stagehand-testrunner/tests/Stagehand/TestRunner/PHPUnitFailureTest.php",
+                     testCase1.getFile()
+                     );
+        assertEquals(80, testCase1.getLine());
+        assertEquals(1, testCase1.getAssertionCount());
+        assertEquals(0.003905, testCase1.getTime(), 0.001);
+        assertEquals("PHPUnit_Framework_ExpectationFailedException", testCase1.getFailure().getType());
+        assertEquals("Stagehand_TestRunner_PHPUnitFailureTest::testTestShouldBeFailure\n" +
+"This is an error message.\n" +
+"Failed asserting that <boolean:false> is true.\n" +
+"\n" +
+"/home/iteman/GITREPOS/stagehand-testrunner/tests/Stagehand/TestRunner/PHPUnitFailureTest.php:82\n",
+                     testCase1.getFailure().getContent()
+                     );
+    }
 }
