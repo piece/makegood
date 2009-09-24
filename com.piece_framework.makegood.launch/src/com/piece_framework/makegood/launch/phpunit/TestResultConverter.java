@@ -86,6 +86,41 @@ public class TestResultConverter {
             }
 
             return suite;
+        } else if (node.getNodeName().equals("testcase")) {
+            TestCase testCase = new TestCase();
+            testCase.name = attributes.getNamedItem("name").getNodeValue();
+            if (attributes.getNamedItem("class") != null) {
+                testCase.className = attributes.getNamedItem("class").getNodeValue();
+            }
+            if (attributes.getNamedItem("file") != null) {
+                testCase.file = attributes.getNamedItem("file").getNodeValue();
+            }
+            if (attributes.getNamedItem("line") != null) {
+                testCase.line = Integer.parseInt(attributes.getNamedItem("line").getNodeValue());
+            }
+            if (attributes.getNamedItem("assertions") != null) {
+                testCase.assertionCount = Integer.parseInt(attributes.getNamedItem("assertions").getNodeValue());
+            }
+            if (attributes.getNamedItem("time") != null) {
+                testCase.time = Double.parseDouble(attributes.getNamedItem("time").getNodeValue());
+            }
+
+            NodeList childNodes = node.getChildNodes();
+            for (int i = 0, count = childNodes.getLength(); i < count; ++i) {
+                if (childNodes.item(i).getNodeName().equals("failure")) {
+                    Node failureNode = childNodes.item(i);
+
+                    Failure failure = new Failure();
+                    if (failureNode.getAttributes().getNamedItem("type") != null) {
+                        failure.type = failureNode.getAttributes().getNamedItem("type").getNodeValue();
+                    }
+                    failure.content = failureNode.getTextContent();
+
+                    testCase.failure = failure;
+                }
+            }
+
+            return testCase;
         }
         return null;
     }
