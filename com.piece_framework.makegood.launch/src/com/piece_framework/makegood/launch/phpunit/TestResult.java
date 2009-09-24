@@ -1,6 +1,7 @@
 package com.piece_framework.makegood.launch.phpunit;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public abstract class TestResult {
@@ -9,6 +10,13 @@ public abstract class TestResult {
 
     public String getName() {
         return name;
+    }
+
+    public List<TestResult> getTestResults() {
+        if (results == null) {
+            return null;
+        }
+        return Collections.unmodifiableList(results);
     }
 
     public TestResult findTestResult(String name) {
