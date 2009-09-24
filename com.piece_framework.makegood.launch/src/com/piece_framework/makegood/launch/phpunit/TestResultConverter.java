@@ -32,7 +32,7 @@ public class TestResultConverter {
             Element root = document.getDocumentElement();
             NodeList nodes = root.getChildNodes();
             for (int i = 0, count = nodes.getLength(); i < count; ++i) {
-                TestSuite suite = (TestSuite) scanNode(nodes.item(i));
+                TestSuite suite = (TestSuite) convertTestResult(nodes.item(i));
                 if (suite != null) {
                     testSuites.add(suite);
                 }
@@ -48,7 +48,7 @@ public class TestResultConverter {
         return testSuites;
     }
 
-    private static TestResult scanNode(Node node) {
+    private static TestResult convertTestResult(Node node) {
         if (!node.hasAttributes()) {
             return null;
         }
@@ -58,7 +58,7 @@ public class TestResultConverter {
 
             NodeList childNodes = node.getChildNodes();
             for (int i = 0, count = childNodes.getLength(); i < count; ++i) {
-                TestResult result = scanNode(childNodes.item(i));
+                TestResult result = convertTestResult(childNodes.item(i));
                 if (result != null) {
                     suite.addTestResult(result);
                 }
