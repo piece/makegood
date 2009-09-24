@@ -1,5 +1,7 @@
 package com.piece_framework.makegood.launch.phpunit;
 
+import java.util.Map;
+
 public class TestSuite extends TestResult {
     String file;
     String fullPackage;
@@ -9,6 +11,34 @@ public class TestSuite extends TestResult {
     int errorCount;
     int failureCount;
     double time;
+
+    TestSuite(Map<String, String> attributes) {
+        this.name = attributes.get("name");
+        if (attributes.containsKey("file")) {
+            this.file = attributes.get("file");
+        }
+        if (attributes.containsKey("fullPackage")) {
+            this.fullPackage = attributes.get("fullPackage");
+        }
+        if (attributes.containsKey("package")) {
+            this.packageName = attributes.get("package");
+        }
+        if (attributes.containsKey("tests")) {
+            this.testCount = Integer.parseInt(attributes.get("tests"));
+        }
+        if (attributes.containsKey("assertions")) {
+            this.assertionCount = Integer.parseInt(attributes.get("assertions"));
+        }
+        if (attributes.containsKey("errors")) {
+            this.errorCount = Integer.parseInt(attributes.get("errors"));
+        }
+        if (attributes.containsKey("failures")) {
+            this.failureCount = Integer.parseInt(attributes.get("failures"));
+        }
+        if (attributes.containsKey("time")) {
+            this.time = Double.parseDouble(attributes.get("time"));
+        }
+    }
 
     public String getFile() {
         return file;
