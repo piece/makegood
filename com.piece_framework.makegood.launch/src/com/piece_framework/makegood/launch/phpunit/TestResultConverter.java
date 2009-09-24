@@ -71,15 +71,9 @@ public class TestResultConverter {
             NodeList childNodes = node.getChildNodes();
             for (int i = 0, count = childNodes.getLength(); i < count; ++i) {
                 if (childNodes.item(i).getNodeName().equals("failure")) {
-                    Node failureNode = childNodes.item(i);
-
-                    Failure failure = new Failure();
-                    if (failureNode.getAttributes().getNamedItem("type") != null) {
-                        failure.type = failureNode.getAttributes().getNamedItem("type").getNodeValue();
-                    }
-                    failure.content = failureNode.getTextContent();
-
-                    testCase.failure = failure;
+                    Map<String, String> attributes = createAttributesMap(childNodes.item(i));
+                    attributes.put("content", childNodes.item(i).getTextContent());
+                    testCase.failure = new Failure(attributes);
                 }
             }
 
