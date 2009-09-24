@@ -24,7 +24,7 @@ public abstract class TestResult {
         return null;
     }
 
-    void addResult(TestResult result) {
+    void addTestResult(TestResult result) {
         if (results == null) {
             results = new ArrayList<TestResult>();
         }
