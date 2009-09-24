@@ -54,17 +54,7 @@ public class TestResultConverter {
         }
 
         if (isTestSuiteNode(node)) {
-            TestSuite suite = new TestSuite(createAttributesMap(node));
-
-            NodeList childNodes = node.getChildNodes();
-            for (int i = 0, count = childNodes.getLength(); i < count; ++i) {
-                TestResult result = convertTestResult(childNodes.item(i));
-                if (result != null) {
-                    suite.addTestResult(result);
-                }
-            }
-
-            return suite;
+            return convertTestSuite(node);
         } else if (isTestCaseNode(node)) {
             TestCase testCase = new TestCase(createAttributesMap(node));
 
@@ -80,6 +70,17 @@ public class TestResultConverter {
             return testCase;
         }
         return null;
+    }
+
+    private static TestResult convertTestSuite(Node node) {
+        TestSuite suite = new TestSuite(createAttributesMap(node));
+
+        NodeList childNodes = node.getChildNodes();
+        for (int i = 0, count = childNodes.getLength(); i < count; ++i) {
+            suite.addTestResult(convertTestResult(childNodes.item(i)));
+        }
+
+        return suite;
     }
 
     private static Map<String, String> createAttributesMap(Node node) {
