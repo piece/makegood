@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.List;
 
 import org.junit.Before;
@@ -16,7 +17,7 @@ public class TestResultConverterTest {
     }
 
     @Test
-    public void convertAllResultType() {
+    public void convertAllResultType() throws Exception {
         List<TestSuite> testResults = TestResultConverter.convert(new File(System.getProperty("user.dir") +
                                                                             String.valueOf(File.separatorChar) +
                                                                             "phpunit-results/all.log"
@@ -281,7 +282,7 @@ public class TestResultConverterTest {
     }
 
     @Test
-    public void convertResultThatOneTestClassPass() {
+    public void convertResultThatOneTestClassPass() throws Exception {
         List<TestSuite> testResults = TestResultConverter.convert(new File(System.getProperty("user.dir") +
                                                                             String.valueOf(File.separatorChar) +
                                                                             "phpunit-results/pass.log"
@@ -338,7 +339,7 @@ public class TestResultConverterTest {
     }
 
     @Test
-    public void convertResultThatOneTestClassIsFailure() {
+    public void convertResultThatOneTestClassIsFailure() throws Exception {
         List<TestSuite> testResults = TestResultConverter.convert(new File(System.getProperty("user.dir") +
                                                                             String.valueOf(File.separatorChar) +
                                                                             "phpunit-results/failure.log"
@@ -377,5 +378,13 @@ public class TestResultConverterTest {
 "/home/iteman/GITREPOS/stagehand-testrunner/tests/Stagehand/TestRunner/PHPUnitFailureTest.php:82\n",
                      testCase1.getFailure().getContent()
                      );
+    }
+
+    @Test(expected=FileNotFoundException.class)
+    public void checkResultFile() throws Exception {
+        TestResultConverter.convert(new File(System.getProperty("user.dir") +
+                                              String.valueOf(File.separatorChar) +
+                                              "phpunit-results/foo.log"
+                                              ));
     }
 }

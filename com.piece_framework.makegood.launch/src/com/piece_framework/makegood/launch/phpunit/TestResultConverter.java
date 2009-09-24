@@ -1,6 +1,7 @@
 package com.piece_framework.makegood.launch.phpunit;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +18,10 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 public class TestResultConverter {
-    public static List<TestSuite> convert(File result) {
+    public static List<TestSuite> convert(File result) throws FileNotFoundException {
+        if (!result.exists()) {
+            throw new FileNotFoundException();
+        }
         List<TestSuite> testSuites = new ArrayList<TestSuite>();
 
         try {
