@@ -33,6 +33,10 @@ public abstract class TestResult {
     }
 
     void addTestResult(TestResult result) {
+        if (result == null) {
+            return;
+        }
+
         if (results == null) {
             results = new ArrayList<TestResult>();
         }
