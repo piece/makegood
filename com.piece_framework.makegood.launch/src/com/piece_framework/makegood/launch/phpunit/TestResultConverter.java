@@ -55,8 +55,11 @@ public class TestResultConverter {
             if (attributes.getNamedItem("file") != null) {
                 suite.file = attributes.getNamedItem("file").getNodeValue();
             }
-            if (attributes.getNamedItem("packageName") != null) {
-                suite.packageName = attributes.getNamedItem("packageName").getNodeValue();
+            if (attributes.getNamedItem("fullPackage") != null) {
+                suite.fullPackage = attributes.getNamedItem("fullPackage").getNodeValue();
+            }
+            if (attributes.getNamedItem("package") != null) {
+                suite.packageName = attributes.getNamedItem("package").getNodeValue();
             }
             if (attributes.getNamedItem("tests") != null) {
                 suite.testCount = Integer.parseInt(attributes.getNamedItem("tests").getNodeValue());
