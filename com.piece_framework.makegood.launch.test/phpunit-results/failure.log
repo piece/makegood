@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="Stagehand_TestRunner_PHPUnitFailureTest" file="/home/iteman/GITREPOS/stagehand-testrunner/tests/Stagehand/TestRunner/PHPUnitFailureTest.php" fullPackage="Stagehand_TestRunner" package="Stagehand_TestRunner" tests="1" assertions="1" failures="1" errors="0" time="0.003905">
+    <testcase name="testTestShouldBeFailure" class="Stagehand_TestRunner_PHPUnitFailureTest" file="/home/iteman/GITREPOS/stagehand-testrunner/tests/Stagehand/TestRunner/PHPUnitFailureTest.php" line="80" assertions="1" time="0.003905">
+      <failure type="PHPUnit_Framework_ExpectationFailedException">Stagehand_TestRunner_PHPUnitFailureTest::testTestShouldBeFailure
+This is an error message.
+Failed asserting that &lt;boolean:false&gt; is true.
+
+/home/iteman/GITREPOS/stagehand-testrunner/tests/Stagehand/TestRunner/PHPUnitFailureTest.php:82
+</failure>
+    </testcase>
+  </testsuite>
+</testsuites>
