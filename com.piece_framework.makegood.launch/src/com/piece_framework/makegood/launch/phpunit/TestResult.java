@@ -11,7 +11,7 @@ public abstract class TestResult {
         return name;
     }
 
-    public TestResult findResult(String name) {
+    public TestResult findTestResult(String name) {
         if (results == null) {
             return null;
         }
