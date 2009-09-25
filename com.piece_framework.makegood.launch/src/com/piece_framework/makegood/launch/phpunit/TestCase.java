@@ -9,6 +9,7 @@ public class TestCase extends TestResult {
     int line;
     double time;
     Failure failure;
+    Error error;
 
     TestCase(Map<String, String> attributes) {
         this.name = attributes.get("name");
@@ -51,5 +52,9 @@ public class TestCase extends TestResult {
 
     public Failure getFailure() {
         return failure;
+    }
+
+    public Error getError() {
+        return error;
     }
 }

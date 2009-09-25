@@ -77,10 +77,16 @@ public class TestResultConverter {
 
         NodeList childNodes = node.getChildNodes();
         for (int i = 0, count = childNodes.getLength(); i < count; ++i) {
-            if (isFailureNode(childNodes.item(i))) {
+            if (isFailureNode(childNodes.item(i))
+                || isErrorNode(childNodes.item(i))
+                ) {
                 Map<String, String> attributes = createAttributesMap(childNodes.item(i));
                 attributes.put("content", childNodes.item(i).getTextContent());
-                testCase.failure = new Failure(attributes);
+                if (isFailureNode(childNodes.item(i))) {
+                    testCase.failure = new Failure(attributes);
+                } else if (isErrorNode(childNodes.item(i))) {
+                    testCase.error = new Error(attributes);
+                }
             }
         }
 
@@ -107,5 +113,9 @@ public class TestResultConverter {
 
     private static boolean isFailureNode(Node node) {
         return node.getNodeName().equals("failure");
+    }
+
+    private static boolean isErrorNode(Node node) {
+        return node.getNodeName().equals("error");
     }
 }
