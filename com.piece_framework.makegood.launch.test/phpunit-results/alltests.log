@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="" tests="12" assertions="8" failures="2" errors="4" time="0.043255">
+    <testsuite name="Stagehand_TestRunner_PHPUnitDependsTest" file="/home/iteman/GITREPOS/stagehand-testrunner/tests/Stagehand/TestRunner/PHPUnitDependsTest.php" fullPackage="Stagehand_TestRunner" package="Stagehand_TestRunner" tests="2" assertions="1" failures="1" errors="1" time="0.004813">
+      <testcase name="pass" class="Stagehand_TestRunner_PHPUnitDependsTest" file="/home/iteman/GITREPOS/stagehand-testrunner/tests/Stagehand/TestRunner/PHPUnitDependsTest.php" line="83" assertions="1" time="0.004792">
+        <failure type="PHPUnit_Framework_ExpectationFailedException">Stagehand_TestRunner_PHPUnitDependsTest::pass
+Failed asserting that &lt;boolean:false&gt; is true.
+
+/home/iteman/GITREPOS/stagehand-testrunner/tests/Stagehand/TestRunner/PHPUnitDependsTest.php:85
+/home/iteman/GITREPOS/stagehand-testrunner/src/Stagehand/TestRunner/Runner/PHPUnitRunner.php:120
+/home/iteman/GITREPOS/stagehand-testrunner/src/Stagehand/TestRunner.php:366
+/home/iteman/GITREPOS/stagehand-testrunner/src/Stagehand/TestRunner.php:175
+/home/iteman/site-php/5.2/PEAR/src/Stagehand/CLIController.php:101
+/home/iteman/GITREPOS/stagehand-testrunner/bin/phpunitrunner:50
+</failure>
+      </testcase>
+      <testcase name="skip" class="Stagehand_TestRunner_PHPUnitDependsTest" file="/home/iteman/GITREPOS/stagehand-testrunner/tests/Stagehand/TestRunner/PHPUnitDependsTest.php" line="92" assertions="0" time="0.000021">
+        <error type="PHPUnit_Framework_SkippedTestError">Skipped Test
+/home/iteman/GITREPOS/stagehand-testrunner/src/Stagehand/TestRunner/Runner/PHPUnitRunner.php:120
+/home/iteman/GITREPOS/stagehand-testrunner/src/Stagehand/TestRunner.php:366
+/home/iteman/GITREPOS/stagehand-testrunner/src/Stagehand/TestRunner.php:175
+/home/iteman/site-php/5.2/PEAR/src/Stagehand/CLIController.php:101
+/home/iteman/GITREPOS/stagehand-testrunner/bin/phpunitrunner:50
+</error>
+      </testcase>
+    </testsuite>
+    <testsuite name="Stagehand_TestRunner_PHPUnitErrorTest" file="/home/iteman/GITREPOS/stagehand-testrunner/tests/Stagehand/TestRunner/PHPUnitErrorTest.php" fullPackage="Stagehand_TestRunner" package="Stagehand_TestRunner" tests="1" assertions="0" failures="0" errors="1" time="0.004186">
+      <testcase name="testTestShouldBeError" class="Stagehand_TestRunner_PHPUnitErrorTest" file="/home/iteman/GITREPOS/stagehand-testrunner/tests/Stagehand/TestRunner/PHPUnitErrorTest.php" line="80" assertions="0" time="0.004186">
+        <error type="PHPUnit_Framework_Error_Notice">Stagehand_TestRunner_PHPUnitErrorTest::testTestShouldBeError
+Undefined property: Stagehand_TestRunner_PHPUnitErrorTest::$foo
+
+/home/iteman/GITREPOS/stagehand-testrunner/tests/Stagehand/TestRunner/PHPUnitErrorTest.php:82
+/home/iteman/GITREPOS/stagehand-testrunner/src/Stagehand/TestRunner/Runner/PHPUnitRunner.php:120
+/home/iteman/GITREPOS/stagehand-testrunner/src/Stagehand/TestRunner.php:366
+/home/iteman/GITREPOS/stagehand-testrunner/src/Stagehand/TestRunner.php:175
+/home/iteman/site-php/5.2/PEAR/src/Stagehand/CLIController.php:101
+/home/iteman/GITREPOS/stagehand-testrunner/bin/phpunitrunner:50
+</error>
+      </testcase>
+    </testsuite>
+    <testsuite name="Stagehand_TestRunner_PHPUnitExtendedTest" file="/home/iteman/GITREPOS/stagehand-testrunner/tests/Stagehand/TestRunner/PHPUnitExtendedTest.php" fullPackage="Stagehand_TestRunner" package="Stagehand_TestRunner" tests="2" assertions="2" failures="0" errors="0" time="0.007455">
+      <testcase name="testTestShouldPassExtended" class="Stagehand_TestRunner_PHPUnitExtendedTest" file="/home/iteman/GITREPOS/stagehand-testrunner/tests/Stagehand/TestRunner/PHPUnitExtendedTest.php" line="82" assertions="1" time="0.003853"/>
+      <testcase name="testTestShouldPassCommon" class="Stagehand_TestRunner_PHPUnitExtendedTest" file="/home/iteman/GITREPOS/stagehand-testrunner/tests/Stagehand/TestRunner/PHPUnitExtendedTest.php" line="80" assertions="1" time="0.003602"/>
+    </testsuite>
+    <testsuite name="Stagehand_TestRunner_PHPUnitFailureTest" file="/home/iteman/GITREPOS/stagehand-testrunner/tests/Stagehand/TestRunner/PHPUnitFailureTest.php" fullPackage="Stagehand_TestRunner" package="Stagehand_TestRunner" tests="1" assertions="1" failures="1" errors="0" time="0.003942">
+      <testcase name="testTestShouldBeFailure" class="Stagehand_TestRunner_PHPUnitFailureTest" file="/home/iteman/GITREPOS/stagehand-testrunner/tests/Stagehand/TestRunner/PHPUnitFailureTest.php" line="80" assertions="1" time="0.003942">
+        <failure type="PHPUnit_Framework_ExpectationFailedException">Stagehand_TestRunner_PHPUnitFailureTest::testTestShouldBeFailure
+This is an error message.
+Failed asserting that &lt;boolean:false&gt; is true.
+
+/home/iteman/GITREPOS/stagehand-testrunner/tests/Stagehand/TestRunner/PHPUnitFailureTest.php:82
+/home/iteman/GITREPOS/stagehand-testrunner/src/Stagehand/TestRunner/Runner/PHPUnitRunner.php:120
+/home/iteman/GITREPOS/stagehand-testrunner/src/Stagehand/TestRunner.php:366
+/home/iteman/GITREPOS/stagehand-testrunner/src/Stagehand/TestRunner.php:175
+/home/iteman/site-php/5.2/PEAR/src/Stagehand/CLIController.php:101
+/home/iteman/GITREPOS/stagehand-testrunner/bin/phpunitrunner:50
+</failure>
+      </testcase>
+    </testsuite>
+    <testsuite name="Stagehand_TestRunner_PHPUnitImcompleteTest" file="/home/iteman/GITREPOS/stagehand-testrunner/tests/Stagehand/TestRunner/PHPUnitIncompleteTest.php" fullPackage="Stagehand_TestRunner" package="Stagehand_TestRunner" tests="1" assertions="0" failures="0" errors="1" time="0.003850">
+      <testcase name="testTestShouldBeImcomplete" class="Stagehand_TestRunner_PHPUnitImcompleteTest" file="/home/iteman/GITREPOS/stagehand-testrunner/tests/Stagehand/TestRunner/PHPUnitIncompleteTest.php" line="80" assertions="0" time="0.003850">
+        <error type="PHPUnit_Framework_IncompleteTestError">Incomplete Test
+/home/iteman/GITREPOS/stagehand-testrunner/tests/Stagehand/TestRunner/PHPUnitIncompleteTest.php:82
+/home/iteman/GITREPOS/stagehand-testrunner/src/Stagehand/TestRunner/Runner/PHPUnitRunner.php:120
+/home/iteman/GITREPOS/stagehand-testrunner/src/Stagehand/TestRunner.php:366
+/home/iteman/GITREPOS/stagehand-testrunner/src/Stagehand/TestRunner.php:175
+/home/iteman/site-php/5.2/PEAR/src/Stagehand/CLIController.php:101
+/home/iteman/GITREPOS/stagehand-testrunner/bin/phpunitrunner:50
+</error>
+      </testcase>
+    </testsuite>
+    <testsuite name="Stagehand_TestRunner_PHPUnitNoTestsTest" file="/home/iteman/GITREPOS/stagehand-testrunner/tests/Stagehand/TestRunner/PHPUnitNoTestsTest.php" fullPackage="Stagehand_TestRunner" package="Stagehand_TestRunner" tests="0" assertions="0" failures="0" errors="0" time="0.000000"/>
+    <testsuite name="Stagehand_TestRunner_PHPUnitPassTest" file="/home/iteman/GITREPOS/stagehand-testrunner/tests/Stagehand/TestRunner/PHPUnitPassTest.php" fullPackage="Stagehand_TestRunner" package="Stagehand_TestRunner" tests="3" assertions="3" failures="0" errors="0" time="0.011314">
+      <testcase name="testTestShouldPass1" class="Stagehand_TestRunner_PHPUnitPassTest" file="/home/iteman/GITREPOS/stagehand-testrunner/tests/Stagehand/TestRunner/PHPUnitPassTest.php" line="80" assertions="1" time="0.003600"/>
+      <testcase name="testTestShouldPass2" class="Stagehand_TestRunner_PHPUnitPassTest" file="/home/iteman/GITREPOS/stagehand-testrunner/tests/Stagehand/TestRunner/PHPUnitPassTest.php" line="85" assertions="1" time="0.003819"/>
+      <testcase name="test日本語を使用できること" class="Stagehand_TestRunner_PHPUnitPassTest" file="/home/iteman/GITREPOS/stagehand-testrunner/tests/Stagehand/TestRunner/PHPUnitPassTest.php" line="90" assertions="1" time="0.003895"/>
+    </testsuite>
+    <testsuite name="Stagehand_TestRunner_PHPUnitSkippedTest" file="/home/iteman/GITREPOS/stagehand-testrunner/tests/Stagehand/TestRunner/PHPUnitSkippedTest.php" fullPackage="Stagehand_TestRunner" package="Stagehand_TestRunner" tests="1" assertions="0" failures="0" errors="1" time="0.004022">
+      <testcase name="testTestShouldBeSkipped" class="Stagehand_TestRunner_PHPUnitSkippedTest" file="/home/iteman/GITREPOS/stagehand-testrunner/tests/Stagehand/TestRunner/PHPUnitSkippedTest.php" line="80" assertions="0" time="0.004022">
+        <error type="PHPUnit_Framework_SkippedTestError">Skipped Test
+/home/iteman/GITREPOS/stagehand-testrunner/tests/Stagehand/TestRunner/PHPUnitSkippedTest.php:82
+/home/iteman/GITREPOS/stagehand-testrunner/src/Stagehand/TestRunner/Runner/PHPUnitRunner.php:120
+/home/iteman/GITREPOS/stagehand-testrunner/src/Stagehand/TestRunner.php:366
+/home/iteman/GITREPOS/stagehand-testrunner/src/Stagehand/TestRunner.php:175
+/home/iteman/site-php/5.2/PEAR/src/Stagehand/CLIController.php:101
+/home/iteman/GITREPOS/stagehand-testrunner/bin/phpunitrunner:50
+</error>
+      </testcase>
+    </testsuite>
+    <testsuite name="Stagehand_TestRunner_PHPUnitTest_PHPUnitPassTest" file="/home/iteman/GITREPOS/stagehand-testrunner/tests/Stagehand/TestRunner/PHPUnitTest/PHPUnitPassTest.php" fullPackage="Stagehand_TestRunner" package="Stagehand_TestRunner" tests="1" assertions="1" failures="0" errors="0" time="0.003673">
+      <testcase name="testTestShouldPass" class="Stagehand_TestRunner_PHPUnitTest_PHPUnitPassTest" file="/home/iteman/GITREPOS/stagehand-testrunner/tests/Stagehand/TestRunner/PHPUnitTest/PHPUnitPassTest.php" line="80" assertions="1" time="0.003673"/>
+    </testsuite>
+  </testsuite>
+</testsuites>
