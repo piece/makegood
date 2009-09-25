@@ -41,7 +41,7 @@ public class MakeGoodLauncherRegistryTest {
             fail(e.getMessage());
         }
 
-        assertEquals(MakeGoodLauncherRegistry.getRegistry().getAbsolutePath() + String.valueOf(File.separatorChar) + "testrunner",
+        assertEquals(MakeGoodLauncherRegistry.getRegistry().getAbsolutePath() + String.valueOf(File.separatorChar) + "phpunitrunner",
                      launcher.getScript()
                      );
     }
