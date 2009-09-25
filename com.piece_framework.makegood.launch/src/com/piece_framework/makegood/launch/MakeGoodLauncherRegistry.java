@@ -17,13 +17,13 @@ public class MakeGoodLauncherRegistry {
 
     static {
         launcherScripts.put(TestingFramework.PHPUnit,
-                            registry.getAbsolutePath() + String.valueOf(File.separatorChar) + "testrunner"
+                            registry.getAbsolutePath() + String.valueOf(File.separatorChar) + "phpunitrunner"
                             );
         launcherScripts.put(TestingFramework.SimpleTest,
-                            registry.getAbsolutePath() + String.valueOf(File.separatorChar) + "testrunner-st"
+                            registry.getAbsolutePath() + String.valueOf(File.separatorChar) + "simpletestrunner"
                             );
         launcherScripts.put(TestingFramework.PHPSpec,
-                            registry.getAbsolutePath() + String.valueOf(File.separatorChar) + "specrunner"
+                            registry.getAbsolutePath() + String.valueOf(File.separatorChar) + "phpspecrunner"
                             );
     }
 

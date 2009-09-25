@@ -44,6 +44,8 @@ $loader = Stagehand_Autoload::legacyLoader();
 $loader->addNamespace('Stagehand');
 Stagehand_Autoload::register($loader);
 
+require_once 'PHPUnit/Framework.php';
+
 $runner = new Stagehand_TestRunner('PHPUnit');
 $result = $runner->run();
 
