@@ -1,5 +1,6 @@
 package com.piece_framework.makegood.launch;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.HashSet;
 import java.util.Set;
@@ -67,16 +68,25 @@ public class MakeGoodLaunchConfigurationDelegate implements ILaunchConfiguration
                                                  ));
         }
 
-        ILaunchConfigurationWorkingCopy workingCopy = configuration.copy(Long.toString(System.currentTimeMillis()));
+        String configurationName = Long.toString(System.currentTimeMillis());
+        ILaunchConfigurationWorkingCopy workingCopy = configuration.copy(configurationName);
         workingCopy.setAttribute("ATTR_FILE",
                                  testFile
                                  );
         workingCopy.setAttribute("ATTR_FILE_FULL_PATH",
                                  launcher.getScript()
                                  );
+        String logFile = MakeGoodLauncherRegistry.getRegistry().getAbsolutePath().toString() +
+                         String.valueOf(File.separatorChar) +
+                         configurationName +
+                         ".xml";
+        workingCopy.setAttribute("LOG_JUNIT", logFile);
+        StringBuilder argument = new StringBuilder();
+        argument.append("-p " + prepareResource.getLocation().toString());
+        argument.append(" --log-junit=" + logFile);
+        argument.append(" " + testResource.getLocation().toString());
         workingCopy.setAttribute("exeDebugArguments",
-                                 "-p " + prepareResource.getLocation().toString() +
-                                     " " + testResource.getLocation().toString()
+                                 argument.toString()
                                  );
         return workingCopy;
     }
