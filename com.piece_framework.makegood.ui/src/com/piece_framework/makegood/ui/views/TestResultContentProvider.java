@@ -1,5 +1,7 @@
 package com.piece_framework.makegood.ui.views;
 
+import java.util.Collection;
+
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 import com.piece_framework.makegood.launch.phpunit.TestResult;
@@ -10,6 +12,9 @@ public class TestResultContentProvider implements ITreeContentProvider {
         if (parentElement instanceof TestResult) {
             TestResult testResult = (TestResult) parentElement;
             return testResult.getTestResults().toArray();
+        } else if (parentElement instanceof Collection) {
+            Collection collection = (Collection) parentElement;
+            return collection.toArray();
         }
         return null;
     }
