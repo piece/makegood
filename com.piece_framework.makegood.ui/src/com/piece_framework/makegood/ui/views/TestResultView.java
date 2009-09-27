@@ -28,11 +28,11 @@ import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.progress.UIJob;
 
-public class ResultView extends ViewPart {
+public class TestResultView extends ViewPart {
     private ScrolledForm root;
     private IDebugEventSetListener listener;
 
-    public ResultView() {
+    public TestResultView() {
         // TODO Auto-generated constructor stub
     }
 
