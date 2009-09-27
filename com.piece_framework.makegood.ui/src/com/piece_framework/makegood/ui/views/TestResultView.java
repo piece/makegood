@@ -1,6 +1,8 @@
 package com.piece_framework.makegood.ui.views;
 
-import java.util.ArrayList;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -11,22 +13,17 @@ import org.eclipse.debug.core.DebugEvent;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.IDebugEventSetListener;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.php.internal.debug.core.model.IPHPDebugTarget;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Tree;
-import org.eclipse.ui.forms.DetailsPart;
-import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.ManagedForm;
-import org.eclipse.ui.forms.MasterDetailsBlock;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
-import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.progress.UIJob;
+
+import com.piece_framework.makegood.launch.phpunit.TestResultConverter;
+import com.piece_framework.makegood.launch.phpunit.TestSuite;
 
 public class TestResultView extends ViewPart {
     private ScrolledForm root;
@@ -41,7 +38,7 @@ public class TestResultView extends ViewPart {
         FormToolkit toolkit = new FormToolkit(parent.getDisplay());
         root = toolkit.createScrolledForm(parent);
 
-        TestResultMasterDetailsBlock block = new TestResultMasterDetailsBlock();
+        final TestResultMasterDetailsBlock block = new TestResultMasterDetailsBlock();
         block.createContent(new ManagedForm(toolkit, root));
 
         listener = new IDebugEventSetListener() {
@@ -56,10 +53,18 @@ public class TestResultView extends ViewPart {
                         Job job = new UIJob("MakeGood result parse") {
                             public IStatus runInUIThread(IProgressMonitor monitor) {
                                 ILaunchConfiguration configuration = debugTarget.getLaunch().getLaunchConfiguration();
+
                                 try {
-                                    System.out.println("xml file:" + configuration.getAttribute("LOG_JUNIT", ""));
+                                    String logFile = configuration.getAttribute("LOG_JUNIT", (String) null);
+                                    List<TestSuite> suites = TestResultConverter.convert(new File(logFile));
+                                    block.setInput(suites);
                                 } catch (CoreException e) {
                                     // TODO Auto-generated catch block
+                                    e.printStackTrace();
+                                } catch (FileNotFoundException e) {
+                                    // TODO Auto-generated catch block
+                                    e.printStackTrace();
+                                } catch (Exception e) {
                                     e.printStackTrace();
                                 }
 
