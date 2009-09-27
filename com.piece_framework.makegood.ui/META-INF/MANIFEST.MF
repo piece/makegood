@@ -11,6 +11,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.php.debug.core,
  org.eclipse.php.debug.ui,
  org.eclipse.debug.ui,
- org.eclipse.ui.forms
+ org.eclipse.ui.forms,
+ com.piece_framework.makegood.launch
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
