@@ -12,6 +12,8 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 
 public class TestResultMasterDetailsBlock extends MasterDetailsBlock {
+    private TreeViewer viewer;
+
     @Override
     protected void createMasterPart(IManagedForm managedForm, Composite parent) {
         FormToolkit toolkit = managedForm.getToolkit();
@@ -20,7 +22,7 @@ public class TestResultMasterDetailsBlock extends MasterDetailsBlock {
         Composite client = toolkit.createComposite(section);
         client.setLayout(new FillLayout());
         Tree tree = toolkit.createTree(client, SWT.BORDER);
-        TreeViewer viewer = new TreeViewer(tree);
+        viewer = new TreeViewer(tree);
         viewer.setContentProvider(new TestResultContentProvider());
         viewer.setLabelProvider(new TestResultLabelProvider());
 
@@ -37,5 +39,9 @@ public class TestResultMasterDetailsBlock extends MasterDetailsBlock {
     protected void registerPages(DetailsPart detailsPart) {
         // TODO Auto-generated method stub
 
+    }
+
+    public void setInput(Object input) {
+        viewer.setInput(input);
     }
 }
