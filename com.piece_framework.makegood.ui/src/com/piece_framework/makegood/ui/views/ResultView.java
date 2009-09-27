@@ -1,5 +1,8 @@
 package com.piece_framework.makegood.ui.views;
 
+import java.util.ArrayList;
+
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -7,17 +10,26 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.debug.core.DebugEvent;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.IDebugEventSetListener;
+import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.php.internal.debug.core.model.IPHPDebugTarget;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.forms.widgets.Form;
+import org.eclipse.swt.widgets.Tree;
+import org.eclipse.ui.forms.DetailsPart;
+import org.eclipse.ui.forms.IManagedForm;
+import org.eclipse.ui.forms.ManagedForm;
+import org.eclipse.ui.forms.MasterDetailsBlock;
 import org.eclipse.ui.forms.widgets.FormToolkit;
+import org.eclipse.ui.forms.widgets.ScrolledForm;
+import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.progress.UIJob;
 
 public class ResultView extends ViewPart {
-    private Form root;
+    private ScrolledForm root;
     private IDebugEventSetListener listener;
 
     public ResultView() {
@@ -27,8 +39,42 @@ public class ResultView extends ViewPart {
     @Override
     public void createPartControl(Composite parent) {
         FormToolkit toolkit = new FormToolkit(parent.getDisplay());
-        root = toolkit.createForm(parent);
-        root.getBody().setLayout(new FillLayout());
+        root = toolkit.createScrolledForm(parent);
+
+        MasterDetailsBlock block = new MasterDetailsBlock() {
+            @Override
+            protected void createMasterPart(IManagedForm managedForm,
+                                              Composite parent
+                                              ) {
+                FormToolkit toolkit = managedForm.getToolkit();
+                Section section = toolkit.createSection(parent,
+                                                        Section.NO_TITLE
+                                                        );
+
+                Composite client = toolkit.createComposite(section);
+                client.setLayout(new FillLayout());
+                Tree tree = toolkit.createTree(client, SWT.BORDER);
+                TreeViewer viewer = new TreeViewer(tree);
+                viewer.setContentProvider(new TestResultContentProvider());
+                viewer.setLabelProvider(new TestResultLabelProvider());
+
+                section.setClient(client);
+            }
+
+            @Override
+            protected void createToolBarActions(IManagedForm managedForm) {
+                // TODO Auto-generated method stub
+                
+            }
+
+            @Override
+            protected void registerPages(DetailsPart detailsPart) {
+                // TODO Auto-generated method stub
+                
+            }
+        };
+        ManagedForm managedForm = new ManagedForm(toolkit, root);
+        block.createContent(managedForm);
 
         listener = new IDebugEventSetListener() {
             @Override
@@ -41,6 +87,14 @@ public class ResultView extends ViewPart {
 
                         Job job = new UIJob("MakeGood result parse") {
                             public IStatus runInUIThread(IProgressMonitor monitor) {
+                                ILaunchConfiguration configuration = debugTarget.getLaunch().getLaunchConfiguration();
+                                try {
+                                    System.out.println("xml file:" + configuration.getAttribute("LOG_JUNIT", ""));
+                                } catch (CoreException e) {
+                                    // TODO Auto-generated catch block
+                                    e.printStackTrace();
+                                }
+
                                 String[] results = debugTarget.getOutputBuffer().toString().split("\n");
                                 int lastLine = results.length - 1;
                                 String result = results[lastLine];
