@@ -89,11 +89,13 @@ public class TestResultConverter {
     }
 
     private static Problem convertProblem(Node node) {
-        Problem problem = new Problem();
+        Problem problem = null;
         if (isFailureNode(node)) {
-            problem.type = ProblemType.Failure;
+            problem = new Problem(ProblemType.Failure);
         } else if (isErrorNode(node)) {
-            problem.type = ProblemType.Error;
+            problem = new Problem(ProblemType.Error);
+        } else {
+            return null;
         }
         problem.typeClass = node.getAttributes().getNamedItem("type").getNodeValue();
         problem.content = node.getTextContent();

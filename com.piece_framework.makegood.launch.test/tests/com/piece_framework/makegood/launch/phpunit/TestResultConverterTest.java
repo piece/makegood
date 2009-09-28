@@ -153,7 +153,7 @@ public class TestResultConverterTest {
         assertEquals(82, testCase3_1.getLine());
         assertEquals(1, testCase3_1.getAssertionCount());
         assertEquals(0.003853, testCase3_1.getTime(), 0.0);
-        assertNull(testCase3_1.getProblem());
+        assertEquals(ProblemType.NONE, testCase3_1.getProblem().getType());
 
         TestCase testCase3_2 = (TestCase) suite3.findTestResult("testTestShouldPassCommon");
         assertEquals("testTestShouldPassCommon", testCase3_2.getName());
@@ -164,7 +164,7 @@ public class TestResultConverterTest {
         assertEquals(80, testCase3_2.getLine());
         assertEquals(1, testCase3_2.getAssertionCount());
         assertEquals(0.003602, testCase3_2.getTime(), 0.0);
-        assertNull(testCase3_2.getProblem());
+        assertEquals(ProblemType.NONE, testCase3_2.getProblem().getType());
 
         TestSuite suite4 = (TestSuite) rootSuite.findTestResult("Stagehand_TestRunner_PHPUnitFailureTest");
         assertEquals("Stagehand_TestRunner_PHPUnitFailureTest", suite4.getName());
@@ -276,7 +276,7 @@ public class TestResultConverterTest {
         assertEquals(80, testCase7_1.getLine());
         assertEquals(1, testCase7_1.getAssertionCount());
         assertEquals(0.003600, testCase7_1.getTime(), 0.0);
-        assertNull(testCase7_1.getProblem());
+        assertEquals(ProblemType.NONE, testCase7_1.getProblem().getType());
 
         TestCase testCase7_2 = (TestCase) suite7.findTestResult("testTestShouldPass2");
         assertEquals("testTestShouldPass2", testCase7_2.getName());
@@ -287,7 +287,7 @@ public class TestResultConverterTest {
         assertEquals(85, testCase7_2.getLine());
         assertEquals(1, testCase7_2.getAssertionCount());
         assertEquals(0.003819, testCase7_2.getTime(), 0.0);
-        assertNull(testCase7_2.getProblem());
+        assertEquals(ProblemType.NONE, testCase7_2.getProblem().getType());
 
         TestCase testCase7_3 = (TestCase) suite7.findTestResult("test日本語を使用できること");
         assertEquals("test日本語を使用できること", testCase7_3.getName());
@@ -298,7 +298,7 @@ public class TestResultConverterTest {
         assertEquals(90, testCase7_3.getLine());
         assertEquals(1, testCase7_3.getAssertionCount());
         assertEquals(0.003895, testCase7_3.getTime(), 0.0);
-        assertNull(testCase7_3.getProblem());
+        assertEquals(ProblemType.NONE, testCase7_3.getProblem().getType());
 
         TestSuite suite8 = (TestSuite) rootSuite.findTestResult("Stagehand_TestRunner_PHPUnitSkippedTest");
         assertEquals("Stagehand_TestRunner_PHPUnitSkippedTest", suite8.getName());
@@ -338,7 +338,7 @@ public class TestResultConverterTest {
         assertEquals(80, testCase9_1.getLine());
         assertEquals(1, testCase9_1.getAssertionCount());
         assertEquals(0.003673, testCase9_1.getTime(), 0.0);
-        assertNull(testCase9_1.getProblem());
+        assertEquals(ProblemType.NONE, testCase9_1.getProblem().getType());
     }
 
     @Test
@@ -373,7 +373,7 @@ public class TestResultConverterTest {
         assertEquals(80, testCase1.getLine());
         assertEquals(1, testCase1.getAssertionCount());
         assertEquals(0.003642, testCase1.getTime(), 0.0);
-        assertNull(testCase1.getProblem());
+        assertEquals(ProblemType.NONE, testCase1.getProblem().getType());
 
         TestCase testCase2 = (TestCase) rootSuite.findTestResult("testTestShouldPass2");
         assertEquals("testTestShouldPass2", testCase2.getName());
@@ -384,7 +384,7 @@ public class TestResultConverterTest {
         assertEquals(85, testCase2.getLine());
         assertEquals(1, testCase2.getAssertionCount());
         assertEquals(0.015340, testCase2.getTime(), 0.0);
-        assertNull(testCase2.getProblem());
+        assertEquals(ProblemType.NONE, testCase2.getProblem().getType());
 
         TestCase testCase3 = (TestCase) rootSuite.findTestResult("test日本語を使用できること");
         assertEquals("test日本語を使用できること", testCase3.getName());
@@ -395,7 +395,7 @@ public class TestResultConverterTest {
         assertEquals(90, testCase3.getLine());
         assertEquals(1, testCase3.getAssertionCount());
         assertEquals(0.003217, testCase3.getTime(), 0.0);
-        assertNull(testCase3.getProblem());
+        assertEquals(ProblemType.NONE, testCase3.getProblem().getType());
     }
 
     @Test

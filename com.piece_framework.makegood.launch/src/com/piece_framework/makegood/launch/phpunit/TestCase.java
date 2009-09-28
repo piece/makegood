@@ -27,6 +27,7 @@ public class TestCase extends TestResult {
         if (attributes.containsKey("time")) {
             this.time = Double.parseDouble(attributes.get("time"));
         }
+        this.problem = new Problem(ProblemType.NONE);
     }
 
     public String getFile() {

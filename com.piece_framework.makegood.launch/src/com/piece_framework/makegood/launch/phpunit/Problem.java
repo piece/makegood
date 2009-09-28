@@ -6,6 +6,10 @@ public class Problem {
     String typeClass;
     String content;
 
+    Problem(ProblemType type) {
+        this.type = type;
+    }
+
     public ProblemType getType() {
         return type;
     }
