@@ -99,6 +99,7 @@ public class TestResultDetailsPage implements IDetailsPage {
             contents = testCase.getFailure().getContent().split("\n");
         }
 
+        contentList.removeAll();
         for (String content: contents) {
             contentList.add(content);
         }
