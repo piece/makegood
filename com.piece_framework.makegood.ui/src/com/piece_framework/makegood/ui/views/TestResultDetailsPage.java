@@ -15,6 +15,7 @@ import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 
+import com.piece_framework.makegood.launch.phpunit.ProblemType;
 import com.piece_framework.makegood.launch.phpunit.TestCase;
 
 public class TestResultDetailsPage implements IDetailsPage {
@@ -91,15 +92,14 @@ public class TestResultDetailsPage implements IDetailsPage {
             return;
         }
 
+        contentList.removeAll();
+
         TestCase testCase = (TestCase) structuredSelection.getFirstElement();
-        String[] contents = null;
-        if (testCase.getError() != null) {
-            contents = testCase.getError().getContent().split("\n");
-        } else if (testCase.getFailure() != null) {
-            contents = testCase.getFailure().getContent().split("\n");
+        if (testCase.getProblem().getType() == ProblemType.NONE) {
+            return;
         }
 
-        contentList.removeAll();
+        String[] contents = testCase.getProblem().getContent().split("\n");
         for (String content: contents) {
             contentList.add(content);
         }

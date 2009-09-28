@@ -5,8 +5,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 
-import com.piece_framework.makegood.launch.phpunit.Error;
-import com.piece_framework.makegood.launch.phpunit.Failure;
+import com.piece_framework.makegood.launch.phpunit.ProblemType;
 import com.piece_framework.makegood.launch.phpunit.TestCase;
 import com.piece_framework.makegood.launch.phpunit.TestResult;
 
@@ -16,12 +15,6 @@ public class TestResultLabelProvider extends LabelProvider {
         if (element instanceof TestResult) {
             TestResult testResult = (TestResult) element;
             return testResult.getName();
-        } else if (element instanceof Error) {
-            Error error = (Error) element;
-            return error.getType();
-        } else if (element instanceof Failure) {
-            Failure failure = (Failure) element;
-            return failure.getType();
         }
         return super.getText(element);
     }
@@ -31,12 +24,12 @@ public class TestResultLabelProvider extends LabelProvider {
         ISharedImages images = PlatformUI.getWorkbench().getSharedImages();
         if (element instanceof TestCase) {
             TestCase testCase = (TestCase) element;
-            if (testCase.getError() != null) {
-                return images.getImage(ISharedImages.IMG_OBJS_ERROR_TSK);
-            } else if (testCase.getFailure() != null){
-                return images.getImage(ISharedImages.IMG_OBJS_WARN_TSK);
-            } else {
+            if (testCase.getProblem().getType() == ProblemType.NONE) {
                 return images.getImage(ISharedImages.IMG_OBJS_INFO_TSK);
+            } else if (testCase.getProblem().getType() == ProblemType.Failure) {
+                return images.getImage(ISharedImages.IMG_OBJS_WARN_TSK);
+            } else if (testCase.getProblem().getType() == ProblemType.Error) {
+                return images.getImage(ISharedImages.IMG_OBJS_ERROR_TSK);
             }
         }
         return super.getImage(element);
