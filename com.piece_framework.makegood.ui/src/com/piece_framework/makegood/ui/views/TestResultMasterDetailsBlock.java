@@ -1,5 +1,7 @@
 package com.piece_framework.makegood.ui.views;
 
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
@@ -8,14 +10,19 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.forms.DetailsPart;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.MasterDetailsBlock;
+import org.eclipse.ui.forms.SectionPart;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
+
+import com.piece_framework.makegood.launch.phpunit.TestCase;
 
 public class TestResultMasterDetailsBlock extends MasterDetailsBlock {
     private TreeViewer viewer;
 
     @Override
-    protected void createMasterPart(IManagedForm managedForm, Composite parent) {
+    protected void createMasterPart(final IManagedForm managedForm,
+                                      Composite parent
+                                      ) {
         FormToolkit toolkit = managedForm.getToolkit();
         Section section = toolkit.createSection(parent, Section.NO_TITLE);
 
@@ -25,6 +32,15 @@ public class TestResultMasterDetailsBlock extends MasterDetailsBlock {
         viewer = new TreeViewer(tree);
         viewer.setContentProvider(new TestResultContentProvider());
         viewer.setLabelProvider(new TestResultLabelProvider());
+
+        final SectionPart sectionPart = new SectionPart(section);
+        managedForm.addPart(sectionPart);
+        viewer.addSelectionChangedListener(new ISelectionChangedListener() {
+            @Override
+            public void selectionChanged(SelectionChangedEvent event) {
+                managedForm.fireSelectionChanged(sectionPart, event.getSelection());
+            }
+        });
 
         section.setClient(client);
     }
@@ -37,8 +53,7 @@ public class TestResultMasterDetailsBlock extends MasterDetailsBlock {
 
     @Override
     protected void registerPages(DetailsPart detailsPart) {
-        // TODO Auto-generated method stub
-
+        detailsPart.registerPage(TestCase.class, new TestResultDetailsPage());
     }
 
     public void setInput(Object input) {
