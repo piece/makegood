@@ -8,8 +8,7 @@ public class TestCase extends TestResult {
     int assertionCount;
     int line;
     double time;
-    Failure failure;
-    Error error;
+    Problem problem;
 
     TestCase(Map<String, String> attributes) {
         this.name = attributes.get("name");
@@ -50,11 +49,7 @@ public class TestCase extends TestResult {
         return time;
     }
 
-    public Failure getFailure() {
-        return failure;
-    }
-
-    public Error getError() {
-        return error;
+    public Problem getProblem() {
+        return problem;
     }
 }

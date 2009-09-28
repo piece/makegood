@@ -80,17 +80,24 @@ public class TestResultConverter {
             if (isFailureNode(childNodes.item(i))
                 || isErrorNode(childNodes.item(i))
                 ) {
-                Map<String, String> attributes = createAttributesMap(childNodes.item(i));
-                attributes.put("content", childNodes.item(i).getTextContent());
-                if (isFailureNode(childNodes.item(i))) {
-                    testCase.failure = new Failure(attributes);
-                } else if (isErrorNode(childNodes.item(i))) {
-                    testCase.error = new Error(attributes);
-                }
+                testCase.problem = convertProblem(childNodes.item(i));
+                break;
             }
         }
 
         return testCase;
+    }
+
+    private static Problem convertProblem(Node node) {
+        Problem problem = new Problem();
+        if (isFailureNode(node)) {
+            problem.type = ProblemType.Failure;
+        } else if (isErrorNode(node)) {
+            problem.type = ProblemType.Error;
+        }
+        problem.typeClass = node.getAttributes().getNamedItem("type").getNodeValue();
+        problem.content = node.getTextContent();
+        return problem;
     }
 
     private static Map<String, String> createAttributesMap(Node node) {

@@ -61,7 +61,8 @@ public class TestResultConverterTest {
         assertEquals(83, testCase1_1.getLine());
         assertEquals(1, testCase1_1.getAssertionCount());
         assertEquals(0.004792, testCase1_1.getTime(), 0.0);
-        assertEquals("PHPUnit_Framework_ExpectationFailedException", testCase1_1.getFailure().getType());
+        assertEquals(ProblemType.Failure, testCase1_1.getProblem().getType());
+        assertEquals("PHPUnit_Framework_ExpectationFailedException", testCase1_1.getProblem().getTypeClass());
         assertEquals("Stagehand_TestRunner_PHPUnitDependsTest::pass\n" +
 "Failed asserting that <boolean:false> is true.\n" +
 "\n" +
@@ -70,8 +71,7 @@ public class TestResultConverterTest {
 "/home/iteman/GITREPOS/stagehand-testrunner/src/Stagehand/TestRunner.php:366\n" +
 "/home/iteman/GITREPOS/stagehand-testrunner/src/Stagehand/TestRunner.php:175\n" +
 "/home/iteman/site-php/5.2/PEAR/src/Stagehand/CLIController.php:101\n" +
-"/home/iteman/GITREPOS/stagehand-testrunner/bin/phpunitrunner:50\n", testCase1_1.getFailure().getContent());
-        assertNull(testCase1_1.getError());
+"/home/iteman/GITREPOS/stagehand-testrunner/bin/phpunitrunner:50\n", testCase1_1.getProblem().getContent());
 
         TestCase testCase1_2 = (TestCase) suite1.findTestResult("skip");
         assertEquals("skip", testCase1_2.getName());
@@ -82,15 +82,15 @@ public class TestResultConverterTest {
         assertEquals(92, testCase1_2.getLine());
         assertEquals(0, testCase1_2.getAssertionCount());
         assertEquals(0.000021, testCase1_2.getTime(), 0.0);
-        assertNull(testCase1_2.getFailure());
-        assertEquals("PHPUnit_Framework_SkippedTestError", testCase1_2.getError().getType());
+        assertEquals(ProblemType.Error, testCase1_2.getProblem().getType());
+        assertEquals("PHPUnit_Framework_SkippedTestError", testCase1_2.getProblem().getTypeClass());
         assertEquals("Skipped Test\n" +
 "/home/iteman/GITREPOS/stagehand-testrunner/src/Stagehand/TestRunner/Runner/PHPUnitRunner.php:120\n" +
 "/home/iteman/GITREPOS/stagehand-testrunner/src/Stagehand/TestRunner.php:366\n" +
 "/home/iteman/GITREPOS/stagehand-testrunner/src/Stagehand/TestRunner.php:175\n" +
 "/home/iteman/site-php/5.2/PEAR/src/Stagehand/CLIController.php:101\n" +
 "/home/iteman/GITREPOS/stagehand-testrunner/bin/phpunitrunner:50\n",
-                     testCase1_2.getError().getContent());
+                     testCase1_2.getProblem().getContent());
 
         TestSuite suite2 = (TestSuite) rootSuite.findTestResult("Stagehand_TestRunner_PHPUnitErrorTest");
         assertEquals("Stagehand_TestRunner_PHPUnitErrorTest", suite2.getName());
@@ -115,8 +115,8 @@ public class TestResultConverterTest {
         assertEquals(80, testCase2_1.getLine());
         assertEquals(0, testCase2_1.getAssertionCount());
         assertEquals(0.004186, testCase2_1.getTime(), 0.0);
-        assertNull(testCase2_1.getFailure());
-        assertEquals("PHPUnit_Framework_Error_Notice", testCase2_1.getError().getType());
+        assertEquals(ProblemType.Error, testCase2_1.getProblem().getType());
+        assertEquals("PHPUnit_Framework_Error_Notice", testCase2_1.getProblem().getTypeClass());
         assertEquals("Stagehand_TestRunner_PHPUnitErrorTest::testTestShouldBeError\n" +
 "Undefined property: Stagehand_TestRunner_PHPUnitErrorTest::$foo\n" +
 "\n" +
@@ -126,7 +126,7 @@ public class TestResultConverterTest {
 "/home/iteman/GITREPOS/stagehand-testrunner/src/Stagehand/TestRunner.php:175\n" +
 "/home/iteman/site-php/5.2/PEAR/src/Stagehand/CLIController.php:101\n" +
 "/home/iteman/GITREPOS/stagehand-testrunner/bin/phpunitrunner:50\n",
-                     testCase2_1.getError().getContent());
+                     testCase2_1.getProblem().getContent());
 
         TestSuite suite3 = (TestSuite) rootSuite.findTestResult("Stagehand_TestRunner_PHPUnitExtendedTest");
         assertEquals("Stagehand_TestRunner_PHPUnitExtendedTest", suite3.getName());
@@ -153,8 +153,7 @@ public class TestResultConverterTest {
         assertEquals(82, testCase3_1.getLine());
         assertEquals(1, testCase3_1.getAssertionCount());
         assertEquals(0.003853, testCase3_1.getTime(), 0.0);
-        assertNull(testCase3_1.getFailure());
-        assertNull(testCase3_1.getError());
+        assertNull(testCase3_1.getProblem());
 
         TestCase testCase3_2 = (TestCase) suite3.findTestResult("testTestShouldPassCommon");
         assertEquals("testTestShouldPassCommon", testCase3_2.getName());
@@ -165,8 +164,7 @@ public class TestResultConverterTest {
         assertEquals(80, testCase3_2.getLine());
         assertEquals(1, testCase3_2.getAssertionCount());
         assertEquals(0.003602, testCase3_2.getTime(), 0.0);
-        assertNull(testCase3_2.getFailure());
-        assertNull(testCase3_2.getError());
+        assertNull(testCase3_2.getProblem());
 
         TestSuite suite4 = (TestSuite) rootSuite.findTestResult("Stagehand_TestRunner_PHPUnitFailureTest");
         assertEquals("Stagehand_TestRunner_PHPUnitFailureTest", suite4.getName());
@@ -191,7 +189,8 @@ public class TestResultConverterTest {
         assertEquals(80, testCase4_1.getLine());
         assertEquals(1, testCase4_1.getAssertionCount());
         assertEquals(0.003942, testCase4_1.getTime(), 0.0);
-        assertEquals("PHPUnit_Framework_ExpectationFailedException", testCase4_1.getFailure().getType());
+        assertEquals(ProblemType.Failure, testCase4_1.getProblem().getType());
+        assertEquals("PHPUnit_Framework_ExpectationFailedException", testCase4_1.getProblem().getTypeClass());
         assertEquals("Stagehand_TestRunner_PHPUnitFailureTest::testTestShouldBeFailure\n" +
 "This is an error message.\n" +
 "Failed asserting that <boolean:false> is true.\n" +
@@ -202,9 +201,8 @@ public class TestResultConverterTest {
 "/home/iteman/GITREPOS/stagehand-testrunner/src/Stagehand/TestRunner.php:175\n" +
 "/home/iteman/site-php/5.2/PEAR/src/Stagehand/CLIController.php:101\n" +
 "/home/iteman/GITREPOS/stagehand-testrunner/bin/phpunitrunner:50\n",
-                     testCase4_1.getFailure().getContent()
+                     testCase4_1.getProblem().getContent()
                      );
-        assertNull(testCase4_1.getError());
 
         TestSuite suite5 = (TestSuite) rootSuite.findTestResult("Stagehand_TestRunner_PHPUnitImcompleteTest");
         assertEquals("Stagehand_TestRunner_PHPUnitImcompleteTest", suite5.getName());
@@ -229,8 +227,8 @@ public class TestResultConverterTest {
         assertEquals(80, testCase5_1.getLine());
         assertEquals(0, testCase5_1.getAssertionCount());
         assertEquals(0.003850, testCase5_1.getTime(), 0.0);
-        assertNull(testCase5_1.getFailure());
-        assertEquals("PHPUnit_Framework_IncompleteTestError", testCase5_1.getError().getType());
+        assertEquals(ProblemType.Error, testCase5_1.getProblem().getType());
+        assertEquals("PHPUnit_Framework_IncompleteTestError", testCase5_1.getProblem().getTypeClass());
         assertEquals("Incomplete Test\n" +
 "/home/iteman/GITREPOS/stagehand-testrunner/tests/Stagehand/TestRunner/PHPUnitIncompleteTest.php:82\n" +
 "/home/iteman/GITREPOS/stagehand-testrunner/src/Stagehand/TestRunner/Runner/PHPUnitRunner.php:120\n" +
@@ -238,7 +236,7 @@ public class TestResultConverterTest {
 "/home/iteman/GITREPOS/stagehand-testrunner/src/Stagehand/TestRunner.php:175\n" +
 "/home/iteman/site-php/5.2/PEAR/src/Stagehand/CLIController.php:101\n" +
 "/home/iteman/GITREPOS/stagehand-testrunner/bin/phpunitrunner:50\n",
-                     testCase5_1.getError().getContent());
+                     testCase5_1.getProblem().getContent());
 
         TestSuite suite6 = (TestSuite) rootSuite.findTestResult("Stagehand_TestRunner_PHPUnitNoTestsTest");
         assertEquals("Stagehand_TestRunner_PHPUnitNoTestsTest", suite6.getName());
@@ -278,8 +276,7 @@ public class TestResultConverterTest {
         assertEquals(80, testCase7_1.getLine());
         assertEquals(1, testCase7_1.getAssertionCount());
         assertEquals(0.003600, testCase7_1.getTime(), 0.0);
-        assertNull(testCase7_1.getFailure());
-        assertNull(testCase7_1.getError());
+        assertNull(testCase7_1.getProblem());
 
         TestCase testCase7_2 = (TestCase) suite7.findTestResult("testTestShouldPass2");
         assertEquals("testTestShouldPass2", testCase7_2.getName());
@@ -290,8 +287,7 @@ public class TestResultConverterTest {
         assertEquals(85, testCase7_2.getLine());
         assertEquals(1, testCase7_2.getAssertionCount());
         assertEquals(0.003819, testCase7_2.getTime(), 0.0);
-        assertNull(testCase7_2.getFailure());
-        assertNull(testCase7_2.getError());
+        assertNull(testCase7_2.getProblem());
 
         TestCase testCase7_3 = (TestCase) suite7.findTestResult("test日本語を使用できること");
         assertEquals("test日本語を使用できること", testCase7_3.getName());
@@ -302,8 +298,7 @@ public class TestResultConverterTest {
         assertEquals(90, testCase7_3.getLine());
         assertEquals(1, testCase7_3.getAssertionCount());
         assertEquals(0.003895, testCase7_3.getTime(), 0.0);
-        assertNull(testCase7_3.getFailure());
-        assertNull(testCase7_3.getError());
+        assertNull(testCase7_3.getProblem());
 
         TestSuite suite8 = (TestSuite) rootSuite.findTestResult("Stagehand_TestRunner_PHPUnitSkippedTest");
         assertEquals("Stagehand_TestRunner_PHPUnitSkippedTest", suite8.getName());
@@ -343,8 +338,7 @@ public class TestResultConverterTest {
         assertEquals(80, testCase9_1.getLine());
         assertEquals(1, testCase9_1.getAssertionCount());
         assertEquals(0.003673, testCase9_1.getTime(), 0.0);
-        assertNull(testCase9_1.getFailure());
-        assertNull(testCase9_1.getError());
+        assertNull(testCase9_1.getProblem());
     }
 
     @Test
@@ -379,7 +373,7 @@ public class TestResultConverterTest {
         assertEquals(80, testCase1.getLine());
         assertEquals(1, testCase1.getAssertionCount());
         assertEquals(0.003642, testCase1.getTime(), 0.0);
-        assertNull(testCase1.getFailure());
+        assertNull(testCase1.getProblem());
 
         TestCase testCase2 = (TestCase) rootSuite.findTestResult("testTestShouldPass2");
         assertEquals("testTestShouldPass2", testCase2.getName());
@@ -390,7 +384,7 @@ public class TestResultConverterTest {
         assertEquals(85, testCase2.getLine());
         assertEquals(1, testCase2.getAssertionCount());
         assertEquals(0.015340, testCase2.getTime(), 0.0);
-        assertNull(testCase2.getFailure());
+        assertNull(testCase2.getProblem());
 
         TestCase testCase3 = (TestCase) rootSuite.findTestResult("test日本語を使用できること");
         assertEquals("test日本語を使用できること", testCase3.getName());
@@ -401,7 +395,7 @@ public class TestResultConverterTest {
         assertEquals(90, testCase3.getLine());
         assertEquals(1, testCase3.getAssertionCount());
         assertEquals(0.003217, testCase3.getTime(), 0.0);
-        assertNull(testCase3.getFailure());
+        assertNull(testCase3.getProblem());
     }
 
     @Test
@@ -436,15 +430,15 @@ public class TestResultConverterTest {
         assertEquals(80, testCase1.getLine());
         assertEquals(1, testCase1.getAssertionCount());
         assertEquals(0.003905, testCase1.getTime(), 0.0);
-        assertEquals("PHPUnit_Framework_ExpectationFailedException", testCase1.getFailure().getType());
+        assertEquals(ProblemType.Failure, testCase1.getProblem().getType());
+        assertEquals("PHPUnit_Framework_ExpectationFailedException", testCase1.getProblem().getTypeClass());
         assertEquals("Stagehand_TestRunner_PHPUnitFailureTest::testTestShouldBeFailure\n" +
 "This is an error message.\n" +
 "Failed asserting that <boolean:false> is true.\n" +
 "\n" +
 "/home/iteman/GITREPOS/stagehand-testrunner/tests/Stagehand/TestRunner/PHPUnitFailureTest.php:82\n",
-                     testCase1.getFailure().getContent()
+                     testCase1.getProblem().getContent()
                      );
-        assertNull(testCase1.getError());
     }
 
     @Test(expected=FileNotFoundException.class)
