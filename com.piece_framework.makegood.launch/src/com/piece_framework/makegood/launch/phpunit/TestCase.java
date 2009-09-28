@@ -4,7 +4,7 @@ import java.util.Map;
 
 public class TestCase extends TestResult {
     String file;
-    String className;
+    String targetClass;
     int assertionCount;
     int line;
     double time;
@@ -13,7 +13,7 @@ public class TestCase extends TestResult {
     TestCase(Map<String, String> attributes) {
         this.name = attributes.get("name");
         if (attributes.containsKey("class")) {
-            this.className = attributes.get("class");
+            this.targetClass = attributes.get("class");
         }
         if (attributes.containsKey("file")) {
             this.file = attributes.get("file");
@@ -34,8 +34,8 @@ public class TestCase extends TestResult {
         return file;
     }
 
-    public String getClassName() {
-        return className;
+    public String getTargetClass() {
+        return targetClass;
     }
 
     public int getAssertionCount() {

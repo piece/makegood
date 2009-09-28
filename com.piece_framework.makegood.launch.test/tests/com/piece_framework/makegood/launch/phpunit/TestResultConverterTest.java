@@ -54,7 +54,7 @@ public class TestResultConverterTest {
         assertEquals(2, suite1.getTestResults().size());
         TestCase testCase1_1 = (TestCase) suite1.findTestResult("pass");
         assertEquals("pass", testCase1_1.getName());
-        assertEquals("Stagehand_TestRunner_PHPUnitDependsTest", testCase1_1.getClassName());
+        assertEquals("Stagehand_TestRunner_PHPUnitDependsTest", testCase1_1.getTargetClass());
         assertEquals("/home/iteman/GITREPOS/stagehand-testrunner/tests/Stagehand/TestRunner/PHPUnitDependsTest.php",
                      testCase1_1.getFile()
                      );
@@ -75,7 +75,7 @@ public class TestResultConverterTest {
 
         TestCase testCase1_2 = (TestCase) suite1.findTestResult("skip");
         assertEquals("skip", testCase1_2.getName());
-        assertEquals("Stagehand_TestRunner_PHPUnitDependsTest", testCase1_2.getClassName());
+        assertEquals("Stagehand_TestRunner_PHPUnitDependsTest", testCase1_2.getTargetClass());
         assertEquals("/home/iteman/GITREPOS/stagehand-testrunner/tests/Stagehand/TestRunner/PHPUnitDependsTest.php",
                      testCase1_2.getFile()
                      );
@@ -108,7 +108,7 @@ public class TestResultConverterTest {
         assertEquals(1, suite2.getTestResults().size());
         TestCase testCase2_1 = (TestCase) suite2.findTestResult("testTestShouldBeError");
         assertEquals("testTestShouldBeError", testCase2_1.getName());
-        assertEquals("Stagehand_TestRunner_PHPUnitErrorTest", testCase2_1.getClassName());
+        assertEquals("Stagehand_TestRunner_PHPUnitErrorTest", testCase2_1.getTargetClass());
         assertEquals("/home/iteman/GITREPOS/stagehand-testrunner/tests/Stagehand/TestRunner/PHPUnitErrorTest.php",
                      testCase2_1.getFile()
                      );
@@ -146,7 +146,7 @@ public class TestResultConverterTest {
         assertEquals(2, suite3.getTestResults().size());
         TestCase testCase3_1 = (TestCase) suite3.findTestResult("testTestShouldPassExtended");
         assertEquals("testTestShouldPassExtended", testCase3_1.getName());
-        assertEquals("Stagehand_TestRunner_PHPUnitExtendedTest", testCase3_1.getClassName());
+        assertEquals("Stagehand_TestRunner_PHPUnitExtendedTest", testCase3_1.getTargetClass());
         assertEquals("/home/iteman/GITREPOS/stagehand-testrunner/tests/Stagehand/TestRunner/PHPUnitExtendedTest.php",
                      testCase3_1.getFile()
                      );
@@ -157,7 +157,7 @@ public class TestResultConverterTest {
 
         TestCase testCase3_2 = (TestCase) suite3.findTestResult("testTestShouldPassCommon");
         assertEquals("testTestShouldPassCommon", testCase3_2.getName());
-        assertEquals("Stagehand_TestRunner_PHPUnitExtendedTest", testCase3_2.getClassName());
+        assertEquals("Stagehand_TestRunner_PHPUnitExtendedTest", testCase3_2.getTargetClass());
         assertEquals("/home/iteman/GITREPOS/stagehand-testrunner/tests/Stagehand/TestRunner/PHPUnitExtendedTest.php",
                      testCase3_2.getFile()
                      );
@@ -182,7 +182,7 @@ public class TestResultConverterTest {
         assertEquals(1, suite4.getTestResults().size());
         TestCase testCase4_1 = (TestCase) suite4.findTestResult("testTestShouldBeFailure");
         assertEquals("testTestShouldBeFailure", testCase4_1.getName());
-        assertEquals("Stagehand_TestRunner_PHPUnitFailureTest", testCase4_1.getClassName());
+        assertEquals("Stagehand_TestRunner_PHPUnitFailureTest", testCase4_1.getTargetClass());
         assertEquals("/home/iteman/GITREPOS/stagehand-testrunner/tests/Stagehand/TestRunner/PHPUnitFailureTest.php",
                      testCase4_1.getFile()
                      );
@@ -220,7 +220,7 @@ public class TestResultConverterTest {
         assertEquals(1, suite5.getTestResults().size());
         TestCase testCase5_1 = (TestCase) suite5.findTestResult("testTestShouldBeImcomplete");
         assertEquals("testTestShouldBeImcomplete", testCase5_1.getName());
-        assertEquals("Stagehand_TestRunner_PHPUnitImcompleteTest", testCase5_1.getClassName());
+        assertEquals("Stagehand_TestRunner_PHPUnitImcompleteTest", testCase5_1.getTargetClass());
         assertEquals("/home/iteman/GITREPOS/stagehand-testrunner/tests/Stagehand/TestRunner/PHPUnitIncompleteTest.php",
                      testCase5_1.getFile()
                      );
@@ -269,7 +269,7 @@ public class TestResultConverterTest {
         assertEquals(3, suite7.getTestResults().size());
         TestCase testCase7_1 = (TestCase) suite7.findTestResult("testTestShouldPass1");
         assertEquals("testTestShouldPass1", testCase7_1.getName());
-        assertEquals("Stagehand_TestRunner_PHPUnitPassTest", testCase7_1.getClassName());
+        assertEquals("Stagehand_TestRunner_PHPUnitPassTest", testCase7_1.getTargetClass());
         assertEquals("/home/iteman/GITREPOS/stagehand-testrunner/tests/Stagehand/TestRunner/PHPUnitPassTest.php",
                      testCase7_1.getFile()
                      );
@@ -280,7 +280,7 @@ public class TestResultConverterTest {
 
         TestCase testCase7_2 = (TestCase) suite7.findTestResult("testTestShouldPass2");
         assertEquals("testTestShouldPass2", testCase7_2.getName());
-        assertEquals("Stagehand_TestRunner_PHPUnitPassTest", testCase7_2.getClassName());
+        assertEquals("Stagehand_TestRunner_PHPUnitPassTest", testCase7_2.getTargetClass());
         assertEquals("/home/iteman/GITREPOS/stagehand-testrunner/tests/Stagehand/TestRunner/PHPUnitPassTest.php",
                      testCase7_2.getFile()
                      );
@@ -291,7 +291,7 @@ public class TestResultConverterTest {
 
         TestCase testCase7_3 = (TestCase) suite7.findTestResult("test日本語を使用できること");
         assertEquals("test日本語を使用できること", testCase7_3.getName());
-        assertEquals("Stagehand_TestRunner_PHPUnitPassTest", testCase7_3.getClassName());
+        assertEquals("Stagehand_TestRunner_PHPUnitPassTest", testCase7_3.getTargetClass());
         assertEquals("/home/iteman/GITREPOS/stagehand-testrunner/tests/Stagehand/TestRunner/PHPUnitPassTest.php",
                      testCase7_3.getFile()
                      );
@@ -331,7 +331,7 @@ public class TestResultConverterTest {
         assertEquals(1, suite9.getTestResults().size());
         TestCase testCase9_1 = (TestCase) suite9.findTestResult("testTestShouldPass");
         assertEquals("testTestShouldPass", testCase9_1.getName());
-        assertEquals("Stagehand_TestRunner_PHPUnitTest_PHPUnitPassTest", testCase9_1.getClassName());
+        assertEquals("Stagehand_TestRunner_PHPUnitTest_PHPUnitPassTest", testCase9_1.getTargetClass());
         assertEquals("/home/iteman/GITREPOS/stagehand-testrunner/tests/Stagehand/TestRunner/PHPUnitTest/PHPUnitPassTest.php",
                      testCase9_1.getFile()
                      );
@@ -366,7 +366,7 @@ public class TestResultConverterTest {
         assertEquals(3, rootSuite.getTestResults().size());
         TestCase testCase1 = (TestCase) rootSuite.findTestResult("testTestShouldPass1");
         assertEquals("testTestShouldPass1", testCase1.getName());
-        assertEquals("Stagehand_TestRunner_PHPUnitPassTest", testCase1.getClassName());
+        assertEquals("Stagehand_TestRunner_PHPUnitPassTest", testCase1.getTargetClass());
         assertEquals("/home/iteman/GITREPOS/stagehand-testrunner/tests/Stagehand/TestRunner/PHPUnitPassTest.php",
                      testCase1.getFile()
                      );
@@ -377,7 +377,7 @@ public class TestResultConverterTest {
 
         TestCase testCase2 = (TestCase) rootSuite.findTestResult("testTestShouldPass2");
         assertEquals("testTestShouldPass2", testCase2.getName());
-        assertEquals("Stagehand_TestRunner_PHPUnitPassTest", testCase2.getClassName());
+        assertEquals("Stagehand_TestRunner_PHPUnitPassTest", testCase2.getTargetClass());
         assertEquals("/home/iteman/GITREPOS/stagehand-testrunner/tests/Stagehand/TestRunner/PHPUnitPassTest.php",
                      testCase2.getFile()
                      );
@@ -388,7 +388,7 @@ public class TestResultConverterTest {
 
         TestCase testCase3 = (TestCase) rootSuite.findTestResult("test日本語を使用できること");
         assertEquals("test日本語を使用できること", testCase3.getName());
-        assertEquals("Stagehand_TestRunner_PHPUnitPassTest", testCase3.getClassName());
+        assertEquals("Stagehand_TestRunner_PHPUnitPassTest", testCase3.getTargetClass());
         assertEquals("/home/iteman/GITREPOS/stagehand-testrunner/tests/Stagehand/TestRunner/PHPUnitPassTest.php",
                      testCase3.getFile()
                      );
@@ -423,7 +423,7 @@ public class TestResultConverterTest {
         assertEquals(1, rootSuite.getTestResults().size());
         TestCase testCase1 = (TestCase) rootSuite.findTestResult("testTestShouldBeFailure");
         assertEquals("testTestShouldBeFailure", testCase1.getName());
-        assertEquals("Stagehand_TestRunner_PHPUnitFailureTest", testCase1.getClassName());
+        assertEquals("Stagehand_TestRunner_PHPUnitFailureTest", testCase1.getTargetClass());
         assertEquals("/home/iteman/GITREPOS/stagehand-testrunner/tests/Stagehand/TestRunner/PHPUnitFailureTest.php",
                      testCase1.getFile()
                      );
