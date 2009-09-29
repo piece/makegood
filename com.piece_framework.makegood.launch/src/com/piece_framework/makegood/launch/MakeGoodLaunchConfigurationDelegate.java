@@ -30,7 +30,7 @@ public class MakeGoodLaunchConfigurationDelegate implements ILaunchConfiguration
                          IProgressMonitor monitor
                          ) throws CoreException {
         ILaunchConfiguration stagehandTestRunnerLaunchConfiguration =
-            createStagehandTestRunnerLaunchConfiguration(configuration);
+            createStagehandTestRunnerLaunchConfiguration(launch, configuration);
 
         ILaunch stagehandTestRunnerLaunch = replaceLaunch(launch, stagehandTestRunnerLaunchConfiguration);
 
@@ -47,12 +47,20 @@ public class MakeGoodLaunchConfigurationDelegate implements ILaunchConfiguration
                                       );
     }
 
-    private ILaunchConfiguration createStagehandTestRunnerLaunchConfiguration(ILaunchConfiguration configuration) throws CoreException {
-        String testFile = configuration.getAttribute("ATTR_FILE", (String) null);
+    private ILaunchConfiguration createStagehandTestRunnerLaunchConfiguration(ILaunch launch,
+                                                                               ILaunchConfiguration configuration
+                                                                               ) throws CoreException {
+        boolean targetIsFolder = launch.getAttribute("TARGET_FOLDER") != null;
+        String target = null;
+        if (targetIsFolder) {
+            target = launch.getAttribute("TARGET_FOLDER");
+        } else {
+            target = configuration.getAttribute("ATTR_FILE", (String) null);
+        }
 
         IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
-        IResource testResource = workspaceRoot.findMember(testFile);
-        IProject project = testResource.getProject();
+        IResource targetResource = workspaceRoot.findMember(target);
+        IProject project = targetResource.getProject();
         IResource prepareResource = project.findMember("/tests/prepare.php");
 
         MakeGoodLauncher launcher = null;
@@ -71,7 +79,8 @@ public class MakeGoodLaunchConfigurationDelegate implements ILaunchConfiguration
         String configurationName = Long.toString(System.currentTimeMillis());
         ILaunchConfigurationWorkingCopy workingCopy = configuration.copy(configurationName);
         workingCopy.setAttribute("ATTR_FILE",
-                                 testFile
+                                 targetIsFolder ? configuration.getAttribute("ATTR_FILE", (String) null)
+                                                : target
                                  );
         workingCopy.setAttribute("ATTR_FILE_FULL_PATH",
                                  launcher.getScript()
@@ -84,7 +93,8 @@ public class MakeGoodLaunchConfigurationDelegate implements ILaunchConfiguration
         StringBuilder argument = new StringBuilder();
         argument.append("-p " + prepareResource.getLocation().toString());
         argument.append(" --log-junit=" + logFile);
-        argument.append(" " + testResource.getLocation().toString());
+        argument.append(targetIsFolder ? " -R" : "");
+        argument.append(" " + targetResource.getLocation().toString());
         workingCopy.setAttribute("exeDebugArguments",
                                  argument.toString()
                                  );
