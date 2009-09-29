@@ -4,7 +4,9 @@ import java.util.Collection;
 
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
+
 import com.piece_framework.makegood.launch.phpunit.TestResult;
+import com.piece_framework.makegood.launch.phpunit.TestSuite;
 
 public class TestResultContentProvider implements ITreeContentProvider {
     @Override
@@ -26,7 +28,7 @@ public class TestResultContentProvider implements ITreeContentProvider {
 
     @Override
     public boolean hasChildren(Object element) {
-        return (element instanceof TestResult);
+        return (element instanceof TestSuite);
     }
 
     @Override
