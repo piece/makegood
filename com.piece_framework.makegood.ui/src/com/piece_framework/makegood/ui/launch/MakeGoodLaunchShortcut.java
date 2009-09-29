@@ -5,7 +5,10 @@ import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.DebugPlugin;
+import org.eclipse.debug.core.ILaunch;
+import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationType;
+import org.eclipse.debug.core.ILaunchListener;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.dltk.core.IScriptFolder;
 import org.eclipse.jface.viewers.ISelection;
@@ -14,19 +17,46 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.php.internal.debug.ui.launching.PHPExeLaunchShortcut;
 
 public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
+    private ILaunchListener launchListener;
+    private IFolder selectedFolder;
+
     @Override
     public void launch(ISelection selection, String mode) {
+        if (launchListener == null) {
+            launchListener = new ILaunchListener() {
+                @Override
+                public void launchAdded(ILaunch launch) {
+                    if (selectedFolder != null) {
+                        launch.setAttribute("TARGET_FOLDER",
+                                            selectedFolder.getFullPath().toString()
+                                            );
+                    }
+                }
+
+                @Override
+                public void launchChanged(ILaunch launch) {
+                }
+
+                @Override
+                public void launchRemoved(ILaunch launch) {
+                }
+            };
+            DebugPlugin.getDefault().getLaunchManager().addLaunchListener(launchListener);
+        }
+
         ISelection element = selection;
+        selectedFolder = null;
         if (selection instanceof IStructuredSelection) {
             IStructuredSelection structuredSelection = (IStructuredSelection) selection;
-            IFolder folder = null;
             if (structuredSelection.getFirstElement() instanceof IScriptFolder) {
                 IScriptFolder scriptFolder = (IScriptFolder) structuredSelection.getFirstElement();
-                folder = (IFolder) scriptFolder.getResource();
+                selectedFolder = (IFolder) scriptFolder.getResource();
             } else if (structuredSelection.getFirstElement() instanceof IFolder) {
-                folder = (IFolder) structuredSelection.getFirstElement();
+                selectedFolder = (IFolder) structuredSelection.getFirstElement();
             }
-            element = new StructuredSelection(findDummyFile(folder));
+            if (selectedFolder != null) {
+                element = new StructuredSelection(findDummyFile(selectedFolder));
+            }
         }
         super.launch(element, mode);
     }
