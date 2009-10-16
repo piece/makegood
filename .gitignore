@@ -1,3 +1,4 @@
 com.piece_framework.makegood.launch/bin
 com.piece_framework.makegood.ui/bin
 com.piece_framework.makegood.launch.test/bin
+org.eclipse.php.debug.core.patch.makegood/bin
