@@ -44,13 +44,13 @@ public class PHPConfiguration {
         }
     }
 
-    public String[] getIncludePathWithPHPIni(File phpIniFile,
-                                             List<String> originalIncludePathList,
-                                             IProject project
-                                             ) {
+    public String[] getIncludePathWithConfiguration(File configurationFile,
+                                                    List<String> originalIncludePathList,
+                                                    IProject project
+                                                    ) {
         String includePathBlock = new ProjectScope(project).getNode(PHPCORE_PLUGIN_ID).get(INCLUDE_PATH_KEY, "");
-        boolean unnecessaryPHPIni = includePathBlock.indexOf(SOURCE_KIND + INCLUDE_PATH_SEPARATOR + FROM_CONFIGURATION_FILE) == -1;
-        if (unnecessaryPHPIni) {
+        boolean unnecessaryFromConfiguration = includePathBlock.indexOf(SOURCE_KIND + INCLUDE_PATH_SEPARATOR + FROM_CONFIGURATION_FILE) == -1;
+        if (unnecessaryFromConfiguration) {
             return originalIncludePathList.toArray(new String[originalIncludePathList.size()]);
         }
 
@@ -64,9 +64,9 @@ public class PHPConfiguration {
                                           newIncludePathList
                                           );
 
-        List<String> phpIniIncludePathList = getIncludePathListFromPHPIni(phpIniFile);
+        List<String> configurationIncludePathList = getIncludePathListFromConfiguration(configurationFile);
 
-        insertPHPIniIncludePathList(phpIniIncludePathList,
+        insertConfigurationIncludePathList(configurationIncludePathList,
                                     newIncludePathList,
                                     insertIndex
                                     );
@@ -125,10 +125,10 @@ public class PHPConfiguration {
         return insertIndex;
     }
 
-    private List<String> getIncludePathListFromPHPIni(File phpIniFile) {
-        List<String> phpIniIncludePathList = new LinkedList<String>();
+    private List<String> getIncludePathListFromConfiguration(File configurationFile) {
+        List<String> configurationIncludePathList = new LinkedList<String>();
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(phpIniFile));
+            BufferedReader reader = new BufferedReader(new FileReader(configurationFile));
             String line;
             Pattern keyValuePattern = Pattern.compile("([\\w]+)\\s*=\\s*(.*)");
             while ((line = reader.readLine()) != null) {
@@ -150,7 +150,7 @@ public class PHPConfiguration {
                         continue;
                     }
 
-                    phpIniIncludePathList.add(includePath);
+                    configurationIncludePathList.add(includePath);
                 }
                 break;
             }
@@ -160,14 +160,14 @@ public class PHPConfiguration {
         } catch (IOException e) {
             PHPDebugPlugin.log(e);
         }
-        return phpIniIncludePathList;
+        return configurationIncludePathList;
     }
 
-    private void insertPHPIniIncludePathList(List<String> phpIniIncludePathList,
+    private void insertConfigurationIncludePathList(List<String> configurationIncludePathList,
                                                     List<String> newIncludePathList,
                                                     int insertIndex
                                                     ) {
-        for (String includePath: phpIniIncludePathList) {
+        for (String includePath: configurationIncludePathList) {
             if (insertIndex != -1) {
                 newIncludePathList.add(insertIndex, includePath);
                 ++insertIndex;

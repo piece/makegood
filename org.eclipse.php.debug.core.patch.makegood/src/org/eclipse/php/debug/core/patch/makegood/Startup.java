@@ -57,11 +57,11 @@ public class Startup implements IStartup {
                         methodCall.replace(
 "org.eclipse.php.internal.debug.core.phpIni.PHPConfiguration configuration =" +
 "    new org.eclipse.php.internal.debug.core.phpIni.PHPConfiguration();" +
-"String[] includePathsByPatch = configuration.getIncludePathWithPHPIni(tempIniFile," +
-"                                                                      includePath,"+
-"                                                                      project" +
-"                                                                      );" +
-"$_ = $proceed($1, includePathsByPatch);");
+"String[] includePathsFromConfiguration = configuration.getIncludePathWithConfiguration(tempIniFile," +
+"                                                                                       includePath,"+
+"                                                                                       project" +
+"                                                                                       );" +
+"$_ = $proceed($1, includePathsFromConfiguration);");
                     }
                 }
             });
