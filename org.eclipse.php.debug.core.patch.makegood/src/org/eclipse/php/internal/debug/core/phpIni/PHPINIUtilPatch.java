@@ -65,40 +65,7 @@ public class PHPINIUtilPatch {
                                           newIncludePathList
                                           );
 
-        List<String> phpIniIncludePathList = new LinkedList<String>();
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader(phpIniFile));
-            String line;
-            Pattern keyValuePattern = Pattern.compile("([\\w]+)\\s*=\\s*(.*)");
-            while ((line = reader.readLine()) != null) {
-                line = line.trim();
-                Matcher matcher = keyValuePattern.matcher(line);
-                if (!matcher.matches()) {
-                    continue;
-                }
-
-                String key = matcher.group(1);
-                if (!key.equals(INCLUDE_PATH_KEY)) {
-                    continue;
-                }
-
-                String value = matcher.group(2).replaceAll("\"", "");
-                String[] includePaths = value.split(File.pathSeparator);
-                for (String includePath: includePaths) {
-                    if (includePath.equals(".")) {
-                        continue;
-                    }
-
-                    phpIniIncludePathList.add(includePath);
-                }
-                break;
-            }
-            reader.close();
-        } catch (FileNotFoundException e) {
-            PHPDebugPlugin.log(e);
-        } catch (IOException e) {
-            PHPDebugPlugin.log(e);
-        }
+        List<String> phpIniIncludePathList = getIncludePathListFromPHPIni(phpIniFile);
 
         for (String includePath: phpIniIncludePathList) {
             if (insertIndex != -1) {
@@ -161,5 +128,43 @@ public class PHPINIUtilPatch {
             }
         }
         return insertIndex;
+    }
+
+    private static List<String> getIncludePathListFromPHPIni(File phpIniFile) {
+        List<String> phpIniIncludePathList = new LinkedList<String>();
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(phpIniFile));
+            String line;
+            Pattern keyValuePattern = Pattern.compile("([\\w]+)\\s*=\\s*(.*)");
+            while ((line = reader.readLine()) != null) {
+                line = line.trim();
+                Matcher matcher = keyValuePattern.matcher(line);
+                if (!matcher.matches()) {
+                    continue;
+                }
+
+                String key = matcher.group(1);
+                if (!key.equals(INCLUDE_PATH_KEY)) {
+                    continue;
+                }
+
+                String value = matcher.group(2).replaceAll("\"", "");
+                String[] includePaths = value.split(File.pathSeparator);
+                for (String includePath: includePaths) {
+                    if (includePath.equals(".")) {
+                        continue;
+                    }
+
+                    phpIniIncludePathList.add(includePath);
+                }
+                break;
+            }
+            reader.close();
+        } catch (FileNotFoundException e) {
+            PHPDebugPlugin.log(e);
+        } catch (IOException e) {
+            PHPDebugPlugin.log(e);
+        }
+        return phpIniIncludePathList;
     }
 }
