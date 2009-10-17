@@ -24,7 +24,7 @@ public class PHPINIUtilPatch {
     private static final char BLOCK_SEPARATOR = (char) 5;
     private static final String INCLUDE_PATH_SEPARATOR = ";";
 
-    private static class ProjectIncludePath {
+    private class ProjectIncludePath {
         int kind;
         String path;
 
@@ -45,10 +45,10 @@ public class PHPINIUtilPatch {
         }
     }
 
-    public static String[] getIncludePathWithPHPIni(File phpIniFile,
-                                                    List<String> originalIncludePathList,
-                                                    IProject project
-                                                    ) {
+    public String[] getIncludePathWithPHPIni(File phpIniFile,
+                                             List<String> originalIncludePathList,
+                                             IProject project
+                                             ) {
         String includePathBlock = new ProjectScope(project).getNode(PHPCORE_PLUGIN_ID).get(INCLUDE_PATH_KEY, "");
         boolean unnecessaryPHPIni = includePathBlock.indexOf(SOURCE_KIND + INCLUDE_PATH_SEPARATOR + ENABLE_PHP_INI) == -1;
         if (unnecessaryPHPIni) {
@@ -75,9 +75,9 @@ public class PHPINIUtilPatch {
         return newIncludePathList.toArray(new String[newIncludePathList.size()]);
     }
 
-    private static List<ProjectIncludePath> parseIncludePathBlock(String includePathBlock,
-                                                                  IProject project
-                                                                  ) {
+    private List<ProjectIncludePath> parseIncludePathBlock(String includePathBlock,
+                                                           IProject project
+                                                           ) {
         List<ProjectIncludePath> projectIncludePathList = new LinkedList<ProjectIncludePath>();
         int startIndex = 0;
         int endIndex = 0;
@@ -106,9 +106,9 @@ public class PHPINIUtilPatch {
         return projectIncludePathList;
     }
 
-    private static int calcInsertIndex(List<ProjectIncludePath> projectIncludePathList,
-                                       List<String> newIncludePathList
-                                       ) {
+    private int calcInsertIndex(List<ProjectIncludePath> projectIncludePathList,
+                                List<String> newIncludePathList
+                                ) {
         int index = 0;
         int insertIndex = -1;
         for (String includePath: newIncludePathList) {
@@ -126,7 +126,7 @@ public class PHPINIUtilPatch {
         return insertIndex;
     }
 
-    private static List<String> getIncludePathListFromPHPIni(File phpIniFile) {
+    private List<String> getIncludePathListFromPHPIni(File phpIniFile) {
         List<String> phpIniIncludePathList = new LinkedList<String>();
         try {
             BufferedReader reader = new BufferedReader(new FileReader(phpIniFile));
@@ -164,7 +164,7 @@ public class PHPINIUtilPatch {
         return phpIniIncludePathList;
     }
 
-    private static void insertPHPIniIncludePathList(List<String> phpIniIncludePathList,
+    private void insertPHPIniIncludePathList(List<String> phpIniIncludePathList,
                                                     List<String> newIncludePathList,
                                                     int insertIndex
                                                     ) {
