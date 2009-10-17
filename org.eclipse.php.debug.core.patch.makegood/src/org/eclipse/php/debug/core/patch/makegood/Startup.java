@@ -9,6 +9,8 @@ import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtMethod;
 import javassist.NotFoundException;
+import javassist.expr.ExprEditor;
+import javassist.expr.MethodCall;
 
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.ui.IStartup;
@@ -19,6 +21,7 @@ public class Startup implements IStartup {
         ClassPool pool = ClassPool.getDefault();
 
         String[] requiredBundles = {"org.eclipse.php.debug.core",
+                                    "org.eclipse.php.debug.core.patch.makegood",
                                     "org.eclipse.core.resources"
                                     };
         for (String requiredBundle: requiredBundles) {
@@ -48,9 +51,23 @@ public class Startup implements IStartup {
         try {
             CtClass targetClass = pool.get("org.eclipse.php.internal.debug.core.phpIni.PHPINIUtil");
             CtMethod targetMethod = targetClass.getDeclaredMethod("createPhpIniByProject");
-            targetMethod.insertBefore("System.out.println(\"START project is \" + project);");
-            targetMethod.insertAfter("System.out.println(\"END\");");
-            targetClass.toClass(this.getClass().getClassLoader(), null);
+            targetMethod.instrument(new ExprEditor() {
+                public void edit(MethodCall methodCall) throws CannotCompileException {
+                    if (methodCall.getMethodName().equals("modifyIncludePath")) {
+                        methodCall.replace(
+"String[] originalIncludePaths = (String[]) includePath.toArray(new String[includePath.size()]);" +
+"String[] includePathsByPatch =" +
+"    org.eclipse.php.internal.debug.core.phpIni.PHPINIUtilPatch.getIncludePathWithPHPIni(" +
+"        tempIniFile," +
+"        originalIncludePaths,"+
+"        project" +
+"        );" +
+"$_ = $proceed($1, includePathsByPatch);");
+                    }
+                }
+            });
+
+            targetClass.toClass(getClass().getClassLoader(), null);
         } catch (NotFoundException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
