@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -58,19 +59,19 @@ public class PHPINIUtilPatch {
                                                                                 project
                                                                                 );
 
-        List<String> newList = new LinkedList<String>();
+        List<String> newIncludePathList = new LinkedList<String>(Arrays.asList(originalIncludePaths));
+
         int index = 0;
         int insertIndex = -1;
-        for (String includePath: originalIncludePaths) {
+        for (String includePath: newIncludePathList) {
             ProjectIncludePath projectIncludePath = projectIncludePathList.get(index);
             ++index;
 
-            if (projectIncludePath.path.equals(includePath)) {
-                newList.add(includePath);
-            } else if (projectIncludePath.kind == SOURCE_KIND
-                       && projectIncludePath.path.equals(ENABLE_PHP_INI)
-                       && insertIndex != -1
-                       ){
+            if (!projectIncludePath.path.equals(includePath)
+                && projectIncludePath.kind == SOURCE_KIND
+                && projectIncludePath.path.equals(ENABLE_PHP_INI)
+                && insertIndex != -1
+                ){
                 insertIndex = index;
             }
         }
@@ -99,10 +100,10 @@ public class PHPINIUtilPatch {
                     }
 
                     if (insertIndex != -1) {
-                        newList.add(insertIndex, includePath);
+                        newIncludePathList.add(insertIndex, includePath);
                         ++insertIndex;
                     } else {
-                        newList.add(includePath);
+                        newIncludePathList.add(includePath);
                     }
                 }
                 break;
@@ -114,7 +115,7 @@ public class PHPINIUtilPatch {
             PHPDebugPlugin.log(e);
         }
 
-        return newList.toArray(new String[newList.size()]);
+        return newIncludePathList.toArray(new String[newIncludePathList.size()]);
     }
 
     private static List<ProjectIncludePath> parseIncludePathBlock(String includePathBlock,
