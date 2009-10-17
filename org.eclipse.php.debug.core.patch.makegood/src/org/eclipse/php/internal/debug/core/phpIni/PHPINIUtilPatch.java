@@ -54,31 +54,9 @@ public class PHPINIUtilPatch {
             return originalIncludePaths;
         }
 
-        List<ProjectIncludePath> projectIncludePathList = new LinkedList<ProjectIncludePath>();
-        int startIndex = 0;
-        int endIndex = 0;
-        while (endIndex != -1) {
-            endIndex = includePathBlock.indexOf(BLOCK_SEPARATOR, startIndex);
-            String block = null;
-            if (endIndex != -1) {
-                block = includePathBlock.substring(startIndex, endIndex);
-            } else {
-                block = includePathBlock.substring(startIndex);
-            }
-
-            String[] attributes = block.split(INCLUDE_PATH_SEPARATOR);
-            if (attributes.length != 2) {
-                break;
-            }
-
-            ProjectIncludePath projectIncludePath = new ProjectIncludePath(Integer.parseInt(attributes[0]),
-                                                                           attributes[1],
-                                                                           project
-                                                                           );
-            projectIncludePathList.add(projectIncludePath);
-
-            startIndex = endIndex + 1;
-        }
+        List<ProjectIncludePath> projectIncludePathList = parseIncludePathBlock(includePathBlock,
+                                                                                project
+                                                                                );
 
         List<String> newList = new LinkedList<String>();
         int index = 0;
@@ -137,5 +115,36 @@ public class PHPINIUtilPatch {
         }
 
         return newList.toArray(new String[newList.size()]);
+    }
+
+    private static List<ProjectIncludePath> parseIncludePathBlock(String includePathBlock,
+                                                                  IProject project
+                                                                  ) {
+        List<ProjectIncludePath> projectIncludePathList = new LinkedList<ProjectIncludePath>();
+        int startIndex = 0;
+        int endIndex = 0;
+        while (endIndex != -1) {
+            endIndex = includePathBlock.indexOf(BLOCK_SEPARATOR, startIndex);
+            String block = null;
+            if (endIndex != -1) {
+                block = includePathBlock.substring(startIndex, endIndex);
+            } else {
+                block = includePathBlock.substring(startIndex);
+            }
+
+            String[] attributes = block.split(INCLUDE_PATH_SEPARATOR);
+            if (attributes.length != 2) {
+                break;
+            }
+
+            ProjectIncludePath projectIncludePath = new ProjectIncludePath(Integer.parseInt(attributes[0]),
+                                                                           attributes[1],
+                                                                           project
+                                                                           );
+            projectIncludePathList.add(projectIncludePath);
+
+            startIndex = endIndex + 1;
+        }
+        return projectIncludePathList;
     }
 }
