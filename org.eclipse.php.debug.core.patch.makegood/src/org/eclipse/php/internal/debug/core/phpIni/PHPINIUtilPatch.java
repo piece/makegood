@@ -27,9 +27,8 @@ public class PHPINIUtilPatch {
                                                     String[] originalIncludePaths,
                                                     IProject project
                                                     ) {
-        ProjectScope scope = new ProjectScope(project);
-        String includePathBlock = scope.getNode(PHPCORE_PLUGIN_ID).get(INCLUDE_PATH_KEY, "");
-        if (includePathBlock == null || includePathBlock.indexOf(SOURCE_KIND + INCLUDE_PATH_SEPARATOR + ENABLE_PHP_INI) == -1) {
+        String includePathBlock = new ProjectScope(project).getNode(PHPCORE_PLUGIN_ID).get(INCLUDE_PATH_KEY, "");
+        if (includePathBlock.indexOf(SOURCE_KIND + INCLUDE_PATH_SEPARATOR + ENABLE_PHP_INI) == -1) {
             return originalIncludePaths;
         }
 
