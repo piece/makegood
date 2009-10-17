@@ -46,20 +46,20 @@ public class PHPINIUtilPatch {
     }
 
     public static String[] getIncludePathWithPHPIni(File phpIniFile,
-                                                    String[] originalIncludePaths,
+                                                    List<String> originalIncludePathList,
                                                     IProject project
                                                     ) {
         String includePathBlock = new ProjectScope(project).getNode(PHPCORE_PLUGIN_ID).get(INCLUDE_PATH_KEY, "");
         boolean unnecessaryPHPIni = includePathBlock.indexOf(SOURCE_KIND + INCLUDE_PATH_SEPARATOR + ENABLE_PHP_INI) == -1;
         if (unnecessaryPHPIni) {
-            return originalIncludePaths;
+            return originalIncludePathList.toArray(new String[originalIncludePathList.size()]);
         }
 
         List<ProjectIncludePath> projectIncludePathList = parseIncludePathBlock(includePathBlock,
                                                                                 project
                                                                                 );
 
-        List<String> newIncludePathList = new LinkedList<String>(Arrays.asList(originalIncludePaths));
+        List<String> newIncludePathList = new LinkedList<String>(originalIncludePathList);
 
         int insertIndex = calcInsertIndex(projectIncludePathList,
                                           newIncludePathList
