@@ -15,7 +15,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ProjectScope;
 import org.eclipse.php.internal.debug.core.PHPDebugPlugin;
 
-public class PHPINIUtilPatch {
+public class PHPConfiguration {
     private static final String PHPCORE_PLUGIN_ID = "org.eclipse.php.core";
     private static final String INCLUDE_PATH_KEY = "include_path";
     private static final String FROM_CONFIGURATION_FILE = "INCLUDE_PATH_FROM_LOADED_CONFIGURATION_FILE";

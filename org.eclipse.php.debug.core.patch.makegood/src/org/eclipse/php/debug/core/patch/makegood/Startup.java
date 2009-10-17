@@ -55,12 +55,12 @@ public class Startup implements IStartup {
                 public void edit(MethodCall methodCall) throws CannotCompileException {
                     if (methodCall.getMethodName().equals("modifyIncludePath")) {
                         methodCall.replace(
-"org.eclipse.php.internal.debug.core.phpIni.PHPINIUtilPatch patch =" +
-"    new org.eclipse.php.internal.debug.core.phpIni.PHPINIUtilPatch();" +
-"String[] includePathsByPatch = patch.getIncludePathWithPHPIni(tempIniFile," +
-"                                                              includePath,"+
-"                                                              project" +
-"                                                              );" +
+"org.eclipse.php.internal.debug.core.phpIni.PHPConfiguration configuration =" +
+"    new org.eclipse.php.internal.debug.core.phpIni.PHPConfiguration();" +
+"String[] includePathsByPatch = configuration.getIncludePathWithPHPIni(tempIniFile," +
+"                                                                      includePath,"+
+"                                                                      project" +
+"                                                                      );" +
 "$_ = $proceed($1, includePathsByPatch);");
                     }
                 }
