@@ -18,7 +18,7 @@ import org.eclipse.php.internal.debug.core.PHPDebugPlugin;
 public class PHPINIUtilPatch {
     private static final String PHPCORE_PLUGIN_ID = "org.eclipse.php.core";
     private static final String INCLUDE_PATH_KEY = "include_path";
-    private static final String ENABLE_PHP_INI = "INCLUDE_PATH_ON_PHP_INI";
+    private static final String FROM_CONFIGURATION_FILE = "INCLUDE_PATH_FROM_LOADED_CONFIGURATION_FILE";
     private static final int SOURCE_KIND = 0;
     private static final char BLOCK_SEPARATOR = (char) 5;
     private static final String INCLUDE_PATH_SEPARATOR = ";";
@@ -34,7 +34,7 @@ public class PHPINIUtilPatch {
             this.kind = kind;
 
             boolean isProjectResource = this.kind == SOURCE_KIND
-                                        && !path.equals(ENABLE_PHP_INI);
+                                        && !path.equals(FROM_CONFIGURATION_FILE);
             if (isProjectResource) {
                 IResource resource = project.getWorkspace().getRoot().findMember(path);
                 this.path = resource.getLocation().toOSString();
@@ -49,7 +49,7 @@ public class PHPINIUtilPatch {
                                              IProject project
                                              ) {
         String includePathBlock = new ProjectScope(project).getNode(PHPCORE_PLUGIN_ID).get(INCLUDE_PATH_KEY, "");
-        boolean unnecessaryPHPIni = includePathBlock.indexOf(SOURCE_KIND + INCLUDE_PATH_SEPARATOR + ENABLE_PHP_INI) == -1;
+        boolean unnecessaryPHPIni = includePathBlock.indexOf(SOURCE_KIND + INCLUDE_PATH_SEPARATOR + FROM_CONFIGURATION_FILE) == -1;
         if (unnecessaryPHPIni) {
             return originalIncludePathList.toArray(new String[originalIncludePathList.size()]);
         }
@@ -116,7 +116,7 @@ public class PHPINIUtilPatch {
 
             if (!projectIncludePath.path.equals(includePath)
                 && projectIncludePath.kind == SOURCE_KIND
-                && projectIncludePath.path.equals(ENABLE_PHP_INI)
+                && projectIncludePath.path.equals(FROM_CONFIGURATION_FILE)
                 && insertIndex != -1
                 ){
                 insertIndex = index;
