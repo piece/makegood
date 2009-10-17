@@ -61,20 +61,9 @@ public class PHPINIUtilPatch {
 
         List<String> newIncludePathList = new LinkedList<String>(Arrays.asList(originalIncludePaths));
 
-        int index = 0;
-        int insertIndex = -1;
-        for (String includePath: newIncludePathList) {
-            ProjectIncludePath projectIncludePath = projectIncludePathList.get(index);
-            ++index;
-
-            if (!projectIncludePath.path.equals(includePath)
-                && projectIncludePath.kind == SOURCE_KIND
-                && projectIncludePath.path.equals(ENABLE_PHP_INI)
-                && insertIndex != -1
-                ){
-                insertIndex = index;
-            }
-        }
+        int insertIndex = calcInsertIndex(projectIncludePathList,
+                                          newIncludePathList
+                                          );
 
         try {
             BufferedReader reader = new BufferedReader(new FileReader(phpIniFile));
@@ -147,5 +136,25 @@ public class PHPINIUtilPatch {
             startIndex = endIndex + 1;
         }
         return projectIncludePathList;
+    }
+
+    private static int calcInsertIndex(List<ProjectIncludePath> projectIncludePathList,
+                                       List<String> newIncludePathList
+                                       ) {
+        int index = 0;
+        int insertIndex = -1;
+        for (String includePath: newIncludePathList) {
+            ProjectIncludePath projectIncludePath = projectIncludePathList.get(index);
+            ++index;
+
+            if (!projectIncludePath.path.equals(includePath)
+                && projectIncludePath.kind == SOURCE_KIND
+                && projectIncludePath.path.equals(ENABLE_PHP_INI)
+                && insertIndex != -1
+                ){
+                insertIndex = index;
+            }
+        }
+        return insertIndex;
     }
 }
