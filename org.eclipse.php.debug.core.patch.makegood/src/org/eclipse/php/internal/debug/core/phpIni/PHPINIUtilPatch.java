@@ -67,14 +67,10 @@ public class PHPINIUtilPatch {
 
         List<String> phpIniIncludePathList = getIncludePathListFromPHPIni(phpIniFile);
 
-        for (String includePath: phpIniIncludePathList) {
-            if (insertIndex != -1) {
-                newIncludePathList.add(insertIndex, includePath);
-                ++insertIndex;
-            } else {
-                newIncludePathList.add(includePath);
-            }
-        }
+        insertPHPIniIncludePathList(phpIniIncludePathList,
+                                    newIncludePathList,
+                                    insertIndex
+                                    );
 
         return newIncludePathList.toArray(new String[newIncludePathList.size()]);
     }
@@ -166,5 +162,19 @@ public class PHPINIUtilPatch {
             PHPDebugPlugin.log(e);
         }
         return phpIniIncludePathList;
+    }
+
+    private static void insertPHPIniIncludePathList(List<String> phpIniIncludePathList,
+                                                    List<String> newIncludePathList,
+                                                    int insertIndex
+                                                    ) {
+        for (String includePath: phpIniIncludePathList) {
+            if (insertIndex != -1) {
+                newIncludePathList.add(insertIndex, includePath);
+                ++insertIndex;
+            } else {
+                newIncludePathList.add(includePath);
+            }
+        }
     }
 }
