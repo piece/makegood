@@ -23,6 +23,27 @@ public class PHPINIUtilPatch {
     private static final char BLOCK_SEPARATOR = (char) 5;
     private static final String INCLUDE_PATH_SEPARATOR = ";";
 
+    private static class ProjectIncludePath {
+        int kind;
+        String path;
+
+        private ProjectIncludePath(int kind,
+                                   String path,
+                                   IProject project
+                                   ) {
+            this.kind = kind;
+
+            boolean isProjectResource = this.kind == SOURCE_KIND
+                                        && !path.equals(ENABLE_PHP_INI);
+            if (isProjectResource) {
+                IResource resource = project.getWorkspace().getRoot().findMember(path);
+                this.path = resource.getLocation().toOSString();
+            } else {
+                this.path = path;
+            }
+        }
+    }
+
     public static String[] getIncludePathWithPHPIni(File phpIniFile,
                                                     String[] originalIncludePaths,
                                                     IProject project
@@ -33,8 +54,7 @@ public class PHPINIUtilPatch {
             return originalIncludePaths;
         }
 
-        List<Integer> preferenceKindList = new LinkedList<Integer>();
-        List<String> preferencePathList = new LinkedList<String>();
+        List<ProjectIncludePath> projectIncludePathList = new LinkedList<ProjectIncludePath>();
         int startIndex = 0;
         int endIndex = 0;
         while (endIndex != -1) {
@@ -50,8 +70,12 @@ public class PHPINIUtilPatch {
             if (attributes.length != 2) {
                 break;
             }
-            preferenceKindList.add(new Integer(attributes[0]));
-            preferencePathList.add(attributes[1]);
+
+            ProjectIncludePath projectIncludePath = new ProjectIncludePath(Integer.parseInt(attributes[0]),
+                                                                           attributes[1],
+                                                                           project
+                                                                           );
+            projectIncludePathList.add(projectIncludePath);
 
             startIndex = endIndex + 1;
         }
@@ -60,19 +84,15 @@ public class PHPINIUtilPatch {
         int index = 0;
         int insertIndex = -1;
         for (String includePath: originalIncludePaths) {
-            Integer kind = preferenceKindList.get(index);
-            String path = null;
-            if (kind == SOURCE_KIND) {
-                IResource resource = project.getWorkspace().getRoot().findMember(preferencePathList.get(index));
-                path = resource.getLocation().toOSString();
-            } else {
-                path = preferencePathList.get(index);
-            }
+            ProjectIncludePath projectIncludePath = projectIncludePathList.get(index);
             ++index;
 
-            if (path.equals(includePath)) {
+            if (projectIncludePath.path.equals(includePath)) {
                 newList.add(includePath);
-            } else if (kind.intValue() == 0 && path.equals(ENABLE_PHP_INI) && insertIndex != -1){
+            } else if (projectIncludePath.kind == SOURCE_KIND
+                       && projectIncludePath.path.equals(ENABLE_PHP_INI)
+                       && insertIndex != -1
+                       ){
                 insertIndex = index;
             }
         }
