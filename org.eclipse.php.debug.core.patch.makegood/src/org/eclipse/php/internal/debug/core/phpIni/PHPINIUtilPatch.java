@@ -65,19 +65,20 @@ public class PHPINIUtilPatch {
                                           newIncludePathList
                                           );
 
+        List<String> phpIniIncludePathList = new LinkedList<String>();
         try {
             BufferedReader reader = new BufferedReader(new FileReader(phpIniFile));
             String line;
-            Pattern NAME_VAL_PATTERN = Pattern.compile("([\\w]+)\\s*=\\s*(.*)");
+            Pattern keyValuePattern = Pattern.compile("([\\w]+)\\s*=\\s*(.*)");
             while ((line = reader.readLine()) != null) {
                 line = line.trim();
-                Matcher matcher = NAME_VAL_PATTERN.matcher(line);
+                Matcher matcher = keyValuePattern.matcher(line);
                 if (!matcher.matches()) {
                     continue;
                 }
 
-                String name = matcher.group(1);
-                if (!name.equals(INCLUDE_PATH_KEY)) {
+                String key = matcher.group(1);
+                if (!key.equals(INCLUDE_PATH_KEY)) {
                     continue;
                 }
 
@@ -88,12 +89,7 @@ public class PHPINIUtilPatch {
                         continue;
                     }
 
-                    if (insertIndex != -1) {
-                        newIncludePathList.add(insertIndex, includePath);
-                        ++insertIndex;
-                    } else {
-                        newIncludePathList.add(includePath);
-                    }
+                    phpIniIncludePathList.add(includePath);
                 }
                 break;
             }
@@ -102,6 +98,15 @@ public class PHPINIUtilPatch {
             PHPDebugPlugin.log(e);
         } catch (IOException e) {
             PHPDebugPlugin.log(e);
+        }
+
+        for (String includePath: phpIniIncludePathList) {
+            if (insertIndex != -1) {
+                newIncludePathList.add(insertIndex, includePath);
+                ++insertIndex;
+            } else {
+                newIncludePathList.add(includePath);
+            }
         }
 
         return newIncludePathList.toArray(new String[newIncludePathList.size()]);
