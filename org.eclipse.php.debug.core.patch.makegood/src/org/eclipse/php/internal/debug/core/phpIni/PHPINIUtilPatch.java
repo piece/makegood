@@ -16,13 +16,20 @@ import org.eclipse.core.resources.ProjectScope;
 import org.eclipse.php.internal.debug.core.PHPDebugPlugin;
 
 public class PHPINIUtilPatch {
+    private static final String PHPCORE_PLUGIN_ID = "org.eclipse.php.core";
+    private static final String INCLUDE_PATH_KEY = "include_path";
+    private static final String ENABLE_PHP_INI = "INCLUDE_PATH_ON_PHP_INI";
+    private static final int SOURCE_KIND = 0;
+    private static final char BLOCK_SEPARATOR = (char) 5;
+    private static final String INCLUDE_PATH_SEPARATOR = ";";
+
     public static String[] getIncludePathWithPHPIni(File phpIniFile,
                                                     String[] originalIncludePaths,
                                                     IProject project
                                                     ) {
         ProjectScope scope = new ProjectScope(project);
-        String includePathBlock = scope.getNode("org.eclipse.php.core").get("include_path", "");
-        if (includePathBlock == null || includePathBlock.indexOf("0;INCLUDE_PATH_ON_PHP_INI") == -1) {
+        String includePathBlock = scope.getNode(PHPCORE_PLUGIN_ID).get(INCLUDE_PATH_KEY, "");
+        if (includePathBlock == null || includePathBlock.indexOf(SOURCE_KIND + INCLUDE_PATH_SEPARATOR + ENABLE_PHP_INI) == -1) {
             return originalIncludePaths;
         }
 
@@ -31,7 +38,7 @@ public class PHPINIUtilPatch {
         int startIndex = 0;
         int endIndex = 0;
         while (endIndex != -1) {
-            endIndex = includePathBlock.indexOf((char) 5, startIndex);
+            endIndex = includePathBlock.indexOf(BLOCK_SEPARATOR, startIndex);
             String block = null;
             if (endIndex != -1) {
                 block = includePathBlock.substring(startIndex, endIndex);
@@ -39,7 +46,7 @@ public class PHPINIUtilPatch {
                 block = includePathBlock.substring(startIndex);
             }
 
-            String[] attributes = block.split(";");
+            String[] attributes = block.split(INCLUDE_PATH_SEPARATOR);
             if (attributes.length != 2) {
                 break;
             }
@@ -55,7 +62,7 @@ public class PHPINIUtilPatch {
         for (String includePath: originalIncludePaths) {
             Integer kind = preferenceKindList.get(index);
             String path = null;
-            if (kind == 0) {
+            if (kind == SOURCE_KIND) {
                 IResource resource = project.getWorkspace().getRoot().findMember(preferencePathList.get(index));
                 path = resource.getLocation().toOSString();
             } else {
@@ -65,7 +72,7 @@ public class PHPINIUtilPatch {
 
             if (path.equals(includePath)) {
                 newList.add(includePath);
-            } else if (kind.intValue() == 0 && path.equals("INCLUDE_PATH_ON_PHP_INI") && insertIndex != -1){
+            } else if (kind.intValue() == 0 && path.equals(ENABLE_PHP_INI) && insertIndex != -1){
                 insertIndex = index;
             }
         }
@@ -82,7 +89,7 @@ public class PHPINIUtilPatch {
                 }
 
                 String name = matcher.group(1);
-                if (!name.equals("include_path")) {
+                if (!name.equals(INCLUDE_PATH_KEY)) {
                     continue;
                 }
 
