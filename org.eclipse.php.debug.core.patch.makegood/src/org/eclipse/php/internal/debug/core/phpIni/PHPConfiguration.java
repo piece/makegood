@@ -45,39 +45,39 @@ public class PHPConfiguration {
     }
 
     public String[] getIncludePathWithConfiguration(File configurationFile,
-                                                    List<String> originalIncludePathList,
+                                                    List<String> originalIncludePaths,
                                                     IProject project
                                                     ) {
         String includePathBlock = new ProjectScope(project).getNode(PHPCORE_PLUGIN_ID).get(INCLUDE_PATH_KEY, "");
         boolean unnecessaryFromConfiguration = includePathBlock.indexOf(SOURCE_KIND + INCLUDE_PATH_SEPARATOR + FROM_CONFIGURATION_FILE) == -1;
         if (unnecessaryFromConfiguration) {
-            return originalIncludePathList.toArray(new String[originalIncludePathList.size()]);
+            return originalIncludePaths.toArray(new String[originalIncludePaths.size()]);
         }
 
-        List<ProjectIncludePath> projectIncludePathList = parseIncludePathBlock(includePathBlock,
-                                                                                project
-                                                                                );
+        List<ProjectIncludePath> projectIncludePaths = parseIncludePathBlock(includePathBlock,
+                                                                             project
+                                                                             );
 
-        List<String> newIncludePathList = new LinkedList<String>(originalIncludePathList);
+        List<String> newIncludePaths = new LinkedList<String>(originalIncludePaths);
 
-        int insertIndex = calcInsertIndex(projectIncludePathList,
-                                          newIncludePathList
+        int insertIndex = calcInsertIndex(projectIncludePaths,
+                                          newIncludePaths
                                           );
 
-        List<String> configurationIncludePathList = getIncludePathListFromConfiguration(configurationFile);
+        List<String> configurationIncludePaths = getIncludePathsFromConfiguration(configurationFile);
 
-        insertConfigurationIncludePathList(configurationIncludePathList,
-                                    newIncludePathList,
-                                    insertIndex
-                                    );
+        insertConfigurationIncludePaths(configurationIncludePaths,
+                                           newIncludePaths,
+                                           insertIndex
+                                           );
 
-        return newIncludePathList.toArray(new String[newIncludePathList.size()]);
+        return newIncludePaths.toArray(new String[newIncludePaths.size()]);
     }
 
     private List<ProjectIncludePath> parseIncludePathBlock(String includePathBlock,
                                                            IProject project
                                                            ) {
-        List<ProjectIncludePath> projectIncludePathList = new LinkedList<ProjectIncludePath>();
+        List<ProjectIncludePath> projectIncludePaths = new LinkedList<ProjectIncludePath>();
         int startIndex = 0;
         int endIndex = 0;
         while (endIndex != -1) {
@@ -98,20 +98,20 @@ public class PHPConfiguration {
                                                                            attributes[1],
                                                                            project
                                                                            );
-            projectIncludePathList.add(projectIncludePath);
+            projectIncludePaths.add(projectIncludePath);
 
             startIndex = endIndex + 1;
         }
-        return projectIncludePathList;
+        return projectIncludePaths;
     }
 
-    private int calcInsertIndex(List<ProjectIncludePath> projectIncludePathList,
-                                List<String> newIncludePathList
+    private int calcInsertIndex(List<ProjectIncludePath> projectIncludePaths,
+                                List<String> newIncludePaths
                                 ) {
         int index = 0;
         int insertIndex = -1;
-        for (String includePath: newIncludePathList) {
-            ProjectIncludePath projectIncludePath = projectIncludePathList.get(index);
+        for (String includePath: newIncludePaths) {
+            ProjectIncludePath projectIncludePath = projectIncludePaths.get(index);
             ++index;
 
             if (!projectIncludePath.path.equals(includePath)
@@ -125,8 +125,8 @@ public class PHPConfiguration {
         return insertIndex;
     }
 
-    private List<String> getIncludePathListFromConfiguration(File configurationFile) {
-        List<String> configurationIncludePathList = new LinkedList<String>();
+    private List<String> getIncludePathsFromConfiguration(File configurationFile) {
+        List<String> configurationIncludePaths = new LinkedList<String>();
         try {
             BufferedReader reader = new BufferedReader(new FileReader(configurationFile));
             String line;
@@ -150,7 +150,7 @@ public class PHPConfiguration {
                         continue;
                     }
 
-                    configurationIncludePathList.add(includePath);
+                    configurationIncludePaths.add(includePath);
                 }
                 break;
             }
@@ -160,19 +160,19 @@ public class PHPConfiguration {
         } catch (IOException e) {
             PHPDebugPlugin.log(e);
         }
-        return configurationIncludePathList;
+        return configurationIncludePaths;
     }
 
-    private void insertConfigurationIncludePathList(List<String> configurationIncludePathList,
-                                                    List<String> newIncludePathList,
-                                                    int insertIndex
-                                                    ) {
-        for (String includePath: configurationIncludePathList) {
+    private void insertConfigurationIncludePaths(List<String> configurationIncludePaths,
+                                                 List<String> newIncludePaths,
+                                                 int insertIndex
+                                                 ) {
+        for (String includePath: configurationIncludePaths) {
             if (insertIndex != -1) {
-                newIncludePathList.add(insertIndex, includePath);
+                newIncludePaths.add(insertIndex, includePath);
                 ++insertIndex;
             } else {
-                newIncludePathList.add(includePath);
+                newIncludePaths.add(includePath);
             }
         }
     }
