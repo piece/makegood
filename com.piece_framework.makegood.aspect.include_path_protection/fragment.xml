@@ -4,7 +4,7 @@
    <extension
          point="org.eclipse.ui.startup">
       <startup
-            class="org.eclipse.php.debug.core.patch.makegood.Startup">
+            class="com.piece_framework.makegood.aspect.include_path_protection.Startup">
       </startup>
    </extension>
 

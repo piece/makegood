@@ -1,4 +1,4 @@
-package org.eclipse.php.internal.debug.core.phpIni;
+package com.piece_framework.makegood.aspect.include_path_protection;
 
 import java.io.BufferedReader;
 import java.io.File;
