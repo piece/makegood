@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Makegood
-Bundle-SymbolicName: org.eclipse.php.debug.core.patch.makegood;singleton:=true
+Bundle-SymbolicName: com.piece_framework.makegood.aspect.include_path_protection;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Fragment-Host: org.eclipse.php.debug.core;bundle-version="2.1.1"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6

@@ -21,7 +21,7 @@ public class Startup implements IStartup {
         ClassPool pool = ClassPool.getDefault();
 
         String[] requiredBundles = {"org.eclipse.php.debug.core",
-                                    "org.eclipse.php.debug.core.patch.makegood",
+                                    "com.piece_framework.makegood.aspect.include_path_protection",
                                     "org.eclipse.core.resources"
                                     };
         for (String requiredBundle: requiredBundles) {

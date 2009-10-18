@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>org.eclipse.php.debug.core.patch.makegood</name>
+	<name>com.piece_framework.makegood.aspect.include_path_protection</name>
 	<comment></comment>
 	<projects>
 	</projects>
