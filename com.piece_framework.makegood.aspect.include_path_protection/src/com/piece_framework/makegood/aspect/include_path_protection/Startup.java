@@ -57,7 +57,7 @@ public class Startup implements IStartup {
                         methodCall.replace(
 "com.piece_framework.makegood.aspect.include_path_protection.PHPConfiguration configuration =" +
 "    new com.piece_framework.makegood.aspect.include_path_protection.PHPConfiguration();" +
-"String[] includePathsFromConfiguration = configuration.getIncludePathWithConfiguration(tempIniFile," +
+"String[] includePathsFromConfiguration = configuration.getIncludePathWithConfiguration($1," +
 "                                                                                       includePath,"+
 "                                                                                       project" +
 "                                                                                       );" +
