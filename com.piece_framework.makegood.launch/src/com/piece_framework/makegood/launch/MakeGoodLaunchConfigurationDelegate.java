@@ -63,6 +63,9 @@ public class MakeGoodLaunchConfigurationDelegate implements ILaunchConfiguration
         IProject project = targetResource.getProject();
         IResource prepareResource = project.findMember("/tests/prepare.php");
 
+        String targetMethod = launch.getAttribute("METHOD");
+        boolean targetIsMethod = targetMethod != null;
+
         MakeGoodLauncher launcher = null;
         try {
             MakeGoodLauncherRegistry registry = new MakeGoodLauncherRegistry();
@@ -93,6 +96,7 @@ public class MakeGoodLaunchConfigurationDelegate implements ILaunchConfiguration
         StringBuilder argument = new StringBuilder();
         argument.append("-p " + prepareResource.getLocation().toString());
         argument.append(" --log-junit=" + logFile);
+        argument.append(targetIsMethod ? " -m " + targetMethod : "");
         argument.append(targetIsFolder ? " -R" : "");
         argument.append(" " + targetResource.getLocation().toString());
         workingCopy.setAttribute("exeDebugArguments",

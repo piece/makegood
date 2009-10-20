@@ -6,11 +6,12 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
-import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchListener;
 import org.eclipse.debug.core.ILaunchManager;
+import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IScriptFolder;
+import org.eclipse.dltk.core.ModelException;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -19,6 +20,7 @@ import org.eclipse.php.internal.debug.ui.launching.PHPExeLaunchShortcut;
 public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
     private ILaunchListener launchListener;
     private IFolder selectedFolder;
+    private IMethod selectedMethod;
 
     @Override
     public void launch(ISelection selection, String mode) {
@@ -29,6 +31,12 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
                     if (selectedFolder != null) {
                         launch.setAttribute("TARGET_FOLDER",
                                             selectedFolder.getFullPath().toString()
+                                            );
+                    } else if (selectedMethod != null) {
+                        launch.setAttribute("METHOD",
+                                            selectedMethod.getParent().getElementName() +
+                                                "::" +
+                                                selectedMethod.getElementName()
                                             );
                     }
                 }
@@ -46,6 +54,7 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
 
         ISelection element = selection;
         selectedFolder = null;
+        selectedMethod = null;
         if (selection instanceof IStructuredSelection) {
             IStructuredSelection structuredSelection = (IStructuredSelection) selection;
             if (structuredSelection.getFirstElement() instanceof IScriptFolder) {
@@ -53,7 +62,10 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
                 selectedFolder = (IFolder) scriptFolder.getResource();
             } else if (structuredSelection.getFirstElement() instanceof IFolder) {
                 selectedFolder = (IFolder) structuredSelection.getFirstElement();
+            } else if (structuredSelection.getFirstElement() instanceof IMethod) {
+                selectedMethod = (IMethod) structuredSelection.getFirstElement();
             }
+
             if (selectedFolder != null) {
                 element = new StructuredSelection(findDummyFile(selectedFolder));
             }
