@@ -25,10 +25,10 @@ import org.eclipse.debug.core.model.ILaunchConfigurationDelegate;
 
 public class MakeGoodLaunchConfigurationDelegate implements ILaunchConfigurationDelegate {
     public void launch(ILaunchConfiguration configuration,
-                         String mode,
-                         ILaunch launch,
-                         IProgressMonitor monitor
-                         ) throws CoreException {
+                       String mode,
+                       ILaunch launch,
+                       IProgressMonitor monitor
+                       ) throws CoreException {
         ILaunchConfiguration stagehandTestRunnerLaunchConfiguration =
             createStagehandTestRunnerLaunchConfiguration(launch, configuration);
 
@@ -48,8 +48,8 @@ public class MakeGoodLaunchConfigurationDelegate implements ILaunchConfiguration
     }
 
     private ILaunchConfiguration createStagehandTestRunnerLaunchConfiguration(ILaunch launch,
-                                                                               ILaunchConfiguration configuration
-                                                                               ) throws CoreException {
+                                                                              ILaunchConfiguration configuration
+                                                                              ) throws CoreException {
         boolean targetIsFolder = launch.getAttribute("TARGET_FOLDER") != null;
         String target = null;
         if (targetIsFolder) {
@@ -69,11 +69,11 @@ public class MakeGoodLaunchConfigurationDelegate implements ILaunchConfiguration
             launcher = registry.getLauncher(TestingFramework.PHPUnit);
         } catch (FileNotFoundException e) {
             throw new CoreException(new Status(IStatus.ERROR,
-                                                 Activator.PLUGIN_ID,
-                                                 0,
-                                                 e.getMessage(),
-                                                 e
-                                                 ));
+                                               Activator.PLUGIN_ID,
+                                               0,
+                                               e.getMessage(),
+                                               e
+                                               ));
         }
 
         String configurationName = Long.toString(System.currentTimeMillis());
