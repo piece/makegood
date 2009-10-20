@@ -13,6 +13,9 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.debug.ui,
  org.eclipse.ui.forms,
  com.piece_framework.makegood.launch,
- org.eclipse.dltk.core
+ org.eclipse.dltk.core,
+ org.eclipse.dltk.ui,
+ org.eclipse.ui.workbench.texteditor,
+ org.eclipse.jface.text
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy

@@ -10,12 +10,20 @@ import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchListener;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.dltk.core.IMethod;
+import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IScriptFolder;
+import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.ModelException;
+import org.eclipse.dltk.core.ScriptModelUtil;
+import org.eclipse.dltk.internal.ui.editor.EditorUtility;
+import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.php.internal.debug.ui.launching.PHPExeLaunchShortcut;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.texteditor.ITextEditor;
 
 public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
     private ILaunchListener launchListener;
@@ -71,6 +79,61 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
             }
         }
         super.launch(element, mode);
+    }
+
+    @Override
+    public void launch(IEditorPart editor, String mode) {
+        if (launchListener == null) {
+            launchListener = new ILaunchListener() {
+                @Override
+                public void launchAdded(ILaunch launch) {
+                    if (selectedFolder != null) {
+                        launch.setAttribute("TARGET_FOLDER",
+                                            selectedFolder.getFullPath().toString()
+                                            );
+                    } else if (selectedMethod != null) {
+                        launch.setAttribute("METHOD",
+                                            selectedMethod.getParent().getElementName() +
+                                                "::" +
+                                                selectedMethod.getElementName()
+                                            );
+                    }
+                }
+
+                @Override
+                public void launchChanged(ILaunch launch) {
+                }
+
+                @Override
+                public void launchRemoved(ILaunch launch) {
+                }
+            };
+            DebugPlugin.getDefault().getLaunchManager().addLaunchListener(launchListener);
+        }
+
+        selectedMethod = null;
+        ISourceModule source = EditorUtility.getEditorInputModelElement(editor, false);
+        if (source != null
+            && editor instanceof ITextEditor
+            ) {
+            ITextEditor textEditor = (ITextEditor) editor;
+            ISelectionProvider provider = (ISelectionProvider) textEditor.getSelectionProvider();
+            ITextSelection selection = (ITextSelection) provider.getSelection();
+            int offset = selection.getOffset();
+
+            try {
+                ScriptModelUtil.reconcile(source);
+                IModelElement target = source.getElementAt(offset);
+                if (target != null
+                    && target.getElementType() == IModelElement.METHOD
+                    ) {
+                    selectedMethod = (IMethod) target;
+                }
+            } catch (ModelException e) {
+            }
+        }
+
+        super.launch(editor, mode);
     }
 
     private IFile findDummyFile(IFolder folder) {
