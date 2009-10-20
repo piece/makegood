@@ -44,10 +44,10 @@ public class PHPConfiguration {
         }
     }
 
-    public String[] getIncludePathWithConfiguration(File configurationFile,
-                                                    List<String> originalIncludePaths,
-                                                    IProject project
-                                                    ) {
+    public String[] combineIncludePaths(File configurationFile,
+                                        List<String> originalIncludePaths,
+                                        IProject project
+                                        ) {
         String includePathBlock = new ProjectScope(project).getNode(PHPCORE_PLUGIN_ID).get(INCLUDE_PATH_KEY, "");
         boolean unnecessaryFromConfiguration = includePathBlock.indexOf(SOURCE_KIND + INCLUDE_PATH_SEPARATOR + FROM_CONFIGURATION_FILE) == -1;
         if (unnecessaryFromConfiguration) {
