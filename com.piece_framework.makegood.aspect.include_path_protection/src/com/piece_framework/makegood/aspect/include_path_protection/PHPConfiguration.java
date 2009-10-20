@@ -66,10 +66,10 @@ public class PHPConfiguration {
 
         List<String> configurationIncludePaths = getIncludePathsFromConfiguration(configurationFile);
 
-        insertConfigurationIncludePaths(configurationIncludePaths,
-                                        newIncludePaths,
-                                        insertIndex
-                                        );
+        insertIncludePaths(configurationIncludePaths,
+                           newIncludePaths,
+                           insertIndex
+                           );
 
         return newIncludePaths.toArray(new String[newIncludePaths.size()]);
     }
@@ -163,16 +163,16 @@ public class PHPConfiguration {
         return configurationIncludePaths;
     }
 
-    private void insertConfigurationIncludePaths(List<String> configurationIncludePaths,
-                                                 List<String> newIncludePaths,
-                                                 int insertIndex
-                                                 ) {
-        for (String includePath: configurationIncludePaths) {
+    private void insertIncludePaths(List<String> sourceIncludePaths,
+                                    List<String> destinationIncludePaths,
+                                    int insertIndex
+                                    ) {
+        for (String includePath: sourceIncludePaths) {
             if (insertIndex != -1) {
-                newIncludePaths.add(insertIndex, includePath);
+                destinationIncludePaths.add(insertIndex, includePath);
                 ++insertIndex;
             } else {
-                newIncludePaths.add(includePath);
+                destinationIncludePaths.add(includePath);
             }
         }
     }
