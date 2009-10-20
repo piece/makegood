@@ -59,6 +59,7 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
     public void launch(IEditorPart editor, String mode) {
         addLaunchListener();
 
+        selectedFolder = null;
         selectedMethod = null;
         ISourceModule source = EditorUtility.getEditorInputModelElement(editor, false);
         if (source != null
@@ -85,33 +86,35 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
     }
 
     private void addLaunchListener() {
-        if (launchListener == null) {
-            launchListener = new ILaunchListener() {
-                @Override
-                public void launchAdded(ILaunch launch) {
-                    if (selectedFolder != null) {
-                        launch.setAttribute("TARGET_FOLDER",
-                                            selectedFolder.getFullPath().toString()
-                                            );
-                    } else if (selectedMethod != null) {
-                        launch.setAttribute("METHOD",
-                                            selectedMethod.getParent().getElementName() +
-                                                "::" +
-                                                selectedMethod.getElementName()
-                                            );
-                    }
-                }
-
-                @Override
-                public void launchChanged(ILaunch launch) {
-                }
-
-                @Override
-                public void launchRemoved(ILaunch launch) {
-                }
-            };
-            DebugPlugin.getDefault().getLaunchManager().addLaunchListener(launchListener);
+        if (launchListener != null) {
+            return;
         }
+
+        launchListener = new ILaunchListener() {
+            @Override
+            public void launchAdded(ILaunch launch) {
+                if (selectedFolder != null) {
+                    launch.setAttribute("TARGET_FOLDER",
+                                        selectedFolder.getFullPath().toString()
+                                        );
+                } else if (selectedMethod != null) {
+                    launch.setAttribute("METHOD",
+                                        selectedMethod.getParent().getElementName() +
+                                            "::" +
+                                            selectedMethod.getElementName()
+                                        );
+                }
+            }
+
+            @Override
+            public void launchChanged(ILaunch launch) {
+            }
+
+            @Override
+            public void launchRemoved(ILaunch launch) {
+            }
+        };
+        DebugPlugin.getDefault().getLaunchManager().addLaunchListener(launchListener);
     }
 
     private IFile findDummyFile(IFolder folder) {
