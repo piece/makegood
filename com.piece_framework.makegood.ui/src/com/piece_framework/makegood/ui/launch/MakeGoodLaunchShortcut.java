@@ -32,33 +32,7 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
 
     @Override
     public void launch(ISelection selection, String mode) {
-        if (launchListener == null) {
-            launchListener = new ILaunchListener() {
-                @Override
-                public void launchAdded(ILaunch launch) {
-                    if (selectedFolder != null) {
-                        launch.setAttribute("TARGET_FOLDER",
-                                            selectedFolder.getFullPath().toString()
-                                            );
-                    } else if (selectedMethod != null) {
-                        launch.setAttribute("METHOD",
-                                            selectedMethod.getParent().getElementName() +
-                                                "::" +
-                                                selectedMethod.getElementName()
-                                            );
-                    }
-                }
-
-                @Override
-                public void launchChanged(ILaunch launch) {
-                }
-
-                @Override
-                public void launchRemoved(ILaunch launch) {
-                }
-            };
-            DebugPlugin.getDefault().getLaunchManager().addLaunchListener(launchListener);
-        }
+        addLaunchListener();
 
         ISelection element = selection;
         selectedFolder = null;
@@ -83,6 +57,34 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
 
     @Override
     public void launch(IEditorPart editor, String mode) {
+        addLaunchListener();
+
+        selectedMethod = null;
+        ISourceModule source = EditorUtility.getEditorInputModelElement(editor, false);
+        if (source != null
+            && editor instanceof ITextEditor
+            ) {
+            ITextEditor textEditor = (ITextEditor) editor;
+            ISelectionProvider provider = (ISelectionProvider) textEditor.getSelectionProvider();
+            ITextSelection selection = (ITextSelection) provider.getSelection();
+            int offset = selection.getOffset();
+
+            try {
+                ScriptModelUtil.reconcile(source);
+                IModelElement target = source.getElementAt(offset);
+                if (target != null
+                    && target.getElementType() == IModelElement.METHOD
+                    ) {
+                    selectedMethod = (IMethod) target;
+                }
+            } catch (ModelException e) {
+            }
+        }
+
+        super.launch(editor, mode);
+    }
+
+    private void addLaunchListener() {
         if (launchListener == null) {
             launchListener = new ILaunchListener() {
                 @Override
@@ -110,30 +112,6 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
             };
             DebugPlugin.getDefault().getLaunchManager().addLaunchListener(launchListener);
         }
-
-        selectedMethod = null;
-        ISourceModule source = EditorUtility.getEditorInputModelElement(editor, false);
-        if (source != null
-            && editor instanceof ITextEditor
-            ) {
-            ITextEditor textEditor = (ITextEditor) editor;
-            ISelectionProvider provider = (ISelectionProvider) textEditor.getSelectionProvider();
-            ITextSelection selection = (ITextSelection) provider.getSelection();
-            int offset = selection.getOffset();
-
-            try {
-                ScriptModelUtil.reconcile(source);
-                IModelElement target = source.getElementAt(offset);
-                if (target != null
-                    && target.getElementType() == IModelElement.METHOD
-                    ) {
-                    selectedMethod = (IMethod) target;
-                }
-            } catch (ModelException e) {
-            }
-        }
-
-        super.launch(editor, mode);
     }
 
     private IFile findDummyFile(IFolder folder) {
