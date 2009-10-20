@@ -67,9 +67,9 @@ public class PHPConfiguration {
         List<String> configurationIncludePaths = getIncludePathsFromConfiguration(configurationFile);
 
         insertConfigurationIncludePaths(configurationIncludePaths,
-                                           newIncludePaths,
-                                           insertIndex
-                                           );
+                                        newIncludePaths,
+                                        insertIndex
+                                        );
 
         return newIncludePaths.toArray(new String[newIncludePaths.size()]);
     }
