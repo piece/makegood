@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Include_path_settings
+Bundle-SymbolicName: com.piece_framework.makegood.aspect.include_path_settings
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: PIECE_FRAMEWORK
+Fragment-Host: org.eclipse.php.ui
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
