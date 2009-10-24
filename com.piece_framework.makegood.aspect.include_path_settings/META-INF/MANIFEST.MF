@@ -6,3 +6,5 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: PIECE_FRAMEWORK
 Fragment-Host: org.eclipse.php.ui
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ClassPath: lib/javassist-3.11.0/javassist.jar,
+ .
