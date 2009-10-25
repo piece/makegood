@@ -24,7 +24,8 @@ public class Startup implements IStartup {
         String[] requiredBundles = {"org.eclipse.php.ui",
                                     "com.piece_framework.makegood.aspect.include_path_settings",
                                     "org.eclipse.dltk.ui",
-                                    "org.eclipse.core.resources"
+                                    "org.eclipse.core.resources",
+                                    "org.eclipse.jface"
                                     };
         for (String requiredBundle: requiredBundles) {
             try {
@@ -64,6 +65,16 @@ public class Startup implements IStartup {
 "}"
                     ,targetClass);
             targetClass.addMethod(newMethod);
+
+            CtMethod targetMethod = targetClass.getDeclaredMethod("getCPListElementBaseImage");
+            targetMethod.insertBefore(
+"org.eclipse.core.resources.IResource target = cpentry.getResource();" +
+"com.piece_framework.makegood.aspect.include_path_settings.ConfigurationIncludePath configuration = new com.piece_framework.makegood.aspect.include_path_settings.ConfigurationIncludePath(target.getProject());" +
+"if (configuration.equalsDummyResource(target)) {" +
+"    return com.piece_framework.makegood.aspect.include_path_settings.ConfigurationIncludePath.icon;" +
+"}"
+                );
+
             targetClass.toClass(getClass().getClassLoader(), null);
         } catch (NotFoundException e) {
             // TODO Auto-generated catch block
