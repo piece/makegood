@@ -15,6 +15,8 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ProjectScope;
 import org.eclipse.php.internal.debug.core.PHPDebugPlugin;
 
+import com.piece_framework.makegood.include_path.ConfigurationIncludePath;
+
 public class PHPConfiguration {
     private static final String PHPCORE_PLUGIN_ID = "org.eclipse.php.core";
     private static final String INCLUDE_PATH_KEY = "include_path";
@@ -42,6 +44,26 @@ public class PHPConfiguration {
                 this.path = path;
             }
         }
+    }
+
+    public String[] transformIncludePaths(File configurationFile,
+                                          List<String> includePaths,
+                                          IProject project
+                                          ) {
+        ConfigurationIncludePath configuration = new ConfigurationIncludePath(project);
+        String configuraionPath = configuration.getDummyResource().getFullPath().toOSString();
+        List<String> newIncludePaths = new LinkedList<String>();
+        for (String includePath: includePaths) {
+            if (includePath.equals(configuraionPath)) {
+                List<String> configurationIncludePaths = getIncludePathsFromConfiguration(configurationFile);
+                for (String configurationIncludePath: configurationIncludePaths) {
+                    newIncludePaths.add(configurationIncludePath);
+                }
+            } else {
+                newIncludePaths.add(includePath);
+            }
+        }
+        return newIncludePaths.toArray(new String[newIncludePaths.size()]);
     }
 
     public String[] combineIncludePaths(File configurationFile,

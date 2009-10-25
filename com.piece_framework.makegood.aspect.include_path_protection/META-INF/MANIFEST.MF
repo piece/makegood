@@ -5,6 +5,7 @@ Bundle-SymbolicName: com.piece_framework.makegood.aspect.include_path_protection
 Bundle-Version: 1.0.0.qualifier
 Fragment-Host: org.eclipse.php.debug.core;bundle-version="2.1.1"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Require-Bundle: org.eclipse.ui
+Require-Bundle: org.eclipse.ui,
+ com.piece_framework.makegood.include_path
 Bundle-ClassPath: lib/javassist-3.11.0/javassist.jar,
  .
