@@ -1,4 +1,4 @@
-package com.piece_framework.makegood.aspect.include_path_settings;
+package com.piece_framework.makegood.include_path;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -6,11 +6,10 @@ import org.eclipse.core.resources.ProjectScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.dltk.core.IBuildpathEntry;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.php.internal.ui.util.PHPPluginImages;
 
 public class ConfigurationIncludePath {
     public static String text = "[Use Configuration]";
-    public static ImageDescriptor icon = PHPPluginImages.DESC_OBJS_INCLUDE;
+    public static ImageDescriptor icon = null;
 
     private IResource dummy;
 

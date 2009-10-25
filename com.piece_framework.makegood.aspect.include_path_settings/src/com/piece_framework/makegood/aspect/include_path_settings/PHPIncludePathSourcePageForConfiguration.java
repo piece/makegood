@@ -15,6 +15,8 @@ import org.eclipse.php.internal.ui.PHPUIMessages;
 import org.eclipse.php.internal.ui.preferences.includepath.PHPIPListLabelProvider;
 import org.eclipse.php.internal.ui.preferences.includepath.PHPIncludePathSourcePage;
 
+import com.piece_framework.makegood.include_path.ConfigurationIncludePath;
+
 public class PHPIncludePathSourcePageForConfiguration extends PHPIncludePathSourcePage {
     protected int IDX_ADD_CONFIG = 1;
 

@@ -23,6 +23,7 @@ public class Startup implements IStartup {
 
         String[] requiredBundles = {"org.eclipse.php.ui",
                                     "com.piece_framework.makegood.aspect.include_path_settings",
+                                    "com.piece_framework.makegood.include_path",
                                     "org.eclipse.dltk.ui",
                                     "org.eclipse.core.resources",
                                     "org.eclipse.jface"
@@ -56,9 +57,9 @@ public class Startup implements IStartup {
             CtMethod newMethod = CtNewMethod.make(
 "public String getCPListElementText(org.eclipse.dltk.internal.ui.wizards.buildpath.BPListElement cpentry) {" +
 "    org.eclipse.core.resources.IResource target = cpentry.getResource();" +
-"    com.piece_framework.makegood.aspect.include_path_settings.ConfigurationIncludePath configuration = new com.piece_framework.makegood.aspect.include_path_settings.ConfigurationIncludePath(target.getProject());" +
+"    com.piece_framework.makegood.include_path.ConfigurationIncludePath configuration = new com.piece_framework.makegood.include_path.ConfigurationIncludePath(target.getProject());" +
 "    if (configuration.equalsDummyResource(target)) {" +
-"        return com.piece_framework.makegood.aspect.include_path_settings.ConfigurationIncludePath.text;" +
+"        return com.piece_framework.makegood.include_path.ConfigurationIncludePath.text;" +
 "    }" +
 "" +
 "    return super.getCPListElementText(cpentry);"+
@@ -69,9 +70,9 @@ public class Startup implements IStartup {
             CtMethod targetMethod = targetClass.getDeclaredMethod("getCPListElementBaseImage");
             targetMethod.insertBefore(
 "org.eclipse.core.resources.IResource target = cpentry.getResource();" +
-"com.piece_framework.makegood.aspect.include_path_settings.ConfigurationIncludePath configuration = new com.piece_framework.makegood.aspect.include_path_settings.ConfigurationIncludePath(target.getProject());" +
+"com.piece_framework.makegood.include_path.ConfigurationIncludePath configuration = new com.piece_framework.makegood.include_path.ConfigurationIncludePath(target.getProject());" +
 "if (configuration.equalsDummyResource(target)) {" +
-"    return com.piece_framework.makegood.aspect.include_path_settings.ConfigurationIncludePath.icon;" +
+"    return com.piece_framework.makegood.include_path.ConfigurationIncludePath.icon;" +
 "}"
                 );
 
@@ -83,7 +84,7 @@ public class Startup implements IStartup {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        
+
         try {
             CtClass targetClass = pool.get("org.eclipse.php.internal.ui.preferences.includepath.PHPIncludePathsBlock");
             CtMethod targetMethod = targetClass.getDeclaredMethod("createControl");
