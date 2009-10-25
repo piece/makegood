@@ -10,7 +10,7 @@ import javassist.CtMethod;
 import javassist.CtNewMethod;
 import javassist.NotFoundException;
 import javassist.expr.ExprEditor;
-import javassist.expr.MethodCall;
+import javassist.expr.NewExpr;
 
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.ui.IStartup;
@@ -75,6 +75,27 @@ public class Startup implements IStartup {
 "}"
                 );
 
+            targetClass.toClass(getClass().getClassLoader(), null);
+        } catch (NotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (CannotCompileException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
+        try {
+            CtClass targetClass = pool.get("org.eclipse.php.internal.ui.preferences.includepath.PHPIncludePathsBlock");
+            CtMethod targetMethod = targetClass.getDeclaredMethod("createControl");
+            targetMethod.instrument(new ExprEditor() {
+                public void edit(NewExpr expression) throws CannotCompileException {
+                    if (expression.getClassName().equals("org.eclipse.php.internal.ui.preferences.includepath.PHPIncludePathSourcePage")) {
+                        expression.replace(
+"$_ = new com.piece_framework.makegood.aspect.include_path_settings.PHPIncludePathSourcePageForConfiguration($1);"
+                            );
+                    }
+                }
+            });
             targetClass.toClass(getClass().getClassLoader(), null);
         } catch (NotFoundException e) {
             // TODO Auto-generated catch block
