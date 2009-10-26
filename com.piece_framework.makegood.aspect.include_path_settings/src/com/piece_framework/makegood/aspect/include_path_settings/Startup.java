@@ -45,16 +45,7 @@ public class Startup implements IStartup {
         try {
             CtClass targetClass = ClassPool.getDefault().get("org.eclipse.php.internal.ui.preferences.includepath.PHPIPListLabelProvider");
             addGetCPListElementTextMethod(targetClass);
-
-            CtMethod targetMethod = targetClass.getDeclaredMethod("getCPListElementBaseImage");
-            targetMethod.insertBefore(
-"org.eclipse.core.resources.IResource target = cpentry.getResource();" +
-"com.piece_framework.makegood.include_path.ConfigurationIncludePath configuration = new com.piece_framework.makegood.include_path.ConfigurationIncludePath(target.getProject());" +
-"if (configuration.equalsDummyResource(target)) {" +
-"    return com.piece_framework.makegood.include_path.ConfigurationIncludePath.icon;" +
-"}"
-                );
-
+            modifyGetCPListElementBaseImage(targetClass);
             targetClass.toClass(getClass().getClassLoader(), null);
         } catch (NotFoundException e) {
             // TODO Auto-generated catch block
@@ -99,5 +90,16 @@ public class Startup implements IStartup {
 "}"
             ,targetClass);
         targetClass.addMethod(newMethod);
+    }
+
+    private void modifyGetCPListElementBaseImage(CtClass targetClass) throws NotFoundException, CannotCompileException {
+        CtMethod targetMethod = targetClass.getDeclaredMethod("getCPListElementBaseImage");
+        targetMethod.insertBefore(
+"org.eclipse.core.resources.IResource target = cpentry.getResource();" +
+"com.piece_framework.makegood.include_path.ConfigurationIncludePath configuration = new com.piece_framework.makegood.include_path.ConfigurationIncludePath(target.getProject());" +
+"if (configuration.equalsDummyResource(target)) {" +
+"    return com.piece_framework.makegood.include_path.ConfigurationIncludePath.icon;" +
+"}"
+            );
     }
 }
