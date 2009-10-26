@@ -44,18 +44,7 @@ public class Startup implements IStartup {
 
         try {
             CtClass targetClass = ClassPool.getDefault().get("org.eclipse.php.internal.ui.preferences.includepath.PHPIPListLabelProvider");
-            CtMethod newMethod = CtNewMethod.make(
-"public String getCPListElementText(org.eclipse.dltk.internal.ui.wizards.buildpath.BPListElement cpentry) {" +
-"    org.eclipse.core.resources.IResource target = cpentry.getResource();" +
-"    com.piece_framework.makegood.include_path.ConfigurationIncludePath configuration = new com.piece_framework.makegood.include_path.ConfigurationIncludePath(target.getProject());" +
-"    if (configuration.equalsDummyResource(target)) {" +
-"        return com.piece_framework.makegood.include_path.ConfigurationIncludePath.text;" +
-"    }" +
-"" +
-"    return super.getCPListElementText(cpentry);"+
-"}"
-                    ,targetClass);
-            targetClass.addMethod(newMethod);
+            addGetCPListElementTextMethod(targetClass);
 
             CtMethod targetMethod = targetClass.getDeclaredMethod("getCPListElementBaseImage");
             targetMethod.insertBefore(
@@ -95,5 +84,20 @@ public class Startup implements IStartup {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+    }
+
+    private void addGetCPListElementTextMethod(CtClass targetClass) throws CannotCompileException {
+        CtMethod newMethod = CtNewMethod.make(
+"public String getCPListElementText(org.eclipse.dltk.internal.ui.wizards.buildpath.BPListElement cpentry) {" +
+"    org.eclipse.core.resources.IResource target = cpentry.getResource();" +
+"    com.piece_framework.makegood.include_path.ConfigurationIncludePath configuration = new com.piece_framework.makegood.include_path.ConfigurationIncludePath(target.getProject());" +
+"    if (configuration.equalsDummyResource(target)) {" +
+"        return com.piece_framework.makegood.include_path.ConfigurationIncludePath.text;" +
+"    }" +
+"" +
+"    return super.getCPListElementText(cpentry);"+
+"}"
+            ,targetClass);
+        targetClass.addMethod(newMethod);
     }
 }
