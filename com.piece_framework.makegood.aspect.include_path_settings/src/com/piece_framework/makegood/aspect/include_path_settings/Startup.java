@@ -41,11 +41,9 @@ public class Startup implements IStartup {
             modifyGetCPListElementBaseImage(targetClass);
             targetClass.toClass(getClass().getClassLoader(), null);
         } catch (NotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            log(e);
         } catch (CannotCompileException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            log(e);
         }
 
         try {
@@ -53,11 +51,9 @@ public class Startup implements IStartup {
             modifyCreateControlMethod(targetClass);
             targetClass.toClass(getClass().getClassLoader(), null);
         } catch (NotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            log(e);
         } catch (CannotCompileException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            log(e);
         }
     }
 
