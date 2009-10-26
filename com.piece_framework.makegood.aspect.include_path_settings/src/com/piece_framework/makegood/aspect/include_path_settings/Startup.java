@@ -57,16 +57,7 @@ public class Startup implements IStartup {
 
         try {
             CtClass targetClass = ClassPool.getDefault().get("org.eclipse.php.internal.ui.preferences.includepath.PHPIncludePathsBlock");
-            CtMethod targetMethod = targetClass.getDeclaredMethod("createControl");
-            targetMethod.instrument(new ExprEditor() {
-                public void edit(NewExpr expression) throws CannotCompileException {
-                    if (expression.getClassName().equals("org.eclipse.php.internal.ui.preferences.includepath.PHPIncludePathSourcePage")) {
-                        expression.replace(
-"$_ = new com.piece_framework.makegood.aspect.include_path_settings.PHPIncludePathSourcePageForConfiguration($1);"
-                            );
-                    }
-                }
-            });
+            modifyCreateControlMethod(targetClass);
             targetClass.toClass(getClass().getClassLoader(), null);
         } catch (NotFoundException e) {
             // TODO Auto-generated catch block
@@ -101,5 +92,18 @@ public class Startup implements IStartup {
 "    return com.piece_framework.makegood.include_path.ConfigurationIncludePath.icon;" +
 "}"
             );
+    }
+
+    private void modifyCreateControlMethod(CtClass targetClass) throws NotFoundException, CannotCompileException {
+        CtMethod targetMethod = targetClass.getDeclaredMethod("createControl");
+        targetMethod.instrument(new ExprEditor() {
+            public void edit(NewExpr expression) throws CannotCompileException {
+                if (expression.getClassName().equals("org.eclipse.php.internal.ui.preferences.includepath.PHPIncludePathSourcePage")) {
+                    expression.replace(
+"$_ = new com.piece_framework.makegood.aspect.include_path_settings.PHPIncludePathSourcePageForConfiguration($1);"
+                        );
+                }
+            }
+        });
     }
 }
