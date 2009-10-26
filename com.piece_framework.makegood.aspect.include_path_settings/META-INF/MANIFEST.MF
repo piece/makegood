@@ -6,6 +6,6 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: PIECE_FRAMEWORK
 Fragment-Host: org.eclipse.php.ui
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Bundle-ClassPath: lib/javassist-3.11.0/javassist.jar,
- .
-Require-Bundle: com.piece_framework.makegood.include_path
+Bundle-ClassPath: .
+Require-Bundle: com.piece_framework.makegood.javassist,
+ com.piece_framework.makegood.include_path
