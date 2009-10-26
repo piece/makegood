@@ -43,50 +43,7 @@ public class Startup implements IStartup {
 
         try {
             CtClass targetClass = ClassPool.getDefault().get("org.eclipse.php.internal.debug.core.phpIni.PHPINIUtil");
-            CtMethod targetMethod = targetClass.getDeclaredMethod("createPhpIniByProject");
-            targetMethod.instrument(new ExprEditor() {
-                public void edit(Cast cast) throws CannotCompileException {
-                    try {
-                        CtClass castClass = cast.getType();
-                        if (castClass.getName().equals("org.eclipse.core.resources.IContainer")) {
-                            cast.replace(
-"$_ = null;" +
-"if (pathObject.getEntry() instanceof org.eclipse.core.resources.IContainer) {" +
-"    $_ = ($r) pathObject.getEntry();" +
-"} else {" +
-"    org.eclipse.core.resources.IResource resource = (org.eclipse.core.resources.IResource) pathObject.getEntry();" +
-"    includePath.add(resource.getFullPath().toOSString());" +
-"}"
-                                );
-                        }
-                    } catch (NotFoundException e) {
-                    }
-                }
-
-                public void edit(MethodCall methodCall) throws CannotCompileException {
-                    if (methodCall.getClassName().equals("org.eclipse.core.resources.IContainer")
-                        && methodCall.getMethodName().equals("getLocation")
-                        ) {
-                        methodCall.replace(
-"$_ = null;" +
-"if (container != null) {" +
-"    $_ = $proceed($$);" +
-"}"
-                            );
-                    } else if (methodCall.getMethodName().equals("modifyIncludePath")) {
-                        methodCall.replace(
-"com.piece_framework.makegood.aspect.include_path_protection.PHPConfiguration phpConfiguration =" +
-"    new com.piece_framework.makegood.aspect.include_path_protection.PHPConfiguration();" +
-"String[] transformedIncludePaths = phpConfiguration.transformIncludePaths($1," +
-"                                                                          includePath,"+
-"                                                                          project" +
-"                                                                          );" +
-"$_ = $proceed($1, transformedIncludePaths);"
-                            );
-                    }
-                }
-            });
-
+            modifyCreatePhpIniByProject(targetClass);
             targetClass.toClass(getClass().getClassLoader(), null);
         } catch (NotFoundException e) {
             // TODO Auto-generated catch block
@@ -95,5 +52,51 @@ public class Startup implements IStartup {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+    }
+
+    private void modifyCreatePhpIniByProject(CtClass targetClass) throws NotFoundException, CannotCompileException {
+        CtMethod targetMethod = targetClass.getDeclaredMethod("createPhpIniByProject");
+        targetMethod.instrument(new ExprEditor() {
+            public void edit(Cast cast) throws CannotCompileException {
+                try {
+                    CtClass castClass = cast.getType();
+                    if (castClass.getName().equals("org.eclipse.core.resources.IContainer")) {
+                        cast.replace(
+"$_ = null;" +
+"if (pathObject.getEntry() instanceof org.eclipse.core.resources.IContainer) {" +
+"    $_ = ($r) pathObject.getEntry();" +
+"} else {" +
+"    org.eclipse.core.resources.IResource resource = (org.eclipse.core.resources.IResource) pathObject.getEntry();" +
+"    includePath.add(resource.getFullPath().toOSString());" +
+"}"
+                            );
+                    }
+                } catch (NotFoundException e) {
+                }
+            }
+
+            public void edit(MethodCall methodCall) throws CannotCompileException {
+                if (methodCall.getClassName().equals("org.eclipse.core.resources.IContainer")
+                    && methodCall.getMethodName().equals("getLocation")
+                    ) {
+                    methodCall.replace(
+"$_ = null;" +
+"if (container != null) {" +
+"    $_ = $proceed($$);" +
+"}"
+                        );
+                } else if (methodCall.getMethodName().equals("modifyIncludePath")) {
+                    methodCall.replace(
+"com.piece_framework.makegood.aspect.include_path_protection.PHPConfiguration phpConfiguration =" +
+"    new com.piece_framework.makegood.aspect.include_path_protection.PHPConfiguration();" +
+"String[] transformedIncludePaths = phpConfiguration.transformIncludePaths($1," +
+"                                                                          includePath,"+
+"                                                                          project" +
+"                                                                          );" +
+"$_ = $proceed($1, transformedIncludePaths);"
+                        );
+                }
+            }
+        });
     }
 }
