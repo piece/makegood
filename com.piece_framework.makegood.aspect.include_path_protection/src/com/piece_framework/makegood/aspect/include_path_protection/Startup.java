@@ -30,14 +30,7 @@ public class Startup implements IStartup {
         try {
             loader.load();
         } catch (NotFoundException e) {
-            IStatus status = new Status(IStatus.ERROR,
-                                        "com.piece_framework.makegood.aspect.include_path_protection",
-                                        0,
-                                        e.getMessage(),
-                                        e
-                                        );
-            Bundle bundle = Platform.getBundle("com.piece_framework.makegood.aspect.include_path_protection");
-            Platform.getLog(bundle).log(status);
+            log(e);
             return;
         }
 
@@ -46,11 +39,9 @@ public class Startup implements IStartup {
             modifyCreatePhpIniByProject(targetClass);
             targetClass.toClass(getClass().getClassLoader(), null);
         } catch (NotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            log(e);
         } catch (CannotCompileException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            log(e);
         }
     }
 
@@ -98,5 +89,16 @@ public class Startup implements IStartup {
                 }
             }
         });
+    }
+
+    private void log(Exception e) {
+        IStatus status = new Status(IStatus.ERROR,
+                                    "com.piece_framework.makegood.aspect.include_path_protection",
+                                    0,
+                                    e.getMessage(),
+                                    e
+                                    );
+        Bundle bundle = Platform.getBundle("com.piece_framework.makegood.aspect.include_path_protection");
+        Platform.getLog(bundle).log(status);
     }
 }
