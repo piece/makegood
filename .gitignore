@@ -4,3 +4,4 @@ com.piece_framework.makegood.launch.test/bin
 com.piece_framework.makegood.aspect.include_path_protection/bin
 com.piece_framework.makegood.aspect.include_path_settings/bin
 com.piece_framework.makegood.include_path/bin
+com.piece_framework.makegood.javassist/bin
