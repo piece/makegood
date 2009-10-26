@@ -1,9 +1,5 @@
 package com.piece_framework.makegood.aspect.include_path_protection;
 
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
-
 import javassist.CannotCompileException;
 import javassist.ClassPool;
 import javassist.CtClass;
@@ -13,46 +9,40 @@ import javassist.expr.Cast;
 import javassist.expr.ExprEditor;
 import javassist.expr.MethodCall;
 
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.IStartup;
+import org.osgi.framework.Bundle;
+
+import com.piece_framework.makegood.javassist.BundleLoader;
 
 public class Startup implements IStartup {
     @Override
     public void earlyStartup() {
-        ClassPool pool = ClassPool.getDefault();
-
-        String[] requiredBundles = {"org.eclipse.php.debug.core",
-                                    "com.piece_framework.makegood.aspect.include_path_protection",
-                                    "org.eclipse.core.resources",
-                                    "org.eclipse.equinox.common",
-                                    "org.eclipse.php.core"
-                                    };
-        for (String requiredBundle: requiredBundles) {
-            try {
-                URL bundleURL = new URL(Platform.getBundle(requiredBundle).getLocation());
-                String bundleLocation = null;
-                if (bundleURL.getFile().startsWith("file:")) {
-                    bundleLocation = bundleURL.getFile().substring("file:".length());
-                } else {
-                    bundleLocation = bundleURL.getFile();
-                }
-
-                if (new File(bundleLocation).isDirectory()) {
-                    bundleLocation += "bin";
-                }
-
-                pool.appendClassPath(bundleLocation);
-            } catch (MalformedURLException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } catch (NotFoundException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+        BundleLoader loader = new BundleLoader(
+                new String[]{"org.eclipse.php.debug.core",
+                             "com.piece_framework.makegood.aspect.include_path_protection",
+                             "org.eclipse.core.resources",
+                             "org.eclipse.equinox.common",
+                             "org.eclipse.php.core"
+                             });
+        try {
+            loader.load();
+        } catch (NotFoundException e) {
+            IStatus status = new Status(IStatus.ERROR,
+                                        "com.piece_framework.makegood.aspect.include_path_protection",
+                                        0,
+                                        e.getMessage(),
+                                        e
+                                        );
+            Bundle bundle = Platform.getBundle("com.piece_framework.makegood.aspect.include_path_protection");
+            Platform.getLog(bundle).log(status);
+            return;
         }
 
         try {
-            CtClass targetClass = pool.get("org.eclipse.php.internal.debug.core.phpIni.PHPINIUtil");
+            CtClass targetClass = ClassPool.getDefault().get("org.eclipse.php.internal.debug.core.phpIni.PHPINIUtil");
             CtMethod targetMethod = targetClass.getDeclaredMethod("createPhpIniByProject");
             targetMethod.instrument(new ExprEditor() {
                 public void edit(Cast cast) throws CannotCompileException {
