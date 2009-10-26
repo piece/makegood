@@ -31,14 +31,7 @@ public class Startup implements IStartup {
         try {
             loader.load();
         } catch (NotFoundException e) {
-            IStatus status = new Status(IStatus.ERROR,
-                                        "com.piece_framework.makegood.aspect.include_path_settings",
-                                        0,
-                                        e.getMessage(),
-                                        e
-                                        );
-            Bundle bundle = Platform.getBundle("com.piece_framework.makegood.aspect.include_path_settings");
-            Platform.getLog(bundle).log(status);
+            log(e);
             return;
         }
 
@@ -105,5 +98,16 @@ public class Startup implements IStartup {
                 }
             }
         });
+    }
+
+    private void log(Exception e) {
+        IStatus status = new Status(IStatus.ERROR,
+                                    "com.piece_framework.makegood.aspect.include_path_settings",
+                                    0,
+                                    e.getMessage(),
+                                    e
+                                    );
+        Bundle bundle = Platform.getBundle("com.piece_framework.makegood.aspect.include_path_settings");
+        Platform.getLog(bundle).log(status);
     }
 }
