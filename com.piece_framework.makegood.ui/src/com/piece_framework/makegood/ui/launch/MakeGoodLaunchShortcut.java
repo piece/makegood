@@ -11,6 +11,7 @@ import org.eclipse.debug.core.ILaunchListener;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
+import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.IScriptFolder;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.ModelException;
@@ -39,7 +40,10 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
         selectedMethod = null;
         if (selection instanceof IStructuredSelection) {
             IStructuredSelection structuredSelection = (IStructuredSelection) selection;
-            if (structuredSelection.getFirstElement() instanceof IScriptFolder) {
+            if (structuredSelection.getFirstElement() instanceof IProjectFragment) {
+                IProjectFragment projectFragment = (IProjectFragment) structuredSelection.getFirstElement();
+                selectedFolder = (IFolder) projectFragment.getResource();
+            } else if (structuredSelection.getFirstElement() instanceof IScriptFolder) {
                 IScriptFolder scriptFolder = (IScriptFolder) structuredSelection.getFirstElement();
                 selectedFolder = (IFolder) scriptFolder.getResource();
             } else if (structuredSelection.getFirstElement() instanceof IFolder) {
