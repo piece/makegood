@@ -40,7 +40,9 @@ public class BundleLoader {
                 }
 
                 if (new File(bundleLocation).isDirectory()) {
-                    bundleLocation += "bin";
+                    if (new File(bundleLocation + "bin").exists()) {
+                        bundleLocation += "bin";
+                    }
                 }
 
                 ClassPool.getDefault().appendClassPath(bundleLocation);
