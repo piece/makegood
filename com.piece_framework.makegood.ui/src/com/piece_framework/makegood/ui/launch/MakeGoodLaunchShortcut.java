@@ -14,6 +14,7 @@ import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.IScriptFolder;
 import org.eclipse.dltk.core.ISourceModule;
+import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.ScriptModelUtil;
 import org.eclipse.dltk.internal.ui.editor.EditorUtility;
@@ -29,6 +30,7 @@ import org.eclipse.ui.texteditor.ITextEditor;
 public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
     private ILaunchListener launchListener;
     private IFolder selectedFolder;
+    private IType selectedType;
     private IMethod selectedMethod;
 
     @Override
@@ -37,6 +39,7 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
 
         ISelection element = selection;
         selectedFolder = null;
+        selectedType = null;
         selectedMethod = null;
         if (selection instanceof IStructuredSelection) {
             IStructuredSelection structuredSelection = (IStructuredSelection) selection;
@@ -48,6 +51,8 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
                 selectedFolder = (IFolder) scriptFolder.getResource();
             } else if (structuredSelection.getFirstElement() instanceof IFolder) {
                 selectedFolder = (IFolder) structuredSelection.getFirstElement();
+            } else if (structuredSelection.getFirstElement() instanceof IType) {
+                selectedType = (IType) structuredSelection.getFirstElement();
             } else if (structuredSelection.getFirstElement() instanceof IMethod) {
                 selectedMethod = (IMethod) structuredSelection.getFirstElement();
             }
@@ -104,6 +109,15 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
                 } else {
                     launch.setAttribute("TARGET_FOLDER", null);
                 }
+
+                if (selectedType != null) {
+                    launch.setAttribute("CLASS",
+                                        selectedType.getElementName()
+                                        );
+                } else {
+                    launch.setAttribute("CLASS", null);
+                }
+
                 if (selectedMethod != null) {
                     launch.setAttribute("METHOD",
                                         selectedMethod.getParent().getElementName() +
