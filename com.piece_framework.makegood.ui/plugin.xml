@@ -38,6 +38,10 @@
          point="org.eclipse.ui.menus">
       <menuContribution
             locationURI="popup:org.eclipse.ui.popup.any?after=additions">
+         <separator
+               name="com.piece_framework.makegood.ui.runTestSeparator"
+               visible="true">
+         </separator>
          <command
                commandId="com.piece_framework.makegood.ui.RunTest"
                icon="icons/MakeGood.gif"
