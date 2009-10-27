@@ -28,10 +28,19 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.texteditor.ITextEditor;
 
 public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
+    public static int RUN_TEST_ON_CURSOR = 1;
+    public static int RUN_TESTS_ON_CLASS = 2;
+    public static int RUN_TESTS_ON_FILE = 3;
+
     private ILaunchListener launchListener;
     private IFolder selectedFolder;
     private IType selectedType;
     private IMethod selectedMethod;
+    private int runLevelOnEditor = RUN_TEST_ON_CURSOR;
+
+    public void setRunLevelOnEditor(int runLevel) {
+        this.runLevelOnEditor = runLevel;
+    }
 
     @Override
     public void launch(ISelection selection, String mode) {
@@ -92,6 +101,18 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
                 }
             } catch (ModelException e) {
             }
+        }
+
+        if (runLevelOnEditor == RUN_TESTS_ON_CLASS) {
+            if (selectedMethod != null) {
+                if (selectedMethod.getParent() instanceof IType) {
+                    selectedType = (IType) selectedMethod.getParent();
+                }
+            }
+            selectedMethod = null;
+        } else if (runLevelOnEditor == RUN_TESTS_ON_FILE) {
+            selectedType = null;
+            selectedMethod = null;
         }
 
         super.launch(editor, mode);

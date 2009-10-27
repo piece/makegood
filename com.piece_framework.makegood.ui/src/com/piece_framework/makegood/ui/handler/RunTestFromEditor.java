@@ -13,7 +13,12 @@ public class RunTestFromEditor extends AbstractHandler {
     public Object execute(ExecutionEvent event) throws ExecutionException {
         IEditorPart editorPart = HandlerUtil.getActiveEditor(event);
         MakeGoodLaunchShortcut shortcut = new MakeGoodLaunchShortcut();
+        shortcut.setRunLevelOnEditor(getRunLevel());
         shortcut.launch(editorPart, "run");
         return shortcut;
+    }
+
+    protected int getRunLevel() {
+        return MakeGoodLaunchShortcut.RUN_TEST_ON_CURSOR;
     }
 }
