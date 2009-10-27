@@ -69,6 +69,7 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
         addLaunchListener();
 
         selectedFolder = null;
+        selectedType = null;
         selectedMethod = null;
         ISourceModule source = EditorUtility.getEditorInputModelElement(editor, false);
         if (source != null
@@ -82,10 +83,12 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
             try {
                 ScriptModelUtil.reconcile(source);
                 IModelElement target = source.getElementAt(offset);
-                if (target != null
-                    && target.getElementType() == IModelElement.METHOD
-                    ) {
-                    selectedMethod = (IMethod) target;
+                if (target != null) {
+                    if (target.getElementType() == IModelElement.TYPE) {
+                        selectedType = (IType) target;
+                    }else if (target.getElementType() == IModelElement.METHOD) {
+                        selectedMethod = (IMethod) target;
+                    }
                 }
             } catch (ModelException e) {
             }
