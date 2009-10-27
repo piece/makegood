@@ -43,7 +43,7 @@
                visible="true">
          </separator>
          <command
-               commandId="com.piece_framework.makegood.ui.RunTest"
+               commandId="com.piece_framework.makegood.ui.RunTestFromExplorer"
                icon="icons/MakeGood.gif"
                label="Run test"
                style="push">
@@ -133,8 +133,8 @@
       <command
             categoryId="com.piece_framework.makegood.ui.RunTestCategory"
             defaultHandler="com.piece_framework.makegood.ui.handler.RunTestFromExplorer"
-            id="com.piece_framework.makegood.ui.RunTest"
-            name="RunTest">
+            id="com.piece_framework.makegood.ui.RunTestFromExplorer"
+            name="RunTestFromExplorer">
       </command>
       <category
             id="com.piece_framework.makegood.ui.RunTestCategory"
