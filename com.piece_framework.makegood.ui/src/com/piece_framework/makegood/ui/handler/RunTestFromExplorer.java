@@ -14,7 +14,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 import com.piece_framework.makegood.ui.launch.MakeGoodLaunchShortcut;
 
-public class RunTest extends AbstractHandler {
+public class RunTestFromExplorer extends AbstractHandler {
     @Override
     public Object execute(ExecutionEvent event) throws ExecutionException {
         ISelection selection = HandlerUtil.getActiveMenuSelection(event);

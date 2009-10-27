@@ -132,7 +132,7 @@
          point="org.eclipse.ui.commands">
       <command
             categoryId="com.piece_framework.makegood.ui.RunTestCategory"
-            defaultHandler="com.piece_framework.makegood.ui.handler.RunTest"
+            defaultHandler="com.piece_framework.makegood.ui.handler.RunTestFromExplorer"
             id="com.piece_framework.makegood.ui.RunTest"
             name="RunTest">
       </command>
