@@ -126,6 +126,24 @@
                </with>
             </visibleWhen>
          </command>
+         <command
+               commandId="com.piece_framework.makegood.ui.RunTestFromEditor"
+               icon="icons/MakeGood.gif"
+               label="Run test on a cursor"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="activeContexts">
+                  <iterate
+                        operator="or">
+                     <equals
+                           value="org.eclipse.php.core.phpsource">
+                     </equals>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </command>
       </menuContribution>
    </extension>
    <extension
@@ -140,6 +158,12 @@
             id="com.piece_framework.makegood.ui.RunTestCategory"
             name="RunTestCategory">
       </category>
+      <command
+            categoryId="com.piece_framework.makegood.ui.RunTestCategory"
+            defaultHandler="com.piece_framework.makegood.ui.handler.RunTestFromEditor"
+            id="com.piece_framework.makegood.ui.RunTestFromEditor"
+            name="RunTestFromEditor">
+      </command>
    </extension>
 
 </plugin>
