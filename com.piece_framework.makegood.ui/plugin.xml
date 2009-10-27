@@ -2,6 +2,21 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
+         point="org.eclipse.core.expressions.definitions">
+      <definition
+            id="com.piece_framework.makegood.ui.definitions.phpContentType">
+         <with
+               variable="activeContexts">
+            <iterate
+                  operator="or">
+               <equals
+                     value="org.eclipse.php.core.phpsource">
+               </equals>
+            </iterate>
+         </with>
+      </definition>
+   </extension>
+   <extension
          point="org.eclipse.ui.views">
       <category
             id="com.piece_framework.makegood.ui.category"
@@ -133,15 +148,9 @@
                style="push">
             <visibleWhen
                   checkEnabled="false">
-               <with
-                     variable="activeContexts">
-                  <iterate
-                        operator="or">
-                     <equals
-                           value="org.eclipse.php.core.phpsource">
-                     </equals>
-                  </iterate>
-               </with>
+               <reference
+                     definitionId="com.piece_framework.makegood.ui.definitions.phpContentType">
+               </reference>
             </visibleWhen>
          </command>
       </menuContribution>
