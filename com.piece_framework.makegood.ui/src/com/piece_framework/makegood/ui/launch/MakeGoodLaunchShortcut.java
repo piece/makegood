@@ -97,12 +97,17 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
                     launch.setAttribute("TARGET_FOLDER",
                                         selectedFolder.getFullPath().toString()
                                         );
-                } else if (selectedMethod != null) {
+                } else {
+                    launch.setAttribute("TARGET_FOLDER", null);
+                }
+                if (selectedMethod != null) {
                     launch.setAttribute("METHOD",
                                         selectedMethod.getParent().getElementName() +
                                             "::" +
                                             selectedMethod.getElementName()
                                         );
+                } else {
+                    launch.setAttribute("METHOD", null);
                 }
             }
 
