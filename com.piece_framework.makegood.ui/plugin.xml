@@ -210,5 +210,24 @@
             name="RunTestFromEditorInFile">
       </command>
    </extension>
+   <extension
+         point="org.eclipse.ui.propertyPages">
+      <page
+            class="com.piece_framework.makegood.ui.propertyPages.MakeGoodPropertyPage"
+            icon="icons/MakeGood.gif"
+            id="com.piece_framework.makegood.ui.MakeGood"
+            name="MakeGood">
+         <enabledWhen>
+            <or>
+               <instanceof
+                     value="org.eclipse.core.resources.IProject">
+               </instanceof>
+               <instanceof
+                     value="org.eclipse.dltk.core.IScriptProject">
+               </instanceof>
+            </or>
+         </enabledWhen>
+      </page>
+   </extension>
 
 </plugin>
