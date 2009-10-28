@@ -3,8 +3,10 @@ package com.piece_framework.makegood.ui.propertyPages;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ProjectScope;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerComparator;
@@ -26,7 +28,11 @@ import org.eclipse.ui.dialogs.PropertyPage;
 import org.eclipse.ui.model.WorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 
+import com.piece_framework.makegood.ui.Activator;
+
 public class MakeGoodPropertyPage extends PropertyPage implements IWorkbenchPropertyPage {
+    private static String PRELOAD_SCRIP_KEY = "preload_script";
+
     @Override
     protected Control createContents(Composite parent) {
         final Composite composite = new Composite(parent, SWT.NONE);
@@ -99,6 +105,9 @@ public class MakeGoodPropertyPage extends PropertyPage implements IWorkbenchProp
                 }
             }
         });
+
+        IScopeContext context = new ProjectScope(getProject());
+        preloadScript.setText(context.getNode(Activator.PLUGIN_ID).get(PRELOAD_SCRIP_KEY, ""));
 
         return composite;
     }
