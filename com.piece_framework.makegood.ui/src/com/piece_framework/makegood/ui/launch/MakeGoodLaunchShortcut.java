@@ -2,8 +2,13 @@ package com.piece_framework.makegood.ui.launch;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.ProjectScope;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfigurationType;
@@ -26,6 +31,8 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.php.internal.debug.ui.launching.PHPExeLaunchShortcut;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.texteditor.ITextEditor;
+
+import com.piece_framework.makegood.ui.Activator;
 
 public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
     public static int RUN_TEST_ON_CURSOR = 1;
@@ -151,6 +158,22 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
                 } else {
                     launch.setAttribute("METHOD", null);
                 }
+
+                try {
+                    String target = launch.getLaunchConfiguration().getAttribute("ATTR_FILE", "");
+                    if (target.equals("")) {
+                        return;
+                    }
+                    IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
+                    IResource targetResource = workspaceRoot.findMember(target);
+                    IProject project = targetResource.getProject();
+                    IEclipsePreferences preference = new ProjectScope(project).getNode(Activator.PLUGIN_ID);
+                    launch.setAttribute("PRELOAD_SCRIPT", preference.get("preload_script", ""));
+                } catch (CoreException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                
             }
 
             @Override

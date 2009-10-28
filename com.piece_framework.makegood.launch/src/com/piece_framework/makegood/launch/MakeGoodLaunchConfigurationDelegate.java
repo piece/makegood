@@ -60,8 +60,8 @@ public class MakeGoodLaunchConfigurationDelegate implements ILaunchConfiguration
 
         IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
         IResource targetResource = workspaceRoot.findMember(target);
-        IProject project = targetResource.getProject();
-        IResource prepareResource = project.findMember("/tests/prepare.php");
+        String preloadScript = launch.getAttribute("PRELOAD_SCRIPT");
+        IResource prepareResource = workspaceRoot.findMember(preloadScript);
 
         String targetClass = launch.getAttribute("CLASS");
         boolean targetIsClass = targetClass != null;
