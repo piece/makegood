@@ -50,13 +50,6 @@ public class MakeGoodPropertyPage extends PropertyPage implements IWorkbenchProp
 
             @Override
             public void widgetSelected(SelectionEvent e) {
-                IProject target = null;
-                if (getElement() instanceof IProject) {
-                    target = (IProject) getElement();
-                } else if (getElement() instanceof IScriptProject) {
-                    target = ((IScriptProject) getElement()).getProject();
-                }
-
                 ElementTreeSelectionDialog dialog = new ElementTreeSelectionDialog(composite.getShell(),
                                                                                    new WorkbenchLabelProvider(),
                                                                                    new WorkbenchContentProvider()
@@ -97,7 +90,7 @@ public class MakeGoodPropertyPage extends PropertyPage implements IWorkbenchProp
                         return false;
                     }
                 });
-                dialog.setInput(target);
+                dialog.setInput(getProject());
                 if (dialog.open() == Window.OK
                     && dialog.getFirstResult() != null
                     ) {
@@ -108,5 +101,15 @@ public class MakeGoodPropertyPage extends PropertyPage implements IWorkbenchProp
         });
 
         return composite;
+    }
+
+    private IProject getProject() {
+        IProject project = null;
+        if (getElement() instanceof IProject) {
+            project = (IProject) getElement();
+        } else if (getElement() instanceof IScriptProject) {
+            project = ((IScriptProject) getElement()).getProject();
+        }
+        return project;
     }
 }
