@@ -1,6 +1,18 @@
 package com.piece_framework.makegood.ui.propertyPages;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.dltk.core.IScriptProject;
+import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerComparator;
+import org.eclipse.jface.viewers.ViewerFilter;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -9,12 +21,15 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbenchPropertyPage;
+import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
 import org.eclipse.ui.dialogs.PropertyPage;
+import org.eclipse.ui.model.WorkbenchContentProvider;
+import org.eclipse.ui.model.WorkbenchLabelProvider;
 
 public class MakeGoodPropertyPage extends PropertyPage implements IWorkbenchPropertyPage {
     @Override
     protected Control createContents(Composite parent) {
-        Composite composite = new Composite(parent, SWT.NONE);
+        final Composite composite = new Composite(parent, SWT.NONE);
         GridLayout layout = new GridLayout();
         layout.numColumns = 3;
         composite.setLayout(layout);
@@ -23,11 +38,74 @@ public class MakeGoodPropertyPage extends PropertyPage implements IWorkbenchProp
         Label label = new Label(composite, SWT.NONE);
         label.setText("&Preload Script:");
 
-        Text preloadScript = new Text(composite, SWT.SINGLE | SWT.BORDER);
+        final Text preloadScript = new Text(composite, SWT.SINGLE | SWT.BORDER);
         preloadScript.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
         Button browse = new Button(composite, SWT.NONE);
         browse.setText("&Browse...");
+        browse.addSelectionListener(new SelectionListener() {
+            @Override
+            public void widgetDefaultSelected(SelectionEvent e) {
+            }
+
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                IProject target = null;
+                if (getElement() instanceof IProject) {
+                    target = (IProject) getElement();
+                } else if (getElement() instanceof IScriptProject) {
+                    target = ((IScriptProject) getElement()).getProject();
+                }
+
+                ElementTreeSelectionDialog dialog = new ElementTreeSelectionDialog(composite.getShell(),
+                                                                                   new WorkbenchLabelProvider(),
+                                                                                   new WorkbenchContentProvider()
+                                                                                   );
+                dialog.setTitle("MakeGood Preload Script");
+                dialog.setMessage("Select a preload script:");
+                dialog.setAllowMultiple(false);
+                dialog.setComparator(new ViewerComparator() {
+                    @Override
+                    public int compare(Viewer viewer, Object e1, Object e2) {
+                        if (e1 instanceof IFile
+                            && e2 instanceof IFolder
+                            ) {
+                            return 1;
+                        } else if (e1 instanceof IFolder
+                                   && e2 instanceof IFile
+                                   ) {
+                            return -1;
+                        }
+                        return super.compare(viewer, e1, e2);
+                    }
+                });
+                dialog.addFilter(new ViewerFilter() {
+                    private IContentType contentType = Platform.getContentTypeManager().getContentType("org.eclipse.php.core.phpsource");
+
+                    @Override
+                    public boolean select(Viewer viewer,
+                                          Object parentElement,
+                                          Object element
+                                          ) {
+                        if (element instanceof IFile) {
+                            if (contentType.isAssociatedWith(((IFile) element).getName())) {
+                                return true;
+                            }
+                        } else if (element instanceof IFolder) {
+                            return true;
+                        }
+                        return false;
+                    }
+                });
+                dialog.setInput(target);
+                if (dialog.open() == Window.OK
+                    && dialog.getFirstResult() != null
+                    ) {
+                    IFile script = (IFile) dialog.getFirstResult();
+                    preloadScript.setText(script.getFullPath().toString());
+                }
+            }
+        });
 
         return composite;
     }
