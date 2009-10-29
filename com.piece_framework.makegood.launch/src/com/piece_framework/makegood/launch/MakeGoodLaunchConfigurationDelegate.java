@@ -69,7 +69,7 @@ public class MakeGoodLaunchConfigurationDelegate implements ILaunchConfiguration
                 target = ((IFolder) parameter.getTarget()).getFullPath().toString();
             }
         } else {
-            target = configuration.getAttribute("ATTR_FILE", (String) null);
+            target = parameter.getScript();
         }
 
         IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
@@ -106,7 +106,7 @@ public class MakeGoodLaunchConfigurationDelegate implements ILaunchConfiguration
         String configurationName = Long.toString(System.currentTimeMillis());
         ILaunchConfigurationWorkingCopy workingCopy = configuration.copy(configurationName);
         workingCopy.setAttribute("ATTR_FILE",
-                                 targetIsFolder ? configuration.getAttribute("ATTR_FILE", (String) null)
+                                 targetIsFolder ? parameter.getScript()
                                                 : target
                                  );
         workingCopy.setAttribute("ATTR_FILE_FULL_PATH",
