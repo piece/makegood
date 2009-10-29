@@ -2,13 +2,8 @@ package com.piece_framework.makegood.ui.launch;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IWorkspaceRoot;
-import org.eclipse.core.resources.ProjectScope;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfigurationType;
@@ -37,7 +32,6 @@ import org.eclipse.ui.texteditor.ITextEditor;
 
 import com.piece_framework.makegood.core.MakeGoodProperty;
 import com.piece_framework.makegood.core.PHPResource;
-import com.piece_framework.makegood.ui.Activator;
 
 public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
     public static int RUN_TEST_ON_CURSOR = 1;
