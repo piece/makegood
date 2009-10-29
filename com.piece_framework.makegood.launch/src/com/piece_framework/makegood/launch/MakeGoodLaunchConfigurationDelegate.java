@@ -99,8 +99,7 @@ public class MakeGoodLaunchConfigurationDelegate implements ILaunchConfiguration
         String configurationName = Long.toString(System.currentTimeMillis());
         ILaunchConfigurationWorkingCopy workingCopy = configuration.copy(configurationName);
         workingCopy.setAttribute("ATTR_FILE",
-                                 targetIsFolder ? parameter.getScript()
-                                                : target
+                                 parameter.getScript()
                                  );
         workingCopy.setAttribute("ATTR_FILE_FULL_PATH",
                                  launcher.getScript()
