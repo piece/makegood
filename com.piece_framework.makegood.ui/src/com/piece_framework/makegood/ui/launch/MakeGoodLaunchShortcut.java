@@ -213,7 +213,7 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
 
     @Override
     protected ILaunchConfigurationType getPHPExeLaunchConfigType() {
-        ILaunchManager lm = DebugPlugin.getDefault().getLaunchManager();
-        return lm.getLaunchConfigurationType("com.piece_framework.makegood.launch.launchConfigurationType");
+        ILaunchManager manager = DebugPlugin.getDefault().getLaunchManager();
+        return manager.getLaunchConfigurationType("com.piece_framework.makegood.launch.launchConfigurationType");
     }
 }
