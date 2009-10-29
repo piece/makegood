@@ -1,5 +1,6 @@
 package com.piece_framework.makegood.core;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ProjectScope;
@@ -11,16 +12,19 @@ import org.osgi.service.prefs.BackingStoreException;
 public class MakeGoodProperty {
     private static String PRELOAD_SCRIP_KEY = "preload_script";
     private IEclipsePreferences preferences;
+    private IProject project;
 
     public MakeGoodProperty(IResource resource) {
-        preferences = new ProjectScope(resource.getProject()).getNode(Activator.PLUGIN_ID);
+        project = resource.getProject();
+        preferences = new ProjectScope(project).getNode(Activator.PLUGIN_ID);
     }
 
     public MakeGoodProperty(String path) {
         IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
         IResource resource = workspaceRoot.findMember(path);
         if (resource != null) {
-            preferences = new ProjectScope(resource.getProject()).getNode(Activator.PLUGIN_ID);
+            project = resource.getProject();
+            preferences = new ProjectScope(project).getNode(Activator.PLUGIN_ID);
         }
     }
 
@@ -35,6 +39,10 @@ public class MakeGoodProperty {
 
     public boolean exists() {
         return preferences.get(PRELOAD_SCRIP_KEY, null) != null;
+    }
+
+    public IProject getProject() {
+        return project;
     }
 
     private void flush() {
