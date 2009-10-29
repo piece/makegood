@@ -32,6 +32,7 @@ import org.eclipse.ui.texteditor.ITextEditor;
 
 import com.piece_framework.makegood.core.MakeGoodProperty;
 import com.piece_framework.makegood.core.PHPResource;
+import com.piece_framework.makegood.launch.MakeGoodLaunchParameter;
 
 public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
     public static int RUN_TEST_ON_CURSOR = 1;
@@ -57,6 +58,14 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
         }
 
         addLaunchListener();
+
+        if (!(selection instanceof IStructuredSelection)) {
+            return;
+        }
+
+        Object target = ((IStructuredSelection) selection).getFirstElement();
+        MakeGoodLaunchParameter parameter = MakeGoodLaunchParameter.get();
+        parameter.setTarget(target);
 
         ISelection element = selection;
         selectedFolder = null;
