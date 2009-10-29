@@ -3,12 +3,6 @@ package com.piece_framework.makegood.ui.propertyPages;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.ProjectScope;
-import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.content.IContentType;
-import org.eclipse.core.runtime.preferences.IEclipsePreferences;
-import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerComparator;
@@ -29,10 +23,9 @@ import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
 import org.eclipse.ui.dialogs.PropertyPage;
 import org.eclipse.ui.model.WorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
-import org.osgi.service.prefs.BackingStoreException;
 
 import com.piece_framework.makegood.core.MakeGoodProperty;
-import com.piece_framework.makegood.ui.Activator;
+import com.piece_framework.makegood.core.PHPResource;
 
 public class MakeGoodPropertyPage extends PropertyPage implements IWorkbenchPropertyPage {
     private static String PRELOAD_SCRIP_KEY = "preload_script";
@@ -84,17 +77,13 @@ public class MakeGoodPropertyPage extends PropertyPage implements IWorkbenchProp
                     }
                 });
                 dialog.addFilter(new ViewerFilter() {
-                    private IContentType contentType = Platform.getContentTypeManager().getContentType("org.eclipse.php.core.phpsource");
-
                     @Override
                     public boolean select(Viewer viewer,
                                           Object parentElement,
                                           Object element
                                           ) {
                         if (element instanceof IFile) {
-                            if (contentType.isAssociatedWith(((IFile) element).getName())) {
-                                return true;
-                            }
+                            return PHPResource.isTrue((IFile) element);
                         } else if (element instanceof IFolder) {
                             return true;
                         }
