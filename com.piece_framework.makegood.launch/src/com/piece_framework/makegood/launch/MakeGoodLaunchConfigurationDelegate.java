@@ -59,15 +59,8 @@ public class MakeGoodLaunchConfigurationDelegate implements ILaunchConfiguration
         boolean targetIsFolder = parameter.getTarget() instanceof IProjectFragment
                                  || parameter.getTarget() instanceof IScriptFolder
                                  || parameter.getTarget() instanceof IFolder;
-        String target = null;
-        if (targetIsFolder) {
-            target = parameter.getTargetResource().getFullPath().toString();
-        } else {
-            target = parameter.getScript();
-        }
 
         IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
-        IResource targetResource = workspaceRoot.findMember(target);
         IResource prepareResource = workspaceRoot.findMember(parameter.getPreloadScript());
 
         boolean targetIsClass = parameter.getTarget() instanceof IType;
@@ -115,7 +108,7 @@ public class MakeGoodLaunchConfigurationDelegate implements ILaunchConfiguration
         argument.append(targetIsClass ? " --classes=" + targetClass : "");
         argument.append(targetIsMethod ? " -m " + targetMethod : "");
         argument.append(targetIsFolder ? " -R" : "");
-        argument.append(" " + targetResource.getLocation().toString());
+        argument.append(" " + parameter.getTargetResource().getLocation().toString());
         workingCopy.setAttribute("exeDebugArguments",
                                  argument.toString()
                                  );
