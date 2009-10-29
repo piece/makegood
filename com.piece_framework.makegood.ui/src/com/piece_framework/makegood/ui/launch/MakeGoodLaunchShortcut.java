@@ -28,8 +28,11 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.window.Window;
 import org.eclipse.php.internal.debug.ui.launching.PHPExeLaunchShortcut;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.internal.dialogs.PropertyDialog;
 import org.eclipse.ui.texteditor.ITextEditor;
 
 import com.piece_framework.makegood.core.MakeGoodProperty;
@@ -52,7 +55,13 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
     }
 
     @Override
-    public void launch(ISelection selection, String mode) {
+    public void launch(final ISelection selection, final String mode) {
+        final MakeGoodProperty property = new MakeGoodProperty(getResource(selection));
+        if (!property.exists()) {
+            showPropertyPage(property, selection, mode);
+            return;
+        }
+
         addLaunchListener();
 
         ISelection element = selection;
@@ -84,6 +93,12 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
 
     @Override
     public void launch(IEditorPart editor, String mode) {
+        final MakeGoodProperty property = new MakeGoodProperty(getResource(editor));
+        if (!property.exists()) {
+            showPropertyPage(property, editor, mode);
+            return;
+        }
+
         addLaunchListener();
 
         selectedFolder = null;
@@ -208,5 +223,45 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
     protected ILaunchConfigurationType getPHPExeLaunchConfigType() {
         ILaunchManager manager = DebugPlugin.getDefault().getLaunchManager();
         return manager.getLaunchConfigurationType("com.piece_framework.makegood.launch.launchConfigurationType");
+    }
+
+    private void showPropertyPage(final MakeGoodProperty property,
+                                  final Object target,
+                                  final String mode
+                                  ) {
+        Display.getDefault().asyncExec(new Runnable() {
+            @Override
+            public void run() {
+                PropertyDialog dialog = PropertyDialog.createDialogOn(null,
+                                                                      "com.piece_framework.makegood.ui.MakeGood",
+                                                                      property.getProject()
+                                                                      );
+                if (dialog.open() == Window.OK) {
+                    int runLevelOnEditor = MakeGoodLaunchShortcut.this.runLevelOnEditor;
+                    MakeGoodLaunchShortcut shortcut = new MakeGoodLaunchShortcut();
+                    shortcut.setRunLevelOnEditor(runLevelOnEditor);
+                    if (target instanceof ISelection) {
+                        shortcut.launch((ISelection) target, mode);
+                    } else if (target instanceof IEditorPart) {
+                        shortcut.launch((IEditorPart) target, mode);
+                    }
+                }
+            }
+        });
+    }
+
+    private IResource getResource(Object target) {
+        if (target instanceof IStructuredSelection) {
+            IStructuredSelection selection = (IStructuredSelection) target;
+            if (selection.getFirstElement() instanceof IModelElement) {
+                return ((IModelElement) selection.getFirstElement()).getResource();
+            }
+        } else if (target instanceof IResource) {
+            return (IResource) target;
+        } else if (target instanceof IEditorPart) {
+            ISourceModule source = EditorUtility.getEditorInputModelElement((IEditorPart) target, false);
+            return source.getResource();
+        }
+        return null;
     }
 }
