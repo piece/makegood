@@ -5,9 +5,8 @@ import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.core.IModelElement;
-import org.eclipse.dltk.core.IProjectFragment;
-import org.eclipse.dltk.core.IScriptFolder;
 
+import com.piece_framework.makegood.core.MakeGoodProperty;
 import com.piece_framework.makegood.core.PHPResource;
 
 public class MakeGoodLaunchParameter {
@@ -46,6 +45,11 @@ public class MakeGoodLaunchParameter {
             return file.getFullPath().toString();
         }
         return null;
+    }
+
+    public String getPreloadScript() {
+        MakeGoodProperty property = new MakeGoodProperty(getTargetResource());
+        return property.getPreloadScript();
     }
 
     private IResource getTargetResource() {
