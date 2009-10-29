@@ -33,6 +33,7 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.texteditor.ITextEditor;
 
 import com.piece_framework.makegood.core.MakeGoodProperty;
+import com.piece_framework.makegood.core.PHPResource;
 import com.piece_framework.makegood.ui.Activator;
 
 public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
@@ -184,9 +185,7 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
     private IFile findDummyFile(IFolder folder) {
         try {
             for (IResource resource: folder.members()) {
-                if (resource instanceof IFile
-                    && resource.getFileExtension().equalsIgnoreCase("php")
-                    ) {
+                if (PHPResource.isTrue(resource)) {
                     return (IFile) resource;
                 }
             }
