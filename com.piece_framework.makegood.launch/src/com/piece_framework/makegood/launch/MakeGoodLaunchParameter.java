@@ -3,8 +3,12 @@ package com.piece_framework.makegood.launch;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
+import org.eclipse.dltk.core.IType;
 
 import com.piece_framework.makegood.core.MakeGoodProperty;
 import com.piece_framework.makegood.core.PHPResource;
@@ -60,6 +64,40 @@ public class MakeGoodLaunchParameter {
             resource = (IResource) target;
         }
         return resource;
+    }
+
+    public String generateParameter(String log) {
+        StringBuilder buffer = new StringBuilder();
+
+        String preloadScript = getPreloadScript();
+        if (!preloadScript.equals("")) {
+            IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+            IResource preloadResource = root.findMember(preloadScript);
+            if (preloadResource != null) {
+                buffer.append("-p " + preloadResource.getLocation().toString());
+            }
+        }
+
+        if (log != null) {
+            buffer.append(" --log-junit=" + log);
+        }
+
+        if (target instanceof IType) {
+            String targetValue = ((IType) target).getElementName();
+            buffer.append(" --classes=" + targetValue);
+        }
+        if (target instanceof IMethod) {
+            IMethod method = (IMethod) target;
+            String targetValue = method.getParent().getElementName() + "::" + method.getElementName();
+            buffer.append(" -m " + targetValue);
+        }
+
+        if (getTargetResource() instanceof IFolder) {
+            buffer.append(" -R");
+        }
+        buffer.append(" " + getTargetResource().getLocation().toString());
+
+        return buffer.toString();
     }
 
     private IFile findDummyFile(IFolder folder) {
