@@ -54,28 +54,6 @@ public class MakeGoodLaunchConfigurationDelegate implements ILaunchConfiguration
     private ILaunchConfiguration createStagehandTestRunnerLaunchConfiguration(ILaunch launch,
                                                                               ILaunchConfiguration configuration
                                                                               ) throws CoreException {
-        MakeGoodLaunchParameter parameter = MakeGoodLaunchParameter.get();
-
-        boolean targetIsFolder = parameter.getTarget() instanceof IProjectFragment
-                                 || parameter.getTarget() instanceof IScriptFolder
-                                 || parameter.getTarget() instanceof IFolder;
-
-        IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
-        IResource prepareResource = workspaceRoot.findMember(parameter.getPreloadScript());
-
-        boolean targetIsClass = parameter.getTarget() instanceof IType;
-        String targetClass = null;
-        if (targetIsClass) {
-            targetClass = ((IType) parameter.getTarget()).getElementName();
-        }
-
-        boolean targetIsMethod = parameter.getTarget() instanceof IMethod;
-        String targetMethod = null;
-        if (targetIsMethod) {
-            IMethod method = (IMethod) parameter.getTarget();
-            targetMethod = method.getParent().getElementName() + "::" + method.getElementName();
-        }
-
         MakeGoodLauncher launcher = null;
         try {
             MakeGoodLauncherRegistry registry = new MakeGoodLauncherRegistry();
@@ -89,6 +67,8 @@ public class MakeGoodLaunchConfigurationDelegate implements ILaunchConfiguration
                                                ));
         }
 
+        MakeGoodLaunchParameter parameter = MakeGoodLaunchParameter.get();
+
         String configurationName = Long.toString(System.currentTimeMillis());
         ILaunchConfigurationWorkingCopy workingCopy = configuration.copy(configurationName);
         workingCopy.setAttribute("ATTR_FILE",
@@ -97,20 +77,13 @@ public class MakeGoodLaunchConfigurationDelegate implements ILaunchConfiguration
         workingCopy.setAttribute("ATTR_FILE_FULL_PATH",
                                  launcher.getScript()
                                  );
-        String logFile = MakeGoodLauncherRegistry.getRegistry().getAbsolutePath().toString() +
-                         String.valueOf(File.separatorChar) +
-                         configurationName +
-                         ".xml";
-        workingCopy.setAttribute("LOG_JUNIT", logFile);
-        StringBuilder argument = new StringBuilder();
-        argument.append("-p " + prepareResource.getLocation().toString());
-        argument.append(" --log-junit=" + logFile);
-        argument.append(targetIsClass ? " --classes=" + targetClass : "");
-        argument.append(targetIsMethod ? " -m " + targetMethod : "");
-        argument.append(targetIsFolder ? " -R" : "");
-        argument.append(" " + parameter.getTargetResource().getLocation().toString());
+        String log = MakeGoodLauncherRegistry.getRegistry().getAbsolutePath().toString() +
+                     String.valueOf(File.separatorChar) +
+                     configurationName +
+                     ".xml";
+        workingCopy.setAttribute("LOG_JUNIT", log);
         workingCopy.setAttribute("exeDebugArguments",
-                                 argument.toString()
+                                 parameter.generateParameter(log)
                                  );
         return workingCopy;
     }
