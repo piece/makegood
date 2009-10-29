@@ -32,6 +32,7 @@ import org.eclipse.php.internal.debug.ui.launching.PHPExeLaunchShortcut;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.texteditor.ITextEditor;
 
+import com.piece_framework.makegood.core.MakeGoodProperty;
 import com.piece_framework.makegood.ui.Activator;
 
 public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
@@ -161,14 +162,8 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
 
                 try {
                     String target = launch.getLaunchConfiguration().getAttribute("ATTR_FILE", "");
-                    if (target.equals("")) {
-                        return;
-                    }
-                    IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
-                    IResource targetResource = workspaceRoot.findMember(target);
-                    IProject project = targetResource.getProject();
-                    IEclipsePreferences preference = new ProjectScope(project).getNode(Activator.PLUGIN_ID);
-                    launch.setAttribute("PRELOAD_SCRIPT", preference.get("preload_script", ""));
+                    MakeGoodProperty property = new MakeGoodProperty(target);
+                    launch.setAttribute("PRELOAD_SCRIPT", property.getPreloadScript());
                 } catch (CoreException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
