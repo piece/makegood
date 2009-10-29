@@ -52,7 +52,7 @@ public class MakeGoodLaunchParameter {
         return property.getPreloadScript();
     }
 
-    private IResource getTargetResource() {
+    public IResource getTargetResource() {
         IResource resource = null;
         if (target instanceof IModelElement) {
             resource = ((IModelElement) target).getResource();
