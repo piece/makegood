@@ -31,6 +31,7 @@ import org.eclipse.ui.model.WorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 import org.osgi.service.prefs.BackingStoreException;
 
+import com.piece_framework.makegood.core.MakeGoodProperty;
 import com.piece_framework.makegood.ui.Activator;
 
 public class MakeGoodPropertyPage extends PropertyPage implements IWorkbenchPropertyPage {
@@ -110,25 +111,16 @@ public class MakeGoodPropertyPage extends PropertyPage implements IWorkbenchProp
             }
         });
 
-        IScopeContext context = new ProjectScope(getProject());
-        preloadScript.setText(context.getNode(Activator.PLUGIN_ID).get(PRELOAD_SCRIP_KEY, ""));
+        MakeGoodProperty property = new MakeGoodProperty(getProject());
+        preloadScript.setText(property.getPreloadScript());
 
         return composite;
     }
 
     @Override
     public boolean performOk() {
-        IEclipsePreferences projectNode = new ProjectScope(getProject()).getNode(Activator.PLUGIN_ID);
-        projectNode.put(PRELOAD_SCRIP_KEY, preloadScript.getText());
-        try {
-            projectNode.flush();
-        } catch (BackingStoreException e) {
-            Activator.getDefault().getLog().log(new Status(Status.ERROR,
-                                                           Activator.PLUGIN_ID,
-                                                           e.getMessage(),
-                                                           e
-                                                           ));
-        }
+        MakeGoodProperty property = new MakeGoodProperty(getProject());
+        property.setPreloadScript(preloadScript.getText());
 
         return true;
     }
