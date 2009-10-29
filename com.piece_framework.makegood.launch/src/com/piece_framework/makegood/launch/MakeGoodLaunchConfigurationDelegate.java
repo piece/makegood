@@ -74,8 +74,7 @@ public class MakeGoodLaunchConfigurationDelegate implements ILaunchConfiguration
 
         IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
         IResource targetResource = workspaceRoot.findMember(target);
-        String preloadScript = launch.getAttribute("PRELOAD_SCRIPT");
-        IResource prepareResource = workspaceRoot.findMember(preloadScript);
+        IResource prepareResource = workspaceRoot.findMember(parameter.getPreloadScript());
 
         boolean targetIsClass = parameter.getTarget() instanceof IType;
         String targetClass = null;
