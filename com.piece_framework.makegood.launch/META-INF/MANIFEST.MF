@@ -11,7 +11,9 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.debug.ui,
  org.eclipse.php.debug.ui,
  org.eclipse.php.debug.core,
- org.eclipse.jface.text
+ org.eclipse.jface.text,
+ org.eclipse.dltk.core
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
-Export-Package: com.piece_framework.makegood.launch.phpunit
+Export-Package: com.piece_framework.makegood.launch,
+ com.piece_framework.makegood.launch.phpunit

@@ -5,7 +5,7 @@ import java.io.FileNotFoundException;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -22,6 +22,10 @@ import org.eclipse.debug.core.ILaunchDelegate;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.Launch;
 import org.eclipse.debug.core.model.ILaunchConfigurationDelegate;
+import org.eclipse.dltk.core.IMethod;
+import org.eclipse.dltk.core.IProjectFragment;
+import org.eclipse.dltk.core.IScriptFolder;
+import org.eclipse.dltk.core.IType;
 
 public class MakeGoodLaunchConfigurationDelegate implements ILaunchConfigurationDelegate {
     public void launch(ILaunchConfiguration configuration,
@@ -50,10 +54,20 @@ public class MakeGoodLaunchConfigurationDelegate implements ILaunchConfiguration
     private ILaunchConfiguration createStagehandTestRunnerLaunchConfiguration(ILaunch launch,
                                                                               ILaunchConfiguration configuration
                                                                               ) throws CoreException {
-        boolean targetIsFolder = launch.getAttribute("TARGET_FOLDER") != null;
+        MakeGoodLaunchParameter parameter = MakeGoodLaunchParameter.get();
+
+        boolean targetIsFolder = parameter.getTarget() instanceof IProjectFragment
+                                 || parameter.getTarget() instanceof IScriptFolder
+                                 || parameter.getTarget() instanceof IFolder;
         String target = null;
         if (targetIsFolder) {
-            target = launch.getAttribute("TARGET_FOLDER");
+            if (parameter.getTarget() instanceof IProjectFragment) {
+                target = ((IProjectFragment) parameter.getTarget()).getResource().getFullPath().toString();
+            } else if (parameter.getTarget() instanceof IScriptFolder) {
+                target = ((IScriptFolder) parameter.getTarget()).getResource().getFullPath().toString();
+            } else if (parameter.getTarget() instanceof IFolder) {
+                target = ((IFolder) parameter.getTarget()).getFullPath().toString();
+            }
         } else {
             target = configuration.getAttribute("ATTR_FILE", (String) null);
         }
@@ -63,11 +77,18 @@ public class MakeGoodLaunchConfigurationDelegate implements ILaunchConfiguration
         String preloadScript = launch.getAttribute("PRELOAD_SCRIPT");
         IResource prepareResource = workspaceRoot.findMember(preloadScript);
 
-        String targetClass = launch.getAttribute("CLASS");
-        boolean targetIsClass = targetClass != null;
+        boolean targetIsClass = parameter.getTarget() instanceof IType;
+        String targetClass = null;
+        if (targetIsClass) {
+            targetClass = ((IType) parameter.getTarget()).getElementName();
+        }
 
-        String targetMethod = launch.getAttribute("METHOD");
-        boolean targetIsMethod = targetMethod != null;
+        boolean targetIsMethod = parameter.getTarget() instanceof IMethod;
+        String targetMethod = null;
+        if (targetIsMethod) {
+            IMethod method = (IMethod) parameter.getTarget();
+            targetMethod = method.getParent().getElementName() + "::" + method.getElementName();
+        }
 
         MakeGoodLauncher launcher = null;
         try {
