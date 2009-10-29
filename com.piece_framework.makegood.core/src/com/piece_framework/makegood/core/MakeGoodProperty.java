@@ -33,6 +33,10 @@ public class MakeGoodProperty {
         flush();
     }
 
+    public boolean exists() {
+        return preferences.get(PRELOAD_SCRIP_KEY, null) != null;
+    }
+
     private void flush() {
         try {
             preferences.flush();
