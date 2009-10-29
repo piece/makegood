@@ -33,31 +33,29 @@ public class MakeGoodLaunchParameter {
     }
 
     public String getScript() {
-        boolean isFolder = target instanceof IProjectFragment
-                           || target instanceof IScriptFolder
-                           || target instanceof IFolder;
-        boolean isFile = target instanceof IFile;
-        boolean isModelElement = target instanceof IModelElement;
-
         IFile file = null;
-        if (isFolder) {
-            IFolder folder = null;
-            if (target instanceof IModelElement) {
-                folder = (IFolder) ((IModelElement) target).getResource();
-            } else if (target instanceof IFolder) {
-                folder = (IFolder) target;
-            }
-            file = findDummyFile(folder);
-        } else if (isFile) {
-            file = (IFile) target;
-        } else if (isModelElement) {
-            file = (IFile) ((IModelElement) target).getResource();
+
+        IResource resource = getTargetResource();
+        if (resource instanceof IFolder) {
+            file = findDummyFile((IFolder) resource);
+        } else if (resource instanceof IFile) {
+            file = (IFile) resource;
         }
 
         if (file != null) {
             return file.getFullPath().toString();
         }
         return null;
+    }
+
+    private IResource getTargetResource() {
+        IResource resource = null;
+        if (target instanceof IModelElement) {
+            resource = ((IModelElement) target).getResource();
+        } else if (target instanceof IResource) {
+            resource = (IResource) target;
+        }
+        return resource;
     }
 
     private IFile findDummyFile(IFolder folder) {
