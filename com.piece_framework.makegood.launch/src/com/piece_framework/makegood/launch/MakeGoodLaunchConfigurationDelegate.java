@@ -61,13 +61,7 @@ public class MakeGoodLaunchConfigurationDelegate implements ILaunchConfiguration
                                  || parameter.getTarget() instanceof IFolder;
         String target = null;
         if (targetIsFolder) {
-            if (parameter.getTarget() instanceof IProjectFragment) {
-                target = ((IProjectFragment) parameter.getTarget()).getResource().getFullPath().toString();
-            } else if (parameter.getTarget() instanceof IScriptFolder) {
-                target = ((IScriptFolder) parameter.getTarget()).getResource().getFullPath().toString();
-            } else if (parameter.getTarget() instanceof IFolder) {
-                target = ((IFolder) parameter.getTarget()).getFullPath().toString();
-            }
+            target = parameter.getTargetResource().getFullPath().toString();
         } else {
             target = parameter.getScript();
         }
