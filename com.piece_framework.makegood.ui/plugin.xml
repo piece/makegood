@@ -32,24 +32,6 @@
       </view>
    </extension>
    <extension
-         point="org.eclipse.debug.ui.launchShortcuts">
-      <shortcut
-            class="com.piece_framework.makegood.ui.launch.MakeGoodLaunchShortcut"
-            id="com.piece_framework.makegood.ui.launchShortcut"
-            label="MakeGood"
-            modes="run, debug">
-         <contextualLaunch>
-            <enablement>
-               <count
-                     value="*">
-               </count></enablement>
-         </contextualLaunch>
-         <configurationType
-               id="com.piece_framework.makegood.launch.launchConfigurationType">
-         </configurationType>
-      </shortcut>
-   </extension>
-   <extension
          point="org.eclipse.ui.menus">
       <menuContribution
             locationURI="popup:org.eclipse.ui.popup.any?after=additions">
