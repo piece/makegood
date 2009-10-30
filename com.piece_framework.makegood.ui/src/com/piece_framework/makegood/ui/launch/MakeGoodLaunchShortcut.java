@@ -67,30 +67,7 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
         MakeGoodLaunchParameter parameter = MakeGoodLaunchParameter.get();
         parameter.setTarget(target);
 
-        ISelection element = selection;
-        selectedFolder = null;
-        selectedType = null;
-        selectedMethod = null;
-        if (selection instanceof IStructuredSelection) {
-            IStructuredSelection structuredSelection = (IStructuredSelection) selection;
-            if (structuredSelection.getFirstElement() instanceof IProjectFragment) {
-                IProjectFragment projectFragment = (IProjectFragment) structuredSelection.getFirstElement();
-                selectedFolder = (IFolder) projectFragment.getResource();
-            } else if (structuredSelection.getFirstElement() instanceof IScriptFolder) {
-                IScriptFolder scriptFolder = (IScriptFolder) structuredSelection.getFirstElement();
-                selectedFolder = (IFolder) scriptFolder.getResource();
-            } else if (structuredSelection.getFirstElement() instanceof IFolder) {
-                selectedFolder = (IFolder) structuredSelection.getFirstElement();
-            } else if (structuredSelection.getFirstElement() instanceof IType) {
-                selectedType = (IType) structuredSelection.getFirstElement();
-            } else if (structuredSelection.getFirstElement() instanceof IMethod) {
-                selectedMethod = (IMethod) structuredSelection.getFirstElement();
-            }
-
-            if (selectedFolder != null) {
-                element = new StructuredSelection(findDummyFile(selectedFolder));
-            }
-        }
+        ISelection element = new StructuredSelection(parameter.getScriptResource());
         super.launch(element, mode);
     }
 
