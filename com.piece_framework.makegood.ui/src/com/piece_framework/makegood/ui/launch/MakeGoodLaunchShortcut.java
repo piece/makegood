@@ -149,9 +149,9 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
             IStructuredSelection selection = (IStructuredSelection) target;
             if (selection.getFirstElement() instanceof IModelElement) {
                 return ((IModelElement) selection.getFirstElement()).getResource();
+            } else if (selection.getFirstElement() instanceof IResource) {
+                return (IResource) selection.getFirstElement();
             }
-        } else if (target instanceof IResource) {
-            return (IResource) target;
         } else if (target instanceof IEditorPart) {
             ISourceModule source = EditorUtility.getEditorInputModelElement((IEditorPart) target, false);
             return source.getResource();
