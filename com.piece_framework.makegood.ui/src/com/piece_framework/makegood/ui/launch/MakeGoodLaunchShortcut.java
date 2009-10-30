@@ -24,6 +24,7 @@ import org.eclipse.ui.texteditor.ITextEditor;
 
 import com.piece_framework.makegood.core.MakeGoodProperty;
 import com.piece_framework.makegood.launch.MakeGoodLaunchParameter;
+import com.piece_framework.makegood.launch.MakeGoodViewRegistry;
 
 public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
     public static int RUN_TEST_ON_CURSOR = 1;
@@ -38,6 +39,8 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
 
     @Override
     public void launch(final ISelection selection, final String mode) {
+        registerView();
+
         final MakeGoodProperty property = new MakeGoodProperty(getResource(selection));
         if (!property.exists()) {
             showPropertyPage(property, selection, mode);
@@ -58,6 +61,8 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
 
     @Override
     public void launch(IEditorPart editor, String mode) {
+        registerView();
+
         final MakeGoodProperty property = new MakeGoodProperty(getResource(editor));
         if (!property.exists()) {
             showPropertyPage(property, editor, mode);
@@ -152,5 +157,9 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
             }
         }
         return elementOnRunLevel;
+    }
+
+    private void registerView() {
+        MakeGoodViewRegistry.register("com.piece_framework.makegood.ui.views.resultView");
     }
 }
