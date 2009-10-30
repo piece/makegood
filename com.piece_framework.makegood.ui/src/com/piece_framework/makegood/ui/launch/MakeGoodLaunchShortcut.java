@@ -11,8 +11,6 @@ import org.eclipse.debug.core.ILaunchListener;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
-import org.eclipse.dltk.core.IProjectFragment;
-import org.eclipse.dltk.core.IScriptFolder;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
@@ -81,43 +79,50 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
 
         addLaunchListener();
 
-        selectedFolder = null;
-        selectedType = null;
-        selectedMethod = null;
+        if (!(editor instanceof ITextEditor)) {
+            return;
+        }
+
         ISourceModule source = EditorUtility.getEditorInputModelElement(editor, false);
-        if (source != null
-            && editor instanceof ITextEditor
-            ) {
-            ITextEditor textEditor = (ITextEditor) editor;
-            ISelectionProvider provider = (ISelectionProvider) textEditor.getSelectionProvider();
-            ITextSelection selection = (ITextSelection) provider.getSelection();
-            int offset = selection.getOffset();
-
-            try {
-                ScriptModelUtil.reconcile(source);
-                IModelElement target = source.getElementAt(offset);
-                if (target != null) {
-                    if (target.getElementType() == IModelElement.TYPE) {
-                        selectedType = (IType) target;
-                    }else if (target.getElementType() == IModelElement.METHOD) {
-                        selectedMethod = (IMethod) target;
-                    }
-                }
-            } catch (ModelException e) {
-            }
+        if (source == null) {
+            return;
         }
 
-        if (runLevelOnEditor == RUN_TESTS_ON_CLASS) {
+        ITextEditor textEditor = (ITextEditor) editor;
+        ISelectionProvider provider = (ISelectionProvider) textEditor.getSelectionProvider();
+        ITextSelection selection = (ITextSelection) provider.getSelection();
+        int offset = selection.getOffset();
+
+        IType selectedClass = null;
+        IMethod selectedMethod = null;
+        try {
+            ScriptModelUtil.reconcile(source);
+            IModelElement currentElement = source.getElementAt(offset);
+            if (currentElement != null) {
+                if (currentElement.getElementType() == IModelElement.TYPE) {
+                    selectedClass = (IType) currentElement;
+                }else if (currentElement.getElementType() == IModelElement.METHOD) {
+                    selectedMethod = (IMethod) currentElement;
+                    selectedClass = (IType) currentElement.getParent();
+                }
+            }
+        } catch (ModelException e) {
+        }
+
+        Object target = source;
+        if (runLevelOnEditor == RUN_TEST_ON_CURSOR) {
             if (selectedMethod != null) {
-                if (selectedMethod.getParent() instanceof IType) {
-                    selectedType = (IType) selectedMethod.getParent();
-                }
+                target = selectedMethod;
+            } else if (selectedClass != null) {
+                target = selectedClass;
             }
-            selectedMethod = null;
-        } else if (runLevelOnEditor == RUN_TESTS_ON_FILE) {
-            selectedType = null;
-            selectedMethod = null;
+        } else if (runLevelOnEditor == RUN_TESTS_ON_CLASS) {
+            if (selectedClass != null) {
+                target = selectedClass;
+            }
         }
+        MakeGoodLaunchParameter parameter = MakeGoodLaunchParameter.get();
+        parameter.setTarget(target);
 
         super.launch(editor, mode);
     }
