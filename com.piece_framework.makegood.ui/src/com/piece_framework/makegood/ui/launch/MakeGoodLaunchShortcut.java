@@ -69,46 +69,8 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
             return;
         }
 
-        ISourceModule source = EditorUtility.getEditorInputModelElement(editor, false);
-        if (source == null) {
-            return;
-        }
-
-        ITextEditor textEditor = (ITextEditor) editor;
-        ISelectionProvider provider = (ISelectionProvider) textEditor.getSelectionProvider();
-        ITextSelection selection = (ITextSelection) provider.getSelection();
-        int offset = selection.getOffset();
-
-        IType selectedClass = null;
-        IMethod selectedMethod = null;
-        try {
-            ScriptModelUtil.reconcile(source);
-            IModelElement currentElement = source.getElementAt(offset);
-            if (currentElement != null) {
-                if (currentElement.getElementType() == IModelElement.TYPE) {
-                    selectedClass = (IType) currentElement;
-                }else if (currentElement.getElementType() == IModelElement.METHOD) {
-                    selectedMethod = (IMethod) currentElement;
-                    selectedClass = (IType) currentElement.getParent();
-                }
-            }
-        } catch (ModelException e) {
-        }
-
-        Object target = source;
-        if (runLevelOnEditor == RUN_TEST_ON_CURSOR) {
-            if (selectedMethod != null) {
-                target = selectedMethod;
-            } else if (selectedClass != null) {
-                target = selectedClass;
-            }
-        } else if (runLevelOnEditor == RUN_TESTS_ON_CLASS) {
-            if (selectedClass != null) {
-                target = selectedClass;
-            }
-        }
         MakeGoodLaunchParameter parameter = MakeGoodLaunchParameter.get();
-        parameter.setTarget(target);
+        parameter.setTarget(getElementOnRunLevel(editor));
 
         super.launch(editor, mode);
     }
@@ -157,5 +119,39 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
             return source.getResource();
         }
         return null;
+    }
+
+    private IModelElement getElementOnRunLevel(IEditorPart editor) {
+        ISourceModule source = EditorUtility.getEditorInputModelElement(editor, false);
+        if (source == null) {
+            return null;
+        }
+        if (runLevelOnEditor == RUN_TESTS_ON_FILE) {
+            return source;
+        }
+
+        ITextEditor textEditor = (ITextEditor) editor;
+        ISelectionProvider provider = (ISelectionProvider) textEditor.getSelectionProvider();
+        ITextSelection selection = (ITextSelection) provider.getSelection();
+        int offset = selection.getOffset();
+
+        IModelElement element = null;
+        try {
+            ScriptModelUtil.reconcile(source);
+            element = source.getElementAt(offset);
+        } catch (ModelException e) {
+        }
+
+        IModelElement elementOnRunLevel = null;
+        if (runLevelOnEditor == RUN_TEST_ON_CURSOR) {
+            elementOnRunLevel = element;
+        } else if (runLevelOnEditor == RUN_TESTS_ON_CLASS) {
+            if (element instanceof IMethod) {
+                elementOnRunLevel = ((IMethod) element).getParent();
+            } else {
+                elementOnRunLevel = element;
+            }
+        }
+        return elementOnRunLevel;
     }
 }
