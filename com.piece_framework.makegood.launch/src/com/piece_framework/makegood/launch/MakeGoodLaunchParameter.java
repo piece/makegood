@@ -51,6 +51,11 @@ public class MakeGoodLaunchParameter {
         return null;
     }
 
+    public IResource getScriptResource() {
+        IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+        return root.findMember(getScript());
+    }
+
     public String getPreloadScript() {
         MakeGoodProperty property = new MakeGoodProperty(getTargetResource());
         return property.getPreloadScript();
