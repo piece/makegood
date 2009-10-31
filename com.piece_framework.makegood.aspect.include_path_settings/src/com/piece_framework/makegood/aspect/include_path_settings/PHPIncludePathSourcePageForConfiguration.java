@@ -38,7 +38,7 @@ public class PHPIncludePathSourcePageForConfiguration extends PHPIncludePathSour
 
         String[] buttonLabels = new String[] {
                 NewWizardMessages.SourceContainerWorkbookPage_folders_add_button,
-                "Add configuration",
+                "Add the System Include Path",
                 NewWizardMessages.SourceContainerWorkbookPage_folders_remove_button
                 };
 
