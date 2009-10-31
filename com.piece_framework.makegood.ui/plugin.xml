@@ -123,42 +123,6 @@
                </with>
             </visibleWhen>
          </command>
-         <command
-               commandId="com.piece_framework.makegood.ui.RunTestFromEditor"
-               icon="icons/MakeGood.gif"
-               label="Run test on a cursor"
-               style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <reference
-                     definitionId="com.piece_framework.makegood.ui.definitions.phpContentType">
-               </reference>
-            </visibleWhen>
-         </command>
-         <command
-               commandId="com.piece_framework.makegood.ui.RunTestFromEditorInClass"
-               icon="icons/MakeGood.gif"
-               label="Run tests in the class"
-               style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <reference
-                     definitionId="com.piece_framework.makegood.ui.definitions.phpContentType">
-               </reference>
-            </visibleWhen>
-         </command>
-         <command
-               commandId="com.piece_framework.makegood.ui.RunTestFromEditorInFile"
-               icon="icons/MakeGood.gif"
-               label="Run tests in the file"
-               style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <reference
-                     definitionId="com.piece_framework.makegood.ui.definitions.phpContentType">
-               </reference>
-            </visibleWhen>
-         </command>
          <menu
                icon="icons/MakeGood.gif"
                label="&amp;Run tests for">
