@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Makegood
 Bundle-SymbolicName: com.piece_framework.makegood.aspect.include_path_protection;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Fragment-Host: org.eclipse.php.debug.core;bundle-version="2.1.1"
+Fragment-Host: org.eclipse.php.debug.core;bundle-version="2.1.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.eclipse.ui,
  com.piece_framework.makegood.javassist,
