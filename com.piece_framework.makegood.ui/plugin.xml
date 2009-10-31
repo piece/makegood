@@ -42,7 +42,7 @@
          <command
                commandId="com.piece_framework.makegood.ui.RunTestFromExplorer"
                icon="icons/MakeGood.gif"
-               label="Run test"
+               label="&amp;Run tests for"
                style="push">
             <visibleWhen
                   checkEnabled="true">
