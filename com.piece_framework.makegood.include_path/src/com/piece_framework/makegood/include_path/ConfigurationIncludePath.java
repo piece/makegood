@@ -8,7 +8,7 @@ import org.eclipse.dltk.core.IBuildpathEntry;
 import org.eclipse.jface.resource.ImageDescriptor;
 
 public class ConfigurationIncludePath {
-    public static String text = "[Use Configuration]";
+    public static String text = "[The System Include Path]";
     public static ImageDescriptor icon = null;
 
     private IResource dummy;
