@@ -1,8 +1,10 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Include_path_search
-Bundle-SymbolicName: com.piece_framework.makegood.aspect.include_path_search
+Bundle-SymbolicName: com.piece_framework.makegood.aspect.include_path_search;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: PIECE_FRAMEWORK
 Fragment-Host: org.eclipse.php.core
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: org.eclipse.ui,
+ com.piece_framework.makegood.javassist

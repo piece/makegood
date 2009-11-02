@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<fragment>
+   <extension
+         point="org.eclipse.ui.startup">
+      <startup
+            class="com.piece_farmework.makegood.aspect.include_path_search.Startup">
+      </startup>
+   </extension>
+
+</fragment>
