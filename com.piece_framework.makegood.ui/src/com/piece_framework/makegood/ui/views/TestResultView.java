@@ -18,6 +18,7 @@ import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -33,6 +34,10 @@ import com.piece_framework.makegood.launch.phpunit.TestSuite;
 import com.piece_framework.makegood.ui.Activator;
 
 public class TestResultView extends ViewPart {
+    private static final RGB GREEN = new RGB(95, 191, 95);
+    private static final RGB RED = new RGB(159, 63, 63);
+    private static final RGB NONE = new RGB(255, 255, 255);
+
     private IDebugEventSetListener listener;
     private ResultLabel tests;
     private ResultLabel assertions;
@@ -49,7 +54,7 @@ public class TestResultView extends ViewPart {
         parent.setLayout(new GridLayout(1, false));
 
         Label progressBar = new Label(parent, SWT.BORDER);
-        progressBar.setBackground(new Color(parent.getDisplay(), 95, 191, 95));
+        progressBar.setBackground(new Color(parent.getDisplay(), NONE));
         progressBar.setLayoutData(createHorizontalFillGridData());
 
         Composite summary = new Composite(parent, SWT.NULL);
