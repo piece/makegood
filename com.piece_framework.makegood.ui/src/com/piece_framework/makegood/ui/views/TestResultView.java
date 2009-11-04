@@ -125,12 +125,6 @@ public class TestResultView extends ViewPart {
         return horizontalFillGrid;
     }
 
-    private Label createLabel(Composite parent, String text, int style) {
-        Label label = new Label(parent, style);
-        label.setText(text);
-        return label;
-    }
-
     private class ResultLabel {
         private CLabel label;
         private String text;
