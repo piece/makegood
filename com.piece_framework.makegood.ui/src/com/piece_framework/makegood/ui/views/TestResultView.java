@@ -28,6 +28,11 @@ public class TestResultView extends ViewPart {
         progressBar.setBackground(new Color(parent.getDisplay(), 95, 191, 95));
         progressBar.setLayoutData(createHorizontalFillGridData());
 
+        Composite summary = new Composite(parent, SWT.NULL);
+        summary.setLayoutData(createHorizontalFillGridData());
+        summary.setLayout(new FillLayout(SWT.HORIZONTAL));
+
+
 //        FormToolkit toolkit = new FormToolkit(parent.getDisplay());
 //        root = toolkit.createScrolledForm(parent);
 
@@ -100,5 +105,11 @@ public class TestResultView extends ViewPart {
         horizontalFillGrid.horizontalAlignment = GridData.FILL;
         horizontalFillGrid.grabExcessHorizontalSpace = true;
         return horizontalFillGrid;
+    }
+
+    private Label createLabel(Composite parent, String text, int style) {
+        Label label = new Label(parent, style);
+        label.setText(text);
+        return label;
     }
 }
