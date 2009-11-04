@@ -1,7 +1,18 @@
 package com.piece_framework.makegood.ui.views;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.debug.core.DebugEvent;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.IDebugEventSetListener;
+import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.php.internal.debug.core.model.IPHPDebugTarget;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.custom.SashForm;
@@ -14,9 +25,11 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Tree;
-import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.part.ViewPart;
+import org.eclipse.ui.progress.UIJob;
 
+import com.piece_framework.makegood.launch.phpunit.TestResultConverter;
+import com.piece_framework.makegood.launch.phpunit.TestSuite;
 import com.piece_framework.makegood.ui.Activator;
 
 public class TestResultView extends ViewPart {
@@ -61,6 +74,45 @@ public class TestResultView extends ViewPart {
         resultTree.setLayoutData(createBothFillGridData());
         List resultList = new List(form, SWT.BORDER);
         resultList.setLayoutData(createBothFillGridData());
+
+        listener = new IDebugEventSetListener() {
+            @Override
+            public void handleDebugEvents(DebugEvent[] events) {
+                for (DebugEvent event: events) {
+                    if (event.getKind() != DebugEvent.TERMINATE
+                        || !(event.getSource() instanceof IPHPDebugTarget)
+                        ) {
+                        continue;
+                    }
+
+                    final IPHPDebugTarget debugTarget = (IPHPDebugTarget) event.getSource();
+                    Job job = new UIJob("MakeGood result parse") {
+                        @Override
+                        public IStatus runInUIThread(IProgressMonitor monitor) {
+                            ILaunchConfiguration configuration = debugTarget.getLaunch().getLaunchConfiguration();
+                            try {
+                                String logFile = configuration.getAttribute("LOG_JUNIT", (String) null);
+                                if (logFile == null) {
+                                    // TODO
+                                    return null;
+                                }
+                                java.util.List<TestSuite> suites = TestResultConverter.convert(new File(logFile));
+                                System.out.println(suites);
+                            } catch (CoreException e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                            } catch (FileNotFoundException e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                            }
+                            return Status.OK_STATUS;
+                        }
+                    };
+                    job.schedule();
+                }
+            }
+        };
+        DebugPlugin.getDefault().addDebugEventListener(listener);
 
 //        listener = new IDebugEventSetListener() {
 //            @Override
