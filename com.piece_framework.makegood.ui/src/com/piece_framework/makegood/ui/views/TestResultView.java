@@ -161,6 +161,9 @@ public class TestResultView extends ViewPart {
                                 }
 
                                 resultTreeViewer.setInput(suites);
+                                if (suite.hasErrorChild()) {
+                                    resultTreeViewer.expandToLevel(2);
+                                }
                             } catch (CoreException e) {
                                 // TODO Auto-generated catch block
                                 e.printStackTrace();
