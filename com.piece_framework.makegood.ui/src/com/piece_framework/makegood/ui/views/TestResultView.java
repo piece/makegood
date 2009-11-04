@@ -14,6 +14,8 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.part.ViewPart;
 
+import com.piece_framework.makegood.ui.Activator;
+
 public class TestResultView extends ViewPart {
     private ScrolledForm root;
     private IDebugEventSetListener listener;
@@ -36,9 +38,18 @@ public class TestResultView extends ViewPart {
 
         new ResultLabel(summary, "Tests:", null);
         new ResultLabel(summary, "Assertions:", null);
-        new ResultLabel(summary, "Passes:", null);
-        new ResultLabel(summary, "Failures:", null);
-        new ResultLabel(summary, "Errors:", null);
+        new ResultLabel(summary,
+                        "Passes:",
+                        Activator.getImageDescriptor("icons/pass.gif").createImage()
+                        );
+        new ResultLabel(summary,
+                        "Failures:",
+                        Activator.getImageDescriptor("icons/failure.gif").createImage()
+                        );
+        new ResultLabel(summary,
+                        "Errors:",
+                        Activator.getImageDescriptor("icons/error.gif").createImage()
+                        );
 
 //        FormToolkit toolkit = new FormToolkit(parent.getDisplay());
 //        root = toolkit.createScrolledForm(parent);
