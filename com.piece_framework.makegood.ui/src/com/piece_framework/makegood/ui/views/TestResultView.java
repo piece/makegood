@@ -3,7 +3,9 @@ package com.piece_framework.makegood.ui.views;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.IDebugEventSetListener;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -32,11 +34,11 @@ public class TestResultView extends ViewPart {
         summary.setLayoutData(createHorizontalFillGridData());
         summary.setLayout(new FillLayout(SWT.HORIZONTAL));
 
-        createLabel(summary, "Tests: 15", SWT.LEFT);
-        createLabel(summary, "Assertions: 10", SWT.LEFT);
-        createLabel(summary, "Passes: 100", SWT.LEFT);
-        createLabel(summary, "Failures: 2000", SWT.LEFT);
-        createLabel(summary, "Errors: 30000", SWT.LEFT);
+        new ResultLabel(summary, "Tests:", null);
+        new ResultLabel(summary, "Assertions:", null);
+        new ResultLabel(summary, "Passes:", null);
+        new ResultLabel(summary, "Failures:", null);
+        new ResultLabel(summary, "Errors:", null);
 
 //        FormToolkit toolkit = new FormToolkit(parent.getDisplay());
 //        root = toolkit.createScrolledForm(parent);
@@ -116,5 +118,20 @@ public class TestResultView extends ViewPart {
         Label label = new Label(parent, style);
         label.setText(text);
         return label;
+    }
+
+    private class ResultLabel {
+        private CLabel label;
+        private String text;
+
+        private ResultLabel(Composite parent, String text, Image icon) {
+            label = new CLabel(parent, SWT.LEFT);
+            label.setText(text);
+            if (icon != null) {
+                label.setImage(icon);
+            }
+
+            this.text = text;
+        }
     }
 }
