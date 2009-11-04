@@ -44,6 +44,12 @@ public class TestResultLabelProvider extends LabelProvider {
             } else if (testCase.getProblem().getType() == ProblemType.Error) {
                 return errorIcon;
             }
+        } else if (element instanceof TestResult) {
+            if (((TestResult) element).hasErrorChild()) {
+                return errorIcon;
+            } else {
+                return passIcon;
+            }
         }
         return super.getImage(element);
     }
