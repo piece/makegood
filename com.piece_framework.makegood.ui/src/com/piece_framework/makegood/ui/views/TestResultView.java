@@ -4,6 +4,7 @@ import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.IDebugEventSetListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
+import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
@@ -11,6 +12,8 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.List;
+import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.part.ViewPart;
 
@@ -50,6 +53,13 @@ public class TestResultView extends ViewPart {
                         "Errors:",
                         Activator.getImageDescriptor("icons/error.gif").createImage()
                         );
+
+        SashForm form = new SashForm(parent, SWT.HORIZONTAL);
+        form.setLayoutData(createHorizontalFillGridData());
+        form.setLayout(new GridLayout(2, false));
+
+        Tree resultTree = new Tree(form, SWT.BORDER);
+        List resultList = new List(form, SWT.BORDER);
 
 //        FormToolkit toolkit = new FormToolkit(parent.getDisplay());
 //        root = toolkit.createScrolledForm(parent);
