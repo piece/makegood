@@ -119,7 +119,7 @@ public class TestResultView extends ViewPart {
             }
         });
 
-        resultList = new List(form, SWT.BORDER);
+        resultList = new List(form, SWT.BORDER + SWT.V_SCROLL + SWT.H_SCROLL);
         resultList.setLayoutData(createBothFillGridData());
 
         listener = new IDebugEventSetListener() {
