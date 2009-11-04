@@ -97,6 +97,8 @@ public class TestResultView extends ViewPart {
         resultTreeViewer.addSelectionChangedListener(new ISelectionChangedListener() {
             @Override
             public void selectionChanged(SelectionChangedEvent event) {
+                resultList.removeAll();
+
                 if (!(event.getSelection() instanceof IStructuredSelection)) {
                     return;
                 }
@@ -104,8 +106,6 @@ public class TestResultView extends ViewPart {
                 if (!(selection.getFirstElement() instanceof TestCase)) {
                     return;
                 }
-
-                resultList.removeAll();
 
                 TestCase testCase = (TestCase) selection.getFirstElement();
                 if (testCase.getProblem().getType() == ProblemType.Pass) {
