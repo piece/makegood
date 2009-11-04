@@ -179,54 +179,6 @@ public class TestResultView extends ViewPart {
             }
         };
         DebugPlugin.getDefault().addDebugEventListener(listener);
-
-//        listener = new IDebugEventSetListener() {
-//            @Override
-//            public void handleDebugEvents(DebugEvent[] events) {
-//                for (DebugEvent event: events) {
-//                    if (event.getKind() == DebugEvent.TERMINATE
-//                        && event.getSource() instanceof IPHPDebugTarget
-//                        ) {
-//                        final IPHPDebugTarget debugTarget = (IPHPDebugTarget) event.getSource();
-//
-//                        Job job = new UIJob("MakeGood result parse") {
-//                            public IStatus runInUIThread(IProgressMonitor monitor) {
-//                                ILaunchConfiguration configuration = debugTarget.getLaunch().getLaunchConfiguration();
-//
-//                                try {
-//                                    String logFile = configuration.getAttribute("LOG_JUNIT", (String) null);
-//                                    List<TestSuite> suites = TestResultConverter.convert(new File(logFile));
-//                                    block.setInput(suites);
-//                                } catch (CoreException e) {
-//                                    // TODO Auto-generated catch block
-//                                    e.printStackTrace();
-//                                } catch (FileNotFoundException e) {
-//                                    // TODO Auto-generated catch block
-//                                    e.printStackTrace();
-//                                } catch (Exception e) {
-//                                    e.printStackTrace();
-//                                }
-//
-//                                String[] results = debugTarget.getOutputBuffer().toString().split("\n");
-//                                int lastLine = results.length - 1;
-//                                String result = results[lastLine];
-//
-//                                root.setText(result);
-//                                if (result.startsWith("OK")) {
-//                                    root.setBackground(new Color(null, 0, 255, 0));
-//                                } else {
-//                                    root.setBackground(new Color(null, 255, 0, 0));
-//                                }
-//
-//                                return Status.OK_STATUS;
-//                            }
-//                        };
-//                        job.schedule();
-//                    }
-//                }
-//            }
-//        };
-//        DebugPlugin.getDefault().addDebugEventListener(listener);
     }
 
     @Override
