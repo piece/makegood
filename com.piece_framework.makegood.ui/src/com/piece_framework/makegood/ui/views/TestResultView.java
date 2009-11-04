@@ -20,7 +20,6 @@ import org.eclipse.ui.part.ViewPart;
 import com.piece_framework.makegood.ui.Activator;
 
 public class TestResultView extends ViewPart {
-    private ScrolledForm root;
     private IDebugEventSetListener listener;
 
     public TestResultView() {
@@ -63,12 +62,6 @@ public class TestResultView extends ViewPart {
         List resultList = new List(form, SWT.BORDER);
         resultList.setLayoutData(createBothFillGridData());
 
-//        FormToolkit toolkit = new FormToolkit(parent.getDisplay());
-//        root = toolkit.createScrolledForm(parent);
-
-//        final TestResultMasterDetailsBlock block = new TestResultMasterDetailsBlock();
-//        block.createContent(new ManagedForm(toolkit, root));
-//
 //        listener = new IDebugEventSetListener() {
 //            @Override
 //            public void handleDebugEvents(DebugEvent[] events) {
