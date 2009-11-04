@@ -34,6 +34,11 @@ import com.piece_framework.makegood.ui.Activator;
 
 public class TestResultView extends ViewPart {
     private IDebugEventSetListener listener;
+    private ResultLabel tests;
+    private ResultLabel assertions;
+    private ResultLabel passes;
+    private ResultLabel failures;
+    private ResultLabel errors;
 
     public TestResultView() {
         // TODO Auto-generated constructor stub
@@ -51,20 +56,20 @@ public class TestResultView extends ViewPart {
         summary.setLayoutData(createHorizontalFillGridData());
         summary.setLayout(new FillLayout(SWT.HORIZONTAL));
 
-        new ResultLabel(summary, "Tests:", null);
-        new ResultLabel(summary, "Assertions:", null);
-        new ResultLabel(summary,
-                        "Passes:",
-                        Activator.getImageDescriptor("icons/pass.gif").createImage()
-                        );
-        new ResultLabel(summary,
-                        "Failures:",
-                        Activator.getImageDescriptor("icons/failure.gif").createImage()
-                        );
-        new ResultLabel(summary,
-                        "Errors:",
-                        Activator.getImageDescriptor("icons/error.gif").createImage()
-                        );
+        tests = new ResultLabel(summary, "Tests:", null);
+        assertions = new ResultLabel(summary, "Assertions:", null);
+        passes = new ResultLabel(summary,
+                                 "Passes:",
+                                 Activator.getImageDescriptor("icons/pass.gif").createImage()
+                                 );
+        failures = new ResultLabel(summary,
+                                   "Failures:",
+                                   Activator.getImageDescriptor("icons/failure.gif").createImage()
+                                   );
+        errors = new ResultLabel(summary,
+                                 "Errors:",
+                                 Activator.getImageDescriptor("icons/error.gif").createImage()
+                                 );
 
         SashForm form = new SashForm(parent, SWT.HORIZONTAL);
         form.setLayoutData(createBothFillGridData());
@@ -97,7 +102,15 @@ public class TestResultView extends ViewPart {
                                     return null;
                                 }
                                 java.util.List<TestSuite> suites = TestResultConverter.convert(new File(logFile));
-                                System.out.println(suites);
+                                TestSuite suite = suites.get(0);
+                                tests.setCount(suite.getTestCount());
+                                assertions.setCount(suite.getAssertionCount());
+                                passes.setCount(suite.getTestCount() -
+                                                suite.getFailureCount() -
+                                                suite.getErrorCount()
+                                                );
+                                failures.setCount(suite.getFailureCount());
+                                errors.setCount(suite.getErrorCount());
                             } catch (CoreException e) {
                                 // TODO Auto-generated catch block
                                 e.printStackTrace();
@@ -207,7 +220,7 @@ public class TestResultView extends ViewPart {
         }
 
         private void setCount(int count) {
-            label.setText(text + count);
+            label.setText(text + " " + count);
         }
     }
 }
