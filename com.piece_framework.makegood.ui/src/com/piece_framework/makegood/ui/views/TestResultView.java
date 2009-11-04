@@ -12,6 +12,9 @@ import org.eclipse.debug.core.DebugEvent;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.IDebugEventSetListener;
 import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.php.internal.debug.core.model.IPHPDebugTarget;
 import org.eclipse.swt.SWT;
@@ -30,6 +33,8 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.progress.UIJob;
 
+import com.piece_framework.makegood.launch.phpunit.ProblemType;
+import com.piece_framework.makegood.launch.phpunit.TestCase;
 import com.piece_framework.makegood.launch.phpunit.TestResultConverter;
 import com.piece_framework.makegood.launch.phpunit.TestSuite;
 import com.piece_framework.makegood.ui.Activator;
@@ -47,6 +52,7 @@ public class TestResultView extends ViewPart {
     private ResultLabel failures;
     private ResultLabel errors;
     private TreeViewer resultTreeViewer;
+    private List resultList;
 
     public TestResultView() {
         // TODO Auto-generated constructor stub
@@ -88,8 +94,32 @@ public class TestResultView extends ViewPart {
         resultTreeViewer = new TreeViewer(resultTree);
         resultTreeViewer.setContentProvider(new TestResultContentProvider());
         resultTreeViewer.setLabelProvider(new TestResultLabelProvider());
+        resultTreeViewer.addSelectionChangedListener(new ISelectionChangedListener() {
+            @Override
+            public void selectionChanged(SelectionChangedEvent event) {
+                if (!(event.getSelection() instanceof IStructuredSelection)) {
+                    return;
+                }
+                IStructuredSelection selection = (IStructuredSelection) event.getSelection();
+                if (!(selection.getFirstElement() instanceof TestCase)) {
+                    return;
+                }
 
-        List resultList = new List(form, SWT.BORDER);
+                resultList.removeAll();
+
+                TestCase testCase = (TestCase) selection.getFirstElement();
+                if (testCase.getProblem().getType() == ProblemType.Pass) {
+                    return;
+                }
+
+                String[] contents = testCase.getProblem().getContent().split("\n");
+                for (String content: contents) {
+                    resultList.add(content);
+                }
+            }
+        });
+
+        resultList = new List(form, SWT.BORDER);
         resultList.setLayoutData(createBothFillGridData());
 
         listener = new IDebugEventSetListener() {
