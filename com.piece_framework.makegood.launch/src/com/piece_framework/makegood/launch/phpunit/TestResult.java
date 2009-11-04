@@ -32,6 +32,10 @@ public abstract class TestResult {
         return null;
     }
 
+    public boolean hasErrorChild() {
+        return false;
+    }
+
     void addTestResult(TestResult result) {
         if (result == null) {
             return;

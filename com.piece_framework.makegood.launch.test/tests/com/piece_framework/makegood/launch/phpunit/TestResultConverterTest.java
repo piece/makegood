@@ -2,6 +2,7 @@ package com.piece_framework.makegood.launch.phpunit;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertFalse;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -447,5 +448,18 @@ public class TestResultConverterTest {
                                               String.valueOf(File.separatorChar) +
                                               "phpunit-results/foo.log"
                                               ));
+    }
+
+    @Test
+    public void setParentThatDoesNotHaveErrorOrFailureChild() throws FileNotFoundException {
+        List<TestSuite> testResults = TestResultConverter.convert(new File(System.getProperty("user.dir") +
+                                                                           String.valueOf(File.separatorChar) +
+                                                                           "phpunit-results/pass.log"
+                                                                           ));
+
+        assertEquals(1, testResults.size());
+
+        TestSuite rootSuite = testResults.get(0);
+        assertFalse(rootSuite.hasErrorChild());
     }
 }
