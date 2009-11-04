@@ -12,6 +12,7 @@ import org.eclipse.debug.core.DebugEvent;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.IDebugEventSetListener;
 import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.php.internal.debug.core.model.IPHPDebugTarget;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
@@ -45,6 +46,7 @@ public class TestResultView extends ViewPart {
     private ResultLabel passes;
     private ResultLabel failures;
     private ResultLabel errors;
+    private TreeViewer resultTreeViewer;
 
     public TestResultView() {
         // TODO Auto-generated constructor stub
@@ -83,6 +85,10 @@ public class TestResultView extends ViewPart {
 
         Tree resultTree = new Tree(form, SWT.BORDER);
         resultTree.setLayoutData(createBothFillGridData());
+        resultTreeViewer = new TreeViewer(resultTree);
+        resultTreeViewer.setContentProvider(new TestResultContentProvider());
+        resultTreeViewer.setLabelProvider(new TestResultLabelProvider());
+
         List resultList = new List(form, SWT.BORDER);
         resultList.setLayoutData(createBothFillGridData());
 
@@ -123,6 +129,8 @@ public class TestResultView extends ViewPart {
                                 } else {
                                     progressBar.setBackground(new Color(progressBar.getDisplay(), RED));
                                 }
+
+                                resultTreeViewer.setInput(suites);
                             } catch (CoreException e) {
                                 // TODO Auto-generated catch block
                                 e.printStackTrace();
