@@ -32,6 +32,11 @@ public class TestResultView extends ViewPart {
         summary.setLayoutData(createHorizontalFillGridData());
         summary.setLayout(new FillLayout(SWT.HORIZONTAL));
 
+        createLabel(summary, "Tests: 15", SWT.LEFT);
+        createLabel(summary, "Assertions: 10", SWT.LEFT);
+        createLabel(summary, "Passes: 100", SWT.LEFT);
+        createLabel(summary, "Failures: 2000", SWT.LEFT);
+        createLabel(summary, "Errors: 30000", SWT.LEFT);
 
 //        FormToolkit toolkit = new FormToolkit(parent.getDisplay());
 //        root = toolkit.createScrolledForm(parent);
