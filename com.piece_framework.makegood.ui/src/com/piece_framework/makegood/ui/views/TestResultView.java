@@ -55,11 +55,13 @@ public class TestResultView extends ViewPart {
                         );
 
         SashForm form = new SashForm(parent, SWT.HORIZONTAL);
-        form.setLayoutData(createHorizontalFillGridData());
+        form.setLayoutData(createBothFillGridData());
         form.setLayout(new GridLayout(2, false));
 
         Tree resultTree = new Tree(form, SWT.BORDER);
+        resultTree.setLayoutData(createBothFillGridData());
         List resultList = new List(form, SWT.BORDER);
+        resultList.setLayoutData(createBothFillGridData());
 
 //        FormToolkit toolkit = new FormToolkit(parent.getDisplay());
 //        root = toolkit.createScrolledForm(parent);
@@ -133,6 +135,16 @@ public class TestResultView extends ViewPart {
         horizontalFillGrid.horizontalAlignment = GridData.FILL;
         horizontalFillGrid.grabExcessHorizontalSpace = true;
         return horizontalFillGrid;
+    }
+
+    private GridData createBothFillGridData() {
+        GridData bothFillGrid = new GridData();
+        bothFillGrid.horizontalAlignment = GridData.FILL;
+        bothFillGrid.verticalAlignment = GridData.FILL;
+        bothFillGrid.grabExcessHorizontalSpace = true;
+        bothFillGrid.grabExcessVerticalSpace = true;
+        return bothFillGrid;
+        
     }
 
     private class ResultLabel {
