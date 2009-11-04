@@ -33,6 +33,15 @@ public abstract class TestResult {
     }
 
     public boolean hasErrorChild() {
+        if (results == null) {
+            return false;
+        }
+
+        for (TestResult result: results) {
+            if (result.hasErrorChild()) {
+                return true;
+            }
+        }
         return false;
     }
 
