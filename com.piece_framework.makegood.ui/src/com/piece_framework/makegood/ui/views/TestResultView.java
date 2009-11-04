@@ -205,5 +205,9 @@ public class TestResultView extends ViewPart {
 
             this.text = text;
         }
+
+        private void setCount(int count) {
+            label.setText(text + count);
+        }
     }
 }
