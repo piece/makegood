@@ -39,6 +39,7 @@ public class TestResultView extends ViewPart {
     private static final RGB NONE = new RGB(255, 255, 255);
 
     private IDebugEventSetListener listener;
+    private Label progressBar;
     private ResultLabel tests;
     private ResultLabel assertions;
     private ResultLabel passes;
@@ -53,7 +54,7 @@ public class TestResultView extends ViewPart {
     public void createPartControl(Composite parent) {
         parent.setLayout(new GridLayout(1, false));
 
-        Label progressBar = new Label(parent, SWT.BORDER);
+        progressBar = new Label(parent, SWT.BORDER);
         progressBar.setBackground(new Color(parent.getDisplay(), NONE));
         progressBar.setLayoutData(createHorizontalFillGridData());
 
@@ -116,6 +117,12 @@ public class TestResultView extends ViewPart {
                                                 );
                                 failures.setCount(suite.getFailureCount());
                                 errors.setCount(suite.getErrorCount());
+
+                                if (!suite.hasErrorChild()) {
+                                    progressBar.setBackground(new Color(progressBar.getDisplay(), GREEN));
+                                } else {
+                                    progressBar.setBackground(new Color(progressBar.getDisplay(), RED));
+                                }
                             } catch (CoreException e) {
                                 // TODO Auto-generated catch block
                                 e.printStackTrace();
