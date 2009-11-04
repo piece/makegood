@@ -4,6 +4,7 @@ import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.IDebugEventSetListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -25,10 +26,7 @@ public class TestResultView extends ViewPart {
 
         Label progressBar = new Label(parent, SWT.BORDER);
         progressBar.setBackground(new Color(parent.getDisplay(), 95, 191, 95));
-        GridData horizontalFillGrid = new GridData();
-        horizontalFillGrid.horizontalAlignment = GridData.FILL;
-        horizontalFillGrid.grabExcessHorizontalSpace = true;
-        progressBar.setLayoutData(horizontalFillGrid);
+        progressBar.setLayoutData(createHorizontalFillGridData());
 
 //        FormToolkit toolkit = new FormToolkit(parent.getDisplay());
 //        root = toolkit.createScrolledForm(parent);
@@ -95,5 +93,12 @@ public class TestResultView extends ViewPart {
     public void dispose() {
         super.dispose();
         DebugPlugin.getDefault().removeDebugEventListener(listener);
+    }
+
+    private GridData createHorizontalFillGridData() {
+        GridData horizontalFillGrid = new GridData();
+        horizontalFillGrid.horizontalAlignment = GridData.FILL;
+        horizontalFillGrid.grabExcessHorizontalSpace = true;
+        return horizontalFillGrid;
     }
 }
