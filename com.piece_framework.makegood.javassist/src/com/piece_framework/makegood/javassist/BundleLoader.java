@@ -2,6 +2,7 @@ package com.piece_framework.makegood.javassist;
 
 import java.io.File;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +39,11 @@ public class BundleLoader {
                 } else {
                     bundleLocation = bundleURL.getFile();
                 }
-
+                File bundleFile = new File(bundleLocation);
+                if (!bundleFile.isAbsolute()) {
+                    bundleLocation = Platform.getInstallLocation().getURL().getPath() +
+                                     bundleLocation;
+                }
                 if (new File(bundleLocation).isDirectory()) {
                     if (new File(bundleLocation + "bin").exists()) {
                         bundleLocation += "bin";
