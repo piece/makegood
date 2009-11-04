@@ -53,4 +53,9 @@ public class TestCase extends TestResult {
     public Problem getProblem() {
         return problem;
     }
+
+    @Override
+    public boolean hasErrorChild() {
+        return problem.getType() != ProblemType.NONE;
+    }
 }
