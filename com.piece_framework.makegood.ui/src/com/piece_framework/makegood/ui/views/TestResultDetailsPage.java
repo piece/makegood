@@ -92,7 +92,7 @@ public class TestResultDetailsPage implements IDetailsPage {
         contentList.removeAll();
 
         TestCase testCase = (TestCase) structuredSelection.getFirstElement();
-        if (testCase.getProblem().getType() == ProblemType.NONE) {
+        if (testCase.getProblem().getType() == ProblemType.Pass) {
             return;
         }
 

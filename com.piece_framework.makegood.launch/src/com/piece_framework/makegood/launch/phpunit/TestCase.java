@@ -27,7 +27,7 @@ public class TestCase extends TestResult {
         if (attributes.containsKey("time")) {
             this.time = Double.parseDouble(attributes.get("time"));
         }
-        this.problem = new Problem(ProblemType.NONE);
+        this.problem = new Problem(ProblemType.Pass);
     }
 
     public String getFile() {
@@ -56,6 +56,6 @@ public class TestCase extends TestResult {
 
     @Override
     public boolean hasErrorChild() {
-        return problem.getType() != ProblemType.NONE;
+        return problem.getType() != ProblemType.Pass;
     }
 }

@@ -37,7 +37,7 @@ public class TestResultLabelProvider extends LabelProvider {
         ISharedImages images = PlatformUI.getWorkbench().getSharedImages();
         if (element instanceof TestCase) {
             TestCase testCase = (TestCase) element;
-            if (testCase.getProblem().getType() == ProblemType.NONE) {
+            if (testCase.getProblem().getType() == ProblemType.Pass) {
                 return passIcon;
             } else if (testCase.getProblem().getType() == ProblemType.Failure) {
                 return failureIcon;
