@@ -5,11 +5,24 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 
+import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.launch.phpunit.ProblemType;
 import com.piece_framework.makegood.launch.phpunit.TestCase;
 import com.piece_framework.makegood.launch.phpunit.TestResult;
 
 public class TestResultLabelProvider extends LabelProvider {
+    private Image passIcon;
+    private Image errorIcon;
+    private Image failureIcon;
+
+    public TestResultLabelProvider() {
+        super();
+
+        passIcon = Activator.getImageDescriptor("icons/pass.gif").createImage();
+        errorIcon = Activator.getImageDescriptor("icons/error.gif").createImage();
+        failureIcon = Activator.getImageDescriptor("icons/failure.gif").createImage();
+    }
+
     @Override
     public String getText(Object element) {
         if (element instanceof TestResult) {
@@ -25,11 +38,11 @@ public class TestResultLabelProvider extends LabelProvider {
         if (element instanceof TestCase) {
             TestCase testCase = (TestCase) element;
             if (testCase.getProblem().getType() == ProblemType.NONE) {
-                return images.getImage(ISharedImages.IMG_OBJS_INFO_TSK);
+                return passIcon;
             } else if (testCase.getProblem().getType() == ProblemType.Failure) {
-                return images.getImage(ISharedImages.IMG_OBJS_WARN_TSK);
+                return failureIcon;
             } else if (testCase.getProblem().getType() == ProblemType.Error) {
-                return images.getImage(ISharedImages.IMG_OBJS_ERROR_TSK);
+                return errorIcon;
             }
         }
         return super.getImage(element);
