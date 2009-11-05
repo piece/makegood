@@ -80,4 +80,13 @@ public class TestSuite extends TestResult {
         }
         return result;
     }
+
+    @Override
+    public boolean hasFailure() {
+        boolean result = super.hasFailure();
+        if (!result) {
+            result = failureCount > 0;
+        }
+        return result;
+    }
 }
