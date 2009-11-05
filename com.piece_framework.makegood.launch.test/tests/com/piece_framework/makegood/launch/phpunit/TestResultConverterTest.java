@@ -490,4 +490,24 @@ public class TestResultConverterTest {
             assertTrue(result.hasFailure());
         }
     }
+
+    @Test
+    public void setParentThatHasErrorChild() throws FileNotFoundException {
+        List<TestSuite> testResults = TestResultConverter.convert(new File(System.getProperty("user.dir") +
+                                                                           String.valueOf(File.separatorChar) +
+                                                                           "phpunit-results/error.log"
+                                                                           ));
+
+        assertEquals(1, testResults.size());
+
+        TestSuite rootSuite = testResults.get(0);
+        assertTrue(rootSuite.hasError());
+        assertFalse(rootSuite.hasFailure());
+
+        assertEquals(1, rootSuite.getTestResults().size());
+        for (TestResult result: rootSuite.getTestResults()) {
+            assertTrue(result.hasError());
+            assertFalse(result.hasFailure());
+        }
+    }
 }
