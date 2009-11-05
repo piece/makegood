@@ -481,6 +481,7 @@ public class TestResultConverterTest {
         assertEquals(1, testResults.size());
 
         TestSuite rootSuite = testResults.get(0);
-        assertTrue(rootSuite.hasErrorChild());
+        assertFalse(rootSuite.hasError());
+        assertTrue(rootSuite.hasFailure());
     }
 }

@@ -58,4 +58,9 @@ public class TestCase extends TestResult {
     public boolean hasErrorChild() {
         return problem.getType() != ProblemType.Pass;
     }
+
+    @Override
+    public boolean hasFailure() {
+        return problem.getType() == ProblemType.Failure;
+    }
 }
