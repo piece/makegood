@@ -34,23 +34,19 @@ public class TestResultLabelProvider extends LabelProvider {
 
     @Override
     public Image getImage(Object element) {
-        ISharedImages images = PlatformUI.getWorkbench().getSharedImages();
-        if (element instanceof TestCase) {
-            TestCase testCase = (TestCase) element;
-            if (testCase.getProblem().getType() == ProblemType.Pass) {
-                return passIcon;
-            } else if (testCase.getProblem().getType() == ProblemType.Failure) {
-                return failureIcon;
-            } else if (testCase.getProblem().getType() == ProblemType.Error) {
-                return errorIcon;
-            }
-        } else if (element instanceof TestResult) {
-            if (((TestResult) element).hasErrorChild()) {
-                return errorIcon;
-            } else {
-                return passIcon;
-            }
+        if (!(element instanceof TestResult)) {
+            return super.getImage(element);
         }
-        return super.getImage(element);
+
+        TestResult result = (TestResult) element;
+        Image icon = null;
+        if (result.hasFailure()) {
+            icon = failureIcon;
+        } else if (result.hasError()) {
+            icon = errorIcon;
+        } else {
+            icon = passIcon;
+        }
+        return icon;
     }
 }
