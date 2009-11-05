@@ -463,6 +463,12 @@ public class TestResultConverterTest {
         TestSuite rootSuite = testResults.get(0);
         assertFalse(rootSuite.hasError());
         assertFalse(rootSuite.hasFailure());
+
+        assertEquals(3, rootSuite.getTestResults().size());
+        for (TestResult result: rootSuite.getTestResults()) {
+            assertFalse(result.hasError());
+            assertFalse(result.hasFailure());
+        }
     }
 
     @Test
