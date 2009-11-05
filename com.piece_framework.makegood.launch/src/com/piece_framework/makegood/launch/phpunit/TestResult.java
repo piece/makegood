@@ -32,19 +32,6 @@ public abstract class TestResult {
         return null;
     }
 
-    public boolean hasErrorChild() {
-        if (results == null) {
-            return false;
-        }
-
-        for (TestResult result: results) {
-            if (result.hasErrorChild()) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public boolean hasError() {
         if (results == null) {
             return false;
