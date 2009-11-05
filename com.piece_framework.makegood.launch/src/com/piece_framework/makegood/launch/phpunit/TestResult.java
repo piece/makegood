@@ -45,6 +45,19 @@ public abstract class TestResult {
         return false;
     }
 
+    public boolean hasError() {
+        if (results == null) {
+            return false;
+        }
+
+        for (TestResult result: results) {
+            if (result.hasError()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     void addTestResult(TestResult result) {
         if (result == null) {
             return;
