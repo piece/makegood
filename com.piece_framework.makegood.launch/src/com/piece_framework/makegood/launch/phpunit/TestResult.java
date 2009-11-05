@@ -58,6 +58,19 @@ public abstract class TestResult {
         return false;
     }
 
+    public boolean hasFailure() {
+        if (results == null) {
+            return false;
+        }
+
+        for (TestResult result: results) {
+            if (result.hasFailure()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     void addTestResult(TestResult result) {
         if (result == null) {
             return;
