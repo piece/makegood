@@ -472,7 +472,7 @@ public class TestResultConverterTest {
     }
 
     @Test
-    public void setParentThatHasErrorOrFailureChild() throws FileNotFoundException {
+    public void setParentThatHasFailureChild() throws FileNotFoundException {
         List<TestSuite> testResults = TestResultConverter.convert(new File(System.getProperty("user.dir") +
                                                                            String.valueOf(File.separatorChar) +
                                                                            "phpunit-results/failure.log"
