@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="Stagehand_TestRunner_PHPUnitImcompleteTest" file="/home/matsu/GITWORK/stagehand-testrunner-for-test/tests/Stagehand/TestRunner/PHPUnitIncompleteTest.php" fullPackage="Stagehand_TestRunner" package="Stagehand_TestRunner" tests="1" assertions="0" failures="0" errors="1" time="0.005091">
+    <testcase name="testTestShouldBeImcomplete" class="Stagehand_TestRunner_PHPUnitImcompleteTest" file="/home/matsu/GITWORK/stagehand-testrunner-for-test/tests/Stagehand/TestRunner/PHPUnitIncompleteTest.php" line="80" assertions="0" time="0.005091">
+      <error type="PHPUnit_Framework_IncompleteTestError">Incomplete Test
+/home/matsu/GITWORK/stagehand-testrunner-for-test/tests/Stagehand/TestRunner/PHPUnitIncompleteTest.php:82
+/home/matsu/GITWORK/stagehand-testrunner-for-test/src/Stagehand/TestRunner/Runner/PHPUnitRunner.php:120
+/home/matsu/GITWORK/stagehand-testrunner-for-test/src/Stagehand/TestRunner.php:377
+/home/matsu/GITWORK/stagehand-testrunner-for-test/src/Stagehand/TestRunner.php:182
+/usr/share/php/src/Stagehand/CLIController.php:101
+/tmp/com.piece_framework.makegood.launch/phpunitrunner:50
+</error>
+    </testcase>
+  </testsuite>
+</testsuites>
