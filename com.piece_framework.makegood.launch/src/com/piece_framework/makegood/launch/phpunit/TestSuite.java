@@ -71,4 +71,13 @@ public class TestSuite extends TestResult {
     public double getTime() {
         return time;
     }
+
+    @Override
+    public boolean hasError() {
+        boolean result = super.hasError();
+        if (!result) {
+            result = errorCount > 0;
+        }
+        return result;
+    }
 }
