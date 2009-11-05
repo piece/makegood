@@ -154,14 +154,14 @@ public class TestResultView extends ViewPart {
                                 failures.setCount(suite.getFailureCount());
                                 errors.setCount(suite.getErrorCount());
 
-                                if (!suite.hasErrorChild()) {
+                                if (!suite.hasError() && !suite.hasFailure()) {
                                     progressBar.setBackground(new Color(progressBar.getDisplay(), GREEN));
                                 } else {
                                     progressBar.setBackground(new Color(progressBar.getDisplay(), RED));
                                 }
 
                                 resultTreeViewer.setInput(suites);
-                                if (suite.hasErrorChild()) {
+                                if (suite.hasError() || suite.hasFailure()) {
                                     resultTreeViewer.expandToLevel(2);
                                 }
                             } catch (CoreException e) {
