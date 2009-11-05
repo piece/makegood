@@ -60,6 +60,11 @@ public class TestCase extends TestResult {
     }
 
     @Override
+    public boolean hasError() {
+        return problem.getType() == ProblemType.Error;
+    }
+
+    @Override
     public boolean hasFailure() {
         return problem.getType() == ProblemType.Failure;
     }
