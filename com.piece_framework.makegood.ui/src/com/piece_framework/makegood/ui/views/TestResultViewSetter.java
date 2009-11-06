@@ -21,7 +21,21 @@ import com.piece_framework.makegood.launch.phpunit.TestResultConverter;
 public class TestResultViewSetter implements IMakeGoodEventListener {
     @Override
     public void create(ILaunch launch) {
-        System.out.println("create:" + launch);
+        Job job = new UIJob("MakeGood reset") {
+            @Override
+            public IStatus runInUIThread(IProgressMonitor monitor) {
+                IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+                IViewPart view = page.findView(MakeGoodViewRegistry.getViewId());
+                if (!(view instanceof TestResultView)) {
+                    return Status.OK_STATUS;
+                }
+
+                ((TestResultView) view).reset();
+
+                return Status.OK_STATUS;
+            }
+        };
+        job.schedule();
     }
 
     @Override
