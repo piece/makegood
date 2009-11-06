@@ -1,22 +1,9 @@
 package com.piece_framework.makegood.ui.views;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.debug.core.DebugEvent;
-import org.eclipse.debug.core.DebugPlugin;
-import org.eclipse.debug.core.IDebugEventSetListener;
-import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.php.internal.debug.core.model.IPHPDebugTarget;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.custom.SashForm;
@@ -31,11 +18,9 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.part.ViewPart;
-import org.eclipse.ui.progress.UIJob;
 
 import com.piece_framework.makegood.launch.phpunit.ProblemType;
 import com.piece_framework.makegood.launch.phpunit.TestCase;
-import com.piece_framework.makegood.launch.phpunit.TestResultConverter;
 import com.piece_framework.makegood.launch.phpunit.TestSuite;
 import com.piece_framework.makegood.ui.Activator;
 
@@ -44,7 +29,6 @@ public class TestResultView extends ViewPart {
     private static final RGB RED = new RGB(159, 63, 63);
     private static final RGB NONE = new RGB(255, 255, 255);
 
-    private IDebugEventSetListener listener;
     private Label progressBar;
     private ResultLabel tests;
     private ResultLabel assertions;
@@ -121,45 +105,12 @@ public class TestResultView extends ViewPart {
 
         resultList = new List(form, SWT.BORDER + SWT.V_SCROLL + SWT.H_SCROLL);
         resultList.setLayoutData(createBothFillGridData());
+    }
 
-        listener = new IDebugEventSetListener() {
-            @Override
-            public void handleDebugEvents(DebugEvent[] events) {
-                for (DebugEvent event: events) {
-                    if (event.getKind() != DebugEvent.TERMINATE
-                        || !(event.getSource() instanceof IPHPDebugTarget)
-                        ) {
-                        continue;
-                    }
-
-                    final IPHPDebugTarget debugTarget = (IPHPDebugTarget) event.getSource();
-                    Job job = new UIJob("MakeGood result parse") {
-                        @Override
-                        public IStatus runInUIThread(IProgressMonitor monitor) {
-                            ILaunchConfiguration configuration = debugTarget.getLaunch().getLaunchConfiguration();
-                            try {
-                                String logFile = configuration.getAttribute("LOG_JUNIT", (String) null);
-                                if (logFile == null) {
-                                    // TODO
-                                    return null;
-                                }
-                                java.util.List<TestSuite> suites = TestResultConverter.convert(new File(logFile));
-                                showTestResult(suites);
-                            } catch (CoreException e) {
-                                // TODO Auto-generated catch block
-                                e.printStackTrace();
-                            } catch (FileNotFoundException e) {
-                                // TODO Auto-generated catch block
-                                e.printStackTrace();
-                            }
-                            return Status.OK_STATUS;
-                        }
-                    };
-                    job.schedule();
-                }
-            }
-        };
-        DebugPlugin.getDefault().addDebugEventListener(listener);
+    @Override
+    public void setFocus() {
+        // TODO Auto-generated method stub
+        
     }
 
     public void showTestResult(java.util.List<TestSuite> suites) {
@@ -183,18 +134,6 @@ public class TestResultView extends ViewPart {
         if (suite.hasError() || suite.hasFailure()) {
             resultTreeViewer.expandToLevel(2);
         }
-    }
-
-    @Override
-    public void setFocus() {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void dispose() {
-        super.dispose();
-        DebugPlugin.getDefault().removeDebugEventListener(listener);
     }
 
     private GridData createHorizontalFillGridData() {
