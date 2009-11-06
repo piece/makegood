@@ -162,7 +162,7 @@ public class TestResultView extends ViewPart {
         DebugPlugin.getDefault().addDebugEventListener(listener);
     }
 
-    private void showTestResult(java.util.List<TestSuite> suites) {
+    public void showTestResult(java.util.List<TestSuite> suites) {
         TestSuite suite = suites.get(0);
         tests.setCount(suite.getTestCount());
         assertions.setCount(suite.getAssertionCount());
