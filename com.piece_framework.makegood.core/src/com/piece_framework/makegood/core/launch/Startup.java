@@ -19,6 +19,13 @@ public class Startup implements IStartup {
 
     @Override
     public void earlyStartup() {
+        List<IMakeGoodEventListener> eventListeners = collectEventListeners();
+        DebugPlugin.getDefault().addDebugEventListener(
+                new MakeGoodDebugEventSetListener(eventListeners)
+                );
+    }
+
+    private List<IMakeGoodEventListener> collectEventListeners() {
         List<IMakeGoodEventListener> eventListeners = new ArrayList<IMakeGoodEventListener>();
 
         IExtensionRegistry registry = Platform.getExtensionRegistry();
@@ -42,9 +49,6 @@ public class Startup implements IStartup {
                 }
             }
         }
-
-        DebugPlugin.getDefault().addDebugEventListener(
-                new MakeGoodDebugEventSetListener(eventListeners)
-                );
+        return eventListeners;
     }
 }
