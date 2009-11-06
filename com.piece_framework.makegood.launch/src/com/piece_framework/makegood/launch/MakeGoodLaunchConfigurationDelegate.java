@@ -18,10 +18,6 @@ import org.eclipse.debug.core.ILaunchDelegate;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.Launch;
 import org.eclipse.debug.core.model.ILaunchConfigurationDelegate;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
 
 public class MakeGoodLaunchConfigurationDelegate implements ILaunchConfigurationDelegate {
     public void launch(ILaunchConfiguration configuration,
@@ -45,21 +41,6 @@ public class MakeGoodLaunchConfigurationDelegate implements ILaunchConfiguration
                                       stagehandTestRunnerLaunch,
                                       monitor
                                       );
-
-        if (MakeGoodViewRegistry.getViewId() == null) {
-            return;
-        }
-        Display.getDefault().syncExec(new Runnable() {
-            public void run() {
-                IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-                try {
-                    page.showView(MakeGoodViewRegistry.getViewId());
-                } catch (PartInitException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            }
-        });
     }
 
     private ILaunchConfiguration createStagehandTestRunnerLaunchConfiguration(ILaunch launch,
