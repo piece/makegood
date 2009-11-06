@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Core
-Bundle-SymbolicName: com.piece_framework.makegood.core
+Bundle-SymbolicName: com.piece_framework.makegood.core;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: com.piece_framework.makegood.core.Activator
 Bundle-Vendor: PIECE_FRAMEWORK
