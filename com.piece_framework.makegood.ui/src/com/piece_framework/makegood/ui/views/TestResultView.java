@@ -113,6 +113,19 @@ public class TestResultView extends ViewPart {
         
     }
 
+    public void reset() {
+        tests.reset();
+        assertions.reset();
+        passes.reset();
+        failures.reset();
+        errors.reset();
+
+        progressBar.setBackground(new Color(progressBar.getDisplay(), NONE));
+
+        resultTreeViewer.getTree().removeAll();
+        resultList.removeAll();
+    }
+
     public void showTestResult(java.util.List<TestSuite> suites) {
         TestSuite suite = suites.get(0);
         tests.setCount(suite.getTestCount());
@@ -169,6 +182,10 @@ public class TestResultView extends ViewPart {
 
         private void setCount(int count) {
             label.setText(text + " " + count);
+        }
+
+        private void reset() {
+            label.setText(text);
         }
     }
 }
