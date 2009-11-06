@@ -17,7 +17,6 @@ import org.eclipse.ui.progress.UIJob;
 import com.piece_framework.makegood.core.launch.IMakeGoodEventListener;
 import com.piece_framework.makegood.launch.MakeGoodViewRegistry;
 import com.piece_framework.makegood.launch.phpunit.TestResultConverter;
-import com.piece_framework.makegood.launch.phpunit.TestSuite;
 
 public class TestResultViewSetter implements IMakeGoodEventListener {
     @Override
@@ -50,8 +49,7 @@ public class TestResultViewSetter implements IMakeGoodEventListener {
                 }
 
                 try {
-                    java.util.List<TestSuite> suites = TestResultConverter.convert(logFile);
-                    ((TestResultView) view).showTestResult(suites);
+                    ((TestResultView) view).showTestResult(TestResultConverter.convert(logFile));
                 } catch (FileNotFoundException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
