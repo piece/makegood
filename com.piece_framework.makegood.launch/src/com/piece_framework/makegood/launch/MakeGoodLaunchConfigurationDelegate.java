@@ -78,7 +78,7 @@ public class MakeGoodLaunchConfigurationDelegate implements ILaunchConfiguration
                                                ));
         }
 
-        String configurationName = Long.toString(System.currentTimeMillis());
+        String configurationName = "MakeGood" + Long.toString(System.currentTimeMillis());
         String log = MakeGoodLauncherRegistry.getRegistry().getAbsolutePath().toString() +
                      String.valueOf(File.separatorChar) +
                      configurationName +
