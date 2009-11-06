@@ -16,7 +16,6 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.progress.UIJob;
 
 import com.piece_framework.makegood.core.launch.IMakeGoodEventListener;
-import com.piece_framework.makegood.launch.MakeGoodViewRegistry;
 import com.piece_framework.makegood.launch.phpunit.TestResultConverter;
 
 public class TestResultViewSetter implements IMakeGoodEventListener {
@@ -81,7 +80,7 @@ public class TestResultViewSetter implements IMakeGoodEventListener {
         IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
         IViewPart view = null;
         try {
-            view = page.showView(MakeGoodViewRegistry.getViewId());
+            view = page.showView("com.piece_framework.makegood.ui.views.resultView");
         } catch (PartInitException e) {
         }
         if (view == null) {
