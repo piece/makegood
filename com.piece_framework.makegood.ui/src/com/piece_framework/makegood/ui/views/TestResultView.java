@@ -144,26 +144,7 @@ public class TestResultView extends ViewPart {
                                     return null;
                                 }
                                 java.util.List<TestSuite> suites = TestResultConverter.convert(new File(logFile));
-                                TestSuite suite = suites.get(0);
-                                tests.setCount(suite.getTestCount());
-                                assertions.setCount(suite.getAssertionCount());
-                                passes.setCount(suite.getTestCount() -
-                                                suite.getFailureCount() -
-                                                suite.getErrorCount()
-                                                );
-                                failures.setCount(suite.getFailureCount());
-                                errors.setCount(suite.getErrorCount());
-
-                                if (!suite.hasError() && !suite.hasFailure()) {
-                                    progressBar.setBackground(new Color(progressBar.getDisplay(), GREEN));
-                                } else {
-                                    progressBar.setBackground(new Color(progressBar.getDisplay(), RED));
-                                }
-
-                                resultTreeViewer.setInput(suites);
-                                if (suite.hasError() || suite.hasFailure()) {
-                                    resultTreeViewer.expandToLevel(2);
-                                }
+                                showTestResult(suites);
                             } catch (CoreException e) {
                                 // TODO Auto-generated catch block
                                 e.printStackTrace();
@@ -179,6 +160,29 @@ public class TestResultView extends ViewPart {
             }
         };
         DebugPlugin.getDefault().addDebugEventListener(listener);
+    }
+
+    private void showTestResult(java.util.List<TestSuite> suites) {
+        TestSuite suite = suites.get(0);
+        tests.setCount(suite.getTestCount());
+        assertions.setCount(suite.getAssertionCount());
+        passes.setCount(suite.getTestCount()
+                        - suite.getFailureCount()
+                        - suite.getErrorCount()
+                        );
+        failures.setCount(suite.getFailureCount());
+        errors.setCount(suite.getErrorCount());
+
+        if (!suite.hasError() && !suite.hasFailure()) {
+            progressBar.setBackground(new Color(progressBar.getDisplay(), GREEN));
+        } else {
+            progressBar.setBackground(new Color(progressBar.getDisplay(), RED));
+        }
+
+        resultTreeViewer.setInput(suites);
+        if (suite.hasError() || suite.hasFailure()) {
+            resultTreeViewer.expandToLevel(2);
+        }
     }
 
     @Override
