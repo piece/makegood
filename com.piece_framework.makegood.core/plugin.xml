@@ -2,5 +2,11 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension-point id="com.piece_framework.makegood.core.eventListener" name="MakeGood execution event listener" schema="schema/com.piece_framework.makegood.core.eventListener.exsd"/>
+   <extension
+         point="org.eclipse.ui.startup">
+      <startup
+            class="com.piece_framework.makegood.core.launch.Startup">
+      </startup>
+   </extension>
 
 </plugin>
