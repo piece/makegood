@@ -11,6 +11,7 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.progress.UIJob;
 
@@ -24,13 +25,14 @@ public class TestResultViewSetter implements IMakeGoodEventListener {
         Job job = new UIJob("MakeGood reset") {
             @Override
             public IStatus runInUIThread(IProgressMonitor monitor) {
-                IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-                IViewPart view = page.findView(MakeGoodViewRegistry.getViewId());
-                if (!(view instanceof TestResultView)) {
-                    return Status.OK_STATUS;
+                TestResultView view = showTestResultView();
+                if (view == null) {
+                    // TODO
+                    return null;
                 }
+                view.setFocus();
 
-                ((TestResultView) view).reset();
+                view.reset();
 
                 return Status.OK_STATUS;
             }
@@ -56,14 +58,15 @@ public class TestResultViewSetter implements IMakeGoodEventListener {
         Job job = new UIJob("MakeGood result parse") {
             @Override
             public IStatus runInUIThread(IProgressMonitor monitor) {
-                IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-                IViewPart view = page.findView(MakeGoodViewRegistry.getViewId());
-                if (!(view instanceof TestResultView)) {
-                    return Status.OK_STATUS;
+                TestResultView view = showTestResultView();
+                if (view == null) {
+                    // TODO
+                    return null;
                 }
+                view.setFocus();
 
                 try {
-                    ((TestResultView) view).showTestResult(TestResultConverter.convert(logFile));
+                    view.showTestResult(TestResultConverter.convert(logFile));
                 } catch (FileNotFoundException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
@@ -72,5 +75,21 @@ public class TestResultViewSetter implements IMakeGoodEventListener {
             }
         };
         job.schedule();
+    }
+
+    private TestResultView showTestResultView() {
+        IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+        IViewPart view = null;
+        try {
+            view = page.showView(MakeGoodViewRegistry.getViewId());
+        } catch (PartInitException e) {
+        }
+        if (view == null) {
+            return null;
+        }
+        if (!(view instanceof TestResultView)) {
+            return null;
+        }
+        return (TestResultView) view;
     }
 }
