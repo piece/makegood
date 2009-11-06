@@ -200,5 +200,11 @@
          </enabledWhen>
       </page>
    </extension>
+   <extension
+         point="com.piece_framework.makegood.core.eventListener">
+      <eventListener
+            listener="com.piece_framework.makegood.ui.views.TestResultViewSetter">
+      </eventListener>
+   </extension>
 
 </plugin>
