@@ -9,6 +9,7 @@ import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.ui.IStartup;
 
 import com.piece_framework.makegood.core.Activator;
@@ -41,5 +42,9 @@ public class Startup implements IStartup {
                 }
             }
         }
+
+        DebugPlugin.getDefault().addDebugEventListener(
+                new MakeGoodDebugEventSetListener(eventListeners)
+                );
     }
 }
