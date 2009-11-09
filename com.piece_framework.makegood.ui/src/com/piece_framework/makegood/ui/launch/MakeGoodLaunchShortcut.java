@@ -141,6 +141,10 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
         } catch (ModelException e) {
         }
 
+        if (element == null) {
+            return source;
+        }
+
         IModelElement elementOnRunLevel = null;
         if (runLevelOnEditor == RUN_TEST_ON_CURSOR) {
             elementOnRunLevel = element;
