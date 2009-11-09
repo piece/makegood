@@ -77,6 +77,28 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
         if (PHPResource.includeTestClass(source)) {
             parameter.addTarget(getElementOnRunLevel(editor));
         } else {
+            IModelElement element = getElementOnRunLevel(editor);
+            IType type = null;
+            if (element instanceof ISourceModule) {
+                try {
+                    if (((ISourceModule) element).getAllTypes().length > 0) {
+                        type = ((ISourceModule) element).getAllTypes()[0];
+                    }
+                } catch (ModelException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            } else if (element instanceof IType) {
+                type = (IType) element;
+            } else if (element instanceof IMethod) {
+                type = (IType) ((IMethod) element).getParent();
+            }
+
+            if (type == null) {
+                return;
+            }
+
+            System.out.println(type);
             return;
         }
 
