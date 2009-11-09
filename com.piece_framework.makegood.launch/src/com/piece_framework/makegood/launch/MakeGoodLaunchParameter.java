@@ -46,7 +46,7 @@ public class MakeGoodLaunchParameter {
     public String getMainScript() {
         IFile file = null;
 
-        IResource resource = getTargetResource(target);
+        IResource resource = getTargetResource(targets.get(0));
         if (resource instanceof IFolder) {
             file = findDummyFile((IFolder) resource);
         } else if (resource instanceof IFile) {
@@ -80,20 +80,23 @@ public class MakeGoodLaunchParameter {
             buffer.append(" --log-junit=" + log);
         }
 
-        if (target instanceof IType) {
-            String targetValue = ((IType) target).getElementName();
-            buffer.append(" --classes=" + targetValue);
-        }
-        if (target instanceof IMethod) {
-            IMethod method = (IMethod) target;
-            String targetValue = method.getParent().getElementName() + "::" + method.getElementName();
-            buffer.append(" -m " + targetValue);
-        }
+        for (Object target: targets) {
+            if (target instanceof IType) {
+                String targetValue = ((IType) target).getElementName();
+                buffer.append(" --classes=" + targetValue);
+            }
+            if (target instanceof IMethod) {
+                IMethod method = (IMethod) target;
+                String targetValue = method.getParent().getElementName() + "::" +
+                                     method.getElementName();
+                buffer.append(" -m " + targetValue);
+            }
 
-        if (getTargetResource(target) instanceof IFolder) {
-            buffer.append(" -R");
+            if (getTargetResource(target) instanceof IFolder) {
+                buffer.append(" -R");
+            }
+            buffer.append(" " + getTargetResource(target).getLocation().toString());
         }
-        buffer.append(" " + getTargetResource(target).getLocation().toString());
 
         return buffer.toString();
     }
@@ -121,7 +124,7 @@ public class MakeGoodLaunchParameter {
     }
 
     private String getPreloadScript() {
-        MakeGoodProperty property = new MakeGoodProperty(getTargetResource(target));
+        MakeGoodProperty property = new MakeGoodProperty(getTargetResource(targets.get(0)));
         return property.getPreloadScript();
     }
 
