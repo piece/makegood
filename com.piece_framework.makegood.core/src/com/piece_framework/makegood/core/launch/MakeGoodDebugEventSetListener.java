@@ -2,6 +2,7 @@ package com.piece_framework.makegood.core.launch;
 
 import java.util.List;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.DebugEvent;
 import org.eclipse.debug.core.IDebugEventSetListener;
 import org.eclipse.debug.core.ILaunch;
@@ -24,6 +25,9 @@ public class MakeGoodDebugEventSetListener implements IDebugEventSetListener {
 
             ILaunch launch = ((IPHPDebugTarget) event.getSource()).getLaunch();
             ILaunchConfiguration configuration = launch.getLaunchConfiguration();
+            if (configuration == null) {
+                continue;
+            }
             if (!configuration.getName().startsWith("MakeGood")) {
                 continue;
             }
@@ -36,6 +40,10 @@ public class MakeGoodDebugEventSetListener implements IDebugEventSetListener {
             if (event.getKind() == DebugEvent.TERMINATE) {
                 for (IMakeGoodEventListener eventListener: eventListeners) {
                     eventListener.terminate(launch);
+                }
+                try {
+                    configuration.delete();
+                } catch (CoreException e) {
                 }
             }
         }
