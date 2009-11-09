@@ -56,21 +56,6 @@ public class MakeGoodLaunchParameter {
         return root.findMember(getScript());
     }
 
-    public String getPreloadScript() {
-        MakeGoodProperty property = new MakeGoodProperty(getTargetResource());
-        return property.getPreloadScript();
-    }
-
-    public IResource getTargetResource() {
-        IResource resource = null;
-        if (target instanceof IModelElement) {
-            resource = ((IModelElement) target).getResource();
-        } else if (target instanceof IResource) {
-            resource = (IResource) target;
-        }
-        return resource;
-    }
-
     public String generateParameter(String log) {
         StringBuilder buffer = new StringBuilder();
 
@@ -125,5 +110,20 @@ public class MakeGoodLaunchParameter {
             e.printStackTrace();
         }
         return null;
+    }
+
+    private String getPreloadScript() {
+        MakeGoodProperty property = new MakeGoodProperty(getTargetResource());
+        return property.getPreloadScript();
+    }
+
+    private IResource getTargetResource() {
+        IResource resource = null;
+        if (target instanceof IModelElement) {
+            resource = ((IModelElement) target).getResource();
+        } else if (target instanceof IResource) {
+            resource = (IResource) target;
+        }
+        return resource;
     }
 }
