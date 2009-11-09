@@ -46,7 +46,7 @@ public class MakeGoodLaunchParameter {
     public String getScript() {
         IFile file = null;
 
-        IResource resource = getTargetResource();
+        IResource resource = getTargetResource(target);
         if (resource instanceof IFolder) {
             file = findDummyFile((IFolder) resource);
         } else if (resource instanceof IFile) {
@@ -90,10 +90,10 @@ public class MakeGoodLaunchParameter {
             buffer.append(" -m " + targetValue);
         }
 
-        if (getTargetResource() instanceof IFolder) {
+        if (getTargetResource(target) instanceof IFolder) {
             buffer.append(" -R");
         }
-        buffer.append(" " + getTargetResource().getLocation().toString());
+        buffer.append(" " + getTargetResource(target).getLocation().toString());
 
         return buffer.toString();
     }
@@ -121,11 +121,11 @@ public class MakeGoodLaunchParameter {
     }
 
     private String getPreloadScript() {
-        MakeGoodProperty property = new MakeGoodProperty(getTargetResource());
+        MakeGoodProperty property = new MakeGoodProperty(getTargetResource(target));
         return property.getPreloadScript();
     }
 
-    private IResource getTargetResource() {
+    private IResource getTargetResource(Object target) {
         IResource resource = null;
         if (target instanceof IModelElement) {
             resource = ((IModelElement) target).getResource();
