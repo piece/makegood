@@ -71,6 +71,9 @@ public class MakeGoodLaunchConfigurationDelegate implements ILaunchConfiguration
         workingCopy.setAttribute("ATTR_FILE_FULL_PATH", launcher.getScript());
         workingCopy.setAttribute("LOG_JUNIT", log);
         workingCopy.setAttribute("exeDebugArguments", parameter.generateParameter(log));
+
+        configuration.delete();
+
         return workingCopy;
     }
 
