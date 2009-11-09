@@ -1,5 +1,8 @@
 package com.piece_framework.makegood.launch;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
@@ -16,6 +19,7 @@ import com.piece_framework.makegood.core.PHPResource;
 public class MakeGoodLaunchParameter {
     private static MakeGoodLaunchParameter parameter;
     private Object target;
+    private List<Object> targets;
 
     private MakeGoodLaunchParameter() {
     }
@@ -25,6 +29,14 @@ public class MakeGoodLaunchParameter {
             parameter = new MakeGoodLaunchParameter();
         }
         return parameter;
+    }
+
+    public void addTarget(Object object) {
+        targets.add(object);
+    }
+
+    public void clearTargets() {
+        targets = new ArrayList<Object>();
     }
 
     public void setTarget(Object target) {
