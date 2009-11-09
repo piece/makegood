@@ -31,10 +31,6 @@ public class MakeGoodLaunchParameter {
         this.target = target;
     }
 
-    public Object getTarget() {
-        return target;
-    }
-
     public String getScript() {
         IFile file = null;
 
