@@ -10,7 +10,6 @@ public class TestSuite extends TestResult {
     int assertionCount;
     int errorCount;
     int failureCount;
-    double time;
 
     TestSuite(Map<String, String> attributes) {
         this.name = attributes.get("name");

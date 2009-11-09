@@ -7,7 +7,6 @@ public class TestCase extends TestResult {
     String targetClass;
     int assertionCount;
     int line;
-    double time;
     Problem problem;
 
     TestCase(Map<String, String> attributes) {

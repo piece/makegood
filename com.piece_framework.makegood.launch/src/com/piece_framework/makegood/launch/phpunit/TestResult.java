@@ -6,6 +6,7 @@ import java.util.List;
 
 public abstract class TestResult {
     String name;
+    double time;
     List<TestResult> results;
 
     public String getName() {
