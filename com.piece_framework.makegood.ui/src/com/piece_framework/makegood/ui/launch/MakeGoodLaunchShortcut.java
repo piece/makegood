@@ -1,15 +1,25 @@
 package com.piece_framework.makegood.ui.launch;
 
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchManager;
+import org.eclipse.dltk.core.DLTKLanguageManager;
+import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.ScriptModelUtil;
+import org.eclipse.dltk.core.search.IDLTKSearchConstants;
+import org.eclipse.dltk.core.search.IDLTKSearchScope;
+import org.eclipse.dltk.core.search.SearchEngine;
+import org.eclipse.dltk.core.search.SearchMatch;
+import org.eclipse.dltk.core.search.SearchParticipant;
+import org.eclipse.dltk.core.search.SearchPattern;
+import org.eclipse.dltk.core.search.SearchRequestor;
 import org.eclipse.dltk.internal.ui.editor.EditorUtility;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.viewers.ISelection;
@@ -98,7 +108,37 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
                 return;
             }
 
-            System.out.println(type);
+            IDLTKLanguageToolkit toolkit = DLTKLanguageManager.getLanguageToolkit(element);
+            if (toolkit == null) {
+                return;
+            }
+
+            SearchRequestor requestor = new SearchRequestor() {
+                @Override
+                public void acceptSearchMatch(SearchMatch match) throws CoreException {
+                    System.out.println(match);
+                }
+            };
+            SearchPattern pattern = SearchPattern.createPattern(type.getElementName(),
+                                                                IDLTKSearchConstants.TYPE,
+                                                                IDLTKSearchConstants.REFERENCES,
+                                                                SearchPattern.R_FULL_MATCH,
+                                                                toolkit
+                                                                );
+            IDLTKSearchScope scope = SearchEngine.createSearchScope(element.getScriptProject());
+            SearchEngine engine = new SearchEngine();
+            try {
+                engine.search(pattern,
+                              new SearchParticipant[] {SearchEngine.getDefaultSearchParticipant()},
+                              scope,
+                              requestor,
+                              null
+                              );
+            } catch (CoreException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
             return;
         }
 
