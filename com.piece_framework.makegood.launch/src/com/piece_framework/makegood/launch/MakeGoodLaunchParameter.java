@@ -18,7 +18,6 @@ import com.piece_framework.makegood.core.PHPResource;
 
 public class MakeGoodLaunchParameter {
     private static MakeGoodLaunchParameter parameter;
-    private Object target;
     private List<Object> targets;
 
     private MakeGoodLaunchParameter() {
@@ -37,10 +36,6 @@ public class MakeGoodLaunchParameter {
 
     public void clearTargets() {
         targets = new ArrayList<Object>();
-    }
-
-    public void setTarget(Object target) {
-        this.target = target;
     }
 
     public String getMainScript() {
