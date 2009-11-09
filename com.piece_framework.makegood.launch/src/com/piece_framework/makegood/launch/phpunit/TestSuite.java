@@ -67,10 +67,6 @@ public class TestSuite extends TestResult {
         return failureCount;
     }
 
-    public double getTime() {
-        return time;
-    }
-
     @Override
     public boolean hasError() {
         boolean result = super.hasError();

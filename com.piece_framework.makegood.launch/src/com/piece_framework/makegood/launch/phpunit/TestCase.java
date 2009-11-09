@@ -45,10 +45,6 @@ public class TestCase extends TestResult {
         return line;
     }
 
-    public double getTime() {
-        return time;
-    }
-
     public Problem getProblem() {
         return problem;
     }

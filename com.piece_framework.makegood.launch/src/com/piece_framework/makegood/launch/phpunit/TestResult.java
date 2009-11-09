@@ -59,6 +59,10 @@ public abstract class TestResult {
         return false;
     }
 
+    public double getTime() {
+        return time;
+    }
+
     void addTestResult(TestResult result) {
         if (result == null) {
             return;
