@@ -43,7 +43,7 @@ public class MakeGoodLaunchParameter {
         this.target = target;
     }
 
-    public String getScript() {
+    public String getMainScript() {
         IFile file = null;
 
         IResource resource = getTargetResource(target);
@@ -61,7 +61,7 @@ public class MakeGoodLaunchParameter {
 
     public IResource getScriptResource() {
         IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-        return root.findMember(getScript());
+        return root.findMember(getMainScript());
     }
 
     public String generateParameter(String log) {
