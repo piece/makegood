@@ -92,9 +92,6 @@ public class MakeGoodLaunchParameter {
                 methods.append(targetValue);
             }
 
-            if (getTargetResource(target) instanceof IFolder) {
-                resources.append(" -R");
-            }
             resources.append(" " + getTargetResource(target).getLocation().toString());
         }
 
@@ -102,7 +99,7 @@ public class MakeGoodLaunchParameter {
                       " --classes " + classes.toString() : "");
         buffer.append(methods.length() > 0 ?
                       " -m " + methods.toString() : "");
-        buffer.append(resources.toString());
+        buffer.append(" -R " + resources.toString());
 
         return buffer.toString();
     }
