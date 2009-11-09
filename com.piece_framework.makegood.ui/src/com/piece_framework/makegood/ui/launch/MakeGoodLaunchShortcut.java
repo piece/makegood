@@ -159,4 +159,25 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
         }
         return elementOnRunLevel;
     }
+
+    private IModelElement getElement(IEditorPart editor) {
+        ISourceModule source = EditorUtility.getEditorInputModelElement(editor, false);
+        if (source == null) {
+            return null;
+        }
+
+        ITextEditor textEditor = (ITextEditor) editor;
+        ISelectionProvider provider = (ISelectionProvider) textEditor.getSelectionProvider();
+        ITextSelection selection = (ITextSelection) provider.getSelection();
+        int offset = selection.getOffset();
+
+        IModelElement element = null;
+        try {
+            ScriptModelUtil.reconcile(source);
+            element = source.getElementAt(offset);
+        } catch (ModelException e) {
+        }
+
+        return element != null ? element : source;
+    }
 }
