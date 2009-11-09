@@ -24,6 +24,7 @@ import org.eclipse.ui.internal.dialogs.PropertyDialog;
 import org.eclipse.ui.texteditor.ITextEditor;
 
 import com.piece_framework.makegood.core.MakeGoodProperty;
+import com.piece_framework.makegood.core.PHPResource;
 import com.piece_framework.makegood.launch.MakeGoodLaunchParameter;
 
 public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
@@ -73,24 +74,7 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
         MakeGoodLaunchParameter parameter = MakeGoodLaunchParameter.get();
         parameter.clearTargets();
         ISourceModule source = EditorUtility.getEditorInputModelElement(editor, false);
-        boolean isTest = false;
-        try {
-            for (IType type : source.getAllTypes()) {
-                for (String superClass : type.getSuperClasses()) {
-                    if (superClass.equals("PHPUnit_Framework_TestCase")) {
-                        isTest = true;
-                        break;
-                    }
-                }
-                if (isTest) {
-                    break;
-                }
-            }
-        } catch (ModelException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        if (isTest) {
+        if (PHPResource.includeTestClass(source)) {
             parameter.addTarget(getElementOnRunLevel(editor));
         } else {
             return;
