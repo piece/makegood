@@ -1,5 +1,7 @@
 package com.piece_framework.makegood.ui.views;
 
+import java.text.NumberFormat;
+
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 
@@ -23,7 +25,13 @@ public class TestResultLabelProvider extends LabelProvider {
     public String getText(Object element) {
         if (element instanceof TestResult) {
             TestResult testResult = (TestResult) element;
-            return testResult.getName();
+
+            NumberFormat timeFormat = NumberFormat.getNumberInstance();
+            timeFormat.setMaximumFractionDigits(3);
+            timeFormat.setMinimumFractionDigits(3);
+            String formattedTime = timeFormat.format(testResult.getTime());
+
+            return testResult.getName() + " (" + formattedTime + " s)";
         }
         return super.getText(element);
     }
