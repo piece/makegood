@@ -52,7 +52,7 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
         MakeGoodLaunchParameter parameter = MakeGoodLaunchParameter.get();
         parameter.setTarget(target);
 
-        ISelection element = new StructuredSelection(parameter.getScriptResource());
+        ISelection element = new StructuredSelection(parameter.getMainScriptResource());
         super.launch(element, mode);
     }
 

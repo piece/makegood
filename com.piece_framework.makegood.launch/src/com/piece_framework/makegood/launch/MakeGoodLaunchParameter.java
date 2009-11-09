@@ -59,7 +59,7 @@ public class MakeGoodLaunchParameter {
         return null;
     }
 
-    public IResource getScriptResource() {
+    public IResource getMainScriptResource() {
         IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
         return root.findMember(getMainScript());
     }
