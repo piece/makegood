@@ -2,13 +2,9 @@ package com.piece_framework.makegood.ui.views;
 
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.ui.ISharedImages;
-import org.eclipse.ui.PlatformUI;
 
-import com.piece_framework.makegood.ui.Activator;
-import com.piece_framework.makegood.launch.phpunit.ProblemType;
-import com.piece_framework.makegood.launch.phpunit.TestCase;
 import com.piece_framework.makegood.launch.phpunit.TestResult;
+import com.piece_framework.makegood.ui.Activator;
 
 public class TestResultLabelProvider extends LabelProvider {
     private Image passIcon;
