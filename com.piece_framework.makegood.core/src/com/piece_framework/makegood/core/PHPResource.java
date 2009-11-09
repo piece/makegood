@@ -21,6 +21,10 @@ public class PHPResource {
     }
 
     public static boolean includeTestClass(ISourceModule source) {
+        if (source == null) {
+            return false;
+        }
+
         boolean isTestClass = false;
         try {
             for (IType type : source.getAllTypes()) {
