@@ -75,23 +75,34 @@ public class MakeGoodLaunchParameter {
             buffer.append(" --log-junit=" + log);
         }
 
+        StringBuilder classes = new StringBuilder();
+        StringBuilder methods = new StringBuilder();
+        StringBuilder resources = new StringBuilder();
         for (Object target: targets) {
             if (target instanceof IType) {
                 String targetValue = ((IType) target).getElementName();
-                buffer.append(" --classes=" + targetValue);
+                classes.append(classes.length() > 0 ? "," : "");
+                classes.append(targetValue);
             }
             if (target instanceof IMethod) {
                 IMethod method = (IMethod) target;
                 String targetValue = method.getParent().getElementName() + "::" +
                                      method.getElementName();
-                buffer.append(" -m " + targetValue);
+                methods.append(methods.length() > 0 ? "," : "");
+                methods.append(targetValue);
             }
 
             if (getTargetResource(target) instanceof IFolder) {
-                buffer.append(" -R");
+                resources.append(" -R");
             }
-            buffer.append(" " + getTargetResource(target).getLocation().toString());
+            resources.append(" " + getTargetResource(target).getLocation().toString());
         }
+
+        buffer.append(classes.length() > 0 ?
+                      " --classes " + classes.toString() : "");
+        buffer.append(methods.length() > 0 ?
+                      " -m " + methods.toString() : "");
+        buffer.append(resources.toString());
 
         return buffer.toString();
     }
