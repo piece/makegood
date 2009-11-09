@@ -72,47 +72,23 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
 
         MakeGoodLaunchParameter parameter = MakeGoodLaunchParameter.get();
         parameter.clearTargets();
-        IModelElement element = getElement(editor);
+        ISourceModule source = EditorUtility.getEditorInputModelElement(editor, false);
         boolean isTest = false;
-        if (element instanceof ISourceModule) {
-            ISourceModule source = (ISourceModule) element;
-            try {
-                for (IType type: source.getAllTypes()) {
-                    for (String superClass: type.getSuperClasses()) {
-                        if (superClass.equals("PHPUnit_Framework_TestCase")) {
-                            isTest = true;
-                            break;
-                        }
-                    }
-                    if (isTest) {
+        try {
+            for (IType type : source.getAllTypes()) {
+                for (String superClass : type.getSuperClasses()) {
+                    if (superClass.equals("PHPUnit_Framework_TestCase")) {
+                        isTest = true;
                         break;
                     }
                 }
-            } catch (ModelException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        } else {
-            IType type = null;
-            if (element instanceof IType) {
-                type = (IType) element;
-            } else if (element instanceof IMethod) {
-                type = (IType) ((IMethod) element).getParent();
-            }
-
-            if (type != null) {
-                try {
-                    for (String superClass : type.getSuperClasses()) {
-                        if (superClass.equals("PHPUnit_Framework_TestCase")) {
-                            isTest = true;
-                            break;
-                        }
-                    }
-                } catch (ModelException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+                if (isTest) {
+                    break;
                 }
             }
+        } catch (ModelException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
         if (isTest) {
             parameter.addTarget(getElementOnRunLevel(editor));
