@@ -206,7 +206,7 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
             return;
         }
 
-        IDLTKLanguageToolkit toolkit = DLTKLanguageManager.getLanguageToolkit(element);
+        IDLTKLanguageToolkit toolkit = DLTKLanguageManager.getLanguageToolkit(type);
         if (toolkit == null) {
             return;
         }
@@ -244,7 +244,7 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
                                                             SearchPattern.R_FULL_MATCH,
                                                             toolkit
                                                             );
-        IDLTKSearchScope scope = SearchEngine.createSearchScope(element.getScriptProject());
+        IDLTKSearchScope scope = SearchEngine.createSearchScope(type.getScriptProject());
         SearchEngine engine = new SearchEngine();
         try {
             engine.search(pattern,
