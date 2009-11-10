@@ -2,10 +2,12 @@ package com.piece_framework.makegood.core;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.IType;
+import org.eclipse.dltk.core.ITypeHierarchy;
 import org.eclipse.dltk.core.ModelException;
 
 public class PHPResource {
@@ -25,21 +27,31 @@ public class PHPResource {
             return false;
         }
 
-        boolean isTestClass = false;
         try {
             for (IType type : source.getAllTypes()) {
-                for (String superClass : type.getSuperClasses()) {
-                    if (superClass.equals("PHPUnit_Framework_TestCase")) {
-                        isTestClass = true;
-                        break;
-                    }
-                }
-                if (isTestClass) {
-                    break;
+                if (isTestClass(type)) {
+                    return true;
                 }
             }
         } catch (ModelException e) {
         }
-        return isTestClass;
+        return false;
+    }
+
+    private static boolean isTestClass(IType type) throws ModelException {
+        for (String superClass: type.getSuperClasses()) {
+            if (superClass.equals("PHPUnit_Framework_TestCase")) {
+                return true;
+            }
+        }
+        ITypeHierarchy hierarchy = type.newTypeHierarchy(new NullProgressMonitor());
+        if (hierarchy != null) {
+            for (IType superClass : hierarchy.getAllSupertypes(type)) {
+                if (isTestClass(superClass)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }
