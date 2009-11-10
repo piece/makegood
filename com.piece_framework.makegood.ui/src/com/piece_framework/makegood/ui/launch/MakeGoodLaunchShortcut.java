@@ -91,7 +91,7 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
         if (PHPResource.includeTestClass(source)) {
             parameter.addTarget(getElementOnRunLevel(editor));
         } else {
-            launchTestsForProductCode(editor, mode, parameter);
+            launchTestsForProductCode(editor, mode);
             return;
         }
 
@@ -183,8 +183,7 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
     }
 
     private void launchTestsForProductCode(final IEditorPart editor,
-                                           final String mode,
-                                           final MakeGoodLaunchParameter parameter
+                                           final String mode
                                            ) {
         IModelElement element = getElementOnRunLevel(editor);
         IType type = null;
@@ -231,6 +230,8 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
 
             @Override
             public void endReporting() {
+                MakeGoodLaunchParameter parameter = MakeGoodLaunchParameter.get();
+                parameter.clearTargets();
                 for (IType test: tests) {
                     parameter.addTarget(test);
                 }
