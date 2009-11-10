@@ -13,10 +13,14 @@ import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.RowLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Tree;
+import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
 import com.piece_framework.makegood.launch.phpunit.ProblemType;
@@ -73,7 +77,21 @@ public class TestResultView extends ViewPart {
         form.setLayoutData(createBothFillGridData());
         form.setLayout(new GridLayout(2, false));
 
-        Tree resultTree = new Tree(form, SWT.BORDER);
+        Composite treeParent = new Composite(form, SWT.NULL);
+        treeParent.setLayoutData(createHorizontalFillGridData());
+        treeParent.setLayout(new GridLayout(1, false));
+
+        Composite operation = new Composite(treeParent, SWT.NULL);
+        operation.setLayoutData(createHorizontalFillGridData());
+        operation.setLayout(new RowLayout());
+
+        ISharedImages images = PlatformUI.getWorkbench().getSharedImages();
+        Button down = new Button(operation, SWT.BORDER);
+        down.setImage(images.getImage(ISharedImages.IMG_OBJS_DND_BOTTOM_SOURCE));
+        Button up = new Button(operation, SWT.BORDER);
+        up.setImage(images.getImage(ISharedImages.IMG_OBJS_DND_TOP_SOURCE));
+
+        Tree resultTree = new Tree(treeParent, SWT.BORDER);
         resultTree.setLayoutData(createBothFillGridData());
         resultTreeViewer = new TreeViewer(resultTree);
         resultTreeViewer.setContentProvider(new TestResultContentProvider());
