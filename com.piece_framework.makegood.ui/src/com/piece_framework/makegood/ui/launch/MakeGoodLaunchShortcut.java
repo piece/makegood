@@ -1,10 +1,14 @@
 package com.piece_framework.makegood.ui.launch;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchManager;
+import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IMethod;
@@ -70,7 +74,7 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
     }
 
     @Override
-    public void launch(IEditorPart editor, String mode) {
+    public void launch(final IEditorPart editor, final String mode) {
         final MakeGoodProperty property = new MakeGoodProperty(getResource(editor));
         if (!property.exists()) {
             showPropertyPage(property, editor, mode);
@@ -81,7 +85,7 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
             return;
         }
 
-        MakeGoodLaunchParameter parameter = MakeGoodLaunchParameter.get();
+        final MakeGoodLaunchParameter parameter = MakeGoodLaunchParameter.get();
         parameter.clearTargets();
         ISourceModule source = EditorUtility.getEditorInputModelElement(editor, false);
         if (PHPResource.includeTestClass(source)) {
@@ -114,9 +118,28 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
             }
 
             SearchRequestor requestor = new SearchRequestor() {
+                List<IType> tests = new ArrayList<IType>();
+
                 @Override
                 public void acceptSearchMatch(SearchMatch match) throws CoreException {
-                    System.out.println(match);
+                    IModelElement element = DLTKCore.create(match.getResource());
+                    if (!(element instanceof ISourceModule)) {
+                        return;
+                    }
+                    if (!PHPResource.includeTestClass((ISourceModule) element)) {
+                        return;
+                    }
+                    for (IType type: ((ISourceModule) element).getAllTypes()) {
+                        tests.add(type);
+                    }
+                }
+
+                @Override
+                public void endReporting() {
+                    for (IType test: tests) {
+                        parameter.addTarget(test);
+                    }
+                    MakeGoodLaunchShortcut.super.launch(editor, mode);
                 }
             };
             SearchPattern pattern = SearchPattern.createPattern(type.getElementName(),
