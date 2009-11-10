@@ -74,8 +74,8 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
     }
 
     @Override
-    public void launch(final IEditorPart editor, final String mode) {
-        final MakeGoodProperty property = new MakeGoodProperty(getResource(editor));
+    public void launch(IEditorPart editor, String mode) {
+        MakeGoodProperty property = new MakeGoodProperty(getResource(editor));
         if (!property.exists()) {
             showPropertyPage(property, editor, mode);
             return;
@@ -85,83 +85,13 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
             return;
         }
 
-        final MakeGoodLaunchParameter parameter = MakeGoodLaunchParameter.get();
+        MakeGoodLaunchParameter parameter = MakeGoodLaunchParameter.get();
         parameter.clearTargets();
         ISourceModule source = EditorUtility.getEditorInputModelElement(editor, false);
         if (PHPResource.includeTestClass(source)) {
             parameter.addTarget(getElementOnRunLevel(editor));
         } else {
-            IModelElement element = getElementOnRunLevel(editor);
-            IType type = null;
-            if (element instanceof ISourceModule) {
-                try {
-                    if (((ISourceModule) element).getAllTypes().length > 0) {
-                        type = ((ISourceModule) element).getAllTypes()[0];
-                    }
-                } catch (ModelException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            } else if (element instanceof IType) {
-                type = (IType) element;
-            } else if (element instanceof IMethod) {
-                type = (IType) ((IMethod) element).getParent();
-            }
-
-            if (type == null) {
-                return;
-            }
-
-            IDLTKLanguageToolkit toolkit = DLTKLanguageManager.getLanguageToolkit(element);
-            if (toolkit == null) {
-                return;
-            }
-
-            SearchRequestor requestor = new SearchRequestor() {
-                List<IType> tests = new ArrayList<IType>();
-
-                @Override
-                public void acceptSearchMatch(SearchMatch match) throws CoreException {
-                    IModelElement element = DLTKCore.create(match.getResource());
-                    if (!(element instanceof ISourceModule)) {
-                        return;
-                    }
-                    if (!PHPResource.includeTestClass((ISourceModule) element)) {
-                        return;
-                    }
-                    for (IType type: ((ISourceModule) element).getAllTypes()) {
-                        tests.add(type);
-                    }
-                }
-
-                @Override
-                public void endReporting() {
-                    for (IType test: tests) {
-                        parameter.addTarget(test);
-                    }
-                    MakeGoodLaunchShortcut.super.launch(editor, mode);
-                }
-            };
-            SearchPattern pattern = SearchPattern.createPattern(type.getElementName(),
-                                                                IDLTKSearchConstants.TYPE,
-                                                                IDLTKSearchConstants.REFERENCES,
-                                                                SearchPattern.R_FULL_MATCH,
-                                                                toolkit
-                                                                );
-            IDLTKSearchScope scope = SearchEngine.createSearchScope(element.getScriptProject());
-            SearchEngine engine = new SearchEngine();
-            try {
-                engine.search(pattern,
-                              new SearchParticipant[] {SearchEngine.getDefaultSearchParticipant()},
-                              scope,
-                              requestor,
-                              null
-                              );
-            } catch (CoreException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-
+            launchTestsForProductCode(editor, mode, parameter);
             return;
         }
 
@@ -250,5 +180,81 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
             }
         }
         return elementOnRunLevel;
+    }
+
+    private void launchTestsForProductCode(final IEditorPart editor,
+                                           final String mode,
+                                           final MakeGoodLaunchParameter parameter
+                                           ) {
+        IModelElement element = getElementOnRunLevel(editor);
+        IType type = null;
+        if (element instanceof ISourceModule) {
+            try {
+                if (((ISourceModule) element).getAllTypes().length > 0) {
+                    type = ((ISourceModule) element).getAllTypes()[0];
+                }
+            } catch (ModelException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        } else if (element instanceof IType) {
+            type = (IType) element;
+        } else if (element instanceof IMethod) {
+            type = (IType) ((IMethod) element).getParent();
+        }
+
+        if (type == null) {
+            return;
+        }
+
+        IDLTKLanguageToolkit toolkit = DLTKLanguageManager.getLanguageToolkit(element);
+        if (toolkit == null) {
+            return;
+        }
+
+        SearchRequestor requestor = new SearchRequestor() {
+            List<IType> tests = new ArrayList<IType>();
+
+            @Override
+            public void acceptSearchMatch(SearchMatch match) throws CoreException {
+                IModelElement element = DLTKCore.create(match.getResource());
+                if (!(element instanceof ISourceModule)) {
+                    return;
+                }
+                if (!PHPResource.includeTestClass((ISourceModule) element)) {
+                    return;
+                }
+                for (IType type: ((ISourceModule) element).getAllTypes()) {
+                    tests.add(type);
+                }
+            }
+
+            @Override
+            public void endReporting() {
+                for (IType test: tests) {
+                    parameter.addTarget(test);
+                }
+                MakeGoodLaunchShortcut.super.launch(editor, mode);
+            }
+        };
+        SearchPattern pattern = SearchPattern.createPattern(type.getElementName(),
+                                                            IDLTKSearchConstants.TYPE,
+                                                            IDLTKSearchConstants.REFERENCES,
+                                                            SearchPattern.R_FULL_MATCH,
+                                                            toolkit
+                                                            );
+        IDLTKSearchScope scope = SearchEngine.createSearchScope(element.getScriptProject());
+        SearchEngine engine = new SearchEngine();
+        try {
+            engine.search(pattern,
+                          new SearchParticipant[] {SearchEngine.getDefaultSearchParticipant()},
+                          scope,
+                          requestor,
+                          null
+                          );
+        } catch (CoreException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 }
