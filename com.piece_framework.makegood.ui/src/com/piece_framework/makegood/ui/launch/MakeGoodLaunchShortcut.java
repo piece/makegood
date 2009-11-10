@@ -92,7 +92,7 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
             parameter.addTarget(getElementOnRunLevel(editor));
         } else {
             launchTestsForProductCode(editor, mode);
-            return;
+            return;     // Run tests by launchTestsForProductCode().
         }
 
         super.launch(editor, mode);
