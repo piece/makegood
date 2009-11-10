@@ -185,23 +185,7 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
     private void launchTestsForProductCode(final IEditorPart editor,
                                            final String mode
                                            ) {
-        IModelElement element = getElementOnRunLevel(editor);
-        IType type = null;
-        if (element instanceof ISourceModule) {
-            try {
-                if (((ISourceModule) element).getAllTypes().length > 0) {
-                    type = ((ISourceModule) element).getAllTypes()[0];
-                }
-            } catch (ModelException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        } else if (element instanceof IType) {
-            type = (IType) element;
-        } else if (element instanceof IMethod) {
-            type = (IType) ((IMethod) element).getParent();
-        }
-
+        IType type = getType(editor);
         if (type == null) {
             return;
         }
@@ -257,5 +241,25 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+    }
+
+    private IType getType(IEditorPart editor) {
+        IModelElement element = getElementOnRunLevel(editor);
+        IType type = null;
+        if (element instanceof ISourceModule) {
+            try {
+                if (((ISourceModule) element).getAllTypes().length > 0) {
+                    type = ((ISourceModule) element).getAllTypes()[0];
+                }
+            } catch (ModelException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        } else if (element instanceof IType) {
+            type = (IType) element;
+        } else if (element instanceof IMethod) {
+            type = (IType) ((IMethod) element).getParent();
+        }
+        return type;
     }
 }
