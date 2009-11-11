@@ -48,7 +48,7 @@ public class RunTestFromExplorer extends AbstractHandler {
         return false;
     }
 
-    public ISelection getSelectionFromActivePage() {
+    private ISelection getSelectionFromActivePage() {
         IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
         return page.getSelection();
     }
