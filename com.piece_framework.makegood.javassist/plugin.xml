@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
-   <extension-point id="com.piece_framework.makegood.javassist.monitorTarge" name="MakeGood monitor target" schema="schema/com.piece_framework.makegood.javassist.monitorTarge.exsd"/>
+   <extension-point id="com.piece_framework.makegood.javassist.monitorTarget" name="MakeGood monitor target" schema="schema/com.piece_framework.makegood.javassist.monitorTarget.exsd"/>
 
 </plugin>

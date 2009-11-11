@@ -3,7 +3,7 @@
 <schema targetNamespace="com.piece_framework.makegood.javassist" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="com.piece_framework.makegood.javassist" id="com.piece_framework.makegood.javassist.monitorTarge" name="MakeGood monitor target"/>
+         <meta.schema plugin="com.piece_framework.makegood.javassist" id="com.piece_framework.makegood.javassist.monitorTarget" name="MakeGood monitor target"/>
       </appinfo>
       <documentation>
          [Enter description of this extension point.]
