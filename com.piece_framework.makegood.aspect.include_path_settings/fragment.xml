@@ -7,5 +7,11 @@
             class="com.piece_framework.makegood.aspect.include_path_settings.Startup">
       </startup>
    </extension>
+   <extension
+         point="com.piece_framework.makegood.javassist.monitorTarget">
+      <monitorTarget
+            target="com.piece_framework.makegood.aspect.include_path_settings.MonitorTarget">
+      </monitorTarget>
+   </extension>
 
 </fragment>
