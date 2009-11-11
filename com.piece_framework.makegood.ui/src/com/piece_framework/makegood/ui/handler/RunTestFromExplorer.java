@@ -19,8 +19,7 @@ public class RunTestFromExplorer extends AbstractHandler {
     public Object execute(ExecutionEvent event) throws ExecutionException {
         ISelection selection = HandlerUtil.getActiveMenuSelection(event);
         if (selection == null) {
-            IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-            selection = page.getSelection();
+            selection = getSelectionFromActivePage();
         }
         MakeGoodLaunchShortcut shortcut = new MakeGoodLaunchShortcut();
         shortcut.launch(selection, "run");
@@ -29,8 +28,7 @@ public class RunTestFromExplorer extends AbstractHandler {
 
     @Override
     public boolean isEnabled() {
-        IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-        ISelection selection = page.getSelection();
+        ISelection selection = getSelectionFromActivePage();
         if (!(selection instanceof IStructuredSelection)) {
             return super.isEnabled();
         }
@@ -48,5 +46,10 @@ public class RunTestFromExplorer extends AbstractHandler {
         } catch (CoreException e) {
         }
         return false;
+    }
+
+    public ISelection getSelectionFromActivePage() {
+        IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+        return page.getSelection();
     }
 }
