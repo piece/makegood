@@ -218,6 +218,19 @@ public class TestResultView extends ViewPart {
                                     TestResult selected,
                                     boolean findSelected
                                     ) {
+        boolean find = findSelected;
+        for (TestResult result: results) {
+            if (!find) {
+                if (result == selected) {
+                    System.out.println(result.getName());
+                    find = true;
+                }
+            }
+
+            if (result instanceof TestSuite) {
+                getNextFailure(result.getTestResults(), selected, find);
+            }
+        }
         return null;
     }
 
