@@ -7,6 +7,8 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.RGB;
@@ -90,6 +92,16 @@ public class TestResultView extends ViewPart {
         down.setImage(images.getImage(ISharedImages.IMG_OBJS_DND_BOTTOM_SOURCE));
         Button up = new Button(operation, SWT.BORDER);
         up.setImage(images.getImage(ISharedImages.IMG_OBJS_DND_TOP_SOURCE));
+
+        down.addSelectionListener(new SelectionListener() {
+            @Override
+            public void widgetDefaultSelected(SelectionEvent event) {
+            }
+
+            @Override
+            public void widgetSelected(SelectionEvent event) {
+            }
+        });
 
         Tree resultTree = new Tree(treeParent, SWT.BORDER);
         resultTree.setLayoutData(createBothFillGridData());
