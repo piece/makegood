@@ -154,31 +154,31 @@
          point="org.eclipse.ui.commands">
       <category
             id="com.piece_framework.makegood.ui.RunTestCategory"
-            name="RunTestCategory">
+            name="MakeGood">
       </category>
       <command
             categoryId="com.piece_framework.makegood.ui.RunTestCategory"
             defaultHandler="com.piece_framework.makegood.ui.handler.RunTestFromExplorer"
             id="com.piece_framework.makegood.ui.RunTestFromExplorer"
-            name="RunTestFromExplorer">
+            name="Run tests for">
       </command>
       <command
             categoryId="com.piece_framework.makegood.ui.RunTestCategory"
             defaultHandler="com.piece_framework.makegood.ui.handler.RunTestFromEditor"
             id="com.piece_framework.makegood.ui.RunTestFromEditor"
-            name="RunTestFromEditor">
+            name="Run tests for context">
       </command>
       <command
             categoryId="com.piece_framework.makegood.ui.RunTestCategory"
             defaultHandler="com.piece_framework.makegood.ui.handler.RunTestFromEditorInClass"
             id="com.piece_framework.makegood.ui.RunTestFromEditorInClass"
-            name="RunTestFromEditorInClass">
+            name="Run tests for class">
       </command>
       <command
             categoryId="com.piece_framework.makegood.ui.RunTestCategory"
             defaultHandler="com.piece_framework.makegood.ui.handler.RunTestFromEditorInFile"
             id="com.piece_framework.makegood.ui.RunTestFromEditorInFile"
-            name="RunTestFromEditorInFile">
+            name="Run tests for file">
       </command>
    </extension>
    <extension
