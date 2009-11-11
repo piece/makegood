@@ -23,6 +23,10 @@ public class TestResultSearch {
         return getNextFailure(results);
     }
 
+    public TestCase getPreviousFailure() {
+        return null;
+    }
+
     private TestCase getNextFailure(List<TestResult> targets) {
         for (TestResult result: targets) {
             if (findSelected == null) {
