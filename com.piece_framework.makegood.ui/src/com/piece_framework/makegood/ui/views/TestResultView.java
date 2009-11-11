@@ -95,6 +95,8 @@ public class TestResultView extends ViewPart {
         down.setImage(images.getImage(ISharedImages.IMG_OBJS_DND_BOTTOM_SOURCE));
         Button up = new Button(operation, SWT.BORDER);
         up.setImage(images.getImage(ISharedImages.IMG_OBJS_DND_TOP_SOURCE));
+        Button filter = new Button(operation, SWT.BORDER + SWT.TOGGLE);
+        filter.setImage(Activator.getImageDescriptor("icons/failure.gif").createImage());
 
         down.addSelectionListener(new SelectionListener() {
             @Override
