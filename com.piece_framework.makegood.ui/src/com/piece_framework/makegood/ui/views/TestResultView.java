@@ -3,6 +3,7 @@ package com.piece_framework.makegood.ui.views;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
@@ -27,6 +28,7 @@ import org.eclipse.ui.part.ViewPart;
 
 import com.piece_framework.makegood.launch.phpunit.ProblemType;
 import com.piece_framework.makegood.launch.phpunit.TestCase;
+import com.piece_framework.makegood.launch.phpunit.TestResult;
 import com.piece_framework.makegood.launch.phpunit.TestSuite;
 import com.piece_framework.makegood.ui.Activator;
 
@@ -100,6 +102,22 @@ public class TestResultView extends ViewPart {
 
             @Override
             public void widgetSelected(SelectionEvent event) {
+                IStructuredSelection selection = (IStructuredSelection) resultTreeViewer.getSelection();
+                TestResult selected = (TestResult) selection.getFirstElement();
+
+                java.util.List<TestResult> results = (java.util.List<TestResult>) resultTreeViewer.getInput();
+                if (results == null || results.size() == 0) {
+                    return;
+                }
+
+                if (selected == null) {
+                    selected = results.get(0);
+                }
+
+                TestResult next = getNextFailure(results, selected, false);
+                if (next != null) {
+                    resultTreeViewer.setSelection(new StructuredSelection(next), true);
+                }
             }
         });
 
@@ -194,6 +212,13 @@ public class TestResultView extends ViewPart {
         bothFillGrid.grabExcessVerticalSpace = true;
         return bothFillGrid;
         
+    }
+
+    private TestCase getNextFailure(java.util.List<TestResult> results,
+                                    TestResult selected,
+                                    boolean findSelected
+                                    ) {
+        return null;
     }
 
     private class ResultLabel {
