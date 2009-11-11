@@ -124,6 +124,16 @@ public class TestResultView extends ViewPart {
             }
         });
 
+        up.addSelectionListener(new SelectionListener() {
+            @Override
+            public void widgetDefaultSelected(SelectionEvent event) {
+            }
+
+            @Override
+            public void widgetSelected(SelectionEvent event) {
+            }
+        });
+
         Tree resultTree = new Tree(treeParent, SWT.BORDER);
         resultTree.setLayoutData(createBothFillGridData());
         resultTreeViewer = new TreeViewer(resultTree);
