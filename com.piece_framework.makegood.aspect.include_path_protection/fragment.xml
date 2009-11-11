@@ -8,7 +8,7 @@
       </startup>
    </extension>
    <extension
-         point="com.piece_framework.makegood.javassist.monitorTarge">
+         point="com.piece_framework.makegood.javassist.monitorTarget">
       <monitorTarget
             target="com.piece_framework.makegood.aspect.include_path_protection.MonitorTarget">
       </monitorTarget>
