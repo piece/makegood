@@ -115,7 +115,7 @@ public class TestResultView extends ViewPart {
                 }
 
                 TestResultSearch search = new TestResultSearch(results, selected);
-                TestResult next = search.getNextFailure(false);
+                TestResult next = search.getNextFailure();
                 if (next != null) {
                     resultTreeViewer.setSelection(new StructuredSelection(next), true);
                 }

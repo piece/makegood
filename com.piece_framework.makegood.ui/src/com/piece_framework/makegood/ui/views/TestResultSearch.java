@@ -18,8 +18,8 @@ public class TestResultSearch {
         this.selected = selected;
     }
 
-    public TestCase getNextFailure(boolean findSelected) {
-        this.findSelected = null;
+    public TestCase getNextFailure() {
+        findSelected = null;
         return getNextFailure(results);
     }
 
