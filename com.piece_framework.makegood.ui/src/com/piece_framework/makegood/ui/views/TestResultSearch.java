@@ -24,7 +24,8 @@ public class TestResultSearch {
     }
 
     public TestCase getPreviousFailure() {
-        return null;
+        findSelected = null;
+        return getPreviousFailure(results);
     }
 
     private TestCase getNextFailure(List<TestResult> targets) {
@@ -48,6 +49,10 @@ public class TestResultSearch {
                 }
             }
         }
+        return null;
+    }
+
+    private TestCase getPreviousFailure(List<TestResult> targets) {
         return null;
     }
 }
