@@ -8,6 +8,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ClassPath: lib/javassist-3.11.0/javassist.jar,
  .
 Export-Package: com.piece_framework.makegood.javassist,
+ com.piece_framework.makegood.javassist.monitor,
  javassist,
  javassist.bytecode,
  javassist.bytecode.analysis,
