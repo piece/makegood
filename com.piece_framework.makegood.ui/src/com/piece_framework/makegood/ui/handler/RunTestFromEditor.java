@@ -6,6 +6,7 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.handlers.HandlerUtil;
 
+import com.piece_framework.makegood.javassist.monitor.WeavingMonitor;
 import com.piece_framework.makegood.ui.launch.MakeGoodLaunchShortcut;
 
 public class RunTestFromEditor extends AbstractHandler {
@@ -16,6 +17,14 @@ public class RunTestFromEditor extends AbstractHandler {
         shortcut.setRunLevelOnEditor(getRunLevel());
         shortcut.launch(editorPart, "run");
         return shortcut;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        if (!WeavingMonitor.endAll()) {
+            return false;
+        }
+        return super.isEnabled();
     }
 
     protected int getRunLevel() {
