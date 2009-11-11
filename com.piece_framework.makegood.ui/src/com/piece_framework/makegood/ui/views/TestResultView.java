@@ -1,5 +1,6 @@
 package com.piece_framework.makegood.ui.views;
 
+import org.eclipse.jface.viewers.AbstractTreeViewer;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
@@ -117,6 +118,7 @@ public class TestResultView extends ViewPart {
                 TestResultSearch search = new TestResultSearch(results, selected);
                 TestResult next = search.getNextFailure();
                 if (next != null) {
+                    resultTreeViewer.expandAll();
                     resultTreeViewer.setSelection(new StructuredSelection(next), true);
                 }
             }
