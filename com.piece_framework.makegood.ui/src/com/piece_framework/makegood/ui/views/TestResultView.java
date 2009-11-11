@@ -1,11 +1,12 @@
 package com.piece_framework.makegood.ui.views;
 
-import org.eclipse.jface.viewers.AbstractTreeViewer;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.custom.SashForm;
@@ -46,6 +47,16 @@ public class TestResultView extends ViewPart {
     private ResultLabel errors;
     private TreeViewer resultTreeViewer;
     private List resultList;
+
+    private ViewerFilter failureFilter = new ViewerFilter() {
+        @Override
+        public boolean select(Viewer viewer,
+                              Object parentElement,
+                              Object element
+                              ) {
+            return false;
+        }
+    };
 
     public TestResultView() {
         // TODO Auto-generated constructor stub
@@ -95,7 +106,7 @@ public class TestResultView extends ViewPart {
         down.setImage(images.getImage(ISharedImages.IMG_OBJS_DND_BOTTOM_SOURCE));
         Button up = new Button(operation, SWT.BORDER);
         up.setImage(images.getImage(ISharedImages.IMG_OBJS_DND_TOP_SOURCE));
-        Button filter = new Button(operation, SWT.BORDER + SWT.TOGGLE);
+        final Button filter = new Button(operation, SWT.BORDER + SWT.TOGGLE);
         filter.setImage(Activator.getImageDescriptor("icons/failure.gif").createImage());
 
         down.addSelectionListener(new SelectionListener() {
@@ -161,6 +172,11 @@ public class TestResultView extends ViewPart {
 
             @Override
             public void widgetSelected(SelectionEvent event) {
+                if (filter.getSelection()) {
+                    resultTreeViewer.addFilter(failureFilter);
+                } else {
+                    resultTreeViewer.removeFilter(failureFilter);
+                }
             }
         });
 
