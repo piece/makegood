@@ -39,21 +39,19 @@ public class RunTestFromExplorer extends AbstractHandler {
         }
 
         Object element = ((IStructuredSelection) selection).getFirstElement();
-        if (element instanceof IFolder
-            || element instanceof IScriptFolder
-            ) {
-            return true;
-        }
         IResource resource = null;
-        if (element instanceof IFile) {
-            resource = (IFile) element;
+        if (element instanceof IResource) {
+            resource = (IResource) element;
         } else if (element instanceof IModelElement) {
             resource = ((IModelElement) element).getResource();
         }
+
         if (resource == null) {
             return false;
         }
-
+        if (resource instanceof IFolder) {
+            return true;
+        }
         return PHPResource.isTrue(resource);
     }
 
