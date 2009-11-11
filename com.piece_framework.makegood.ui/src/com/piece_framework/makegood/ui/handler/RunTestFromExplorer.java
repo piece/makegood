@@ -5,8 +5,10 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IScriptFolder;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -14,6 +16,7 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 
+import com.piece_framework.makegood.core.PHPResource;
 import com.piece_framework.makegood.ui.launch.MakeGoodLaunchShortcut;
 
 public class RunTestFromExplorer extends AbstractHandler {
@@ -37,22 +40,21 @@ public class RunTestFromExplorer extends AbstractHandler {
 
         Object element = ((IStructuredSelection) selection).getFirstElement();
         if (element instanceof IFolder
-            && element instanceof IScriptFolder
+            || element instanceof IScriptFolder
             ) {
             return true;
         }
-        if (!(element instanceof IFile)) {
-            return super.isEnabled();
+        IResource resource = null;
+        if (element instanceof IFile) {
+            resource = (IFile) element;
+        } else if (element instanceof IModelElement) {
+            resource = ((IModelElement) element).getResource();
+        }
+        if (resource == null) {
+            return false;
         }
 
-        try {
-            IContentType contentType = ((IFile) element).getContentDescription().getContentType();
-            if (contentType.getId().equals("org.eclipse.php.core.phpsource")) {
-                return true;
-            }
-        } catch (CoreException e) {
-        }
-        return false;
+        return PHPResource.isTrue(resource);
     }
 
     private ISelection getSelectionFromActivePage() {
