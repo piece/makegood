@@ -16,32 +16,7 @@ public class WeavingMonitor {
 
     public static boolean endAll() {
         if (targets == null) {
-            targets = new ArrayList<IMonitorTarget>();
-
-            IExtensionRegistry registry = Platform.getExtensionRegistry();
-            IExtensionPoint point = registry
-                    .getExtensionPoint(EXTENSION_POINT_ID);
-            IExtension[] extensions = point.getExtensions();
-            for (IExtension extension : extensions) {
-                for (IConfigurationElement configuration : extension
-                        .getConfigurationElements()) {
-                    if (configuration.getName() == null) {
-                        continue;
-                    }
-                    if (configuration.getName().equals("monitorTarget")) {
-                        try {
-                            Object executable = configuration
-                                    .createExecutableExtension("target");
-                            if (executable instanceof IMonitorTarget) {
-                                targets.add((IMonitorTarget) executable);
-                            }
-                        } catch (CoreException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            }
+            targets = getMonitorTargets();
         }
 
         for (IMonitorTarget target: targets) {
@@ -50,5 +25,33 @@ public class WeavingMonitor {
             }
         }
         return true;
+    }
+
+    private static List<IMonitorTarget> getMonitorTargets() {
+        List<IMonitorTarget> targets = new ArrayList<IMonitorTarget>();
+
+        IExtensionRegistry registry = Platform.getExtensionRegistry();
+        IExtensionPoint point = registry
+                .getExtensionPoint(EXTENSION_POINT_ID);
+        IExtension[] extensions = point.getExtensions();
+        for (IExtension extension: extensions) {
+            for (IConfigurationElement configuration: extension.getConfigurationElements()) {
+                if (configuration.getName() == null) {
+                    continue;
+                }
+                if (configuration.getName().equals("monitorTarget")) {
+                    try {
+                        Object executable = configuration.createExecutableExtension("target");
+                        if (executable instanceof IMonitorTarget) {
+                            targets.add((IMonitorTarget) executable);
+                        }
+                    } catch (CoreException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+        return targets;
     }
 }
