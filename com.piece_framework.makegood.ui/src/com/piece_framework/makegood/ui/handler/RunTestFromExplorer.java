@@ -6,8 +6,6 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IScriptFolder;
 import org.eclipse.jface.viewers.ISelection;
@@ -17,6 +15,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import com.piece_framework.makegood.core.PHPResource;
+import com.piece_framework.makegood.javassist.monitor.WeavingMonitor;
 import com.piece_framework.makegood.ui.launch.MakeGoodLaunchShortcut;
 
 public class RunTestFromExplorer extends AbstractHandler {
@@ -33,6 +32,9 @@ public class RunTestFromExplorer extends AbstractHandler {
 
     @Override
     public boolean isEnabled() {
+        if (!WeavingMonitor.endAll()) {
+            return false;
+        }
         ISelection selection = getSelectionFromActivePage();
         if (!(selection instanceof IStructuredSelection)) {
             return super.isEnabled();
