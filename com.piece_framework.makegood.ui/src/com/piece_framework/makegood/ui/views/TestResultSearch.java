@@ -9,6 +9,7 @@ import com.piece_framework.makegood.launch.phpunit.TestSuite;
 public class TestResultSearch {
     private List<TestResult> results;
     private TestResult selected;
+    private TestResult findSelected;
 
     public TestResultSearch(List<TestResult> results,
                             TestResult selected
@@ -18,22 +19,29 @@ public class TestResultSearch {
     }
 
     public TestCase getNextFailure(boolean findSelected) {
-        return getNextFailure(results, null);
+        this.findSelected = null;
+        return getNextFailure(results);
     }
 
-    private TestCase getNextFailure(List<TestResult> targets,
-                                    TestResult findSelected
-                                    ) {
+    private TestCase getNextFailure(List<TestResult> targets) {
         for (TestResult result: targets) {
             if (findSelected == null) {
-                if (result == selected) {
+                if (result.getName().equals(selected.getName())) {
                     findSelected = result;
-                    System.out.println(result.getName());
+                }
+            } else {
+                if (result instanceof TestCase
+                    && (result.hasError() || result.hasFailure())
+                    ) {
+                    return (TestCase) result;
                 }
             }
 
             if (result instanceof TestSuite) {
-                getNextFailure(result.getTestResults(), findSelected);
+                TestCase testCase = getNextFailure(result.getTestResults());
+                if (testCase != null) {
+                    return testCase;
+                }
             }
         }
         return null;
