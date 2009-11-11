@@ -131,6 +131,24 @@ public class TestResultView extends ViewPart {
 
             @Override
             public void widgetSelected(SelectionEvent event) {
+                IStructuredSelection selection = (IStructuredSelection) resultTreeViewer.getSelection();
+                TestResult selected = (TestResult) selection.getFirstElement();
+
+                java.util.List<TestResult> results = (java.util.List<TestResult>) resultTreeViewer.getInput();
+                if (results == null || results.size() == 0) {
+                    return;
+                }
+
+                if (selected == null) {
+                    selected = results.get(0);
+                }
+
+                TestResultSearch search = new TestResultSearch(results, selected);
+                TestResult previous = search.getPreviousFailure();
+                if (previous != null) {
+                    resultTreeViewer.expandAll();
+                    resultTreeViewer.setSelection(new StructuredSelection(previous), true);
+                }
             }
         });
 
