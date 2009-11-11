@@ -114,7 +114,8 @@ public class TestResultView extends ViewPart {
                     selected = results.get(0);
                 }
 
-                TestResult next = getNextFailure(results, selected, false);
+                TestResultSearch search = new TestResultSearch();
+                TestResult next = search.getNextFailure(results, selected, false);
                 if (next != null) {
                     resultTreeViewer.setSelection(new StructuredSelection(next), true);
                 }
@@ -212,26 +213,6 @@ public class TestResultView extends ViewPart {
         bothFillGrid.grabExcessVerticalSpace = true;
         return bothFillGrid;
         
-    }
-
-    private TestCase getNextFailure(java.util.List<TestResult> results,
-                                    TestResult selected,
-                                    boolean findSelected
-                                    ) {
-        boolean find = findSelected;
-        for (TestResult result: results) {
-            if (!find) {
-                if (result == selected) {
-                    System.out.println(result.getName());
-                    find = true;
-                }
-            }
-
-            if (result instanceof TestSuite) {
-                getNextFailure(result.getTestResults(), selected, find);
-            }
-        }
-        return null;
     }
 
     private class ResultLabel {
