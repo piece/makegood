@@ -4,8 +4,10 @@ import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.dltk.core.IScriptFolder;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IWorkbenchPage;
@@ -34,6 +36,11 @@ public class RunTestFromExplorer extends AbstractHandler {
         }
 
         Object element = ((IStructuredSelection) selection).getFirstElement();
+        if (element instanceof IFolder
+            && element instanceof IScriptFolder
+            ) {
+            return true;
+        }
         if (!(element instanceof IFile)) {
             return super.isEnabled();
         }
