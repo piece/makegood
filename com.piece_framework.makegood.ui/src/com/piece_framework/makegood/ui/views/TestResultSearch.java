@@ -18,17 +18,22 @@ public class TestResultSearch {
     }
 
     public TestCase getNextFailure(boolean findSelected) {
-        boolean find = findSelected;
-        for (TestResult result: results) {
-            if (!find) {
+        return getNextFailure(results, null);
+    }
+
+    private TestCase getNextFailure(List<TestResult> targets,
+                                    TestResult findSelected
+                                    ) {
+        for (TestResult result: targets) {
+            if (findSelected == null) {
                 if (result == selected) {
+                    findSelected = result;
                     System.out.println(result.getName());
-                    find = true;
                 }
             }
 
             if (result instanceof TestSuite) {
-                getNextFailure(find);
+                getNextFailure(result.getTestResults(), findSelected);
             }
         }
         return null;
