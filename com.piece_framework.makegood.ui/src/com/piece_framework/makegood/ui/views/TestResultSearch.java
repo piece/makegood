@@ -10,6 +10,7 @@ public class TestResultSearch {
     private List<TestResult> results;
     private TestResult selected;
     private TestResult findSelected;
+    private TestCase lastFailure;
 
     public TestResultSearch(List<TestResult> results,
                             TestResult selected
@@ -25,6 +26,7 @@ public class TestResultSearch {
 
     public TestCase getPreviousFailure() {
         findSelected = null;
+        lastFailure = null;
         return getPreviousFailure(results);
     }
 
@@ -53,6 +55,26 @@ public class TestResultSearch {
     }
 
     private TestCase getPreviousFailure(List<TestResult> targets) {
+        for (TestResult result: targets) {
+            if (findSelected == null) {
+                if (result.getName().equals(selected.getName())) {
+                    return lastFailure;
+                } else {
+                    if (result instanceof TestCase
+                        && (result.hasError() || result.hasFailure())
+                        ) {
+                        lastFailure = (TestCase) result;
+                    }
+                }
+            }
+
+            if (result instanceof TestSuite) {
+                TestCase testCase = getPreviousFailure(result.getTestResults());
+                if (testCase != null) {
+                    return testCase;
+                }
+            }
+        }
         return null;
     }
 }
