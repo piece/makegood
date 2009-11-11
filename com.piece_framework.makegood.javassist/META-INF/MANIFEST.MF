@@ -1,13 +1,14 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Javassist
-Bundle-SymbolicName: com.piece_framework.makegood.javassist
+Bundle-SymbolicName: com.piece_framework.makegood.javassist;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: PIECE_FRAMEWORK
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ClassPath: lib/javassist-3.11.0/javassist.jar,
  .
 Export-Package: com.piece_framework.makegood.javassist,
+ com.piece_framework.makegood.javassist.monitor,
  javassist,
  javassist.bytecode,
  javassist.bytecode.analysis,

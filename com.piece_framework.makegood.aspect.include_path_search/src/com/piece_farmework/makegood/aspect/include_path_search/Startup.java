@@ -41,6 +41,8 @@ public class Startup implements IStartup {
         } catch (CannotCompileException e) {
             log(e);
         }
+
+        MonitorTarget.endWeaving = true;
     }
 
     private void modifyFind(CtClass targetClass) throws NotFoundException, CannotCompileException {
