@@ -18,6 +18,10 @@ public class RunTestFromExplorer extends AbstractHandler {
     @Override
     public Object execute(ExecutionEvent event) throws ExecutionException {
         ISelection selection = HandlerUtil.getActiveMenuSelection(event);
+        if (selection == null) {
+            IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+            selection = page.getSelection();
+        }
         MakeGoodLaunchShortcut shortcut = new MakeGoodLaunchShortcut();
         shortcut.launch(selection, "run");
         return shortcut;
