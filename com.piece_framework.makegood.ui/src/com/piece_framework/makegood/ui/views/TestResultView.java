@@ -54,7 +54,12 @@ public class TestResultView extends ViewPart {
                               Object parentElement,
                               Object element
                               ) {
-            return false;
+            if (!(element instanceof TestResult)) {
+                return false;
+            }
+
+            TestResult result = (TestResult) element;
+            return result.hasFailure() || result.hasError();
         }
     };
 
