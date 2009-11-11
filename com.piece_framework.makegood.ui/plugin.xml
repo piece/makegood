@@ -206,5 +206,14 @@
             listener="com.piece_framework.makegood.ui.views.TestResultViewSetter">
       </eventListener>
    </extension>
+   <extension
+         point="org.eclipse.ui.bindings">
+      <key
+            commandId="com.piece_framework.makegood.ui.RunTestFromEditor"
+            contextId="org.eclipse.php.core.phpsource"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M3+M">
+      </key>
+   </extension>
 
 </plugin>
