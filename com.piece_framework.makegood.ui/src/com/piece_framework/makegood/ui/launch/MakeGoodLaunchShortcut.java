@@ -174,7 +174,7 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
                                            final String mode
                                            ) {
         SearchRequestor requestor = new SearchRequestor() {
-            List<IType> tests = new ArrayList<IType>();
+            List<IResource> tests = new ArrayList<IResource>();
 
             @Override
             public void acceptSearchMatch(SearchMatch match) throws CoreException {
@@ -185,16 +185,14 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
                 if (!PHPResource.includeTestClass((ISourceModule) element)) {
                     return;
                 }
-                for (IType type: ((ISourceModule) element).getAllTypes()) {
-                    tests.add(type);
-                }
+                tests.add(match.getResource());
             }
 
             @Override
             public void endReporting() {
                 MakeGoodLaunchParameter parameter = MakeGoodLaunchParameter.get();
                 parameter.clearTargets();
-                for (IType test: tests) {
+                for (IResource test: tests) {
                     parameter.addTarget(test);
                 }
                 MakeGoodLaunchShortcut.super.launch(editor, mode);
