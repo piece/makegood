@@ -211,10 +211,15 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
             return;
         }
 
-        SearchPattern pattern = SearchPattern.createPattern(types.get(0).getElementName(),
+        StringBuilder patternString = new StringBuilder();
+        for (IType type: types) {
+            patternString.append(patternString.length() > 0 ? "|" : "");
+            patternString.append(type.getElementName());
+        }
+        SearchPattern pattern = SearchPattern.createPattern(patternString.toString(),
                                                             IDLTKSearchConstants.TYPE,
                                                             IDLTKSearchConstants.REFERENCES,
-                                                            SearchPattern.R_FULL_MATCH,
+                                                            SearchPattern.R_REGEXP_MATCH,
                                                             toolkit
                                                             );
         IDLTKSearchScope scope = SearchEngine.createSearchScope(types.get(0).getScriptProject());
