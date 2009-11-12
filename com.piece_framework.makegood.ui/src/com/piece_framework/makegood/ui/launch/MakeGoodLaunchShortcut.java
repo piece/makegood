@@ -40,11 +40,11 @@ import com.piece_framework.makegood.launch.MakeGoodLaunchParameter;
 import com.piece_framework.makegood.ui.parser.EditorParser;
 
 public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
-    public static int RUN_TEST_ON_CURSOR = 1;
+    public static int RUN_TEST_ON_CONTEXT = 1;
     public static int RUN_TESTS_ON_CLASS = 2;
     public static int RUN_TESTS_ON_FILE = 3;
 
-    private int runLevelOnEditor = RUN_TEST_ON_CURSOR;
+    private int runLevelOnEditor = RUN_TEST_ON_CONTEXT;
 
     public void setRunLevelOnEditor(int runLevel) {
         this.runLevelOnEditor = runLevel;
@@ -158,7 +158,7 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
         }
 
         IModelElement elementOnRunLevel = null;
-        if (runLevelOnEditor == RUN_TEST_ON_CURSOR) {
+        if (runLevelOnEditor == RUN_TEST_ON_CONTEXT) {
             elementOnRunLevel = element;
         } else if (runLevelOnEditor == RUN_TESTS_ON_CLASS) {
             if (element instanceof IMethod) {

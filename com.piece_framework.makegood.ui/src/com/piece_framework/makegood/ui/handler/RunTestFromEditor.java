@@ -28,6 +28,6 @@ public class RunTestFromEditor extends AbstractHandler {
     }
 
     protected int getRunLevel() {
-        return MakeGoodLaunchShortcut.RUN_TEST_ON_CURSOR;
+        return MakeGoodLaunchShortcut.RUN_TEST_ON_CONTEXT;
     }
 }
