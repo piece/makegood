@@ -40,6 +40,7 @@ import org.eclipse.ui.texteditor.ITextEditor;
 import com.piece_framework.makegood.core.MakeGoodProperty;
 import com.piece_framework.makegood.core.PHPResource;
 import com.piece_framework.makegood.launch.MakeGoodLaunchParameter;
+import com.piece_framework.makegood.ui.parser.EditorParser;
 
 public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
     public static int RUN_TEST_ON_CURSOR = 1;
@@ -145,7 +146,8 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
     }
 
     private IModelElement getElementOnRunLevel(IEditorPart editor) {
-        ISourceModule source = EditorUtility.getEditorInputModelElement(editor, false);
+        EditorParser parser = new EditorParser(editor);
+        ISourceModule source = parser.getSourceModule();
         if (source == null) {
             return null;
         }
