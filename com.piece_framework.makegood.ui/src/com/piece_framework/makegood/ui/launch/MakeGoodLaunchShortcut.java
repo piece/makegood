@@ -176,16 +176,6 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
     private void launchTestsForProductCode(final IEditorPart editor,
                                            final String mode
                                            ) {
-        IType type = getType(editor);
-        if (type == null) {
-            return;
-        }
-
-        IDLTKLanguageToolkit toolkit = DLTKLanguageManager.getLanguageToolkit(type);
-        if (toolkit == null) {
-            return;
-        }
-
         SearchRequestor requestor = new SearchRequestor() {
             List<IType> tests = new ArrayList<IType>();
 
@@ -213,6 +203,17 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
                 MakeGoodLaunchShortcut.super.launch(editor, mode);
             }
         };
+
+        IType type = getType(editor);
+        if (type == null) {
+            return;
+        }
+
+        IDLTKLanguageToolkit toolkit = DLTKLanguageManager.getLanguageToolkit(type);
+        if (toolkit == null) {
+            return;
+        }
+
         SearchPattern pattern = SearchPattern.createPattern(type.getElementName(),
                                                             IDLTKSearchConstants.TYPE,
                                                             IDLTKSearchConstants.REFERENCES,
