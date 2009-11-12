@@ -202,7 +202,7 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
         };
 
         List<IType> types = getTypes(editor);
-        if (types == null) {
+        if (types == null || types.size() == 0) {
             return;
         }
 
