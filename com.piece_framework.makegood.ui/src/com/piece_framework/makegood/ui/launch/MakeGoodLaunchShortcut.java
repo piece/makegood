@@ -16,7 +16,6 @@ import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
-import org.eclipse.dltk.core.ScriptModelUtil;
 import org.eclipse.dltk.core.search.IDLTKSearchConstants;
 import org.eclipse.dltk.core.search.IDLTKSearchScope;
 import org.eclipse.dltk.core.search.SearchEngine;
@@ -25,9 +24,7 @@ import org.eclipse.dltk.core.search.SearchParticipant;
 import org.eclipse.dltk.core.search.SearchPattern;
 import org.eclipse.dltk.core.search.SearchRequestor;
 import org.eclipse.dltk.internal.ui.editor.EditorUtility;
-import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.window.Window;
@@ -204,23 +201,23 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
             }
         };
 
-        IType type = getType(editor);
-        if (type == null) {
+        List<IType> types = getTypes(editor);
+        if (types == null) {
             return;
         }
 
-        IDLTKLanguageToolkit toolkit = DLTKLanguageManager.getLanguageToolkit(type);
+        IDLTKLanguageToolkit toolkit = DLTKLanguageManager.getLanguageToolkit(types.get(0));
         if (toolkit == null) {
             return;
         }
 
-        SearchPattern pattern = SearchPattern.createPattern(type.getElementName(),
+        SearchPattern pattern = SearchPattern.createPattern(types.get(0).getElementName(),
                                                             IDLTKSearchConstants.TYPE,
                                                             IDLTKSearchConstants.REFERENCES,
                                                             SearchPattern.R_FULL_MATCH,
                                                             toolkit
                                                             );
-        IDLTKSearchScope scope = SearchEngine.createSearchScope(type.getScriptProject());
+        IDLTKSearchScope scope = SearchEngine.createSearchScope(types.get(0).getScriptProject());
         SearchEngine engine = new SearchEngine();
         try {
             engine.search(pattern,
@@ -235,23 +232,22 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
         }
     }
 
-    private IType getType(IEditorPart editor) {
-        IModelElement element = getElementOnRunLevel(editor);
-        IType type = null;
-        if (element instanceof ISourceModule) {
-            try {
-                if (((ISourceModule) element).getAllTypes().length > 0) {
-                    type = ((ISourceModule) element).getAllTypes()[0];
-                }
-            } catch (ModelException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        } else if (element instanceof IType) {
-            type = (IType) element;
-        } else if (element instanceof IMethod) {
-            type = (IType) ((IMethod) element).getParent();
+    private List<IType> getTypes(IEditorPart editor) {
+        EditorParser parser = new EditorParser(editor);
+        ISourceModule source = parser.getSourceModule();
+        if (source == null) {
+            return null;
         }
-        return type;
+
+        List<IType> types = new ArrayList<IType>();
+        try {
+            for (IType type: source.getAllTypes()) {
+                types.add(type);
+            }
+        } catch (ModelException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return types;
     }
 }
