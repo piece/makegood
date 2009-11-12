@@ -15,30 +15,13 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.texteditor.ITextEditor;
 
 import com.piece_framework.makegood.ui.launch.MakeGoodLaunchShortcut;
+import com.piece_framework.makegood.ui.parser.EditorParser;
 
 public class RunTestFromEditorInClass extends RunTestFromEditor {
     @Override
     public boolean isEnabled() {
-        IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-        IEditorPart editor = page.getActiveEditor();
-
-        ISourceModule source = EditorUtility.getEditorInputModelElement(editor, false);
-        if (source == null) {
-            return false;
-        }
-
-        ITextEditor textEditor = (ITextEditor) editor;
-        ISelectionProvider provider = (ISelectionProvider) textEditor.getSelectionProvider();
-        ITextSelection selection = (ITextSelection) provider.getSelection();
-        int offset = selection.getOffset();
-
-        IModelElement element = null;
-        try {
-            ScriptModelUtil.reconcile(source);
-            element = source.getElementAt(offset);
-        } catch (ModelException e) {
-        }
-
+        EditorParser parser = new EditorParser();
+        IModelElement element = parser.getModelElementOnSelection();
         if (element instanceof IType
             || element instanceof IMethod
             ) {
