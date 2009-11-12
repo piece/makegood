@@ -155,18 +155,7 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
             return source;
         }
 
-        ITextEditor textEditor = (ITextEditor) editor;
-        ISelectionProvider provider = (ISelectionProvider) textEditor.getSelectionProvider();
-        ITextSelection selection = (ITextSelection) provider.getSelection();
-        int offset = selection.getOffset();
-
-        IModelElement element = null;
-        try {
-            ScriptModelUtil.reconcile(source);
-            element = source.getElementAt(offset);
-        } catch (ModelException e) {
-        }
-
+        IModelElement element = parser.getModelElementOnSelection();
         if (element == null) {
             return source;
         }
