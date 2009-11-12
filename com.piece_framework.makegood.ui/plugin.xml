@@ -180,6 +180,11 @@
             id="com.piece_framework.makegood.ui.RunTestFromEditorInFile"
             name="Run tests for file">
       </command>
+      <command
+            categoryId="com.piece_framework.makegood.ui.RunTestCategory"
+            id="com.piece_framework.makegood.ui.RunRelatedTestFromEditor"
+            name="Run tests that depend on this file">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.propertyPages">
