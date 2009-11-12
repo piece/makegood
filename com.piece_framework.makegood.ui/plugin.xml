@@ -148,6 +148,18 @@
                   style="push">
             </command>
          </menu>
+         <command
+               commandId="com.piece_framework.makegood.ui.RunRelatedTestFromEditor"
+               icon="icons/MakeGood.gif"
+               label="Run tests that depend on this file"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <reference
+                     definitionId="com.piece_framework.makegood.ui.definitions.phpContentType">
+               </reference>
+            </visibleWhen>
+         </command>
       </menuContribution>
    </extension>
    <extension
