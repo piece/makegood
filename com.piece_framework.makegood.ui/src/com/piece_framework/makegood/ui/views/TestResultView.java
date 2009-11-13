@@ -110,47 +110,6 @@ public class TestResultView extends ViewPart {
         operation.setLayoutData(createHorizontalFillGridData());
         operation.setLayout(new RowLayout());
 
-        ISharedImages images = PlatformUI.getWorkbench().getSharedImages();
-        Button down = new Button(operation, SWT.BORDER);
-        down.setImage(images.getImage(ISharedImages.IMG_OBJS_DND_BOTTOM_SOURCE));
-        Button up = new Button(operation, SWT.BORDER);
-        up.setImage(images.getImage(ISharedImages.IMG_OBJS_DND_TOP_SOURCE));
-        final Button filter = new Button(operation, SWT.BORDER + SWT.TOGGLE);
-        filter.setImage(Activator.getImageDescriptor("icons/failure.gif").createImage());
-
-        down.addSelectionListener(new SelectionListener() {
-            @Override
-            public void widgetDefaultSelected(SelectionEvent event) {
-            }
-
-            @Override
-            public void widgetSelected(SelectionEvent event) {
-                nextResult();
-            }
-        });
-
-        up.addSelectionListener(new SelectionListener() {
-            @Override
-            public void widgetDefaultSelected(SelectionEvent event) {
-            }
-
-            @Override
-            public void widgetSelected(SelectionEvent event) {
-                previousResult();
-            }
-        });
-
-        filter.addSelectionListener(new SelectionListener() {
-            @Override
-            public void widgetDefaultSelected(SelectionEvent event) {
-            }
-
-            @Override
-            public void widgetSelected(SelectionEvent event) {
-                filterResult(filter.getSelection());
-            }
-        });
-
         Tree resultTree = new Tree(treeParent, SWT.BORDER);
         resultTree.setLayoutData(createBothFillGridData());
         resultTreeViewer = new TreeViewer(resultTree);
