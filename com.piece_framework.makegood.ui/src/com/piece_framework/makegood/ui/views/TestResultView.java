@@ -125,24 +125,7 @@ public class TestResultView extends ViewPart {
 
             @Override
             public void widgetSelected(SelectionEvent event) {
-                IStructuredSelection selection = (IStructuredSelection) resultTreeViewer.getSelection();
-                TestResult selected = (TestResult) selection.getFirstElement();
-
-                java.util.List<TestResult> results = (java.util.List<TestResult>) resultTreeViewer.getInput();
-                if (results == null || results.size() == 0) {
-                    return;
-                }
-
-                if (selected == null) {
-                    selected = results.get(0);
-                }
-
-                TestResultSearch search = new TestResultSearch(results, selected);
-                TestResult next = search.getNextFailure();
-                if (next != null) {
-                    resultTreeViewer.expandAll();
-                    resultTreeViewer.setSelection(new StructuredSelection(next), true);
-                }
+                nextResult();
             }
         });
 
@@ -302,6 +285,27 @@ public class TestResultView extends ViewPart {
         bothFillGrid.grabExcessVerticalSpace = true;
         return bothFillGrid;
         
+    }
+
+    public void nextResult() {
+        IStructuredSelection selection = (IStructuredSelection) resultTreeViewer.getSelection();
+        TestResult selected = (TestResult) selection.getFirstElement();
+
+        java.util.List<TestResult> results = (java.util.List<TestResult>) resultTreeViewer.getInput();
+        if (results == null || results.size() == 0) {
+            return;
+        }
+
+        if (selected == null) {
+            selected = results.get(0);
+        }
+
+        TestResultSearch search = new TestResultSearch(results, selected);
+        TestResult next = search.getNextFailure();
+        if (next != null) {
+            resultTreeViewer.expandAll();
+            resultTreeViewer.setSelection(new StructuredSelection(next), true);
+        }
     }
 
     private class ResultLabel {
