@@ -164,7 +164,7 @@
       <menuContribution
             locationURI="toolbar:com.piece_framework.makegood.ui.views.resultView?after=additions">
          <command
-               commandId="com.piece_framework.makegood.ui.RunRelatedTestFromEditor"
+               commandId="com.piece_framework.makegood.ui.nextFailedTest"
                icon="icons/next.gif"
                label="Next"
                style="push"
@@ -221,6 +221,12 @@
             defaultHandler="com.piece_framework.makegood.ui.handler.RunRelatedTestFromEditor"
             id="com.piece_framework.makegood.ui.RunRelatedTestFromEditor"
             name="Run tests that depend on this file">
+      </command>
+      <command
+            categoryId="com.piece_framework.makegood.ui.RunTestCategory"
+            defaultHandler="com.piece_framework.makegood.ui.handler.NextFailedTestHandler"
+            id="com.piece_framework.makegood.ui.nextFailedTest"
+            name="Next Failed Test">
       </command>
    </extension>
    <extension
