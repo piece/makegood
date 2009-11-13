@@ -171,7 +171,7 @@
                tooltip="Next Failed Test">
          </command>
          <command
-               commandId="com.piece_framework.makegood.ui.RunRelatedTestFromEditor"
+               commandId="com.piece_framework.makegood.ui.previousFailedTest"
                icon="icons/previous.gif"
                label="Previous"
                style="push"
@@ -227,6 +227,12 @@
             defaultHandler="com.piece_framework.makegood.ui.handler.NextFailedTestHandler"
             id="com.piece_framework.makegood.ui.nextFailedTest"
             name="Next Failed Test">
+      </command>
+      <command
+            categoryId="com.piece_framework.makegood.ui.RunTestCategory"
+            defaultHandler="com.piece_framework.makegood.ui.handler.PreviousFailedTestHandler"
+            id="com.piece_framework.makegood.ui.previousFailedTest"
+            name="Previous Failed Test">
       </command>
    </extension>
    <extension
