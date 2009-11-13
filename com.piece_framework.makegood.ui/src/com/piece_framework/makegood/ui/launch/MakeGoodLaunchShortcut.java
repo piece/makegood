@@ -24,6 +24,7 @@ import org.eclipse.dltk.core.search.SearchParticipant;
 import org.eclipse.dltk.core.search.SearchPattern;
 import org.eclipse.dltk.core.search.SearchRequestor;
 import org.eclipse.dltk.internal.ui.editor.EditorUtility;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -191,6 +192,14 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
 
             @Override
             public void endReporting() {
+                if (tests.size() == 0) {
+                    MessageDialog.openInformation(null,
+                                                  "MakeGood",
+                                                  "Not found tests that depend on this file."
+                                                  );
+                    return;
+                }
+
                 MakeGoodLaunchParameter parameter = MakeGoodLaunchParameter.get();
                 parameter.clearTargets();
                 for (IResource test: tests) {
