@@ -106,9 +106,12 @@ public class TestResultView extends ViewPart {
         treeParent.setLayoutData(createHorizontalFillGridData());
         treeParent.setLayout(new GridLayout(1, false));
 
-        Composite operation = new Composite(treeParent, SWT.NULL);
-        operation.setLayoutData(createHorizontalFillGridData());
-        operation.setLayout(new RowLayout());
+        Composite result = new Composite(treeParent, SWT.NULL);
+        result.setLayoutData(createHorizontalFillGridData());
+        result.setLayout(new RowLayout());
+
+        Label dummy = new Label(result, SWT.LEFT + SWT.BORDER);
+        dummy.setText("(dummy)");
 
         Tree resultTree = new Tree(treeParent, SWT.BORDER);
         resultTree.setLayoutData(createBothFillGridData());
