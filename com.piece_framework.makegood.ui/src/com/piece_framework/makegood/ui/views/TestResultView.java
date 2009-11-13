@@ -41,6 +41,7 @@ public class TestResultView extends ViewPart {
     private static final RGB GREEN = new RGB(95, 191, 95);
     private static final RGB RED = new RGB(159, 63, 63);
     private static final RGB NONE = new RGB(255, 255, 255);
+    private static final String VIEW_ID = "com.piece_framework.makegood.ui.views.resultView";
 
     private Label progressBar;
     private ResultLabel tests;
@@ -266,7 +267,7 @@ public class TestResultView extends ViewPart {
 
     public static TestResultView getView() {
         IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-        IViewPart view = page.findView("com.piece_framework.makegood.ui.views.resultView");
+        IViewPart view = page.findView(VIEW_ID);
         if (!(view instanceof TestResultView)) {
             return null;
         }
@@ -277,7 +278,7 @@ public class TestResultView extends ViewPart {
         IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
         IViewPart view = null;
         try {
-            view = page.showView("com.piece_framework.makegood.ui.views.resultView");
+            view = page.showView(VIEW_ID);
         } catch (PartInitException e) {
         }
         if (!(view instanceof TestResultView)) {
