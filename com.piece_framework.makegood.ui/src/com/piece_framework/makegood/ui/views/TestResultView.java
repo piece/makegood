@@ -143,7 +143,20 @@ public class TestResultView extends ViewPart {
             }
         });
 
-        resultList = new List(form, SWT.BORDER + SWT.V_SCROLL + SWT.H_SCROLL);
+        Composite traceParent = new Composite(form, SWT.NULL);
+        traceParent.setLayoutData(createHorizontalFillGridData());
+        traceParent.setLayout(new GridLayout(1, false));
+
+        Composite trace = new Composite(traceParent, SWT.NULL);
+        trace.setLayoutData(createHorizontalFillGridData());
+        trace.setLayout(new RowLayout());
+
+        new ResultLabel(trace,
+                        "Failure Trace",
+                        Activator.getImageDescriptor("icons/pass.gif").createImage()
+                        );
+
+        resultList = new List(traceParent, SWT.BORDER + SWT.V_SCROLL + SWT.H_SCROLL);
         resultList.setLayoutData(createBothFillGridData());
     }
 
