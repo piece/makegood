@@ -86,8 +86,8 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
 
         MakeGoodLaunchParameter parameter = MakeGoodLaunchParameter.get();
         parameter.clearTargets();
-        ISourceModule source = EditorUtility.getEditorInputModelElement(editor, false);
-        if (PHPResource.includeTestClass(source)) {
+
+        if (runLevelOnEditor != RUN_RELATED_TESTS) {
             parameter.addTarget(getElementOnRunLevel(editor));
         } else {
             launchTestsForProductCode(editor, mode);
