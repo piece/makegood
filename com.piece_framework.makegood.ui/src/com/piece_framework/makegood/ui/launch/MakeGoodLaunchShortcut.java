@@ -43,6 +43,7 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
     public static int RUN_TEST_ON_CONTEXT = 1;
     public static int RUN_TESTS_ON_CLASS = 2;
     public static int RUN_TESTS_ON_FILE = 3;
+    public static int RUN_RELATED_TESTS = 4;
 
     private int runLevelOnEditor = RUN_TEST_ON_CONTEXT;
 
