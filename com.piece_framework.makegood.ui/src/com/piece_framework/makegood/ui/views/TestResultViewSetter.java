@@ -77,18 +77,6 @@ public class TestResultViewSetter implements IMakeGoodEventListener {
     }
 
     private TestResultView showTestResultView() {
-        IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-        IViewPart view = null;
-        try {
-            view = page.showView("com.piece_framework.makegood.ui.views.resultView");
-        } catch (PartInitException e) {
-        }
-        if (view == null) {
-            return null;
-        }
-        if (!(view instanceof TestResultView)) {
-            return null;
-        }
-        return (TestResultView) view;
+        return TestResultView.showView();
     }
 }
