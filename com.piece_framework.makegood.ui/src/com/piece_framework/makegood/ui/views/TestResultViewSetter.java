@@ -24,7 +24,7 @@ public class TestResultViewSetter implements IMakeGoodEventListener {
         Job job = new UIJob("MakeGood reset") {
             @Override
             public IStatus runInUIThread(IProgressMonitor monitor) {
-                TestResultView view = showTestResultView();
+                TestResultView view = TestResultView.showView();
                 if (view == null) {
                     // TODO
                     return null;
@@ -57,7 +57,7 @@ public class TestResultViewSetter implements IMakeGoodEventListener {
         Job job = new UIJob("MakeGood result parse") {
             @Override
             public IStatus runInUIThread(IProgressMonitor monitor) {
-                TestResultView view = showTestResultView();
+                TestResultView view = TestResultView.showView();
                 if (view == null) {
                     // TODO
                     return null;
@@ -74,9 +74,5 @@ public class TestResultViewSetter implements IMakeGoodEventListener {
             }
         };
         job.schedule();
-    }
-
-    private TestResultView showTestResultView() {
-        return TestResultView.showView();
     }
 }
