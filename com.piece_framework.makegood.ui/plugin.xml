@@ -178,7 +178,7 @@
                tooltip="Previous Failed Test">
          </command>
          <command
-               commandId="com.piece_framework.makegood.ui.RunRelatedTestFromEditor"
+               commandId="com.piece_framework.makegood.ui.showFailuresOnly"
                icon="icons/filter.gif"
                label="Filter"
                style="toggle"
@@ -233,6 +233,12 @@
             defaultHandler="com.piece_framework.makegood.ui.handler.PreviousFailedTestHandler"
             id="com.piece_framework.makegood.ui.previousFailedTest"
             name="Previous Failed Test">
+      </command>
+      <command
+            categoryId="com.piece_framework.makegood.ui.RunTestCategory"
+            defaultHandler="com.piece_framework.makegood.ui.handler.ShowFailuredOnlyHandler"
+            id="com.piece_framework.makegood.ui.showFailuresOnly"
+            name="Show Failures Only">
       </command>
    </extension>
    <extension
