@@ -193,7 +193,7 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
             @Override
             public void endReporting() {
                 if (tests.size() == 0) {
-                    MessageDialog.openInformation(null,
+                    MessageDialog.openInformation(editor.getEditorSite().getShell(),
                                                   "MakeGood",
                                                   "Not found tests that depend on this file."
                                                   );
