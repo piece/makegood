@@ -236,7 +236,7 @@
       </command>
       <command
             categoryId="com.piece_framework.makegood.ui.RunTestCategory"
-            defaultHandler="com.piece_framework.makegood.ui.handler.ShowFailuredOnlyHandler"
+            defaultHandler="com.piece_framework.makegood.ui.handler.ShowFailuresOnlyHandler"
             id="com.piece_framework.makegood.ui.showFailuresOnly"
             name="Show Failures Only">
       </command>
