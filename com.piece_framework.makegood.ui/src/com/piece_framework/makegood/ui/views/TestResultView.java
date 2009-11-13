@@ -147,11 +147,7 @@ public class TestResultView extends ViewPart {
 
             @Override
             public void widgetSelected(SelectionEvent event) {
-                if (filter.getSelection()) {
-                    resultTreeViewer.addFilter(failureFilter);
-                } else {
-                    resultTreeViewer.removeFilter(failureFilter);
-                }
+                filterResult(filter.getSelection());
             }
         });
 
@@ -309,6 +305,14 @@ public class TestResultView extends ViewPart {
         if (previous != null) {
             resultTreeViewer.expandAll();
             resultTreeViewer.setSelection(new StructuredSelection(previous), true);
+        }
+    }
+
+    public void filterResult(boolean filterOn) {
+        if (filterOn) {
+            resultTreeViewer.addFilter(failureFilter);
+        } else {
+            resultTreeViewer.removeFilter(failureFilter);
         }
     }
 
