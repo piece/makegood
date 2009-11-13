@@ -25,6 +25,9 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.IViewPart;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
@@ -259,6 +262,15 @@ public class TestResultView extends ViewPart {
         if (suite.hasError() || suite.hasFailure()) {
             resultTreeViewer.expandToLevel(2);
         }
+    }
+
+    public static TestResultView getView() {
+        IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+        IViewPart view = page.findView("com.piece_framework.makegood.ui.views.resultView");
+        if (!(view instanceof TestResultView)) {
+            return null;
+        }
+        return (TestResultView) view;
     }
 
     private GridData createHorizontalFillGridData() {
