@@ -273,6 +273,19 @@ public class TestResultView extends ViewPart {
         return (TestResultView) view;
     }
 
+    public static TestResultView showView() {
+        IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+        IViewPart view = null;
+        try {
+            view = page.showView("com.piece_framework.makegood.ui.views.resultView");
+        } catch (PartInitException e) {
+        }
+        if (!(view instanceof TestResultView)) {
+            return null;
+        }
+        return (TestResultView) view;
+    }
+
     private GridData createHorizontalFillGridData() {
         GridData horizontalFillGrid = new GridData();
         horizontalFillGrid.horizontalAlignment = GridData.FILL;
