@@ -110,8 +110,7 @@ public class TestResultView extends ViewPart {
         result.setLayoutData(createHorizontalFillGridData());
         result.setLayout(new RowLayout());
 
-        CLabel dummy = new CLabel(result, SWT.LEFT);
-        dummy.setText("(dummy)");
+        new CLabel(result, SWT.LEFT);
 
         Tree resultTree = new Tree(treeParent, SWT.BORDER);
         resultTree.setLayoutData(createBothFillGridData());
