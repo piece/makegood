@@ -161,6 +161,30 @@
             </visibleWhen>
          </command>
       </menuContribution>
+      <menuContribution
+            locationURI="toolbar:com.piece_framework.makegood.ui.views.resultView?after=additions">
+         <command
+               commandId="com.piece_framework.makegood.ui.RunRelatedTestFromEditor"
+               icon="icons/next.gif"
+               label="Next"
+               style="push"
+               tooltip="Next Failed Test">
+         </command>
+         <command
+               commandId="com.piece_framework.makegood.ui.RunRelatedTestFromEditor"
+               icon="icons/previous.gif"
+               label="Previous"
+               style="push"
+               tooltip="Previous Failed Test">
+         </command>
+         <command
+               commandId="com.piece_framework.makegood.ui.RunRelatedTestFromEditor"
+               icon="icons/filter.gif"
+               label="Filter"
+               style="toggle"
+               tooltip="Show Failures Only">
+         </command>
+      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
