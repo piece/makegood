@@ -11,7 +11,7 @@ import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 
 public class WeavingMonitor {
-    private static final String EXTENSION_POINT_ID = "com.piece_framework.makegood.javassist.monitorTarget";
+    private static final String EXTENSION_POINT_ID = "com.piece_framework.makegood.javassist.monitorTargets";
     private static List<IMonitorTarget> targets;
 
     public static boolean endAll() {
