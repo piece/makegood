@@ -1,7 +1,9 @@
 package com.piece_framework.makegood.ui.launch;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
@@ -177,7 +179,7 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
                                            final String mode
                                            ) {
         SearchRequestor requestor = new SearchRequestor() {
-            List<IResource> tests = new ArrayList<IResource>();
+            Set<IResource> tests = new HashSet<IResource>();
 
             @Override
             public void acceptSearchMatch(SearchMatch match) throws CoreException {
