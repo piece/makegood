@@ -10,10 +10,6 @@
             modes="run,debug"
             name="MakeGood"
             public="false">
-         <fileExtension
-               default="true"
-               extension="php">
-         </fileExtension>
       </launchConfigurationType>
    </extension>
 
