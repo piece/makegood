@@ -4,8 +4,8 @@ import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IType;
 
+import com.piece_framework.makegood.ui.launch.EditorParser;
 import com.piece_framework.makegood.ui.launch.MakeGoodLaunchShortcut;
-import com.piece_framework.makegood.ui.parser.EditorParser;
 
 public class RunTestFromEditorInClass extends RunTestFromEditor {
     @Override

@@ -1,4 +1,4 @@
-package com.piece_framework.makegood.ui.parser;
+package com.piece_framework.makegood.ui.launch;
 
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ISourceModule;

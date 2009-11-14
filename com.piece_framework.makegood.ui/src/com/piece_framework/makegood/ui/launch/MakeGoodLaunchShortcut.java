@@ -38,7 +38,6 @@ import org.eclipse.ui.texteditor.ITextEditor;
 import com.piece_framework.makegood.core.MakeGoodProperty;
 import com.piece_framework.makegood.core.PHPResource;
 import com.piece_framework.makegood.launch.MakeGoodLaunchParameter;
-import com.piece_framework.makegood.ui.parser.EditorParser;
 
 public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
     public static int RUN_TEST_ON_CONTEXT = 1;

@@ -8,8 +8,8 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 import com.piece_framework.makegood.core.PHPResource;
 import com.piece_framework.makegood.javassist.monitor.WeavingMonitor;
+import com.piece_framework.makegood.ui.launch.EditorParser;
 import com.piece_framework.makegood.ui.launch.MakeGoodLaunchShortcut;
-import com.piece_framework.makegood.ui.parser.EditorParser;
 
 public class RunTestFromEditor extends AbstractHandler {
     @Override
