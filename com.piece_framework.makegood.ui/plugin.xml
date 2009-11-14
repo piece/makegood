@@ -204,19 +204,19 @@
       <command
             categoryId="com.piece_framework.makegood.ui.RunTestCategory"
             defaultHandler="com.piece_framework.makegood.ui.handler.NextFailedTestHandler"
-            id="com.piece_framework.makegood.ui.nextFailedTest"
+            id="com.piece_framework.makegood.ui.commands.nextFailedTest"
             name="Next Failed Test">
       </command>
       <command
             categoryId="com.piece_framework.makegood.ui.RunTestCategory"
             defaultHandler="com.piece_framework.makegood.ui.handler.PreviousFailedTestHandler"
-            id="com.piece_framework.makegood.ui.previousFailedTest"
+            id="com.piece_framework.makegood.ui.commands.previousFailedTest"
             name="Previous Failed Test">
       </command>
       <command
             categoryId="com.piece_framework.makegood.ui.RunTestCategory"
             defaultHandler="com.piece_framework.makegood.ui.handler.ShowFailuresOnlyHandler"
-            id="com.piece_framework.makegood.ui.showFailuresOnly"
+            id="com.piece_framework.makegood.ui.commands.showFailuresOnly"
             name="Show Failures Only">
       </command>
    </extension>
