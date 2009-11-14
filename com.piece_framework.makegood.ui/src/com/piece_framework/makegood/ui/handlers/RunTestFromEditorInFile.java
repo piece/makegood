@@ -1,4 +1,4 @@
-package com.piece_framework.makegood.ui.handler;
+package com.piece_framework.makegood.ui.handlers;
 
 import com.piece_framework.makegood.ui.launch.MakeGoodLaunchShortcut;
 

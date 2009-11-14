@@ -1,4 +1,4 @@
-package com.piece_framework.makegood.ui.handler;
+package com.piece_framework.makegood.ui.handlers;
 
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;

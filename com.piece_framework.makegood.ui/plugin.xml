@@ -170,31 +170,31 @@
       </category>
       <command
             categoryId="com.piece_framework.makegood.ui.RunTestCategory"
-            defaultHandler="com.piece_framework.makegood.ui.handler.RunTestFromExplorer"
+            defaultHandler="com.piece_framework.makegood.ui.handlers.RunTestFromExplorer"
             id="com.piece_framework.makegood.ui.RunTestFromExplorer"
             name="Run tests for">
       </command>
       <command
             categoryId="com.piece_framework.makegood.ui.RunTestCategory"
-            defaultHandler="com.piece_framework.makegood.ui.handler.RunTestFromEditor"
+            defaultHandler="com.piece_framework.makegood.ui.handlers.RunTestFromEditor"
             id="com.piece_framework.makegood.ui.RunTestFromEditor"
             name="Run tests for context">
       </command>
       <command
             categoryId="com.piece_framework.makegood.ui.RunTestCategory"
-            defaultHandler="com.piece_framework.makegood.ui.handler.RunTestFromEditorInClass"
+            defaultHandler="com.piece_framework.makegood.ui.handlers.RunTestFromEditorInClass"
             id="com.piece_framework.makegood.ui.RunTestFromEditorInClass"
             name="Run tests for class">
       </command>
       <command
             categoryId="com.piece_framework.makegood.ui.RunTestCategory"
-            defaultHandler="com.piece_framework.makegood.ui.handler.RunTestFromEditorInFile"
+            defaultHandler="com.piece_framework.makegood.ui.handlers.RunTestFromEditorInFile"
             id="com.piece_framework.makegood.ui.RunTestFromEditorInFile"
             name="Run tests for file">
       </command>
       <command
             categoryId="com.piece_framework.makegood.ui.RunTestCategory"
-            defaultHandler="com.piece_framework.makegood.ui.handler.RunRelatedTestFromEditor"
+            defaultHandler="com.piece_framework.makegood.ui.handlers.RunRelatedTestFromEditor"
             id="com.piece_framework.makegood.ui.RunRelatedTestFromEditor"
             name="Run tests that depend on this file">
       </command>
