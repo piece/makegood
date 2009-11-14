@@ -237,12 +237,6 @@
       </page>
    </extension>
    <extension
-         point="com.piece_framework.makegood.core.eventListener">
-      <eventListener
-            listener="com.piece_framework.makegood.ui.views.TestResultViewSetter">
-      </eventListener>
-   </extension>
-   <extension
          point="org.eclipse.ui.contexts">
       <context
             id="com.piece_framework.makegood.ui.contexts.resultView"
@@ -312,6 +306,12 @@
                tooltip="Next Failed Test">
          </action>
       </viewContribution>
+   </extension>
+   <extension
+         point="com.piece_framework.makegood.core.eventListeners">
+      <eventListener
+            listener="com.piece_framework.makegood.ui.views.TestResultViewSetter">
+      </eventListener>
    </extension>
 
 </plugin>

@@ -15,7 +15,7 @@ import org.eclipse.ui.IStartup;
 import com.piece_framework.makegood.core.Activator;
 
 public class Startup implements IStartup {
-    private static final String EXTENSION_POINT_ID = Activator.PLUGIN_ID + ".eventListener";
+    private static final String EXTENSION_POINT_ID = Activator.PLUGIN_ID + ".eventListeners";
 
     @Override
     public void earlyStartup() {
