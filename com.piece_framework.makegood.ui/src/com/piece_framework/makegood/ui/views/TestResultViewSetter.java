@@ -11,6 +11,10 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.model.IProcess;
+import org.eclipse.ui.IViewPart;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.progress.UIJob;
 
 import com.piece_framework.makegood.core.launch.IMakeGoodEventListener;
@@ -81,5 +85,13 @@ public class TestResultViewSetter implements IMakeGoodEventListener {
             }
         };
         job.schedule();
+    }
+
+    private void showDebugOutput() {
+        IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+        try {
+            page.showView("org.eclipse.debug.ui.PHPDebugOutput");
+        } catch (PartInitException e) {
+        }
     }
 }
