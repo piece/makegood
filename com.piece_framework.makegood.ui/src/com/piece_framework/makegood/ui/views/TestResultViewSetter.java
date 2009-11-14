@@ -46,6 +46,7 @@ public class TestResultViewSetter implements IMakeGoodEventListener {
         for (IProcess process: launch.getProcesses()) {
             try {
                 if (process.getExitValue() != 0) {
+                    showDebugOutput();
                     return;
                 }
             } catch (DebugException e) {
@@ -58,10 +59,12 @@ public class TestResultViewSetter implements IMakeGoodEventListener {
         } catch (CoreException e) {
         }
         if (log == null) {
+            showDebugOutput();
             return;
         }
         final File logFile = new File(log);
         if (!logFile.exists()) {
+            showDebugOutput();
             return;
         }
 
