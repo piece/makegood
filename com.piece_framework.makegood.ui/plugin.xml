@@ -19,11 +19,11 @@
    <extension
          point="org.eclipse.ui.views">
       <category
-            id="com.piece_framework.makegood.ui.category"
+            id="com.piece_framework.makegood.ui.views.makeGoodCategory"
             name="MakeGood">
       </category>
       <view
-            category="com.piece_framework.makegood.ui.category"
+            category="com.piece_framework.makegood.ui.views.makeGoodCategory"
             class="com.piece_framework.makegood.ui.views.TestResultView"
             icon="icons/MakeGood.gif"
             id="com.piece_framework.makegood.ui.views.resultView"
