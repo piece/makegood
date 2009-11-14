@@ -53,11 +53,8 @@ public class TestResultViewSetter implements IMakeGoodEventListener {
         try {
             log = launch.getLaunchConfiguration().getAttribute("LOG_JUNIT", (String) null);
         } catch (CoreException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
         }
         if (log == null) {
-            // TODO
             return;
         }
         final File logFile = new File(log);
