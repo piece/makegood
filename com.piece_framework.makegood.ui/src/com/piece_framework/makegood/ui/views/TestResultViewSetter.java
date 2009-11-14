@@ -8,7 +8,10 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.ILaunch;
+import org.eclipse.debug.core.model.IProcess;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.ui.progress.UIJob;
 
 import com.piece_framework.makegood.core.launch.IMakeGoodEventListener;
@@ -37,6 +40,15 @@ public class TestResultViewSetter implements IMakeGoodEventListener {
 
     @Override
     public void terminate(ILaunch launch) {
+        for (IProcess process: launch.getProcesses()) {
+            try {
+                if (process.getExitValue() != 0) {
+                    return;
+                }
+            } catch (DebugException e) {
+            }
+        }
+
         String log = null;
         try {
             log = launch.getLaunchConfiguration().getAttribute("LOG_JUNIT", (String) null);
