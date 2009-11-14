@@ -88,10 +88,18 @@ public class TestResultViewSetter implements IMakeGoodEventListener {
     }
 
     private void showDebugOutput() {
-        IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-        try {
-            page.showView("org.eclipse.debug.ui.PHPDebugOutput");
-        } catch (PartInitException e) {
-        }
+        Job job = new UIJob("Show Debug Output") {
+            @Override
+            public IStatus runInUIThread(IProgressMonitor monitor) {
+                IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+                try {
+                    page.showView("org.eclipse.debug.ui.PHPDebugOutput");
+                } catch (PartInitException e) {
+                }
+
+                return Status.OK_STATUS;
+            }
+        };
+        job.schedule();
     }
 }
