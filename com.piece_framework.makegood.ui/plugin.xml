@@ -36,7 +36,7 @@
       <menuContribution
             locationURI="popup:org.eclipse.ui.popup.any?after=additions">
          <separator
-               name="com.piece_framework.makegood.ui.runTestSeparator"
+               name="Run tests separator"
                visible="true">
          </separator>
          <command
