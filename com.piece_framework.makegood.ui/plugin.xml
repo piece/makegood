@@ -243,6 +243,13 @@
       </eventListener>
    </extension>
    <extension
+         point="org.eclipse.ui.contexts">
+      <context
+            id="com.piece_framework.makegood.ui.contexts.resultView"
+            name="In MakeGood Result View">
+      </context>
+   </extension>
+   <extension
          point="org.eclipse.ui.bindings">
       <key
             commandId="com.piece_framework.makegood.ui.RunTestFromEditor"
