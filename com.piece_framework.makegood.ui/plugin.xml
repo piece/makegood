@@ -282,7 +282,7 @@
          <action
                class="com.piece_framework.makegood.ui.actions.ShowFailuresOnlyAction"
                definitionId="com.piece_framework.makegood.ui.commands.showFailuresOnly"
-               icon="icons/filter.gif"
+               icon="icons/filter-by-failures.gif"
                id="com.piece_framework.makegood.ui.viewActions.resultView.showFailuresOnly"
                label="Show Failures Only"
                style="toggle"
@@ -292,7 +292,7 @@
          <action
                class="com.piece_framework.makegood.ui.actions.PreviousFailedTestActions"
                definitionId="com.piece_framework.makegood.ui.commands.previousFailedTest"
-               icon="icons/previous.gif"
+               icon="icons/up-arrow.gif"
                id="com.piece_framework.makegood.ui.viewActions.resultView.previousFailedTest"
                label="Previous Failed Test"
                style="push"
@@ -302,7 +302,7 @@
          <action
                class="com.piece_framework.makegood.ui.actions.NextFailedTestAction"
                definitionId="com.piece_framework.makegood.ui.commands.nextFailedTest"
-               icon="icons/next.gif"
+               icon="icons/down-arrow.gif"
                id="com.piece_framework.makegood.ui.viewActions.resultView.NextFailedTest"
                label="Next Failed Test"
                style="push"

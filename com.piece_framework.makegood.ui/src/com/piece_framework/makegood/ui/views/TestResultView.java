@@ -91,15 +91,15 @@ public class TestResultView extends ViewPart {
         assertions = new ResultLabel(summary, "Assertions:", null);
         passes = new ResultLabel(summary,
                                  "Passes:",
-                                 Activator.getImageDescriptor("icons/pass.gif").createImage()
+                                 Activator.getImageDescriptor("icons/pass-gray.gif").createImage()
                                  );
         failures = new ResultLabel(summary,
                                    "Failures:",
-                                   Activator.getImageDescriptor("icons/failure.gif").createImage()
+                                   Activator.getImageDescriptor("icons/failure-gray.gif").createImage()
                                    );
         errors = new ResultLabel(summary,
                                  "Errors:",
-                                 Activator.getImageDescriptor("icons/error.gif").createImage()
+                                 Activator.getImageDescriptor("icons/error-gray.gif").createImage()
                                  );
 
         SashForm form = new SashForm(parent, SWT.HORIZONTAL);

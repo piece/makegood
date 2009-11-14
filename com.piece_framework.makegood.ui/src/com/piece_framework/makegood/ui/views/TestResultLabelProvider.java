@@ -17,9 +17,9 @@ public class TestResultLabelProvider extends LabelProvider {
     public TestResultLabelProvider() {
         super();
 
-        passIcon = Activator.getImageDescriptor("icons/pass.gif").createImage();
-        errorIcon = Activator.getImageDescriptor("icons/error.gif").createImage();
-        failureIcon = Activator.getImageDescriptor("icons/failure.gif").createImage();
+        passIcon = Activator.getImageDescriptor("icons/pass-white.gif").createImage();
+        errorIcon = Activator.getImageDescriptor("icons/error-white.gif").createImage();
+        failureIcon = Activator.getImageDescriptor("icons/failure-white.gif").createImage();
 
         timeFormat = NumberFormat.getNumberInstance();
         timeFormat.setMaximumFractionDigits(3);
