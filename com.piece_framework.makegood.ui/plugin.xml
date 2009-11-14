@@ -166,7 +166,7 @@
          point="org.eclipse.ui.commands">
       <category
             id="com.piece_framework.makegood.ui.commands.runTestCategory"
-            name="MakeGood">
+            name="MakeGood Run Tests">
       </category>
       <command
             categoryId="com.piece_framework.makegood.ui.commands.runTestCategory"
