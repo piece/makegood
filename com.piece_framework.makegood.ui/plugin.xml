@@ -165,35 +165,35 @@
    <extension
          point="org.eclipse.ui.commands">
       <category
-            id="com.piece_framework.makegood.ui.RunTestCategory"
+            id="com.piece_framework.makegood.ui.commands.runTestCategory"
             name="MakeGood">
       </category>
       <command
-            categoryId="com.piece_framework.makegood.ui.RunTestCategory"
+            categoryId="com.piece_framework.makegood.ui.commands.runTestCategory"
             defaultHandler="com.piece_framework.makegood.ui.handlers.RunTestFromExplorer"
             id="com.piece_framework.makegood.ui.RunTestFromExplorer"
             name="Run tests for">
       </command>
       <command
-            categoryId="com.piece_framework.makegood.ui.RunTestCategory"
+            categoryId="com.piece_framework.makegood.ui.commands.runTestCategory"
             defaultHandler="com.piece_framework.makegood.ui.handlers.RunTestFromEditor"
             id="com.piece_framework.makegood.ui.RunTestFromEditor"
             name="Run tests for context">
       </command>
       <command
-            categoryId="com.piece_framework.makegood.ui.RunTestCategory"
+            categoryId="com.piece_framework.makegood.ui.commands.runTestCategory"
             defaultHandler="com.piece_framework.makegood.ui.handlers.RunTestFromEditorInClass"
             id="com.piece_framework.makegood.ui.RunTestFromEditorInClass"
             name="Run tests for class">
       </command>
       <command
-            categoryId="com.piece_framework.makegood.ui.RunTestCategory"
+            categoryId="com.piece_framework.makegood.ui.commands.runTestCategory"
             defaultHandler="com.piece_framework.makegood.ui.handlers.RunTestFromEditorInFile"
             id="com.piece_framework.makegood.ui.RunTestFromEditorInFile"
             name="Run tests for file">
       </command>
       <command
-            categoryId="com.piece_framework.makegood.ui.RunTestCategory"
+            categoryId="com.piece_framework.makegood.ui.commands.runTestCategory"
             defaultHandler="com.piece_framework.makegood.ui.handlers.RunRelatedTestFromEditor"
             id="com.piece_framework.makegood.ui.RunRelatedTestFromEditor"
             name="Run tests that depend on this file">
