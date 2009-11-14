@@ -29,6 +29,7 @@ import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.contexts.IContextService;
 import org.eclipse.ui.part.ViewPart;
 
 import com.piece_framework.makegood.launch.phpunit.ProblemType;
@@ -73,6 +74,9 @@ public class TestResultView extends ViewPart {
 
     @Override
     public void createPartControl(Composite parent) {
+        IContextService service = (IContextService) getSite().getService(IContextService.class);
+        service.activateContext("com.piece_framework.makegood.ui.contexts.resultView");
+
         parent.setLayout(new GridLayout(1, false));
 
         progressBar = new Label(parent, SWT.BORDER);
