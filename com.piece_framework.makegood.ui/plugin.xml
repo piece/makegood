@@ -201,18 +201,22 @@
    </extension>
    <extension
          point="org.eclipse.ui.commands">
+      <category
+            id="com.piece_framework.makegood.ui.commands.resultViewCategory"
+            name="MakeGood Result View">
+      </category>
       <command
-            categoryId="com.piece_framework.makegood.ui.RunTestCategory"
+            categoryId="com.piece_framework.makegood.ui.commands.resultViewCategory"
             id="com.piece_framework.makegood.ui.commands.nextFailedTest"
             name="Next Failed Test">
       </command>
       <command
-            categoryId="com.piece_framework.makegood.ui.RunTestCategory"
+            categoryId="com.piece_framework.makegood.ui.commands.resultViewCategory"
             id="com.piece_framework.makegood.ui.commands.previousFailedTest"
             name="Previous Failed Test">
       </command>
       <command
-            categoryId="com.piece_framework.makegood.ui.RunTestCategory"
+            categoryId="com.piece_framework.makegood.ui.commands.resultViewCategory"
             id="com.piece_framework.makegood.ui.commands.showFailuresOnly"
             name="Show Failures Only">
       </command>
