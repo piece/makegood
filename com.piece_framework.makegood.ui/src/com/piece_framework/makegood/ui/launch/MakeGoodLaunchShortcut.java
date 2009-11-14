@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchManager;
@@ -15,6 +16,7 @@ import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.IType;
+import org.eclipse.dltk.core.ITypeHierarchy;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.search.IDLTKSearchConstants;
 import org.eclipse.dltk.core.search.IDLTKSearchScope;
@@ -255,6 +257,13 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
         try {
             for (IType type: source.getAllTypes()) {
                 types.add(type);
+
+                ITypeHierarchy hierarchy = type.newTypeHierarchy(new NullProgressMonitor());
+                if (hierarchy != null) {
+                    for (IType subClass : hierarchy.getAllSubtypes(type)) {
+                        types.add(subClass);
+                    }
+                }
             }
         } catch (ModelException e) {
             // TODO Auto-generated catch block
