@@ -12,6 +12,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IType;
+import org.eclipse.osgi.framework.debug.Debug;
 
 import com.piece_framework.makegood.core.MakeGoodProperty;
 import com.piece_framework.makegood.core.PHPResource;
@@ -100,7 +101,7 @@ public class MakeGoodLaunchParameter {
         buffer.append(methods.length() > 0 ?
                       " -m " + methods.toString() : "");
         buffer.append(" -R " + resources.toString());
-
+        Debug.println(buffer.toString());
         return buffer.toString();
     }
 

@@ -33,6 +33,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.window.Window;
+import org.eclipse.osgi.framework.debug.Debug;
 import org.eclipse.php.internal.debug.ui.launching.PHPExeLaunchShortcut;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorPart;
@@ -215,6 +216,7 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
                 MakeGoodLaunchParameter parameter = MakeGoodLaunchParameter.get();
                 parameter.clearTargets();
                 for (IResource test: tests) {
+                    Debug.println(test);
                     parameter.addTarget(test);
                 }
                 MakeGoodLaunchShortcut.super.launch(editor, mode);
@@ -233,6 +235,7 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
 
         StringBuilder patternString = new StringBuilder();
         for (IType type: types) {
+            Debug.println(type.getElementName());
             patternString.append(patternString.length() > 0 ? "|" : "");
             patternString.append(type.getElementName());
         }
