@@ -161,30 +161,6 @@
             </visibleWhen>
          </command>
       </menuContribution>
-      <menuContribution
-            locationURI="toolbar:com.piece_framework.makegood.ui.views.resultView?after=additions">
-         <command
-               commandId="com.piece_framework.makegood.ui.nextFailedTest"
-               icon="icons/next.gif"
-               label="Next"
-               style="push"
-               tooltip="Next Failed Test">
-         </command>
-         <command
-               commandId="com.piece_framework.makegood.ui.previousFailedTest"
-               icon="icons/previous.gif"
-               label="Previous"
-               style="push"
-               tooltip="Previous Failed Test">
-         </command>
-         <command
-               commandId="com.piece_framework.makegood.ui.showFailuresOnly"
-               icon="icons/filter.gif"
-               label="Filter"
-               style="toggle"
-               tooltip="Show Failures Only">
-         </command>
-      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
@@ -274,6 +250,40 @@
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="M3+M">
       </key>
+   </extension>
+   <extension
+         point="org.eclipse.ui.viewActions">
+      <viewContribution
+            id="com.piece_framework.makegood.ui.viewActions.resultView"
+            targetID="com.piece_framework.makegood.ui.views.resultView">
+         <action
+               class="com.piece_framework.makegood.ui.actions.ShowFailuresOnlyAction"
+               icon="icons/filter.gif"
+               id="com.piece_framework.makegood.ui.viewActions.resultView.showFailuresOnly"
+               label="Show Failures Only"
+               style="toggle"
+               toolbarPath="additions"
+               tooltip="Show Failures Only">
+         </action>
+         <action
+               class="com.piece_framework.makegood.ui.actions.PreviousFailedTestActions"
+               icon="icons/previous.gif"
+               id="com.piece_framework.makegood.ui.viewActions.resultView.previousFailedTest"
+               label="Previous Failed Test"
+               style="push"
+               toolbarPath="additions"
+               tooltip="Previous Failed Test">
+         </action>
+         <action
+               class="com.piece_framework.makegood.ui.actions.NextFailedTestAction"
+               icon="icons/next.gif"
+               id="com.piece_framework.makegood.ui.viewActions.resultView.NextFailedTest"
+               label="Next Failed Test"
+               style="push"
+               toolbarPath="additions"
+               tooltip="Next Failed Test">
+         </action>
+      </viewContribution>
    </extension>
 
 </plugin>
