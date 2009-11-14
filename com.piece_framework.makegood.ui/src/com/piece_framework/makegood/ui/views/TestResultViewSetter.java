@@ -58,6 +58,9 @@ public class TestResultViewSetter implements IMakeGoodEventListener {
             return;
         }
         final File logFile = new File(log);
+        if (!logFile.exists()) {
+            return;
+        }
 
         Job job = new UIJob("MakeGood result parse") {
             @Override
