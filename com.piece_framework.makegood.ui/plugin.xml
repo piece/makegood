@@ -198,6 +198,9 @@
             id="com.piece_framework.makegood.ui.RunRelatedTestFromEditor"
             name="Run tests that depend on this file">
       </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
       <command
             categoryId="com.piece_framework.makegood.ui.RunTestCategory"
             defaultHandler="com.piece_framework.makegood.ui.handler.NextFailedTestHandler"
