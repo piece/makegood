@@ -258,6 +258,7 @@
             targetID="com.piece_framework.makegood.ui.views.resultView">
          <action
                class="com.piece_framework.makegood.ui.actions.ShowFailuresOnlyAction"
+               definitionId="com.piece_framework.makegood.ui.commands.showFailuresOnly"
                icon="icons/filter.gif"
                id="com.piece_framework.makegood.ui.viewActions.resultView.showFailuresOnly"
                label="Show Failures Only"
@@ -267,6 +268,7 @@
          </action>
          <action
                class="com.piece_framework.makegood.ui.actions.PreviousFailedTestActions"
+               definitionId="com.piece_framework.makegood.ui.commands.previousFailedTest"
                icon="icons/previous.gif"
                id="com.piece_framework.makegood.ui.viewActions.resultView.previousFailedTest"
                label="Previous Failed Test"
@@ -276,6 +278,7 @@
          </action>
          <action
                class="com.piece_framework.makegood.ui.actions.NextFailedTestAction"
+               definitionId="com.piece_framework.makegood.ui.commands.nextFailedTest"
                icon="icons/next.gif"
                id="com.piece_framework.makegood.ui.viewActions.resultView.NextFailedTest"
                label="Next Failed Test"
