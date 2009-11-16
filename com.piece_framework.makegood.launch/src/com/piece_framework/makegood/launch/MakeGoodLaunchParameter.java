@@ -11,7 +11,9 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
+import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.IType;
+import org.eclipse.dltk.core.ModelException;
 import org.eclipse.osgi.framework.debug.Debug;
 
 import com.piece_framework.makegood.core.MakeGoodProperty;
@@ -80,6 +82,16 @@ public class MakeGoodLaunchParameter {
         StringBuilder methods = new StringBuilder();
         StringBuilder resources = new StringBuilder();
         for (Object target: targets) {
+            if (target instanceof ISourceModule) {
+                try {
+                    for (IType type: ((ISourceModule) target).getAllTypes()) {
+                        String targetValue = type.getElementName();
+                        classes.append(classes.length() > 0 ? "," : ""); //$NON-NLS-1$ //$NON-NLS-2$
+                        classes.append(targetValue);
+                    }
+                } catch (ModelException e) {
+                }
+            }
             if (target instanceof IType) {
                 String targetValue = ((IType) target).getElementName();
                 classes.append(classes.length() > 0 ? "," : ""); //$NON-NLS-1$ //$NON-NLS-2$
