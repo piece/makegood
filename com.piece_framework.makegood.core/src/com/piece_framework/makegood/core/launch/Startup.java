@@ -15,7 +15,7 @@ import org.eclipse.ui.IStartup;
 import com.piece_framework.makegood.core.Activator;
 
 public class Startup implements IStartup {
-    private static final String EXTENSION_POINT_ID = Activator.PLUGIN_ID + ".eventListeners";
+    private static final String EXTENSION_POINT_ID = Activator.PLUGIN_ID + ".eventListeners"; //$NON-NLS-1$
 
     @Override
     public void earlyStartup() {
@@ -36,9 +36,9 @@ public class Startup implements IStartup {
                 if (configuration.getName() == null) {
                     continue;
                 }
-                if (configuration.getName().equals("eventListener")) {
+                if (configuration.getName().equals("eventListener")) { //$NON-NLS-1$
                     try {
-                        Object executable = configuration.createExecutableExtension("listener");
+                        Object executable = configuration.createExecutableExtension("listener"); //$NON-NLS-1$
                         if (executable instanceof IMakeGoodEventListener) {
                             eventListeners.add((IMakeGoodEventListener) executable);
                         }

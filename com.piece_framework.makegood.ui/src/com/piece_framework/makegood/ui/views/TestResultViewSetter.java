@@ -23,7 +23,7 @@ import com.piece_framework.makegood.launch.phpunit.TestResultConverter;
 public class TestResultViewSetter implements IMakeGoodEventListener {
     @Override
     public void create(ILaunch launch) {
-        Job job = new UIJob("MakeGood reset") {
+        Job job = new UIJob("MakeGood reset") { //$NON-NLS-1$
             @Override
             public IStatus runInUIThread(IProgressMonitor monitor) {
                 TestResultView view = TestResultView.showView();
@@ -55,7 +55,7 @@ public class TestResultViewSetter implements IMakeGoodEventListener {
 
         String log = null;
         try {
-            log = launch.getLaunchConfiguration().getAttribute("LOG_JUNIT", (String) null);
+            log = launch.getLaunchConfiguration().getAttribute("LOG_JUNIT", (String) null); //$NON-NLS-1$
         } catch (CoreException e) {
         }
         if (log == null) {
@@ -68,7 +68,7 @@ public class TestResultViewSetter implements IMakeGoodEventListener {
             return;
         }
 
-        Job job = new UIJob("MakeGood result parse") {
+        Job job = new UIJob("MakeGood result parse") { //$NON-NLS-1$
             @Override
             public IStatus runInUIThread(IProgressMonitor monitor) {
                 TestResultView view = TestResultView.showView();
@@ -91,12 +91,12 @@ public class TestResultViewSetter implements IMakeGoodEventListener {
     }
 
     private void showDebugOutput() {
-        Job job = new UIJob("Show Debug Output") {
+        Job job = new UIJob("Show Debug Output") { //$NON-NLS-1$
             @Override
             public IStatus runInUIThread(IProgressMonitor monitor) {
                 IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
                 try {
-                    page.showView("org.eclipse.debug.ui.PHPDebugOutput");
+                    page.showView("org.eclipse.debug.ui.PHPDebugOutput"); //$NON-NLS-1$
                 } catch (PartInitException e) {
                 }
 

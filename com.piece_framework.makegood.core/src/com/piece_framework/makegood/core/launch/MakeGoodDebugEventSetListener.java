@@ -28,7 +28,7 @@ public class MakeGoodDebugEventSetListener implements IDebugEventSetListener {
             if (configuration == null) {
                 continue;
             }
-            if (!configuration.getName().startsWith("MakeGood")) {
+            if (!configuration.getName().startsWith("MakeGood")) { //$NON-NLS-1$
                 continue;
             }
 

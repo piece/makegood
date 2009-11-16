@@ -15,7 +15,7 @@ import org.osgi.framework.BundleContext;
  */
 public class Activator extends AbstractUIPlugin {
     // The plug-in ID
-    public static final String PLUGIN_ID = "com.piece_framework.makegood.launch";
+    public static final String PLUGIN_ID = "com.piece_framework.makegood.launch"; //$NON-NLS-1$
 
     // The shared instance
     private static Activator plugin;
@@ -35,7 +35,7 @@ public class Activator extends AbstractUIPlugin {
         plugin = this;
 
         try {
-            URL launchersURL = Platform.getBundle(PLUGIN_ID).getEntry("launchers");
+            URL launchersURL = Platform.getBundle(PLUGIN_ID).getEntry("launchers"); //$NON-NLS-1$
             File launchersDirectory = new File(FileLocator.toFileURL(launchersURL).getPath());
             MakeGoodLauncherRegistry.createRegistry(launchersDirectory);
         } catch (IOException e) {

@@ -26,9 +26,10 @@ import org.eclipse.ui.model.WorkbenchLabelProvider;
 
 import com.piece_framework.makegood.core.MakeGoodProperty;
 import com.piece_framework.makegood.core.PHPResource;
+import com.piece_framework.makegood.ui.Messages;
 
 public class MakeGoodPropertyPage extends PropertyPage implements IWorkbenchPropertyPage {
-    private static String PRELOAD_SCRIP_KEY = "preload_script";
+    private static String PRELOAD_SCRIP_KEY = "preload_script"; //$NON-NLS-1$
     private Text preloadScript;
 
     @Override
@@ -40,13 +41,13 @@ public class MakeGoodPropertyPage extends PropertyPage implements IWorkbenchProp
         composite.setLayoutData(new GridData(GridData.FILL_BOTH));
 
         Label label = new Label(composite, SWT.NONE);
-        label.setText("&Preload Script:");
+        label.setText(Messages.MakeGoodPropertyPage_preloadScriptLabel);
 
         preloadScript = new Text(composite, SWT.SINGLE | SWT.BORDER);
         preloadScript.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
         Button browse = new Button(composite, SWT.NONE);
-        browse.setText("&Browse...");
+        browse.setText(Messages.MakeGoodPropertyPage_browseLabel);
         browse.addSelectionListener(new SelectionListener() {
             @Override
             public void widgetDefaultSelected(SelectionEvent e) {
@@ -58,8 +59,8 @@ public class MakeGoodPropertyPage extends PropertyPage implements IWorkbenchProp
                                                                                    new WorkbenchLabelProvider(),
                                                                                    new WorkbenchContentProvider()
                                                                                    );
-                dialog.setTitle("MakeGood Preload Script");
-                dialog.setMessage("Select a preload script:");
+                dialog.setTitle(Messages.MakeGoodPropertyPage_preloadScriptDialogTitle);
+                dialog.setMessage(Messages.MakeGoodPropertyPage_preloadScriptDialogMessage);
                 dialog.setAllowMultiple(false);
                 dialog.setComparator(new ViewerComparator() {
                     @Override

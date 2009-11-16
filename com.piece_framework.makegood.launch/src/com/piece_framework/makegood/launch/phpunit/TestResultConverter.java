@@ -97,7 +97,7 @@ public class TestResultConverter {
         } else {
             return null;
         }
-        problem.typeClass = node.getAttributes().getNamedItem("type").getNodeValue();
+        problem.typeClass = node.getAttributes().getNamedItem("type").getNodeValue(); //$NON-NLS-1$
         problem.content = node.getTextContent();
         return problem;
     }
@@ -113,18 +113,18 @@ public class TestResultConverter {
     }
 
     private static boolean isTestSuiteNode(Node node) {
-        return node.getNodeName().equals("testsuite");
+        return node.getNodeName().equals("testsuite"); //$NON-NLS-1$
     }
 
     private static boolean isTestCaseNode(Node node) {
-        return node.getNodeName().equals("testcase");
+        return node.getNodeName().equals("testcase"); //$NON-NLS-1$
     }
 
     private static boolean isFailureNode(Node node) {
-        return node.getNodeName().equals("failure");
+        return node.getNodeName().equals("failure"); //$NON-NLS-1$
     }
 
     private static boolean isErrorNode(Node node) {
-        return node.getNodeName().equals("error");
+        return node.getNodeName().equals("error"); //$NON-NLS-1$
     }
 }

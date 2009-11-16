@@ -11,26 +11,26 @@ import java.util.Map;
 public class MakeGoodLauncherRegistry {
     private static Map<TestingFramework, String> launcherScripts = new HashMap<TestingFramework, String>();
 
-    private static File registry = new File(System.getProperty("java.io.tmpdir"),
+    private static File registry = new File(System.getProperty("java.io.tmpdir"), //$NON-NLS-1$
                                                Activator.PLUGIN_ID
                                                );
 
     static {
         launcherScripts.put(TestingFramework.PHPUnit,
-                            registry.getAbsolutePath() + String.valueOf(File.separatorChar) + "phpunitrunner"
+                            registry.getAbsolutePath() + String.valueOf(File.separatorChar) + "phpunitrunner" //$NON-NLS-1$
                             );
         launcherScripts.put(TestingFramework.SimpleTest,
-                            registry.getAbsolutePath() + String.valueOf(File.separatorChar) + "simpletestrunner"
+                            registry.getAbsolutePath() + String.valueOf(File.separatorChar) + "simpletestrunner" //$NON-NLS-1$
                             );
         launcherScripts.put(TestingFramework.PHPSpec,
-                            registry.getAbsolutePath() + String.valueOf(File.separatorChar) + "phpspecrunner"
+                            registry.getAbsolutePath() + String.valueOf(File.separatorChar) + "phpspecrunner" //$NON-NLS-1$
                             );
     }
 
     public MakeGoodLauncher getLauncher(TestingFramework testingFramework) throws FileNotFoundException {
         File launcherScript = new File(launcherScripts.get(testingFramework));
         if (!launcherScript.exists()) {
-            throw new FileNotFoundException(testingFramework.toString() + " launcher script is not found.");
+            throw new FileNotFoundException(testingFramework.toString() + Messages.MakeGoodLauncherRegistry_notFoundMessage);
         }
 
         return new MakeGoodLauncher(testingFramework,

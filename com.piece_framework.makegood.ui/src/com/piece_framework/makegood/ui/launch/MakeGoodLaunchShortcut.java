@@ -43,6 +43,7 @@ import org.eclipse.ui.texteditor.ITextEditor;
 import com.piece_framework.makegood.core.MakeGoodProperty;
 import com.piece_framework.makegood.core.PHPResource;
 import com.piece_framework.makegood.launch.MakeGoodLaunchParameter;
+import com.piece_framework.makegood.ui.Messages;
 
 public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
     public static int RUN_TEST_ON_CONTEXT = 1;
@@ -105,7 +106,7 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
     @Override
     protected ILaunchConfigurationType getPHPExeLaunchConfigType() {
         ILaunchManager manager = DebugPlugin.getDefault().getLaunchManager();
-        return manager.getLaunchConfigurationType("com.piece_framework.makegood.launch.launchConfigurationTypes.makeGood");
+        return manager.getLaunchConfigurationType("com.piece_framework.makegood.launch.launchConfigurationTypes.makeGood"); //$NON-NLS-1$
     }
 
     private void showPropertyPage(final MakeGoodProperty property,
@@ -116,7 +117,7 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
             @Override
             public void run() {
                 PropertyDialog dialog = PropertyDialog.createDialogOn(null,
-                                                                      "com.piece_framework.makegood.ui.MakeGood",
+                                                                      "com.piece_framework.makegood.ui.MakeGood", //$NON-NLS-1$
                                                                       property.getProject()
                                                                       );
                 if (dialog.open() == Window.OK) {
@@ -207,8 +208,8 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
             public void endReporting() {
                 if (tests.size() == 0) {
                     MessageDialog.openInformation(editor.getEditorSite().getShell(),
-                                                  "MakeGood",
-                                                  "Not found tests that depend on this file."
+                                                  Messages.MakeGoodLaunchShortcut_messageTitle,
+                                                  Messages.MakeGoodLaunchShortcut_notFoundTestsMessage
                                                   );
                     return;
                 }
@@ -236,7 +237,7 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
         StringBuilder patternString = new StringBuilder();
         for (IType type: types) {
             Debug.println(type.getElementName());
-            patternString.append(patternString.length() > 0 ? "|" : "");
+            patternString.append(patternString.length() > 0 ? "|" : ""); //$NON-NLS-1$ //$NON-NLS-2$
             patternString.append(type.getElementName());
         }
         SearchPattern pattern = SearchPattern.createPattern(patternString.toString(),

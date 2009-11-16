@@ -33,7 +33,7 @@ public class MakeGoodLaunchConfigurationDelegate implements ILaunchConfiguration
         Set modes = new HashSet();
         modes.add(mode);
         ILaunchConfigurationType configurationType =
-            DebugPlugin.getDefault().getLaunchManager().getLaunchConfigurationType("org.eclipse.php.debug.core.launching.PHPExeLaunchConfigurationType");
+            DebugPlugin.getDefault().getLaunchManager().getLaunchConfigurationType("org.eclipse.php.debug.core.launching.PHPExeLaunchConfigurationType"); //$NON-NLS-1$
         ILaunchDelegate delegate = configurationType.getDelegates(modes)[0];
 
         delegate.getDelegate().launch(stagehandTestRunnerLaunchConfiguration,
@@ -59,18 +59,18 @@ public class MakeGoodLaunchConfigurationDelegate implements ILaunchConfiguration
                                                ));
         }
 
-        String configurationName = "MakeGood" + Long.toString(System.currentTimeMillis());
+        String configurationName = "MakeGood" + Long.toString(System.currentTimeMillis()); //$NON-NLS-1$
         String log = MakeGoodLauncherRegistry.getRegistry().getAbsolutePath().toString() +
                      String.valueOf(File.separatorChar) +
                      configurationName +
-                     ".xml";
+                     ".xml"; //$NON-NLS-1$
         MakeGoodLaunchParameter parameter = MakeGoodLaunchParameter.get();
 
         ILaunchConfigurationWorkingCopy workingCopy = configuration.copy(configurationName);
-        workingCopy.setAttribute("ATTR_FILE", parameter.getMainScript());
-        workingCopy.setAttribute("ATTR_FILE_FULL_PATH", launcher.getScript());
-        workingCopy.setAttribute("LOG_JUNIT", log);
-        workingCopy.setAttribute("exeDebugArguments", parameter.generateParameter(log));
+        workingCopy.setAttribute("ATTR_FILE", parameter.getMainScript()); //$NON-NLS-1$
+        workingCopy.setAttribute("ATTR_FILE_FULL_PATH", launcher.getScript()); //$NON-NLS-1$
+        workingCopy.setAttribute("LOG_JUNIT", log); //$NON-NLS-1$
+        workingCopy.setAttribute("exeDebugArguments", parameter.generateParameter(log)); //$NON-NLS-1$
 
         configuration.delete();
 

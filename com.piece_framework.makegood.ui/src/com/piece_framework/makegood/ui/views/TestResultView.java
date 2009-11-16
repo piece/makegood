@@ -10,8 +10,6 @@ import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.custom.SashForm;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.RGB;
@@ -19,12 +17,10 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Tree;
-import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
@@ -37,12 +33,13 @@ import com.piece_framework.makegood.launch.phpunit.TestCase;
 import com.piece_framework.makegood.launch.phpunit.TestResult;
 import com.piece_framework.makegood.launch.phpunit.TestSuite;
 import com.piece_framework.makegood.ui.Activator;
+import com.piece_framework.makegood.ui.Messages;
 
 public class TestResultView extends ViewPart {
     private static final RGB GREEN = new RGB(95, 191, 95);
     private static final RGB RED = new RGB(159, 63, 63);
     private static final RGB NONE = new RGB(255, 255, 255);
-    private static final String VIEW_ID = "com.piece_framework.makegood.ui.views.resultView";
+    private static final String VIEW_ID = "com.piece_framework.makegood.ui.views.resultView"; //$NON-NLS-1$
 
     private Label progressBar;
     private ResultLabel tests;
@@ -75,7 +72,7 @@ public class TestResultView extends ViewPart {
     @Override
     public void createPartControl(Composite parent) {
         IContextService service = (IContextService) getSite().getService(IContextService.class);
-        service.activateContext("com.piece_framework.makegood.ui.contexts.resultView");
+        service.activateContext("com.piece_framework.makegood.ui.contexts.resultView"); //$NON-NLS-1$
 
         parent.setLayout(new GridLayout(1, false));
 
@@ -87,19 +84,19 @@ public class TestResultView extends ViewPart {
         summary.setLayoutData(createHorizontalFillGridData());
         summary.setLayout(new FillLayout(SWT.HORIZONTAL));
 
-        tests = new ResultLabel(summary, "Tests:", null);
-        assertions = new ResultLabel(summary, "Assertions:", null);
+        tests = new ResultLabel(summary, Messages.TestResultView_testsLabel, null);
+        assertions = new ResultLabel(summary, Messages.TestResultView_assertionsLabel, null);
         passes = new ResultLabel(summary,
-                                 "Passes:",
-                                 Activator.getImageDescriptor("icons/pass-gray.gif").createImage()
+                                 Messages.TestResultView_passesLabel,
+                                 Activator.getImageDescriptor("icons/pass-gray.gif").createImage() //$NON-NLS-1$
                                  );
         failures = new ResultLabel(summary,
-                                   "Failures:",
-                                   Activator.getImageDescriptor("icons/failure-gray.gif").createImage()
+                                   Messages.TestResultView_failuresLabel,
+                                   Activator.getImageDescriptor("icons/failure-gray.gif").createImage() //$NON-NLS-1$
                                    );
         errors = new ResultLabel(summary,
-                                 "Errors:",
-                                 Activator.getImageDescriptor("icons/error-gray.gif").createImage()
+                                 Messages.TestResultView_errorsLabel,
+                                 Activator.getImageDescriptor("icons/error-gray.gif").createImage() //$NON-NLS-1$
                                  );
 
         SashForm form = new SashForm(parent, SWT.HORIZONTAL);
@@ -139,7 +136,7 @@ public class TestResultView extends ViewPart {
                     return;
                 }
 
-                String[] contents = testCase.getProblem().getContent().split("\n");
+                String[] contents = testCase.getProblem().getContent().split("\n"); //$NON-NLS-1$
                 for (String content: contents) {
                     resultList.add(content);
                 }
@@ -155,8 +152,8 @@ public class TestResultView extends ViewPart {
         trace.setLayout(new RowLayout());
 
         new ResultLabel(trace,
-                        "Failure Trace",
-                        Activator.getImageDescriptor("icons/trace.gif").createImage()
+                        Messages.TestResultView_failureTraceLabel,
+                        Activator.getImageDescriptor("icons/trace.gif").createImage() //$NON-NLS-1$
                         );
 
         resultList = new List(traceParent, SWT.BORDER + SWT.V_SCROLL + SWT.H_SCROLL);
@@ -309,7 +306,7 @@ public class TestResultView extends ViewPart {
         }
 
         private void setCount(int count) {
-            label.setText(text + " " + count);
+            label.setText(text + " " + count); //$NON-NLS-1$
         }
 
         private void reset() {

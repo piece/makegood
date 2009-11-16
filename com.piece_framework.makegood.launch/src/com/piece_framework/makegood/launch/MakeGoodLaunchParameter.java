@@ -64,16 +64,16 @@ public class MakeGoodLaunchParameter {
         StringBuilder buffer = new StringBuilder();
 
         String preloadScript = getPreloadScript();
-        if (!preloadScript.equals("")) {
+        if (!preloadScript.equals("")) { //$NON-NLS-1$
             IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
             IResource preloadResource = root.findMember(preloadScript);
             if (preloadResource != null) {
-                buffer.append("-p " + preloadResource.getLocation().toString());
+                buffer.append("-p " + preloadResource.getLocation().toString()); //$NON-NLS-1$
             }
         }
 
         if (log != null) {
-            buffer.append(" --log-junit=" + log);
+            buffer.append(" --log-junit=" + log); //$NON-NLS-1$
         }
 
         StringBuilder classes = new StringBuilder();
@@ -82,25 +82,25 @@ public class MakeGoodLaunchParameter {
         for (Object target: targets) {
             if (target instanceof IType) {
                 String targetValue = ((IType) target).getElementName();
-                classes.append(classes.length() > 0 ? "," : "");
+                classes.append(classes.length() > 0 ? "," : ""); //$NON-NLS-1$ //$NON-NLS-2$
                 classes.append(targetValue);
             }
             if (target instanceof IMethod) {
                 IMethod method = (IMethod) target;
-                String targetValue = method.getParent().getElementName() + "::" +
+                String targetValue = method.getParent().getElementName() + "::" + //$NON-NLS-1$
                                      method.getElementName();
-                methods.append(methods.length() > 0 ? "," : "");
+                methods.append(methods.length() > 0 ? "," : ""); //$NON-NLS-1$ //$NON-NLS-2$
                 methods.append(targetValue);
             }
 
-            resources.append(" " + getTargetResource(target).getLocation().toString());
+            resources.append(" " + getTargetResource(target).getLocation().toString()); //$NON-NLS-1$
         }
 
         buffer.append(classes.length() > 0 ?
-                      " --classes " + classes.toString() : "");
+                      " --classes " + classes.toString() : ""); //$NON-NLS-1$ //$NON-NLS-2$
         buffer.append(methods.length() > 0 ?
-                      " -m " + methods.toString() : "");
-        buffer.append(" -R " + resources.toString());
+                      " -m " + methods.toString() : ""); //$NON-NLS-1$ //$NON-NLS-2$
+        buffer.append(" -R " + resources.toString()); //$NON-NLS-1$
         Debug.println(buffer.toString());
         return buffer.toString();
     }

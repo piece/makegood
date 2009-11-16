@@ -26,7 +26,7 @@ public class RunTestFromExplorer extends AbstractHandler {
             selection = getSelectionFromActivePage();
         }
         MakeGoodLaunchShortcut shortcut = new MakeGoodLaunchShortcut();
-        shortcut.launch(selection, "run");
+        shortcut.launch(selection, "run"); //$NON-NLS-1$
         return shortcut;
     }
 

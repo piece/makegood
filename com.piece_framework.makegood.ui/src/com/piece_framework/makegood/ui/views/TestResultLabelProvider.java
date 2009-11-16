@@ -17,9 +17,9 @@ public class TestResultLabelProvider extends LabelProvider {
     public TestResultLabelProvider() {
         super();
 
-        passIcon = Activator.getImageDescriptor("icons/pass-white.gif").createImage();
-        errorIcon = Activator.getImageDescriptor("icons/error-white.gif").createImage();
-        failureIcon = Activator.getImageDescriptor("icons/failure-white.gif").createImage();
+        passIcon = Activator.getImageDescriptor("icons/pass-white.gif").createImage(); //$NON-NLS-1$
+        errorIcon = Activator.getImageDescriptor("icons/error-white.gif").createImage(); //$NON-NLS-1$
+        failureIcon = Activator.getImageDescriptor("icons/failure-white.gif").createImage(); //$NON-NLS-1$
 
         timeFormat = NumberFormat.getNumberInstance();
         timeFormat.setMaximumFractionDigits(3);
@@ -32,7 +32,7 @@ public class TestResultLabelProvider extends LabelProvider {
             TestResult testResult = (TestResult) element;
 
             String formattedTime = timeFormat.format(testResult.getTime());
-            return testResult.getName() + " (" + formattedTime + " s)";
+            return testResult.getName() + " (" + formattedTime + " s)"; //$NON-NLS-1$ //$NON-NLS-2$
         }
         return super.getText(element);
     }

@@ -10,21 +10,21 @@ public class TestCase extends TestResult {
     Problem problem;
 
     TestCase(Map<String, String> attributes) {
-        this.name = attributes.get("name");
-        if (attributes.containsKey("class")) {
-            this.targetClass = attributes.get("class");
+        this.name = attributes.get("name"); //$NON-NLS-1$
+        if (attributes.containsKey("class")) { //$NON-NLS-1$
+            this.targetClass = attributes.get("class"); //$NON-NLS-1$
         }
-        if (attributes.containsKey("file")) {
-            this.file = attributes.get("file");
+        if (attributes.containsKey("file")) { //$NON-NLS-1$
+            this.file = attributes.get("file"); //$NON-NLS-1$
         }
-        if (attributes.containsKey("line")) {
-            this.line = Integer.parseInt(attributes.get("line"));
+        if (attributes.containsKey("line")) { //$NON-NLS-1$
+            this.line = Integer.parseInt(attributes.get("line")); //$NON-NLS-1$
         }
-        if (attributes.containsKey("assertions")) {
-            this.assertionCount = Integer.parseInt(attributes.get("assertions"));
+        if (attributes.containsKey("assertions")) { //$NON-NLS-1$
+            this.assertionCount = Integer.parseInt(attributes.get("assertions")); //$NON-NLS-1$
         }
-        if (attributes.containsKey("time")) {
-            this.time = Double.parseDouble(attributes.get("time"));
+        if (attributes.containsKey("time")) { //$NON-NLS-1$
+            this.time = Double.parseDouble(attributes.get("time")); //$NON-NLS-1$
         }
         this.problem = new Problem(ProblemType.Pass);
     }

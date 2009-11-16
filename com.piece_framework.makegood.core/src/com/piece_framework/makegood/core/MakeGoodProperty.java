@@ -10,7 +10,7 @@ import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.osgi.service.prefs.BackingStoreException;
 
 public class MakeGoodProperty {
-    private static String PRELOAD_SCRIPT_KEY = "preload_script";
+    private static String PRELOAD_SCRIPT_KEY = "preload_script"; //$NON-NLS-1$
     private IEclipsePreferences preferences;
     private IProject project;
 
@@ -29,7 +29,7 @@ public class MakeGoodProperty {
     }
 
     public String getPreloadScript() {
-        return preferences.get(PRELOAD_SCRIPT_KEY, "");
+        return preferences.get(PRELOAD_SCRIPT_KEY, ""); //$NON-NLS-1$
     }
 
     public void setPreloadScript(String preloadScript) {

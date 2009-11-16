@@ -14,7 +14,7 @@ public class RunRelatedTestFromEditor extends AbstractHandler {
         IEditorPart editorPart = HandlerUtil.getActiveEditor(event);
         MakeGoodLaunchShortcut shortcut = new MakeGoodLaunchShortcut();
         shortcut.setRunLevelOnEditor(MakeGoodLaunchShortcut.RUN_RELATED_TESTS);
-        shortcut.launch(editorPart, "run");
+        shortcut.launch(editorPart, "run"); //$NON-NLS-1$
         return shortcut;
     }
 }

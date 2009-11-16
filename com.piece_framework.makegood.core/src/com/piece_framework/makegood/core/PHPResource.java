@@ -11,7 +11,7 @@ import org.eclipse.dltk.core.ITypeHierarchy;
 import org.eclipse.dltk.core.ModelException;
 
 public class PHPResource {
-    public static String CONTENT_TYPE = "org.eclipse.php.core.phpsource";
+    public static String CONTENT_TYPE = "org.eclipse.php.core.phpsource"; //$NON-NLS-1$
 
     public static boolean isTrue(IResource target) {
         if (!(target instanceof IFile)) {
@@ -40,7 +40,7 @@ public class PHPResource {
 
     private static boolean isTestClass(IType type) throws ModelException {
         for (String superClass: type.getSuperClasses()) {
-            if (superClass.equals("PHPUnit_Framework_TestCase")) {
+            if (superClass.equals("PHPUnit_Framework_TestCase")) { //$NON-NLS-1$
                 return true;
             }
         }
