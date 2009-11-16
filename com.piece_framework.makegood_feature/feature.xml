@@ -22,6 +22,26 @@
       <update label="%Feature.UpdateSiteName" url="http://eclipse.piece-framework.com/makegood/"/>
    </url>
 
+   <requires>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.php.debug.core" version="2.1.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.php.core" version="2.1.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.php.ui" version="2.1.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.debug.core"/>
+      <import plugin="org.eclipse.dltk.core"/>
+      <import plugin="org.eclipse.jface"/>
+      <import plugin="org.eclipse.debug.ui"/>
+      <import plugin="org.eclipse.php.debug.ui"/>
+      <import plugin="org.eclipse.jface.text"/>
+      <import plugin="org.eclipse.ui.forms"/>
+      <import plugin="org.eclipse.dltk.ui"/>
+      <import plugin="org.eclipse.ui.workbench.texteditor"/>
+      <import plugin="org.eclipse.core.expressions"/>
+      <import plugin="org.eclipse.ui.ide"/>
+   </requires>
+
    <plugin
          id="com.piece_framework.makegood.aspect.include_path_protection"
          download-size="0"
