@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: MakeGood Include Path Library
+Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: com.piece_framework.makegood.include_path
 Bundle-Version: 0.1.0
-Bundle-Vendor: Piece Project
+Bundle-Vendor: %Bundle-Vendor
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.eclipse.core.resources,
  org.eclipse.core.runtime,

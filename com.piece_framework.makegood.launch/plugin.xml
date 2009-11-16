@@ -8,7 +8,7 @@
             delegate="com.piece_framework.makegood.launch.MakeGoodLaunchConfigurationDelegate"
             id="com.piece_framework.makegood.launch.launchConfigurationTypes.makeGood"
             modes="run,debug"
-            name="MakeGood"
+            name="%launchConfigurationTypes.makeGood.name"
             public="false">
       </launchConfigurationType>
    </extension>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
-   <extension-point id="com.piece_framework.makegood.core.eventListeners" name="MakeGood execution event listener" schema="schema/com.piece_framework.makegood.core.eventListeners.exsd"/>
+   <extension-point id="com.piece_framework.makegood.core.eventListeners" name="%eventListeners.name" schema="schema/com.piece_framework.makegood.core.eventListeners.exsd"/>
    <extension
          point="org.eclipse.ui.startup">
       <startup

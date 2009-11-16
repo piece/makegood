@@ -1,10 +1,10 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: MakeGood Core
+Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: com.piece_framework.makegood.core;singleton:=true
 Bundle-Version: 0.1.0
 Bundle-Activator: com.piece_framework.makegood.core.Activator
-Bundle-Vendor: Piece Project
+Bundle-Vendor: %Bundle-Vendor
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.core.resources,

@@ -20,14 +20,14 @@
          point="org.eclipse.ui.views">
       <category
             id="com.piece_framework.makegood.ui.views.makeGoodCategory"
-            name="MakeGood">
+            name="%views.makeGoodCategory.name">
       </category>
       <view
             category="com.piece_framework.makegood.ui.views.makeGoodCategory"
             class="com.piece_framework.makegood.ui.views.TestResultView"
             icon="icons/MakeGood.gif"
             id="com.piece_framework.makegood.ui.views.resultView"
-            name="MakeGood"
+            name="%views.resultView.name"
             restorable="true">
       </view>
    </extension>
@@ -42,7 +42,7 @@
          <command
                commandId="com.piece_framework.makegood.ui.commands.runTestFromExplorer"
                icon="icons/MakeGood.gif"
-               label="&amp;Run tests for"
+               label="%commands.runTestFromExplorer.label"
                style="push">
             <visibleWhen
                   checkEnabled="true">
@@ -125,7 +125,7 @@
          </command>
          <menu
                icon="icons/MakeGood.gif"
-               label="&amp;Run tests for">
+               label="%menu.runTestsFor.label">
             <visibleWhen
                   checkEnabled="false">
                <reference
@@ -134,24 +134,24 @@
             </visibleWhen>
             <command
                   commandId="com.piece_framework.makegood.ui.commands.runTestFromEditor"
-                  label="&amp;Context"
+                  label="%commands.runTestFromEditor.label"
                   style="push">
             </command>
             <command
                   commandId="com.piece_framework.makegood.ui.commands.runTestFromEditorInClass"
-                  label="C&amp;lass"
+                  label="%commands.runTestFromEditorInClass.label"
                   style="push">
             </command>
             <command
                   commandId="com.piece_framework.makegood.ui.commands.runTestFromEditorInFile"
-                  label="&amp;File"
+                  label="%commands.runTestFromEditorInFile.label"
                   style="push">
             </command>
          </menu>
          <command
                commandId="com.piece_framework.makegood.ui.commands.runRelatedTestFromEditor"
                icon="icons/MakeGood.gif"
-               label="Run tests that depend on this file"
+               label="%commands.runRelatedTestFromEditor.label"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -166,59 +166,59 @@
          point="org.eclipse.ui.commands">
       <category
             id="com.piece_framework.makegood.ui.commands.runTestCategory"
-            name="MakeGood Run Tests">
+            name="%commands.runTestCategory.name">
       </category>
       <command
             categoryId="com.piece_framework.makegood.ui.commands.runTestCategory"
             defaultHandler="com.piece_framework.makegood.ui.handlers.RunTestFromExplorer"
             id="com.piece_framework.makegood.ui.commands.runTestFromExplorer"
-            name="Run tests for">
+            name="%commands.runTestFromExplorer.name">
       </command>
       <command
             categoryId="com.piece_framework.makegood.ui.commands.runTestCategory"
             defaultHandler="com.piece_framework.makegood.ui.handlers.RunTestFromEditor"
             id="com.piece_framework.makegood.ui.commands.runTestFromEditor"
-            name="Run tests for context">
+            name="%commands.runTestFromEditor.name">
       </command>
       <command
             categoryId="com.piece_framework.makegood.ui.commands.runTestCategory"
             defaultHandler="com.piece_framework.makegood.ui.handlers.RunTestFromEditorInClass"
             id="com.piece_framework.makegood.ui.commands.runTestFromEditorInClass"
-            name="Run tests for class">
+            name="%commands.runTestFromEditorInClass.name">
       </command>
       <command
             categoryId="com.piece_framework.makegood.ui.commands.runTestCategory"
             defaultHandler="com.piece_framework.makegood.ui.handlers.RunTestFromEditorInFile"
             id="com.piece_framework.makegood.ui.commands.runTestFromEditorInFile"
-            name="Run tests for file">
+            name="%commands.runTestFromEditorInFile.name">
       </command>
       <command
             categoryId="com.piece_framework.makegood.ui.commands.runTestCategory"
             defaultHandler="com.piece_framework.makegood.ui.handlers.RunRelatedTestFromEditor"
             id="com.piece_framework.makegood.ui.commands.runRelatedTestFromEditor"
-            name="Run tests that depend on this file">
+            name="%commands.runRelatedTestFromEditor.name">
       </command>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
       <category
             id="com.piece_framework.makegood.ui.commands.resultViewCategory"
-            name="MakeGood Result View">
+            name="%commands.resultViewCategory.name">
       </category>
       <command
             categoryId="com.piece_framework.makegood.ui.commands.resultViewCategory"
             id="com.piece_framework.makegood.ui.commands.nextFailedTest"
-            name="Next Failed Test">
+            name="%commands.nextFailedTest.name">
       </command>
       <command
             categoryId="com.piece_framework.makegood.ui.commands.resultViewCategory"
             id="com.piece_framework.makegood.ui.commands.previousFailedTest"
-            name="Previous Failed Test">
+            name="%commands.previousFailedTest.name">
       </command>
       <command
             categoryId="com.piece_framework.makegood.ui.commands.resultViewCategory"
             id="com.piece_framework.makegood.ui.commands.showFailuresOnly"
-            name="Show Failures Only">
+            name="%commands.showFailuresOnly.name">
       </command>
    </extension>
    <extension
@@ -227,7 +227,7 @@
             class="com.piece_framework.makegood.ui.propertyPages.MakeGoodPropertyPage"
             icon="icons/MakeGood.gif"
             id="com.piece_framework.makegood.ui.propertyPages.makeGood"
-            name="MakeGood">
+            name="%propertyPages.makeGood.name">
          <enabledWhen>
             <or>
                <instanceof
@@ -244,7 +244,7 @@
          point="org.eclipse.ui.contexts">
       <context
             id="com.piece_framework.makegood.ui.contexts.resultView"
-            name="In MakeGood Result View">
+            name="%contexts.resultView.name">
       </context>
    </extension>
    <extension
@@ -284,30 +284,30 @@
                definitionId="com.piece_framework.makegood.ui.commands.showFailuresOnly"
                icon="icons/filter-by-failures.gif"
                id="com.piece_framework.makegood.ui.viewActions.resultView.showFailuresOnly"
-               label="Show Failures Only"
+               label="%resultView.showFailuresOnly.label"
                style="toggle"
                toolbarPath="additions"
-               tooltip="Show Failures Only">
+               tooltip="%resultView.showFailuresOnly.tooltip">
          </action>
          <action
                class="com.piece_framework.makegood.ui.actions.PreviousFailedTestActions"
                definitionId="com.piece_framework.makegood.ui.commands.previousFailedTest"
                icon="icons/up-arrow.gif"
                id="com.piece_framework.makegood.ui.viewActions.resultView.previousFailedTest"
-               label="Previous Failed Test"
+               label="%resultView.previousFailedTest.label"
                style="push"
                toolbarPath="additions"
-               tooltip="Previous Failed Test">
+               tooltip="%resultView.previousFailedTest.tooltip">
          </action>
          <action
                class="com.piece_framework.makegood.ui.actions.NextFailedTestAction"
                definitionId="com.piece_framework.makegood.ui.commands.nextFailedTest"
                icon="icons/down-arrow.gif"
                id="com.piece_framework.makegood.ui.viewActions.resultView.NextFailedTest"
-               label="Next Failed Test"
+               label="%resultView.nextFailedTest.label"
                style="push"
                toolbarPath="additions"
-               tooltip="Next Failed Test">
+               tooltip="%resultView.nextFailedTest.tooltip">
          </action>
       </viewContribution>
    </extension>
