@@ -194,14 +194,6 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
                 }
 
                 tests.add(match.getResource());
-                for (IType type: ((ISourceModule) element).getAllTypes()) {
-                    ITypeHierarchy hierarchy = type.newTypeHierarchy(new NullProgressMonitor());
-                    if (hierarchy != null) {
-                        for (IType subClass : hierarchy.getAllSubtypes(type)) {
-                            tests.add(subClass.getResource());
-                        }
-                    }
-                }
             }
 
             @Override
