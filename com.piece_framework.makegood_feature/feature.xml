@@ -3,7 +3,8 @@
       id="com.piece_framework.makegood_feature"
       label="Makegood Feature"
       version="0.1.0"
-      provider-name="Piece Product">
+      provider-name="Piece Product"
+      plugin="com.piece_framework.makegood.core">
 
    <description url="http://www.example.com/description">
       [Enter Feature Description here.]
