@@ -11,7 +11,7 @@ import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 
 public class WeavingMonitor {
-    private static final String EXTENSION_POINT_ID = "com.piece_framework.makegood.javassist.monitorTargets";
+    private static final String EXTENSION_POINT_ID = "com.piece_framework.makegood.javassist.monitorTargets"; //$NON-NLS-1$
     private static List<IMonitorTarget> targets;
 
     public static boolean endAll() {
@@ -39,9 +39,9 @@ public class WeavingMonitor {
                 if (configuration.getName() == null) {
                     continue;
                 }
-                if (configuration.getName().equals("monitorTarget")) {
+                if (configuration.getName().equals("monitorTarget")) { //$NON-NLS-1$
                     try {
-                        Object executable = configuration.createExecutableExtension("target");
+                        Object executable = configuration.createExecutableExtension("target"); //$NON-NLS-1$
                         if (executable instanceof IMonitorTarget) {
                             targets.add((IMonitorTarget) executable);
                         }

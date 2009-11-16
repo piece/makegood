@@ -34,8 +34,8 @@ public class BundleLoader {
                 }
                 URL bundleURL = new URL(realBundle.getLocation());
                 String bundleLocation = null;
-                if (bundleURL.getFile().startsWith("file:")) {
-                    bundleLocation = bundleURL.getFile().substring("file:".length());
+                if (bundleURL.getFile().startsWith("file:")) { //$NON-NLS-1$
+                    bundleLocation = bundleURL.getFile().substring("file:".length()); //$NON-NLS-1$
                 } else {
                     bundleLocation = bundleURL.getFile();
                 }
@@ -45,8 +45,8 @@ public class BundleLoader {
                                      bundleLocation;
                 }
                 if (new File(bundleLocation).isDirectory()) {
-                    if (new File(bundleLocation + "bin").exists()) {
-                        bundleLocation += "bin";
+                    if (new File(bundleLocation + "bin").exists()) { //$NON-NLS-1$
+                        bundleLocation += "bin"; //$NON-NLS-1$
                     }
                 }
 
@@ -61,10 +61,10 @@ public class BundleLoader {
         if (notFoundBundles.size() > 0) {
             StringBuffer buffer = new StringBuffer();
             for (String notFoundBundle: notFoundBundles) {
-                buffer.append(buffer.length() > 0 ? ", " : "");
+                buffer.append(buffer.length() > 0 ? ", " : ""); //$NON-NLS-1$ //$NON-NLS-2$
                 buffer.append(notFoundBundle);
             }
-            throw new NotFoundException("The following bundles were not found: " + buffer.toString());
+            throw new NotFoundException(Messages.BundleLoader_notFoundMessage + buffer.toString());
         }
     }
 }
