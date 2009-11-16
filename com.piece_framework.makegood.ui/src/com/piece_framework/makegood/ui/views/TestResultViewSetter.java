@@ -63,7 +63,7 @@ public class TestResultViewSetter implements IMakeGoodEventListener {
             return;
         }
         final File logFile = new File(log);
-        if (!logFile.exists()) {
+        if (!logFile.exists() || logFile.length() == 0) {
             showDebugOutput();
             return;
         }
