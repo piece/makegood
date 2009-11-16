@@ -21,9 +21,9 @@ public class Startup implements IStartup {
     @Override
     public void earlyStartup() {
         BundleLoader loader = new BundleLoader(
-                new String[]{"org.eclipse.php.core",
-                             "com.piece_framework.makegood.aspect.include_path_search",
-                             "org.eclipse.core.resources"
+                new String[]{"org.eclipse.php.core", //$NON-NLS-1$
+                             "com.piece_framework.makegood.aspect.include_path_search", //$NON-NLS-1$
+                             "org.eclipse.core.resources" //$NON-NLS-1$
                              });
         try {
             loader.load();
@@ -33,7 +33,7 @@ public class Startup implements IStartup {
         }
 
         try {
-            CtClass targetClass = ClassPool.getDefault().get("org.eclipse.php.internal.core.util.PHPSearchEngine");
+            CtClass targetClass = ClassPool.getDefault().get("org.eclipse.php.internal.core.util.PHPSearchEngine"); //$NON-NLS-1$
             modifyFind(targetClass);
             targetClass.toClass(getClass().getClassLoader(), null);
         } catch (NotFoundException e) {
@@ -46,17 +46,17 @@ public class Startup implements IStartup {
     }
 
     private void modifyFind(CtClass targetClass) throws NotFoundException, CannotCompileException {
-        CtMethod targetMethod = targetClass.getDeclaredMethod("find");
+        CtMethod targetMethod = targetClass.getDeclaredMethod("find"); //$NON-NLS-1$
         targetMethod.instrument(new ExprEditor() {
             public void edit(Cast cast) throws CannotCompileException {
                 try {
                     CtClass castClass = cast.getType();
-                    if (castClass.getName().equals("org.eclipse.core.resources.IContainer")) {
+                    if (castClass.getName().equals("org.eclipse.core.resources.IContainer")) { //$NON-NLS-1$
                         cast.replace(
-"$_ = null;" +
-"if (includePath.getEntry() instanceof org.eclipse.core.resources.IContainer) {" +
-"    $_ = ($r) includePath.getEntry();" +
-"}"
+"$_ = null;" + //$NON-NLS-1$
+"if (includePath.getEntry() instanceof org.eclipse.core.resources.IContainer) {" + //$NON-NLS-1$
+"    $_ = ($r) includePath.getEntry();" + //$NON-NLS-1$
+"}" //$NON-NLS-1$
                             );
                     }
                 } catch (NotFoundException e) {
@@ -64,14 +64,14 @@ public class Startup implements IStartup {
             }
 
             public void edit(MethodCall methodCall) throws CannotCompileException {
-                if (methodCall.getClassName().equals("org.eclipse.core.resources.IContainer")
-                    && methodCall.getMethodName().equals("findMember")
+                if (methodCall.getClassName().equals("org.eclipse.core.resources.IContainer") //$NON-NLS-1$
+                    && methodCall.getMethodName().equals("findMember") //$NON-NLS-1$
                     ) {
                     methodCall.replace(
-"$_ = null;" +
-"if (container != null) {" +
-"    $_ = $proceed($$);" +
-"}"
+"$_ = null;" + //$NON-NLS-1$
+"if (container != null) {" + //$NON-NLS-1$
+"    $_ = $proceed($$);" + //$NON-NLS-1$
+"}" //$NON-NLS-1$
                         );
                 }
             }
@@ -80,12 +80,12 @@ public class Startup implements IStartup {
 
     private void log(Exception e) {
         IStatus status = new Status(IStatus.ERROR,
-                                    "com.piece_framework.makegood.aspect.include_path_search",
+                                    "com.piece_framework.makegood.aspect.include_path_search", //$NON-NLS-1$
                                     0,
                                     e.getMessage(),
                                     e
                                     );
-        Bundle bundle = Platform.getBundle("com.piece_framework.makegood.aspect.include_path_search");
+        Bundle bundle = Platform.getBundle("com.piece_framework.makegood.aspect.include_path_search"); //$NON-NLS-1$
         Platform.getLog(bundle).log(status);
     }
 }

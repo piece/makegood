@@ -21,12 +21,12 @@ public class Startup implements IStartup {
     @Override
     public void earlyStartup() {
         BundleLoader loader = new BundleLoader(
-                new String[]{"org.eclipse.php.ui",
-                             "com.piece_framework.makegood.aspect.include_path_settings",
-                             "com.piece_framework.makegood.include_path",
-                             "org.eclipse.dltk.ui",
-                             "org.eclipse.core.resources",
-                             "org.eclipse.jface"
+                new String[]{"org.eclipse.php.ui", //$NON-NLS-1$
+                             "com.piece_framework.makegood.aspect.include_path_settings", //$NON-NLS-1$
+                             "com.piece_framework.makegood.include_path", //$NON-NLS-1$
+                             "org.eclipse.dltk.ui", //$NON-NLS-1$
+                             "org.eclipse.core.resources", //$NON-NLS-1$
+                             "org.eclipse.jface" //$NON-NLS-1$
                              });
         try {
             loader.load();
@@ -36,7 +36,7 @@ public class Startup implements IStartup {
         }
 
         try {
-            CtClass targetClass = ClassPool.getDefault().get("org.eclipse.php.internal.ui.preferences.includepath.PHPIPListLabelProvider");
+            CtClass targetClass = ClassPool.getDefault().get("org.eclipse.php.internal.ui.preferences.includepath.PHPIPListLabelProvider"); //$NON-NLS-1$
             addGetCPListElementTextMethod(targetClass);
             modifyGetCPListElementBaseImage(targetClass);
             targetClass.toClass(getClass().getClassLoader(), null);
@@ -47,7 +47,7 @@ public class Startup implements IStartup {
         }
 
         try {
-            CtClass targetClass = ClassPool.getDefault().get("org.eclipse.php.internal.ui.preferences.includepath.PHPIncludePathsBlock");
+            CtClass targetClass = ClassPool.getDefault().get("org.eclipse.php.internal.ui.preferences.includepath.PHPIncludePathsBlock"); //$NON-NLS-1$
             modifyCreateControlMethod(targetClass);
             targetClass.toClass(getClass().getClassLoader(), null);
         } catch (NotFoundException e) {
@@ -61,37 +61,37 @@ public class Startup implements IStartup {
 
     private void addGetCPListElementTextMethod(CtClass targetClass) throws CannotCompileException {
         CtMethod newMethod = CtNewMethod.make(
-"public String getCPListElementText(org.eclipse.dltk.internal.ui.wizards.buildpath.BPListElement cpentry) {" +
-"    org.eclipse.core.resources.IResource target = cpentry.getResource();" +
-"    com.piece_framework.makegood.include_path.ConfigurationIncludePath configuration = new com.piece_framework.makegood.include_path.ConfigurationIncludePath(target.getProject());" +
-"    if (configuration.equalsDummyResource(target)) {" +
-"        return com.piece_framework.makegood.include_path.ConfigurationIncludePath.text;" +
-"    }" +
-"" +
-"    return super.getCPListElementText(cpentry);"+
-"}"
+"public String getCPListElementText(org.eclipse.dltk.internal.ui.wizards.buildpath.BPListElement cpentry) {" + //$NON-NLS-1$
+"    org.eclipse.core.resources.IResource target = cpentry.getResource();" + //$NON-NLS-1$
+"    com.piece_framework.makegood.include_path.ConfigurationIncludePath configuration = new com.piece_framework.makegood.include_path.ConfigurationIncludePath(target.getProject());" + //$NON-NLS-1$
+"    if (configuration.equalsDummyResource(target)) {" + //$NON-NLS-1$
+"        return com.piece_framework.makegood.include_path.ConfigurationIncludePath.text;" + //$NON-NLS-1$
+"    }" + //$NON-NLS-1$
+"" + //$NON-NLS-1$
+"    return super.getCPListElementText(cpentry);"+ //$NON-NLS-1$
+"}" //$NON-NLS-1$
             ,targetClass);
         targetClass.addMethod(newMethod);
     }
 
     private void modifyGetCPListElementBaseImage(CtClass targetClass) throws NotFoundException, CannotCompileException {
-        CtMethod targetMethod = targetClass.getDeclaredMethod("getCPListElementBaseImage");
+        CtMethod targetMethod = targetClass.getDeclaredMethod("getCPListElementBaseImage"); //$NON-NLS-1$
         targetMethod.insertBefore(
-"org.eclipse.core.resources.IResource target = cpentry.getResource();" +
-"com.piece_framework.makegood.include_path.ConfigurationIncludePath configuration = new com.piece_framework.makegood.include_path.ConfigurationIncludePath(target.getProject());" +
-"if (configuration.equalsDummyResource(target)) {" +
-"    return com.piece_framework.makegood.include_path.ConfigurationIncludePath.icon;" +
-"}"
+"org.eclipse.core.resources.IResource target = cpentry.getResource();" + //$NON-NLS-1$
+"com.piece_framework.makegood.include_path.ConfigurationIncludePath configuration = new com.piece_framework.makegood.include_path.ConfigurationIncludePath(target.getProject());" + //$NON-NLS-1$
+"if (configuration.equalsDummyResource(target)) {" + //$NON-NLS-1$
+"    return com.piece_framework.makegood.include_path.ConfigurationIncludePath.icon;" + //$NON-NLS-1$
+"}" //$NON-NLS-1$
             );
     }
 
     private void modifyCreateControlMethod(CtClass targetClass) throws NotFoundException, CannotCompileException {
-        CtMethod targetMethod = targetClass.getDeclaredMethod("createControl");
+        CtMethod targetMethod = targetClass.getDeclaredMethod("createControl"); //$NON-NLS-1$
         targetMethod.instrument(new ExprEditor() {
             public void edit(NewExpr expression) throws CannotCompileException {
-                if (expression.getClassName().equals("org.eclipse.php.internal.ui.preferences.includepath.PHPIncludePathSourcePage")) {
+                if (expression.getClassName().equals("org.eclipse.php.internal.ui.preferences.includepath.PHPIncludePathSourcePage")) { //$NON-NLS-1$
                     expression.replace(
-"$_ = new com.piece_framework.makegood.aspect.include_path_settings.PHPIncludePathSourcePageForConfiguration($1);"
+"$_ = new com.piece_framework.makegood.aspect.include_path_settings.PHPIncludePathSourcePageForConfiguration($1);" //$NON-NLS-1$
                         );
                 }
             }
@@ -100,12 +100,12 @@ public class Startup implements IStartup {
 
     private void log(Exception e) {
         IStatus status = new Status(IStatus.ERROR,
-                                    "com.piece_framework.makegood.aspect.include_path_settings",
+                                    "com.piece_framework.makegood.aspect.include_path_settings", //$NON-NLS-1$
                                     0,
                                     e.getMessage(),
                                     e
                                     );
-        Bundle bundle = Platform.getBundle("com.piece_framework.makegood.aspect.include_path_settings");
+        Bundle bundle = Platform.getBundle("com.piece_framework.makegood.aspect.include_path_settings"); //$NON-NLS-1$
         Platform.getLog(bundle).log(status);
     }
 }

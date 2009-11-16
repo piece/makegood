@@ -21,11 +21,11 @@ public class Startup implements IStartup {
     @Override
     public void earlyStartup() {
         BundleLoader loader = new BundleLoader(
-                new String[]{"org.eclipse.php.debug.core",
-                             "com.piece_framework.makegood.aspect.include_path_protection",
-                             "org.eclipse.core.resources",
-                             "org.eclipse.equinox.common",
-                             "org.eclipse.php.core"
+                new String[]{"org.eclipse.php.debug.core", //$NON-NLS-1$
+                             "com.piece_framework.makegood.aspect.include_path_protection", //$NON-NLS-1$
+                             "org.eclipse.core.resources", //$NON-NLS-1$
+                             "org.eclipse.equinox.common", //$NON-NLS-1$
+                             "org.eclipse.php.core" //$NON-NLS-1$
                              });
         try {
             loader.load();
@@ -35,7 +35,7 @@ public class Startup implements IStartup {
         }
 
         try {
-            CtClass targetClass = ClassPool.getDefault().get("org.eclipse.php.internal.debug.core.phpIni.PHPINIUtil");
+            CtClass targetClass = ClassPool.getDefault().get("org.eclipse.php.internal.debug.core.phpIni.PHPINIUtil"); //$NON-NLS-1$
             modifyCreatePhpIniByProject(targetClass);
             targetClass.toClass(getClass().getClassLoader(), null);
         } catch (NotFoundException e) {
@@ -48,20 +48,20 @@ public class Startup implements IStartup {
     }
 
     private void modifyCreatePhpIniByProject(CtClass targetClass) throws NotFoundException, CannotCompileException {
-        CtMethod targetMethod = targetClass.getDeclaredMethod("createPhpIniByProject");
+        CtMethod targetMethod = targetClass.getDeclaredMethod("createPhpIniByProject"); //$NON-NLS-1$
         targetMethod.instrument(new ExprEditor() {
             public void edit(Cast cast) throws CannotCompileException {
                 try {
                     CtClass castClass = cast.getType();
-                    if (castClass.getName().equals("org.eclipse.core.resources.IContainer")) {
+                    if (castClass.getName().equals("org.eclipse.core.resources.IContainer")) { //$NON-NLS-1$
                         cast.replace(
-"$_ = null;" +
-"if (pathObject.getEntry() instanceof org.eclipse.core.resources.IContainer) {" +
-"    $_ = ($r) pathObject.getEntry();" +
-"} else {" +
-"    org.eclipse.core.resources.IResource resource = (org.eclipse.core.resources.IResource) pathObject.getEntry();" +
-"    includePath.add(resource.getFullPath().toOSString());" +
-"}"
+"$_ = null;" + //$NON-NLS-1$
+"if (pathObject.getEntry() instanceof org.eclipse.core.resources.IContainer) {" + //$NON-NLS-1$
+"    $_ = ($r) pathObject.getEntry();" + //$NON-NLS-1$
+"} else {" + //$NON-NLS-1$
+"    org.eclipse.core.resources.IResource resource = (org.eclipse.core.resources.IResource) pathObject.getEntry();" + //$NON-NLS-1$
+"    includePath.add(resource.getFullPath().toOSString());" + //$NON-NLS-1$
+"}" //$NON-NLS-1$
                             );
                     }
                 } catch (NotFoundException e) {
@@ -69,24 +69,24 @@ public class Startup implements IStartup {
             }
 
             public void edit(MethodCall methodCall) throws CannotCompileException {
-                if (methodCall.getClassName().equals("org.eclipse.core.resources.IContainer")
-                    && methodCall.getMethodName().equals("getLocation")
+                if (methodCall.getClassName().equals("org.eclipse.core.resources.IContainer") //$NON-NLS-1$
+                    && methodCall.getMethodName().equals("getLocation") //$NON-NLS-1$
                     ) {
                     methodCall.replace(
-"$_ = null;" +
-"if (container != null) {" +
-"    $_ = $proceed($$);" +
-"}"
+"$_ = null;" + //$NON-NLS-1$
+"if (container != null) {" + //$NON-NLS-1$
+"    $_ = $proceed($$);" + //$NON-NLS-1$
+"}" //$NON-NLS-1$
                         );
-                } else if (methodCall.getMethodName().equals("modifyIncludePath")) {
+                } else if (methodCall.getMethodName().equals("modifyIncludePath")) { //$NON-NLS-1$
                     methodCall.replace(
-"com.piece_framework.makegood.aspect.include_path_protection.PHPConfiguration phpConfiguration =" +
-"    new com.piece_framework.makegood.aspect.include_path_protection.PHPConfiguration();" +
-"String[] transformedIncludePaths = phpConfiguration.transformIncludePaths($1," +
-"                                                                          includePath,"+
-"                                                                          project" +
-"                                                                          );" +
-"$_ = $proceed($1, transformedIncludePaths);"
+"com.piece_framework.makegood.aspect.include_path_protection.PHPConfiguration phpConfiguration =" + //$NON-NLS-1$
+"    new com.piece_framework.makegood.aspect.include_path_protection.PHPConfiguration();" + //$NON-NLS-1$
+"String[] transformedIncludePaths = phpConfiguration.transformIncludePaths($1," + //$NON-NLS-1$
+"                                                                          includePath,"+ //$NON-NLS-1$
+"                                                                          project" + //$NON-NLS-1$
+"                                                                          );" + //$NON-NLS-1$
+"$_ = $proceed($1, transformedIncludePaths);" //$NON-NLS-1$
                         );
                 }
             }
@@ -95,12 +95,12 @@ public class Startup implements IStartup {
 
     private void log(Exception e) {
         IStatus status = new Status(IStatus.ERROR,
-                                    "com.piece_framework.makegood.aspect.include_path_protection",
+                                    "com.piece_framework.makegood.aspect.include_path_protection", //$NON-NLS-1$
                                     0,
                                     e.getMessage(),
                                     e
                                     );
-        Bundle bundle = Platform.getBundle("com.piece_framework.makegood.aspect.include_path_protection");
+        Bundle bundle = Platform.getBundle("com.piece_framework.makegood.aspect.include_path_protection"); //$NON-NLS-1$
         Platform.getLog(bundle).log(status);
     }
 }

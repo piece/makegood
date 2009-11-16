@@ -16,7 +16,7 @@ import org.eclipse.php.internal.debug.core.PHPDebugPlugin;
 import com.piece_framework.makegood.include_path.ConfigurationIncludePath;
 
 public class PHPConfiguration {
-    private static final String INCLUDE_PATH_KEY = "include_path";
+    private static final String INCLUDE_PATH_KEY = "include_path"; //$NON-NLS-1$
 
     public String[] transformIncludePaths(File configurationFile,
                                           List<String> includePaths,
@@ -43,7 +43,7 @@ public class PHPConfiguration {
         try {
             BufferedReader reader = new BufferedReader(new FileReader(configurationFile));
             String line;
-            Pattern keyValuePattern = Pattern.compile("([\\w]+)\\s*=\\s*(.*)");
+            Pattern keyValuePattern = Pattern.compile("([\\w]+)\\s*=\\s*(.*)"); //$NON-NLS-1$
             while ((line = reader.readLine()) != null) {
                 line = line.trim();
                 Matcher matcher = keyValuePattern.matcher(line);
@@ -56,10 +56,10 @@ public class PHPConfiguration {
                     continue;
                 }
 
-                String value = matcher.group(2).replaceAll("\"", "");
+                String value = matcher.group(2).replaceAll("\"", ""); //$NON-NLS-1$ //$NON-NLS-2$
                 String[] includePaths = value.split(File.pathSeparator);
                 for (String includePath: includePaths) {
-                    if (includePath.equals(".")) {
+                    if (includePath.equals(".")) { //$NON-NLS-1$
                         continue;
                     }
 

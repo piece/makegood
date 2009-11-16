@@ -38,7 +38,7 @@ public class PHPIncludePathSourcePageForConfiguration extends PHPIncludePathSour
 
         String[] buttonLabels = new String[] {
                 NewWizardMessages.SourceContainerWorkbookPage_folders_add_button,
-                "Add the System Include Path",
+                Messages.PHPIncludePathSourcePageForConfiguration_label,
                 NewWizardMessages.SourceContainerWorkbookPage_folders_remove_button
                 };
 
@@ -47,7 +47,7 @@ public class PHPIncludePathSourcePageForConfiguration extends PHPIncludePathSour
                                                new PHPIPListLabelProvider()
                                                );
         fFoldersList.setDialogFieldListener(adapter);
-        fFoldersList.setLabelText(PHPUIMessages.getString("IncludePathSourcePage_Folders_Label")); //$NON-NLS-1$
+        fFoldersList.setLabelText("Source folders on include path:"); //$NON-NLS-1$
         fFoldersList.setViewerSorter(new BPListElementSorter());
     }
 
