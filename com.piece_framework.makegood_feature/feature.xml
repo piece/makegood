@@ -3,8 +3,9 @@
       id="com.piece_framework.makegood_feature"
       label="%Feature.BundleName"
       version="0.1.0"
-      provider-name="%Feature.BundleName"
-      plugin="com.piece_framework.makegood.core">
+      provider-name="%Feature.BundleProvider"
+      plugin="com.piece_framework.makegood.core"
+      image="makegood_120.jpg">
 
    <description url="%Feature.DescriptionURL">
       %Feature.Description
