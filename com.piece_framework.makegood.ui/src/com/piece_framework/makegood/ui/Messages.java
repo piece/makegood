@@ -16,6 +16,7 @@ public class Messages extends NLS {
     public static String TestResultView_failureTraceLabel;
     public static String TestResultView_passesLabel;
     public static String TestResultView_testsLabel;
+    public static String TestResultView_resultsLabel;
     static {
         // initialize resource bundle
         NLS.initializeMessages(BUNDLE_NAME, Messages.class);
