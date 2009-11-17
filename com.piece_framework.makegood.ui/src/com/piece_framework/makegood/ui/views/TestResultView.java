@@ -153,7 +153,7 @@ public class TestResultView extends ViewPart {
 
         new ResultLabel(trace,
                         Messages.TestResultView_failureTraceLabel,
-                        Activator.getImageDescriptor("icons/trace.gif").createImage() //$NON-NLS-1$
+                        Activator.getImageDescriptor("icons/failure-trace.gif").createImage() //$NON-NLS-1$
                         );
 
         resultList = new List(traceParent, SWT.BORDER + SWT.V_SCROLL + SWT.H_SCROLL);
