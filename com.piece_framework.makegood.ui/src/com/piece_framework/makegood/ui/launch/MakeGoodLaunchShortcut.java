@@ -198,6 +198,12 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
 
             @Override
             public void endReporting() {
+                EditorParser parser = new EditorParser(editor);
+                ISourceModule source = parser.getSourceModule();
+                if (source != null && PHPResource.includeTestClass(source)) {
+                    tests.add(source.getResource());
+                }
+
                 if (tests.size() == 0) {
                     MessageDialog.openInformation(editor.getEditorSite().getShell(),
                                                   Messages.MakeGoodLaunchShortcut_messageTitle,
