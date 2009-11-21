@@ -117,7 +117,7 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
             @Override
             public void run() {
                 PropertyDialog dialog = PropertyDialog.createDialogOn(null,
-                                                                      "com.piece_framework.makegood.ui.MakeGood", //$NON-NLS-1$
+                                                                      "com.piece_framework.makegood.ui.propertyPages.makeGood", //$NON-NLS-1$
                                                                       property.getProject()
                                                                       );
                 if (dialog.open() == Window.OK) {
