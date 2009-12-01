@@ -63,6 +63,9 @@ public class Startup implements IStartup {
         CtMethod newMethod = CtNewMethod.make(
 "public String getCPListElementText(org.eclipse.dltk.internal.ui.wizards.buildpath.BPListElement cpentry) {" + //$NON-NLS-1$
 "    org.eclipse.core.resources.IResource target = cpentry.getResource();" + //$NON-NLS-1$
+"    if (target == null) {" + //$NON-NLS-1$
+"        return super.getCPListElementText(cpentry);" + //$NON-NLS-1$
+"    }" + //$NON-NLS-1$
 "    com.piece_framework.makegood.include_path.ConfigurationIncludePath configuration = new com.piece_framework.makegood.include_path.ConfigurationIncludePath(target.getProject());" + //$NON-NLS-1$
 "    if (configuration.equalsDummyResource(target)) {" + //$NON-NLS-1$
 "        return com.piece_framework.makegood.include_path.ConfigurationIncludePath.text;" + //$NON-NLS-1$
@@ -78,9 +81,11 @@ public class Startup implements IStartup {
         CtMethod targetMethod = targetClass.getDeclaredMethod("getCPListElementBaseImage"); //$NON-NLS-1$
         targetMethod.insertBefore(
 "org.eclipse.core.resources.IResource target = cpentry.getResource();" + //$NON-NLS-1$
-"com.piece_framework.makegood.include_path.ConfigurationIncludePath configuration = new com.piece_framework.makegood.include_path.ConfigurationIncludePath(target.getProject());" + //$NON-NLS-1$
-"if (configuration.equalsDummyResource(target)) {" + //$NON-NLS-1$
-"    return com.piece_framework.makegood.include_path.ConfigurationIncludePath.icon;" + //$NON-NLS-1$
+"if (target != null) {" + //$NON-NLS-1$
+"    com.piece_framework.makegood.include_path.ConfigurationIncludePath configuration = new com.piece_framework.makegood.include_path.ConfigurationIncludePath(target.getProject());" + //$NON-NLS-1$
+"    if (configuration.equalsDummyResource(target)) {" + //$NON-NLS-1$
+"        return com.piece_framework.makegood.include_path.ConfigurationIncludePath.icon;" + //$NON-NLS-1$
+"    }" + //$NON-NLS-1$
 "}" //$NON-NLS-1$
             );
     }
