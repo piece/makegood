@@ -71,7 +71,7 @@ public class Startup implements IStartup {
 "        return com.piece_framework.makegood.include_path.ConfigurationIncludePath.text;" + //$NON-NLS-1$
 "    }" + //$NON-NLS-1$
 "" + //$NON-NLS-1$
-"    return super.getCPListElementText(cpentry);"+ //$NON-NLS-1$
+"    return super.getCPListElementText(cpentry);" + //$NON-NLS-1$
 "}" //$NON-NLS-1$
             ,targetClass);
         targetClass.addMethod(newMethod);
