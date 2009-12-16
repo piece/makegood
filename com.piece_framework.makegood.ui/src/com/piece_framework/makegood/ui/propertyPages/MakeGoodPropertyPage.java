@@ -13,9 +13,11 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbenchPropertyPage;
@@ -31,6 +33,8 @@ import com.piece_framework.makegood.ui.Messages;
 public class MakeGoodPropertyPage extends PropertyPage implements IWorkbenchPropertyPage {
     private static String PRELOAD_SCRIP_KEY = "preload_script"; //$NON-NLS-1$
     private Text preloadScript;
+    private Button phpUnit;
+    private Button simpleTest;
 
     @Override
     protected Control createContents(Composite parent) {
@@ -39,6 +43,19 @@ public class MakeGoodPropertyPage extends PropertyPage implements IWorkbenchProp
         layout.numColumns = 3;
         composite.setLayout(layout);
         composite.setLayoutData(new GridData(GridData.FILL_BOTH));
+
+        Group group = new Group(composite, SWT.LEFT | SWT.TOP);
+        group.setText("&Testing Framework");
+        group.setLayout(new RowLayout());
+        GridData gridData = new GridData();
+        gridData.horizontalSpan = 3;
+        gridData.horizontalAlignment = SWT.FILL;
+        group.setLayoutData(gridData);
+
+        phpUnit = new Button(group, SWT.RADIO);
+        phpUnit.setText("P&HPUnit");
+        simpleTest = new Button(group, SWT.RADIO);
+        simpleTest.setText("&SimpleTest");
 
         Label label = new Label(composite, SWT.NONE);
         label.setText(Messages.MakeGoodPropertyPage_preloadScriptLabel);
