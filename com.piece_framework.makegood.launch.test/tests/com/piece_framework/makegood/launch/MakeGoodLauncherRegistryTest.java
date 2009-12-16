@@ -47,4 +47,19 @@ public class MakeGoodLauncherRegistryTest {
                      launcher.getScript()
                      );
     }
+
+    @Test
+    public void returnLauncherOfSimpleTest() {
+        MakeGoodLauncherRegistry registry = new MakeGoodLauncherRegistry();
+        MakeGoodLauncher launcher = null;
+        try {
+            launcher = registry.getLauncher(TestingFramework.SimpleTest);
+        } catch (FileNotFoundException e) {
+            fail(e.getMessage());
+        }
+
+        assertEquals(MakeGoodLauncherRegistry.getRegistry().getAbsolutePath() + String.valueOf(File.separatorChar) + "simpletestrunner",
+                     launcher.getScript()
+                     );
+    }
 }
