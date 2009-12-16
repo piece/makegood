@@ -19,8 +19,6 @@ import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.Launch;
 import org.eclipse.debug.core.model.ILaunchConfigurationDelegate;
 
-import com.piece_framework.makegood.core.TestingFramework;
-
 public class MakeGoodLaunchConfigurationDelegate implements ILaunchConfigurationDelegate {
     public void launch(ILaunchConfiguration configuration,
                        String mode,
@@ -91,7 +89,7 @@ public class MakeGoodLaunchConfigurationDelegate implements ILaunchConfiguration
         MakeGoodLauncher launcher = null;
         try {
             MakeGoodLauncherRegistry registry = new MakeGoodLauncherRegistry();
-            launcher = registry.getLauncher(TestingFramework.PHPUnit);
+            launcher = registry.getLauncher(MakeGoodLaunchParameter.get().getTestingFramework());
         } catch (FileNotFoundException e) {
             throw new CoreException(new Status(IStatus.ERROR,
                                                Activator.PLUGIN_ID,
