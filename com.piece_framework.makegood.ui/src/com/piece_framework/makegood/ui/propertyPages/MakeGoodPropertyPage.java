@@ -28,6 +28,7 @@ import org.eclipse.ui.model.WorkbenchLabelProvider;
 
 import com.piece_framework.makegood.core.MakeGoodProperty;
 import com.piece_framework.makegood.core.PHPResource;
+import com.piece_framework.makegood.core.TestingFramework;
 import com.piece_framework.makegood.ui.Messages;
 
 public class MakeGoodPropertyPage extends PropertyPage implements IWorkbenchPropertyPage {
@@ -134,6 +135,13 @@ public class MakeGoodPropertyPage extends PropertyPage implements IWorkbenchProp
     @Override
     public boolean performOk() {
         MakeGoodProperty property = new MakeGoodProperty(getProject());
+        TestingFramework testingFramework = null;
+        if (phpUnit.getSelection()) {
+            testingFramework = TestingFramework.PHPUnit;
+        } else if (simpleTest.getSelection()) {
+            testingFramework = TestingFramework.SimpleTest;
+        }
+        property.setTestingFramework(testingFramework);
         property.setPreloadScript(preloadScript.getText());
 
         return true;
