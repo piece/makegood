@@ -35,7 +35,6 @@ public class MakeGoodProperty {
 
     public void setPreloadScript(String preloadScript) {
         preferences.put(PRELOAD_SCRIPT_KEY, preloadScript);
-        flush();
     }
 
     public boolean exists() {
@@ -56,7 +55,6 @@ public class MakeGoodProperty {
 
     public void setTestingFramework(TestingFramework testingFramework) {
         preferences.put(TESTING_FRAMEWORK_KEY, testingFramework.name());
-        flush();
     }
 
     public TestingFramework getTestingFramework() {
@@ -69,7 +67,7 @@ public class MakeGoodProperty {
         return null;
     }
 
-    private void flush() {
+    public void flush() {
         try {
             preferences.flush();
         } catch (BackingStoreException e) {

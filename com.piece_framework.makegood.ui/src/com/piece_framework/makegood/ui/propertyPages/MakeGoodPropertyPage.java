@@ -142,6 +142,7 @@ public class MakeGoodPropertyPage extends PropertyPage implements IWorkbenchProp
         }
         property.setTestingFramework(testingFramework);
         property.setPreloadScript(preloadScript.getText());
+        property.flush();
 
         return true;
     }
