@@ -59,6 +59,16 @@ public class MakeGoodProperty {
         flush();
     }
 
+    public TestingFramework getTestingFramework() {
+        String testingFramework = preferences.get(TESTING_FRAMEWORK_KEY, "");
+        if (testingFramework.equals(TestingFramework.PHPUnit.name())) {
+            return TestingFramework.PHPUnit;
+        } else if (testingFramework.equals(TestingFramework.SimpleTest.name())) {
+            return TestingFramework.SimpleTest;
+        }
+        return null;
+    }
+
     private void flush() {
         try {
             preferences.flush();
