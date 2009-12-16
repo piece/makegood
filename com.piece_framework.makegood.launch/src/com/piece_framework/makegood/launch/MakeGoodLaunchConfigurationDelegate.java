@@ -48,18 +48,7 @@ public class MakeGoodLaunchConfigurationDelegate implements ILaunchConfiguration
     private ILaunchConfiguration createStagehandTestRunnerLaunchConfiguration(ILaunch launch,
                                                                               ILaunchConfiguration configuration
                                                                               ) throws CoreException {
-        MakeGoodLauncher launcher = null;
-        try {
-            MakeGoodLauncherRegistry registry = new MakeGoodLauncherRegistry();
-            launcher = registry.getLauncher(TestingFramework.PHPUnit);
-        } catch (FileNotFoundException e) {
-            throw new CoreException(new Status(IStatus.ERROR,
-                                               Activator.PLUGIN_ID,
-                                               0,
-                                               e.getMessage(),
-                                               e
-                                               ));
-        }
+        MakeGoodLauncher launcher = getLauncher();
 
         String configurationName = "MakeGood" + Long.toString(System.currentTimeMillis()); //$NON-NLS-1$
         String log = MakeGoodLauncherRegistry.getRegistry().getAbsolutePath().toString() +
@@ -96,5 +85,21 @@ public class MakeGoodLaunchConfigurationDelegate implements ILaunchConfiguration
         manager.addLaunch(newLaunch);
 
         return newLaunch;
+    }
+
+    private MakeGoodLauncher getLauncher() throws CoreException {
+        MakeGoodLauncher launcher = null;
+        try {
+            MakeGoodLauncherRegistry registry = new MakeGoodLauncherRegistry();
+            launcher = registry.getLauncher(TestingFramework.PHPUnit);
+        } catch (FileNotFoundException e) {
+            throw new CoreException(new Status(IStatus.ERROR,
+                                               Activator.PLUGIN_ID,
+                                               0,
+                                               e.getMessage(),
+                                               e
+                                               ));
+        }
+        return launcher;
     }
 }
