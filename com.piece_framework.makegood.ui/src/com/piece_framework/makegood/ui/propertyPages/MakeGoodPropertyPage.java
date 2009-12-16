@@ -32,7 +32,6 @@ import com.piece_framework.makegood.core.TestingFramework;
 import com.piece_framework.makegood.ui.Messages;
 
 public class MakeGoodPropertyPage extends PropertyPage implements IWorkbenchPropertyPage {
-    private static String PRELOAD_SCRIP_KEY = "preload_script"; //$NON-NLS-1$
     private Text preloadScript;
     private Button phpUnit;
     private Button simpleTest;
