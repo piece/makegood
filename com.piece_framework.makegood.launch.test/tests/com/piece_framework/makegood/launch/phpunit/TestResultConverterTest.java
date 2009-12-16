@@ -538,4 +538,28 @@ public class TestResultConverterTest {
         assertFalse(rootSuite.hasError());
         assertTrue(rootSuite.hasFailure());
     }
+
+    @Test
+    public void convertErrorResultThatHasNoType() throws FileNotFoundException {
+        List<TestSuite> testResults = TestResultConverter.convert(new File(System.getProperty("user.dir") +
+                                                                           String.valueOf(File.separatorChar) +
+                                                                           "phpunit-results/error-no-type.log"
+                                                                           ));
+
+        assertEquals(1, testResults.size());
+
+        TestSuite rootSuite = testResults.get(0);
+        assertTrue(rootSuite.hasError());
+        assertFalse(rootSuite.hasFailure());
+
+        assertEquals(1, rootSuite.getTestResults().size());
+        for (TestResult result: rootSuite.getTestResults()) {
+            assertTrue(result.hasError());
+            assertFalse(result.hasFailure());
+        }
+
+        TestCase result = (TestCase) rootSuite.results.get(0).results.get(0);
+        assertEquals(ProblemType.Error, result.problem.type);
+        assertNull(result.problem.typeClass);
+    }
 }

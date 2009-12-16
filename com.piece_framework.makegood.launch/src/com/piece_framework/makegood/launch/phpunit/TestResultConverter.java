@@ -97,7 +97,9 @@ public class TestResultConverter {
         } else {
             return null;
         }
-        problem.typeClass = node.getAttributes().getNamedItem("type").getNodeValue(); //$NON-NLS-1$
+        if (node.getAttributes().getNamedItem("type") != null) {    //$NON-NLS-1$
+            problem.typeClass = node.getAttributes().getNamedItem("type").getNodeValue(); //$NON-NLS-1$
+        }
         problem.content = node.getTextContent();
         return problem;
     }
