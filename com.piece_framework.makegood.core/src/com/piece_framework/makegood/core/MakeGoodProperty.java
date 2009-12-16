@@ -12,8 +12,6 @@ import org.osgi.service.prefs.BackingStoreException;
 public class MakeGoodProperty {
     private static String PRELOAD_SCRIPT_KEY = "preload_script"; //$NON-NLS-1$
     private static String TESTING_FRAMEWORK_KEY = "testing_framework"; //$NON-NLS-1$
-    private static String PHP_UNIT = "PHPUnit";
-    private static String SIMPLE_TEST = "SimpleTest";
     private IEclipsePreferences preferences;
     private IProject project;
 
@@ -49,11 +47,11 @@ public class MakeGoodProperty {
     }
 
     public boolean usePHPUnit() {
-        return preferences.get(TESTING_FRAMEWORK_KEY, "").equals(PHP_UNIT);
+        return preferences.get(TESTING_FRAMEWORK_KEY, "").equals(TestingFramework.PHPUnit.name());
     }
 
     public boolean useSimpleTest() {
-        return preferences.get(TESTING_FRAMEWORK_KEY, "").equals(SIMPLE_TEST);
+        return preferences.get(TESTING_FRAMEWORK_KEY, "").equals(TestingFramework.SimpleTest.name());
     }
 
     private void flush() {
