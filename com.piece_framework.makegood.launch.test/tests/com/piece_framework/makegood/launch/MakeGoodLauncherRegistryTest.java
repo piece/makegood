@@ -11,6 +11,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.piece_framework.makegood.core.TestingFramework;
+
 public class MakeGoodLauncherRegistryTest {
 
     @Before
