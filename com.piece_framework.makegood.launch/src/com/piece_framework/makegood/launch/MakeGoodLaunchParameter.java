@@ -18,6 +18,7 @@ import org.eclipse.osgi.framework.debug.Debug;
 
 import com.piece_framework.makegood.core.MakeGoodProperty;
 import com.piece_framework.makegood.core.PHPResource;
+import com.piece_framework.makegood.core.TestingFramework;
 
 public class MakeGoodLaunchParameter {
     private static MakeGoodLaunchParameter parameter;
@@ -115,6 +116,11 @@ public class MakeGoodLaunchParameter {
         buffer.append(" -R " + resources.toString()); //$NON-NLS-1$
         Debug.println(buffer.toString());
         return buffer.toString();
+    }
+
+    public TestingFramework getTestingFramework() {
+        MakeGoodProperty property = new MakeGoodProperty(getTargetResource(targets.get(0)));
+        return property.getTestingFramework();
     }
 
     private IFile findDummyFile(IFolder folder) {
