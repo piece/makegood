@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.piece_framework.makegood.core.TestingFramework;
+
 public class MakeGoodLauncherRegistry {
     private static Map<TestingFramework, String> launcherScripts = new HashMap<TestingFramework, String>();
 

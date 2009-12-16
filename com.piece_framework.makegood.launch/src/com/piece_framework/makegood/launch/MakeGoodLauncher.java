@@ -1,5 +1,7 @@
 package com.piece_framework.makegood.launch;
 
+import com.piece_framework.makegood.core.TestingFramework;
+
 public class MakeGoodLauncher {
     private TestingFramework testingFramework;
     private String script;

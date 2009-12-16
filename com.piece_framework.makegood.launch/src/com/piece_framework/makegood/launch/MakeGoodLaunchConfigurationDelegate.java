@@ -19,6 +19,8 @@ import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.Launch;
 import org.eclipse.debug.core.model.ILaunchConfigurationDelegate;
 
+import com.piece_framework.makegood.core.TestingFramework;
+
 public class MakeGoodLaunchConfigurationDelegate implements ILaunchConfigurationDelegate {
     public void launch(ILaunchConfiguration configuration,
                        String mode,
