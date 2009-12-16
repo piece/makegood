@@ -46,14 +46,13 @@ public class MakeGoodLaunchConfigurationDelegate implements ILaunchConfiguration
     private ILaunchConfiguration createStagehandTestRunnerLaunchConfiguration(ILaunch launch,
                                                                               ILaunchConfiguration configuration
                                                                               ) throws CoreException {
-        MakeGoodLauncher launcher = getLauncher();
-
         String configurationName = "MakeGood" + Long.toString(System.currentTimeMillis()); //$NON-NLS-1$
         String log = MakeGoodLauncherRegistry.getRegistry().getAbsolutePath().toString() +
                      String.valueOf(File.separatorChar) +
                      configurationName +
                      ".xml"; //$NON-NLS-1$
         MakeGoodLaunchParameter parameter = MakeGoodLaunchParameter.get();
+        MakeGoodLauncher launcher = getLauncher();
 
         ILaunchConfigurationWorkingCopy workingCopy = configuration.copy(configurationName);
         workingCopy.setAttribute("ATTR_FILE", parameter.getMainScript()); //$NON-NLS-1$
