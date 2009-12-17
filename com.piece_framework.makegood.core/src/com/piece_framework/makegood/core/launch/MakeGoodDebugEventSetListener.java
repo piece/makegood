@@ -41,10 +41,6 @@ public class MakeGoodDebugEventSetListener implements IDebugEventSetListener {
                 for (IMakeGoodEventListener eventListener: eventListeners) {
                     eventListener.terminate(launch);
                 }
-                try {
-                    configuration.delete();
-                } catch (CoreException e) {
-                }
             }
         }
     }
