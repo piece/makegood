@@ -42,16 +42,8 @@ public class PHPResource {
         if (type == null) {
             return false;
         }
-        MakeGoodProperty property = new MakeGoodProperty(type.getResource());
-        String testClass = null;
-        if (property.usePHPUnit()) {
-            testClass = "PHPUnit_Framework_TestCase";
-        } else if (property.useSimpleTest()) {
-            testClass = "UnitTestCase";
-        } else {
-            testClass = "PHPUnit_Framework_TestCase";
-        }
 
+        String testClass = getTestClass(type);
         for (String superClass: type.getSuperClasses()) {
             if (superClass.equals(testClass)) { //$NON-NLS-1$
                 return true;
@@ -66,5 +58,16 @@ public class PHPResource {
             }
         }
         return false;
+    }
+
+    private static String getTestClass(IType type) {
+        MakeGoodProperty property = new MakeGoodProperty(type.getResource());
+        if (property.usePHPUnit()) {
+            return "PHPUnit_Framework_TestCase";
+        } else if (property.useSimpleTest()) {
+            return "UnitTestCase";
+        } else {
+            return "PHPUnit_Framework_TestCase";
+        }
     }
 }
