@@ -63,8 +63,9 @@ public class MakeGoodProperty {
             return TestingFramework.PHPUnit;
         } else if (testingFramework.equals(TestingFramework.SimpleTest.name())) {
             return TestingFramework.SimpleTest;
+        } else {
+            return TestingFramework.PHPUnit;
         }
-        return null;
     }
 
     public void flush() {
