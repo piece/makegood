@@ -39,8 +39,21 @@ public class PHPResource {
     }
 
     private static boolean isTestClass(IType type) throws ModelException {
+        if (type == null) {
+            return false;
+        }
+        MakeGoodProperty property = new MakeGoodProperty(type.getResource());
+        String testClass = null;
+        if (property.usePHPUnit()) {
+            testClass = "PHPUnit_Framework_TestCase";
+        } else if (property.useSimpleTest()) {
+            testClass = "UnitTestCase";
+        } else {
+            testClass = "PHPUnit_Framework_TestCase";
+        }
+
         for (String superClass: type.getSuperClasses()) {
-            if (superClass.equals("PHPUnit_Framework_TestCase")) { //$NON-NLS-1$
+            if (superClass.equals(testClass)) { //$NON-NLS-1$
                 return true;
             }
         }
