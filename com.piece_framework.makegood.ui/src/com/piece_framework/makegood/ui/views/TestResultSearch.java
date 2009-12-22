@@ -2,9 +2,9 @@ package com.piece_framework.makegood.ui.views;
 
 import java.util.List;
 
-import com.piece_framework.makegood.launch.phpunit.TestCase;
-import com.piece_framework.makegood.launch.phpunit.TestResult;
-import com.piece_framework.makegood.launch.phpunit.TestSuite;
+import com.piece_framework.makegood.launch.elements.TestCase;
+import com.piece_framework.makegood.launch.elements.TestResult;
+import com.piece_framework.makegood.launch.elements.TestSuite;
 
 public class TestResultSearch {
     private List<TestResult> results;

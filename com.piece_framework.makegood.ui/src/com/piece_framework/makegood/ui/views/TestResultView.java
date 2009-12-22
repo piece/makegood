@@ -28,10 +28,10 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.contexts.IContextService;
 import org.eclipse.ui.part.ViewPart;
 
-import com.piece_framework.makegood.launch.phpunit.ProblemType;
-import com.piece_framework.makegood.launch.phpunit.TestCase;
-import com.piece_framework.makegood.launch.phpunit.TestResult;
-import com.piece_framework.makegood.launch.phpunit.TestSuite;
+import com.piece_framework.makegood.launch.elements.ProblemType;
+import com.piece_framework.makegood.launch.elements.TestCase;
+import com.piece_framework.makegood.launch.elements.TestResult;
+import com.piece_framework.makegood.launch.elements.TestSuite;
 import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.Messages;
 

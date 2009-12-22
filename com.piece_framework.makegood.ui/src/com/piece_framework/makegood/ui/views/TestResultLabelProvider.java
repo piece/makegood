@@ -5,7 +5,7 @@ import java.text.NumberFormat;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 
-import com.piece_framework.makegood.launch.phpunit.TestResult;
+import com.piece_framework.makegood.launch.elements.TestResult;
 import com.piece_framework.makegood.ui.Activator;
 
 public class TestResultLabelProvider extends LabelProvider {

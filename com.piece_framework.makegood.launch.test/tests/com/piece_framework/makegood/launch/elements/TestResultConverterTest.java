@@ -1,4 +1,4 @@
-package com.piece_framework.makegood.launch.phpunit;
+package com.piece_framework.makegood.launch.elements;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -11,6 +11,12 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import com.piece_framework.makegood.launch.elements.ProblemType;
+import com.piece_framework.makegood.launch.elements.TestCase;
+import com.piece_framework.makegood.launch.elements.TestResult;
+import com.piece_framework.makegood.launch.elements.TestResultConverter;
+import com.piece_framework.makegood.launch.elements.TestSuite;
 
 public class TestResultConverterTest {
 

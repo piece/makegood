@@ -18,7 +18,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.progress.UIJob;
 
 import com.piece_framework.makegood.core.launch.IMakeGoodEventListener;
-import com.piece_framework.makegood.launch.phpunit.TestResultConverter;
+import com.piece_framework.makegood.launch.elements.TestResultConverter;
 
 public class TestResultViewSetter implements IMakeGoodEventListener {
     @Override
