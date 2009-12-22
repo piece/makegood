@@ -45,7 +45,7 @@ public class MakeGoodPropertyPage extends PropertyPage implements IWorkbenchProp
         composite.setLayoutData(new GridData(GridData.FILL_BOTH));
 
         Group group = new Group(composite, SWT.LEFT | SWT.TOP);
-        group.setText("&Testing Framework");
+        group.setText(Messages.MakeGoodPropertyPage_testingFrameworkLabel);
         group.setLayout(new RowLayout());
         GridData gridData = new GridData();
         gridData.horizontalSpan = 3;

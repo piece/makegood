@@ -6,6 +6,7 @@ public class Messages extends NLS {
     private static final String BUNDLE_NAME = "messages"; //$NON-NLS-1$
     public static String MakeGoodLaunchShortcut_messageTitle;
     public static String MakeGoodLaunchShortcut_notFoundTestsMessage;
+    public static String MakeGoodPropertyPage_testingFrameworkLabel;
     public static String MakeGoodPropertyPage_browseLabel;
     public static String MakeGoodPropertyPage_preloadScriptDialogMessage;
     public static String MakeGoodPropertyPage_preloadScriptDialogTitle;
