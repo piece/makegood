@@ -7,3 +7,4 @@ com.piece_framework.makegood.include_path/bin
 com.piece_framework.makegood.javassist/bin
 com.piece_framework.makegood.core/bin
 com.piece_framework.makegood.aspect.include_path_search/bin
+com.piece_framework.makegood.aspect.program_arguments_parsing/bin

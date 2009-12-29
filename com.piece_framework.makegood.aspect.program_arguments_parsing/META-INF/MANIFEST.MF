@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %Bundle-Name
+Bundle-SymbolicName: com.piece_framework.makegood.aspect.program_arguments_parsing;singleton:=true
+Bundle-Version: 0.3.0.dev
+Bundle-Vendor: %Bundle-Vendor
+Fragment-Host: org.eclipse.php.debug.core;bundle-version="2.1.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: org.eclipse.ui,
+ com.piece_framework.makegood.javassist
