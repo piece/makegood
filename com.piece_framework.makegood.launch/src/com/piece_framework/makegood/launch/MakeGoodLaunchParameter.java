@@ -71,12 +71,12 @@ public class MakeGoodLaunchParameter {
             IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
             IResource preloadResource = root.findMember(preloadScript);
             if (preloadResource != null) {
-                buffer.append("-p " + preloadResource.getLocation().toString()); //$NON-NLS-1$
+                buffer.append("-p \"" + preloadResource.getLocation().toString() + "\""); //$NON-NLS-1$
             }
         }
 
         if (log != null) {
-            buffer.append(" --log-junit=" + log); //$NON-NLS-1$
+            buffer.append(" --log-junit=\"" + log + "\""); //$NON-NLS-1$
         }
 
         StringBuilder classes = new StringBuilder();
@@ -106,7 +106,7 @@ public class MakeGoodLaunchParameter {
                 methods.append(targetValue);
             }
 
-            resources.append(" " + getTargetResource(target).getLocation().toString()); //$NON-NLS-1$
+            resources.append(" \"" + getTargetResource(target).getLocation().toString() + "\""); //$NON-NLS-1$
         }
 
         buffer.append(classes.length() > 0 ?
