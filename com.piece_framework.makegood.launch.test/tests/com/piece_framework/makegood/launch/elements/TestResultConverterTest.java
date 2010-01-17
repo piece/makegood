@@ -564,7 +564,7 @@ public class TestResultConverterTest {
             assertFalse(result.hasFailure());
         }
 
-        TestCase result = (TestCase) rootSuite.results.get(0).results.get(0);
+        TestCase result = (TestCase) rootSuite.getTestResults().get(0).getTestResults().get(0);
         assertEquals(ProblemType.Error, result.problem.type);
         assertNull(result.problem.typeClass);
     }

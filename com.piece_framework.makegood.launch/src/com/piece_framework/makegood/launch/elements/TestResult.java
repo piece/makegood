@@ -1,76 +1,27 @@
 package com.piece_framework.makegood.launch.elements;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public abstract class TestResult {
     String name;
     double time;
-    List<TestResult> results;
+    TestResult parent;
 
     public String getName() {
         return name;
-    }
-
-    public List<TestResult> getTestResults() {
-        if (results == null) {
-            results = new ArrayList<TestResult>();
-        }
-        return Collections.unmodifiableList(results);
-    }
-
-    public TestResult findTestResult(String name) {
-        if (results == null) {
-            return null;
-        }
-
-        for (TestResult result: results) {
-            if (result.getName().equals(name)) {
-                return result;
-            }
-        }
-        return null;
-    }
-
-    public boolean hasError() {
-        if (results == null) {
-            return false;
-        }
-
-        for (TestResult result: results) {
-            if (result.hasError()) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public boolean hasFailure() {
-        if (results == null) {
-            return false;
-        }
-
-        for (TestResult result: results) {
-            if (result.hasFailure()) {
-                return true;
-            }
-        }
-        return false;
     }
 
     public double getTime() {
         return time;
     }
 
-    void addTestResult(TestResult result) {
-        if (result == null) {
-            return;
-        }
+    public abstract List<TestResult> getTestResults();
 
-        if (results == null) {
-            results = new ArrayList<TestResult>();
-        }
-        results.add(result);
-    }
+    public abstract TestResult findTestResult(String name);
+
+    public abstract boolean hasError();
+
+    public abstract boolean hasFailure();
+
+    abstract void addTestResult(TestResult result);
 }

@@ -1,5 +1,8 @@
 package com.piece_framework.makegood.launch.elements;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 public class TestCase extends TestResult {
@@ -57,5 +60,20 @@ public class TestCase extends TestResult {
     @Override
     public boolean hasFailure() {
         return problem.getType() == ProblemType.Failure;
+    }
+
+    @Override
+    void addTestResult(TestResult result) throws UnsupportedOperationException {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public List<TestResult> getTestResults() {
+        return Collections.unmodifiableList(new ArrayList<TestResult>());
+    }
+
+    @Override
+    public TestResult findTestResult(String name) {
+        return null;
     }
 }

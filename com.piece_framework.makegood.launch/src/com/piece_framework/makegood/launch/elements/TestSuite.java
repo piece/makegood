@@ -1,5 +1,8 @@
 package com.piece_framework.makegood.launch.elements;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 public class TestSuite extends TestResult {
@@ -10,6 +13,7 @@ public class TestSuite extends TestResult {
     int assertionCount;
     int errorCount;
     int failureCount;
+    List<TestResult> children;
 
     TestSuite(Map<String, String> attributes) {
         this.name = attributes.get("name"); //$NON-NLS-1$
@@ -28,15 +32,11 @@ public class TestSuite extends TestResult {
         if (attributes.containsKey("assertions")) { //$NON-NLS-1$
             this.assertionCount = Integer.parseInt(attributes.get("assertions")); //$NON-NLS-1$
         }
-        if (attributes.containsKey("errors")) { //$NON-NLS-1$
-            this.errorCount = Integer.parseInt(attributes.get("errors")); //$NON-NLS-1$
-        }
-        if (attributes.containsKey("failures")) { //$NON-NLS-1$
-            this.failureCount = Integer.parseInt(attributes.get("failures")); //$NON-NLS-1$
-        }
         if (attributes.containsKey("time")) { //$NON-NLS-1$
             this.time = Double.parseDouble(attributes.get("time")); //$NON-NLS-1$
         }
+
+        children = new ArrayList<TestResult>();
     }
 
     public String getFile() {
@@ -69,19 +69,61 @@ public class TestSuite extends TestResult {
 
     @Override
     public boolean hasError() {
-        boolean result = super.hasError();
-        if (!result) {
-            result = errorCount > 0;
+        for (TestResult result : children) {
+            if (result.hasError()) {
+                return true;
+            }
         }
-        return result;
+        return errorCount > 0;
     }
 
     @Override
     public boolean hasFailure() {
-        boolean result = super.hasFailure();
-        if (!result) {
-            result = failureCount > 0;
+        for (TestResult result : children) {
+            if (result.hasFailure()) {
+                return true;
+            }
         }
-        return result;
+        return failureCount > 0;
+    }
+
+    @Override
+    void addTestResult(TestResult result) {
+        if (result == null) {
+            return;
+        }
+
+        result.parent = this;
+
+        children.add(result);
+    }
+
+    @Override
+    public List<TestResult> getTestResults() {
+        return Collections.unmodifiableList(children);
+    }
+
+    @Override
+    public TestResult findTestResult(String name) {
+        for (TestResult result: children) {
+            if (result.getName().equals(name)) {
+                return result;
+            }
+        }
+        return null;
+    }
+
+    public void increaseFailureCount() {
+        ++failureCount;
+        if (parent != null) {
+            ((TestSuite) parent).increaseFailureCount();
+        }
+    }
+
+    public void increaseErrorCount() {
+        ++errorCount;
+        if (parent != null) {
+            ((TestSuite) parent).increaseErrorCount();
+        }
     }
 }
