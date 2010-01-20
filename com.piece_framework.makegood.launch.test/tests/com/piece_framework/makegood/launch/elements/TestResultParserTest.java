@@ -23,11 +23,11 @@ public class TestResultParserTest {
                                          SAXException,
                                          IOException,
                                          InterruptedException {
-        final TestResultParser parser = new TestResultParser(
-                                            new File(System.getProperty("user.dir") +
-                                                     String.valueOf(File.separatorChar) +
-                                                     "stagehand-testrunner-results/alltests.xml"
-                                                     ));
+        TestResultParser parser = new TestResultParser(
+                                      new File(System.getProperty("user.dir") +
+                                               String.valueOf(File.separatorChar) +
+                                               "stagehand-testrunner-results/alltests.xml"
+                                               ));
         parser.start();
 
         List<TestResult> results = parser.getTestResults();
