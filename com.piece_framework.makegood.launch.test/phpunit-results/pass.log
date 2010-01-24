@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuites>
-  <testsuite name="Stagehand_TestRunner_PHPUnitPassTest" file="/home/iteman/GITREPOS/stagehand-testrunner/tests/Stagehand/TestRunner/PHPUnitPassTest.php" fullPackage="Stagehand_TestRunner" package="Stagehand_TestRunner" tests="3" assertions="3" failures="0" errors="0" time="0.022199">
-    <testcase name="testTestShouldPass1" class="Stagehand_TestRunner_PHPUnitPassTest" file="/home/iteman/GITREPOS/stagehand-testrunner/tests/Stagehand/TestRunner/PHPUnitPassTest.php" line="80" assertions="1" time="0.003642"/>
-    <testcase name="testTestShouldPass2" class="Stagehand_TestRunner_PHPUnitPassTest" file="/home/iteman/GITREPOS/stagehand-testrunner/tests/Stagehand/TestRunner/PHPUnitPassTest.php" line="85" assertions="1" time="0.015340"/>
-    <testcase name="test日本語を使用できること" class="Stagehand_TestRunner_PHPUnitPassTest" file="/home/iteman/GITREPOS/stagehand-testrunner/tests/Stagehand/TestRunner/PHPUnitPassTest.php" line="90" assertions="1" time="0.003217"/>
-  </testsuite>
-</testsuites>
