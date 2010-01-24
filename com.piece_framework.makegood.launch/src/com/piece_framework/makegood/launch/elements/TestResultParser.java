@@ -79,10 +79,6 @@ public class TestResultParser extends DefaultHandler {
                              String qualifiedName,
                              Attributes attributes
                              ) throws SAXException {
-        if (terminate) {
-            return;
-        }
-
         Map<String, String> map = convertAttributesToMap(attributes);
 
         if (qualifiedName.equalsIgnoreCase("testsuite")) {
@@ -103,10 +99,6 @@ public class TestResultParser extends DefaultHandler {
                            int start,
                            int length
                            ) throws SAXException {
-        if (terminate) {
-            return;
-        }
-
         if (contents != null) {
             contents.append(new String(characters, start, length));
         }
@@ -117,10 +109,6 @@ public class TestResultParser extends DefaultHandler {
                            String localName,
                            String qualifiedName
                            ) throws SAXException {
-        if (terminate) {
-            return;
-        }
-
         if (qualifiedName.equalsIgnoreCase("testsuite")) {
             endTestSuite();
         } else if (qualifiedName.equalsIgnoreCase("testcase")) {
