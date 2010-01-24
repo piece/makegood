@@ -32,9 +32,6 @@ public class TestSuite extends TestResult {
         if (attributes.containsKey("assertions")) { //$NON-NLS-1$
             this.assertionCount = Integer.parseInt(attributes.get("assertions")); //$NON-NLS-1$
         }
-        if (attributes.containsKey("time")) { //$NON-NLS-1$
-            this.time = Double.parseDouble(attributes.get("time")); //$NON-NLS-1$
-        }
 
         children = new ArrayList<TestResult>();
     }
