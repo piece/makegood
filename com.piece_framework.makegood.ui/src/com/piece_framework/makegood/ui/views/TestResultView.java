@@ -43,7 +43,6 @@ public class TestResultView extends ViewPart {
 
     private Label progressBar;
     private ResultLabel tests;
-    private ResultLabel assertions;
     private ResultLabel passes;
     private ResultLabel failures;
     private ResultLabel errors;
@@ -85,7 +84,6 @@ public class TestResultView extends ViewPart {
         summary.setLayout(new FillLayout(SWT.HORIZONTAL));
 
         tests = new ResultLabel(summary, Messages.TestResultView_testsLabel, null);
-        assertions = new ResultLabel(summary, Messages.TestResultView_assertionsLabel, null);
         passes = new ResultLabel(summary,
                                  Messages.TestResultView_passesLabel,
                                  Activator.getImageDescriptor("icons/pass-gray.gif").createImage() //$NON-NLS-1$
@@ -171,7 +169,6 @@ public class TestResultView extends ViewPart {
 
     public void reset() {
         tests.reset();
-        assertions.reset();
         passes.reset();
         failures.reset();
         errors.reset();
@@ -185,7 +182,6 @@ public class TestResultView extends ViewPart {
     public void showTestResult(java.util.List<TestSuite> suites) {
         TestSuite suite = suites.get(0);
         tests.setCount(suite.getTestCount());
-        assertions.setCount(suite.getAssertionCount());
         passes.setCount(suite.getTestCount()
                         - suite.getFailureCount()
                         - suite.getErrorCount()

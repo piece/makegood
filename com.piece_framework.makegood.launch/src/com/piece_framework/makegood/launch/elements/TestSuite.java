@@ -10,7 +10,6 @@ public class TestSuite extends TestResult {
     String fullPackage;
     String packageName;
     int testCount;
-    int assertionCount;
     int errorCount;
     int failureCount;
     List<TestResult> children;
@@ -28,9 +27,6 @@ public class TestSuite extends TestResult {
         }
         if (attributes.containsKey("tests")) { //$NON-NLS-1$
             this.testCount = Integer.parseInt(attributes.get("tests")); //$NON-NLS-1$
-        }
-        if (attributes.containsKey("assertions")) { //$NON-NLS-1$
-            this.assertionCount = Integer.parseInt(attributes.get("assertions")); //$NON-NLS-1$
         }
 
         children = new ArrayList<TestResult>();
@@ -50,10 +46,6 @@ public class TestSuite extends TestResult {
 
     public int getTestCount() {
         return testCount;
-    }
-
-    public int getAssertionCount() {
-        return assertionCount;
     }
 
     public int getErrorCount() {

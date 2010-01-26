@@ -8,7 +8,6 @@ import java.util.Map;
 public class TestCase extends TestResult {
     String file;
     String targetClass;
-    int assertionCount;
     int line;
     Problem problem;
 
@@ -23,9 +22,6 @@ public class TestCase extends TestResult {
         if (attributes.containsKey("line")) { //$NON-NLS-1$
             this.line = Integer.parseInt(attributes.get("line")); //$NON-NLS-1$
         }
-        if (attributes.containsKey("assertions")) { //$NON-NLS-1$
-            this.assertionCount = Integer.parseInt(attributes.get("assertions")); //$NON-NLS-1$
-        }
         this.problem = new Problem(ProblemType.Pass);
     }
 
@@ -35,10 +31,6 @@ public class TestCase extends TestResult {
 
     public String getTargetClass() {
         return targetClass;
-    }
-
-    public int getAssertionCount() {
-        return assertionCount;
     }
 
     public int getLine() {
