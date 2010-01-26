@@ -42,7 +42,7 @@ public class TestResultView extends ViewPart {
     private static final String VIEW_ID = "com.piece_framework.makegood.ui.views.resultView"; //$NON-NLS-1$
 
     private Label progressBar;
-    private ResultLabel tests;
+    private Label tests;
     private ResultLabel passes;
     private ResultLabel failures;
     private ResultLabel errors;
@@ -83,7 +83,8 @@ public class TestResultView extends ViewPart {
         summary.setLayoutData(createHorizontalFillGridData());
         summary.setLayout(new FillLayout(SWT.HORIZONTAL));
 
-        tests = new ResultLabel(summary, Messages.TestResultView_testsLabel, null);
+        tests = new Label(summary, SWT.LEFT);
+        tests.setText(Messages.TestResultView_testsLabel);
         passes = new ResultLabel(summary,
                                  Messages.TestResultView_passesLabel,
                                  Activator.getImageDescriptor("icons/pass-gray.gif").createImage() //$NON-NLS-1$
@@ -168,7 +169,7 @@ public class TestResultView extends ViewPart {
     }
 
     public void reset() {
-        tests.reset();
+        tests.setText("");
         passes.reset();
         failures.reset();
         errors.reset();
@@ -181,7 +182,6 @@ public class TestResultView extends ViewPart {
 
     public void showTestResult(java.util.List<TestSuite> suites) {
         TestSuite suite = suites.get(0);
-        tests.setCount(suite.getTestCount());
         passes.setCount(suite.getTestCount()
                         - suite.getFailureCount()
                         - suite.getErrorCount()
@@ -288,6 +288,16 @@ public class TestResultView extends ViewPart {
         } else {
             resultTreeViewer.removeFilter(failureFilter);
         }
+    }
+
+    public void refresh(TestProgress progress) {
+        tests.setText(Messages.TestResultView_testsLabel + " " +
+                      progress.getEndTestCount() + "/" +
+                      progress.getAllTestCount()
+                      );
+        passes.setCount(progress.getPassCount());
+        failures.setCount(progress.getFailureCount());
+        errors.setCount(progress.getErrorCount());
     }
 
     private class ResultLabel {

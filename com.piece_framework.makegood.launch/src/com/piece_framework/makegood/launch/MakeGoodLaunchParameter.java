@@ -79,6 +79,8 @@ public class MakeGoodLaunchParameter {
             buffer.append(" --log-junit=\"" + log + "\""); //$NON-NLS-1$
         }
 
+        buffer.append(" --log-junit-realtime");
+
         StringBuilder classes = new StringBuilder();
         StringBuilder methods = new StringBuilder();
         StringBuilder resources = new StringBuilder();

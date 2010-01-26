@@ -1,7 +1,6 @@
 package com.piece_framework.makegood.ui.views;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,12 +22,17 @@ import org.eclipse.ui.progress.UIJob;
 import org.xml.sax.SAXException;
 
 import com.piece_framework.makegood.core.launch.IMakeGoodEventListener;
+import com.piece_framework.makegood.launch.elements.ParserListener;
+import com.piece_framework.makegood.launch.elements.Problem;
+import com.piece_framework.makegood.launch.elements.TestCase;
 import com.piece_framework.makegood.launch.elements.TestResult;
 import com.piece_framework.makegood.launch.elements.TestResultParser;
 import com.piece_framework.makegood.launch.elements.TestSuite;
 
-public class TestResultViewSetter implements IMakeGoodEventListener {
+public class TestResultViewSetter implements IMakeGoodEventListener, ParserListener {
     private TestResultParser parser;
+    private TestProgress progress;
+    private TestCase currentTestCase;
 
     @Override
     public void create(ILaunch launch) {
@@ -41,19 +45,13 @@ public class TestResultViewSetter implements IMakeGoodEventListener {
             return;
         }
 
+        progress = new TestProgress();
+
         parser = new TestResultParser(new File(log));
-        Job job = new UIJob("MakeGood reset") { //$NON-NLS-1$
+        parser.addParserListener(this);
+        Thread parserThread = new Thread() {
             @Override
-            public IStatus runInUIThread(IProgressMonitor monitor) {
-                TestResultView view = TestResultView.showView();
-                if (view == null) {
-                    // TODO
-                    return null;
-                }
-                view.setFocus();
-
-                view.reset();
-
+            public void run() {
                 try {
                     parser.start();
                 } catch (ParserConfigurationException e) {
@@ -66,6 +64,20 @@ public class TestResultViewSetter implements IMakeGoodEventListener {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
+            }
+        };
+        parserThread.start();
+
+        Job job = new UIJob("MakeGood reset") { //$NON-NLS-1$
+            @Override
+            public IStatus runInUIThread(IProgressMonitor monitor) {
+                TestResultView view = TestResultView.showView();
+                if (view == null) {
+                    // TODO
+                    return null;
+                }
+                view.setFocus();
+                view.reset();
 
                 return Status.OK_STATUS;
             }
@@ -134,5 +146,55 @@ public class TestResultViewSetter implements IMakeGoodEventListener {
 
     private TestResultParser getParser() {
         return parser;
+    }
+
+    @Override
+    public void startTestSuite(TestSuite testSuite) {
+        if (!progress.isInitialized()) {
+            progress.initialize(testSuite.getTestCount());
+        }
+    }
+
+    @Override
+    public void endTestSuite() {
+    }
+
+    @Override
+    public void startTestCase(TestCase testCase) {
+        this.currentTestCase = testCase;
+    }
+
+    @Override
+    public void endTestCase() {
+        if (!progress.isInitialized()) {
+            return;
+        }
+
+        progress.incrementEndTestCount();
+        progress.incrementResultCount(currentTestCase.getProblem().getType());
+
+        Job job = new UIJob("MakeGood refresh") { //$NON-NLS-1$
+            @Override
+            public IStatus runInUIThread(IProgressMonitor monitor) {
+                TestResultView view = TestResultView.showView();
+                if (view == null) {
+                    // TODO
+                    return null;
+                }
+                view.setFocus();
+                view.refresh(progress);
+
+                return Status.OK_STATUS;
+            }
+        };
+        job.schedule();
+    }
+
+    @Override
+    public void startProblem(Problem problem) {
+    }
+
+    @Override
+    public void endProblem() {
     }
 }
