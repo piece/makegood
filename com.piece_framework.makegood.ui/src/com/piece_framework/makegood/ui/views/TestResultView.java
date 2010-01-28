@@ -187,8 +187,7 @@ public class TestResultView extends ViewPart {
 
         progressBar.setBackground(new Color(progressBar.getDisplay(), NONE));
 
-        resultTreeViewer.getTree().removeAll();
-        resultList.removeAll();
+        resultTreeViewer.setInput(null);
     }
 
     public void showTestResult(java.util.List<TestSuite> suites) {
@@ -301,7 +300,15 @@ public class TestResultView extends ViewPart {
         }
     }
 
-    public void refresh(TestProgress progress) {
+    public void setTreeInput(java.util.List<TestResult> suites) {
+        resultTreeViewer.setInput(suites);
+    }
+
+    public boolean isSetTreeInput() {
+        return resultTreeViewer.getInput() != null;
+    }
+
+    public void refresh(TestProgress progress, TestResult result) {
         rate.setText(String.format("%3d", progress.getRate()) + " %  ");
         average.setText(String.format("%.3f", progress.getAverage()) + " s / test  ");
 
@@ -313,6 +320,12 @@ public class TestResultView extends ViewPart {
         passes.setCount(progress.getPassCount());
         failures.setCount(progress.getFailureCount());
         errors.setCount(progress.getErrorCount());
+
+        if (result != null) {
+            resultTreeViewer.expandAll();
+            resultTreeViewer.setSelection(new StructuredSelection(result));
+        }
+        resultTreeViewer.refresh();
     }
 
     private class ResultLabel {

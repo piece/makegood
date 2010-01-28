@@ -120,10 +120,10 @@ public class TestResultViewSetter implements IMakeGoodEventListener, ParserListe
                     return null;
                 }
                 view.setFocus();
-                view.showTestResult(suites);
+                //view.showTestResult(suites);
 
                 progress.finalize();
-                view.refresh(progress);
+                view.refresh(progress, currentTestCase);
 
                 return Status.OK_STATUS;
             }
@@ -185,7 +185,10 @@ public class TestResultViewSetter implements IMakeGoodEventListener, ParserListe
                     return null;
                 }
                 view.setFocus();
-                view.refresh(progress);
+                if (!view.isSetTreeInput()) {
+                    view.setTreeInput(parser.getTestResults());
+                }
+                view.refresh(progress, currentTestCase);
 
                 return Status.OK_STATUS;
             }
