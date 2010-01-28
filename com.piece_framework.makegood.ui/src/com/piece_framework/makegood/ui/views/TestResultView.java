@@ -293,7 +293,8 @@ public class TestResultView extends ViewPart {
     public void refresh(TestProgress progress) {
         tests.setText(Messages.TestResultView_testsLabel + " " +
                       progress.getEndTestCount() + "/" +
-                      progress.getAllTestCount()
+                      progress.getAllTestCount() + " " +
+                      "(" + String.format("%.3f", progress.getTotalTime()) + " s)"
                       );
         passes.setCount(progress.getPassCount());
         failures.setCount(progress.getFailureCount());
