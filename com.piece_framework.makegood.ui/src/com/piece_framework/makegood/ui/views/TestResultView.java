@@ -31,7 +31,6 @@ import org.eclipse.ui.part.ViewPart;
 import com.piece_framework.makegood.launch.elements.ProblemType;
 import com.piece_framework.makegood.launch.elements.TestCase;
 import com.piece_framework.makegood.launch.elements.TestResult;
-import com.piece_framework.makegood.launch.elements.TestSuite;
 import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.Messages;
 
@@ -190,27 +189,6 @@ public class TestResultView extends ViewPart {
         resultTreeViewer.setInput(null);
     }
 
-    public void showTestResult(java.util.List<TestSuite> suites) {
-        TestSuite suite = suites.get(0);
-        passes.setCount(suite.getTestCount()
-                        - suite.getFailureCount()
-                        - suite.getErrorCount()
-                        );
-        failures.setCount(suite.getFailureCount());
-        errors.setCount(suite.getErrorCount());
-
-        if (!suite.hasError() && !suite.hasFailure()) {
-            progressBar.setBackground(new Color(progressBar.getDisplay(), GREEN));
-        } else {
-            progressBar.setBackground(new Color(progressBar.getDisplay(), RED));
-        }
-
-        resultTreeViewer.setInput(suites);
-        if (suite.hasError() || suite.hasFailure()) {
-            resultTreeViewer.expandToLevel(2);
-        }
-    }
-
     public static TestResultView getView() {
         IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
         IViewPart view = page.findView(VIEW_ID);
@@ -247,7 +225,6 @@ public class TestResultView extends ViewPart {
         bothFillGrid.grabExcessHorizontalSpace = true;
         bothFillGrid.grabExcessVerticalSpace = true;
         return bothFillGrid;
-        
     }
 
     public void nextResult() {

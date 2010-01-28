@@ -120,7 +120,6 @@ public class TestResultViewSetter implements IMakeGoodEventListener, ParserListe
                     return null;
                 }
                 view.setFocus();
-                //view.showTestResult(suites);
 
                 progress.finalize();
                 view.refresh(progress, currentTestCase);
@@ -145,10 +144,6 @@ public class TestResultViewSetter implements IMakeGoodEventListener, ParserListe
             }
         };
         job.schedule();
-    }
-
-    private TestResultParser getParser() {
-        return parser;
     }
 
     @Override
