@@ -29,6 +29,7 @@ public class TestResultParser extends DefaultHandler {
     private List<ParserListener> listeners = new ArrayList<ParserListener>();
     private boolean terminate = false;
     private SynchronizedFileInputStream stream;
+    private boolean createdTestCase;
 
     public TestResultParser(File log) {
         this.log = log;
@@ -213,6 +214,7 @@ public class TestResultParser extends DefaultHandler {
             mapForTestCase.put("class", currentSuite.name);
             mapForTestCase.put("file", currentSuite.file);
             startTestCase(mapForTestCase);
+            createdTestCase = true;
         }
         currentCase.problem = problem;
 
@@ -228,6 +230,11 @@ public class TestResultParser extends DefaultHandler {
 
         for (ParserListener listener: listeners) {
             listener.endProblem();
+        }
+
+        if (createdTestCase) {
+            endTestCase();
+            createdTestCase = false;
         }
     }
 
