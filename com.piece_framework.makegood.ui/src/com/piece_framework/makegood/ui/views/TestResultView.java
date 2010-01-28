@@ -321,6 +321,14 @@ public class TestResultView extends ViewPart {
         failures.setCount(progress.getFailureCount());
         errors.setCount(progress.getErrorCount());
 
+        boolean noErrorOrFailure = progress.getErrorCount() == 0
+                                   || progress.getFailureCount() == 0;
+        if (noErrorOrFailure) {
+            progressBar.setBackground(new Color(progressBar.getDisplay(), GREEN));
+        } else {
+            progressBar.setBackground(new Color(progressBar.getDisplay(), RED));
+        }
+
         if (result != null) {
             resultTreeViewer.expandAll();
             resultTreeViewer.setSelection(new StructuredSelection(result));
