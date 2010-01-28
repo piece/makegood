@@ -48,6 +48,8 @@ public class TestResultView extends ViewPart {
     private ResultLabel errors;
     private TreeViewer resultTreeViewer;
     private List resultList;
+    private Label rate;
+    private Label average;
 
     private ViewerFilter failureFilter = new ViewerFilter() {
         @Override
@@ -75,16 +77,21 @@ public class TestResultView extends ViewPart {
 
         parent.setLayout(new GridLayout(1, false));
 
-        progressBar = new Label(parent, SWT.BORDER);
+        Composite progress = new Composite(parent, SWT.NULL);
+        progress.setLayoutData(createHorizontalFillGridData());
+        progress.setLayout(new GridLayout(3, false));
+
+        rate = new Label(progress, SWT.LEFT);
+        progressBar = new Label(progress, SWT.BORDER);
         progressBar.setBackground(new Color(parent.getDisplay(), NONE));
         progressBar.setLayoutData(createHorizontalFillGridData());
+        average = new Label(progress, SWT.LEFT);
 
         Composite summary = new Composite(parent, SWT.NULL);
         summary.setLayoutData(createHorizontalFillGridData());
         summary.setLayout(new FillLayout(SWT.HORIZONTAL));
 
         tests = new Label(summary, SWT.LEFT);
-        tests.setText(Messages.TestResultView_testsLabel);
         passes = new ResultLabel(summary,
                                  Messages.TestResultView_passesLabel,
                                  Activator.getImageDescriptor("icons/pass-gray.gif").createImage() //$NON-NLS-1$
@@ -160,6 +167,8 @@ public class TestResultView extends ViewPart {
 
         resultList = new List(traceParent, SWT.BORDER + SWT.V_SCROLL + SWT.H_SCROLL);
         resultList.setLayoutData(createBothFillGridData());
+
+        reset();
     }
 
     @Override
@@ -169,7 +178,9 @@ public class TestResultView extends ViewPart {
     }
 
     public void reset() {
-        tests.setText("");
+        rate.setText("    %  ");
+        average.setText("      s / test  ");
+        tests.setText(Messages.TestResultView_testsLabel);
         passes.reset();
         failures.reset();
         errors.reset();
@@ -291,6 +302,9 @@ public class TestResultView extends ViewPart {
     }
 
     public void refresh(TestProgress progress) {
+        rate.setText(String.format("%3d", progress.getRate()) + " %  ");
+        average.setText(String.format("%.3f", progress.getAverage()) + " s / test  ");
+
         tests.setText(Messages.TestResultView_testsLabel + " " +
                       progress.getEndTestCount() + "/" +
                       progress.getAllTestCount() + " " +
