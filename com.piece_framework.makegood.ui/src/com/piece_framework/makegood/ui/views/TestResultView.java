@@ -10,8 +10,11 @@ import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.events.ControlAdapter;
+import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
@@ -35,12 +38,9 @@ import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.Messages;
 
 public class TestResultView extends ViewPart {
-    private static final RGB GREEN = new RGB(95, 191, 95);
-    private static final RGB RED = new RGB(159, 63, 63);
-    private static final RGB NONE = new RGB(255, 255, 255);
     private static final String VIEW_ID = "com.piece_framework.makegood.ui.views.resultView"; //$NON-NLS-1$
 
-    private Label progressBar;
+    private MakeGoodProgressBar progressBar;
     private Label tests;
     private ResultLabel passes;
     private ResultLabel failures;
@@ -81,8 +81,7 @@ public class TestResultView extends ViewPart {
         progress.setLayout(new GridLayout(3, false));
 
         rate = new Label(progress, SWT.LEFT);
-        progressBar = new Label(progress, SWT.BORDER);
-        progressBar.setBackground(new Color(parent.getDisplay(), NONE));
+        progressBar = new MakeGoodProgressBar(progress);
         progressBar.setLayoutData(createHorizontalFillGridData());
         average = new Label(progress, SWT.LEFT);
 
@@ -184,7 +183,7 @@ public class TestResultView extends ViewPart {
         failures.reset();
         errors.reset();
 
-        progressBar.setBackground(new Color(progressBar.getDisplay(), NONE));
+        progressBar.reset();
 
         resultTreeViewer.setInput(null);
     }
@@ -298,13 +297,12 @@ public class TestResultView extends ViewPart {
         failures.setCount(progress.getFailureCount());
         errors.setCount(progress.getErrorCount());
 
-        boolean noErrorOrFailure = progress.getErrorCount() == 0
-                                   || progress.getFailureCount() == 0;
-        if (noErrorOrFailure) {
-            progressBar.setBackground(new Color(progressBar.getDisplay(), GREEN));
-        } else {
-            progressBar.setBackground(new Color(progressBar.getDisplay(), RED));
+        boolean raiseErrorOrFailure = progress.getErrorCount() > 0
+                                      || progress.getFailureCount() > 0;
+        if (raiseErrorOrFailure) {
+            progressBar.raisedError();
         }
+        progressBar.worked(progress.getRate());
 
         if (result != null) {
             resultTreeViewer.expandAll();
@@ -333,6 +331,71 @@ public class TestResultView extends ViewPart {
 
         private void reset() {
             label.setText(text);
+        }
+    }
+
+    private class MakeGoodProgressBar extends Composite {
+        private final RGB GREEN = new RGB(95, 191, 95);
+        private final RGB RED = new RGB(159, 63, 63);
+        private final RGB NONE = new RGB(255, 255, 255);
+
+        private Label bar;
+        private int rate;
+
+        private MakeGoodProgressBar(Composite parent) {
+            super(parent, SWT.BORDER);
+            GridLayout layout = new GridLayout();
+            layout.marginTop = 0;
+            layout.marginBottom = 0;
+            layout.marginLeft = 0;
+            layout.marginRight = 0;
+            layout.marginHeight = 0;
+            layout.marginWidth = 0;
+            layout.verticalSpacing = 0;
+            layout.horizontalSpacing = 0;
+            setLayout(layout);
+
+            setBackground(new Color(parent.getDisplay(), NONE));
+
+            bar = new Label(this, SWT.NONE);
+            bar.setLayoutData(new GridData());
+            bar.addControlListener(new ControlAdapter() {
+                @Override
+                public void controlResized(ControlEvent e) {
+                    worked(rate);
+                }
+            });
+
+            reset();
+        }
+
+        private void worked(int rate) {
+            int maxWidth = getSize().x;
+
+            int barWidth = bar.getSize().x;
+            if (rate < 100) {
+                barWidth = (int) (maxWidth * ((double) rate / 100d));
+            } else if (rate >= 100) {
+                barWidth = maxWidth;
+            }
+
+            Point size = bar.getSize();
+            size.x = barWidth;
+            bar.setSize(size);
+
+            this.rate = rate;
+        }
+
+        private void raisedError() {
+            bar.setBackground(new Color(getDisplay(), RED));
+        }
+
+        private void reset() {
+            Point size = bar.getSize();
+            size.x = 0;
+            bar.setSize(size);
+
+            bar.setBackground(new Color(getDisplay(), GREEN));
         }
     }
 }
