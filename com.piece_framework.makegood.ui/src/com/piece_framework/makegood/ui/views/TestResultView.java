@@ -359,12 +359,15 @@ public class TestResultView extends ViewPart {
 
             bar = new Label(this, SWT.NONE);
             bar.setLayoutData(new GridData());
-            bar.addControlListener(new ControlAdapter() {
+
+            ControlAdapter listener = new ControlAdapter() {
                 @Override
                 public void controlResized(ControlEvent e) {
                     worked(rate);
                 }
-            });
+            };
+            bar.addControlListener(listener);
+            addControlListener(listener);
 
             reset();
         }
