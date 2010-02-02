@@ -391,9 +391,7 @@ public class TestResultView extends ViewPart {
         }
 
         private void reset() {
-            Point size = bar.getSize();
-            size.x = 0;
-            bar.setSize(size);
+            worked(0);
 
             bar.setBackground(new Color(getDisplay(), GREEN));
         }
