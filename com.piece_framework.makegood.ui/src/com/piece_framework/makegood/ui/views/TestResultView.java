@@ -372,16 +372,22 @@ public class TestResultView extends ViewPart {
         private void worked(int rate) {
             int maxWidth = getSize().x;
 
-            int barWidth = bar.getSize().x;
+            int width = bar.getSize().x;
             if (rate < 100) {
-                barWidth = (int) (maxWidth * ((double) rate / 100d));
+                width = (int) (maxWidth * ((double) rate / 100d));
             } else if (rate >= 100) {
-                barWidth = maxWidth;
+                width = maxWidth;
             }
+            final int barWidth = width;
 
-            Point size = bar.getSize();
-            size.x = barWidth;
-            bar.setSize(size);
+            getDisplay().asyncExec(new Runnable() {
+                @Override
+                public void run() {
+                    Point size = bar.getSize();
+                    size.x = barWidth;
+                    bar.setSize(size);
+                }
+            });
 
             this.rate = rate;
         }
