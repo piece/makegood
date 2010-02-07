@@ -15,6 +15,10 @@ public abstract class TestResult {
         return time;
     }
 
+    public void setTime(double time) {
+        this.time = time;
+    }
+
     public abstract List<TestResult> getTestResults();
 
     public abstract TestResult findTestResult(String name);

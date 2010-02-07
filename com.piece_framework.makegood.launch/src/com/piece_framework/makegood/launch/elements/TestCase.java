@@ -65,4 +65,10 @@ public class TestCase extends TestResult {
     public TestResult findTestResult(String name) {
         return null;
     }
+
+    @Override
+    public void setTime(double time) {
+        super.setTime(time);
+        parent.time += time;
+    }
 }

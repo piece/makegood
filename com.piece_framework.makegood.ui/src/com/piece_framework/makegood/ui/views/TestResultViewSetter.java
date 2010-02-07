@@ -170,6 +170,9 @@ public class TestResultViewSetter implements IMakeGoodEventListener, ParserListe
 
         progress.incrementEndTestCount();
         progress.incrementResultCount(currentTestCase.getProblem().getType());
+        progress.endTestCase();
+
+        currentTestCase.setTime(progress.getTestCaseTime());
 
         Job job = new UIJob("MakeGood refresh") { //$NON-NLS-1$
             @Override
@@ -189,6 +192,8 @@ public class TestResultViewSetter implements IMakeGoodEventListener, ParserListe
             }
         };
         job.schedule();
+
+        progress.startTestCase();   // The method startTestCase() does not be invoked when the test runs.
     }
 
     @Override

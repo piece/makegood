@@ -11,6 +11,8 @@ public class TestProgress {
     private int errorCount;
     private long startTime;
     private double totalTime;
+    private long startTimeForTestCase;
+    private double testCaseTime;
 
     public void initialize(int allTestCount) {
         this.allTestCount = allTestCount;
@@ -21,6 +23,8 @@ public class TestProgress {
 
         startTime = System.currentTimeMillis();
         totalTime = 0.0d;
+
+        startTimeForTestCase = System.currentTimeMillis();
 
         initialized = true;
     }
@@ -80,6 +84,18 @@ public class TestProgress {
             ++errorCount;
         }
         updateTime();
+    }
+
+    public void startTestCase() {
+        startTimeForTestCase = System.currentTimeMillis();
+    }
+
+    public void endTestCase() {
+        testCaseTime = (System.currentTimeMillis() - startTimeForTestCase) / 1000d;
+    }
+
+    public double getTestCaseTime() {
+        return testCaseTime;
     }
 
     private void updateTime() {
