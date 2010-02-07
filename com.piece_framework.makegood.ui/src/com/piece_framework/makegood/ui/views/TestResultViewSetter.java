@@ -78,6 +78,7 @@ public class TestResultViewSetter implements IMakeGoodEventListener, ParserListe
                 }
                 view.setFocus();
                 view.reset();
+                view.start(progress);
 
                 return Status.OK_STATUS;
             }
@@ -122,6 +123,7 @@ public class TestResultViewSetter implements IMakeGoodEventListener, ParserListe
                 view.setFocus();
 
                 progress.finalize();
+                view.terminate();
                 view.refresh(progress, currentTestCase);
 
                 return Status.OK_STATUS;

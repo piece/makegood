@@ -49,6 +49,7 @@ public class TestResultView extends ViewPart {
     private List resultList;
     private Label rate;
     private Label average;
+    private ShowTimer showTimer;
 
     private ViewerFilter failureFilter = new ViewerFilter() {
         @Override
@@ -311,6 +312,15 @@ public class TestResultView extends ViewPart {
         resultTreeViewer.refresh();
     }
 
+    public void start(TestProgress progress) {
+        showTimer = new ShowTimer(tests, progress, 200);
+        showTimer.start();
+    }
+
+    public void terminate() {
+        showTimer.terminate();
+    }
+
     private class ResultLabel {
         private CLabel label;
         private String text;
@@ -403,6 +413,51 @@ public class TestResultView extends ViewPart {
             worked(0);
 
             bar.setBackground(new Color(getDisplay(), GREEN));
+        }
+    }
+
+    private class ShowTimer implements Runnable {
+        private Label tests;
+        private TestProgress progress;
+        private int delay;
+        private long startTime;
+        private boolean terminate;
+
+        private ShowTimer(Label tests,
+                          TestProgress progress,
+                          int delay
+                          ) {
+            this.tests = tests;
+            this.progress = progress;
+            this.delay = delay;
+        }
+
+        private void start() {
+            startTime = System.currentTimeMillis();
+            schedule();
+        }
+
+        private void terminate() {
+            terminate = true;
+        }
+
+        private void schedule() {
+            tests.getDisplay().timerExec(delay, this);
+        }
+
+        @Override
+        public void run() {
+            double elapsedTime = (System.currentTimeMillis() - startTime) / 1000d;
+            tests.setText(Messages.TestResultView_testsLabel + " " +
+                          progress.getEndTestCount() + "/" +
+                          progress.getAllTestCount() + " " +
+                          "(real " + String.format("%.3f", elapsedTime) + " s," +
+                          " test " + String.format("%.3f", progress.getTotalTime()) + " s)"
+                          );
+
+            if (!terminate) {
+                schedule();
+            }
         }
     }
 }
