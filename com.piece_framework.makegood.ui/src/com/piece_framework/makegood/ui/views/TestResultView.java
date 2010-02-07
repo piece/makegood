@@ -289,11 +289,7 @@ public class TestResultView extends ViewPart {
         rate.setText(String.format("%3d", progress.getRate()) + " %  ");
         average.setText(String.format("%.3f", progress.getAverage()) + " s / test  ");
 
-        tests.setText(Messages.TestResultView_testsLabel + " " +
-                      progress.getEndTestCount() + "/" +
-                      progress.getAllTestCount() + " " +
-                      "(" + String.format("%.3f", progress.getTotalTime()) + " s)"
-                      );
+        showTimer.show();
         passes.setCount(progress.getPassCount());
         failures.setCount(progress.getFailureCount());
         errors.setCount(progress.getErrorCount());
@@ -422,6 +418,7 @@ public class TestResultView extends ViewPart {
         private int delay;
         private long startTime;
         private boolean terminate;
+        private double elapsedTime;
 
         private ShowTimer(Label tests,
                           TestProgress progress,
@@ -445,15 +442,19 @@ public class TestResultView extends ViewPart {
             tests.getDisplay().timerExec(delay, this);
         }
 
-        @Override
-        public void run() {
-            double elapsedTime = (System.currentTimeMillis() - startTime) / 1000d;
+        private void show() {
             tests.setText(Messages.TestResultView_testsLabel + " " +
                           progress.getEndTestCount() + "/" +
                           progress.getAllTestCount() + " " +
                           "(real " + String.format("%.3f", elapsedTime) + " s," +
                           " test " + String.format("%.3f", progress.getTotalTime()) + " s)"
                           );
+        }
+
+        @Override
+        public void run() {
+            elapsedTime = (System.currentTimeMillis() - startTime) / 1000d;
+            show();
 
             if (!terminate) {
                 schedule();
