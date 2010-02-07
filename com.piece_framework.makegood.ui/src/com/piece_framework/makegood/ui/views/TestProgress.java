@@ -9,7 +9,6 @@ public class TestProgress {
     private int passCount;
     private int failureCount;
     private int errorCount;
-    private long startTime;
     private double totalTime;
     private long startTimeForTestCase;
     private double testCaseTime;
@@ -21,10 +20,8 @@ public class TestProgress {
         failureCount = 0;
         errorCount = 0;
 
-        startTime = System.currentTimeMillis();
-        totalTime = 0.0d;
-
         startTimeForTestCase = System.currentTimeMillis();
+        totalTime = 0.0d;
 
         initialized = true;
     }
@@ -34,7 +31,6 @@ public class TestProgress {
     }
 
     public void finalize() {
-        updateTime();
     }
 
     public int getAllTestCount() {
@@ -72,7 +68,6 @@ public class TestProgress {
 
     public void incrementEndTestCount() {
         ++endTestCount;
-        updateTime();
     }
 
     public void incrementResultCount(ProblemType problemType) {
@@ -83,7 +78,6 @@ public class TestProgress {
         } else if (problemType == ProblemType.Error) {
             ++errorCount;
         }
-        updateTime();
     }
 
     public void startTestCase() {
@@ -92,13 +86,10 @@ public class TestProgress {
 
     public void endTestCase() {
         testCaseTime = (System.currentTimeMillis() - startTimeForTestCase) / 1000d;
+        totalTime += testCaseTime;
     }
 
     public double getTestCaseTime() {
         return testCaseTime;
-    }
-
-    private void updateTime() {
-        totalTime = (System.currentTimeMillis() - startTime) / 1000d;
     }
 }
