@@ -9,9 +9,9 @@ public class TestProgress {
     private int passCount;
     private int failureCount;
     private int errorCount;
-    private double totalTime;
+    private long totalTime;
     private long startTimeForTestCase;
-    private double testCaseTime;
+    private long testCaseTime;
 
     public void initialize(int allTestCount) {
         this.allTestCount = allTestCount;
@@ -21,7 +21,7 @@ public class TestProgress {
         errorCount = 0;
 
         startTimeForTestCase = System.currentTimeMillis();
-        totalTime = 0.0d;
+        totalTime = 0;
 
         initialized = true;
     }
@@ -54,7 +54,7 @@ public class TestProgress {
     }
 
     public double getTotalTime() {
-        return totalTime;
+        return totalTime / 1000d;
     }
 
     public int getRate() {
@@ -63,7 +63,7 @@ public class TestProgress {
     }
 
     public double getAverage() {
-        return totalTime / (double) endTestCount;
+        return (double) totalTime / (double) endTestCount;
     }
 
     public void incrementEndTestCount() {
@@ -85,11 +85,11 @@ public class TestProgress {
     }
 
     public void endTestCase() {
-        testCaseTime = (System.currentTimeMillis() - startTimeForTestCase) / 1000d;
+        testCaseTime = System.currentTimeMillis() - startTimeForTestCase;
         totalTime += testCaseTime;
     }
 
     public double getTestCaseTime() {
-        return testCaseTime;
+        return testCaseTime / 1000d;
     }
 }
