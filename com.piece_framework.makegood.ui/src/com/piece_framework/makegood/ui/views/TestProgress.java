@@ -63,7 +63,7 @@ public class TestProgress {
     }
 
     public double getAverage() {
-        return (double) totalTime / (double) endTestCount;
+        return getTotalTime() / (double) endTestCount;
     }
 
     public void incrementEndTestCount() {
