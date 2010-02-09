@@ -184,8 +184,16 @@ public class TestResultView extends ViewPart {
     }
 
     public void reset() {
-        rate.setText("    %  ");
-        average.setText("      s / test  ");
+        rate.setText("    " +   //$NON-NLS-1$ 
+                     Messages.TestResultView_percent +
+                     "  "       //$NON-NLS-1$
+                     );
+        average.setText("      " +      //$NON-NLS-1$
+                        Messages.TestResultView_second +
+                        " / " +         //$NON-NLS-1$
+                        Messages.TestResultView_averageTest +
+                        "  "            //$NON-NLS-1$
+                        );
         tests.setText(Messages.TestResultView_testsLabel);
         passes.reset();
         failures.reset();
@@ -293,8 +301,18 @@ public class TestResultView extends ViewPart {
     }
 
     public void refresh(TestProgress progress, TestResult result) {
-        rate.setText(String.format("%3d", progress.getRate()) + " %  ");
-        average.setText(String.format("%.3f", progress.getAverage()) + " s / test  ");
+        rate.setText(String.format("%3d", progress.getRate()) +     //$NON-NLS-1$
+                     " " +      //$NON-NLS-1$
+                     Messages.TestResultView_percent +
+                     "  "       //$NON-NLS-1$
+                     );
+        average.setText(String.format("%.3f", progress.getAverage()) +      //$NON-NLS-1$
+                        " " +       //$NON-NLS-1$
+                        Messages.TestResultView_second +
+                        " / " +     //$NON-NLS-1$
+                        Messages.TestResultView_averageTest +
+                        "  "        //$NON-NLS-1$
+                        );
 
         showTimer.show();
         passes.setCount(progress.getPassCount());
@@ -450,11 +468,23 @@ public class TestResultView extends ViewPart {
         }
 
         private void show() {
-            tests.setText(Messages.TestResultView_testsLabel + " " +
-                          progress.getEndTestCount() + "/" +
-                          progress.getAllTestCount() + " " +
-                          "(real " + String.format("%.3f", elapsedTime) + " s," +
-                          " test " + String.format("%.3f", progress.getTotalTime()) + " s)"
+            tests.setText(Messages.TestResultView_testsLabel + " " + //$NON-NLS-1$
+                          progress.getEndTestCount() + "/" + //$NON-NLS-1$
+                          progress.getAllTestCount() + " " + //$NON-NLS-1$
+                          "(" +         //$NON-NLS-1$
+                              Messages.TestResultView_realTime +
+                              " " +     //$NON-NLS-1$
+                              String.format("%.3f", elapsedTime) +      //$NON-NLS-1$
+                              " " +     //$NON-NLS-1$
+                              Messages.TestResultView_second +
+                              "," +     //$NON-NLS-1$
+                          " " +         //$NON-NLS-1$
+                              Messages.TestResultView_testTime +
+                              " " +     //$NON-NLS-1$
+                              String.format("%.3f", progress.getTotalTime()) +      //$NON-NLS-1$
+                              " " +     //$NON-NLS-1$
+                              Messages.TestResultView_second +
+                          ")" //$NON-NLS-1$
                           );
         }
 

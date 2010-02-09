@@ -11,6 +11,8 @@ public class Messages extends NLS {
     public static String MakeGoodPropertyPage_preloadScriptDialogMessage;
     public static String MakeGoodPropertyPage_preloadScriptDialogTitle;
     public static String MakeGoodPropertyPage_preloadScriptLabel;
+    public static String MakeGoodPropertyPage_PHPUnit;
+    public static String MakeGoodPropertyPage_SimpleTest;
     public static String TestResultView_assertionsLabel;
     public static String TestResultView_errorsLabel;
     public static String TestResultView_failuresLabel;
@@ -18,6 +20,13 @@ public class Messages extends NLS {
     public static String TestResultView_passesLabel;
     public static String TestResultView_testsLabel;
     public static String TestResultView_resultsLabel;
+    public static String TestResultView_averageTest;
+    public static String TestResultView_percent;
+    public static String TestResultView_realTime;
+    public static String TestResultView_second;
+    public static String TestResultView_testTime;
+    public static String TestResultViewSetter_messageTitle;
+    public static String TestResultViewSetter_failedToParseXMLMessage;
     static {
         // initialize resource bundle
         NLS.initializeMessages(BUNDLE_NAME, Messages.class);

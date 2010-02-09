@@ -53,9 +53,9 @@ public class MakeGoodPropertyPage extends PropertyPage implements IWorkbenchProp
         group.setLayoutData(gridData);
 
         phpUnit = new Button(group, SWT.RADIO);
-        phpUnit.setText("P&HPUnit");
+        phpUnit.setText(Messages.MakeGoodPropertyPage_PHPUnit);
         simpleTest = new Button(group, SWT.RADIO);
-        simpleTest.setText("&SimpleTest");
+        simpleTest.setText(Messages.MakeGoodPropertyPage_SimpleTest);
 
         Label label = new Label(composite, SWT.NONE);
         label.setText(Messages.MakeGoodPropertyPage_preloadScriptLabel);

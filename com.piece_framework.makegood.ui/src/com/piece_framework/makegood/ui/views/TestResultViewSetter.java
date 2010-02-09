@@ -22,7 +22,6 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.progress.UIJob;
 import org.xml.sax.SAXException;
 
-import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.core.launch.IMakeGoodEventListener;
 import com.piece_framework.makegood.launch.elements.ParserListener;
 import com.piece_framework.makegood.launch.elements.Problem;
@@ -30,6 +29,8 @@ import com.piece_framework.makegood.launch.elements.TestCase;
 import com.piece_framework.makegood.launch.elements.TestResult;
 import com.piece_framework.makegood.launch.elements.TestResultParser;
 import com.piece_framework.makegood.launch.elements.TestSuite;
+import com.piece_framework.makegood.ui.Activator;
+import com.piece_framework.makegood.ui.Messages;
 
 public class TestResultViewSetter implements IMakeGoodEventListener, ParserListener {
     private TestResultParser parser;
@@ -128,8 +129,8 @@ public class TestResultViewSetter implements IMakeGoodEventListener, ParserListe
 
                 if (parserException != null) {
                     MessageDialog.openError(view.getViewSite().getShell(),
-                                            "MakeGood",
-                                            "Failed to parse the XML: " + parserException.getMessage()
+                                            Messages.TestResultViewSetter_messageTitle,
+                                            Messages.TestResultViewSetter_failedToParseXMLMessage + parserException.getMessage()
                                             );
 
                     IStatus status = new Status(IStatus.ERROR,
