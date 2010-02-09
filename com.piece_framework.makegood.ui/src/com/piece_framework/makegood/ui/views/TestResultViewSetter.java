@@ -15,12 +15,14 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.model.IProcess;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.progress.UIJob;
 import org.xml.sax.SAXException;
 
+import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.core.launch.IMakeGoodEventListener;
 import com.piece_framework.makegood.launch.elements.ParserListener;
 import com.piece_framework.makegood.launch.elements.Problem;
@@ -33,6 +35,7 @@ public class TestResultViewSetter implements IMakeGoodEventListener, ParserListe
     private TestResultParser parser;
     private TestProgress progress;
     private TestCase currentTestCase;
+    private Exception parserException;
 
     @Override
     public void create(ILaunch launch) {
@@ -55,14 +58,11 @@ public class TestResultViewSetter implements IMakeGoodEventListener, ParserListe
                 try {
                     parser.start();
                 } catch (ParserConfigurationException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    parserException = e;
                 } catch (SAXException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    parserException = e;
                 } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    parserException = e;
                 }
             }
         };
@@ -125,6 +125,21 @@ public class TestResultViewSetter implements IMakeGoodEventListener, ParserListe
                 progress.finalize();
                 view.terminate();
                 view.refresh(progress, currentTestCase);
+
+                if (parserException != null) {
+                    MessageDialog.openError(view.getViewSite().getShell(),
+                                            "MakeGood",
+                                            "Failed to parse the XML: " + parserException.getMessage()
+                                            );
+
+                    IStatus status = new Status(IStatus.ERROR,
+                                                Activator.PLUGIN_ID,
+                                                0,
+                                                parserException.getMessage(),
+                                                parserException
+                                                );
+                    Activator.getDefault().getLog().log(status);
+                }
 
                 return Status.OK_STATUS;
             }
