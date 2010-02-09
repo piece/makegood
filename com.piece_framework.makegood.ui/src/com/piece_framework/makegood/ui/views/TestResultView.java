@@ -184,17 +184,29 @@ public class TestResultView extends ViewPart {
     }
 
     public void reset() {
-        rate.setText("    " +   //$NON-NLS-1$ 
+        rate.setText("  0 " +   //$NON-NLS-1$ 
                      Messages.TestResultView_percent +
                      "  "       //$NON-NLS-1$
                      );
-        average.setText("      " +      //$NON-NLS-1$
+        average.setText(" 0.000 " +      //$NON-NLS-1$
                         Messages.TestResultView_second +
                         " / " +         //$NON-NLS-1$
                         Messages.TestResultView_averageTest +
                         "  "            //$NON-NLS-1$
                         );
-        tests.setText(Messages.TestResultView_testsLabel);
+        tests.setText(Messages.TestResultView_testsLabel + " " + //$NON-NLS-1$
+                      " 0/0 " + //$NON-NLS-1$
+                      "(" +         //$NON-NLS-1$
+                          Messages.TestResultView_realTime +
+                          " 0.000 " +     //$NON-NLS-1$
+                          Messages.TestResultView_second +
+                          "," +     //$NON-NLS-1$
+                      " " +         //$NON-NLS-1$
+                          Messages.TestResultView_testTime +
+                          " 0.000 " +     //$NON-NLS-1$
+                          Messages.TestResultView_second +
+                      ")" //$NON-NLS-1$
+                      );
         passes.reset();
         failures.reset();
         errors.reset();
