@@ -88,18 +88,25 @@ public class TestResultView extends ViewPart {
 
         Composite summary = new Composite(parent, SWT.NULL);
         summary.setLayoutData(createHorizontalFillGridData());
-        summary.setLayout(new FillLayout(SWT.HORIZONTAL));
+        summary.setLayout(new GridLayout(3, true));
 
         tests = new Label(summary, SWT.LEFT);
-        passes = new ResultLabel(summary,
+        tests.setLayoutData(createHorizontalFillGridData());
+
+        Composite labels = new Composite(summary, SWT.NULL);
+        GridData gridData = createHorizontalFillGridData();
+        gridData.horizontalSpan = 2;
+        labels.setLayoutData(gridData);
+        labels.setLayout(new FillLayout(SWT.HORIZONTAL));
+        passes = new ResultLabel(labels,
                                  Messages.TestResultView_passesLabel,
                                  Activator.getImageDescriptor("icons/pass-gray.gif").createImage() //$NON-NLS-1$
                                  );
-        failures = new ResultLabel(summary,
+        failures = new ResultLabel(labels,
                                    Messages.TestResultView_failuresLabel,
                                    Activator.getImageDescriptor("icons/failure-gray.gif").createImage() //$NON-NLS-1$
                                    );
-        errors = new ResultLabel(summary,
+        errors = new ResultLabel(labels,
                                  Messages.TestResultView_errorsLabel,
                                  Activator.getImageDescriptor("icons/error-gray.gif").createImage() //$NON-NLS-1$
                                  );
