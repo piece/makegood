@@ -56,6 +56,7 @@ public class TestResultViewSetter implements IMakeGoodEventListener, ParserListe
         Thread parserThread = new Thread() {
             @Override
             public void run() {
+                parserException = null;
                 try {
                     parser.start();
                 } catch (ParserConfigurationException e) {
