@@ -88,15 +88,13 @@ public class TestResultView extends ViewPart {
 
         Composite summary = new Composite(parent, SWT.NULL);
         summary.setLayoutData(createHorizontalFillGridData());
-        summary.setLayout(new GridLayout(3, true));
+        summary.setLayout(new GridLayout(2, true));
 
         tests = new Label(summary, SWT.LEFT);
         tests.setLayoutData(createHorizontalFillGridData());
 
         Composite labels = new Composite(summary, SWT.NULL);
-        GridData gridData = createHorizontalFillGridData();
-        gridData.horizontalSpan = 2;
-        labels.setLayoutData(gridData);
+        labels.setLayoutData(createHorizontalFillGridData());
         labels.setLayout(new FillLayout(SWT.HORIZONTAL));
         passes = new ResultLabel(labels,
                                  Messages.TestResultView_passesLabel,
