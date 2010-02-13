@@ -220,6 +220,11 @@
             id="com.piece_framework.makegood.ui.commands.showFailuresOnly"
             name="%commands.showFailuresOnly.name">
       </command>
+      <command
+            categoryId="com.piece_framework.makegood.ui.commands.resultViewCategory"
+            id="com.piece_framework.makegood.ui.commands.terminateTest"
+            name="Terminate Test">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.propertyPages">
@@ -308,6 +313,16 @@
                style="push"
                toolbarPath="additions"
                tooltip="%resultView.nextFailedTest.tooltip">
+         </action>
+         <action
+               class="com.piece_framework.makegood.ui.actions.TerminateTestAction"
+               definitionId="com.piece_framework.makegood.ui.commands.terminateTest"
+               icon="icons/terminate.gif"
+               id="com.piece_framework.makegood.ui.viewActions.resultView.terminateTestAction"
+               label="Terminate Test"
+               style="push"
+               toolbarPath="additions"
+               tooltip="Terminate Test">
          </action>
       </viewContribution>
    </extension>

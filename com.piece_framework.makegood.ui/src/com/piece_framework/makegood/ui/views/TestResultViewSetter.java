@@ -106,11 +106,10 @@ public class TestResultViewSetter implements IMakeGoodEventListener, ParserListe
         }
 
         parser.terminate();
-        while (!parser.wasEnd() || parser.getTestResults().size() == 0) {
+        for (int i = 0; i < 10 && !parser.wasEnd(); ++i) {
             try {
                 Thread.sleep(200);
-            } catch (InterruptedException e) {
-            }
+            } catch (InterruptedException e) {}
         }
         final List<TestSuite> suites = new ArrayList<TestSuite>();
         for (TestResult result : parser.getTestResults()) {

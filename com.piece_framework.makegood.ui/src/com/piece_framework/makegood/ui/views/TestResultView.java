@@ -1,5 +1,8 @@
 package com.piece_framework.makegood.ui.views;
 
+import org.eclipse.jface.action.ActionContributionItem;
+import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
@@ -25,6 +28,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.IViewPart;
+import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
@@ -39,6 +43,7 @@ import com.piece_framework.makegood.ui.Messages;
 
 public class TestResultView extends ViewPart {
     private static final String VIEW_ID = "com.piece_framework.makegood.ui.views.resultView"; //$NON-NLS-1$
+    private static final String TERMINATE_ACTION_ID = "com.piece_framework.makegood.ui.viewActions.resultView.terminateTestAction"; //$NON-NLS-1$
 
     private MakeGoodProgressBar progressBar;
     private Label tests;
@@ -50,6 +55,7 @@ public class TestResultView extends ViewPart {
     private Label rate;
     private Label average;
     private ShowTimer showTimer;
+    private IAction terminateAction;
 
     private ViewerFilter failureFilter = new ViewerFilter() {
         @Override
@@ -68,6 +74,23 @@ public class TestResultView extends ViewPart {
 
     public TestResultView() {
         // TODO Auto-generated constructor stub
+    }
+
+    @Override
+    public IViewSite getViewSite() {
+        IViewSite site = super.getViewSite();
+
+        // There is no hook point for disabling the actions...
+        if (terminateAction == null) {
+            IToolBarManager manager = site.getActionBars().getToolBarManager();
+            ActionContributionItem terminateItem = (ActionContributionItem) manager.find(TERMINATE_ACTION_ID);
+            if (terminateItem != null) {
+                terminateAction = terminateItem.getAction();
+                terminateAction.setEnabled(false);
+            }
+        }
+
+        return site;
     }
 
     @Override
@@ -178,7 +201,6 @@ public class TestResultView extends ViewPart {
     @Override
     public void setFocus() {
         // TODO Auto-generated method stub
-        
     }
 
     public void reset() {
@@ -346,10 +368,14 @@ public class TestResultView extends ViewPart {
     public void start(TestProgress progress) {
         showTimer = new ShowTimer(tests, progress, 200);
         showTimer.start();
+
+        terminateAction.setEnabled(true);
     }
 
     public void terminate() {
         showTimer.terminate();
+
+        terminateAction.setEnabled(false);
     }
 
     private class ResultLabel {
