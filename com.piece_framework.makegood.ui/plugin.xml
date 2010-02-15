@@ -223,7 +223,7 @@
       <command
             categoryId="com.piece_framework.makegood.ui.commands.resultViewCategory"
             id="com.piece_framework.makegood.ui.commands.terminateTest"
-            name="Terminate Test">
+            name="%commands.terminateTest.name">
       </command>
    </extension>
    <extension
@@ -319,10 +319,10 @@
                definitionId="com.piece_framework.makegood.ui.commands.terminateTest"
                icon="icons/terminate.gif"
                id="com.piece_framework.makegood.ui.viewActions.resultView.terminateTestAction"
-               label="Terminate Test"
+               label="%resultView.terminateTest.label"
                style="push"
                toolbarPath="additions"
-               tooltip="Terminate Test">
+               tooltip="%resultView.terminateTest.tooltip">
          </action>
       </viewContribution>
    </extension>

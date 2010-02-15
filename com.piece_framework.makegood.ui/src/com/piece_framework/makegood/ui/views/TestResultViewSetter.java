@@ -111,12 +111,6 @@ public class TestResultViewSetter implements IMakeGoodEventListener, ParserListe
                 Thread.sleep(200);
             } catch (InterruptedException e) {}
         }
-        final List<TestSuite> suites = new ArrayList<TestSuite>();
-        for (TestResult result : parser.getTestResults()) {
-            if (result instanceof TestSuite) {
-                suites.add((TestSuite) result);
-            }
-        }
 
         Job job = new UIJob("MakeGood result parse") { //$NON-NLS-1$
             @Override

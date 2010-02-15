@@ -42,8 +42,9 @@ import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.Messages;
 
 public class TestResultView extends ViewPart {
-    private static final String VIEW_ID = "com.piece_framework.makegood.ui.views.resultView"; //$NON-NLS-1$
-    private static final String TERMINATE_ACTION_ID = "com.piece_framework.makegood.ui.viewActions.resultView.terminateTestAction"; //$NON-NLS-1$
+    private static final String VIEW_ID = Activator.PLUGIN_ID + ".views.resultView"; //$NON-NLS-1$
+    private static final String TERMINATE_ACTION_ID = Activator.PLUGIN_ID + ".viewActions.resultView.terminateTestAction"; //$NON-NLS-1$
+    private static final String CONTEXT_ID = Activator.PLUGIN_ID + ".contexts.resultView"; //$NON-NLS-1$
 
     private MakeGoodProgressBar progressBar;
     private Label tests;
@@ -96,7 +97,7 @@ public class TestResultView extends ViewPart {
     @Override
     public void createPartControl(Composite parent) {
         IContextService service = (IContextService) getSite().getService(IContextService.class);
-        service.activateContext("com.piece_framework.makegood.ui.contexts.resultView"); //$NON-NLS-1$
+        service.activateContext(CONTEXT_ID); //$NON-NLS-1$
 
         parent.setLayout(new GridLayout(1, false));
 
