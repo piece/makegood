@@ -43,7 +43,8 @@ import com.piece_framework.makegood.ui.Messages;
 
 public class TestResultView extends ViewPart {
     private static final String VIEW_ID = Activator.PLUGIN_ID + ".views.resultView"; //$NON-NLS-1$
-    private static final String TERMINATE_ACTION_ID = Activator.PLUGIN_ID + ".viewActions.resultView.terminateTestAction"; //$NON-NLS-1$
+    private static final String TERMINATE_ACTION_ID = Activator.PLUGIN_ID + ".viewActions.resultView.terminateTest"; //$NON-NLS-1$
+    private static final String RERUN_ACTION_ID = Activator.PLUGIN_ID + ".viewActions.resultView.rerunTest"; //$NON-NLS-1$
     private static final String CONTEXT_ID = Activator.PLUGIN_ID + ".contexts.resultView"; //$NON-NLS-1$
 
     private MakeGoodProgressBar progressBar;
@@ -57,6 +58,7 @@ public class TestResultView extends ViewPart {
     private Label average;
     private ShowTimer showTimer;
     private IAction terminateAction;
+    private IAction rerunAction;
 
     private ViewerFilter failureFilter = new ViewerFilter() {
         @Override
@@ -88,6 +90,12 @@ public class TestResultView extends ViewPart {
             if (terminateItem != null) {
                 terminateAction = terminateItem.getAction();
                 terminateAction.setEnabled(false);
+            }
+
+            ActionContributionItem rerunItem = (ActionContributionItem) manager.find(RERUN_ACTION_ID);
+            if (rerunItem != null) {
+                rerunAction = rerunItem.getAction();
+                rerunAction.setEnabled(false);
             }
         }
 
@@ -371,12 +379,14 @@ public class TestResultView extends ViewPart {
         showTimer.start();
 
         terminateAction.setEnabled(true);
+        rerunAction.setEnabled(false);
     }
 
     public void terminate() {
         showTimer.terminate();
 
         terminateAction.setEnabled(false);
+        rerunAction.setEnabled(true);
     }
 
     private class ResultLabel {

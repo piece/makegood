@@ -53,6 +53,21 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
 
     private int runLevelOnEditor = RUN_TEST_ON_CONTEXT;
 
+    private Object lastTarget;
+    private String lastMode;
+
+    private static MakeGoodLaunchShortcut shortcut;
+
+    private MakeGoodLaunchShortcut() {
+    }
+
+    public static MakeGoodLaunchShortcut get() {
+        if (shortcut == null) {
+            shortcut = new MakeGoodLaunchShortcut();
+        }
+        return shortcut;
+    }
+
     public void setRunLevelOnEditor(int runLevel) {
         this.runLevelOnEditor = runLevel;
     }
@@ -68,6 +83,9 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
         if (!(selection instanceof IStructuredSelection)) {
             return;
         }
+
+        lastTarget = selection;
+        lastMode = mode;
 
         Object target = ((IStructuredSelection) selection).getFirstElement();
         MakeGoodLaunchParameter parameter = MakeGoodLaunchParameter.get();
@@ -93,6 +111,9 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
         MakeGoodLaunchParameter parameter = MakeGoodLaunchParameter.get();
         parameter.clearTargets();
 
+        lastTarget = editor;
+        lastMode = mode;
+
         if (runLevelOnEditor != RUN_RELATED_TESTS) {
             parameter.addTarget(getElementOnRunLevel(editor));
         } else {
@@ -101,6 +122,18 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
         }
 
         super.launch(editor, mode);
+    }
+
+    public boolean hasLastTest() {
+        return lastTarget != null;
+    }
+
+    public void rerunLastTest() {
+        if (lastTarget instanceof ISelection) {
+            launch((ISelection) lastTarget, lastMode);
+        } else if (lastTarget instanceof IEditorPart) {
+            launch((IEditorPart) lastTarget, lastMode);
+        }
     }
 
     @Override

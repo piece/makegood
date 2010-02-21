@@ -225,6 +225,11 @@
             id="com.piece_framework.makegood.ui.commands.terminateTest"
             name="%commands.terminateTest.name">
       </command>
+      <command
+            categoryId="com.piece_framework.makegood.ui.commands.resultViewCategory"
+            id="com.piece_framework.makegood.ui.commands.rerunTest"
+            name="%commands.rerunTest.name">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.propertyPages">
@@ -308,7 +313,7 @@
                class="com.piece_framework.makegood.ui.actions.NextFailedTestAction"
                definitionId="com.piece_framework.makegood.ui.commands.nextFailedTest"
                icon="icons/down-arrow.gif"
-               id="com.piece_framework.makegood.ui.viewActions.resultView.NextFailedTest"
+               id="com.piece_framework.makegood.ui.viewActions.resultView.nextFailedTest"
                label="%resultView.nextFailedTest.label"
                style="push"
                toolbarPath="additions"
@@ -318,11 +323,21 @@
                class="com.piece_framework.makegood.ui.actions.TerminateTestAction"
                definitionId="com.piece_framework.makegood.ui.commands.terminateTest"
                icon="icons/terminate.gif"
-               id="com.piece_framework.makegood.ui.viewActions.resultView.terminateTestAction"
+               id="com.piece_framework.makegood.ui.viewActions.resultView.terminateTest"
                label="%resultView.terminateTest.label"
                style="push"
                toolbarPath="additions"
                tooltip="%resultView.terminateTest.tooltip">
+         </action>
+         <action
+               class="com.piece_framework.makegood.ui.actions.RerunTestAction"
+               definitionId="com.piece_framework.makegood.ui.commands.rerunTest"
+               icon="icons/rerun.gif"
+               id="com.piece_framework.makegood.ui.viewActions.resultView.rerunTest"
+               label="%resultView.rerunTest.label"
+               style="push"
+               toolbarPath="additions"
+               tooltip="%resultView.rerunTest.tooltip">
          </action>
       </viewContribution>
    </extension>
