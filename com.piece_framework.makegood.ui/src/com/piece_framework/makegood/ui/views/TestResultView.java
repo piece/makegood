@@ -557,7 +557,7 @@ public class TestResultView extends ViewPart {
         private StyledText text;
         private Cursor handCursor;
         private Cursor arrowCursor;
-        private Vector<FileWithLineRange> ranges = new Vector<FileWithLineRange>();
+        private Vector<FileWithLineRange> ranges;
 
         public FailureTrace(Composite parent) {
             Composite traceParent = new Composite(parent, SWT.NULL);
@@ -590,6 +590,7 @@ public class TestResultView extends ViewPart {
         }
 
         private void generatelinks(String text) {
+            ranges = new Vector<FileWithLineRange>();
             Matcher matcher = Pattern.compile(
                                   "^(.+):(\\d+)$",
                                   Pattern.MULTILINE
