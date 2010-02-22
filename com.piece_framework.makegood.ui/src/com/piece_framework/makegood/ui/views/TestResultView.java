@@ -719,7 +719,13 @@ public class TestResultView extends ViewPart {
         }
 
         private FileWithLineRange findFileWithLineRange(Point point) {
-            int offset = text.getOffsetAtLocation(point);
+            int offset;
+            try {
+                offset = text.getOffsetAtLocation(point);
+            } catch (IllegalArgumentException e) {
+                return null;
+            }
+
             for (int i = 0; i < ranges.size(); ++i) {
                 FileWithLineRange range = ranges.get(i);
                 int startOffset = range.start;
