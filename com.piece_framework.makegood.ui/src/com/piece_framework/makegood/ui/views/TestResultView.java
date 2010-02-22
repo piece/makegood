@@ -2,6 +2,8 @@ package com.piece_framework.makegood.ui.views;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.jface.action.ActionContributionItem;
@@ -598,7 +600,16 @@ public class TestResultView extends ViewPart {
                     files = ResourcesPlugin.getWorkspace().getRoot()
                             .findFilesForLocationURI(
                                     new URI("file:///" + matcher.group(1)));
-                } catch (URISyntaxException e1) {
+                } catch (URISyntaxException e) {
+                    Activator.getDefault().getLog().log(
+                        new Status(
+                            IStatus.WARNING,
+                            Activator.PLUGIN_ID,
+                            0,
+                            e.getMessage(),
+                            e
+                        )
+                    );
                     continue;
                 }
 
@@ -618,6 +629,15 @@ public class TestResultView extends ViewPart {
                             EFS.getLocalFileSystem()
                                .getStore(new URI("file:///" + matcher.group(1)));
                     } catch (URISyntaxException e) {
+                        Activator.getDefault().getLog().log(
+                            new Status(
+                                IStatus.WARNING,
+                                Activator.PLUGIN_ID,
+                                0,
+                                e.getMessage(),
+                                e
+                            )
+                        );
                         continue;
                     }
 
@@ -664,11 +684,25 @@ public class TestResultView extends ViewPart {
                     );
                 gotoLine((ITextEditor) editorPart, range.line);
             } catch (PartInitException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                Activator.getDefault().getLog().log(
+                    new Status(
+                        IStatus.WARNING,
+                        Activator.PLUGIN_ID,
+                        0,
+                        e.getMessage(),
+                        e
+                    )
+                );
             } catch (BadLocationException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                Activator.getDefault().getLog().log(
+                    new Status(
+                        IStatus.WARNING,
+                        Activator.PLUGIN_ID,
+                        0,
+                        e.getMessage(),
+                        e
+                    )
+                );
             }
         }
 
