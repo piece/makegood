@@ -1,8 +1,14 @@
 package com.piece_framework.makegood.ui.views;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.filesystem.EFS;
+import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.jface.text.BadLocationException;
+import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
@@ -15,25 +21,39 @@ import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.events.MouseListener;
+import org.eclipse.swt.events.MouseMoveListener;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.RGB;
+import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Tree;
+import org.eclipse.swt.custom.StyleRange;
+import org.eclipse.swt.custom.StyledText;
+import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.contexts.IContextService;
+import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.part.ViewPart;
+import org.eclipse.ui.texteditor.ITextEditor;
+
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.Vector;
 
 import com.piece_framework.makegood.launch.elements.ProblemType;
 import com.piece_framework.makegood.launch.elements.TestCase;
@@ -52,11 +72,11 @@ public class TestResultView extends ViewPart {
     private ResultLabel failures;
     private ResultLabel errors;
     private TreeViewer resultTreeViewer;
-    private List resultList;
     private Label rate;
     private Label average;
     private ShowTimer showTimer;
     private IAction terminateAction;
+    private FailureTrace failureTrace;
 
     private ViewerFilter failureFilter = new ViewerFilter() {
         @Override
@@ -95,7 +115,7 @@ public class TestResultView extends ViewPart {
     }
 
     @Override
-    public void createPartControl(Composite parent) {
+    public void createPartControl(final Composite parent) {
         IContextService service = (IContextService) getSite().getService(IContextService.class);
         service.activateContext(CONTEXT_ID); //$NON-NLS-1$
 
@@ -158,7 +178,7 @@ public class TestResultView extends ViewPart {
         resultTreeViewer.addSelectionChangedListener(new ISelectionChangedListener() {
             @Override
             public void selectionChanged(SelectionChangedEvent event) {
-                resultList.removeAll();
+                failureTrace.clearText();
 
                 if (!(event.getSelection() instanceof IStructuredSelection)) {
                     return;
@@ -173,28 +193,11 @@ public class TestResultView extends ViewPart {
                     return;
                 }
 
-                String[] contents = testCase.getProblem().getContent().split("\n"); //$NON-NLS-1$
-                for (String content: contents) {
-                    resultList.add(content);
-                }
+                failureTrace.setText(testCase.getProblem().getContent());
             }
         });
 
-        Composite traceParent = new Composite(form, SWT.NULL);
-        traceParent.setLayoutData(createHorizontalFillGridData());
-        traceParent.setLayout(new GridLayout(1, false));
-
-        Composite trace = new Composite(traceParent, SWT.NULL);
-        trace.setLayoutData(createHorizontalFillGridData());
-        trace.setLayout(new RowLayout());
-
-        new ResultLabel(trace,
-                        Messages.TestResultView_failureTraceLabel,
-                        Activator.getImageDescriptor("icons/failure-trace.gif").createImage() //$NON-NLS-1$
-                        );
-
-        resultList = new List(traceParent, SWT.BORDER + SWT.V_SCROLL + SWT.H_SCROLL);
-        resultList.setLayoutData(createBothFillGridData());
+        failureTrace = new FailureTrace(form);
 
         reset();
     }
@@ -532,6 +535,191 @@ public class TestResultView extends ViewPart {
 
             if (!terminate) {
                 schedule();
+            }
+        }
+    }
+
+    private class FileWithLineRange extends StyleRange {
+        Integer line;
+    }
+
+    private class InternalFileWithLineRange extends FileWithLineRange {
+        IFile file;
+    }
+
+    private class ExternalFileWithLineRange extends FileWithLineRange {
+        IFileStore fileStore;
+    }
+
+    private class FailureTrace implements MouseListener, MouseMoveListener {
+        private StyledText text;
+        private Cursor handCursor;
+        private Cursor arrowCursor;
+        private Vector<FileWithLineRange> ranges = new Vector<FileWithLineRange>();
+
+        public FailureTrace(Composite parent) {
+            Composite traceParent = new Composite(parent, SWT.NULL);
+            traceParent.setLayoutData(createHorizontalFillGridData());
+            traceParent.setLayout(new GridLayout(1, false));
+            Composite trace = new Composite(traceParent, SWT.NULL);
+            trace.setLayoutData(createHorizontalFillGridData());
+            trace.setLayout(new RowLayout());
+            new ResultLabel(
+                trace,
+                Messages.TestResultView_failureTraceLabel,
+                Activator.getImageDescriptor("icons/failure-trace.gif").createImage() //$NON-NLS-1$
+            );
+            text = new StyledText(
+                       traceParent,
+                       SWT.MULTI | SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL
+                   );
+            text.setLayoutData(createBothFillGridData());
+            text.setEditable(false);
+            text.addMouseListener(this);
+            text.addMouseMoveListener(this);
+
+            handCursor = new Cursor(parent.getDisplay(), SWT.CURSOR_HAND);
+            arrowCursor = new Cursor(parent.getDisplay(), SWT.CURSOR_ARROW);
+        }
+
+        public void setText(String text) {
+            this.text.setText(text);
+            generatelinks(text);
+        }
+
+        private void generatelinks(String text) {
+            Matcher matcher = Pattern.compile(
+                                  "^(.+):(\\d+)$",
+                                  Pattern.MULTILINE
+                                      ).matcher(text);
+            while (matcher.find()) {
+                IFile[] files;
+                try {
+                    files = ResourcesPlugin.getWorkspace().getRoot()
+                            .findFilesForLocationURI(
+                                    new URI("file:///" + matcher.group(1)));
+                } catch (URISyntaxException e1) {
+                    continue;
+                }
+
+                FileWithLineRange range;
+                if (files.length > 0) {
+                    InternalFileWithLineRange iRange =
+                        new InternalFileWithLineRange();
+                    iRange.file = files[0];
+                    iRange.foreground =
+                        this.text.getDisplay().getSystemColor(SWT.COLOR_BLUE);
+                    range = (FileWithLineRange) iRange;
+                } else {
+                    ExternalFileWithLineRange eRange =
+                        new ExternalFileWithLineRange();
+                    try {
+                        eRange.fileStore =
+                            EFS.getLocalFileSystem()
+                               .getStore(new URI("file:///" + matcher.group(1)));
+                    } catch (URISyntaxException e) {
+                        continue;
+                    }
+
+                    eRange.foreground = new Color(
+                                            this.text.getDisplay(),
+                                            114, 159, 207
+                                        );
+                    range = (FileWithLineRange) eRange;
+                }
+
+                String line = matcher.group();
+                range.start = text.indexOf(line);
+                range.length = line.length();
+                range.line = Integer.valueOf(matcher.group(2));
+                ranges.add(range);
+                setRange(range);
+            }
+        }
+
+        public void clearText() {
+            text.setText("");
+        }
+
+        public void setRange(StyleRange range) {
+            text.setStyleRange(range);
+        }
+
+        public void mouseDoubleClick(MouseEvent e) {}
+
+        public void mouseDown(MouseEvent event) {
+            FileWithLineRange range =
+                findFileWithLineRange(new Point(event.x, event.y));
+            if (range == null) {
+                return;
+            }
+
+            try {
+                IEditorPart editorPart =
+                    openEditor(
+                        PlatformUI.getWorkbench()
+                                  .getActiveWorkbenchWindow()
+                                  .getActivePage(),
+                        range
+                    );
+                gotoLine((ITextEditor) editorPart, range.line);
+            } catch (PartInitException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (BadLocationException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+
+        public void mouseUp(MouseEvent e) {}
+
+        public void mouseMove(MouseEvent event) {
+            FileWithLineRange range =
+                findFileWithLineRange(new Point(event.x, event.y));
+            if (range != null) {
+                text.setCursor(handCursor);
+            } else {
+                text.setCursor(arrowCursor);
+            }
+        }
+
+        private FileWithLineRange findFileWithLineRange(Point point) {
+            int offset = text.getOffsetAtLocation(point);
+            for (int i = 0; i < ranges.size(); ++i) {
+                FileWithLineRange range = ranges.get(i);
+                int startOffset = range.start;
+                int endOffset = startOffset + range.length;
+                if (offset >= startOffset && offset <= endOffset) {
+                    return range;
+                }
+            }
+
+            return null;
+        }
+
+        private void gotoLine(ITextEditor editor, Integer line)
+            throws BadLocationException {
+            IRegion region;
+            region = editor.getDocumentProvider()
+                           .getDocument(editor.getEditorInput())
+                           .getLineInformation(line - 1);
+            editor.selectAndReveal(region.getOffset(), region.getLength());
+        }
+
+        private IEditorPart openEditor(
+                IWorkbenchPage page, FileWithLineRange range
+            ) throws PartInitException {
+            if (range instanceof InternalFileWithLineRange) {
+                return IDE.openEditor(
+                            page, ((InternalFileWithLineRange) range).file
+                        );
+            } else if (range instanceof ExternalFileWithLineRange) {
+                return IDE.openEditorOnFileStore(
+                            page, ((ExternalFileWithLineRange) range).fileStore
+                        );
+            } else {
+                return null;
             }
         }
     }
