@@ -22,7 +22,7 @@ public class TerminateTestAction implements IViewActionDelegate {
     public void run(IAction action) {
         ILaunchManager manager = DebugPlugin.getDefault().getLaunchManager();
         for (ILaunch launch: manager.getLaunches()) {
-            boolean isMakeGood = launch.getLaunchConfiguration().getName().startsWith("MakeGood");
+            boolean isMakeGood = launch.getLaunchConfiguration().getName().startsWith("MakeGood"); //$NON-NLS-1$
             if (isMakeGood) {
                 try {
                     launch.terminate();

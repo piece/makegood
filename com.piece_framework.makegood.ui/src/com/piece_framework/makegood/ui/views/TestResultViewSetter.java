@@ -90,10 +90,10 @@ public class TestResultViewSetter implements IMakeGoodEventListener, ParserListe
 
     @Override
     public void terminate(ILaunch launch) {
-        if (launch.getAttribute("processTerminateOf" + getClass().getName()) != null) {
+        if (launch.getAttribute("processTerminateOf" + getClass().getName()) != null) { //$NON-NLS-1$
             return;
         }
-        launch.setAttribute("processTerminateOf" + getClass().getName(), "done");
+        launch.setAttribute("processTerminateOf" + getClass().getName(), "done"); //$NON-NLS-1$ //$NON-NLS-2$
 
         for (IProcess process: launch.getProcesses()) {
             try {

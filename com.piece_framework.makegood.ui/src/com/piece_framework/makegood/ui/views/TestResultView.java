@@ -602,7 +602,7 @@ public class TestResultView extends ViewPart {
         private void generatelinks(String text) {
             ranges = new Vector<FileWithLineRange>();
             Matcher matcher = Pattern.compile(
-                                  "^(.+):(\\d+)$",
+                                  "^(.+):(\\d+)$", //$NON-NLS-1$
                                   Pattern.MULTILINE
                                       ).matcher(text);
             while (matcher.find()) {
@@ -610,7 +610,7 @@ public class TestResultView extends ViewPart {
                 try {
                     files = ResourcesPlugin.getWorkspace().getRoot()
                             .findFilesForLocationURI(
-                                    new URI("file:///" + matcher.group(1)));
+                                    new URI("file:///" + matcher.group(1))); //$NON-NLS-1$
                 } catch (URISyntaxException e) {
                     Activator.getDefault().getLog().log(
                         new Status(
@@ -638,7 +638,7 @@ public class TestResultView extends ViewPart {
                     try {
                         eRange.fileStore =
                             EFS.getLocalFileSystem()
-                               .getStore(new URI("file:///" + matcher.group(1)));
+                               .getStore(new URI("file:///" + matcher.group(1))); //$NON-NLS-1$
                     } catch (URISyntaxException e) {
                         Activator.getDefault().getLog().log(
                             new Status(
@@ -669,7 +669,7 @@ public class TestResultView extends ViewPart {
         }
 
         public void clearText() {
-            text.setText("");
+            text.setText(""); //$NON-NLS-1$
         }
 
         public void setRange(StyleRange range) {
