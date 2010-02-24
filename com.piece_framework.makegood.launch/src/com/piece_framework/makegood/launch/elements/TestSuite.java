@@ -115,4 +115,12 @@ public class TestSuite extends TestResult {
             ((TestSuite) parent).increaseErrorCount();
         }
     }
+
+    @Override
+    public void setTime(double time) {
+        this.time += time;
+        if (parent != null) {
+            parent.setTime(time);
+        }
+    }
 }
