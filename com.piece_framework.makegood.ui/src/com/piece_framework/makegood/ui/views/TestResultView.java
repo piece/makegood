@@ -659,9 +659,8 @@ public class TestResultView extends ViewPart {
                     range = (FileWithLineRange) eRange;
                 }
 
-                String line = matcher.group();
-                range.start = text.indexOf(line);
-                range.length = line.length();
+                range.start = matcher.start();
+                range.length = matcher.group().length();
                 range.line = Integer.valueOf(matcher.group(2));
                 ranges.add(range);
                 setRange(range);
