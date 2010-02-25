@@ -5,7 +5,7 @@
 /**
  * PHP version 5
  *
- * Copyright (c) 2007-2009 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2007-2010 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,13 +30,34 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_TestRunner
- * @copyright  2007-2009 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2007-2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: @package_version@
+ * @version    Release: 2.11.0
  * @since      File available since Release 1.1.0
  */
 
-preload();
+// Finds the preload option and preloads a file as a PHP script if it is specified.
+$preload = create_function('', '
+do {
+    for ($i = 1, $count = count($_SERVER[\'argv\']); $i < $count; ++$i) {
+        if ($_SERVER[\'argv\'][$i] == \'-p\') {
+            $preloadFileIndex = $i + 1;
+            break 2;
+        }
+    }
+    return;
+} while (false);
+if (!array_key_exists($preloadFileIndex, $_SERVER[\'argv\'])) {
+    return;
+}
+$preloadFile = $_SERVER[\'argv\'][$preloadFileIndex];
+$result = include_once $preloadFile;
+if (!$result) {
+    echo "ERROR: Cannot load [ $preloadFile ]. Make sure the file path and permission are correct.\n";
+    exit(1);
+}
+');
+$preload();
 
 require_once 'Stagehand/Autoload.php';
 
@@ -44,45 +65,10 @@ $loader = Stagehand_Autoload::legacyLoader();
 $loader->addNamespace('Stagehand');
 Stagehand_Autoload::register($loader);
 
-$runner = new Stagehand_TestRunner('SimpleTest');
+$runner = new Stagehand_TestRunner(Stagehand_TestRunner_Framework::SIMPLETEST);
 $result = $runner->run();
 
 exit($result);
-
-// {{{ preload()
-
-/**
- * Finds the preload option and preloads a file as a PHP script if it is
- * specified.
- */
-function preload()
-{
-    do {
-        for ($i = 1, $count = count($_SERVER['argv']); $i < $count; ++$i) {
-            if (preg_match('/^-.*p/', $_SERVER['argv'][$i])) {
-                $preloadFileIndex = $i + 1;
-                break 2;
-            }
-        }
-
-        return;
-    } while (false);
-
-    if (!array_key_exists($preloadFileIndex, $_SERVER['argv'])) {
-        return;
-    }
-
-    $preloadFile = $_SERVER['argv'][$preloadFileIndex];
-    if (!is_null($preloadFile)) {
-        $result = include_once $preloadFile;
-        if (!$result) {
-            echo "ERROR: Cannot load [ $preloadFile ]. Make sure the file path and permission are correct.\n";
-            exit(1);
-        }
-    }
-}
-
-// }}}
 
 /*
  * Local Variables:
