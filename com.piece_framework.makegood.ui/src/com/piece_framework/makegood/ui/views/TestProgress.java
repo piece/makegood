@@ -20,7 +20,7 @@ public class TestProgress {
         failureCount = 0;
         errorCount = 0;
 
-        startTimeForTestCase = System.currentTimeMillis();
+        startTimeForTestCase = System.nanoTime();
         totalTime = 0;
 
         initialized = true;
@@ -53,8 +53,8 @@ public class TestProgress {
         return errorCount;
     }
 
-    public double getTotalTime() {
-        return totalTime / 1000d;
+    public long getTotalTime() {
+        return totalTime;
     }
 
     public int getRate() {
@@ -62,8 +62,8 @@ public class TestProgress {
         return rate <= 100 ? rate : 100;
     }
 
-    public double getAverage() {
-        return getTotalTime() / (double) endTestCount;
+    public long getAverage() {
+        return getTotalTime() / endTestCount;
     }
 
     public void incrementEndTestCount() {
@@ -81,15 +81,15 @@ public class TestProgress {
     }
 
     public void startTestCase() {
-        startTimeForTestCase = System.currentTimeMillis();
+        startTimeForTestCase = System.nanoTime();
     }
 
     public void endTestCase() {
-        testCaseTime = System.currentTimeMillis() - startTimeForTestCase;
+        testCaseTime = System.nanoTime() - startTimeForTestCase;
         totalTime += testCaseTime;
     }
 
-    public double getTestCaseTime() {
-        return testCaseTime / 1000d;
+    public long getTestCaseTime() {
+        return testCaseTime;
     }
 }
