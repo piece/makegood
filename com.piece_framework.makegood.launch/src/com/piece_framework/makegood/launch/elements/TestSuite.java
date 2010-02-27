@@ -117,7 +117,7 @@ public class TestSuite extends TestResult {
     }
 
     @Override
-    public void setTime(double time) {
+    public void setTime(long time) {
         this.time += time;
         if (parent != null) {
             parent.setTime(time);

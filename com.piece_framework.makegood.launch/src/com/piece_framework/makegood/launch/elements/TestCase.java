@@ -67,7 +67,7 @@ public class TestCase extends TestResult {
     }
 
     @Override
-    public void setTime(double time) {
+    public void setTime(long time) {
         this.time = time;
         parent.setTime(time);
     }

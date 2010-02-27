@@ -24,6 +24,7 @@ public class Messages extends NLS {
     public static String TestResultView_percent;
     public static String TestResultView_realTime;
     public static String TestResultView_second;
+    public static String TestResultView_millisecond;
     public static String TestResultView_testTime;
     public static String TestResultViewSetter_messageTitle;
     public static String TestResultViewSetter_failedToParseXMLMessage;

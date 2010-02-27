@@ -144,7 +144,7 @@ public class TestResultView extends ViewPart {
         summary.setLayoutData(createHorizontalFillGridData());
         summary.setLayout(new GridLayout(2, true));
 
-        tests = new Label(summary, SWT.LEFT);
+        tests = new Label(summary, SWT.LEFT | SWT.WRAP);
         tests.setLayoutData(createHorizontalFillGridData());
 
         Composite labels = new Composite(summary, SWT.NULL);
@@ -222,8 +222,10 @@ public class TestResultView extends ViewPart {
                      Messages.TestResultView_percent +
                      "  "       //$NON-NLS-1$
                      );
-        average.setText(" 0.000 " +      //$NON-NLS-1$
-                        Messages.TestResultView_second +
+        average.setText(TimeFormatter.format(0,
+                                             Messages.TestResultView_second,
+                                             Messages.TestResultView_millisecond
+                                             ) +
                         " / " +         //$NON-NLS-1$
                         Messages.TestResultView_averageTest +
                         "  "            //$NON-NLS-1$
@@ -232,13 +234,19 @@ public class TestResultView extends ViewPart {
                       " 0/0 " + //$NON-NLS-1$
                       "(" +         //$NON-NLS-1$
                           Messages.TestResultView_realTime +
-                          " 0.000 " +     //$NON-NLS-1$
-                          Messages.TestResultView_second +
+                          " " +  //$NON-NLS-1$
+                          TimeFormatter.format(0,
+                                             Messages.TestResultView_second,
+                                             Messages.TestResultView_millisecond
+                                             ) +
                           "," +     //$NON-NLS-1$
                       " " +         //$NON-NLS-1$
                           Messages.TestResultView_testTime +
-                          " 0.000 " +     //$NON-NLS-1$
-                          Messages.TestResultView_second +
+                          " " +  //$NON-NLS-1$
+                          TimeFormatter.format(0,
+                                             Messages.TestResultView_second,
+                                             Messages.TestResultView_millisecond
+                                             ) +
                       ")" //$NON-NLS-1$
                       );
         passes.reset();
@@ -352,13 +360,15 @@ public class TestResultView extends ViewPart {
                      Messages.TestResultView_percent +
                      "  "       //$NON-NLS-1$
                      );
-        average.setText(String.format("%.3f", progress.getAverage()) +      //$NON-NLS-1$
-                        " " +       //$NON-NLS-1$
-                        Messages.TestResultView_second +
+        average.setText(TimeFormatter.format(progress.getAverage(),
+                                             Messages.TestResultView_second,
+                                             Messages.TestResultView_millisecond
+                                             ) +
                         " / " +     //$NON-NLS-1$
                         Messages.TestResultView_averageTest +
                         "  "        //$NON-NLS-1$
                         );
+        average.getParent().layout();
 
         showTimer.show();
         passes.setCount(progress.getPassCount());
@@ -495,7 +505,7 @@ public class TestResultView extends ViewPart {
         private int delay;
         private long startTime;
         private boolean terminate;
-        private double elapsedTime;
+        private long elapsedTime;
 
         private ShowTimer(Label tests,
                           TestProgress progress,
@@ -507,7 +517,7 @@ public class TestResultView extends ViewPart {
         }
 
         private void start() {
-            startTime = System.currentTimeMillis();
+            startTime = System.nanoTime();
             schedule();
         }
 
@@ -526,23 +536,25 @@ public class TestResultView extends ViewPart {
                           "(" +         //$NON-NLS-1$
                               Messages.TestResultView_realTime +
                               " " +     //$NON-NLS-1$
-                              String.format("%.3f", elapsedTime) +      //$NON-NLS-1$
-                              " " +     //$NON-NLS-1$
-                              Messages.TestResultView_second +
+                              TimeFormatter.format(elapsedTime,
+                                                   Messages.TestResultView_second,
+                                                   Messages.TestResultView_millisecond
+                                                   ) +
                               "," +     //$NON-NLS-1$
                           " " +         //$NON-NLS-1$
                               Messages.TestResultView_testTime +
                               " " +     //$NON-NLS-1$
-                              String.format("%.3f", progress.getTotalTime()) +      //$NON-NLS-1$
-                              " " +     //$NON-NLS-1$
-                              Messages.TestResultView_second +
+                              TimeFormatter.format(progress.getTotalTime(),
+                                                   Messages.TestResultView_second,
+                                                   Messages.TestResultView_millisecond
+                                                   ) +
                           ")" //$NON-NLS-1$
                           );
         }
 
         @Override
         public void run() {
-            elapsedTime = (System.currentTimeMillis() - startTime) / 1000d;
+            elapsedTime = System.nanoTime() - startTime;
             show();
 
             if (!terminate) {

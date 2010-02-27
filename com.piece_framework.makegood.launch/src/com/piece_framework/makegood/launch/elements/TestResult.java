@@ -4,18 +4,18 @@ import java.util.List;
 
 public abstract class TestResult {
     String name;
-    double time;
+    long time;
     TestResult parent;
 
     public String getName() {
         return name;
     }
 
-    public double getTime() {
+    public long getTime() {
         return time;
     }
 
-    public abstract void setTime(double time);
+    public abstract void setTime(long time);
 
     public abstract List<TestResult> getTestResults();
 
