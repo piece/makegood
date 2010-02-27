@@ -12,7 +12,6 @@ public class TestResultLabelProvider extends LabelProvider {
     private Image passIcon;
     private Image errorIcon;
     private Image failureIcon;
-    private final NumberFormat timeFormat;
 
     public TestResultLabelProvider() {
         super();
@@ -20,10 +19,6 @@ public class TestResultLabelProvider extends LabelProvider {
         passIcon = Activator.getImageDescriptor("icons/pass-white.gif").createImage(); //$NON-NLS-1$
         errorIcon = Activator.getImageDescriptor("icons/error-white.gif").createImage(); //$NON-NLS-1$
         failureIcon = Activator.getImageDescriptor("icons/failure-white.gif").createImage(); //$NON-NLS-1$
-
-        timeFormat = NumberFormat.getNumberInstance();
-        timeFormat.setMaximumFractionDigits(3);
-        timeFormat.setMinimumFractionDigits(3);
     }
 
     @Override
@@ -31,8 +26,9 @@ public class TestResultLabelProvider extends LabelProvider {
         if (element instanceof TestResult) {
             TestResult testResult = (TestResult) element;
 
-            String formattedTime = timeFormat.format(testResult.getTime());
-            return testResult.getName() + " (" + formattedTime + " s)"; //$NON-NLS-1$ //$NON-NLS-2$
+            return testResult.getName() + " (" +  //$NON-NLS-1$
+                   TimeFormatter.format(testResult.getTime(), "s", "ms") +  //$NON-NLS-1$ //$NON-NLS-2$
+                   ")";  //$NON-NLS-1$
         }
         return super.getText(element);
     }
