@@ -144,7 +144,7 @@ public class TestResultView extends ViewPart {
         summary.setLayoutData(createHorizontalFillGridData());
         summary.setLayout(new GridLayout(2, true));
 
-        tests = new Label(summary, SWT.LEFT);
+        tests = new Label(summary, SWT.LEFT | SWT.WRAP);
         tests.setLayoutData(createHorizontalFillGridData());
 
         Composite labels = new Composite(summary, SWT.NULL);
@@ -368,6 +368,7 @@ public class TestResultView extends ViewPart {
                         Messages.TestResultView_averageTest +
                         "  "        //$NON-NLS-1$
                         );
+        average.getParent().layout();
 
         showTimer.show();
         passes.setCount(progress.getPassCount());
