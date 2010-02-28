@@ -1,8 +1,6 @@
 package com.piece_framework.makegood.ui.handlers;
 
-import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
-import org.eclipse.dltk.core.IType;
 
 import com.piece_framework.makegood.ui.launch.EditorParser;
 import com.piece_framework.makegood.ui.launch.MakeGoodLaunchShortcut;
@@ -16,8 +14,8 @@ public class RunTestFromEditorInClass extends RunTestFromEditor {
 
         EditorParser parser = new EditorParser();
         IModelElement element = parser.getModelElementOnSelection();
-        if (element instanceof IType
-            || element instanceof IMethod
+        if (element.getElementType() == IModelElement.TYPE
+            || element.getElementType() == IModelElement.METHOD
             ) {
             return true;
         }
