@@ -16,6 +16,7 @@ public class RunTestFromEditorInClass extends RunTestFromEditor {
         IModelElement element = parser.getModelElementOnSelection();
         if (element.getElementType() == IModelElement.TYPE
             || element.getElementType() == IModelElement.METHOD
+            || element.getElementType() == IModelElement.FIELD
             ) {
             return true;
         }
