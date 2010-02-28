@@ -11,6 +11,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchManager;
+import org.eclipse.dltk.compiler.env.ISourceField;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
@@ -195,6 +196,9 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
         IModelElement element = parser.getModelElementOnSelection();
         if (element == null) {
             return source;
+        }
+        if (element.getElementType() == IModelElement.FIELD) {
+            element = element.getParent();
         }
 
         IModelElement elementOnRunLevel = null;
