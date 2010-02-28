@@ -58,11 +58,17 @@ public class TestProgress {
     }
 
     public int getRate() {
+        if (allTestCount == 0) {
+            return 0;
+        }
         int rate = (int) (((double) endTestCount / (double) allTestCount) * 100d);
         return rate <= 100 ? rate : 100;
     }
 
     public long getAverage() {
+        if (endTestCount == 0) {
+            return 0;
+        }
         return getTotalTime() / endTestCount;
     }
 
