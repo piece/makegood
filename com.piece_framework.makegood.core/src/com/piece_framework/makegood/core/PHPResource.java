@@ -4,6 +4,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.IType;
@@ -34,6 +35,14 @@ public class PHPResource {
                 }
             }
         } catch (ModelException e) {
+            Activator.getDefault().getLog().log(
+                new Status(
+                    Status.WARNING,
+                    Activator.PLUGIN_ID,
+                    e.getMessage(),
+                    e
+                )
+            );
         }
         return false;
     }

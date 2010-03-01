@@ -273,6 +273,14 @@ public class TestResultView extends ViewPart {
         try {
             view = page.showView(VIEW_ID);
         } catch (PartInitException e) {
+            Activator.getDefault().getLog().log(
+                new Status(
+                    Status.WARNING,
+                    Activator.PLUGIN_ID,
+                    e.getMessage(),
+                    e
+                )
+            );
         }
         if (!(view instanceof TestResultView)) {
             return null;
@@ -628,7 +636,6 @@ public class TestResultView extends ViewPart {
                         new Status(
                             IStatus.WARNING,
                             Activator.PLUGIN_ID,
-                            0,
                             e.getMessage(),
                             e
                         )
@@ -656,7 +663,6 @@ public class TestResultView extends ViewPart {
                             new Status(
                                 IStatus.WARNING,
                                 Activator.PLUGIN_ID,
-                                0,
                                 e.getMessage(),
                                 e
                             )
@@ -710,7 +716,6 @@ public class TestResultView extends ViewPart {
                     new Status(
                         IStatus.WARNING,
                         Activator.PLUGIN_ID,
-                        0,
                         e.getMessage(),
                         e
                     )
@@ -720,7 +725,6 @@ public class TestResultView extends ViewPart {
                     new Status(
                         IStatus.WARNING,
                         Activator.PLUGIN_ID,
-                        0,
                         e.getMessage(),
                         e
                     )

@@ -8,10 +8,10 @@ import java.util.Set;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchManager;
-import org.eclipse.dltk.compiler.env.ISourceField;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
@@ -44,6 +44,7 @@ import org.eclipse.ui.texteditor.ITextEditor;
 import com.piece_framework.makegood.core.MakeGoodProperty;
 import com.piece_framework.makegood.core.PHPResource;
 import com.piece_framework.makegood.launch.MakeGoodLaunchParameter;
+import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.Messages;
 
 public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
@@ -291,8 +292,14 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
                           null
                           );
         } catch (CoreException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            Activator.getDefault().getLog().log(
+                new Status(
+                    Status.ERROR,
+                    Activator.PLUGIN_ID,
+                    e.getMessage(),
+                    e
+                )
+            );
         }
     }
 
@@ -316,8 +323,14 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
                 }
             }
         } catch (ModelException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            Activator.getDefault().getLog().log(
+                new Status(
+                    Status.ERROR,
+                    Activator.PLUGIN_ID,
+                    e.getMessage(),
+                    e
+                )
+            );
         }
         return types;
     }

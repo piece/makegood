@@ -91,12 +91,14 @@ public class MakeGoodLaunchConfigurationDelegate implements ILaunchConfiguration
             MakeGoodLauncherRegistry registry = new MakeGoodLauncherRegistry();
             launcher = registry.getLauncher(MakeGoodLaunchParameter.get().getTestingFramework());
         } catch (FileNotFoundException e) {
-            throw new CoreException(new Status(IStatus.ERROR,
-                                               Activator.PLUGIN_ID,
-                                               0,
-                                               e.getMessage(),
-                                               e
-                                               ));
+            throw new CoreException(
+                new Status(
+                    IStatus.ERROR,
+                    Activator.PLUGIN_ID,
+                    e.getMessage(),
+                    e
+                )
+            );
         }
         return launcher;
     }

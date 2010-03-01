@@ -44,6 +44,14 @@ public class TestResultViewSetter implements IMakeGoodEventListener, ParserListe
         try {
             log = launch.getLaunchConfiguration().getAttribute("LOG_JUNIT", (String) null); //$NON-NLS-1$
         } catch (CoreException e) {
+            Activator.getDefault().getLog().log(
+                new Status(
+                    Status.WARNING,
+                    Activator.PLUGIN_ID,
+                    e.getMessage(),
+                    e
+                )
+            );
         }
         if (log == null) {
             return;
@@ -102,6 +110,14 @@ public class TestResultViewSetter implements IMakeGoodEventListener, ParserListe
                     return;
                 }
             } catch (DebugException e) {
+                Activator.getDefault().getLog().log(
+                    new Status(
+                        Status.WARNING,
+                        Activator.PLUGIN_ID,
+                        e.getMessage(),
+                        e
+                    )
+                );
             }
         }
 
@@ -132,13 +148,14 @@ public class TestResultViewSetter implements IMakeGoodEventListener, ParserListe
                                             Messages.TestResultViewSetter_failedToParseXMLMessage + parserException.getMessage()
                                             );
 
-                    IStatus status = new Status(IStatus.ERROR,
-                                                Activator.PLUGIN_ID,
-                                                0,
-                                                parserException.getMessage(),
-                                                parserException
-                                                );
-                    Activator.getDefault().getLog().log(status);
+                    Activator.getDefault().getLog().log(
+                        new Status(
+                            IStatus.ERROR,
+                            Activator.PLUGIN_ID,
+                            parserException.getMessage(),
+                            parserException
+                        )
+                    );
                 }
 
                 return Status.OK_STATUS;
@@ -155,6 +172,11 @@ public class TestResultViewSetter implements IMakeGoodEventListener, ParserListe
                 try {
                     page.showView("org.eclipse.debug.ui.PHPDebugOutput"); //$NON-NLS-1$
                 } catch (PartInitException e) {
+                    Activator.getDefault().getLog().log(new Status(Status.WARNING,
+                                                        Activator.PLUGIN_ID,
+                                                        e.getMessage(),
+                                                        e
+                                                        ));
                 }
 
                 return Status.OK_STATUS;

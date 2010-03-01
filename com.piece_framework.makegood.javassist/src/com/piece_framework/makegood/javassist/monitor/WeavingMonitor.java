@@ -8,10 +8,13 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
+import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
 
 public class WeavingMonitor {
-    private static final String EXTENSION_POINT_ID = "com.piece_framework.makegood.javassist.monitorTargets"; //$NON-NLS-1$
+    private static final String PLUGIN_ID = "com.piece_framework.makegood.javassist";    //$NON-NLS-1$
+    private static final String EXTENSION_POINT_ID = PLUGIN_ID + ".monitorTargets";      //$NON-NLS-1$
     private static List<IMonitorTarget> targets;
 
     public static boolean endAll() {
@@ -46,8 +49,14 @@ public class WeavingMonitor {
                             targets.add((IMonitorTarget) executable);
                         }
                     } catch (CoreException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
+                        Platform.getLog(Platform.getBundle(PLUGIN_ID)).log(
+                            new Status(
+                                Status.WARNING,
+                                PLUGIN_ID,
+                                e.getMessage(),
+                                e
+                            )
+                        );
                     }
                 }
             }

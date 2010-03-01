@@ -6,6 +6,7 @@ import java.net.URL;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
@@ -39,7 +40,14 @@ public class Activator extends AbstractUIPlugin {
             File launchersDirectory = new File(FileLocator.toFileURL(launchersURL).getPath());
             MakeGoodLauncherRegistry.createRegistry(launchersDirectory);
         } catch (IOException e) {
-            e.printStackTrace();
+            getLog().log(
+                new Status(
+                    Status.WARNING,
+                    PLUGIN_ID,
+                    e.getMessage(),
+                    e
+                )
+            );
         }
     }
 

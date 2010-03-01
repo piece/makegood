@@ -9,6 +9,7 @@ import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.ui.IStartup;
 
@@ -43,8 +44,14 @@ public class Startup implements IStartup {
                             eventListeners.add((IMakeGoodEventListener) executable);
                         }
                     } catch (CoreException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
+                        Activator.getDefault().getLog().log(
+                            new Status(
+                                Status.WARNING,
+                                Activator.PLUGIN_ID,
+                                e.getMessage(),
+                                e
+                            )
+                        );
                     }
                 }
             }

@@ -65,6 +65,7 @@ public class Startup implements IStartup {
                             );
                     }
                 } catch (NotFoundException e) {
+                    log(e);
                 }
             }
 

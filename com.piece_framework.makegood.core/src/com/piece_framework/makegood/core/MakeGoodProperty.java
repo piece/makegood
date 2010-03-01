@@ -72,11 +72,14 @@ public class MakeGoodProperty {
         try {
             preferences.flush();
         } catch (BackingStoreException e) {
-            Activator.getDefault().getLog().log(new Status(Status.ERROR,
-                                                           Activator.PLUGIN_ID,
-                                                           e.getMessage(),
-                                                           e
-                                                           ));
+            Activator.getDefault().getLog().log(
+                new Status(
+                    Status.ERROR,
+                    Activator.PLUGIN_ID,
+                    e.getMessage(),
+                    e
+                )
+            );
         }
     }
 }

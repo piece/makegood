@@ -9,6 +9,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ISourceModule;
@@ -93,6 +94,14 @@ public class MakeGoodLaunchParameter {
                         classes.append(targetValue);
                     }
                 } catch (ModelException e) {
+                    Activator.getDefault().getLog().log(
+                        new Status(
+                            Status.WARNING,
+                            Activator.PLUGIN_ID,
+                            e.getMessage(),
+                            e
+                        )
+                    );
                 }
             }
             if (target instanceof IType) {
@@ -141,8 +150,14 @@ public class MakeGoodLaunchParameter {
                 }
             }
         } catch (CoreException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            Activator.getDefault().getLog().log(
+                new Status(
+                    Status.WARNING,
+                    Activator.PLUGIN_ID,
+                    e.getMessage(),
+                    e
+                )
+            );
         }
         return null;
     }

@@ -27,13 +27,14 @@ public class TerminateTestAction implements IViewActionDelegate {
                 try {
                     launch.terminate();
                 } catch (DebugException e) {
-                    IStatus status = new Status(IStatus.ERROR,
-                                                Activator.PLUGIN_ID,
-                                                0,
-                                                e.getMessage(),
-                                                e
-                                                );
-                    Activator.getDefault().getLog().log(status);
+                    Activator.getDefault().getLog().log(
+                        new Status(
+                            Status.ERROR,
+                            Activator.PLUGIN_ID,
+                            e.getMessage(),
+                            e
+                        )
+                    );
                 }
                 break;
             }

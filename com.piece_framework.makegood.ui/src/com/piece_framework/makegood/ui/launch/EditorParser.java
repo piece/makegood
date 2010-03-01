@@ -1,5 +1,6 @@
 package com.piece_framework.makegood.ui.launch;
 
+import org.eclipse.core.runtime.Status;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.ModelException;
@@ -11,6 +12,8 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.texteditor.ITextEditor;
+
+import com.piece_framework.makegood.ui.Activator;
 
 public class EditorParser {
     private IEditorPart editor;
@@ -40,6 +43,14 @@ public class EditorParser {
             ScriptModelUtil.reconcile(source);
             element = source.getElementAt(offset);
         } catch (ModelException e) {
+            Activator.getDefault().getLog().log(
+                new Status(
+                    Status.WARNING,
+                    Activator.PLUGIN_ID,
+                    e.getMessage(),
+                    e
+                )
+            );
         }
         return element;
     }
