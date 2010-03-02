@@ -49,18 +49,18 @@ public class Startup implements IStartup {
         CtMethod targetMethod = targetClass.getDeclaredMethod("find"); //$NON-NLS-1$
         targetMethod.instrument(new ExprEditor() {
             public void edit(Cast cast) throws CannotCompileException {
+                CtClass castClass = null;
                 try {
-                    CtClass castClass = cast.getType();
-                    if (castClass.getName().equals("org.eclipse.core.resources.IContainer")) { //$NON-NLS-1$
-                        cast.replace(
+                    castClass = cast.getType();
+                } catch (NotFoundException e) {}
+
+                if (castClass != null && castClass.getName().equals("org.eclipse.core.resources.IContainer")) { //$NON-NLS-1$
+                    cast.replace(
 "$_ = null;" + //$NON-NLS-1$
 "if (includePath.getEntry() instanceof org.eclipse.core.resources.IContainer) {" + //$NON-NLS-1$
 "    $_ = ($r) includePath.getEntry();" + //$NON-NLS-1$
 "}" //$NON-NLS-1$
-                            );
-                    }
-                } catch (NotFoundException e) {
-                    log(e);
+                    );
                 }
             }
 

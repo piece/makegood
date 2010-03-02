@@ -51,10 +51,13 @@ public class Startup implements IStartup {
         CtMethod targetMethod = targetClass.getDeclaredMethod("createPhpIniByProject"); //$NON-NLS-1$
         targetMethod.instrument(new ExprEditor() {
             public void edit(Cast cast) throws CannotCompileException {
+                CtClass castClass = null;
                 try {
-                    CtClass castClass = cast.getType();
-                    if (castClass.getName().equals("org.eclipse.core.resources.IContainer")) { //$NON-NLS-1$
-                        cast.replace(
+                    castClass = cast.getType();
+                } catch (NotFoundException e) {}
+
+                if (castClass != null && castClass.getName().equals("org.eclipse.core.resources.IContainer")) { //$NON-NLS-1$
+                    cast.replace(
 "$_ = null;" + //$NON-NLS-1$
 "if (pathObject.getEntry() instanceof org.eclipse.core.resources.IContainer) {" + //$NON-NLS-1$
 "    $_ = ($r) pathObject.getEntry();" + //$NON-NLS-1$
@@ -62,10 +65,7 @@ public class Startup implements IStartup {
 "    org.eclipse.core.resources.IResource resource = (org.eclipse.core.resources.IResource) pathObject.getEntry();" + //$NON-NLS-1$
 "    includePath.add(resource.getFullPath().toOSString());" + //$NON-NLS-1$
 "}" //$NON-NLS-1$
-                            );
-                    }
-                } catch (NotFoundException e) {
-                    log(e);
+                    );
                 }
             }
 
