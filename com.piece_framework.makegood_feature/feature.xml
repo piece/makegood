@@ -2,7 +2,7 @@
 <feature
       id="com.piece_framework.makegood_feature"
       label="%Feature.BundleName"
-      version="0.3.0.dev"
+      version="0.3.0"
       provider-name="%Feature.BundleProvider"
       plugin="com.piece_framework.makegood.core"
       image="makegood_120.jpg">
@@ -41,6 +41,7 @@
       <import plugin="org.eclipse.ui.workbench.texteditor"/>
       <import plugin="org.eclipse.core.expressions"/>
       <import plugin="org.eclipse.ui.ide"/>
+      <import plugin="org.eclipse.core.filesystem"/>
    </requires>
 
    <plugin
