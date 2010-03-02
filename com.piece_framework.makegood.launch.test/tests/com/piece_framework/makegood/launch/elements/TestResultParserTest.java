@@ -56,7 +56,7 @@ public class TestResultParserTest {
                                                ));
         startParser(parser, null);
         Thread.sleep(500);
-        parser.terminate();
+        parser.stop();
         Thread.sleep(500);
 
         List<TestResult> results = parser.getTestResults();
@@ -464,13 +464,13 @@ SRC_DIR + "/Stagehand/TestRunner.php:186\n" +
         testRunner.start();
         testRunner.waitForEnd();
 
-        parser.terminate();
+        parser.stop();
 
         assertTrue(listener.clearAll());
     }
 
     @Test
-    public void terminate() throws InterruptedException {
+    public void stop() throws InterruptedException {
         File xmlFile = new File(TMP_DIR + 
                                 String.valueOf(File.separatorChar) +
                                 "realtime.xml"
@@ -484,7 +484,7 @@ SRC_DIR + "/Stagehand/TestRunner.php:186\n" +
                                                          );
         testRunner.start();
         Thread.sleep(2000);
-        parser.terminate();
+        parser.stop();
         Thread.sleep(2000);
 
         assertTrue(parser.wasEnd());

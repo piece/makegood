@@ -65,7 +65,7 @@ import com.piece_framework.makegood.ui.Messages;
 
 public class TestResultView extends ViewPart {
     private static final String VIEW_ID = Activator.PLUGIN_ID + ".views.resultView"; //$NON-NLS-1$
-    private static final String TERMINATE_ACTION_ID = Activator.PLUGIN_ID + ".viewActions.resultView.terminateTest"; //$NON-NLS-1$
+    private static final String STOP_ACTION_ID = Activator.PLUGIN_ID + ".viewActions.resultView.stopTest"; //$NON-NLS-1$
     private static final String RERUN_ACTION_ID = Activator.PLUGIN_ID + ".viewActions.resultView.rerunTest"; //$NON-NLS-1$
     private static final String CONTEXT_ID = Activator.PLUGIN_ID + ".contexts.resultView"; //$NON-NLS-1$
 
@@ -78,7 +78,7 @@ public class TestResultView extends ViewPart {
     private Label rate;
     private Label average;
     private ShowTimer showTimer;
-    private IAction terminateAction;
+    private IAction stopAction;
     private IAction rerunAction;
     private FailureTrace failureTrace;
 
@@ -106,12 +106,12 @@ public class TestResultView extends ViewPart {
         IViewSite site = super.getViewSite();
 
         // There is no hook point for disabling the actions...
-        if (terminateAction == null) {
+        if (stopAction == null) {
             IToolBarManager manager = site.getActionBars().getToolBarManager();
-            ActionContributionItem terminateItem = (ActionContributionItem) manager.find(TERMINATE_ACTION_ID);
-            if (terminateItem != null) {
-                terminateAction = terminateItem.getAction();
-                terminateAction.setEnabled(false);
+            ActionContributionItem stopItem = (ActionContributionItem) manager.find(STOP_ACTION_ID);
+            if (stopItem != null) {
+                stopAction = stopItem.getAction();
+                stopAction.setEnabled(false);
             }
 
             ActionContributionItem rerunItem = (ActionContributionItem) manager.find(RERUN_ACTION_ID);
@@ -401,14 +401,14 @@ public class TestResultView extends ViewPart {
         showTimer = new ShowTimer(tests, progress, 200);
         showTimer.start();
 
-        terminateAction.setEnabled(true);
+        stopAction.setEnabled(true);
         rerunAction.setEnabled(false);
     }
 
-    public void terminate() {
-        showTimer.terminate();
+    public void stop() {
+        showTimer.stop();
 
-        terminateAction.setEnabled(false);
+        stopAction.setEnabled(false);
         rerunAction.setEnabled(true);
     }
 
@@ -512,7 +512,7 @@ public class TestResultView extends ViewPart {
         private TestProgress progress;
         private int delay;
         private long startTime;
-        private boolean terminate;
+        private boolean stop;
         private long elapsedTime;
 
         private ShowTimer(Label tests,
@@ -529,8 +529,8 @@ public class TestResultView extends ViewPart {
             schedule();
         }
 
-        private void terminate() {
-            terminate = true;
+        private void stop() {
+            stop = true;
         }
 
         private void schedule() {
@@ -565,7 +565,7 @@ public class TestResultView extends ViewPart {
             elapsedTime = System.nanoTime() - startTime;
             show();
 
-            if (!terminate) {
+            if (!stop) {
                 schedule();
             }
         }

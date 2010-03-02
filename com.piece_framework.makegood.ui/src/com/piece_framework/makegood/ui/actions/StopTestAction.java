@@ -1,6 +1,5 @@
 package com.piece_framework.makegood.ui.actions;
 
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.DebugPlugin;
@@ -13,7 +12,7 @@ import org.eclipse.ui.IViewPart;
 
 import com.piece_framework.makegood.ui.Activator;
 
-public class TerminateTestAction implements IViewActionDelegate {
+public class StopTestAction implements IViewActionDelegate {
     @Override
     public void init(IViewPart view) {
     }

@@ -222,8 +222,8 @@
       </command>
       <command
             categoryId="com.piece_framework.makegood.ui.commands.resultViewCategory"
-            id="com.piece_framework.makegood.ui.commands.terminateTest"
-            name="%commands.terminateTest.name">
+            id="com.piece_framework.makegood.ui.commands.stopTest"
+            name="%commands.stopTest.name">
       </command>
       <command
             categoryId="com.piece_framework.makegood.ui.commands.resultViewCategory"
@@ -320,14 +320,14 @@
                tooltip="%resultView.nextFailedTest.tooltip">
          </action>
          <action
-               class="com.piece_framework.makegood.ui.actions.TerminateTestAction"
-               definitionId="com.piece_framework.makegood.ui.commands.terminateTest"
-               icon="icons/terminate.gif"
-               id="com.piece_framework.makegood.ui.viewActions.resultView.terminateTest"
-               label="%resultView.terminateTest.label"
+               class="com.piece_framework.makegood.ui.actions.StopTestAction"
+               definitionId="com.piece_framework.makegood.ui.commands.stopTest"
+               icon="icons/stop.gif"
+               id="com.piece_framework.makegood.ui.viewActions.resultView.stopTest"
+               label="%resultView.stopTest.label"
                style="push"
                toolbarPath="additions"
-               tooltip="%resultView.terminateTest.tooltip">
+               tooltip="%resultView.stopTest.tooltip">
          </action>
          <action
                class="com.piece_framework.makegood.ui.actions.RerunTestAction"

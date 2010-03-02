@@ -121,7 +121,7 @@ public class TestResultViewSetter implements IMakeGoodEventListener, ParserListe
             }
         }
 
-        parser.terminate();
+        parser.stop();
         for (int i = 0; i < 10 && !parser.wasEnd(); ++i) {
             try {
                 Thread.sleep(200);
@@ -139,7 +139,7 @@ public class TestResultViewSetter implements IMakeGoodEventListener, ParserListe
                 view.setFocus();
 
                 progress.finalize();
-                view.terminate();
+                view.stop();
                 view.refresh(progress, currentTestCase);
 
                 if (parserException != null) {

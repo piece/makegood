@@ -27,7 +27,7 @@ public class TestResultParser extends DefaultHandler {
     private TestCase currentCase;
     private StringBuilder contents;
     private List<ParserListener> listeners = new ArrayList<ParserListener>();
-    private boolean terminate = false;
+    private boolean stop = false;
     private SynchronizedFileInputStream stream;
     private boolean createdTestCase;
 
@@ -52,8 +52,8 @@ public class TestResultParser extends DefaultHandler {
         parser.parse(stream, this);
     }
 
-    public void terminate() {
-        terminate = true;
+    public void stop() {
+        stop = true;
         wasEnd = true;
     }
 
@@ -128,7 +128,7 @@ public class TestResultParser extends DefaultHandler {
 
     @Override
     public void error(SAXParseException e) throws SAXException {
-        if (terminate) {
+        if (stop) {
             return;
         }
         super.error(e);
@@ -136,7 +136,7 @@ public class TestResultParser extends DefaultHandler {
 
     @Override
     public void fatalError(SAXParseException e) throws SAXException {
-        if (terminate) {
+        if (stop) {
             return;
         }
         super.fatalError(e);
@@ -290,7 +290,7 @@ public class TestResultParser extends DefaultHandler {
                     break;
                 }
 
-                if (terminate) {
+                if (stop) {
                     break;
                 }
 
