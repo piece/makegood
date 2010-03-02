@@ -609,6 +609,7 @@ public class TestResultView extends ViewPart {
             text.setEditable(false);
             text.addMouseListener(this);
             text.addMouseMoveListener(this);
+            visibleScrollBar(false);
 
             handCursor = new Cursor(parent.getDisplay(), SWT.CURSOR_HAND);
             arrowCursor = new Cursor(parent.getDisplay(), SWT.CURSOR_ARROW);
@@ -617,6 +618,8 @@ public class TestResultView extends ViewPart {
         public void setText(String text) {
             this.text.setText(text);
             generatelinks(text);
+
+            visibleScrollBar(true);
         }
 
         private void generatelinks(String text) {
@@ -687,6 +690,8 @@ public class TestResultView extends ViewPart {
 
         public void clearText() {
             text.setText(""); //$NON-NLS-1$
+
+            visibleScrollBar(false);
         }
 
         public void setRange(StyleRange range) {
@@ -787,6 +792,11 @@ public class TestResultView extends ViewPart {
             } else {
                 return null;
             }
+        }
+
+        private void visibleScrollBar(boolean visible) {
+            text.getVerticalBar().setVisible(visible);
+            text.getHorizontalBar().setVisible(visible);
         }
     }
 }
