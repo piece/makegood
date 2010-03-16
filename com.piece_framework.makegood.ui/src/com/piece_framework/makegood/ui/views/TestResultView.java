@@ -11,6 +11,8 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IRegion;
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
@@ -60,6 +62,7 @@ import java.util.Vector;
 import com.piece_framework.makegood.launch.elements.ProblemType;
 import com.piece_framework.makegood.launch.elements.TestCase;
 import com.piece_framework.makegood.launch.elements.TestResult;
+import com.piece_framework.makegood.launch.elements.TestSuite;
 import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.Messages;
 
@@ -84,14 +87,8 @@ public class TestResultView extends ViewPart {
 
     private ViewerFilter failureFilter = new ViewerFilter() {
         @Override
-        public boolean select(Viewer viewer,
-                              Object parentElement,
-                              Object element
-                              ) {
-            if (!(element instanceof TestResult)) {
-                return false;
-            }
-
+        public boolean select(Viewer viewer, Object parentElement, Object element) {
+            if (!(element instanceof TestResult)) return false;
             TestResult result = (TestResult) element;
             return result.hasFailure() || result.hasError();
         }
@@ -189,21 +186,43 @@ public class TestResultView extends ViewPart {
             @Override
             public void selectionChanged(SelectionChangedEvent event) {
                 failureTrace.clearText();
-
-                if (!(event.getSelection() instanceof IStructuredSelection)) {
-                    return;
-                }
+                if (!(event.getSelection() instanceof IStructuredSelection)) return;
                 IStructuredSelection selection = (IStructuredSelection) event.getSelection();
-                if (!(selection.getFirstElement() instanceof TestCase)) {
-                    return;
-                }
-
-                TestCase testCase = (TestCase) selection.getFirstElement();
-                if (testCase.getProblem().getType() == ProblemType.Pass) {
-                    return;
-                }
-
+                Object element = selection.getFirstElement();
+                if (!(element instanceof TestCase)) return;
+                TestCase testCase = (TestCase) element;
+                if (testCase.getProblem().getType() == ProblemType.Pass) return;
                 failureTrace.setText(testCase.getProblem().getContent());
+            }
+        });
+        resultTreeViewer.addDoubleClickListener(new IDoubleClickListener() {
+            @Override
+            public void doubleClick(DoubleClickEvent event) {
+                IStructuredSelection selection = (IStructuredSelection) event.getSelection();
+                Object element = selection.getFirstElement();
+                if (element instanceof TestCase) {
+                    TestCase testCase = (TestCase) element;
+                    String fileName = testCase.getFile();
+                    if (fileName == null) return;
+                    IFile[] files = findFiles(fileName);
+                    if (files == null) return;
+                    if (files.length > 0) {
+                        openEditor(files[0], testCase.getLine());
+                    } else {
+                        openEditor(findFileStore(fileName), testCase.getLine());
+                    }
+                } else if (element instanceof TestSuite) {
+                    TestSuite suite= (TestSuite) element;
+                    String fileName = suite.getFile();
+                    if (fileName == null) return;
+                    IFile[] files = findFiles(fileName);
+                    if (files == null) return;
+                    if (files.length > 0) {
+                        openEditor(files[0]);
+                    } else {
+                        openEditor(findFileStore(fileName));
+                    }
+                }
             }
         });
 
@@ -261,9 +280,7 @@ public class TestResultView extends ViewPart {
     public static TestResultView getView() {
         IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
         IViewPart view = page.findView(VIEW_ID);
-        if (!(view instanceof TestResultView)) {
-            return null;
-        }
+        if (!(view instanceof TestResultView)) return null;
         return (TestResultView) view;
     }
 
@@ -273,18 +290,11 @@ public class TestResultView extends ViewPart {
         try {
             view = page.showView(VIEW_ID);
         } catch (PartInitException e) {
-            Activator.getDefault().getLog().log(
-                new Status(
-                    Status.WARNING,
-                    Activator.PLUGIN_ID,
-                    e.getMessage(),
-                    e
-                )
-            );
-        }
-        if (!(view instanceof TestResultView)) {
+            Activator.getDefault().getLog().log(new Status(IStatus.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
             return null;
         }
+
+        if (!(view instanceof TestResultView)) return null;
         return (TestResultView) view;
     }
 
@@ -304,18 +314,105 @@ public class TestResultView extends ViewPart {
         return bothFillGrid;
     }
 
+    private void gotoLine(ITextEditor editor, Integer line) {
+        IRegion region;
+        try {
+            region = editor.getDocumentProvider()
+                           .getDocument(editor.getEditorInput())
+                           .getLineInformation(line - 1);
+        } catch (BadLocationException e) {
+            Activator.getDefault().getLog().log(new Status(IStatus.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
+            return;
+        }
+
+        editor.selectAndReveal(region.getOffset(), region.getLength());
+    }
+
+    private IFile[] findFiles(String file) {
+        try {
+            return ResourcesPlugin.getWorkspace()
+                                   .getRoot()
+                                   .findFilesForLocationURI(
+                                       new URI("file:///" + file) //$NON-NLS-1$
+                                   );
+        } catch (URISyntaxException e) {
+            Activator.getDefault().getLog().log(new Status(IStatus.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
+            return null;
+        }
+    }
+
+    private IFileStore findFileStore(String file) {
+        try {
+            return EFS.getLocalFileSystem()
+                       .getStore(new URI("file:///" + file)); //$NON-NLS-1$
+        } catch (URISyntaxException e) {
+            Activator.getDefault().getLog().log(new Status(IStatus.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
+            return null;
+        }
+    }
+
+    private IEditorPart openEditor(IFile file) {
+        try {
+            return IDE.openEditor(
+                        PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage(),
+                        file
+                    );
+        } catch (PartInitException e) {
+            Activator.getDefault().getLog().log(new Status(IStatus.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
+            return null;
+        }
+    }
+
+    private IEditorPart openEditor(IFileStore fileStore) {
+        try {
+            return IDE.openEditorOnFileStore(
+                        PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage(),
+                        fileStore
+                    );
+        } catch (PartInitException e) {
+            Activator.getDefault().getLog().log(new Status(IStatus.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
+            return null;
+        }
+    }
+
+    private IEditorPart openEditor(FileWithLineRange range) {
+        if (range instanceof InternalFileWithLineRange) {
+            return openEditor(((InternalFileWithLineRange) range).file);
+        } else if (range instanceof ExternalFileWithLineRange) {
+            return openEditor(((ExternalFileWithLineRange) range).fileStore);
+        } else {
+            return null;
+        }
+    }
+
+    private IEditorPart openEditor(IFile file, Integer line) {
+        IEditorPart editorPart = openEditor(file);
+        if (editorPart == null) return null;
+        gotoLine((ITextEditor) editorPart, line);
+        return editorPart;
+    }
+
+    private IEditorPart openEditor(IFileStore fileStore, Integer line) {
+        IEditorPart editorPart = openEditor(fileStore);
+        if (editorPart == null) return null;
+        gotoLine((ITextEditor) editorPart, line);
+        return editorPart;
+    }
+
+    private IEditorPart openEditor(FileWithLineRange range, Integer line) {
+        IEditorPart editorPart = openEditor(range);
+        if (editorPart == null) return null;
+        gotoLine((ITextEditor) editorPart, line);
+        return editorPart;
+    }
+
     public void nextResult() {
         IStructuredSelection selection = (IStructuredSelection) resultTreeViewer.getSelection();
         TestResult selected = (TestResult) selection.getFirstElement();
 
         java.util.List<TestResult> results = (java.util.List<TestResult>) resultTreeViewer.getInput();
-        if (results == null || results.size() == 0) {
-            return;
-        }
-
-        if (selected == null) {
-            selected = results.get(0);
-        }
+        if (results == null || results.size() == 0) return;
+        if (selected == null) selected = results.get(0);
 
         TestResultSearch search = new TestResultSearch(results, selected);
         TestResult next = search.getNextFailure();
@@ -330,13 +427,8 @@ public class TestResultView extends ViewPart {
         TestResult selected = (TestResult) selection.getFirstElement();
 
         java.util.List<TestResult> results = (java.util.List<TestResult>) resultTreeViewer.getInput();
-        if (results == null || results.size() == 0) {
-            return;
-        }
-
-        if (selected == null) {
-            selected = results.get(0);
-        }
+        if (results == null || results.size() == 0) return;
+        if (selected == null) selected = results.get(0);
 
         TestResultSearch search = new TestResultSearch(results, selected);
         TestResult previous = search.getPreviousFailure();
@@ -385,9 +477,7 @@ public class TestResultView extends ViewPart {
 
         boolean raiseErrorOrFailure = progress.getErrorCount() > 0
                                       || progress.getFailureCount() > 0;
-        if (raiseErrorOrFailure) {
-            progressBar.raisedError();
-        }
+        if (raiseErrorOrFailure) progressBar.raisedError();
         progressBar.worked(progress.getRate());
 
         if (result != null) {
@@ -419,10 +509,7 @@ public class TestResultView extends ViewPart {
         private ResultLabel(Composite parent, String text, Image icon) {
             label = new CLabel(parent, SWT.LEFT);
             label.setText(text);
-            if (icon != null) {
-                label.setImage(icon);
-            }
-
+            if (icon != null) label.setImage(icon);
             this.text = text;
         }
 
@@ -564,10 +651,7 @@ public class TestResultView extends ViewPart {
         public void run() {
             elapsedTime = System.nanoTime() - startTime;
             show();
-
-            if (!stop) {
-                schedule();
-            }
+            if (!stop) schedule();
         }
     }
 
@@ -629,54 +713,21 @@ public class TestResultView extends ViewPart {
                                   Pattern.MULTILINE
                                       ).matcher(text);
             while (matcher.find()) {
-                IFile[] files;
-                try {
-                    files = ResourcesPlugin.getWorkspace().getRoot()
-                            .findFilesForLocationURI(
-                                    new URI("file:///" + matcher.group(1))); //$NON-NLS-1$
-                } catch (URISyntaxException e) {
-                    Activator.getDefault().getLog().log(
-                        new Status(
-                            IStatus.WARNING,
-                            Activator.PLUGIN_ID,
-                            e.getMessage(),
-                            e
-                        )
-                    );
-                    continue;
-                }
-
+                IFile[] files = findFiles(matcher.group(1));
+                if (files == null) continue;
                 FileWithLineRange range;
                 if (files.length > 0) {
-                    InternalFileWithLineRange iRange =
-                        new InternalFileWithLineRange();
+                    InternalFileWithLineRange iRange = new InternalFileWithLineRange();
                     iRange.file = files[0];
                     iRange.foreground =
                         this.text.getDisplay().getSystemColor(SWT.COLOR_BLUE);
                     range = (FileWithLineRange) iRange;
                 } else {
-                    ExternalFileWithLineRange eRange =
-                        new ExternalFileWithLineRange();
-                    try {
-                        eRange.fileStore =
-                            EFS.getLocalFileSystem()
-                               .getStore(new URI("file:///" + matcher.group(1))); //$NON-NLS-1$
-                    } catch (URISyntaxException e) {
-                        Activator.getDefault().getLog().log(
-                            new Status(
-                                IStatus.WARNING,
-                                Activator.PLUGIN_ID,
-                                e.getMessage(),
-                                e
-                            )
-                        );
-                        continue;
-                    }
-
-                    eRange.foreground = new Color(
-                                            this.text.getDisplay(),
-                                            114, 159, 207
-                                        );
+                    ExternalFileWithLineRange eRange = new ExternalFileWithLineRange();
+                    IFileStore fileStore = findFileStore(matcher.group(1));
+                    if (fileStore == null) continue;
+                    eRange.fileStore = fileStore;
+                    eRange.foreground = new Color(this.text.getDisplay(), 114, 159, 207);
                     range = (FileWithLineRange) eRange;
                 }
 
@@ -703,38 +754,8 @@ public class TestResultView extends ViewPart {
         public void mouseDown(MouseEvent event) {
             FileWithLineRange range =
                 findFileWithLineRange(new Point(event.x, event.y));
-            if (range == null) {
-                return;
-            }
-
-            try {
-                IEditorPart editorPart =
-                    openEditor(
-                        PlatformUI.getWorkbench()
-                                  .getActiveWorkbenchWindow()
-                                  .getActivePage(),
-                        range
-                    );
-                gotoLine((ITextEditor) editorPart, range.line);
-            } catch (PartInitException e) {
-                Activator.getDefault().getLog().log(
-                    new Status(
-                        IStatus.WARNING,
-                        Activator.PLUGIN_ID,
-                        e.getMessage(),
-                        e
-                    )
-                );
-            } catch (BadLocationException e) {
-                Activator.getDefault().getLog().log(
-                    new Status(
-                        IStatus.WARNING,
-                        Activator.PLUGIN_ID,
-                        e.getMessage(),
-                        e
-                    )
-                );
-            }
+            if (range == null) return;
+            openEditor(range, range.line);
         }
 
         public void mouseUp(MouseEvent e) {}
@@ -761,37 +782,10 @@ public class TestResultView extends ViewPart {
                 FileWithLineRange range = ranges.get(i);
                 int startOffset = range.start;
                 int endOffset = startOffset + range.length;
-                if (offset >= startOffset && offset <= endOffset) {
-                    return range;
-                }
+                if (offset >= startOffset && offset <= endOffset) return range;
             }
 
             return null;
-        }
-
-        private void gotoLine(ITextEditor editor, Integer line)
-            throws BadLocationException {
-            IRegion region;
-            region = editor.getDocumentProvider()
-                           .getDocument(editor.getEditorInput())
-                           .getLineInformation(line - 1);
-            editor.selectAndReveal(region.getOffset(), region.getLength());
-        }
-
-        private IEditorPart openEditor(
-                IWorkbenchPage page, FileWithLineRange range
-            ) throws PartInitException {
-            if (range instanceof InternalFileWithLineRange) {
-                return IDE.openEditor(
-                            page, ((InternalFileWithLineRange) range).file
-                        );
-            } else if (range instanceof ExternalFileWithLineRange) {
-                return IDE.openEditorOnFileStore(
-                            page, ((ExternalFileWithLineRange) range).fileStore
-                        );
-            } else {
-                return null;
-            }
         }
 
         private void visibleScrollBar(boolean visible) {
