@@ -749,16 +749,15 @@ public class TestResultView extends ViewPart {
             text.setStyleRange(range);
         }
 
-        public void mouseDoubleClick(MouseEvent e) {}
-
-        public void mouseDown(MouseEvent event) {
+        public void mouseDoubleClick(MouseEvent event) {
             FileWithLineRange range =
                 findFileWithLineRange(new Point(event.x, event.y));
             if (range == null) return;
             openEditor(range, range.line);
         }
 
-        public void mouseUp(MouseEvent e) {}
+        public void mouseDown(MouseEvent event) {}
+        public void mouseUp(MouseEvent event) {}
 
         public void mouseMove(MouseEvent event) {
             FileWithLineRange range =
