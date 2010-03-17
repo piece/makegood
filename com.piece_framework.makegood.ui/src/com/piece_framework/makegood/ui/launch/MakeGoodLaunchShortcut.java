@@ -260,7 +260,7 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
             }
         };
 
-        List<IType> types = getTypes(editor);
+        List<IType> types = new EditorParser(editor).getTypes();
         if (types == null || types.size() == 0) {
             return;
         }
@@ -301,37 +301,5 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
                 )
             );
         }
-    }
-
-    private List<IType> getTypes(IEditorPart editor) {
-        EditorParser parser = new EditorParser(editor);
-        ISourceModule source = parser.getSourceModule();
-        if (source == null) {
-            return null;
-        }
-
-        List<IType> types = new ArrayList<IType>();
-        try {
-            for (IType type: source.getAllTypes()) {
-                types.add(type);
-
-                ITypeHierarchy hierarchy = type.newTypeHierarchy(new NullProgressMonitor());
-                if (hierarchy != null) {
-                    for (IType subClass : hierarchy.getAllSubtypes(type)) {
-                        types.add(subClass);
-                    }
-                }
-            }
-        } catch (ModelException e) {
-            Activator.getDefault().getLog().log(
-                new Status(
-                    Status.ERROR,
-                    Activator.PLUGIN_ID,
-                    e.getMessage(),
-                    e
-                )
-            );
-        }
-        return types;
     }
 }
