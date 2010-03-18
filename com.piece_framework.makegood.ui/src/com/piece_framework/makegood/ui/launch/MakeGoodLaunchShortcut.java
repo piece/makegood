@@ -48,10 +48,10 @@ import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.Messages;
 
 public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
-    public static int RUN_TEST_ON_CONTEXT = 1;
-    public static int RUN_TESTS_ON_CLASS = 2;
-    public static int RUN_TESTS_ON_FILE = 3;
-    public static int RUN_RELATED_TESTS = 4;
+    static int RUN_TEST_ON_CONTEXT = 1;
+    static int RUN_TESTS_ON_CLASS = 2;
+    static int RUN_TESTS_ON_FILE = 3;
+    static int RUN_RELATED_TESTS = 4;
 
     private int runLevelOnEditor = RUN_TEST_ON_CONTEXT;
 
@@ -63,14 +63,14 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
     private MakeGoodLaunchShortcut() {
     }
 
-    public static MakeGoodLaunchShortcut getInstance() {
+    static MakeGoodLaunchShortcut get() {
         if (shortcut == null) {
             shortcut = new MakeGoodLaunchShortcut();
         }
         return shortcut;
     }
 
-    public void setRunLevelOnEditor(int runLevel) {
+    void setRunLevelOnEditor(int runLevel) {
         this.runLevelOnEditor = runLevel;
     }
 
@@ -126,11 +126,11 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
         super.launch(editor, mode);
     }
 
-    public boolean hasLastTest() {
+    boolean hasLastTest() {
         return lastTarget != null;
     }
 
-    public void rerunLastTest() {
+    void rerunLastTest() {
         if (lastTarget instanceof ISelection) {
             launch((ISelection) lastTarget, lastMode);
         } else if (lastTarget instanceof IEditorPart) {

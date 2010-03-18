@@ -3,11 +3,9 @@ package com.piece_framework.makegood.ui.handlers;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.dltk.core.IModelElement;
-import org.eclipse.dltk.core.IScriptFolder;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IWorkbenchPage;
@@ -16,7 +14,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 import com.piece_framework.makegood.core.PHPResource;
 import com.piece_framework.makegood.javassist.monitor.WeavingMonitor;
-import com.piece_framework.makegood.ui.launch.MakeGoodLaunchShortcut;
+import com.piece_framework.makegood.ui.launch.TestRunner;
 
 public class RunTestFromExplorer extends AbstractHandler {
     @Override
@@ -25,9 +23,8 @@ public class RunTestFromExplorer extends AbstractHandler {
         if (selection == null) {
             selection = getSelectionFromActivePage();
         }
-        MakeGoodLaunchShortcut shortcut = MakeGoodLaunchShortcut.getInstance();
-        shortcut.launch(selection, "run"); //$NON-NLS-1$
-        return shortcut;
+        TestRunner.runTests(selection);
+        return null;
     }
 
     @Override
