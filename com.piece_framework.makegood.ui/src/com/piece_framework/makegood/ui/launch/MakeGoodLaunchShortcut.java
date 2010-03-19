@@ -1,13 +1,11 @@
 package com.piece_framework.makegood.ui.launch;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfigurationType;
@@ -19,8 +17,6 @@ import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.IType;
-import org.eclipse.dltk.core.ITypeHierarchy;
-import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.search.IDLTKSearchConstants;
 import org.eclipse.dltk.core.search.IDLTKSearchScope;
 import org.eclipse.dltk.core.search.SearchEngine;
@@ -28,20 +24,15 @@ import org.eclipse.dltk.core.search.SearchMatch;
 import org.eclipse.dltk.core.search.SearchParticipant;
 import org.eclipse.dltk.core.search.SearchPattern;
 import org.eclipse.dltk.core.search.SearchRequestor;
-import org.eclipse.dltk.internal.ui.editor.EditorUtility;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jface.window.Window;
 import org.eclipse.osgi.framework.debug.Debug;
 import org.eclipse.php.internal.debug.ui.launching.PHPExeLaunchShortcut;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.internal.dialogs.PropertyDialog;
 import org.eclipse.ui.texteditor.ITextEditor;
 
-import com.piece_framework.makegood.core.MakeGoodProperty;
 import com.piece_framework.makegood.core.PHPResource;
 import com.piece_framework.makegood.launch.MakeGoodLaunchParameter;
 import com.piece_framework.makegood.ui.Activator;
@@ -55,39 +46,15 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
 
     private int runLevelOnEditor = RUN_TEST_ON_CONTEXT;
 
-    private Object lastTarget;
-    private String lastMode;
-
-    private static MakeGoodLaunchShortcut shortcut;
-
-    private MakeGoodLaunchShortcut() {
-    }
-
-    static MakeGoodLaunchShortcut get() {
-        if (shortcut == null) {
-            shortcut = new MakeGoodLaunchShortcut();
-        }
-        return shortcut;
-    }
-
     void setRunLevelOnEditor(int runLevel) {
         this.runLevelOnEditor = runLevel;
     }
 
     @Override
     public void launch(final ISelection selection, final String mode) {
-        final MakeGoodProperty property = new MakeGoodProperty(getResource(selection));
-        if (!property.exists()) {
-            showPropertyPage(property, selection, mode);
-            return;
-        }
-
         if (!(selection instanceof IStructuredSelection)) {
             return;
         }
-
-        lastTarget = selection;
-        lastMode = mode;
 
         Object target = ((IStructuredSelection) selection).getFirstElement();
         MakeGoodLaunchParameter parameter = MakeGoodLaunchParameter.getInstance();
@@ -100,21 +67,12 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
 
     @Override
     public void launch(IEditorPart editor, String mode) {
-        MakeGoodProperty property = new MakeGoodProperty(getResource(editor));
-        if (!property.exists()) {
-            showPropertyPage(property, editor, mode);
-            return;
-        }
-
         if (!(editor instanceof ITextEditor)) {
             return;
         }
 
         MakeGoodLaunchParameter parameter = MakeGoodLaunchParameter.getInstance();
         parameter.clearTargets();
-
-        lastTarget = editor;
-        lastMode = mode;
 
         if (runLevelOnEditor != RUN_RELATED_TESTS) {
             parameter.addTarget(getElementOnRunLevel(editor));
@@ -126,62 +84,10 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
         super.launch(editor, mode);
     }
 
-    boolean hasLastTest() {
-        return lastTarget != null;
-    }
-
-    void rerunLastTest() {
-        if (lastTarget instanceof ISelection) {
-            launch((ISelection) lastTarget, lastMode);
-        } else if (lastTarget instanceof IEditorPart) {
-            launch((IEditorPart) lastTarget, lastMode);
-        }
-    }
-
     @Override
     protected ILaunchConfigurationType getPHPExeLaunchConfigType() {
         ILaunchManager manager = DebugPlugin.getDefault().getLaunchManager();
         return manager.getLaunchConfigurationType("com.piece_framework.makegood.launch.launchConfigurationTypes.makeGood"); //$NON-NLS-1$
-    }
-
-    private void showPropertyPage(final MakeGoodProperty property,
-                                  final Object target,
-                                  final String mode
-                                  ) {
-        Display.getDefault().asyncExec(new Runnable() {
-            @Override
-            public void run() {
-                PropertyDialog dialog = PropertyDialog.createDialogOn(null,
-                                                                      "com.piece_framework.makegood.ui.propertyPages.makeGood", //$NON-NLS-1$
-                                                                      property.getProject()
-                                                                      );
-                if (dialog.open() == Window.OK) {
-                    int runLevelOnEditor = MakeGoodLaunchShortcut.this.runLevelOnEditor;
-                    MakeGoodLaunchShortcut shortcut = new MakeGoodLaunchShortcut();
-                    shortcut.setRunLevelOnEditor(runLevelOnEditor);
-                    if (target instanceof ISelection) {
-                        shortcut.launch((ISelection) target, mode);
-                    } else if (target instanceof IEditorPart) {
-                        shortcut.launch((IEditorPart) target, mode);
-                    }
-                }
-            }
-        });
-    }
-
-    private IResource getResource(Object target) {
-        if (target instanceof IStructuredSelection) {
-            IStructuredSelection selection = (IStructuredSelection) target;
-            if (selection.getFirstElement() instanceof IModelElement) {
-                return ((IModelElement) selection.getFirstElement()).getResource();
-            } else if (selection.getFirstElement() instanceof IResource) {
-                return (IResource) selection.getFirstElement();
-            }
-        } else if (target instanceof IEditorPart) {
-            ISourceModule source = EditorUtility.getEditorInputModelElement((IEditorPart) target, false);
-            return source.getResource();
-        }
-        return null;
     }
 
     private IModelElement getElementOnRunLevel(IEditorPart editor) {
