@@ -15,36 +15,32 @@ import com.piece_framework.makegood.core.MakeGoodProperty;
 
 public class TestRunner {
     private static String MODE_RUN ="run";
+    private static MakeGoodLaunchShortcut lastShortcut;
     private static Object lastTarget;
-    private static int lastRunLevel;
 
     public static void runRelatedTests(IEditorPart editorPart) {
-        runTestsOnEditor(editorPart, MakeGoodLaunchShortcut.RUN_RELATED_TESTS);
+        MakeGoodLaunchShortcut shortcut = new RelatedTestsLaunchShortcut();
+        runTests(editorPart, shortcut);
     }
 
     public static void runTestsInContext(IEditorPart editorPart) {
-        runTestsOnEditor(editorPart, MakeGoodLaunchShortcut.RUN_TEST_ON_CONTEXT);
+        MakeGoodLaunchShortcut shortcut = new ContextLaunchShortcut();
+        runTests(editorPart, shortcut);
     }
 
     public static void runTestsInClass(IEditorPart editorPart) {
-        runTestsOnEditor(editorPart, MakeGoodLaunchShortcut.RUN_TESTS_ON_CLASS);
+        MakeGoodLaunchShortcut shortcut = new ClassLaunchShortcut();
+        runTests(editorPart, shortcut);
     }
 
     public static void runTestsInFile(IEditorPart editorPart) {
-        runTestsOnEditor(editorPart, MakeGoodLaunchShortcut.RUN_TESTS_ON_FILE);
+        MakeGoodLaunchShortcut shortcut = new FileLaunchShortcut();
+        runTests(editorPart, shortcut);
     }
 
     public static void runTests(ISelection selection) {
-        MakeGoodProperty property = new MakeGoodProperty(getResource(selection));
-        if (!property.exists()) {
-            showPropertyPage(property, selection, 0);
-            return;
-        }
-
-        lastTarget = selection;
-
         MakeGoodLaunchShortcut shortcut = new MakeGoodLaunchShortcut();
-        shortcut.launch(selection, MODE_RUN); //$NON-NLS-1$
+        runTests(selection, shortcut);
     }
 
     public static boolean hasLastTest() {
@@ -52,26 +48,24 @@ public class TestRunner {
     }
 
     public static void rerunLastTest() {
-        if (lastTarget instanceof ISelection) {
-            runTests((ISelection) lastTarget);
-        } else if (lastTarget instanceof IEditorPart) {
-            runTestsOnEditor((IEditorPart) lastTarget, lastRunLevel);
-        }
+        runTests(lastTarget, lastShortcut);
     }
 
-    private static void runTestsOnEditor(IEditorPart editorPart, int runLevel) {
-        MakeGoodProperty property = new MakeGoodProperty(getResource(editorPart));
+    private static void runTests(Object target, MakeGoodLaunchShortcut shortcut) {
+        MakeGoodProperty property = new MakeGoodProperty(getResource(target));
         if (!property.exists()) {
-            showPropertyPage(property, editorPart, runLevel);
+            showPropertyPage(property, target, shortcut);
             return;
         }
 
-        lastTarget = editorPart;
-        lastRunLevel = runLevel;
+        lastShortcut = shortcut;
+        lastTarget = target;
 
-        MakeGoodLaunchShortcut shortcut = new MakeGoodLaunchShortcut();
-        shortcut.setRunLevelOnEditor(runLevel);
-        shortcut.launch(editorPart, MODE_RUN); //$NON-NLS-1$
+        if (target instanceof ISelection) {
+            shortcut.launch((ISelection) target, MODE_RUN); //$NON-NLS-1$
+        } else if (target instanceof IEditorPart) {
+            shortcut.launch((IEditorPart) target, MODE_RUN); //$NON-NLS-1$
+        }
     }
 
     private static IResource getResource(Object target) {
@@ -91,7 +85,7 @@ public class TestRunner {
 
     private static void showPropertyPage(final MakeGoodProperty property,
                                          final Object target,
-                                         final int runLevel
+                                         final MakeGoodLaunchShortcut shortcut
                                          ) {
         Display.getDefault().asyncExec(new Runnable() {
             @Override
@@ -101,11 +95,7 @@ public class TestRunner {
                                                                       property.getProject()
                                                                       );
                 if (dialog.open() == Window.OK) {
-                    if (target instanceof ISelection) {
-                        runTests((ISelection) target);
-                    } else if (target instanceof IEditorPart) {
-                        runTestsOnEditor((IEditorPart) target, runLevel);
-                    }
+                    runTests(target, shortcut);
                 }
             }
         });
