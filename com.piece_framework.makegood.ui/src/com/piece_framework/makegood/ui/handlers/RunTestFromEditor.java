@@ -15,7 +15,7 @@ public class RunTestFromEditor extends AbstractHandler {
     @Override
     public Object execute(ExecutionEvent event) throws ExecutionException {
         IEditorPart editorPart = HandlerUtil.getActiveEditor(event);
-        MakeGoodLaunchShortcut shortcut = MakeGoodLaunchShortcut.get();
+        MakeGoodLaunchShortcut shortcut = MakeGoodLaunchShortcut.getInstance();
         shortcut.setRunLevelOnEditor(getRunLevel());
         shortcut.launch(editorPart, "run"); //$NON-NLS-1$
         return shortcut;

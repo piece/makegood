@@ -63,7 +63,7 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
     private MakeGoodLaunchShortcut() {
     }
 
-    public static MakeGoodLaunchShortcut get() {
+    public static MakeGoodLaunchShortcut getInstance() {
         if (shortcut == null) {
             shortcut = new MakeGoodLaunchShortcut();
         }
@@ -90,7 +90,7 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
         lastMode = mode;
 
         Object target = ((IStructuredSelection) selection).getFirstElement();
-        MakeGoodLaunchParameter parameter = MakeGoodLaunchParameter.get();
+        MakeGoodLaunchParameter parameter = MakeGoodLaunchParameter.getInstance();
         parameter.clearTargets();
         parameter.addTarget(target);
 
@@ -110,7 +110,7 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
             return;
         }
 
-        MakeGoodLaunchParameter parameter = MakeGoodLaunchParameter.get();
+        MakeGoodLaunchParameter parameter = MakeGoodLaunchParameter.getInstance();
         parameter.clearTargets();
 
         lastTarget = editor;
@@ -250,7 +250,7 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
                     return;
                 }
 
-                MakeGoodLaunchParameter parameter = MakeGoodLaunchParameter.get();
+                MakeGoodLaunchParameter parameter = MakeGoodLaunchParameter.getInstance();
                 parameter.clearTargets();
                 for (IResource test: tests) {
                     Debug.println(test);

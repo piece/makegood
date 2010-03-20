@@ -13,7 +13,7 @@ public class StopOnFailureAction implements IViewActionDelegate {
 
     @Override
     public void run(IAction action) {
-        MakeGoodLaunchParameter parameter = MakeGoodLaunchParameter.get();
+        MakeGoodLaunchParameter parameter = MakeGoodLaunchParameter.getInstance();
         parameter.setStopsOnFailure(action.isChecked());
     }
 

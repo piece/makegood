@@ -29,7 +29,7 @@ public class MakeGoodLaunchParameter {
     private MakeGoodLaunchParameter() {
     }
 
-    public static MakeGoodLaunchParameter get() {
+    public static MakeGoodLaunchParameter getInstance() {
         if (parameter == null) {
             parameter = new MakeGoodLaunchParameter();
         }

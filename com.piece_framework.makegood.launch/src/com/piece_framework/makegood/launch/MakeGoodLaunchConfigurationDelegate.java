@@ -51,7 +51,7 @@ public class MakeGoodLaunchConfigurationDelegate implements ILaunchConfiguration
                      String.valueOf(File.separatorChar) +
                      configurationName +
                      ".xml"; //$NON-NLS-1$
-        MakeGoodLaunchParameter parameter = MakeGoodLaunchParameter.get();
+        MakeGoodLaunchParameter parameter = MakeGoodLaunchParameter.getInstance();
         MakeGoodLauncher launcher = getLauncher();
 
         ILaunchConfigurationWorkingCopy workingCopy =
@@ -89,7 +89,7 @@ public class MakeGoodLaunchConfigurationDelegate implements ILaunchConfiguration
         MakeGoodLauncher launcher = null;
         try {
             MakeGoodLauncherRegistry registry = new MakeGoodLauncherRegistry();
-            launcher = registry.getLauncher(MakeGoodLaunchParameter.get().getTestingFramework());
+            launcher = registry.getLauncher(MakeGoodLaunchParameter.getInstance().getTestingFramework());
         } catch (FileNotFoundException e) {
             throw new CoreException(
                 new Status(

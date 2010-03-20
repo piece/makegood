@@ -14,7 +14,7 @@ public class RerunTestAction implements IViewActionDelegate {
 
     @Override
     public void run(IAction action) {
-        MakeGoodLaunchShortcut shortcut = MakeGoodLaunchShortcut.get();
+        MakeGoodLaunchShortcut shortcut = MakeGoodLaunchShortcut.getInstance();
         if (shortcut.hasLastTest()) {
             shortcut.rerunLastTest();
         }
