@@ -222,6 +222,11 @@
       </command>
       <command
             categoryId="com.piece_framework.makegood.ui.commands.resultViewCategory"
+            id="com.piece_framework.makegood.ui.commands.stopOnFailure"
+            name="%commands.stopOnFailure.name">
+      </command>
+      <command
+            categoryId="com.piece_framework.makegood.ui.commands.resultViewCategory"
             id="com.piece_framework.makegood.ui.commands.stopTest"
             name="%commands.stopTest.name">
       </command>
@@ -318,6 +323,16 @@
                style="push"
                toolbarPath="additions"
                tooltip="%resultView.nextFailedTest.tooltip">
+         </action>
+         <action
+               class="com.piece_framework.makegood.ui.actions.StopOnFailureAction"
+               definitionId="com.piece_framework.makegood.ui.commands.stopOnFailure"
+               icon="icons/stop-on-failure.gif"
+               id="com.piece_framework.makegood.ui.viewActions.resultView.stopOnFailure"
+               label="%resultView.stopOnFailure.label"
+               style="toggle"
+               toolbarPath="additions"
+               tooltip="%resultView.stopOnFailure.tooltip">
          </action>
          <action
                class="com.piece_framework.makegood.ui.actions.StopTestAction"

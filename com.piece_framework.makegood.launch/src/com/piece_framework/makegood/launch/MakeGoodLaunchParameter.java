@@ -24,6 +24,7 @@ import com.piece_framework.makegood.core.TestingFramework;
 public class MakeGoodLaunchParameter {
     private static MakeGoodLaunchParameter parameter;
     private List<Object> targets;
+    private boolean stopsOnFailure = false;
 
     private MakeGoodLaunchParameter() {
     }
@@ -82,6 +83,10 @@ public class MakeGoodLaunchParameter {
 
         buffer.append(" --log-junit-realtime");
 
+        if (parameter.stopsOnFailure) {
+            buffer.append(" --stop-on-failure");
+        }
+
         StringBuilder classes = new StringBuilder();
         StringBuilder methods = new StringBuilder();
         StringBuilder resources = new StringBuilder();
@@ -132,6 +137,10 @@ public class MakeGoodLaunchParameter {
     public TestingFramework getTestingFramework() {
         MakeGoodProperty property = new MakeGoodProperty(getTargetResource(targets.get(0)));
         return property.getTestingFramework();
+    }
+
+    public void setStopsOnFailure(boolean stopsOnFailure) {
+        this.stopsOnFailure = stopsOnFailure;
     }
 
     private IFile findDummyFile(IFolder folder) {
