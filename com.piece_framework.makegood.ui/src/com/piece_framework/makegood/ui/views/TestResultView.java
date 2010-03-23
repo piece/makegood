@@ -9,8 +9,6 @@ import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IToolBarManager;
-import org.eclipse.jface.text.BadLocationException;
-import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -42,16 +40,13 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.custom.StyledText;
-import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.contexts.IContextService;
-import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.part.ViewPart;
-import org.eclipse.ui.texteditor.ITextEditor;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -65,6 +60,10 @@ import com.piece_framework.makegood.launch.elements.TestResult;
 import com.piece_framework.makegood.launch.elements.TestSuite;
 import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.Messages;
+import com.piece_framework.makegood.ui.ide.EditorOpen;
+import com.piece_framework.makegood.ui.swt.ExternalFileWithLineRange;
+import com.piece_framework.makegood.ui.swt.FileWithLineRange;
+import com.piece_framework.makegood.ui.swt.InternalFileWithLineRange;
 
 public class TestResultView extends ViewPart {
     private static final String VIEW_ID = Activator.PLUGIN_ID + ".views.resultView"; //$NON-NLS-1$
@@ -207,9 +206,9 @@ public class TestResultView extends ViewPart {
                     IFile[] files = findFiles(fileName);
                     if (files == null) return;
                     if (files.length > 0) {
-                        openEditor(files[0], testCase.getLine());
+                        EditorOpen.open(files[0], testCase.getLine());
                     } else {
-                        openEditor(findFileStore(fileName), testCase.getLine());
+                        EditorOpen.open(findFileStore(fileName), testCase.getLine());
                     }
                 } else if (element instanceof TestSuite) {
                     TestSuite suite= (TestSuite) element;
@@ -218,9 +217,9 @@ public class TestResultView extends ViewPart {
                     IFile[] files = findFiles(fileName);
                     if (files == null) return;
                     if (files.length > 0) {
-                        openEditor(files[0]);
+                        EditorOpen.open(files[0]);
                     } else {
-                        openEditor(findFileStore(fileName));
+                        EditorOpen.open(findFileStore(fileName));
                     }
                 }
             }
@@ -314,20 +313,6 @@ public class TestResultView extends ViewPart {
         return bothFillGrid;
     }
 
-    private void gotoLine(ITextEditor editor, Integer line) {
-        IRegion region;
-        try {
-            region = editor.getDocumentProvider()
-                           .getDocument(editor.getEditorInput())
-                           .getLineInformation(line - 1);
-        } catch (BadLocationException e) {
-            Activator.getDefault().getLog().log(new Status(IStatus.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
-            return;
-        }
-
-        editor.selectAndReveal(region.getOffset(), region.getLength());
-    }
-
     private IFile[] findFiles(String file) {
         try {
             return ResourcesPlugin.getWorkspace()
@@ -349,61 +334,6 @@ public class TestResultView extends ViewPart {
             Activator.getDefault().getLog().log(new Status(IStatus.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
             return null;
         }
-    }
-
-    private IEditorPart openEditor(IFile file) {
-        try {
-            return IDE.openEditor(
-                        PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage(),
-                        file
-                    );
-        } catch (PartInitException e) {
-            Activator.getDefault().getLog().log(new Status(IStatus.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
-            return null;
-        }
-    }
-
-    private IEditorPart openEditor(IFileStore fileStore) {
-        try {
-            return IDE.openEditorOnFileStore(
-                        PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage(),
-                        fileStore
-                    );
-        } catch (PartInitException e) {
-            Activator.getDefault().getLog().log(new Status(IStatus.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
-            return null;
-        }
-    }
-
-    private IEditorPart openEditor(FileWithLineRange range) {
-        if (range instanceof InternalFileWithLineRange) {
-            return openEditor(((InternalFileWithLineRange) range).file);
-        } else if (range instanceof ExternalFileWithLineRange) {
-            return openEditor(((ExternalFileWithLineRange) range).fileStore);
-        } else {
-            return null;
-        }
-    }
-
-    private IEditorPart openEditor(IFile file, Integer line) {
-        IEditorPart editorPart = openEditor(file);
-        if (editorPart == null) return null;
-        gotoLine((ITextEditor) editorPart, line);
-        return editorPart;
-    }
-
-    private IEditorPart openEditor(IFileStore fileStore, Integer line) {
-        IEditorPart editorPart = openEditor(fileStore);
-        if (editorPart == null) return null;
-        gotoLine((ITextEditor) editorPart, line);
-        return editorPart;
-    }
-
-    private IEditorPart openEditor(FileWithLineRange range, Integer line) {
-        IEditorPart editorPart = openEditor(range);
-        if (editorPart == null) return null;
-        gotoLine((ITextEditor) editorPart, line);
-        return editorPart;
     }
 
     public void nextResult() {
@@ -655,18 +585,6 @@ public class TestResultView extends ViewPart {
         }
     }
 
-    private class FileWithLineRange extends StyleRange {
-        Integer line;
-    }
-
-    private class InternalFileWithLineRange extends FileWithLineRange {
-        IFile file;
-    }
-
-    private class ExternalFileWithLineRange extends FileWithLineRange {
-        IFileStore fileStore;
-    }
-
     private class FailureTrace implements MouseListener, MouseMoveListener {
         private StyledText text;
         private Cursor handCursor;
@@ -753,7 +671,7 @@ public class TestResultView extends ViewPart {
             FileWithLineRange range =
                 findFileWithLineRange(new Point(event.x, event.y));
             if (range == null) return;
-            openEditor(range, range.line);
+            EditorOpen.open(range, range.line);
         }
 
         public void mouseDown(MouseEvent event) {}
