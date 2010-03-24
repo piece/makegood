@@ -669,7 +669,7 @@ public class TestResultView extends ViewPart {
 
         public void mouseDoubleClick(MouseEvent event) {
             FileWithLineRange range =
-                findFileWithLineRange(new Point(event.x, event.y));
+                FileWithLineRange.findFileWithLineRange(new Point(event.x, event.y), text, ranges);
             if (range == null) return;
             EditorOpen.open(range, range.line);
         }
@@ -679,30 +679,12 @@ public class TestResultView extends ViewPart {
 
         public void mouseMove(MouseEvent event) {
             FileWithLineRange range =
-                findFileWithLineRange(new Point(event.x, event.y));
+                FileWithLineRange.findFileWithLineRange(new Point(event.x, event.y), text, ranges);
             if (range != null) {
                 text.setCursor(handCursor);
             } else {
                 text.setCursor(arrowCursor);
             }
-        }
-
-        private FileWithLineRange findFileWithLineRange(Point point) {
-            int offset;
-            try {
-                offset = text.getOffsetAtLocation(point);
-            } catch (IllegalArgumentException e) {
-                return null;
-            }
-
-            for (int i = 0; i < ranges.size(); ++i) {
-                FileWithLineRange range = ranges.get(i);
-                int startOffset = range.start;
-                int endOffset = startOffset + range.length;
-                if (offset >= startOffset && offset <= endOffset) return range;
-            }
-
-            return null;
         }
 
         private void visibleScrollBar(boolean visible) {
