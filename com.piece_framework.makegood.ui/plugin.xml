@@ -168,6 +168,12 @@
                </reference>
             </visibleWhen>
          </command>
+         <command
+               commandId="com.piece_framework.makegood.ui.commands.runAllTests"
+               icon="icons/MakeGood.gif"
+               label="Run all tests"
+               style="push">
+         </command>
       </menuContribution>
    </extension>
    <extension
@@ -205,6 +211,12 @@
             defaultHandler="com.piece_framework.makegood.ui.handlers.RunRelatedTestFromEditor"
             id="com.piece_framework.makegood.ui.commands.runRelatedTestFromEditor"
             name="%commands.runRelatedTestFromEditor.name">
+      </command>
+      <command
+            categoryId="com.piece_framework.makegood.ui.commands.runTestCategory"
+            defaultHandler="com.piece_framework.makegood.ui.handlers.RunAllTests"
+            id="com.piece_framework.makegood.ui.commands.runAllTests"
+            name="Run all tests">
       </command>
    </extension>
    <extension

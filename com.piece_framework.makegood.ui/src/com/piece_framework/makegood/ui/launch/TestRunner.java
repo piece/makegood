@@ -9,6 +9,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.internal.dialogs.PropertyDialog;
 
 import com.piece_framework.makegood.core.MakeGoodProperty;
@@ -39,8 +40,13 @@ public class TestRunner {
     }
 
     public static void runTests(ISelection selection) {
-        MakeGoodLaunchShortcut shortcut = new MakeGoodLaunchShortcut();
+        MakeGoodLaunchShortcut shortcut = new ResourceLaunchShortcut();
         runTests(selection, shortcut);
+    }
+
+    public static void runAllTests(Object target) {
+        MakeGoodLaunchShortcut shortcut = new AllTestsLaunchShortcut();
+        runTests(target, shortcut);
     }
 
     public static boolean hasLastTest() {
@@ -49,6 +55,28 @@ public class TestRunner {
 
     public static void rerunLastTest() {
         runTests(lastTarget, lastShortcut);
+    }
+
+    public static IResource getResource(Object target) {
+        if (target instanceof IStructuredSelection) {
+            IStructuredSelection selection = (IStructuredSelection) target;
+            if (selection.getFirstElement() instanceof IModelElement) {
+                return ((IModelElement) selection.getFirstElement()).getResource();
+            } else if (selection.getFirstElement() instanceof IResource) {
+                return (IResource) selection.getFirstElement();
+            }
+        } else if (target instanceof IEditorPart) {
+            ISourceModule source = EditorUtility.getEditorInputModelElement((IEditorPart) target, false);
+            if (source != null) {
+                return source.getResource();
+            }
+
+            IEditorPart editor = (IEditorPart) target;
+            if (editor.getEditorInput() instanceof IFileEditorInput) {
+                return ((IFileEditorInput) editor.getEditorInput()).getFile();
+            }
+        }
+        return null;
     }
 
     private static void runTests(Object target, MakeGoodLaunchShortcut shortcut) {
@@ -66,21 +94,6 @@ public class TestRunner {
         } else if (target instanceof IEditorPart) {
             shortcut.launch((IEditorPart) target, MODE_RUN); //$NON-NLS-1$
         }
-    }
-
-    private static IResource getResource(Object target) {
-        if (target instanceof IStructuredSelection) {
-            IStructuredSelection selection = (IStructuredSelection) target;
-            if (selection.getFirstElement() instanceof IModelElement) {
-                return ((IModelElement) selection.getFirstElement()).getResource();
-            } else if (selection.getFirstElement() instanceof IResource) {
-                return (IResource) selection.getFirstElement();
-            }
-        } else if (target instanceof IEditorPart) {
-            ISourceModule source = EditorUtility.getEditorInputModelElement((IEditorPart) target, false);
-            return source.getResource();
-        }
-        return null;
     }
 
     private static void showPropertyPage(final MakeGoodProperty property,
