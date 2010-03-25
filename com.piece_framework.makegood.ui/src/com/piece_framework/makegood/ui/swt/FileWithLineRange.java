@@ -48,37 +48,40 @@ public class FileWithLineRange extends StyleRange {
     }
 
     public static Vector<FileWithLineRange> generateLinks(String text, StyledText styledText) {
-            Vector<FileWithLineRange> ranges = new Vector<FileWithLineRange>();
-            Matcher matcher = Pattern.compile(
-                                  "^(.+):(\\d+)$", //$NON-NLS-1$
-                                  Pattern.MULTILINE
-                                      ).matcher(text);
-            while (matcher.find()) {
-                IFile[] files = FileFind.findFiles(matcher.group(1));
-                if (files == null) continue;
-                FileWithLineRange range;
-                if (files.length > 0) {
-                    InternalFileWithLineRange iRange = new InternalFileWithLineRange();
-                    iRange.file = files[0];
-                    iRange.foreground =
-                        styledText.getDisplay().getSystemColor(SWT.COLOR_BLUE);
-                    range = (FileWithLineRange) iRange;
-                } else {
-                    ExternalFileWithLineRange eRange = new ExternalFileWithLineRange();
-                    IFileStore fileStore = FileFind.findFileStore(matcher.group(1));
-                    if (fileStore == null) continue;
-                    eRange.fileStore = fileStore;
-                    eRange.foreground = new Color(styledText.getDisplay(), 114, 159, 207);
-                    range = (FileWithLineRange) eRange;
-                }
-
-                range.start = matcher.start();
-                range.length = matcher.group().length();
-                range.line = Integer.valueOf(matcher.group(2));
-                ranges.add(range);
-                styledText.setStyleRange(range);
+        Vector<FileWithLineRange> ranges = new Vector<FileWithLineRange>();
+        Matcher matcher = Pattern.compile(
+                              "^(.+):(\\d+)$", //$NON-NLS-1$
+                              Pattern.MULTILINE
+                                  ).matcher(text);
+        while (matcher.find()) {
+            IFile[] files = FileFind.findFiles(matcher.group(1));
+            if (files == null)
+                continue;
+            FileWithLineRange range;
+            if (files.length > 0) {
+                InternalFileWithLineRange iRange = new InternalFileWithLineRange();
+                iRange.file = files[0];
+                iRange.foreground = styledText.getDisplay().getSystemColor(
+                        SWT.COLOR_BLUE);
+                range = (FileWithLineRange) iRange;
+            } else {
+                ExternalFileWithLineRange eRange = new ExternalFileWithLineRange();
+                IFileStore fileStore = FileFind.findFileStore(matcher.group(1));
+                if (fileStore == null)
+                    continue;
+                eRange.fileStore = fileStore;
+                eRange.foreground = new Color(styledText.getDisplay(), 114,
+                        159, 207);
+                range = (FileWithLineRange) eRange;
             }
 
-            return ranges;
+            range.start = matcher.start();
+            range.length = matcher.group().length();
+            range.line = Integer.valueOf(matcher.group(2));
+            ranges.add(range);
+            styledText.setStyleRange(range);
         }
+
+        return ranges;
+    }
 }
