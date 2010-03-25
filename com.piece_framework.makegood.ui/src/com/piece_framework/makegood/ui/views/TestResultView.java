@@ -3,7 +3,6 @@ package com.piece_framework.makegood.ui.views;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IToolBarManager;
@@ -46,8 +45,6 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.contexts.IContextService;
 import org.eclipse.ui.part.ViewPart;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.Vector;
 
 import com.piece_framework.makegood.launch.elements.ProblemType;
@@ -58,9 +55,7 @@ import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.Messages;
 import com.piece_framework.makegood.ui.ide.EditorOpen;
 import com.piece_framework.makegood.ui.ide.FileFind;
-import com.piece_framework.makegood.ui.swt.ExternalFileWithLineRange;
 import com.piece_framework.makegood.ui.swt.FileWithLineRange;
-import com.piece_framework.makegood.ui.swt.InternalFileWithLineRange;
 
 public class TestResultView extends ViewPart {
     private static final String VIEW_ID = Activator.PLUGIN_ID + ".views.resultView"; //$NON-NLS-1$
@@ -593,52 +588,14 @@ public class TestResultView extends ViewPart {
 
         public void setText(String text) {
             this.text.setText(text);
-            generatelinks(text);
-
+            ranges = FileWithLineRange.generateLinks(text, this.text);
             visibleScrollBar(true);
-        }
-
-        private void generatelinks(String text) {
-            ranges = new Vector<FileWithLineRange>();
-            Matcher matcher = Pattern.compile(
-                                  "^(.+):(\\d+)$", //$NON-NLS-1$
-                                  Pattern.MULTILINE
-                                      ).matcher(text);
-            while (matcher.find()) {
-                IFile[] files = FileFind.findFiles(matcher.group(1));
-                if (files == null) continue;
-                FileWithLineRange range;
-                if (files.length > 0) {
-                    InternalFileWithLineRange iRange = new InternalFileWithLineRange();
-                    iRange.file = files[0];
-                    iRange.foreground =
-                        this.text.getDisplay().getSystemColor(SWT.COLOR_BLUE);
-                    range = (FileWithLineRange) iRange;
-                } else {
-                    ExternalFileWithLineRange eRange = new ExternalFileWithLineRange();
-                    IFileStore fileStore = FileFind.findFileStore(matcher.group(1));
-                    if (fileStore == null) continue;
-                    eRange.fileStore = fileStore;
-                    eRange.foreground = new Color(this.text.getDisplay(), 114, 159, 207);
-                    range = (FileWithLineRange) eRange;
-                }
-
-                range.start = matcher.start();
-                range.length = matcher.group().length();
-                range.line = Integer.valueOf(matcher.group(2));
-                ranges.add(range);
-                setRange(range);
-            }
         }
 
         public void clearText() {
             text.setText(""); //$NON-NLS-1$
 
             visibleScrollBar(false);
-        }
-
-        public void setRange(StyleRange range) {
-            text.setStyleRange(range);
         }
 
         public void mouseDoubleClick(MouseEvent event) {
