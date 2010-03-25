@@ -13,7 +13,6 @@ package com.piece_framework.makegood.ui.swt;
 
 import java.util.Vector;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.resources.IFile;
@@ -47,12 +46,8 @@ public class FileWithLineRange extends StyleRange {
         return null;
     }
 
-    public static Vector<FileWithLineRange> generateLinks(String text, StyledText styledText) {
+    public static Vector<FileWithLineRange> generateLinks(String text, StyledText styledText, Matcher matcher) {
         Vector<FileWithLineRange> ranges = new Vector<FileWithLineRange>();
-        Matcher matcher = Pattern.compile(
-                              "^(.+):(\\d+)$", //$NON-NLS-1$
-                              Pattern.MULTILINE
-                                  ).matcher(text);
         while (matcher.find()) {
             IFile[] files = FileFind.findFiles(matcher.group(1));
             if (files == null)

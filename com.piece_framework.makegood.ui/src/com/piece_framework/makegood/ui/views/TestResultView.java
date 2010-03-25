@@ -35,7 +35,6 @@ import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Tree;
-import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IViewSite;
@@ -46,6 +45,7 @@ import org.eclipse.ui.contexts.IContextService;
 import org.eclipse.ui.part.ViewPart;
 
 import java.util.Vector;
+import java.util.regex.Pattern;
 
 import com.piece_framework.makegood.launch.elements.ProblemType;
 import com.piece_framework.makegood.launch.elements.TestCase;
@@ -559,8 +559,11 @@ public class TestResultView extends ViewPart {
         private Cursor handCursor;
         private Cursor arrowCursor;
         private Vector<FileWithLineRange> ranges;
+        private Pattern pattern;
 
         public FailureTrace(Composite parent) {
+            pattern = Pattern.compile("^(.+):(\\d+)$", Pattern.MULTILINE); //$NON-NLS-1$
+
             Composite traceParent = new Composite(parent, SWT.NULL);
             traceParent.setLayoutData(createHorizontalFillGridData());
             traceParent.setLayout(new GridLayout(1, false));
@@ -588,7 +591,7 @@ public class TestResultView extends ViewPart {
 
         public void setText(String text) {
             this.text.setText(text);
-            ranges = FileWithLineRange.generateLinks(text, this.text);
+            ranges = FileWithLineRange.generateLinks(text, this.text, pattern.matcher(text));
             visibleScrollBar(true);
         }
 
