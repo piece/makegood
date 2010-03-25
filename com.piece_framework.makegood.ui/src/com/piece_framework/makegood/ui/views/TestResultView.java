@@ -1,10 +1,8 @@
 package com.piece_framework.makegood.ui.views;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.IAction;
@@ -48,8 +46,6 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.contexts.IContextService;
 import org.eclipse.ui.part.ViewPart;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.Vector;
@@ -61,6 +57,7 @@ import com.piece_framework.makegood.launch.elements.TestSuite;
 import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.Messages;
 import com.piece_framework.makegood.ui.ide.EditorOpen;
+import com.piece_framework.makegood.ui.ide.FileFind;
 import com.piece_framework.makegood.ui.swt.ExternalFileWithLineRange;
 import com.piece_framework.makegood.ui.swt.FileWithLineRange;
 import com.piece_framework.makegood.ui.swt.InternalFileWithLineRange;
@@ -203,23 +200,23 @@ public class TestResultView extends ViewPart {
                     TestCase testCase = (TestCase) element;
                     String fileName = testCase.getFile();
                     if (fileName == null) return;
-                    IFile[] files = findFiles(fileName);
+                    IFile[] files = FileFind.findFiles(fileName);
                     if (files == null) return;
                     if (files.length > 0) {
                         EditorOpen.open(files[0], testCase.getLine());
                     } else {
-                        EditorOpen.open(findFileStore(fileName), testCase.getLine());
+                        EditorOpen.open(FileFind.findFileStore(fileName), testCase.getLine());
                     }
                 } else if (element instanceof TestSuite) {
                     TestSuite suite= (TestSuite) element;
                     String fileName = suite.getFile();
                     if (fileName == null) return;
-                    IFile[] files = findFiles(fileName);
+                    IFile[] files = FileFind.findFiles(fileName);
                     if (files == null) return;
                     if (files.length > 0) {
                         EditorOpen.open(files[0]);
                     } else {
-                        EditorOpen.open(findFileStore(fileName));
+                        EditorOpen.open(FileFind.findFileStore(fileName));
                     }
                 }
             }
@@ -311,29 +308,6 @@ public class TestResultView extends ViewPart {
         bothFillGrid.grabExcessHorizontalSpace = true;
         bothFillGrid.grabExcessVerticalSpace = true;
         return bothFillGrid;
-    }
-
-    private IFile[] findFiles(String file) {
-        try {
-            return ResourcesPlugin.getWorkspace()
-                                   .getRoot()
-                                   .findFilesForLocationURI(
-                                       new URI("file:///" + file) //$NON-NLS-1$
-                                   );
-        } catch (URISyntaxException e) {
-            Activator.getDefault().getLog().log(new Status(IStatus.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
-            return null;
-        }
-    }
-
-    private IFileStore findFileStore(String file) {
-        try {
-            return EFS.getLocalFileSystem()
-                       .getStore(new URI("file:///" + file)); //$NON-NLS-1$
-        } catch (URISyntaxException e) {
-            Activator.getDefault().getLog().log(new Status(IStatus.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
-            return null;
-        }
     }
 
     public void nextResult() {
@@ -631,7 +605,7 @@ public class TestResultView extends ViewPart {
                                   Pattern.MULTILINE
                                       ).matcher(text);
             while (matcher.find()) {
-                IFile[] files = findFiles(matcher.group(1));
+                IFile[] files = FileFind.findFiles(matcher.group(1));
                 if (files == null) continue;
                 FileWithLineRange range;
                 if (files.length > 0) {
@@ -642,7 +616,7 @@ public class TestResultView extends ViewPart {
                     range = (FileWithLineRange) iRange;
                 } else {
                     ExternalFileWithLineRange eRange = new ExternalFileWithLineRange();
-                    IFileStore fileStore = findFileStore(matcher.group(1));
+                    IFileStore fileStore = FileFind.findFileStore(matcher.group(1));
                     if (fileStore == null) continue;
                     eRange.fileStore = fileStore;
                     eRange.foreground = new Color(this.text.getDisplay(), 114, 159, 207);
