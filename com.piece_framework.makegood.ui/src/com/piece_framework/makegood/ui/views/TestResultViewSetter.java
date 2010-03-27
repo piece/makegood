@@ -31,6 +31,7 @@ import com.piece_framework.makegood.launch.elements.TestResultParser;
 import com.piece_framework.makegood.launch.elements.TestSuite;
 import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.Messages;
+import com.piece_framework.makegood.ui.ide.ViewShow;
 
 public class TestResultViewSetter implements IMakeGoodEventListener, ParserListener {
     private TestResultParser parser;
@@ -81,6 +82,8 @@ public class TestResultViewSetter implements IMakeGoodEventListener, ParserListe
         Job job = new UIJob("MakeGood reset") { //$NON-NLS-1$
             @Override
             public IStatus runInUIThread(IProgressMonitor monitor) {
+                ViewShow.show(OutputView.ID);
+
                 TestResultView view = TestResultView.showView();
                 if (view == null) {
                     // TODO
@@ -106,7 +109,7 @@ public class TestResultViewSetter implements IMakeGoodEventListener, ParserListe
         for (IProcess process: launch.getProcesses()) {
             try {
                 if (process.getExitValue() != 0) {
-                    showDebugOutput();
+                    showOutput();
                     return;
                 }
             } catch (DebugException e) {
@@ -164,21 +167,11 @@ public class TestResultViewSetter implements IMakeGoodEventListener, ParserListe
         job.schedule();
     }
 
-    private void showDebugOutput() {
-        Job job = new UIJob("Show Debug Output") { //$NON-NLS-1$
+    private void showOutput() {
+        Job job = new UIJob("MakeGood Show Output") { //$NON-NLS-1$
             @Override
             public IStatus runInUIThread(IProgressMonitor monitor) {
-                IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-                try {
-                    page.showView("org.eclipse.debug.ui.PHPDebugOutput"); //$NON-NLS-1$
-                } catch (PartInitException e) {
-                    Activator.getDefault().getLog().log(new Status(Status.WARNING,
-                                                        Activator.PLUGIN_ID,
-                                                        e.getMessage(),
-                                                        e
-                                                        ));
-                }
-
+                ViewShow.show(OutputView.ID);
                 return Status.OK_STATUS;
             }
         };
