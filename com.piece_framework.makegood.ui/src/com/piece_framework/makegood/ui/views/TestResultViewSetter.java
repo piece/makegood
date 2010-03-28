@@ -2,8 +2,6 @@ package com.piece_framework.makegood.ui.views;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -16,9 +14,6 @@ import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.progress.UIJob;
 import org.xml.sax.SAXException;
 
@@ -26,7 +21,6 @@ import com.piece_framework.makegood.core.launch.IMakeGoodEventListener;
 import com.piece_framework.makegood.launch.elements.ParserListener;
 import com.piece_framework.makegood.launch.elements.Problem;
 import com.piece_framework.makegood.launch.elements.TestCase;
-import com.piece_framework.makegood.launch.elements.TestResult;
 import com.piece_framework.makegood.launch.elements.TestResultParser;
 import com.piece_framework.makegood.launch.elements.TestSuite;
 import com.piece_framework.makegood.ui.Activator;
