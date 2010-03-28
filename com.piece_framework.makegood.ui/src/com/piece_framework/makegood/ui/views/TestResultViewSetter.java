@@ -76,7 +76,7 @@ public class TestResultViewSetter implements IMakeGoodEventListener, ParserListe
             public IStatus runInUIThread(IProgressMonitor monitor) {
                 ViewShow.show(OutputView.ID);
 
-                TestResultView view = TestResultView.showView();
+                ResultView view = ResultView.showView();
                 if (view == null) {
                     // TODO
                     return null;
@@ -126,7 +126,7 @@ public class TestResultViewSetter implements IMakeGoodEventListener, ParserListe
         Job job = new UIJob("MakeGood result parse") { //$NON-NLS-1$
             @Override
             public IStatus runInUIThread(IProgressMonitor monitor) {
-                TestResultView view = TestResultView.showView();
+                ResultView view = ResultView.showView();
                 if (view == null) {
                     // TODO
                     return null;
@@ -196,7 +196,7 @@ public class TestResultViewSetter implements IMakeGoodEventListener, ParserListe
         Job job = new UIJob("MakeGood refresh") { //$NON-NLS-1$
             @Override
             public IStatus runInUIThread(IProgressMonitor monitor) {
-                TestResultView view = TestResultView.showView();
+                ResultView view = ResultView.showView();
                 if (view == null) {
                     // TODO
                     return null;

@@ -24,7 +24,7 @@
       </category>
       <view
             category="com.piece_framework.makegood.ui.views.makeGoodCategory"
-            class="com.piece_framework.makegood.ui.views.TestResultView"
+            class="com.piece_framework.makegood.ui.views.ResultView"
             icon="icons/MakeGood.gif"
             id="com.piece_framework.makegood.ui.views.resultView"
             name="%views.resultView.name"

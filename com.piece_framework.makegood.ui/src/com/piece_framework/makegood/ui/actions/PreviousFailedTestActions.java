@@ -5,7 +5,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IViewActionDelegate;
 import org.eclipse.ui.IViewPart;
 
-import com.piece_framework.makegood.ui.views.TestResultView;
+import com.piece_framework.makegood.ui.views.ResultView;
 
 public class PreviousFailedTestActions implements IViewActionDelegate {
     @Override
@@ -14,7 +14,7 @@ public class PreviousFailedTestActions implements IViewActionDelegate {
 
     @Override
     public void run(IAction action) {
-        TestResultView view = TestResultView.getView();
+        ResultView view = ResultView.getView();
         if (view != null) {
             view.previousResult();
         }

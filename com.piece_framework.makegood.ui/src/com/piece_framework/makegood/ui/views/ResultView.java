@@ -57,7 +57,7 @@ import com.piece_framework.makegood.ui.ide.EditorOpen;
 import com.piece_framework.makegood.ui.ide.FileFind;
 import com.piece_framework.makegood.ui.swt.FileWithLineRange;
 
-public class TestResultView extends ViewPart {
+public class ResultView extends ViewPart {
     private static final String ID = Activator.PLUGIN_ID + ".views.resultView"; //$NON-NLS-1$
     private static final String STOP_ACTION_ID = Activator.PLUGIN_ID + ".viewActions.resultView.stopTest"; //$NON-NLS-1$
     private static final String RERUN_ACTION_ID = Activator.PLUGIN_ID + ".viewActions.resultView.rerunTest"; //$NON-NLS-1$
@@ -85,7 +85,7 @@ public class TestResultView extends ViewPart {
         }
     };
 
-    public TestResultView() {
+    public ResultView() {
         // TODO Auto-generated constructor stub
     }
 
@@ -268,14 +268,14 @@ public class TestResultView extends ViewPart {
         resultTreeViewer.setInput(null);
     }
 
-    public static TestResultView getView() {
+    public static ResultView getView() {
         IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
         IViewPart view = page.findView(ID);
-        if (!(view instanceof TestResultView)) return null;
-        return (TestResultView) view;
+        if (!(view instanceof ResultView)) return null;
+        return (ResultView) view;
     }
 
-    public static TestResultView showView() {
+    public static ResultView showView() {
         IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
         IViewPart view = null;
         try {
@@ -285,8 +285,8 @@ public class TestResultView extends ViewPart {
             return null;
         }
 
-        if (!(view instanceof TestResultView)) return null;
-        return (TestResultView) view;
+        if (!(view instanceof ResultView)) return null;
+        return (ResultView) view;
     }
 
     private GridData createHorizontalFillGridData() {
