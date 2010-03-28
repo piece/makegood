@@ -1,8 +1,6 @@
 package com.piece_framework.makegood.ui.views;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IToolBarManager;
@@ -34,7 +32,6 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.contexts.IContextService;
 import org.eclipse.ui.part.ViewPart;
@@ -52,7 +49,7 @@ import com.piece_framework.makegood.ui.ide.FileFind;
 import com.piece_framework.makegood.ui.swt.LinkedText;
 
 public class ResultView extends ViewPart {
-    private static final String ID = Activator.PLUGIN_ID + ".views.resultView"; //$NON-NLS-1$
+    public static final String ID = Activator.PLUGIN_ID + ".views.resultView"; //$NON-NLS-1$
     private static final String STOP_ACTION_ID = Activator.PLUGIN_ID + ".viewActions.resultView.stopTest"; //$NON-NLS-1$
     private static final String RERUN_ACTION_ID = Activator.PLUGIN_ID + ".viewActions.resultView.rerunTest"; //$NON-NLS-1$
     private static final String CONTEXT_ID = Activator.PLUGIN_ID + ".contexts.resultView"; //$NON-NLS-1$
@@ -265,20 +262,6 @@ public class ResultView extends ViewPart {
     public static ResultView getView() {
         IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
         IViewPart view = page.findView(ID);
-        if (!(view instanceof ResultView)) return null;
-        return (ResultView) view;
-    }
-
-    public static ResultView showView() {
-        IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-        IViewPart view = null;
-        try {
-            view = page.showView(ID);
-        } catch (PartInitException e) {
-            Activator.getDefault().getLog().log(new Status(IStatus.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
-            return null;
-        }
-
         if (!(view instanceof ResultView)) return null;
         return (ResultView) view;
     }

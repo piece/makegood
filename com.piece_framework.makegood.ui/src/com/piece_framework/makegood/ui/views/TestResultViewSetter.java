@@ -75,15 +75,13 @@ public class TestResultViewSetter implements IMakeGoodEventListener, ParserListe
             @Override
             public IStatus runInUIThread(IProgressMonitor monitor) {
                 ViewShow.show(OutputView.ID);
-
-                ResultView view = ResultView.showView();
-                if (view == null) {
-                    // TODO
-                    return null;
+                ResultView resultView = (ResultView)ViewShow.show(ResultView.ID);
+                if (resultView == null) {
+                    return Status.CANCEL_STATUS;
                 }
-                view.setFocus();
-                view.reset();
-                view.start(progress);
+
+                resultView.reset();
+                resultView.start(progress);
 
                 return Status.OK_STATUS;
             }
@@ -126,16 +124,14 @@ public class TestResultViewSetter implements IMakeGoodEventListener, ParserListe
         Job job = new UIJob("MakeGood result parse") { //$NON-NLS-1$
             @Override
             public IStatus runInUIThread(IProgressMonitor monitor) {
-                ResultView view = ResultView.showView();
-                if (view == null) {
-                    // TODO
-                    return null;
+                ResultView resultView = (ResultView)ViewShow.show(ResultView.ID);
+                if (resultView == null) {
+                    return Status.CANCEL_STATUS;
                 }
-                view.setFocus();
 
                 progress.finalize();
-                view.stop();
-                view.refresh(progress, currentTestCase);
+                resultView.stop();
+                resultView.refresh(progress, currentTestCase);
 
                 if (parserException != null) {
                     Activator.getDefault().getLog().log(
@@ -196,16 +192,16 @@ public class TestResultViewSetter implements IMakeGoodEventListener, ParserListe
         Job job = new UIJob("MakeGood refresh") { //$NON-NLS-1$
             @Override
             public IStatus runInUIThread(IProgressMonitor monitor) {
-                ResultView view = ResultView.showView();
-                if (view == null) {
-                    // TODO
-                    return null;
+                ResultView resultView = (ResultView)ViewShow.show(ResultView.ID);
+                if (resultView == null) {
+                    return Status.CANCEL_STATUS;
                 }
-                view.setFocus();
-                if (!view.isSetTreeInput()) {
-                    view.setTreeInput(parser.getTestResults());
+
+                if (!resultView.isSetTreeInput()) {
+                    resultView.setTreeInput(parser.getTestResults());
                 }
-                view.refresh(progress, currentTestCase);
+
+                resultView.refresh(progress, currentTestCase);
 
                 return Status.OK_STATUS;
             }
