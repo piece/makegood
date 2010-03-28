@@ -13,7 +13,6 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.model.IProcess;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.ui.progress.UIJob;
 import org.xml.sax.SAXException;
 
@@ -24,7 +23,6 @@ import com.piece_framework.makegood.launch.elements.TestCase;
 import com.piece_framework.makegood.launch.elements.TestResultParser;
 import com.piece_framework.makegood.launch.elements.TestSuite;
 import com.piece_framework.makegood.ui.Activator;
-import com.piece_framework.makegood.ui.Messages;
 import com.piece_framework.makegood.ui.ide.ViewShow;
 
 public class TestResultViewSetter implements IMakeGoodEventListener, ParserListener {
@@ -140,11 +138,6 @@ public class TestResultViewSetter implements IMakeGoodEventListener, ParserListe
                 view.refresh(progress, currentTestCase);
 
                 if (parserException != null) {
-                    MessageDialog.openError(view.getViewSite().getShell(),
-                                            Messages.TestResultViewSetter_messageTitle,
-                                            Messages.TestResultViewSetter_failedToParseXMLMessage + parserException.getMessage()
-                                            );
-
                     Activator.getDefault().getLog().log(
                         new Status(
                             IStatus.ERROR,
