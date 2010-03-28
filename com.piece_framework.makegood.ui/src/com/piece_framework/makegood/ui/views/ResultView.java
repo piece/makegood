@@ -601,23 +601,28 @@ public class ResultView extends ViewPart {
             visibleScrollBar(false);
         }
 
-        public void mouseDoubleClick(MouseEvent event) {
+        @Override
+        public void mouseDoubleClick(MouseEvent e) {}
+
+        @Override
+        public void mouseDown(MouseEvent e) {
             FileWithLineRange range =
-                FileWithLineRange.findFileWithLineRange(new Point(event.x, event.y), text, ranges);
+                FileWithLineRange.findFileWithLineRange(new Point(e.x, e.y), text, ranges);
             if (range == null) return;
             EditorOpen.open(range, range.line);
         }
 
-        public void mouseDown(MouseEvent event) {}
-        public void mouseUp(MouseEvent event) {}
+        @Override
+        public void mouseUp(MouseEvent e) {}
 
-        public void mouseMove(MouseEvent event) {
+        @Override
+        public void mouseMove(MouseEvent e) {
             FileWithLineRange range =
-                FileWithLineRange.findFileWithLineRange(new Point(event.x, event.y), text, ranges);
+                FileWithLineRange.findFileWithLineRange(new Point(e.x, e.y), text, ranges);
             if (range != null) {
                 text.setCursor(handCursor);
             } else {
-                text.setCursor(arrowCursor);
+                text.setCursor(arrowCursor); 
             }
         }
 
