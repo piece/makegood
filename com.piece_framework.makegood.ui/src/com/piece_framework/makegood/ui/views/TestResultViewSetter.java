@@ -71,7 +71,7 @@ public class TestResultViewSetter implements IMakeGoodEventListener, ParserListe
         };
         parserThread.start();
 
-        Job job = new UIJob("MakeGood reset") { //$NON-NLS-1$
+        Job job = new UIJob("MakeGood Reset Result View") { //$NON-NLS-1$
             @Override
             public IStatus runInUIThread(IProgressMonitor monitor) {
                 ViewShow.show(OutputView.ID);
@@ -121,7 +121,7 @@ public class TestResultViewSetter implements IMakeGoodEventListener, ParserListe
             } catch (InterruptedException e) {}
         }
 
-        Job job = new UIJob("MakeGood result parse") { //$NON-NLS-1$
+        Job job = new UIJob("MakeGood Parse Result") { //$NON-NLS-1$
             @Override
             public IStatus runInUIThread(IProgressMonitor monitor) {
                 ResultView resultView = (ResultView)ViewShow.show(ResultView.ID);
@@ -151,7 +151,7 @@ public class TestResultViewSetter implements IMakeGoodEventListener, ParserListe
     }
 
     private void showOutput() {
-        Job job = new UIJob("MakeGood Show Output") { //$NON-NLS-1$
+        Job job = new UIJob("MakeGood Show Output View") { //$NON-NLS-1$
             @Override
             public IStatus runInUIThread(IProgressMonitor monitor) {
                 ViewShow.show(OutputView.ID);
@@ -189,7 +189,7 @@ public class TestResultViewSetter implements IMakeGoodEventListener, ParserListe
 
         currentTestCase.setTime(progress.getTestCaseTime());
 
-        Job job = new UIJob("MakeGood refresh") { //$NON-NLS-1$
+        Job job = new UIJob("MakeGood Refresh Result View") { //$NON-NLS-1$
             @Override
             public IStatus runInUIThread(IProgressMonitor monitor) {
                 ResultView resultView = (ResultView)ViewShow.show(ResultView.ID);
