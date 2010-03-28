@@ -11,7 +11,6 @@
 
 package com.piece_framework.makegood.ui.views;
 
-import java.util.Vector;
 import java.util.regex.Pattern;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -22,31 +21,26 @@ import org.eclipse.debug.core.DebugEvent;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.IDebugEventSetListener;
 import org.eclipse.php.internal.debug.core.zend.model.PHPDebugTarget;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.StyledText;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseListener;
-import org.eclipse.swt.events.MouseMoveListener;
-import org.eclipse.swt.graphics.Cursor;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.progress.UIJob;
 
 import com.piece_framework.makegood.ui.Activator;
-import com.piece_framework.makegood.ui.ide.EditorOpen;
-import com.piece_framework.makegood.ui.swt.FileWithLineRange;
+import com.piece_framework.makegood.ui.swt.LinkedText;
 
 @SuppressWarnings("restriction")
 public class OutputView extends ViewPart {
     public static final String ID = Activator.PLUGIN_ID + ".views.outputView"; //$NON-NLS-1$
-    private Output output;
+    private LinkedText output;
     private IDebugEventSetListener terminateListener;
 
     @Override
     public void createPartControl(Composite parent) {
-        output = new Output(parent);
+        output =
+            new LinkedText(
+                parent,
+                Pattern.compile("in (.+) on line (\\d+)", Pattern.MULTILINE) //$NON-NLS-1$
+            );
         terminateListener = new IDebugEventSetListener() {
             @Override
             public void handleDebugEvents(DebugEvent[] events) {
@@ -84,59 +78,5 @@ public class OutputView extends ViewPart {
     @Override
     public void dispose() {
         DebugPlugin.getDefault().removeDebugEventListener(terminateListener);
-    }
-
-    private class Output implements MouseListener, MouseMoveListener {
-        private StyledText text;
-        private Cursor handCursor;
-        private Cursor arrowCursor;
-        private Vector<FileWithLineRange> ranges;
-        private Pattern pattern;
-
-        public Output(Composite parent) {
-            pattern = Pattern.compile("in (.+) on line (\\d+)", Pattern.MULTILINE); //$NON-NLS-1$
-
-            text = new StyledText(
-                       parent,
-                       SWT.MULTI | SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL
-                   );
-            text.setLayoutData(new GridData(GridData.FILL_BOTH));
-            text.setEditable(false);
-            text.addMouseListener(this);
-            text.addMouseMoveListener(this);
-
-            handCursor = new Cursor(parent.getDisplay(), SWT.CURSOR_HAND);
-            arrowCursor = new Cursor(parent.getDisplay(), SWT.CURSOR_ARROW);
-        }
-
-        @Override
-        public void mouseDoubleClick(MouseEvent e) {}
-
-        @Override
-        public void mouseDown(MouseEvent e) {
-            FileWithLineRange range =
-                FileWithLineRange.findFileWithLineRange(new Point(e.x, e.y), text, ranges);
-            if (range == null) return;
-            EditorOpen.open(range, range.line);
-        }
-
-        @Override
-        public void mouseUp(MouseEvent e) {}
-
-        @Override
-        public void mouseMove(MouseEvent e) {
-            FileWithLineRange range =
-                FileWithLineRange.findFileWithLineRange(new Point(e.x, e.y), text, ranges);
-            if (range != null) {
-                text.setCursor(handCursor);
-            } else {
-                text.setCursor(arrowCursor); 
-            }
-        }
-
-        public void setText(String text) {
-            this.text.setText(text);
-            ranges = FileWithLineRange.generateLinks(text, this.text, pattern.matcher(text));
-        }
     }
 }

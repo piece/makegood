@@ -20,14 +20,10 @@ import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
-import org.eclipse.swt.events.MouseListener;
-import org.eclipse.swt.events.MouseMoveListener;
-import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.RGB;
-import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -35,7 +31,6 @@ import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Tree;
-import org.eclipse.swt.custom.StyledText;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.IWorkbenchPage;
@@ -44,7 +39,6 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.contexts.IContextService;
 import org.eclipse.ui.part.ViewPart;
 
-import java.util.Vector;
 import java.util.regex.Pattern;
 
 import com.piece_framework.makegood.launch.elements.ProblemType;
@@ -55,7 +49,7 @@ import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.Messages;
 import com.piece_framework.makegood.ui.ide.EditorOpen;
 import com.piece_framework.makegood.ui.ide.FileFind;
-import com.piece_framework.makegood.ui.swt.FileWithLineRange;
+import com.piece_framework.makegood.ui.swt.LinkedText;
 
 public class ResultView extends ViewPart {
     private static final String ID = Activator.PLUGIN_ID + ".views.resultView"; //$NON-NLS-1$
@@ -217,7 +211,7 @@ public class ResultView extends ViewPart {
             }
         });
 
-        failureTrace = new FailureTrace(form);
+        failureTrace = createFailureTrace(form);
 
         reset();
     }
@@ -303,6 +297,22 @@ public class ResultView extends ViewPart {
         bothFillGrid.grabExcessHorizontalSpace = true;
         bothFillGrid.grabExcessVerticalSpace = true;
         return bothFillGrid;
+    }
+
+    private FailureTrace createFailureTrace(Composite parent) {
+        Composite traceParent = new Composite(parent, SWT.NULL);
+        traceParent.setLayoutData(createHorizontalFillGridData());
+        traceParent.setLayout(new GridLayout(1, false));
+        Composite trace = new Composite(traceParent, SWT.NULL);
+        trace.setLayoutData(createHorizontalFillGridData());
+        trace.setLayout(new RowLayout());
+        new ResultLabel(
+            trace,
+            Messages.TestResultView_failureTraceLabel,
+            Activator.getImageDescriptor("icons/failure-trace.gif").createImage() //$NON-NLS-1$
+        );
+
+        return new FailureTrace(traceParent);
     }
 
     public void nextResult() {
@@ -554,81 +564,15 @@ public class ResultView extends ViewPart {
         }
     }
 
-    private class FailureTrace implements MouseListener, MouseMoveListener {
-        private StyledText text;
-        private Cursor handCursor;
-        private Cursor arrowCursor;
-        private Vector<FileWithLineRange> ranges;
-        private Pattern pattern;
-
+    private class FailureTrace extends LinkedText {
         public FailureTrace(Composite parent) {
-            pattern = Pattern.compile("^(.+):(\\d+)$", Pattern.MULTILINE); //$NON-NLS-1$
-
-            Composite traceParent = new Composite(parent, SWT.NULL);
-            traceParent.setLayoutData(createHorizontalFillGridData());
-            traceParent.setLayout(new GridLayout(1, false));
-            Composite trace = new Composite(traceParent, SWT.NULL);
-            trace.setLayoutData(createHorizontalFillGridData());
-            trace.setLayout(new RowLayout());
-            new ResultLabel(
-                trace,
-                Messages.TestResultView_failureTraceLabel,
-                Activator.getImageDescriptor("icons/failure-trace.gif").createImage() //$NON-NLS-1$
-            );
-            text = new StyledText(
-                       traceParent,
-                       SWT.MULTI | SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL
-                   );
-            text.setLayoutData(createBothFillGridData());
-            text.setEditable(false);
-            text.addMouseListener(this);
-            text.addMouseMoveListener(this);
-            visibleScrollBar(false);
-
-            handCursor = new Cursor(parent.getDisplay(), SWT.CURSOR_HAND);
-            arrowCursor = new Cursor(parent.getDisplay(), SWT.CURSOR_ARROW);
-        }
-
-        public void setText(String text) {
-            this.text.setText(text);
-            ranges = FileWithLineRange.generateLinks(text, this.text, pattern.matcher(text));
-            visibleScrollBar(true);
+            super(parent, Pattern.compile("^(.+):(\\d+)$", Pattern.MULTILINE)); //$NON-NLS-1$
+            hideScrollBar();
         }
 
         public void clearText() {
-            text.setText(""); //$NON-NLS-1$
-
-            visibleScrollBar(false);
-        }
-
-        @Override
-        public void mouseDoubleClick(MouseEvent e) {}
-
-        @Override
-        public void mouseDown(MouseEvent e) {
-            FileWithLineRange range =
-                FileWithLineRange.findFileWithLineRange(new Point(e.x, e.y), text, ranges);
-            if (range == null) return;
-            EditorOpen.open(range, range.line);
-        }
-
-        @Override
-        public void mouseUp(MouseEvent e) {}
-
-        @Override
-        public void mouseMove(MouseEvent e) {
-            FileWithLineRange range =
-                FileWithLineRange.findFileWithLineRange(new Point(e.x, e.y), text, ranges);
-            if (range != null) {
-                text.setCursor(handCursor);
-            } else {
-                text.setCursor(arrowCursor); 
-            }
-        }
-
-        private void visibleScrollBar(boolean visible) {
-            text.getVerticalBar().setVisible(visible);
-            text.getHorizontalBar().setVisible(visible);
+            setText(""); //$NON-NLS-1$
+            hideScrollBar();
         }
     }
 }
