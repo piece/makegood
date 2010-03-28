@@ -58,7 +58,7 @@ import com.piece_framework.makegood.ui.ide.FileFind;
 import com.piece_framework.makegood.ui.swt.FileWithLineRange;
 
 public class TestResultView extends ViewPart {
-    private static final String VIEW_ID = Activator.PLUGIN_ID + ".views.resultView"; //$NON-NLS-1$
+    private static final String ID = Activator.PLUGIN_ID + ".views.resultView"; //$NON-NLS-1$
     private static final String STOP_ACTION_ID = Activator.PLUGIN_ID + ".viewActions.resultView.stopTest"; //$NON-NLS-1$
     private static final String RERUN_ACTION_ID = Activator.PLUGIN_ID + ".viewActions.resultView.rerunTest"; //$NON-NLS-1$
     private static final String CONTEXT_ID = Activator.PLUGIN_ID + ".contexts.resultView"; //$NON-NLS-1$
@@ -270,7 +270,7 @@ public class TestResultView extends ViewPart {
 
     public static TestResultView getView() {
         IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-        IViewPart view = page.findView(VIEW_ID);
+        IViewPart view = page.findView(ID);
         if (!(view instanceof TestResultView)) return null;
         return (TestResultView) view;
     }
@@ -279,7 +279,7 @@ public class TestResultView extends ViewPart {
         IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
         IViewPart view = null;
         try {
-            view = page.showView(VIEW_ID);
+            view = page.showView(ID);
         } catch (PartInitException e) {
             Activator.getDefault().getLog().log(new Status(IStatus.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
             return null;
