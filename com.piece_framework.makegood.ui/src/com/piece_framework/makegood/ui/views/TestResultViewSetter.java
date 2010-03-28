@@ -99,7 +99,7 @@ public class TestResultViewSetter implements IMakeGoodEventListener, ParserListe
         for (IProcess process: launch.getProcesses()) {
             try {
                 if (process.getExitValue() != 0) {
-                    showOutput();
+                    showOutputView();
                     return;
                 }
             } catch (DebugException e) {
@@ -150,7 +150,7 @@ public class TestResultViewSetter implements IMakeGoodEventListener, ParserListe
         job.schedule();
     }
 
-    private void showOutput() {
+    private void showOutputView() {
         Job job = new UIJob("MakeGood Show Output View") { //$NON-NLS-1$
             @Override
             public IStatus runInUIThread(IProgressMonitor monitor) {
