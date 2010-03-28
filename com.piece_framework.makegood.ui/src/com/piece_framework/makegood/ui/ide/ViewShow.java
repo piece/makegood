@@ -31,4 +31,11 @@ public class ViewShow {
             return null;
         }
     }
+
+    public static IViewPart find(String viewId) {
+        return PlatformUI.getWorkbench()
+                         .getActiveWorkbenchWindow()
+                         .getActivePage()
+                         .findView(viewId);
+    }
 }

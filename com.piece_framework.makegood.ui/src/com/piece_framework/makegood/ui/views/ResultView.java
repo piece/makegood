@@ -29,10 +29,7 @@ import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Tree;
-import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IViewSite;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.contexts.IContextService;
 import org.eclipse.ui.part.ViewPart;
 
@@ -257,13 +254,6 @@ public class ResultView extends ViewPart {
         progressBar.reset();
 
         resultTreeViewer.setInput(null);
-    }
-
-    public static ResultView getView() {
-        IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-        IViewPart view = page.findView(ID);
-        if (!(view instanceof ResultView)) return null;
-        return (ResultView) view;
     }
 
     private GridData createHorizontalFillGridData() {
