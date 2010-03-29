@@ -8,12 +8,12 @@ import org.eclipse.swt.graphics.Image;
 import com.piece_framework.makegood.launch.elements.TestResult;
 import com.piece_framework.makegood.ui.Activator;
 
-public class TestResultLabelProvider extends LabelProvider {
+public class ResultLabelProvider extends LabelProvider {
     private Image passIcon;
     private Image errorIcon;
     private Image failureIcon;
 
-    public TestResultLabelProvider() {
+    public ResultLabelProvider() {
         super();
 
         passIcon = Activator.getImageDescriptor("icons/pass-white.gif").createImage(); //$NON-NLS-1$

@@ -160,7 +160,7 @@ public class ResultView extends ViewPart {
         resultTree.setLayoutData(createBothFillGridData());
         resultTreeViewer = new TreeViewer(resultTree);
         resultTreeViewer.setContentProvider(new ResultContentProvider());
-        resultTreeViewer.setLabelProvider(new TestResultLabelProvider());
+        resultTreeViewer.setLabelProvider(new ResultLabelProvider());
         resultTreeViewer.addSelectionChangedListener(new ISelectionChangedListener() {
             @Override
             public void selectionChanged(SelectionChangedEvent event) {
