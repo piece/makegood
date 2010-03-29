@@ -367,7 +367,7 @@
    <extension
          point="com.piece_framework.makegood.core.eventListeners">
       <eventListener
-            listener="com.piece_framework.makegood.ui.views.TestResultViewSetter">
+            listener="com.piece_framework.makegood.ui.views.ResultViewController">
       </eventListener>
    </extension>
 

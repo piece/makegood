@@ -25,7 +25,7 @@ import com.piece_framework.makegood.launch.elements.TestSuite;
 import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.ide.ViewShow;
 
-public class TestResultViewSetter implements IMakeGoodEventListener, ParserListener {
+public class ResultViewController implements IMakeGoodEventListener, ParserListener {
     private TestResultParser parser;
     private TestProgress progress;
     private TestCase currentTestCase;
