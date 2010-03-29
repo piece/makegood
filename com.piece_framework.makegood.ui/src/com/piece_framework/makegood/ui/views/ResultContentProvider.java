@@ -8,7 +8,7 @@ import org.eclipse.jface.viewers.Viewer;
 import com.piece_framework.makegood.launch.elements.TestResult;
 import com.piece_framework.makegood.launch.elements.TestSuite;
 
-public class TestResultContentProvider implements ITreeContentProvider {
+public class ResultContentProvider implements ITreeContentProvider {
     @Override
     public Object[] getChildren(Object parentElement) {
         if (parentElement instanceof TestResult) {

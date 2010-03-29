@@ -159,7 +159,7 @@ public class ResultView extends ViewPart {
         Tree resultTree = new Tree(treeParent, SWT.BORDER);
         resultTree.setLayoutData(createBothFillGridData());
         resultTreeViewer = new TreeViewer(resultTree);
-        resultTreeViewer.setContentProvider(new TestResultContentProvider());
+        resultTreeViewer.setContentProvider(new ResultContentProvider());
         resultTreeViewer.setLabelProvider(new TestResultLabelProvider());
         resultTreeViewer.addSelectionChangedListener(new ISelectionChangedListener() {
             @Override
