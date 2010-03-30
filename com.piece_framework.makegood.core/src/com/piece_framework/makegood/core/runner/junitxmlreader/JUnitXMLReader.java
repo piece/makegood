@@ -25,7 +25,7 @@ import com.piece_framework.makegood.core.runner.TestCase;
 import com.piece_framework.makegood.core.runner.TestResult;
 import com.piece_framework.makegood.core.runner.TestSuite;
 
-public class TestResultParser extends DefaultHandler {
+public class JUnitXMLReader extends DefaultHandler {
     private File log;
     private boolean wasEnd;
     private List<TestResult> results = new ArrayList<TestResult>();
@@ -37,7 +37,7 @@ public class TestResultParser extends DefaultHandler {
     private SynchronizedFileInputStream stream;
     private boolean createdTestCase;
 
-    public TestResultParser(File log) {
+    public JUnitXMLReader(File log) {
         this.log = log;
     }
 

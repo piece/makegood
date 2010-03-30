@@ -23,7 +23,7 @@ import com.piece_framework.makegood.core.runner.ProblemType;
 import com.piece_framework.makegood.core.runner.TestCase;
 import com.piece_framework.makegood.core.runner.TestResult;
 import com.piece_framework.makegood.core.runner.TestSuite;
-import com.piece_framework.makegood.core.runner.junitxmlreader.TestResultParser;
+import com.piece_framework.makegood.core.runner.junitxmlreader.JUnitXMLReader;
 
 public class TestResultParserTest {
     private static final String BASE_DIR = "/home/matsu/GITWORK/stagehand-testrunner";
@@ -56,7 +56,7 @@ public class TestResultParserTest {
 
     @Test
     public void parseTestResult() throws InterruptedException {
-        TestResultParser parser = new TestResultParser(
+        JUnitXMLReader parser = new JUnitXMLReader(
                                       new File(RESULTS_DIR + 
                                                String.valueOf(File.separatorChar) +
                                                "alltests.xml"
@@ -460,7 +460,7 @@ SRC_DIR + "/Stagehand/TestRunner.php:186\n" +
                                 String.valueOf(File.separatorChar) +
                                 "realtime.xml"
                                 );
-        TestResultParser parser = new TestResultParser(xmlFile);
+        JUnitXMLReader parser = new JUnitXMLReader(xmlFile);
         parser.addParserListener(listener);
         startParser(parser, null);
 
@@ -482,7 +482,7 @@ SRC_DIR + "/Stagehand/TestRunner.php:186\n" +
                                 String.valueOf(File.separatorChar) +
                                 "realtime.xml"
                                 );
-        TestResultParser parser = new TestResultParser(xmlFile);
+        JUnitXMLReader parser = new JUnitXMLReader(xmlFile);
         startParser(parser, SAXParseException.class);
 
         DummyTestRunner testRunner = new DummyTestRunner(xmlFile,
@@ -517,7 +517,7 @@ SRC_DIR + "/Stagehand/TestRunner.php:186\n" +
         return fragmentFiles;
     }
 
-    private void startParser(final TestResultParser parser,
+    private void startParser(final JUnitXMLReader parser,
                              final Class expectedExceptionClass
                              ) {
         Thread parserThread = new Thread() {
