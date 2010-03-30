@@ -1,4 +1,4 @@
-package com.piece_framework.makegood.launch.elements;
+package com.piece_framework.makegood.core.runner;
 
 public interface ParserListener {
     public void startTestSuite(TestSuite testSuite);

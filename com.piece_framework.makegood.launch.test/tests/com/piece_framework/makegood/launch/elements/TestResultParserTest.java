@@ -18,6 +18,13 @@ import org.junit.Test;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
+import com.piece_framework.makegood.core.runner.Problem;
+import com.piece_framework.makegood.core.runner.ProblemType;
+import com.piece_framework.makegood.core.runner.TestCase;
+import com.piece_framework.makegood.core.runner.TestResult;
+import com.piece_framework.makegood.core.runner.TestResultParser;
+import com.piece_framework.makegood.core.runner.TestSuite;
+
 public class TestResultParserTest {
     private static final String BASE_DIR = "/home/matsu/GITWORK/stagehand-testrunner";
     private static final String EXAMPLES_DIR = BASE_DIR + "/examples";
@@ -554,11 +561,11 @@ SRC_DIR + "/Stagehand/TestRunner.php:186\n" +
         assertTrue(result instanceof TestSuite);
 
         TestSuite suite = (TestSuite) result;
-        assertEquals(expectedName, suite.name);
-        assertEquals(expectedTestCount, suite.testCount);
-        assertEquals(expectedFailureCount, suite.failureCount);
-        assertEquals(expectedErrorCount, suite.errorCount);
-        assertEquals(expectedFile, suite.file);
+        assertEquals(expectedName, suite.getName());
+        assertEquals(expectedTestCount, suite.getTestCount());
+        assertEquals(expectedFailureCount, suite.getFailureCount());
+        assertEquals(expectedErrorCount, suite.getErrorCount());
+        assertEquals(expectedFile, suite.getFile());
         assertEquals(expectedTestResultsCount, suite.getTestResults().size());
         return suite;
     }
@@ -572,10 +579,10 @@ SRC_DIR + "/Stagehand/TestRunner.php:186\n" +
         assertTrue(result instanceof TestCase);
 
         TestCase testCase = (TestCase) result;
-        assertEquals(expectedName, testCase.name);
-        assertEquals(expectedTargetClass, testCase.targetClass);
-        assertEquals(expectedFile, testCase.file);
-        assertEquals(expectedLine, testCase.line);
+        assertEquals(expectedName, testCase.getName());
+        assertEquals(expectedTargetClass, testCase.getTargetClass());
+        assertEquals(expectedFile, testCase.getFile());
+        assertEquals(expectedLine, testCase.getLine());
         return testCase;
     }
 
@@ -586,10 +593,10 @@ SRC_DIR + "/Stagehand/TestRunner.php:186\n" +
                                   ) {
         assertTrue(result instanceof TestCase);
 
-        Problem problem = ((TestCase) result).problem;
-        assertEquals(expectedProblemType, problem.type);
-        assertEquals(expectedTypeClass, problem.typeClass);
-        assertEquals(expectedContent, problem.content);
+        Problem problem = ((TestCase) result).getProblem();
+        assertEquals(expectedProblemType, problem.getType());
+        assertEquals(expectedTypeClass, problem.getTypeClass());
+        assertEquals(expectedContent, problem.getContent());
         return problem;
     }
 

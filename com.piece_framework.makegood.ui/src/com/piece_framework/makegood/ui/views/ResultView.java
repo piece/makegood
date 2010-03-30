@@ -35,10 +35,10 @@ import org.eclipse.ui.part.ViewPart;
 
 import java.util.regex.Pattern;
 
-import com.piece_framework.makegood.launch.elements.ProblemType;
-import com.piece_framework.makegood.launch.elements.TestCase;
-import com.piece_framework.makegood.launch.elements.TestResult;
-import com.piece_framework.makegood.launch.elements.TestSuite;
+import com.piece_framework.makegood.core.runner.ProblemType;
+import com.piece_framework.makegood.core.runner.TestCase;
+import com.piece_framework.makegood.core.runner.TestResult;
+import com.piece_framework.makegood.core.runner.TestSuite;
 import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.Messages;
 import com.piece_framework.makegood.ui.ide.EditorOpen;

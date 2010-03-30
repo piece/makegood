@@ -17,11 +17,11 @@ import org.eclipse.ui.progress.UIJob;
 import org.xml.sax.SAXException;
 
 import com.piece_framework.makegood.core.launch.IMakeGoodEventListener;
-import com.piece_framework.makegood.launch.elements.ParserListener;
-import com.piece_framework.makegood.launch.elements.Problem;
-import com.piece_framework.makegood.launch.elements.TestCase;
-import com.piece_framework.makegood.launch.elements.TestResultParser;
-import com.piece_framework.makegood.launch.elements.TestSuite;
+import com.piece_framework.makegood.core.runner.ParserListener;
+import com.piece_framework.makegood.core.runner.Problem;
+import com.piece_framework.makegood.core.runner.TestCase;
+import com.piece_framework.makegood.core.runner.TestResultParser;
+import com.piece_framework.makegood.core.runner.TestSuite;
 import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.ide.ViewShow;
 

@@ -4,6 +4,12 @@ import static org.junit.Assert.assertEquals;
 import java.util.Arrays;
 import java.util.Iterator;
 
+import com.piece_framework.makegood.core.runner.ParserListener;
+import com.piece_framework.makegood.core.runner.Problem;
+import com.piece_framework.makegood.core.runner.ProblemType;
+import com.piece_framework.makegood.core.runner.TestCase;
+import com.piece_framework.makegood.core.runner.TestSuite;
+
 public class NamesAssertionParserListener implements ParserListener {
     private Iterator<String> suiteNamesIterator;
     private Iterator<String> caseNamesIterator;
@@ -30,7 +36,7 @@ public class NamesAssertionParserListener implements ParserListener {
 
     @Override
     public void startProblem(Problem problem) {
-        assertEquals(problemTypesIterator.next(), problem.type);
+        assertEquals(problemTypesIterator.next(), problem.getType());
     }
 
     @Override
