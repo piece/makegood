@@ -9,9 +9,9 @@ public class TestCase extends TestResult {
     String file;
     String targetClass;
     int line;
-    Problem problem;
+    private Problem problem;
 
-    TestCase(Map<String, String> attributes) {
+    public TestCase(Map<String, String> attributes) {
         this.name = attributes.get("name"); //$NON-NLS-1$
         if (attributes.containsKey("class")) { //$NON-NLS-1$
             this.targetClass = attributes.get("class"); //$NON-NLS-1$
@@ -22,7 +22,7 @@ public class TestCase extends TestResult {
         if (attributes.containsKey("line")) { //$NON-NLS-1$
             this.line = Integer.parseInt(attributes.get("line")); //$NON-NLS-1$
         }
-        this.problem = new Problem(ProblemType.Pass);
+        setProblem(new Problem(ProblemType.Pass));
     }
 
     public String getFile() {
@@ -43,12 +43,12 @@ public class TestCase extends TestResult {
 
     @Override
     public boolean hasError() {
-        return problem.getType() == ProblemType.Error;
+        return getProblem().getType() == ProblemType.Error;
     }
 
     @Override
     public boolean hasFailure() {
-        return problem.getType() == ProblemType.Failure;
+        return getProblem().getType() == ProblemType.Failure;
     }
 
     @Override
@@ -69,6 +69,10 @@ public class TestCase extends TestResult {
     @Override
     public void setTime(long time) {
         this.time = time;
-        parent.setTime(time);
+        getParent().setTime(time);
+    }
+
+    public void setProblem(Problem problem) {
+        this.problem = problem;
     }
 }

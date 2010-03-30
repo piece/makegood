@@ -3,10 +3,10 @@ package com.piece_framework.makegood.core.runner;
 
 public class Problem {
     ProblemType type;
-    String typeClass;
-    String content;
+    private String typeClass;
+    private String content;
 
-    Problem(ProblemType type) {
+    public Problem(ProblemType type) {
         this.type = type;
     }
 
@@ -20,5 +20,13 @@ public class Problem {
 
     public String getContent() {
         return content;
+    }
+
+    public void setTypeClass(String typeClass) {
+        this.typeClass = typeClass;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 }

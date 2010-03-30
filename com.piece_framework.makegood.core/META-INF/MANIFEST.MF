@@ -15,4 +15,5 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Export-Package: com.piece_framework.makegood.core,
  com.piece_framework.makegood.core.launch,
- com.piece_framework.makegood.core.runner
+ com.piece_framework.makegood.core.runner,
+ com.piece_framework.makegood.core.runner.junitxmlreader

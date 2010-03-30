@@ -22,8 +22,8 @@ import com.piece_framework.makegood.core.runner.Problem;
 import com.piece_framework.makegood.core.runner.ProblemType;
 import com.piece_framework.makegood.core.runner.TestCase;
 import com.piece_framework.makegood.core.runner.TestResult;
-import com.piece_framework.makegood.core.runner.TestResultParser;
 import com.piece_framework.makegood.core.runner.TestSuite;
+import com.piece_framework.makegood.core.runner.junitxmlreader.TestResultParser;
 
 public class TestResultParserTest {
     private static final String BASE_DIR = "/home/matsu/GITWORK/stagehand-testrunner";

@@ -1,4 +1,4 @@
-package com.piece_framework.makegood.core.runner;
+package com.piece_framework.makegood.core.runner.junitxmlreader;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -18,6 +18,12 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
+
+import com.piece_framework.makegood.core.runner.Problem;
+import com.piece_framework.makegood.core.runner.ProblemType;
+import com.piece_framework.makegood.core.runner.TestCase;
+import com.piece_framework.makegood.core.runner.TestResult;
+import com.piece_framework.makegood.core.runner.TestSuite;
 
 public class TestResultParser extends DefaultHandler {
     private File log;
@@ -175,7 +181,7 @@ public class TestResultParser extends DefaultHandler {
 
     private void endTestSuite() {
         if (currentSuite != null) {
-            currentSuite = (TestSuite) currentSuite.parent;
+            currentSuite = (TestSuite) currentSuite.getParent();
         }
 
         for (ParserListener listener: listeners) {
@@ -205,18 +211,18 @@ public class TestResultParser extends DefaultHandler {
                               ProblemType problemType
                               ) {
         Problem problem = new Problem(problemType);
-        problem.typeClass = map.get("type");
+        problem.setTypeClass(map.get("type"));
 
         if (currentCase == null) {
             Map<String, String> mapForTestCase = new HashMap<String, String>();
             mapForTestCase.put("name",
                                "(" + problemType.toString().toLowerCase() + ")");
-            mapForTestCase.put("class", currentSuite.name);
-            mapForTestCase.put("file", currentSuite.file);
+            mapForTestCase.put("class", currentSuite.getName());
+            mapForTestCase.put("file", currentSuite.getFile());
             startTestCase(mapForTestCase);
             createdTestCase = true;
         }
-        currentCase.problem = problem;
+        currentCase.setProblem(problem);
 
         contents = new StringBuilder();
 
@@ -226,7 +232,7 @@ public class TestResultParser extends DefaultHandler {
     }
 
     private void endProblem() {
-        currentCase.problem.content = contents.toString();
+        currentCase.getProblem().setContent(contents.toString());
 
         for (ParserListener listener: listeners) {
             listener.endProblem();

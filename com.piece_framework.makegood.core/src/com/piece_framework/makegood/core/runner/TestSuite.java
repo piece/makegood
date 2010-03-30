@@ -14,7 +14,7 @@ public class TestSuite extends TestResult {
     int failureCount;
     List<TestResult> children;
 
-    TestSuite(Map<String, String> attributes) {
+    public TestSuite(Map<String, String> attributes) {
         this.name = attributes.get("name"); //$NON-NLS-1$
         if (attributes.containsKey("file")) { //$NON-NLS-1$
             this.file = attributes.get("file"); //$NON-NLS-1$
@@ -77,12 +77,12 @@ public class TestSuite extends TestResult {
     }
 
     @Override
-    void addTestResult(TestResult result) {
+    public void addTestResult(TestResult result) {
         if (result == null) {
             return;
         }
 
-        result.parent = this;
+        result.setParent(this);
 
         children.add(result);
     }
@@ -104,23 +104,23 @@ public class TestSuite extends TestResult {
 
     public void increaseFailureCount() {
         ++failureCount;
-        if (parent != null) {
-            ((TestSuite) parent).increaseFailureCount();
+        if (getParent() != null) {
+            ((TestSuite) getParent()).increaseFailureCount();
         }
     }
 
     public void increaseErrorCount() {
         ++errorCount;
-        if (parent != null) {
-            ((TestSuite) parent).increaseErrorCount();
+        if (getParent() != null) {
+            ((TestSuite) getParent()).increaseErrorCount();
         }
     }
 
     @Override
     public void setTime(long time) {
         this.time += time;
-        if (parent != null) {
-            parent.setTime(time);
+        if (getParent() != null) {
+            getParent().setTime(time);
         }
     }
 }

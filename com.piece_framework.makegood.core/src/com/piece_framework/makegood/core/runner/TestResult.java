@@ -5,7 +5,7 @@ import java.util.List;
 public abstract class TestResult {
     String name;
     long time;
-    TestResult parent;
+    private TestResult parent;
 
     public String getName() {
         return name;
@@ -26,4 +26,12 @@ public abstract class TestResult {
     public abstract boolean hasFailure();
 
     abstract void addTestResult(TestResult result);
+
+    public TestResult getParent() {
+        return parent;
+    }
+
+    public void setParent(TestResult parent) {
+        this.parent = parent;
+    }
 }
