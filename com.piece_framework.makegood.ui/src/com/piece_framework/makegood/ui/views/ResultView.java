@@ -336,7 +336,7 @@ public class ResultView extends ViewPart {
         return resultTreeViewer.getInput() != null;
     }
 
-    public void refresh(TestProgress progress, TestResult result) {
+    public void refresh(RunProgress progress, TestResult result) {
         rate.setText(String.format("%3d", progress.getRate()) +     //$NON-NLS-1$
                      " " +      //$NON-NLS-1$
                      Messages.TestResultView_percent +
@@ -369,7 +369,7 @@ public class ResultView extends ViewPart {
         resultTreeViewer.refresh();
     }
 
-    public void start(TestProgress progress) {
+    public void start(RunProgress progress) {
         showTimer = new ShowTimer(tests, progress, 200);
         showTimer.start();
 
@@ -478,14 +478,14 @@ public class ResultView extends ViewPart {
 
     private class ShowTimer implements Runnable {
         private Label tests;
-        private TestProgress progress;
+        private RunProgress progress;
         private int delay;
         private long startTime;
         private boolean stop;
         private long elapsedTime;
 
         private ShowTimer(Label tests,
-                          TestProgress progress,
+                          RunProgress progress,
                           int delay
                           ) {
             this.tests = tests;

@@ -2,7 +2,7 @@ package com.piece_framework.makegood.ui.views;
 
 import com.piece_framework.makegood.launch.elements.ProblemType;
 
-public class TestProgress {
+public class RunProgress {
     private int allTestCount;
     private int endTestCount;
     private boolean initialized;

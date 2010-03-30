@@ -27,7 +27,7 @@ import com.piece_framework.makegood.ui.ide.ViewShow;
 
 public class ResultViewController implements IMakeGoodEventListener, ParserListener {
     private TestResultParser parser;
-    private TestProgress progress;
+    private RunProgress progress;
     private TestCase currentTestCase;
     private Exception parserException;
 
@@ -50,7 +50,7 @@ public class ResultViewController implements IMakeGoodEventListener, ParserListe
             return;
         }
 
-        progress = new TestProgress();
+        progress = new RunProgress();
 
         parser = new TestResultParser(new File(log));
         parser.addParserListener(this);
