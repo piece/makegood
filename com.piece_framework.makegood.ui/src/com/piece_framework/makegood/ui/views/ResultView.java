@@ -298,7 +298,7 @@ public class ResultView extends ViewPart {
         if (results == null || results.size() == 0) return;
         if (selected == null) selected = results.get(0);
 
-        TestResultSearch search = new TestResultSearch(results, selected);
+        FailureFilter search = new FailureFilter(results, selected);
         TestResult next = search.getNextFailure();
         if (next != null) {
             resultTreeViewer.expandAll();
@@ -314,7 +314,7 @@ public class ResultView extends ViewPart {
         if (results == null || results.size() == 0) return;
         if (selected == null) selected = results.get(0);
 
-        TestResultSearch search = new TestResultSearch(results, selected);
+        FailureFilter search = new FailureFilter(results, selected);
         TestResult previous = search.getPreviousFailure();
         if (previous != null) {
             resultTreeViewer.expandAll();
@@ -551,15 +551,13 @@ public class ResultView extends ViewPart {
         }
     }
 
-    private class TestResultSearch {
+    private class FailureFilter {
         private List<TestResult> results;
         private TestResult selected;
         private TestResult findSelected;
         private TestCase lastFailure;
 
-        public TestResultSearch(List<TestResult> results,
-                                TestResult selected
-                                ) {
+        public FailureFilter(List<TestResult> results, TestResult selected) {
             this.results = results;
             this.selected = selected;
         }
