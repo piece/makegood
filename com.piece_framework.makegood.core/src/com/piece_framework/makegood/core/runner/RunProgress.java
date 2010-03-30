@@ -1,6 +1,5 @@
-package com.piece_framework.makegood.ui.views;
+package com.piece_framework.makegood.core.runner;
 
-import com.piece_framework.makegood.core.runner.ProblemType;
 
 public class RunProgress {
     private int allTestCount;

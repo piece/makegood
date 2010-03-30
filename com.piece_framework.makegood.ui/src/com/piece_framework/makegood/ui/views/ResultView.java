@@ -36,6 +36,7 @@ import org.eclipse.ui.part.ViewPart;
 import java.util.regex.Pattern;
 
 import com.piece_framework.makegood.core.runner.ProblemType;
+import com.piece_framework.makegood.core.runner.RunProgress;
 import com.piece_framework.makegood.core.runner.TestCase;
 import com.piece_framework.makegood.core.runner.TestResult;
 import com.piece_framework.makegood.core.runner.TestSuite;
