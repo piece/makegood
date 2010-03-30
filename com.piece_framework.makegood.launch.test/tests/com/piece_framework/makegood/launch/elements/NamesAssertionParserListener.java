@@ -8,9 +8,9 @@ import com.piece_framework.makegood.core.runner.Problem;
 import com.piece_framework.makegood.core.runner.ProblemType;
 import com.piece_framework.makegood.core.runner.TestCase;
 import com.piece_framework.makegood.core.runner.TestSuite;
-import com.piece_framework.makegood.core.runner.junitxmlreader.ParserListener;
+import com.piece_framework.makegood.core.runner.junitxmlreader.JUnitXMLReaderListener;
 
-public class NamesAssertionParserListener implements ParserListener {
+public class NamesAssertionParserListener implements JUnitXMLReaderListener {
     private Iterator<String> suiteNamesIterator;
     private Iterator<String> caseNamesIterator;
     private Iterator<ProblemType> problemTypesIterator;

@@ -32,7 +32,7 @@ public class JUnitXMLReader extends DefaultHandler {
     private TestSuite currentSuite;
     private TestCase currentCase;
     private StringBuilder contents;
-    private List<ParserListener> listeners = new ArrayList<ParserListener>();
+    private List<JUnitXMLReaderListener> listeners = new ArrayList<JUnitXMLReaderListener>();
     private boolean stop = false;
     private SynchronizedFileInputStream stream;
     private boolean createdTestCase;
@@ -63,11 +63,11 @@ public class JUnitXMLReader extends DefaultHandler {
         wasEnd = true;
     }
 
-    public void addParserListener(ParserListener listener) {
+    public void addParserListener(JUnitXMLReaderListener listener) {
         listeners.add(listener);
     }
 
-    public void removeParserListener(ParserListener listener) {
+    public void removeParserListener(JUnitXMLReaderListener listener) {
         listeners.remove(listener);
     }
 
@@ -174,7 +174,7 @@ public class JUnitXMLReader extends DefaultHandler {
 
         currentSuite = suite;
 
-        for (ParserListener listener: listeners) {
+        for (JUnitXMLReaderListener listener: listeners) {
             listener.startTestSuite(suite);
         }
     }
@@ -184,7 +184,7 @@ public class JUnitXMLReader extends DefaultHandler {
             currentSuite = (TestSuite) currentSuite.getParent();
         }
 
-        for (ParserListener listener: listeners) {
+        for (JUnitXMLReaderListener listener: listeners) {
             listener.endTestSuite();
         }
     }
@@ -194,7 +194,7 @@ public class JUnitXMLReader extends DefaultHandler {
         currentSuite.addTestResult(testCase);
         currentCase = testCase;
 
-        for (ParserListener listener: listeners) {
+        for (JUnitXMLReaderListener listener: listeners) {
             listener.startTestCase(testCase);
         }
     }
@@ -202,7 +202,7 @@ public class JUnitXMLReader extends DefaultHandler {
     private void endTestCase() {
         currentCase = null;
 
-        for (ParserListener listener: listeners) {
+        for (JUnitXMLReaderListener listener: listeners) {
             listener.endTestCase();
         }
     }
@@ -226,7 +226,7 @@ public class JUnitXMLReader extends DefaultHandler {
 
         contents = new StringBuilder();
 
-        for (ParserListener listener: listeners) {
+        for (JUnitXMLReaderListener listener: listeners) {
             listener.startProblem(problem);
         }
     }
@@ -234,7 +234,7 @@ public class JUnitXMLReader extends DefaultHandler {
     private void endProblem() {
         currentCase.getProblem().setContent(contents.toString());
 
-        for (ParserListener listener: listeners) {
+        for (JUnitXMLReaderListener listener: listeners) {
             listener.endProblem();
         }
 

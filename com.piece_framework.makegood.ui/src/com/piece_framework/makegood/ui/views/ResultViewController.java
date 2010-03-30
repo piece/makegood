@@ -21,12 +21,12 @@ import com.piece_framework.makegood.core.runner.Problem;
 import com.piece_framework.makegood.core.runner.RunProgress;
 import com.piece_framework.makegood.core.runner.TestCase;
 import com.piece_framework.makegood.core.runner.TestSuite;
-import com.piece_framework.makegood.core.runner.junitxmlreader.ParserListener;
+import com.piece_framework.makegood.core.runner.junitxmlreader.JUnitXMLReaderListener;
 import com.piece_framework.makegood.core.runner.junitxmlreader.JUnitXMLReader;
 import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.ide.ViewShow;
 
-public class ResultViewController implements IMakeGoodEventListener, ParserListener {
+public class ResultViewController implements IMakeGoodEventListener, JUnitXMLReaderListener {
     private JUnitXMLReader parser;
     private RunProgress progress;
     private TestCase currentTestCase;
