@@ -47,7 +47,7 @@ import com.piece_framework.makegood.ui.ide.FileFind;
 import com.piece_framework.makegood.ui.swt.LinkedText;
 
 public class ResultView extends ViewPart {
-    public static final String ID = Activator.PLUGIN_ID + ".views.resultView"; //$NON-NLS-1$
+    public static final String ID = "com.piece_framework.makegood.ui.views.resultView"; //$NON-NLS-1$
     private static final String STOP_ACTION_ID = Activator.PLUGIN_ID + ".viewActions.resultView.stopTest"; //$NON-NLS-1$
     private static final String RERUN_ACTION_ID = Activator.PLUGIN_ID + ".viewActions.resultView.rerunTest"; //$NON-NLS-1$
     private static final String CONTEXT_ID = Activator.PLUGIN_ID + ".contexts.resultView"; //$NON-NLS-1$
