@@ -52,7 +52,7 @@ public class ResultView extends ViewPart {
     private static final String RERUN_ACTION_ID = Activator.PLUGIN_ID + ".viewActions.resultView.rerunTest"; //$NON-NLS-1$
     private static final String CONTEXT_ID = Activator.PLUGIN_ID + ".contexts.resultView"; //$NON-NLS-1$
 
-    private MakeGoodProgressBar progressBar;
+    private RunProgressBar progressBar;
     private Label tests;
     private ResultLabel passes;
     private ResultLabel failures;
@@ -113,7 +113,7 @@ public class ResultView extends ViewPart {
         progress.setLayout(new GridLayout(3, false));
 
         rate = new Label(progress, SWT.LEFT);
-        progressBar = new MakeGoodProgressBar(progress);
+        progressBar = new RunProgressBar(progress);
         progressBar.setLayoutData(createHorizontalFillGridData());
         average = new Label(progress, SWT.LEFT);
 
@@ -405,7 +405,7 @@ public class ResultView extends ViewPart {
         }
     }
 
-    private class MakeGoodProgressBar extends Composite {
+    private class RunProgressBar extends Composite {
         private final RGB GREEN = new RGB(95, 191, 95);
         private final RGB RED = new RGB(159, 63, 63);
         private final RGB NONE = new RGB(255, 255, 255);
@@ -413,7 +413,7 @@ public class ResultView extends ViewPart {
         private Label bar;
         private int rate;
 
-        private MakeGoodProgressBar(Composite parent) {
+        private RunProgressBar(Composite parent) {
             super(parent, SWT.BORDER);
             GridLayout layout = new GridLayout();
             layout.marginTop = 0;
