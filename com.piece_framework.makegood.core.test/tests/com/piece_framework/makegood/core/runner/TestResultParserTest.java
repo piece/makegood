@@ -1,4 +1,4 @@
-package com.piece_framework.makegood.launch.elements;
+package com.piece_framework.makegood.core.runner;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -18,8 +18,6 @@ import org.junit.Test;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
-import com.piece_framework.makegood.core.runner.DummyTestRunner;
-import com.piece_framework.makegood.core.runner.NamesAssertionParserListener;
 import com.piece_framework.makegood.core.runner.Problem;
 import com.piece_framework.makegood.core.runner.ProblemType;
 import com.piece_framework.makegood.core.runner.TestCase;
