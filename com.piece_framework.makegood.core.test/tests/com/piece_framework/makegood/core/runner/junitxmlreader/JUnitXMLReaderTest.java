@@ -464,7 +464,7 @@ SRC_DIR + "/Stagehand/TestRunner.php:186\n" +
         parser.addParserListener(listener);
         startParser(parser, null);
 
-        DummyTestRunner testRunner = new DummyTestRunner(xmlFile,
+        MockTestRunner testRunner = new MockTestRunner(xmlFile,
                                                          listOfFragmentFiles(),
                                                          1000
                                                          );
@@ -485,7 +485,7 @@ SRC_DIR + "/Stagehand/TestRunner.php:186\n" +
         JUnitXMLReader parser = new JUnitXMLReader(xmlFile);
         startParser(parser, SAXParseException.class);
 
-        DummyTestRunner testRunner = new DummyTestRunner(xmlFile,
+        MockTestRunner testRunner = new MockTestRunner(xmlFile,
                                                          listOfFragmentFiles(),
                                                          1000
                                                          );

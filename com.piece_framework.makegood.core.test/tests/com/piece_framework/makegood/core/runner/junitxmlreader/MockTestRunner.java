@@ -7,12 +7,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
-public class DummyTestRunner extends Thread {
+public class MockTestRunner extends Thread {
     private File xmlFile;
     private List<File> fragmentFiles;
     private int interval;
 
-    public DummyTestRunner(File xmlFile,
+    public MockTestRunner(File xmlFile,
                            List<File> fragmentFiles,
                            int interval
                            ) {
