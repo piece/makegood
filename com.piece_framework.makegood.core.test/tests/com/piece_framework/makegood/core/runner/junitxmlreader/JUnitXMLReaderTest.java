@@ -454,7 +454,7 @@ SRC_DIR + "/Stagehand/TestRunner.php:186\n" +
                                           "passWithDataProvider with data set #3"
                                           };
         ProblemType[] problemTypes = new ProblemType[]{ProblemType.Failure};
-        NamesAssertionParserListener listener = new NamesAssertionParserListener(suiteNames, caseNames, problemTypes);
+        NamesAssertionJUnitXMLReaderListener listener = new NamesAssertionJUnitXMLReaderListener(suiteNames, caseNames, problemTypes);
 
         File xmlFile = new File(TMP_DIR +
                                 String.valueOf(File.separatorChar) +

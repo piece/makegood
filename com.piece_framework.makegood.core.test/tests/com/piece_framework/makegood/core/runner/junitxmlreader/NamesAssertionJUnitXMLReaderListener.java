@@ -10,12 +10,12 @@ import com.piece_framework.makegood.core.runner.TestCase;
 import com.piece_framework.makegood.core.runner.TestSuite;
 import com.piece_framework.makegood.core.runner.junitxmlreader.JUnitXMLReaderListener;
 
-public class NamesAssertionParserListener implements JUnitXMLReaderListener {
+public class NamesAssertionJUnitXMLReaderListener implements JUnitXMLReaderListener {
     private Iterator<String> suiteNamesIterator;
     private Iterator<String> caseNamesIterator;
     private Iterator<ProblemType> problemTypesIterator;
 
-    public NamesAssertionParserListener(String[] suiteNames,
+    public NamesAssertionJUnitXMLReaderListener(String[] suiteNames,
                                String[] caseNames,
                                ProblemType[] problemTypes
                                ) {
