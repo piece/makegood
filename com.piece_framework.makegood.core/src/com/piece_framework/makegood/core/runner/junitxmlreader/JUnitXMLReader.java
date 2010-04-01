@@ -167,7 +167,7 @@ public class JUnitXMLReader extends DefaultHandler {
 
         boolean isTop = currentSuite == null;
         if (!isTop) {
-            currentSuite.addTestResult(suite);
+            currentSuite.addChild(suite);
         } else {
             results.add(suite);
         }
@@ -191,7 +191,7 @@ public class JUnitXMLReader extends DefaultHandler {
 
     private void startTestCase(Map<String, String> map) {
         TestCase testCase = new TestCase(map);
-        currentSuite.addTestResult(testCase);
+        currentSuite.addChild(testCase);
         currentCase = testCase;
 
         for (JUnitXMLReaderListener listener: listeners) {

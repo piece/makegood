@@ -72,7 +72,7 @@ public class TestSuite extends TestResult {
     }
 
     @Override
-    public void addTestResult(TestResult result) {
+    public void addChild(TestResult result) {
         if (result == null) {
             return;
         }
