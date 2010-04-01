@@ -47,7 +47,7 @@ public class TestCase extends TestResult {
     }
 
     @Override
-    void addChild(TestResult result) throws UnsupportedOperationException {
+    public void addChild(TestResult result) throws UnsupportedOperationException {
         throw new UnsupportedOperationException();
     }
 

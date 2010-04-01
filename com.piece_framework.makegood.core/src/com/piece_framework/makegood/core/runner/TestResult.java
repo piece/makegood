@@ -30,7 +30,7 @@ public abstract class TestResult {
 
     public abstract boolean hasFailure();
 
-    abstract void addChild(TestResult result);
+    public abstract void addChild(TestResult result);
 
     public TestResult getParent() {
         return parent;
