@@ -24,7 +24,7 @@ public abstract class TestResult {
 
     public abstract List<TestResult> getChildren();
 
-    public abstract TestResult findTestResult(String name);
+    public abstract TestResult getChild(String name);
 
     public abstract boolean hasError();
 

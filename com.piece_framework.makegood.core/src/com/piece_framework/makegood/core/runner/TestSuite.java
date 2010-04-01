@@ -88,7 +88,7 @@ public class TestSuite extends TestResult {
     }
 
     @Override
-    public TestResult findTestResult(String name) {
+    public TestResult getChild(String name) {
         for (TestResult result: children) {
             if (result.getName().equals(name)) {
                 return result;

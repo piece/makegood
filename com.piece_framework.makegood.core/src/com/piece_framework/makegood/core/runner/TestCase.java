@@ -57,7 +57,7 @@ public class TestCase extends TestResult {
     }
 
     @Override
-    public TestResult findTestResult(String name) {
+    public TestResult getChild(String name) {
         return null;
     }
 
