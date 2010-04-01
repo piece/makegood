@@ -3,9 +3,9 @@ package com.piece_framework.makegood.core.runner;
 import java.util.List;
 
 public abstract class TestResult {
-    String name;
-    long time;
-    String file;
+    protected String name;
+    protected long time;
+    protected String file;
     private TestResult parent;
 
     public String getName() {
