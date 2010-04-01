@@ -13,7 +13,7 @@ public class ResultContentProvider implements ITreeContentProvider {
     public Object[] getChildren(Object parentElement) {
         if (parentElement instanceof TestResult) {
             TestResult testResult = (TestResult) parentElement;
-            return testResult.getTestResults().toArray();
+            return testResult.getChildren().toArray();
         } else if (parentElement instanceof Collection) {
             Collection collection = (Collection) parentElement;
             return collection.toArray();

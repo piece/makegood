@@ -52,7 +52,7 @@ public class TestCase extends TestResult {
     }
 
     @Override
-    public List<TestResult> getTestResults() {
+    public List<TestResult> getChildren() {
         return Collections.unmodifiableList(new ArrayList<TestResult>());
     }
 

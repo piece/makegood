@@ -22,7 +22,7 @@ public abstract class TestResult {
 
     public abstract void setTime(long time);
 
-    public abstract List<TestResult> getTestResults();
+    public abstract List<TestResult> getChildren();
 
     public abstract TestResult findTestResult(String name);
 

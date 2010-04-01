@@ -588,7 +588,7 @@ public class ResultView extends ViewPart {
                 }
 
                 if (result instanceof TestSuite) {
-                    TestCase testCase = getNextFailure(result.getTestResults());
+                    TestCase testCase = getNextFailure(result.getChildren());
                     if (testCase != null) {
                         return testCase;
                     }
@@ -612,7 +612,7 @@ public class ResultView extends ViewPart {
                 }
 
                 if (result instanceof TestSuite) {
-                    TestCase testCase = getPreviousFailure(result.getTestResults());
+                    TestCase testCase = getPreviousFailure(result.getChildren());
                     if (testCase != null) {
                         return testCase;
                     }
