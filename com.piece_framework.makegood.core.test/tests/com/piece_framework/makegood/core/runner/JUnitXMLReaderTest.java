@@ -25,7 +25,7 @@ import com.piece_framework.makegood.core.runner.TestResult;
 import com.piece_framework.makegood.core.runner.TestSuite;
 import com.piece_framework.makegood.core.runner.junitxmlreader.JUnitXMLReader;
 
-public class TestResultParserTest {
+public class JUnitXMLReaderTest {
     private static final String BASE_DIR = "/home/matsu/GITWORK/stagehand-testrunner";
     private static final String EXAMPLES_DIR = BASE_DIR + "/examples";
     private static final String SRC_DIR = BASE_DIR + "/src";
