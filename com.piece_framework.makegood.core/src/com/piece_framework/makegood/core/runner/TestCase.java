@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 public class TestCase extends TestResult {
-    String file;
     String targetClass;
     int line;
     private Problem problem;
@@ -23,10 +22,6 @@ public class TestCase extends TestResult {
             this.line = Integer.parseInt(attributes.get("line")); //$NON-NLS-1$
         }
         setProblem(new Problem(ProblemType.Pass));
-    }
-
-    public String getFile() {
-        return file;
     }
 
     public String getTargetClass() {

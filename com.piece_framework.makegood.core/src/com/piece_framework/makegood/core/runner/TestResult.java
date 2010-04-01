@@ -5,6 +5,7 @@ import java.util.List;
 public abstract class TestResult {
     String name;
     long time;
+    String file;
     private TestResult parent;
 
     public String getName() {
@@ -13,6 +14,10 @@ public abstract class TestResult {
 
     public long getTime() {
         return time;
+    }
+
+    public String getFile() {
+        return file;
     }
 
     public abstract void setTime(long time);

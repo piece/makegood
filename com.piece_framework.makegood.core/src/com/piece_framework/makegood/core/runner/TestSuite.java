@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 public class TestSuite extends TestResult {
-    String file;
     String fullPackage;
     String packageName;
     int testCount;
@@ -30,10 +29,6 @@ public class TestSuite extends TestResult {
         }
 
         children = new ArrayList<TestResult>();
-    }
-
-    public String getFile() {
-        return file;
     }
 
     public String getFullPackage() {
