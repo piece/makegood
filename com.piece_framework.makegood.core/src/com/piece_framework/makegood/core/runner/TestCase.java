@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 public class TestCase extends TestResult {
-    String targetClass;
-    int line;
+    private String targetClass;
+    private int line;
     private Problem problem;
 
     public TestCase(Map<String, String> attributes) {

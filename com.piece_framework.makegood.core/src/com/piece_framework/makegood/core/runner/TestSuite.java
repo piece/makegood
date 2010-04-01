@@ -6,12 +6,12 @@ import java.util.List;
 import java.util.Map;
 
 public class TestSuite extends TestResult {
-    String fullPackage;
-    String packageName;
-    int testCount;
-    int errorCount;
-    int failureCount;
-    List<TestResult> children;
+    private String fullPackage;
+    private String packageName;
+    private int testCount;
+    private int errorCount;
+    private int failureCount;
+    private List<TestResult> children;
 
     public TestSuite(Map<String, String> attributes) {
         this.name = attributes.get("name"); //$NON-NLS-1$
