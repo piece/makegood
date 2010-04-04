@@ -19,7 +19,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import com.piece_framework.makegood.core.runner.Problem;
 import com.piece_framework.makegood.core.runner.ProblemType;
-import com.piece_framework.makegood.core.runner.TestCase;
+import com.piece_framework.makegood.core.runner.TestCaseResult;
 import com.piece_framework.makegood.core.runner.Result;
 import com.piece_framework.makegood.core.runner.TestSuite;
 
@@ -28,7 +28,7 @@ public class JUnitXMLReader extends DefaultHandler {
     private boolean finished;
     private List<Result> results = new ArrayList<Result>();
     private TestSuite currentTestSuite;
-    private TestCase currentTestCase;
+    private TestCaseResult currentTestCase;
     private StringBuilder contents;
     private List<JUnitXMLReaderListener> listeners = new ArrayList<JUnitXMLReaderListener>();
     private boolean stopped = false;
@@ -188,7 +188,7 @@ public class JUnitXMLReader extends DefaultHandler {
         }
     }
 
-    private void startTestCase(TestCase testCase) {
+    private void startTestCase(TestCaseResult testCase) {
         currentTestSuite.addChild(testCase);
         currentTestCase = testCase;
 
@@ -207,8 +207,8 @@ public class JUnitXMLReader extends DefaultHandler {
 
     private void startProblem(Problem problem) {
         if (currentTestCase == null) {
-            TestCase testCase =
-                new TestCase("(" + problem.getType().toString().toLowerCase() + ")");
+            TestCaseResult testCase =
+                new TestCaseResult("(" + problem.getType().toString().toLowerCase() + ")");
             testCase.setClassName(currentTestSuite.getName());
             testCase.setFile(currentTestSuite.getFile());
             testCase.setIsArtificial(true);
@@ -253,8 +253,8 @@ public class JUnitXMLReader extends DefaultHandler {
         return suite;
     }
 
-    private TestCase createTestCase(Attributes attributes) {
-        TestCase testCase = new TestCase(attributes.getValue("name")); //$NON-NLS-1$
+    private TestCaseResult createTestCase(Attributes attributes) {
+        TestCaseResult testCase = new TestCaseResult(attributes.getValue("name")); //$NON-NLS-1$
         if (attributes.getIndex("file") != -1) { //$NON-NLS-1$
             testCase.setFile(attributes.getValue("file")); //$NON-NLS-1$
         }

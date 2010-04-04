@@ -38,7 +38,7 @@ import java.util.regex.Pattern;
 
 import com.piece_framework.makegood.core.runner.ProblemType;
 import com.piece_framework.makegood.core.runner.RunProgress;
-import com.piece_framework.makegood.core.runner.TestCase;
+import com.piece_framework.makegood.core.runner.TestCaseResult;
 import com.piece_framework.makegood.core.runner.Result;
 import com.piece_framework.makegood.core.runner.TestSuite;
 import com.piece_framework.makegood.ui.Activator;
@@ -170,8 +170,8 @@ public class ResultView extends ViewPart {
                 if (!(event.getSelection() instanceof IStructuredSelection)) return;
                 IStructuredSelection selection = (IStructuredSelection) event.getSelection();
                 Object element = selection.getFirstElement();
-                if (!(element instanceof TestCase)) return;
-                TestCase testCase = (TestCase) element;
+                if (!(element instanceof TestCaseResult)) return;
+                TestCaseResult testCase = (TestCaseResult) element;
                 if (testCase.getProblem().getType() == ProblemType.Pass) return;
                 failureTrace.setText(testCase.getProblem().getContent());
             }
@@ -181,8 +181,8 @@ public class ResultView extends ViewPart {
             public void doubleClick(DoubleClickEvent event) {
                 IStructuredSelection selection = (IStructuredSelection) event.getSelection();
                 Object element = selection.getFirstElement();
-                if (element instanceof TestCase) {
-                    TestCase testCase = (TestCase) element;
+                if (element instanceof TestCaseResult) {
+                    TestCaseResult testCase = (TestCaseResult) element;
                     String fileName = testCase.getFile();
                     if (fileName == null) return;
                     IFile[] files = FileFind.findFiles(fileName);
@@ -555,40 +555,40 @@ public class ResultView extends ViewPart {
         private List<Result> results;
         private Result selected;
         private Result findSelected;
-        private TestCase lastFailure;
+        private TestCaseResult lastFailure;
 
         public FailureFilter(List<Result> results, Result selected) {
             this.results = results;
             this.selected = selected;
         }
 
-        public TestCase getNextFailure() {
+        public TestCaseResult getNextFailure() {
             findSelected = null;
             return getNextFailure(results);
         }
 
-        public TestCase getPreviousFailure() {
+        public TestCaseResult getPreviousFailure() {
             findSelected = null;
             lastFailure = null;
             return getPreviousFailure(results);
         }
 
-        private TestCase getNextFailure(List<Result> targets) {
+        private TestCaseResult getNextFailure(List<Result> targets) {
             for (Result result: targets) {
                 if (findSelected == null) {
                     if (result.getName().equals(selected.getName())) {
                         findSelected = result;
                     }
                 } else {
-                    if (result instanceof TestCase
+                    if (result instanceof TestCaseResult
                         && (result.hasError() || result.hasFailure())
                         ) {
-                        return (TestCase) result;
+                        return (TestCaseResult) result;
                     }
                 }
 
                 if (result instanceof TestSuite) {
-                    TestCase testCase = getNextFailure(result.getChildren());
+                    TestCaseResult testCase = getNextFailure(result.getChildren());
                     if (testCase != null) {
                         return testCase;
                     }
@@ -597,22 +597,22 @@ public class ResultView extends ViewPart {
             return null;
         }
 
-        private TestCase getPreviousFailure(List<Result> targets) {
+        private TestCaseResult getPreviousFailure(List<Result> targets) {
             for (Result result: targets) {
                 if (findSelected == null) {
                     if (result.getName().equals(selected.getName())) {
                         return lastFailure;
                     } else {
-                        if (result instanceof TestCase
+                        if (result instanceof TestCaseResult
                             && (result.hasError() || result.hasFailure())
                             ) {
-                            lastFailure = (TestCase) result;
+                            lastFailure = (TestCaseResult) result;
                         }
                     }
                 }
 
                 if (result instanceof TestSuite) {
-                    TestCase testCase = getPreviousFailure(result.getChildren());
+                    TestCaseResult testCase = getPreviousFailure(result.getChildren());
                     if (testCase != null) {
                         return testCase;
                     }

@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class TestCase extends Result {
+public class TestCaseResult extends Result {
     private String className;
     private int line;
     private Problem problem;
     private boolean isArtificial = false;
 
-    public TestCase(String name) {
+    public TestCaseResult(String name) {
         this.name = name;
         setProblem(new Problem(ProblemType.Pass));
     }

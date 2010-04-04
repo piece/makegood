@@ -1,7 +1,7 @@
 package com.piece_framework.makegood.core.runner.junitxmlreader;
 
 import com.piece_framework.makegood.core.runner.Problem;
-import com.piece_framework.makegood.core.runner.TestCase;
+import com.piece_framework.makegood.core.runner.TestCaseResult;
 import com.piece_framework.makegood.core.runner.TestSuite;
 
 public interface JUnitXMLReaderListener {
@@ -9,7 +9,7 @@ public interface JUnitXMLReaderListener {
 
     public void endTestSuite();
 
-    public void startTestCase(TestCase testCase);
+    public void startTestCase(TestCaseResult testCase);
 
     public void endTestCase();
 

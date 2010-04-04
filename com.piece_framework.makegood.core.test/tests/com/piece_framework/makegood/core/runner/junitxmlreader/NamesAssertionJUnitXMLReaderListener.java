@@ -6,7 +6,7 @@ import java.util.Iterator;
 
 import com.piece_framework.makegood.core.runner.Problem;
 import com.piece_framework.makegood.core.runner.ProblemType;
-import com.piece_framework.makegood.core.runner.TestCase;
+import com.piece_framework.makegood.core.runner.TestCaseResult;
 import com.piece_framework.makegood.core.runner.TestSuite;
 import com.piece_framework.makegood.core.runner.junitxmlreader.JUnitXMLReaderListener;
 
@@ -30,7 +30,7 @@ public class NamesAssertionJUnitXMLReaderListener implements JUnitXMLReaderListe
     }
 
     @Override
-    public void startTestCase(TestCase testCase) {
+    public void startTestCase(TestCaseResult testCase) {
         assertEquals(caseNamesIterator.next(), testCase.getName());
     }
 

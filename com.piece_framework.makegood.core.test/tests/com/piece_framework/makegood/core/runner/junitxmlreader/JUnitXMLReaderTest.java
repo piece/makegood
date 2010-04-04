@@ -20,7 +20,7 @@ import org.xml.sax.SAXParseException;
 
 import com.piece_framework.makegood.core.runner.Problem;
 import com.piece_framework.makegood.core.runner.ProblemType;
-import com.piece_framework.makegood.core.runner.TestCase;
+import com.piece_framework.makegood.core.runner.TestCaseResult;
 import com.piece_framework.makegood.core.runner.Result;
 import com.piece_framework.makegood.core.runner.TestSuite;
 import com.piece_framework.makegood.core.runner.junitxmlreader.JUnitXMLReader;
@@ -570,15 +570,15 @@ SRC_DIR + "/Stagehand/TestRunner.php:186\n" +
         return suite;
     }
 
-    private TestCase assertTestCase(Result result,
+    private TestCaseResult assertTestCase(Result result,
                                     String expectedName,
                                     String expectedTargetClass,
                                     String expectedFile,
                                     int expectedLine
                                     ) {
-        assertTrue(result instanceof TestCase);
+        assertTrue(result instanceof TestCaseResult);
 
-        TestCase testCase = (TestCase) result;
+        TestCaseResult testCase = (TestCaseResult) result;
         assertEquals(expectedName, testCase.getName());
         assertEquals(expectedTargetClass, testCase.getClassName());
         assertEquals(expectedFile, testCase.getFile());
@@ -591,16 +591,16 @@ SRC_DIR + "/Stagehand/TestRunner.php:186\n" +
                                   String expectedTypeClass,
                                   String expectedContent
                                   ) {
-        assertTrue(result instanceof TestCase);
+        assertTrue(result instanceof TestCaseResult);
 
-        Problem problem = ((TestCase) result).getProblem();
+        Problem problem = ((TestCaseResult) result).getProblem();
         assertEquals(expectedProblemType, problem.getType());
         assertEquals(expectedTypeClass, problem.getTypeClass());
         assertEquals(expectedContent, problem.getContent());
         return problem;
     }
 
-    private TestCase[] assertTestCases(Result result,
+    private TestCaseResult[] assertTestCases(Result result,
                                        String expectedTargetClass,
                                        String expectedFile,
                                        String[] expectedNames,
@@ -609,9 +609,9 @@ SRC_DIR + "/Stagehand/TestRunner.php:186\n" +
         assertTrue(result instanceof TestSuite);
 
         TestSuite suite = (TestSuite) result;
-        List<TestCase> testCases = new ArrayList<TestCase>();
+        List<TestCaseResult> testCases = new ArrayList<TestCaseResult>();
         for (int i = 0; i < suite.getChildren().size(); ++i) {
-            TestCase testCase = assertTestCase(suite.getChildren().get(i),
+            TestCaseResult testCase = assertTestCase(suite.getChildren().get(i),
                                                expectedNames[i],
                                                expectedTargetClass,
                                                expectedFile,
@@ -619,7 +619,7 @@ SRC_DIR + "/Stagehand/TestRunner.php:186\n" +
                                                );
             testCases.add(testCase);
         }
-        return testCases.toArray(new TestCase[] {});
+        return testCases.toArray(new TestCaseResult[] {});
     }
 
     private Problem[] assertProblems(Result result,
@@ -632,7 +632,7 @@ SRC_DIR + "/Stagehand/TestRunner.php:186\n" +
         TestSuite suite = (TestSuite) result;
         List<Problem> problems = new ArrayList<Problem>();
         for (int i = 0; i < suite.getChildren().size(); ++i) {
-            TestCase testCase = (TestCase) suite.getChildren().get(i);
+            TestCaseResult testCase = (TestCaseResult) suite.getChildren().get(i);
             Problem problem = assertProblem(testCase,
                                             expectedProblemTypes[i],
                                             expectedTypeClasses[i],
