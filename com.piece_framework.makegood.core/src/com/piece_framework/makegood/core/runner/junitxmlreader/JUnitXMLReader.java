@@ -189,7 +189,6 @@ public class JUnitXMLReader extends DefaultHandler {
     }
 
     private void startTestCase(TestCaseResult testCase) {
-        currentTestSuite.addChild(testCase);
         currentTestCase = testCase;
 
         for (JUnitXMLReaderListener listener: listeners) {
@@ -198,6 +197,10 @@ public class JUnitXMLReader extends DefaultHandler {
     }
 
     private void endTestCase() {
+        if (currentTestSuite != null) {
+            currentTestSuite.addChild(currentTestCase);
+        }
+
         currentTestCase = null;
 
         for (JUnitXMLReaderListener listener: listeners) {
