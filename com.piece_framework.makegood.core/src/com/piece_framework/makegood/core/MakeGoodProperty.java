@@ -80,9 +80,18 @@ public class MakeGoodProperty {
         List<IFolder> testFoldersList = new ArrayList<IFolder>();
         IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
         for (String testFolder: testFolders) {
-            testFoldersList.add(root.getFolder(new Path(testFolder)));
+            if (!testFolder.equals("")) testFoldersList.add(root.getFolder(new Path(testFolder)));
         }
         return Collections.unmodifiableList(testFoldersList);
+    }
+
+    public void setTestFolders(List<IFolder> testFolders) {
+        StringBuilder builder = new StringBuilder();
+        for (IFolder testFolder: testFolders) {
+            if (builder.length() > 0) builder.append("\u0005");
+            builder.append(testFolder.getFullPath().toString());
+        }
+        preferences.put(TEST_FOLDERS, builder.toString());
     }
 
     public void flush() {
