@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class TestSuite extends Result {
+public class TestSuiteResult extends Result {
     private String fullPackageName;
     private String packageName;
     private int testCount;
@@ -12,7 +12,7 @@ public class TestSuite extends Result {
     private int failureCount;
     private List<Result> children;
 
-    public TestSuite(String name) {
+    public TestSuiteResult(String name) {
         this.name = name;
         children = new ArrayList<Result>();
     }
@@ -89,14 +89,14 @@ public class TestSuite extends Result {
     public void increaseFailureCount() {
         ++failureCount;
         if (getParent() != null) {
-            ((TestSuite)getParent()).increaseFailureCount();
+            ((TestSuiteResult)getParent()).increaseFailureCount();
         }
     }
 
     public void increaseErrorCount() {
         ++errorCount;
         if (getParent() != null) {
-            ((TestSuite)getParent()).increaseErrorCount();
+            ((TestSuiteResult)getParent()).increaseErrorCount();
         }
     }
 

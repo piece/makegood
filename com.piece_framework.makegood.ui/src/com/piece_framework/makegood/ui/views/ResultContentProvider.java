@@ -6,7 +6,7 @@ import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
 import com.piece_framework.makegood.core.runner.Result;
-import com.piece_framework.makegood.core.runner.TestSuite;
+import com.piece_framework.makegood.core.runner.TestSuiteResult;
 
 public class ResultContentProvider implements ITreeContentProvider {
     @Override
@@ -28,7 +28,7 @@ public class ResultContentProvider implements ITreeContentProvider {
 
     @Override
     public boolean hasChildren(Object element) {
-        return (element instanceof TestSuite);
+        return (element instanceof TestSuiteResult);
     }
 
     @Override

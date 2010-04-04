@@ -2,10 +2,10 @@ package com.piece_framework.makegood.core.runner.junitxmlreader;
 
 import com.piece_framework.makegood.core.runner.Problem;
 import com.piece_framework.makegood.core.runner.TestCaseResult;
-import com.piece_framework.makegood.core.runner.TestSuite;
+import com.piece_framework.makegood.core.runner.TestSuiteResult;
 
 public interface JUnitXMLReaderListener {
-    public void startTestSuite(TestSuite testSuite);
+    public void startTestSuite(TestSuiteResult testSuite);
 
     public void endTestSuite();
 

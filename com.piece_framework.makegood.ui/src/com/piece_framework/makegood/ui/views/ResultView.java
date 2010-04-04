@@ -40,7 +40,7 @@ import com.piece_framework.makegood.core.runner.ProblemType;
 import com.piece_framework.makegood.core.runner.RunProgress;
 import com.piece_framework.makegood.core.runner.TestCaseResult;
 import com.piece_framework.makegood.core.runner.Result;
-import com.piece_framework.makegood.core.runner.TestSuite;
+import com.piece_framework.makegood.core.runner.TestSuiteResult;
 import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.Messages;
 import com.piece_framework.makegood.ui.ide.EditorOpen;
@@ -192,8 +192,8 @@ public class ResultView extends ViewPart {
                     } else {
                         EditorOpen.open(FileFind.findFileStore(fileName), testCase.getLine());
                     }
-                } else if (element instanceof TestSuite) {
-                    TestSuite suite= (TestSuite) element;
+                } else if (element instanceof TestSuiteResult) {
+                    TestSuiteResult suite= (TestSuiteResult) element;
                     String fileName = suite.getFile();
                     if (fileName == null) return;
                     IFile[] files = FileFind.findFiles(fileName);
@@ -587,7 +587,7 @@ public class ResultView extends ViewPart {
                     }
                 }
 
-                if (result instanceof TestSuite) {
+                if (result instanceof TestSuiteResult) {
                     TestCaseResult testCase = getNextFailure(result.getChildren());
                     if (testCase != null) {
                         return testCase;
@@ -611,7 +611,7 @@ public class ResultView extends ViewPart {
                     }
                 }
 
-                if (result instanceof TestSuite) {
+                if (result instanceof TestSuiteResult) {
                     TestCaseResult testCase = getPreviousFailure(result.getChildren());
                     if (testCase != null) {
                         return testCase;

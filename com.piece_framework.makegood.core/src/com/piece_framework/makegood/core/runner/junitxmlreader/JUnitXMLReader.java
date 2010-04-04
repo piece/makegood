@@ -21,13 +21,13 @@ import com.piece_framework.makegood.core.runner.Problem;
 import com.piece_framework.makegood.core.runner.ProblemType;
 import com.piece_framework.makegood.core.runner.TestCaseResult;
 import com.piece_framework.makegood.core.runner.Result;
-import com.piece_framework.makegood.core.runner.TestSuite;
+import com.piece_framework.makegood.core.runner.TestSuiteResult;
 
 public class JUnitXMLReader extends DefaultHandler {
     private File log;
     private boolean finished;
     private List<Result> results = new ArrayList<Result>();
-    private TestSuite currentTestSuite;
+    private TestSuiteResult currentTestSuite;
     private TestCaseResult currentTestCase;
     private StringBuilder contents;
     private List<JUnitXMLReaderListener> listeners = new ArrayList<JUnitXMLReaderListener>();
@@ -164,7 +164,7 @@ public class JUnitXMLReader extends DefaultHandler {
         return Collections.unmodifiableList(results);
     }
 
-    private void startTestSuite(TestSuite suite) {
+    private void startTestSuite(TestSuiteResult suite) {
         if (!results.isEmpty()) {
             currentTestSuite.addChild(suite);
         } else {
@@ -180,7 +180,7 @@ public class JUnitXMLReader extends DefaultHandler {
 
     private void endTestSuite() {
         if (currentTestSuite != null) {
-            currentTestSuite = (TestSuite) currentTestSuite.getParent();
+            currentTestSuite = (TestSuiteResult) currentTestSuite.getParent();
         }
 
         for (JUnitXMLReaderListener listener: listeners) {
@@ -235,8 +235,8 @@ public class JUnitXMLReader extends DefaultHandler {
         }
     }
 
-    private TestSuite createTestSuite(Attributes attributes) {
-        TestSuite suite = new TestSuite(attributes.getValue("name")); //$NON-NLS-1$
+    private TestSuiteResult createTestSuite(Attributes attributes) {
+        TestSuiteResult suite = new TestSuiteResult(attributes.getValue("name")); //$NON-NLS-1$
         if (attributes.getIndex("file") != -1) { //$NON-NLS-1$
             suite.setFile(attributes.getValue("file")); //$NON-NLS-1$
         }

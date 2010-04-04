@@ -20,7 +20,7 @@ import com.piece_framework.makegood.core.launch.IMakeGoodEventListener;
 import com.piece_framework.makegood.core.runner.Problem;
 import com.piece_framework.makegood.core.runner.RunProgress;
 import com.piece_framework.makegood.core.runner.TestCaseResult;
-import com.piece_framework.makegood.core.runner.TestSuite;
+import com.piece_framework.makegood.core.runner.TestSuiteResult;
 import com.piece_framework.makegood.core.runner.junitxmlreader.JUnitXMLReaderListener;
 import com.piece_framework.makegood.core.runner.junitxmlreader.JUnitXMLReader;
 import com.piece_framework.makegood.ui.Activator;
@@ -163,7 +163,7 @@ public class ResultViewController implements IMakeGoodEventListener, JUnitXMLRea
     }
 
     @Override
-    public void startTestSuite(TestSuite testSuite) {
+    public void startTestSuite(TestSuiteResult testSuite) {
         if (!progress.isInitialized()) {
             progress.initialize(testSuite.getTestCount());
         }
