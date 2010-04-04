@@ -6,9 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -27,15 +25,14 @@ import com.piece_framework.makegood.core.runner.TestSuite;
 
 public class JUnitXMLReader extends DefaultHandler {
     private File log;
-    private boolean wasEnd;
+    private boolean finished;
     private List<TestResult> results = new ArrayList<TestResult>();
-    private TestSuite currentSuite;
-    private TestCase currentCase;
+    private TestSuite currentTestSuite;
+    private TestCase currentTestCase;
     private StringBuilder contents;
     private List<JUnitXMLReaderListener> listeners = new ArrayList<JUnitXMLReaderListener>();
-    private boolean stop = false;
+    private boolean stopped = false;
     private SynchronizedFileInputStream stream;
-    private boolean createdTestCase;
 
     public JUnitXMLReader(File log) {
         this.log = log;
@@ -44,7 +41,7 @@ public class JUnitXMLReader extends DefaultHandler {
     public void start() throws ParserConfigurationException,
                                SAXException,
                                IOException {
-        currentSuite = null;
+        currentTestSuite = null;
         endTestCase();
         results = new ArrayList<TestResult>();
 
@@ -59,8 +56,8 @@ public class JUnitXMLReader extends DefaultHandler {
     }
 
     public void stop() {
-        stop = true;
-        wasEnd = true;
+        stopped = true;
+        finished = true;
     }
 
     public void addParserListener(JUnitXMLReaderListener listener) {
@@ -71,9 +68,20 @@ public class JUnitXMLReader extends DefaultHandler {
         listeners.remove(listener);
     }
 
-    public boolean wasEnd() {
-        return wasEnd &&
-               (stream != null || stream.isClose);
+    public boolean isActive() {
+        if (stream == null) {
+            return false;
+        }
+
+        if (stream.closed) {
+            return false;
+        }
+
+        if (finished) {
+            return false;
+        }
+
+        return true;
     }
 
     @Override
@@ -86,18 +94,20 @@ public class JUnitXMLReader extends DefaultHandler {
                              String qualifiedName,
                              Attributes attributes
                              ) throws SAXException {
-        Map<String, String> map = convertAttributesToMap(attributes);
-
-        if (qualifiedName.equalsIgnoreCase("testsuite")) {
-            startTestSuite(map);
-        } else if (qualifiedName.equalsIgnoreCase("testcase")) {
-            startTestCase(map);
-        } else if (qualifiedName.equalsIgnoreCase("failure")) {
-            startProblem(map, ProblemType.Failure);
-            currentSuite.increaseFailureCount();
-        } else if (qualifiedName.equalsIgnoreCase("error")) {
-            startProblem(map, ProblemType.Error);
-            currentSuite.increaseErrorCount();
+        if (qualifiedName.equalsIgnoreCase("testsuite")) { //$NON-NLS-1$
+            startTestSuite(createTestSuite(attributes));
+        } else if (qualifiedName.equalsIgnoreCase("testcase")) { //$NON-NLS-1$
+            startTestCase(createTestCase(attributes));
+        } else if (qualifiedName.equalsIgnoreCase("failure")) { //$NON-NLS-1$
+            Problem problem = new Problem(ProblemType.Failure);
+            problem.setTypeClass(attributes.getValue("type")); //$NON-NLS-1$
+            startProblem(problem);
+            currentTestSuite.increaseFailureCount();
+        } else if (qualifiedName.equalsIgnoreCase("error")) { //$NON-NLS-1$
+            Problem problem = new Problem(ProblemType.Error);
+            problem.setTypeClass(attributes.getValue("type")); //$NON-NLS-1$
+            startProblem(problem);
+            currentTestSuite.increaseErrorCount();
         }
     }
 
@@ -116,35 +126,37 @@ public class JUnitXMLReader extends DefaultHandler {
                            String localName,
                            String qualifiedName
                            ) throws SAXException {
-        if (qualifiedName.equalsIgnoreCase("testsuite")) {
+        if (qualifiedName.equalsIgnoreCase("testsuite")) { //$NON-NLS-1$
             endTestSuite();
-        } else if (qualifiedName.equalsIgnoreCase("testcase")) {
+        } else if (qualifiedName.equalsIgnoreCase("testcase")) { //$NON-NLS-1$
             endTestCase();
-        } else if (qualifiedName.equalsIgnoreCase("failure")) {
+        } else if (qualifiedName.equalsIgnoreCase("failure")) { //$NON-NLS-1$
             endProblem();
-        } else if (qualifiedName.equalsIgnoreCase("error")) {
+        } else if (qualifiedName.equalsIgnoreCase("error")) { //$NON-NLS-1$
             endProblem();
         }
     }
 
     @Override
     public void endDocument() throws SAXException {
-        wasEnd = true;
+        finished = true;
     }
 
     @Override
     public void error(SAXParseException e) throws SAXException {
-        if (stop) {
+        if (stopped) {
             return;
         }
+
         super.error(e);
     }
 
     @Override
     public void fatalError(SAXParseException e) throws SAXException {
-        if (stop) {
+        if (stopped) {
             return;
         }
+
         super.fatalError(e);
     }
 
@@ -152,27 +164,14 @@ public class JUnitXMLReader extends DefaultHandler {
         return Collections.unmodifiableList(results);
     }
 
-    private Map<String, String> convertAttributesToMap(Attributes attributes) {
-        Map<String, String> map = new HashMap<String, String>();
-        for (int i = 0; i < attributes.getLength(); ++i) {
-            map.put(attributes.getQName(i),
-                    attributes.getValue(i)
-                    );
-        }
-        return map;
-    }
-
-    private void startTestSuite(Map<String, String> map) {
-        TestSuite suite = new TestSuite(map);
-
-        boolean isTop = currentSuite == null;
-        if (!isTop) {
-            currentSuite.addChild(suite);
+    private void startTestSuite(TestSuite suite) {
+        if (!results.isEmpty()) {
+            currentTestSuite.addChild(suite);
         } else {
             results.add(suite);
         }
 
-        currentSuite = suite;
+        currentTestSuite = suite;
 
         for (JUnitXMLReaderListener listener: listeners) {
             listener.startTestSuite(suite);
@@ -180,8 +179,8 @@ public class JUnitXMLReader extends DefaultHandler {
     }
 
     private void endTestSuite() {
-        if (currentSuite != null) {
-            currentSuite = (TestSuite) currentSuite.getParent();
+        if (currentTestSuite != null) {
+            currentTestSuite = (TestSuite) currentTestSuite.getParent();
         }
 
         for (JUnitXMLReaderListener listener: listeners) {
@@ -189,10 +188,9 @@ public class JUnitXMLReader extends DefaultHandler {
         }
     }
 
-    private void startTestCase(Map<String, String> map) {
-        TestCase testCase = new TestCase(map);
-        currentSuite.addChild(testCase);
-        currentCase = testCase;
+    private void startTestCase(TestCase testCase) {
+        currentTestSuite.addChild(testCase);
+        currentTestCase = testCase;
 
         for (JUnitXMLReaderListener listener: listeners) {
             listener.startTestCase(testCase);
@@ -200,29 +198,23 @@ public class JUnitXMLReader extends DefaultHandler {
     }
 
     private void endTestCase() {
-        currentCase = null;
+        currentTestCase = null;
 
         for (JUnitXMLReaderListener listener: listeners) {
             listener.endTestCase();
         }
     }
 
-    private void startProblem(Map<String, String> map,
-                              ProblemType problemType
-                              ) {
-        Problem problem = new Problem(problemType);
-        problem.setTypeClass(map.get("type"));
-
-        if (currentCase == null) {
-            Map<String, String> mapForTestCase = new HashMap<String, String>();
-            mapForTestCase.put("name",
-                               "(" + problemType.toString().toLowerCase() + ")");
-            mapForTestCase.put("class", currentSuite.getName());
-            mapForTestCase.put("file", currentSuite.getFile());
-            startTestCase(mapForTestCase);
-            createdTestCase = true;
+    private void startProblem(Problem problem) {
+        if (currentTestCase == null) {
+            TestCase testCase =
+                new TestCase("(" + problem.getType().toString().toLowerCase() + ")");
+            testCase.setClassName(currentTestSuite.getName());
+            testCase.setFile(currentTestSuite.getFile());
+            testCase.setIsArtificial(true);
+            startTestCase(testCase);
         }
-        currentCase.setProblem(problem);
+        currentTestCase.setProblem(problem);
 
         contents = new StringBuilder();
 
@@ -232,23 +224,55 @@ public class JUnitXMLReader extends DefaultHandler {
     }
 
     private void endProblem() {
-        currentCase.getProblem().setContent(contents.toString());
+        currentTestCase.getProblem().setContent(contents.toString());
 
         for (JUnitXMLReaderListener listener: listeners) {
             listener.endProblem();
         }
 
-        if (createdTestCase) {
+        if (currentTestCase.isArtificial()) {
             endTestCase();
-            createdTestCase = false;
         }
+    }
+
+    private TestSuite createTestSuite(Attributes attributes) {
+        TestSuite suite = new TestSuite(attributes.getValue("name")); //$NON-NLS-1$
+        if (attributes.getIndex("file") != -1) { //$NON-NLS-1$
+            suite.setFile(attributes.getValue("file")); //$NON-NLS-1$
+        }
+        if (attributes.getIndex("fullPackage") != -1) { //$NON-NLS-1$
+            suite.setFullPackageName(attributes.getValue("fullPackage")); //$NON-NLS-1$
+        }
+        if (attributes.getIndex("package") != -1) { //$NON-NLS-1$
+            suite.setPackageName(attributes.getValue("package")); //$NON-NLS-1$
+        }
+        if (attributes.getIndex("tests") != -1) { //$NON-NLS-1$
+            suite.setTestCount(Integer.parseInt(attributes.getValue("tests"))); //$NON-NLS-1$
+        }
+
+        return suite;
+    }
+
+    private TestCase createTestCase(Attributes attributes) {
+        TestCase testCase = new TestCase(attributes.getValue("name")); //$NON-NLS-1$
+        if (attributes.getIndex("file") != -1) { //$NON-NLS-1$
+            testCase.setFile(attributes.getValue("file")); //$NON-NLS-1$
+        }
+        if (attributes.getIndex("class") != -1) { //$NON-NLS-1$
+            testCase.setClassName(attributes.getValue("class")); //$NON-NLS-1$
+        }
+        if (attributes.getIndex("line") != -1) { //$NON-NLS-1$
+            testCase.setLine(Integer.parseInt(attributes.getValue("line"))); //$NON-NLS-1$
+        }
+
+        return testCase;
     }
 
     private class SynchronizedFileInputStream extends FileInputStream{
         private static final int READ_NO_PARAM = 1;
         private static final int READ_ARRAY = 2;
         private static final int READ_OFFSET = 3;
-        boolean isClose = false;
+        boolean closed = false;
 
         public SynchronizedFileInputStream(File file) throws FileNotFoundException {
             super(file);
@@ -274,7 +298,7 @@ public class JUnitXMLReader extends DefaultHandler {
 
         @Override
         public void close() throws IOException {
-            isClose = true;
+            closed = true;
             super.close();
         }
 
@@ -296,7 +320,7 @@ public class JUnitXMLReader extends DefaultHandler {
                     break;
                 }
 
-                if (stop) {
+                if (stopped) {
                     break;
                 }
 

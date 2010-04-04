@@ -68,7 +68,7 @@ public class JUnitXMLReaderTest {
 
         List<TestResult> results = parser.getTestResults();
 
-        assertTrue(parser.wasEnd());
+        assertTrue(!parser.isActive());
         assertEquals(1, results.size());
 
         TestSuite firstSuite = assertTestSuite(results.get(0),
@@ -494,7 +494,7 @@ SRC_DIR + "/Stagehand/TestRunner.php:186\n" +
         parser.stop();
         Thread.sleep(2000);
 
-        assertTrue(parser.wasEnd());
+        assertTrue(!parser.isActive());
 
         testRunner.waitForEnd();
     }
@@ -580,7 +580,7 @@ SRC_DIR + "/Stagehand/TestRunner.php:186\n" +
 
         TestCase testCase = (TestCase) result;
         assertEquals(expectedName, testCase.getName());
-        assertEquals(expectedTargetClass, testCase.getTargetClass());
+        assertEquals(expectedTargetClass, testCase.getClassName());
         assertEquals(expectedFile, testCase.getFile());
         assertEquals(expectedLine, testCase.getLine());
         return testCase;

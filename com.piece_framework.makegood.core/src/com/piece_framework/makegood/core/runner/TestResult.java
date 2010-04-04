@@ -39,4 +39,8 @@ public abstract class TestResult {
     public void setParent(TestResult parent) {
         this.parent = parent;
     }
+
+    public void setFile(String file) {
+        this.file = file;
+    }
 }

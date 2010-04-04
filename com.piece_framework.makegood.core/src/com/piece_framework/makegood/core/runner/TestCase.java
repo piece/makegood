@@ -3,29 +3,20 @@ package com.piece_framework.makegood.core.runner;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 public class TestCase extends TestResult {
-    private String targetClass;
+    private String className;
     private int line;
     private Problem problem;
+    private boolean isArtificial = false;
 
-    public TestCase(Map<String, String> attributes) {
-        this.name = attributes.get("name"); //$NON-NLS-1$
-        if (attributes.containsKey("class")) { //$NON-NLS-1$
-            this.targetClass = attributes.get("class"); //$NON-NLS-1$
-        }
-        if (attributes.containsKey("file")) { //$NON-NLS-1$
-            this.file = attributes.get("file"); //$NON-NLS-1$
-        }
-        if (attributes.containsKey("line")) { //$NON-NLS-1$
-            this.line = Integer.parseInt(attributes.get("line")); //$NON-NLS-1$
-        }
+    public TestCase(String name) {
+        this.name = name;
         setProblem(new Problem(ProblemType.Pass));
     }
 
-    public String getTargetClass() {
-        return targetClass;
+    public String getClassName() {
+        return className;
     }
 
     public int getLine() {
@@ -69,5 +60,21 @@ public class TestCase extends TestResult {
 
     public void setProblem(Problem problem) {
         this.problem = problem;
+    }
+
+    public void setClassName(String cassName) {
+        this.className = cassName;
+    }
+
+    public void setLine(int line) {
+        this.line = line;
+    }
+
+    public boolean isArtificial() {
+        return isArtificial;
+    }
+
+    public void setIsArtificial(boolean isArtificial) {
+        this.isArtificial = isArtificial;
     }
 }

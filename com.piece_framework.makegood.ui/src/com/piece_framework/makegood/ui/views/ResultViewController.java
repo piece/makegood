@@ -116,7 +116,7 @@ public class ResultViewController implements IMakeGoodEventListener, JUnitXMLRea
         }
 
         parser.stop();
-        for (int i = 0; i < 10 && !parser.wasEnd(); ++i) {
+        for (int i = 0; i < 10 && parser.isActive(); ++i) {
             try {
                 Thread.sleep(200);
             } catch (InterruptedException e) {}

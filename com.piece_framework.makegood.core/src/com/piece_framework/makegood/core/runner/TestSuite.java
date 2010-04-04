@@ -3,36 +3,22 @@ package com.piece_framework.makegood.core.runner;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 public class TestSuite extends TestResult {
-    private String fullPackage;
+    private String fullPackageName;
     private String packageName;
     private int testCount;
     private int errorCount;
     private int failureCount;
     private List<TestResult> children;
 
-    public TestSuite(Map<String, String> attributes) {
-        this.name = attributes.get("name"); //$NON-NLS-1$
-        if (attributes.containsKey("file")) { //$NON-NLS-1$
-            this.file = attributes.get("file"); //$NON-NLS-1$
-        }
-        if (attributes.containsKey("fullPackage")) { //$NON-NLS-1$
-            this.fullPackage = attributes.get("fullPackage"); //$NON-NLS-1$
-        }
-        if (attributes.containsKey("package")) { //$NON-NLS-1$
-            this.packageName = attributes.get("package"); //$NON-NLS-1$
-        }
-        if (attributes.containsKey("tests")) { //$NON-NLS-1$
-            this.testCount = Integer.parseInt(attributes.get("tests")); //$NON-NLS-1$
-        }
-
+    public TestSuite(String name) {
+        this.name = name;
         children = new ArrayList<TestResult>();
     }
 
-    public String getFullPackage() {
-        return fullPackage;
+    public String getFullPackageName() {
+        return fullPackageName;
     }
 
     public String getPackageName() {
@@ -58,6 +44,7 @@ public class TestSuite extends TestResult {
                 return true;
             }
         }
+
         return errorCount > 0;
     }
 
@@ -68,6 +55,7 @@ public class TestSuite extends TestResult {
                 return true;
             }
         }
+
         return failureCount > 0;
     }
 
@@ -94,20 +82,21 @@ public class TestSuite extends TestResult {
                 return result;
             }
         }
+
         return null;
     }
 
     public void increaseFailureCount() {
         ++failureCount;
         if (getParent() != null) {
-            ((TestSuite) getParent()).increaseFailureCount();
+            ((TestSuite)getParent()).increaseFailureCount();
         }
     }
 
     public void increaseErrorCount() {
         ++errorCount;
         if (getParent() != null) {
-            ((TestSuite) getParent()).increaseErrorCount();
+            ((TestSuite)getParent()).increaseErrorCount();
         }
     }
 
@@ -117,5 +106,17 @@ public class TestSuite extends TestResult {
         if (getParent() != null) {
             getParent().setTime(time);
         }
+    }
+
+    public void setFullPackageName(String fullPackage) {
+        this.fullPackageName = fullPackage;
+    }
+
+    public void setPackageName(String packageName) {
+        this.packageName = packageName;
+    }
+
+    public void setTestCount(int testCount) {
+        this.testCount = testCount;
     }
 }
