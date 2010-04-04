@@ -2,11 +2,11 @@ package com.piece_framework.makegood.core.runner;
 
 import java.util.List;
 
-public abstract class TestResult {
+public abstract class Result {
     protected String name;
     protected long time;
     protected String file;
-    private TestResult parent;
+    private Result parent;
 
     public String getName() {
         return name;
@@ -22,21 +22,21 @@ public abstract class TestResult {
 
     public abstract void setTime(long time);
 
-    public abstract List<TestResult> getChildren();
+    public abstract List<Result> getChildren();
 
-    public abstract TestResult getChild(String name);
+    public abstract Result getChild(String name);
 
     public abstract boolean hasError();
 
     public abstract boolean hasFailure();
 
-    public abstract void addChild(TestResult result);
+    public abstract void addChild(Result result);
 
-    public TestResult getParent() {
+    public Result getParent() {
         return parent;
     }
 
-    public void setParent(TestResult parent) {
+    public void setParent(Result parent) {
         this.parent = parent;
     }
 

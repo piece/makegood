@@ -20,13 +20,13 @@ import org.xml.sax.helpers.DefaultHandler;
 import com.piece_framework.makegood.core.runner.Problem;
 import com.piece_framework.makegood.core.runner.ProblemType;
 import com.piece_framework.makegood.core.runner.TestCase;
-import com.piece_framework.makegood.core.runner.TestResult;
+import com.piece_framework.makegood.core.runner.Result;
 import com.piece_framework.makegood.core.runner.TestSuite;
 
 public class JUnitXMLReader extends DefaultHandler {
     private File log;
     private boolean finished;
-    private List<TestResult> results = new ArrayList<TestResult>();
+    private List<Result> results = new ArrayList<Result>();
     private TestSuite currentTestSuite;
     private TestCase currentTestCase;
     private StringBuilder contents;
@@ -43,7 +43,7 @@ public class JUnitXMLReader extends DefaultHandler {
                                IOException {
         currentTestSuite = null;
         endTestCase();
-        results = new ArrayList<TestResult>();
+        results = new ArrayList<Result>();
 
         if (!log.exists()) {
             log.createNewFile();
@@ -160,7 +160,7 @@ public class JUnitXMLReader extends DefaultHandler {
         super.fatalError(e);
     }
 
-    public List<TestResult> getTestResults() {
+    public List<Result> getTestResults() {
         return Collections.unmodifiableList(results);
     }
 

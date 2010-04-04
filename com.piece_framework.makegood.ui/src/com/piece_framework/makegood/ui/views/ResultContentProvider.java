@@ -5,14 +5,14 @@ import java.util.Collection;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
-import com.piece_framework.makegood.core.runner.TestResult;
+import com.piece_framework.makegood.core.runner.Result;
 import com.piece_framework.makegood.core.runner.TestSuite;
 
 public class ResultContentProvider implements ITreeContentProvider {
     @Override
     public Object[] getChildren(Object parentElement) {
-        if (parentElement instanceof TestResult) {
-            TestResult testResult = (TestResult) parentElement;
+        if (parentElement instanceof Result) {
+            Result testResult = (Result) parentElement;
             return testResult.getChildren().toArray();
         } else if (parentElement instanceof Collection) {
             Collection collection = (Collection) parentElement;

@@ -4,17 +4,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class TestSuite extends TestResult {
+public class TestSuite extends Result {
     private String fullPackageName;
     private String packageName;
     private int testCount;
     private int errorCount;
     private int failureCount;
-    private List<TestResult> children;
+    private List<Result> children;
 
     public TestSuite(String name) {
         this.name = name;
-        children = new ArrayList<TestResult>();
+        children = new ArrayList<Result>();
     }
 
     public String getFullPackageName() {
@@ -39,7 +39,7 @@ public class TestSuite extends TestResult {
 
     @Override
     public boolean hasError() {
-        for (TestResult result : children) {
+        for (Result result : children) {
             if (result.hasError()) {
                 return true;
             }
@@ -50,7 +50,7 @@ public class TestSuite extends TestResult {
 
     @Override
     public boolean hasFailure() {
-        for (TestResult result : children) {
+        for (Result result : children) {
             if (result.hasFailure()) {
                 return true;
             }
@@ -60,7 +60,7 @@ public class TestSuite extends TestResult {
     }
 
     @Override
-    public void addChild(TestResult result) {
+    public void addChild(Result result) {
         if (result == null) {
             return;
         }
@@ -71,13 +71,13 @@ public class TestSuite extends TestResult {
     }
 
     @Override
-    public List<TestResult> getChildren() {
+    public List<Result> getChildren() {
         return Collections.unmodifiableList(children);
     }
 
     @Override
-    public TestResult getChild(String name) {
-        for (TestResult result: children) {
+    public Result getChild(String name) {
+        for (Result result: children) {
             if (result.getName().equals(name)) {
                 return result;
             }

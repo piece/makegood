@@ -39,7 +39,7 @@ import java.util.regex.Pattern;
 import com.piece_framework.makegood.core.runner.ProblemType;
 import com.piece_framework.makegood.core.runner.RunProgress;
 import com.piece_framework.makegood.core.runner.TestCase;
-import com.piece_framework.makegood.core.runner.TestResult;
+import com.piece_framework.makegood.core.runner.Result;
 import com.piece_framework.makegood.core.runner.TestSuite;
 import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.Messages;
@@ -69,8 +69,8 @@ public class ResultView extends ViewPart {
     private ViewerFilter failureFilter = new ViewerFilter() {
         @Override
         public boolean select(Viewer viewer, Object parentElement, Object element) {
-            if (!(element instanceof TestResult)) return false;
-            TestResult result = (TestResult) element;
+            if (!(element instanceof Result)) return false;
+            Result result = (Result) element;
             return result.hasFailure() || result.hasError();
         }
     };
@@ -292,14 +292,14 @@ public class ResultView extends ViewPart {
 
     public void nextResult() {
         IStructuredSelection selection = (IStructuredSelection) resultTreeViewer.getSelection();
-        TestResult selected = (TestResult) selection.getFirstElement();
+        Result selected = (Result) selection.getFirstElement();
 
-        java.util.List<TestResult> results = (java.util.List<TestResult>) resultTreeViewer.getInput();
+        java.util.List<Result> results = (java.util.List<Result>) resultTreeViewer.getInput();
         if (results == null || results.size() == 0) return;
         if (selected == null) selected = results.get(0);
 
         FailureFilter search = new FailureFilter(results, selected);
-        TestResult next = search.getNextFailure();
+        Result next = search.getNextFailure();
         if (next != null) {
             resultTreeViewer.expandAll();
             resultTreeViewer.setSelection(new StructuredSelection(next), true);
@@ -308,14 +308,14 @@ public class ResultView extends ViewPart {
 
     public void previousResult() {
         IStructuredSelection selection = (IStructuredSelection) resultTreeViewer.getSelection();
-        TestResult selected = (TestResult) selection.getFirstElement();
+        Result selected = (Result) selection.getFirstElement();
 
-        java.util.List<TestResult> results = (java.util.List<TestResult>) resultTreeViewer.getInput();
+        java.util.List<Result> results = (java.util.List<Result>) resultTreeViewer.getInput();
         if (results == null || results.size() == 0) return;
         if (selected == null) selected = results.get(0);
 
         FailureFilter search = new FailureFilter(results, selected);
-        TestResult previous = search.getPreviousFailure();
+        Result previous = search.getPreviousFailure();
         if (previous != null) {
             resultTreeViewer.expandAll();
             resultTreeViewer.setSelection(new StructuredSelection(previous), true);
@@ -330,7 +330,7 @@ public class ResultView extends ViewPart {
         }
     }
 
-    public void setTreeInput(java.util.List<TestResult> suites) {
+    public void setTreeInput(java.util.List<Result> suites) {
         resultTreeViewer.setInput(suites);
     }
 
@@ -338,7 +338,7 @@ public class ResultView extends ViewPart {
         return resultTreeViewer.getInput() != null;
     }
 
-    public void refresh(RunProgress progress, TestResult result) {
+    public void refresh(RunProgress progress, Result result) {
         rate.setText(String.format("%3d", progress.getRate()) +     //$NON-NLS-1$
                      " " +      //$NON-NLS-1$
                      Messages.TestResultView_percent +
@@ -552,12 +552,12 @@ public class ResultView extends ViewPart {
     }
 
     private class FailureFilter {
-        private List<TestResult> results;
-        private TestResult selected;
-        private TestResult findSelected;
+        private List<Result> results;
+        private Result selected;
+        private Result findSelected;
         private TestCase lastFailure;
 
-        public FailureFilter(List<TestResult> results, TestResult selected) {
+        public FailureFilter(List<Result> results, Result selected) {
             this.results = results;
             this.selected = selected;
         }
@@ -573,8 +573,8 @@ public class ResultView extends ViewPart {
             return getPreviousFailure(results);
         }
 
-        private TestCase getNextFailure(List<TestResult> targets) {
-            for (TestResult result: targets) {
+        private TestCase getNextFailure(List<Result> targets) {
+            for (Result result: targets) {
                 if (findSelected == null) {
                     if (result.getName().equals(selected.getName())) {
                         findSelected = result;
@@ -597,8 +597,8 @@ public class ResultView extends ViewPart {
             return null;
         }
 
-        private TestCase getPreviousFailure(List<TestResult> targets) {
-            for (TestResult result: targets) {
+        private TestCase getPreviousFailure(List<Result> targets) {
+            for (Result result: targets) {
                 if (findSelected == null) {
                     if (result.getName().equals(selected.getName())) {
                         return lastFailure;

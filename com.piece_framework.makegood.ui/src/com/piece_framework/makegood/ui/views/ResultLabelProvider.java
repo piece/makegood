@@ -5,7 +5,7 @@ import java.text.NumberFormat;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 
-import com.piece_framework.makegood.core.runner.TestResult;
+import com.piece_framework.makegood.core.runner.Result;
 import com.piece_framework.makegood.ui.Activator;
 
 public class ResultLabelProvider extends LabelProvider {
@@ -23,8 +23,8 @@ public class ResultLabelProvider extends LabelProvider {
 
     @Override
     public String getText(Object element) {
-        if (element instanceof TestResult) {
-            TestResult testResult = (TestResult) element;
+        if (element instanceof Result) {
+            Result testResult = (Result) element;
 
             return testResult.getName() + " (" +  //$NON-NLS-1$
                    TimeFormatter.format(testResult.getTime(), "s", "ms") +  //$NON-NLS-1$ //$NON-NLS-2$
@@ -35,11 +35,11 @@ public class ResultLabelProvider extends LabelProvider {
 
     @Override
     public Image getImage(Object element) {
-        if (!(element instanceof TestResult)) {
+        if (!(element instanceof Result)) {
             return super.getImage(element);
         }
 
-        TestResult result = (TestResult) element;
+        Result result = (Result) element;
         Image icon = null;
         if (result.hasFailure()) {
             icon = failureIcon;

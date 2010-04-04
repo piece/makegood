@@ -21,7 +21,7 @@ import org.xml.sax.SAXParseException;
 import com.piece_framework.makegood.core.runner.Problem;
 import com.piece_framework.makegood.core.runner.ProblemType;
 import com.piece_framework.makegood.core.runner.TestCase;
-import com.piece_framework.makegood.core.runner.TestResult;
+import com.piece_framework.makegood.core.runner.Result;
 import com.piece_framework.makegood.core.runner.TestSuite;
 import com.piece_framework.makegood.core.runner.junitxmlreader.JUnitXMLReader;
 
@@ -66,7 +66,7 @@ public class JUnitXMLReaderTest {
         parser.stop();
         Thread.sleep(500);
 
-        List<TestResult> results = parser.getTestResults();
+        List<Result> results = parser.getTestResults();
 
         assertTrue(!parser.isActive());
         assertEquals(1, results.size());
@@ -550,7 +550,7 @@ SRC_DIR + "/Stagehand/TestRunner.php:186\n" +
         parserThread.start();
     }
 
-    private TestSuite assertTestSuite(TestResult result,
+    private TestSuite assertTestSuite(Result result,
                                       String expectedName,
                                       int expectedTestCount,
                                       int expectedFailureCount,
@@ -570,7 +570,7 @@ SRC_DIR + "/Stagehand/TestRunner.php:186\n" +
         return suite;
     }
 
-    private TestCase assertTestCase(TestResult result,
+    private TestCase assertTestCase(Result result,
                                     String expectedName,
                                     String expectedTargetClass,
                                     String expectedFile,
@@ -586,7 +586,7 @@ SRC_DIR + "/Stagehand/TestRunner.php:186\n" +
         return testCase;
     }
 
-    private Problem assertProblem(TestResult result,
+    private Problem assertProblem(Result result,
                                   ProblemType expectedProblemType,
                                   String expectedTypeClass,
                                   String expectedContent
@@ -600,7 +600,7 @@ SRC_DIR + "/Stagehand/TestRunner.php:186\n" +
         return problem;
     }
 
-    private TestCase[] assertTestCases(TestResult result,
+    private TestCase[] assertTestCases(Result result,
                                        String expectedTargetClass,
                                        String expectedFile,
                                        String[] expectedNames,
@@ -622,7 +622,7 @@ SRC_DIR + "/Stagehand/TestRunner.php:186\n" +
         return testCases.toArray(new TestCase[] {});
     }
 
-    private Problem[] assertProblems(TestResult result,
+    private Problem[] assertProblems(Result result,
                                      ProblemType[] expectedProblemTypes,
                                      String[] expectedTypeClasses,
                                      String[] expectedContents

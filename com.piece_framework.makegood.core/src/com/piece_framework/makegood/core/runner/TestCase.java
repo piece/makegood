@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class TestCase extends TestResult {
+public class TestCase extends Result {
     private String className;
     private int line;
     private Problem problem;
@@ -38,17 +38,17 @@ public class TestCase extends TestResult {
     }
 
     @Override
-    public void addChild(TestResult result) throws UnsupportedOperationException {
+    public void addChild(Result result) throws UnsupportedOperationException {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public List<TestResult> getChildren() {
-        return Collections.unmodifiableList(new ArrayList<TestResult>());
+    public List<Result> getChildren() {
+        return Collections.unmodifiableList(new ArrayList<Result>());
     }
 
     @Override
-    public TestResult getChild(String name) {
+    public Result getChild(String name) {
         return null;
     }
 
