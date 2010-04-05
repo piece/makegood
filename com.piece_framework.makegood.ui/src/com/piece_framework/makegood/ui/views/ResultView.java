@@ -360,8 +360,8 @@ public class ResultView extends ViewPart {
         failures.setCount(progress.getFailureCount());
         errors.setCount(progress.getErrorCount());
 
-        if (progress.hasFailures()) progressBar.raisedError();
-        progressBar.worked(progress.getRate());
+        if (progress.hasFailures()) progressBar.red();
+        progressBar.update(progress.getRate());
 
         if (result != null) {
             resultTreeViewer.expandAll();
@@ -434,7 +434,7 @@ public class ResultView extends ViewPart {
             ControlAdapter listener = new ControlAdapter() {
                 @Override
                 public void controlResized(ControlEvent e) {
-                    worked(rate);
+                    update(rate);
                 }
             };
             bar.addControlListener(listener);
@@ -443,7 +443,7 @@ public class ResultView extends ViewPart {
             reset();
         }
 
-        private void worked(int rate) {
+        private void update(int rate) {
             int maxWidth = getSize().x;
 
             int width = bar.getSize().x;
@@ -466,12 +466,12 @@ public class ResultView extends ViewPart {
             this.rate = rate;
         }
 
-        private void raisedError() {
+        private void red() {
             bar.setBackground(new Color(getDisplay(), RED));
         }
 
         private void reset() {
-            worked(0);
+            update(0);
 
             bar.setBackground(new Color(getDisplay(), GREEN));
         }
