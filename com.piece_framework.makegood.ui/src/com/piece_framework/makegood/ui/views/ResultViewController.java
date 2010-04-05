@@ -185,7 +185,7 @@ public class ResultViewController implements IMakeGoodEventListener, JUnitXMLRea
 
         progress.endTestCase();
 
-        currentTestCase.setTime(progress.getTestCaseTime());
+        currentTestCase.setTime(progress.getProcessTimeForTestCase());
 
         Job job = new UIJob("MakeGood Refresh Result View") { //$NON-NLS-1$
             @Override

@@ -4,7 +4,7 @@ public class RunProgress {
     private boolean isInitialized;
     private long processTime;
     private long startTimeForTestCase;
-    private long testCaseTime;
+    private long processTimeForTestCase;
     private TestSuiteResult suite;
 
     public void initialize(TestSuiteResult suite) {
@@ -66,11 +66,11 @@ public class RunProgress {
     }
 
     public void endTestCase() {
-        testCaseTime = System.nanoTime() - startTimeForTestCase;
-        processTime += testCaseTime;
+        processTimeForTestCase = System.nanoTime() - startTimeForTestCase;
+        processTime += processTimeForTestCase;
     }
 
-    public long getTestCaseTime() {
-        return testCaseTime;
+    public long getProcessTimeForTestCase() {
+        return processTimeForTestCase;
     }
 }
