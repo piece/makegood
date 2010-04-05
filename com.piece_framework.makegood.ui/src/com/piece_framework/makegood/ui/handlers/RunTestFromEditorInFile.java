@@ -1,10 +1,15 @@
 package com.piece_framework.makegood.ui.handlers;
 
-import com.piece_framework.makegood.ui.launch.MakeGoodLaunchShortcut;
+import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.ui.handlers.HandlerUtil;
+
+import com.piece_framework.makegood.ui.launch.TestRunner;
 
 public class RunTestFromEditorInFile extends RunTestFromEditor {
     @Override
-    protected int getRunLevel() {
-        return MakeGoodLaunchShortcut.RUN_TESTS_ON_FILE;
+    public Object execute(ExecutionEvent event) throws ExecutionException {
+        TestRunner.runTestsInFile(HandlerUtil.getActiveEditor(event));
+        return null;
     }
 }

@@ -1,10 +1,16 @@
 package com.piece_framework.makegood.core;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ProjectScope;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.osgi.service.prefs.BackingStoreException;
@@ -12,6 +18,7 @@ import org.osgi.service.prefs.BackingStoreException;
 public class MakeGoodProperty {
     private static String PRELOAD_SCRIPT_KEY = "preload_script"; //$NON-NLS-1$
     private static String TESTING_FRAMEWORK_KEY = "testing_framework"; //$NON-NLS-1$
+    private static String TEST_FOLDERS = "test_folders"; //$NON-NLS-1$
     private IEclipsePreferences preferences;
     private IProject project;
 
@@ -66,6 +73,25 @@ public class MakeGoodProperty {
         } else {
             return TestingFramework.PHPUnit;
         }
+    }
+
+    public List<IFolder> getTestFolders() {
+        String[] testFolders = preferences.get(TEST_FOLDERS, "").split("\u0005");
+        List<IFolder> testFoldersList = new ArrayList<IFolder>();
+        IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+        for (String testFolder: testFolders) {
+            if (!testFolder.equals("")) testFoldersList.add(root.getFolder(new Path(testFolder)));
+        }
+        return Collections.unmodifiableList(testFoldersList);
+    }
+
+    public void setTestFolders(List<IFolder> testFolders) {
+        StringBuilder builder = new StringBuilder();
+        for (IFolder testFolder: testFolders) {
+            if (builder.length() > 0) builder.append("\u0005");
+            builder.append(testFolder.getFullPath().toString());
+        }
+        preferences.put(TEST_FOLDERS, builder.toString());
     }
 
     public void flush() {

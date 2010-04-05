@@ -5,7 +5,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IViewActionDelegate;
 import org.eclipse.ui.IViewPart;
 
-import com.piece_framework.makegood.ui.launch.MakeGoodLaunchShortcut;
+import com.piece_framework.makegood.ui.launch.TestRunner;
 
 public class RerunTestAction implements IViewActionDelegate {
     @Override
@@ -14,9 +14,8 @@ public class RerunTestAction implements IViewActionDelegate {
 
     @Override
     public void run(IAction action) {
-        MakeGoodLaunchShortcut shortcut = MakeGoodLaunchShortcut.getInstance();
-        if (shortcut.hasLastTest()) {
-            shortcut.rerunLastTest();
+        if (TestRunner.hasLastTest()) {
+            TestRunner.rerunLastTest();
         }
     }
 

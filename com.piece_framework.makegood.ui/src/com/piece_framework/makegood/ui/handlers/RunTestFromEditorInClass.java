@@ -1,11 +1,20 @@
 package com.piece_framework.makegood.ui.handlers;
 
+import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.dltk.core.IModelElement;
+import org.eclipse.ui.handlers.HandlerUtil;
 
 import com.piece_framework.makegood.ui.launch.EditorParser;
-import com.piece_framework.makegood.ui.launch.MakeGoodLaunchShortcut;
+import com.piece_framework.makegood.ui.launch.TestRunner;
 
 public class RunTestFromEditorInClass extends RunTestFromEditor {
+    @Override
+    public Object execute(ExecutionEvent event) throws ExecutionException {
+        TestRunner.runTestsInClass(HandlerUtil.getActiveEditor(event));
+        return null;
+    }
+
     @Override
     public boolean isEnabled() {
         if (!super.isEnabled()) {
@@ -21,10 +30,5 @@ public class RunTestFromEditorInClass extends RunTestFromEditor {
             return true;
         }
         return false;
-    }
-
-    @Override
-    protected int getRunLevel() {
-        return MakeGoodLaunchShortcut.RUN_TESTS_ON_CLASS;
     }
 }
