@@ -7,10 +7,8 @@ import java.util.List;
 public class TestSuiteResult extends Result {
     private String fullPackageName;
     private String packageName;
-    private int testCount;
-    private int errorCount;
-    private int failureCount;
     private List<Result> children;
+    private int allTestCount;
 
     public TestSuiteResult(String name) {
         this.name = name;
@@ -25,38 +23,34 @@ public class TestSuiteResult extends Result {
         return packageName;
     }
 
+    @Override
     public int getTestCount() {
-        return testCount;
+        int count = 0;
+        for (Result result : children) {
+            count += result.getTestCount();
+        }
+
+        return count;
     }
 
+    @Override
     public int getErrorCount() {
-        return errorCount;
+        int count = 0;
+        for (Result result : children) {
+            count += result.getErrorCount();
+        }
+
+        return count;
     }
 
+    @Override
     public int getFailureCount() {
-        return failureCount;
-    }
-
-    @Override
-    public boolean hasError() {
+        int count = 0;
         for (Result result : children) {
-            if (result.hasError()) {
-                return true;
-            }
+            count += result.getFailureCount();
         }
 
-        return errorCount > 0;
-    }
-
-    @Override
-    public boolean hasFailure() {
-        for (Result result : children) {
-            if (result.hasFailure()) {
-                return true;
-            }
-        }
-
-        return failureCount > 0;
+        return count;
     }
 
     @Override
@@ -86,20 +80,6 @@ public class TestSuiteResult extends Result {
         return null;
     }
 
-    public void increaseFailureCount() {
-        ++failureCount;
-        if (getParent() != null) {
-            ((TestSuiteResult)getParent()).increaseFailureCount();
-        }
-    }
-
-    public void increaseErrorCount() {
-        ++errorCount;
-        if (getParent() != null) {
-            ((TestSuiteResult)getParent()).increaseErrorCount();
-        }
-    }
-
     @Override
     public void setTime(long time) {
         this.time += time;
@@ -116,7 +96,15 @@ public class TestSuiteResult extends Result {
         this.packageName = packageName;
     }
 
-    public void setTestCount(int testCount) {
-        this.testCount = testCount;
+    public void setAllTestCount(int allTestCount) {
+        this.allTestCount = allTestCount;
+    }
+
+    public int getAllTestCount() {
+        return allTestCount;
+    }
+
+    public int getPassCount() {
+        return getTestCount() - (getFailureCount() + getErrorCount());
     }
 }

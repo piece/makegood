@@ -27,4 +27,9 @@ public class ErrorTestCaseResult extends TestCaseResult {
     public boolean hasError() {
         return true;
     }
+
+    @Override
+    public int getErrorCount() {
+        return 1;
+    }
 }

@@ -26,9 +26,13 @@ public abstract class Result {
 
     public abstract Result getChild(String name);
 
-    public abstract boolean hasError();
+    public boolean hasError() {
+        return getErrorCount() > 0;
+    }
 
-    public abstract boolean hasFailure();
+    public boolean hasFailure() {
+        return getFailureCount() > 0;
+    }
 
     public abstract void addChild(Result result);
 
@@ -43,4 +47,10 @@ public abstract class Result {
     public void setFile(String file) {
         this.file = file;
     }
+
+    public abstract int getTestCount();
+
+    public abstract int getErrorCount();
+
+    public abstract int getFailureCount();
 }

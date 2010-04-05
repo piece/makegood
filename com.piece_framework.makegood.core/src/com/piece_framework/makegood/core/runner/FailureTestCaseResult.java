@@ -27,4 +27,9 @@ public class FailureTestCaseResult extends TestCaseResult {
     public boolean hasFailure() {
         return true;
     }
+
+    @Override
+    public int getFailureCount() {
+        return 1;
+    }
 }

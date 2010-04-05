@@ -164,7 +164,7 @@ public class ResultViewController implements IMakeGoodEventListener, JUnitXMLRea
     @Override
     public void startTestSuite(TestSuiteResult testSuite) {
         if (!progress.isInitialized()) {
-            progress.initialize(testSuite.getTestCount());
+            progress.initialize(testSuite);
         }
     }
 
@@ -183,8 +183,6 @@ public class ResultViewController implements IMakeGoodEventListener, JUnitXMLRea
             return;
         }
 
-        progress.incrementEndTestCount();
-        progress.incrementResultCount(currentTestCase);
         progress.endTestCase();
 
         currentTestCase.setTime(progress.getTestCaseTime());

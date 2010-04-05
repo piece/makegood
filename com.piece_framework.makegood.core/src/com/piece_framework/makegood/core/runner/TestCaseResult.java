@@ -85,4 +85,19 @@ public class TestCaseResult extends Result {
     public String getFailureTrace() {
         return failureTrace;
     }
+
+    @Override
+    public int getTestCount() {
+        return 1;
+    }
+
+    @Override
+    public int getErrorCount() {
+        return 0;
+    }
+
+    @Override
+    public int getFailureCount() {
+        return 0;
+    }
 }

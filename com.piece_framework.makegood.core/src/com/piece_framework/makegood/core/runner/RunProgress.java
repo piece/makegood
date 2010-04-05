@@ -1,27 +1,16 @@
 package com.piece_framework.makegood.core.runner;
 
-
 public class RunProgress {
-    private int allTestCount;
-    private int endTestCount;
     private boolean initialized;
-    private int passCount;
-    private int failureCount;
-    private int errorCount;
     private long totalTime;
     private long startTimeForTestCase;
     private long testCaseTime;
+    private TestSuiteResult suite;
 
-    public void initialize(int allTestCount) {
-        this.allTestCount = allTestCount;
-        endTestCount = 0;
-        passCount = 0;
-        failureCount = 0;
-        errorCount = 0;
-
+    public void initialize(TestSuiteResult suite) {
+        this.suite = suite;
         startTimeForTestCase = System.nanoTime();
         totalTime = 0;
-
         initialized = true;
     }
 
@@ -29,27 +18,26 @@ public class RunProgress {
         return initialized;
     }
 
-    public void finalize() {
-    }
+    public void finalize() {}
 
     public int getAllTestCount() {
-        return allTestCount;
+        return suite.getAllTestCount();
     }
 
     public int getEndTestCount() {
-        return endTestCount;
+        return suite.getTestCount();
     }
 
     public int getPassCount() {
-        return passCount;
+        return suite.getPassCount();
     }
 
     public int getFailureCount() {
-        return failureCount;
+        return suite.getFailureCount();
     }
 
     public int getErrorCount() {
-        return errorCount;
+        return suite.getErrorCount();
     }
 
     public long getTotalTime() {
@@ -57,32 +45,20 @@ public class RunProgress {
     }
 
     public int getRate() {
-        if (allTestCount == 0) {
+        if (suite.getAllTestCount() == 0) {
             return 0;
         }
-        int rate = (int) (((double) endTestCount / (double) allTestCount) * 100d);
+
+        int rate = (int) (((double) suite.getTestCount() / (double) suite.getAllTestCount()) * 100d);
         return rate <= 100 ? rate : 100;
     }
 
     public long getAverage() {
-        if (endTestCount == 0) {
+        if (suite.getTestCount() == 0) {
             return 0;
         }
-        return getTotalTime() / endTestCount;
-    }
 
-    public void incrementEndTestCount() {
-        ++endTestCount;
-    }
-
-    public void incrementResultCount(TestCaseResult testCase) {
-        if (testCase.hasFailure()) {
-            ++failureCount;
-        } else if (testCase.hasError()) {
-            ++errorCount;
-        } else {
-            ++passCount;
-        }
+        return getTotalTime() / suite.getTestCount();
     }
 
     public void startTestCase() {
