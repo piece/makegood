@@ -523,7 +523,7 @@ public class ResultView extends ViewPart {
                           " " +         //$NON-NLS-1$
                               Messages.TestResultView_testTime +
                               " " +     //$NON-NLS-1$
-                              TimeFormatter.format(progress.getTotalTime(),
+                              TimeFormatter.format(progress.getProcessTime(),
                                                    Messages.TestResultView_second,
                                                    Messages.TestResultView_millisecond
                                                    ) +

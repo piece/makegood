@@ -2,7 +2,7 @@ package com.piece_framework.makegood.core.runner;
 
 public class RunProgress {
     private boolean isInitialized;
-    private long totalTime;
+    private long processTime;
     private long startTimeForTestCase;
     private long testCaseTime;
     private TestSuiteResult suite;
@@ -10,7 +10,7 @@ public class RunProgress {
     public void initialize(TestSuiteResult suite) {
         this.suite = suite;
         startTimeForTestCase = System.nanoTime();
-        totalTime = 0;
+        processTime = 0;
         isInitialized = true;
     }
 
@@ -40,8 +40,8 @@ public class RunProgress {
         return suite.getErrorCount();
     }
 
-    public long getTotalTime() {
-        return totalTime;
+    public long getProcessTime() {
+        return processTime;
     }
 
     public int getRate() {
@@ -58,7 +58,7 @@ public class RunProgress {
             return 0;
         }
 
-        return getTotalTime() / suite.getTestCount();
+        return getProcessTime() / suite.getTestCount();
     }
 
     public void startTestCase() {
@@ -67,7 +67,7 @@ public class RunProgress {
 
     public void endTestCase() {
         testCaseTime = System.nanoTime() - startTimeForTestCase;
-        totalTime += testCaseTime;
+        processTime += testCaseTime;
     }
 
     public long getTestCaseTime() {
