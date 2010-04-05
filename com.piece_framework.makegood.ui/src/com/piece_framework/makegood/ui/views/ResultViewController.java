@@ -129,7 +129,6 @@ public class ResultViewController implements IMakeGoodEventListener, JUnitXMLRea
                     return Status.CANCEL_STATUS;
                 }
 
-                progress.finalize();
                 resultView.stop();
                 resultView.refresh(progress, currentTestCase);
 

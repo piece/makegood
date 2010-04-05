@@ -18,8 +18,6 @@ public class RunProgress {
         return isInitialized;
     }
 
-    public void finalize() {}
-
     public int getAllTestCount() {
         return suite.getAllTestCount();
     }
