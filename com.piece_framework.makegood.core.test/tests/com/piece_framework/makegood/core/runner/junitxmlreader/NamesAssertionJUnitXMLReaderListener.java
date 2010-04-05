@@ -46,7 +46,7 @@ public class NamesAssertionJUnitXMLReaderListener implements JUnitXMLReaderListe
     }
 
     @Override
-    public void endProblem() {
+    public void endFailure() {
     }
 
     public boolean clearAll() {

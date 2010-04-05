@@ -217,6 +217,6 @@ public class ResultViewController implements IMakeGoodEventListener, JUnitXMLRea
     }
 
     @Override
-    public void endProblem() {
+    public void endFailure() {
     }
 }

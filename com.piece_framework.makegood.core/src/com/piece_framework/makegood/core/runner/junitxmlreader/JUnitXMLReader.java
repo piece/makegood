@@ -216,7 +216,7 @@ public class JUnitXMLReader extends DefaultHandler {
         currentTestCase.setFailureTrace(contents.toString());
 
         for (JUnitXMLReaderListener listener: listeners) {
-            listener.endProblem();
+            listener.endFailure();
         }
 
         if (currentTestCase.isArtificial()) {
