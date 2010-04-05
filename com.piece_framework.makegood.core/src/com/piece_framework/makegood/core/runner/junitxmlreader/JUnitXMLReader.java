@@ -99,10 +99,10 @@ public class JUnitXMLReader extends DefaultHandler {
         } else if (qualifiedName.equalsIgnoreCase("testcase")) { //$NON-NLS-1$
             startTestCase(createTestCase(attributes));
         } else if (qualifiedName.equalsIgnoreCase("failure")) { //$NON-NLS-1$
-            startProblem(createFailureTestCase(attributes));
+            startFailure(createFailureTestCase(attributes));
             currentTestSuite.increaseFailureCount();
         } else if (qualifiedName.equalsIgnoreCase("error")) { //$NON-NLS-1$
-            startProblem(createErrorTestCase(attributes));
+            startFailure(createErrorTestCase(attributes));
             currentTestSuite.increaseErrorCount();
         }
     }
@@ -204,11 +204,11 @@ public class JUnitXMLReader extends DefaultHandler {
         }
     }
 
-    private void startProblem(TestCaseResult problem) {
+    private void startFailure(TestCaseResult failure) {
         contents = new StringBuilder();
 
         for (JUnitXMLReaderListener listener: listeners) {
-            listener.startFailure(problem);
+            listener.startFailure(failure);
         }
     }
 
