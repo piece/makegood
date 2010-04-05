@@ -1,7 +1,7 @@
 package com.piece_framework.makegood.core.runner;
 
 public class RunProgress {
-    private boolean initialized;
+    private boolean isInitialized;
     private long totalTime;
     private long startTimeForTestCase;
     private long testCaseTime;
@@ -11,11 +11,11 @@ public class RunProgress {
         this.suite = suite;
         startTimeForTestCase = System.nanoTime();
         totalTime = 0;
-        initialized = true;
+        isInitialized = true;
     }
 
     public boolean isInitialized() {
-        return initialized;
+        return isInitialized;
     }
 
     public void finalize() {}
