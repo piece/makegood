@@ -208,7 +208,7 @@ public class JUnitXMLReader extends DefaultHandler {
         contents = new StringBuilder();
 
         for (JUnitXMLReaderListener listener: listeners) {
-            listener.startProblem(problem);
+            listener.startFailure(problem);
         }
     }
 

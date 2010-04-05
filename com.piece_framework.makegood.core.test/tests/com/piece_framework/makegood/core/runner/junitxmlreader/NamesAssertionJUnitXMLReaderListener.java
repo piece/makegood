@@ -33,7 +33,7 @@ public class NamesAssertionJUnitXMLReaderListener implements JUnitXMLReaderListe
     }
 
     @Override
-    public void startProblem(TestCaseResult problem) {
+    public void startFailure(TestCaseResult problem) {
         assertEquals(problemTypesIterator.next(), problem.getClass());
     }
 

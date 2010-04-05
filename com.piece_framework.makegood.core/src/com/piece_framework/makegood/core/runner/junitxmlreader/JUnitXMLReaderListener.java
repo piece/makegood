@@ -12,7 +12,7 @@ public interface JUnitXMLReaderListener {
 
     public void endTestCase();
 
-    public void startProblem(TestCaseResult problem);
+    public void startFailure(TestCaseResult failure);
 
     public void endProblem();
 }

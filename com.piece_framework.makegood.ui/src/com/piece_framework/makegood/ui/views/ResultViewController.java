@@ -212,8 +212,8 @@ public class ResultViewController implements IMakeGoodEventListener, JUnitXMLRea
     }
 
     @Override
-    public void startProblem(TestCaseResult problem) {
-        currentTestCase = problem;
+    public void startFailure(TestCaseResult failure) {
+        currentTestCase = failure;
     }
 
     @Override
