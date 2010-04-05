@@ -56,7 +56,7 @@ public class JUnitXMLReaderTest {
     }
 
     @Test
-    public void parseTestResult() throws InterruptedException {
+    public void readJUnitXML() throws InterruptedException {
         JUnitXMLReader parser = new JUnitXMLReader(
                                       new File(RESULTS_DIR + 
                                                String.valueOf(File.separatorChar) +
