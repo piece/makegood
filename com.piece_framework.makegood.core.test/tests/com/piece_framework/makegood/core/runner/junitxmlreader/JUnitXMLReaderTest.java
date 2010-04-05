@@ -15,11 +15,12 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.internal.runners.ErrorReportingRunner;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
-import com.piece_framework.makegood.core.runner.Problem;
-import com.piece_framework.makegood.core.runner.ProblemType;
+import com.piece_framework.makegood.core.runner.ErrorTestCaseResult;
+import com.piece_framework.makegood.core.runner.FailureTestCaseResult;
 import com.piece_framework.makegood.core.runner.TestCaseResult;
 import com.piece_framework.makegood.core.runner.Result;
 import com.piece_framework.makegood.core.runner.TestSuiteResult;
@@ -113,11 +114,12 @@ SRC_DIR + "/Stagehand/TestRunner.php:390\n" +
 SRC_DIR + "/Stagehand/TestRunner.php:186\n" +
 "/usr/share/php/src/Stagehand/CLIController.php:101\n" +
 "/tmp/com.piece_framework.makegood.launch/phpunitrunner:50\n";
-            assertProblems(childSuite,
-                           new ProblemType[] {ProblemType.Pass, ProblemType.Pass, ProblemType.Pass, ProblemType.Failure},
-                           new String[] {null, null, null, "PHPUnit_Framework_ExpectationFailedException"},
-                           new String[] {null, null, null, failureContent}
-                           );
+            assertProblems(
+                childSuite,
+                new Class[] { TestCaseResult.class, TestCaseResult.class, TestCaseResult.class, FailureTestCaseResult.class },
+                new String[] { null, null, null, "PHPUnit_Framework_ExpectationFailedException" },
+                new String[] { null, null, null, failureContent }
+            );
         }
 
         {
@@ -132,7 +134,7 @@ SRC_DIR + "/Stagehand/TestRunner.php:186\n" +
             assertTestCases(suite,
                             expectedTargetClass,
                             expectedFile,
-                            new String[] {"pass", "(error)"},
+                            new String[] {"pass", "(Error)"},
                             new int[] {83, 0}
                             );
             String failureContent = "Stagehand_TestRunner_PHPUnitDependsTest::pass\n" +
@@ -150,11 +152,12 @@ SRC_DIR + "/Stagehand/TestRunner.php:390\n" +
 SRC_DIR + "/Stagehand/TestRunner.php:186\n" +
 "/usr/share/php/src/Stagehand/CLIController.php:101\n" +
 "/tmp/com.piece_framework.makegood.launch/phpunitrunner:50\n";
-            assertProblems(suite,
-                           new ProblemType[] {ProblemType.Failure, ProblemType.Error},
-                           new String[] {"PHPUnit_Framework_ExpectationFailedException", "PHPUnit_Framework_SkippedTestError"},
-                           new String[] {failureContent, errorContent}
-                           );
+            assertProblems(
+                suite,
+                new Class[] { FailureTestCaseResult.class, ErrorTestCaseResult.class },
+                new String[] { "PHPUnit_Framework_ExpectationFailedException", "PHPUnit_Framework_SkippedTestError" },
+                new String[] { failureContent, errorContent }
+            );
         }
 
         {
@@ -182,11 +185,12 @@ SRC_DIR + "/Stagehand/TestRunner.php:390\n" +
 SRC_DIR + "/Stagehand/TestRunner.php:186\n" +
 "/usr/share/php/src/Stagehand/CLIController.php:101\n" +
 "/tmp/com.piece_framework.makegood.launch/phpunitrunner:50\n";
-            assertProblems(suite,
-                           new ProblemType[] {ProblemType.Error},
-                           new String[] {"PHPUnit_Framework_Error_Notice"},
-                           new String[] {errorContent}
-                           );
+            assertProblems(
+                suite,
+                new Class[] { ErrorTestCaseResult.class },
+                new String[] { "PHPUnit_Framework_Error_Notice" },
+                new String[] { errorContent }
+            );
         }
 
         {
@@ -204,11 +208,12 @@ SRC_DIR + "/Stagehand/TestRunner.php:186\n" +
                             new String[] {"testTestShouldPassExtended", "testTestShouldPassCommon"},
                             new int[] {80, 80}
                             );
-            assertProblems(suite,
-                           new ProblemType[] {ProblemType.Pass, ProblemType.Pass},
-                           new String[] {null, null},
-                           new String[] {null, null}
-                           );
+            assertProblems(
+                suite,
+                new Class[] { TestCaseResult.class, TestCaseResult.class },
+                new String[] { null, null },
+                new String[] { null, null }
+            );
         }
 
         {
@@ -237,11 +242,12 @@ SRC_DIR + "/Stagehand/TestRunner.php:390\n" +
 SRC_DIR + "/Stagehand/TestRunner.php:186\n" +
 "/usr/share/php/src/Stagehand/CLIController.php:101\n" +
 "/tmp/com.piece_framework.makegood.launch/phpunitrunner:50\n";
-            assertProblems(suite,
-                           new ProblemType[] {ProblemType.Failure},
-                           new String[] {"PHPUnit_Framework_ExpectationFailedException"},
-                           new String[] {failureContent}
-                           );
+            assertProblems(
+                suite,
+                new Class[] { FailureTestCaseResult.class },
+                new String[] { "PHPUnit_Framework_ExpectationFailedException" },
+                new String[] { failureContent }
+            );
         }
 
         {
@@ -265,11 +271,12 @@ SRC_DIR + "/Stagehand/TestRunner.php:390\n" +
 SRC_DIR + "/Stagehand/TestRunner.php:186\n" +
 "/usr/share/php/src/Stagehand/CLIController.php:101\n" +
 "/tmp/com.piece_framework.makegood.launch/phpunitrunner:50\n";
-            assertProblems(suite,
-                           new ProblemType[] {ProblemType.Error},
-                           new String[] {"PHPUnit_Framework_IncompleteTestError"},
-                           new String[] {errorContent}
-                           );
+            assertProblems(
+                suite,
+                new Class[] { ErrorTestCaseResult.class },
+                new String[] { "PHPUnit_Framework_IncompleteTestError" },
+                new String[] { errorContent }
+            );
         }
 
         {
@@ -287,11 +294,12 @@ SRC_DIR + "/Stagehand/TestRunner.php:186\n" +
                             new String[] {"pass1", "pass2"},
                             new int[] {94, 102}
                             );
-            assertProblems(suite,
-                           new ProblemType[] {ProblemType.Pass, ProblemType.Pass},
-                           new String[] {null, null},
-                           new String[] {null, null}
-                           );
+            assertProblems(
+                 suite,
+                 new Class[] { TestCaseResult.class, TestCaseResult.class },
+                 new String[] { null, null },
+                 new String[] { null, null }
+            );
         }
 
         {
@@ -309,11 +317,12 @@ SRC_DIR + "/Stagehand/TestRunner.php:186\n" +
                             new String[] {"pass1", "pass2"},
                             new int[] {166, 174}
                             );
-            assertProblems(suite,
-                           new ProblemType[] {ProblemType.Pass, ProblemType.Pass},
-                           new String[] {null, null},
-                           new String[] {null, null}
-                           );
+            assertProblems(
+                suite,
+                new Class[] { TestCaseResult.class, TestCaseResult.class },
+                new String[] { null, null },
+                new String[] { null, null }
+            );
         }
 
         {
@@ -340,11 +349,12 @@ SRC_DIR + "/Stagehand/TestRunner.php:390\n" +
 SRC_DIR + "/Stagehand/TestRunner.php:186\n" +
 "/usr/share/php/src/Stagehand/CLIController.php:101\n" +
 "/tmp/com.piece_framework.makegood.launch/phpunitrunner:50\n";
-            assertProblems(suite,
-                           new ProblemType[] {ProblemType.Failure},
-                           new String[] {"PHPUnit_Framework_AssertionFailedError"},
-                           new String[] {failureContent}
-                           );
+            assertProblems(
+                suite,
+                new Class[] { FailureTestCaseResult.class },
+                new String[] { "PHPUnit_Framework_AssertionFailedError" },
+                new String[] { failureContent }
+            );
         }
 
         {
@@ -362,11 +372,12 @@ SRC_DIR + "/Stagehand/TestRunner.php:186\n" +
                             new String[] {"passWithAnAssertion", "passWithMultipleAssertions", "日本語を使用できる"},
                             new int[] {83, 91, 100}
                             );
-            assertProblems(suite,
-                           new ProblemType[] {ProblemType.Pass, ProblemType.Pass, ProblemType.Pass},
-                           new String[] {null, null, null},
-                           new String[] {null, null, null}
-                           );
+            assertProblems(
+                suite,
+                new Class[] { TestCaseResult.class, TestCaseResult.class, TestCaseResult.class },
+                new String[] { null, null, null },
+                new String[] { null, null, null }
+            );
         }
 
         {
@@ -390,11 +401,12 @@ SRC_DIR + "/Stagehand/TestRunner.php:390\n" +
 SRC_DIR + "/Stagehand/TestRunner.php:186\n" +
 "/usr/share/php/src/Stagehand/CLIController.php:101\n" +
 "/tmp/com.piece_framework.makegood.launch/phpunitrunner:50\n";
-            assertProblems(suite,
-                           new ProblemType[] {ProblemType.Error},
-                           new String[] {"PHPUnit_Framework_SkippedTestError"},
-                           new String[] {errorContent}
-                           );
+            assertProblems(
+                suite,
+                new Class[] { ErrorTestCaseResult.class },
+                new String[] { "PHPUnit_Framework_SkippedTestError" },
+                new String[] { errorContent }
+            );
         }
 
         {
@@ -412,11 +424,12 @@ SRC_DIR + "/Stagehand/TestRunner.php:186\n" +
                             new String[] {"testTestShouldPass"},
                             new int[] {80}
                             );
-            assertProblems(suite,
-                           new ProblemType[] {ProblemType.Pass},
-                           new String[] {null},
-                           new String[] {null}
-                           );
+            assertProblems(
+                suite,
+                new Class[] { TestCaseResult.class },
+                new String[] { null },
+                new String[] { null }
+            );
         }
 
         {
@@ -434,11 +447,12 @@ SRC_DIR + "/Stagehand/TestRunner.php:186\n" +
                             new String[] {"testTestShouldPass"},
                             new int[] {80}
                             );
-            assertProblems(suite,
-                           new ProblemType[] {ProblemType.Pass},
-                           new String[] {null},
-                           new String[] {null}
-                           );
+            assertProblems(
+                suite,
+                new Class[] { TestCaseResult.class },
+                new String[] { null },
+                new String[] { null }
+            );
         }
     }
 
@@ -453,7 +467,7 @@ SRC_DIR + "/Stagehand/TestRunner.php:186\n" +
                                           "passWithDataProvider with data set #2",
                                           "passWithDataProvider with data set #3"
                                           };
-        ProblemType[] problemTypes = new ProblemType[]{ProblemType.Failure};
+        Class[] problemTypes = new Class[]{ FailureTestCaseResult.class };
         NamesAssertionJUnitXMLReaderListener listener = new NamesAssertionJUnitXMLReaderListener(suiteNames, caseNames, problemTypes);
 
         File xmlFile = new File(TMP_DIR +
@@ -570,12 +584,12 @@ SRC_DIR + "/Stagehand/TestRunner.php:186\n" +
         return suite;
     }
 
-    private TestCaseResult assertTestCase(Result result,
-                                    String expectedName,
-                                    String expectedTargetClass,
-                                    String expectedFile,
-                                    int expectedLine
-                                    ) {
+    private TestCaseResult assertTestCase(
+        Result result,
+        String expectedName,
+        String expectedTargetClass,
+        String expectedFile,
+        int expectedLine) {
         assertTrue(result instanceof TestCaseResult);
 
         TestCaseResult testCase = (TestCaseResult) result;
@@ -583,21 +597,22 @@ SRC_DIR + "/Stagehand/TestRunner.php:186\n" +
         assertEquals(expectedTargetClass, testCase.getClassName());
         assertEquals(expectedFile, testCase.getFile());
         assertEquals(expectedLine, testCase.getLine());
+
         return testCase;
     }
 
-    private Problem assertProblem(Result result,
-                                  ProblemType expectedProblemType,
-                                  String expectedTypeClass,
-                                  String expectedContent
-                                  ) {
+    private TestCaseResult assertProblem(
+        TestCaseResult result,
+        Class expectedProblemType,
+        String expectedTypeClass,
+        String expectedContent) {
         assertTrue(result instanceof TestCaseResult);
 
-        Problem problem = ((TestCaseResult) result).getProblem();
-        assertEquals(expectedProblemType, problem.getType());
-        assertEquals(expectedTypeClass, problem.getTypeClass());
-        assertEquals(expectedContent, problem.getContent());
-        return problem;
+        assertEquals(expectedProblemType, result.getClass());
+        assertEquals(expectedTypeClass, result.getFailureType());
+        assertEquals(expectedContent, result.getFailureTrace());
+
+        return result;
     }
 
     private TestCaseResult[] assertTestCases(Result result,
@@ -622,24 +637,27 @@ SRC_DIR + "/Stagehand/TestRunner.php:186\n" +
         return testCases.toArray(new TestCaseResult[] {});
     }
 
-    private Problem[] assertProblems(Result result,
-                                     ProblemType[] expectedProblemTypes,
-                                     String[] expectedTypeClasses,
-                                     String[] expectedContents
-                                     ) {
+    private Class[] assertProblems(
+        Result result,
+        Class[] expectedProblemTypes,
+        String[] expectedTypeClasses,
+        String[] expectedContents) {
         assertTrue(result instanceof TestSuiteResult);
 
         TestSuiteResult suite = (TestSuiteResult) result;
-        List<Problem> problems = new ArrayList<Problem>();
+        List<Class> problems = new ArrayList<Class>();
         for (int i = 0; i < suite.getChildren().size(); ++i) {
-            TestCaseResult testCase = (TestCaseResult) suite.getChildren().get(i);
-            Problem problem = assertProblem(testCase,
-                                            expectedProblemTypes[i],
-                                            expectedTypeClasses[i],
-                                            expectedContents[i]
-                                            );
-            problems.add(problem);
+            TestCaseResult testCase = (TestCaseResult)suite.getChildren().get(i);
+            TestCaseResult problem =
+                assertProblem(
+                    testCase,
+                    expectedProblemTypes[i],
+                    expectedTypeClasses[i],
+                    expectedContents[i]
+                );
+            problems.add(problem.getClass());
         }
-        return problems.toArray(new Problem[] {});
+
+        return problems.toArray(new Class[] {});
     }
 }

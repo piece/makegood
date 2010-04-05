@@ -17,7 +17,6 @@ import org.eclipse.ui.progress.UIJob;
 import org.xml.sax.SAXException;
 
 import com.piece_framework.makegood.core.launch.IMakeGoodEventListener;
-import com.piece_framework.makegood.core.runner.Problem;
 import com.piece_framework.makegood.core.runner.RunProgress;
 import com.piece_framework.makegood.core.runner.TestCaseResult;
 import com.piece_framework.makegood.core.runner.TestSuiteResult;
@@ -185,7 +184,7 @@ public class ResultViewController implements IMakeGoodEventListener, JUnitXMLRea
         }
 
         progress.incrementEndTestCount();
-        progress.incrementResultCount(currentTestCase.getProblem().getType());
+        progress.incrementResultCount(currentTestCase);
         progress.endTestCase();
 
         currentTestCase.setTime(progress.getTestCaseTime());
@@ -213,7 +212,8 @@ public class ResultViewController implements IMakeGoodEventListener, JUnitXMLRea
     }
 
     @Override
-    public void startProblem(Problem problem) {
+    public void startProblem(TestCaseResult problem) {
+        currentTestCase = problem;
     }
 
     @Override

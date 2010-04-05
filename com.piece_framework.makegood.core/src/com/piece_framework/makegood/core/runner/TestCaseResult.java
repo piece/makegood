@@ -7,12 +7,12 @@ import java.util.List;
 public class TestCaseResult extends Result {
     private String className;
     private int line;
-    private Problem problem;
     private boolean isArtificial = false;
+    private String failureType;
+    private String failureTrace;
 
     public TestCaseResult(String name) {
         this.name = name;
-        setProblem(new Problem(ProblemType.Pass));
     }
 
     public String getClassName() {
@@ -23,18 +23,14 @@ public class TestCaseResult extends Result {
         return line;
     }
 
-    public Problem getProblem() {
-        return problem;
-    }
-
     @Override
     public boolean hasError() {
-        return getProblem().getType() == ProblemType.Error;
+        return false;
     }
 
     @Override
     public boolean hasFailure() {
-        return getProblem().getType() == ProblemType.Failure;
+        return false;
     }
 
     @Override
@@ -58,10 +54,6 @@ public class TestCaseResult extends Result {
         getParent().setTime(time);
     }
 
-    public void setProblem(Problem problem) {
-        this.problem = problem;
-    }
-
     public void setClassName(String cassName) {
         this.className = cassName;
     }
@@ -76,5 +68,21 @@ public class TestCaseResult extends Result {
 
     public void setIsArtificial(boolean isArtificial) {
         this.isArtificial = isArtificial;
+    }
+
+    public void setFailureType(String failureType) {
+        this.failureType = failureType;
+    }
+
+    public String getFailureType() {
+        return failureType;
+    }
+
+    public void setFailureTrace(String failureTrace) {
+        this.failureTrace = failureTrace;
+    }
+
+    public String getFailureTrace() {
+        return failureTrace;
     }
 }

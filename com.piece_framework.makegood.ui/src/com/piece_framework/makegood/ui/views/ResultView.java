@@ -36,7 +36,8 @@ import org.eclipse.ui.part.ViewPart;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import com.piece_framework.makegood.core.runner.ProblemType;
+import com.piece_framework.makegood.core.runner.ErrorTestCaseResult;
+import com.piece_framework.makegood.core.runner.FailureTestCaseResult;
 import com.piece_framework.makegood.core.runner.RunProgress;
 import com.piece_framework.makegood.core.runner.TestCaseResult;
 import com.piece_framework.makegood.core.runner.Result;
@@ -171,9 +172,9 @@ public class ResultView extends ViewPart {
                 IStructuredSelection selection = (IStructuredSelection) event.getSelection();
                 Object element = selection.getFirstElement();
                 if (!(element instanceof TestCaseResult)) return;
-                TestCaseResult testCase = (TestCaseResult) element;
-                if (testCase.getProblem().getType() == ProblemType.Pass) return;
-                failureTrace.setText(testCase.getProblem().getContent());
+                TestCaseResult testCase = (TestCaseResult)element;
+                if (!testCase.hasFailure() && !testCase.hasError()) return;
+                failureTrace.setText(testCase.getFailureTrace());
             }
         });
         resultTreeViewer.addDoubleClickListener(new IDoubleClickListener() {

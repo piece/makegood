@@ -75,13 +75,13 @@ public class RunProgress {
         ++endTestCount;
     }
 
-    public void incrementResultCount(ProblemType problemType) {
-        if (problemType == ProblemType.Pass) {
-            ++passCount;
-        } else if (problemType == ProblemType.Failure) {
+    public void incrementResultCount(TestCaseResult testCase) {
+        if (testCase.hasFailure()) {
             ++failureCount;
-        } else if (problemType == ProblemType.Error) {
+        } else if (testCase.hasError()) {
             ++errorCount;
+        } else {
+            ++passCount;
         }
     }
 

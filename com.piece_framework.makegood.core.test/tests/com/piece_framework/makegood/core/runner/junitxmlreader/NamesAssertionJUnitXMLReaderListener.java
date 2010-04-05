@@ -4,8 +4,6 @@ import static org.junit.Assert.assertEquals;
 import java.util.Arrays;
 import java.util.Iterator;
 
-import com.piece_framework.makegood.core.runner.Problem;
-import com.piece_framework.makegood.core.runner.ProblemType;
 import com.piece_framework.makegood.core.runner.TestCaseResult;
 import com.piece_framework.makegood.core.runner.TestSuiteResult;
 import com.piece_framework.makegood.core.runner.junitxmlreader.JUnitXMLReaderListener;
@@ -13,12 +11,12 @@ import com.piece_framework.makegood.core.runner.junitxmlreader.JUnitXMLReaderLis
 public class NamesAssertionJUnitXMLReaderListener implements JUnitXMLReaderListener {
     private Iterator<String> suiteNamesIterator;
     private Iterator<String> caseNamesIterator;
-    private Iterator<ProblemType> problemTypesIterator;
+    private Iterator<Class> problemTypesIterator;
 
-    public NamesAssertionJUnitXMLReaderListener(String[] suiteNames,
-                               String[] caseNames,
-                               ProblemType[] problemTypes
-                               ) {
+    public NamesAssertionJUnitXMLReaderListener(
+        String[] suiteNames,
+        String[] caseNames,
+        Class[] problemTypes) {
         suiteNamesIterator = Arrays.asList(suiteNames).iterator();
         caseNamesIterator = Arrays.asList(caseNames).iterator();
         problemTypesIterator = Arrays.asList(problemTypes).iterator();
@@ -35,8 +33,8 @@ public class NamesAssertionJUnitXMLReaderListener implements JUnitXMLReaderListe
     }
 
     @Override
-    public void startProblem(Problem problem) {
-        assertEquals(problemTypesIterator.next(), problem.getType());
+    public void startProblem(TestCaseResult problem) {
+        assertEquals(problemTypesIterator.next(), problem.getClass());
     }
 
     @Override

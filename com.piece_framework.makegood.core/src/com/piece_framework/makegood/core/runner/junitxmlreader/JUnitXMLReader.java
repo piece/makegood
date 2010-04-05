@@ -17,8 +17,8 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import com.piece_framework.makegood.core.runner.Problem;
-import com.piece_framework.makegood.core.runner.ProblemType;
+import com.piece_framework.makegood.core.runner.ErrorTestCaseResult;
+import com.piece_framework.makegood.core.runner.FailureTestCaseResult;
 import com.piece_framework.makegood.core.runner.TestCaseResult;
 import com.piece_framework.makegood.core.runner.Result;
 import com.piece_framework.makegood.core.runner.TestSuiteResult;
@@ -99,14 +99,10 @@ public class JUnitXMLReader extends DefaultHandler {
         } else if (qualifiedName.equalsIgnoreCase("testcase")) { //$NON-NLS-1$
             startTestCase(createTestCase(attributes));
         } else if (qualifiedName.equalsIgnoreCase("failure")) { //$NON-NLS-1$
-            Problem problem = new Problem(ProblemType.Failure);
-            problem.setTypeClass(attributes.getValue("type")); //$NON-NLS-1$
-            startProblem(problem);
+            startProblem(createFailureTestCase(attributes));
             currentTestSuite.increaseFailureCount();
         } else if (qualifiedName.equalsIgnoreCase("error")) { //$NON-NLS-1$
-            Problem problem = new Problem(ProblemType.Error);
-            problem.setTypeClass(attributes.getValue("type")); //$NON-NLS-1$
-            startProblem(problem);
+            startProblem(createErrorTestCase(attributes));
             currentTestSuite.increaseErrorCount();
         }
     }
@@ -208,17 +204,7 @@ public class JUnitXMLReader extends DefaultHandler {
         }
     }
 
-    private void startProblem(Problem problem) {
-        if (currentTestCase == null) {
-            TestCaseResult testCase =
-                new TestCaseResult("(" + problem.getType().toString().toLowerCase() + ")");
-            testCase.setClassName(currentTestSuite.getName());
-            testCase.setFile(currentTestSuite.getFile());
-            testCase.setIsArtificial(true);
-            startTestCase(testCase);
-        }
-        currentTestCase.setProblem(problem);
-
+    private void startProblem(TestCaseResult problem) {
         contents = new StringBuilder();
 
         for (JUnitXMLReaderListener listener: listeners) {
@@ -227,7 +213,7 @@ public class JUnitXMLReader extends DefaultHandler {
     }
 
     private void endProblem() {
-        currentTestCase.getProblem().setContent(contents.toString());
+        currentTestCase.setFailureTrace(contents.toString());
 
         for (JUnitXMLReaderListener listener: listeners) {
             listener.endProblem();
@@ -269,6 +255,38 @@ public class JUnitXMLReader extends DefaultHandler {
         }
 
         return testCase;
+    }
+
+    private TestCaseResult createFailureTestCase(Attributes attributes) {
+        if (currentTestCase != null) {
+            currentTestCase = new FailureTestCaseResult(currentTestCase);
+        } else {
+            currentTestCase = new FailureTestCaseResult("(Failure)"); //$NON-NLS-1$
+            currentTestCase.setClassName(currentTestSuite.getName());
+            currentTestCase.setFile(currentTestSuite.getFile());
+            currentTestCase.setIsArtificial(true);
+            startTestCase(currentTestCase);
+        }
+
+        currentTestCase.setFailureType(attributes.getValue("type")); //$NON-NLS-1$
+
+        return currentTestCase;
+    }
+
+    private TestCaseResult createErrorTestCase(Attributes attributes) {
+        if (currentTestCase != null) {
+            currentTestCase = new ErrorTestCaseResult(currentTestCase);
+        } else {
+            currentTestCase = new ErrorTestCaseResult("(Error)"); //$NON-NLS-1$
+            currentTestCase.setClassName(currentTestSuite.getName());
+            currentTestCase.setFile(currentTestSuite.getFile());
+            currentTestCase.setIsArtificial(true);
+            startTestCase(currentTestCase);
+        }
+
+        currentTestCase.setFailureType(attributes.getValue("type")); //$NON-NLS-1$
+
+        return currentTestCase;
     }
 
     private class SynchronizedFileInputStream extends FileInputStream{
