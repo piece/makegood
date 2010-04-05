@@ -360,9 +360,7 @@ public class ResultView extends ViewPart {
         failures.setCount(progress.getFailureCount());
         errors.setCount(progress.getErrorCount());
 
-        boolean raiseErrorOrFailure = progress.getErrorCount() > 0
-                                      || progress.getFailureCount() > 0;
-        if (raiseErrorOrFailure) progressBar.raisedError();
+        if (progress.hasFailures()) progressBar.raisedError();
         progressBar.worked(progress.getRate());
 
         if (result != null) {

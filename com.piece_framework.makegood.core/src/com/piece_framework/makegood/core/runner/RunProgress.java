@@ -71,4 +71,8 @@ public class RunProgress {
     public long getProcessTimeForTestCase() {
         return processTimeForTestCase;
     }
+
+    public boolean hasFailures() {
+        return suite.hasFailure() || suite.hasError();
+    }
 }
