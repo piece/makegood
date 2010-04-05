@@ -485,7 +485,6 @@ public class ResultView extends ViewPart {
         private int delay;
         private long startTime;
         private boolean stop;
-        private long elapsedTime;
 
         private ShowTimer(Label tests,
                           RunProgress progress,
@@ -516,7 +515,7 @@ public class ResultView extends ViewPart {
                           "(" +         //$NON-NLS-1$
                               Messages.TestResultView_realTime +
                               " " +     //$NON-NLS-1$
-                              TimeFormatter.format(elapsedTime,
+                              TimeFormatter.format(System.nanoTime() - startTime,
                                                    Messages.TestResultView_second,
                                                    Messages.TestResultView_millisecond
                                                    ) +
@@ -534,7 +533,6 @@ public class ResultView extends ViewPart {
 
         @Override
         public void run() {
-            elapsedTime = System.nanoTime() - startTime;
             show();
             if (!stop) schedule();
         }
