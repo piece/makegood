@@ -29,7 +29,7 @@ public class JUnitXMLReader extends DefaultHandler {
     private List<Result> results = new ArrayList<Result>();
     private TestSuiteResult currentTestSuite;
     private TestCaseResult currentTestCase;
-    private StringBuilder contents;
+    private StringBuilder failureTrace;
     private List<JUnitXMLReaderListener> listeners = new ArrayList<JUnitXMLReaderListener>();
     private boolean stopped = false;
     private SynchronizedFileInputStream stream;
@@ -112,8 +112,8 @@ public class JUnitXMLReader extends DefaultHandler {
                            int start,
                            int length
                            ) throws SAXException {
-        if (contents != null) {
-            contents.append(new String(characters, start, length));
+        if (failureTrace != null) {
+            failureTrace.append(new String(characters, start, length));
         }
     }
 
@@ -205,7 +205,7 @@ public class JUnitXMLReader extends DefaultHandler {
     }
 
     private void startFailure(TestCaseResult failure) {
-        contents = new StringBuilder();
+        failureTrace = new StringBuilder();
 
         for (JUnitXMLReaderListener listener: listeners) {
             listener.startFailure(failure);
@@ -213,7 +213,7 @@ public class JUnitXMLReader extends DefaultHandler {
     }
 
     private void endFailure() {
-        currentTestCase.setFailureTrace(contents.toString());
+        currentTestCase.setFailureTrace(failureTrace.toString());
 
         for (JUnitXMLReaderListener listener: listeners) {
             listener.endFailure();
