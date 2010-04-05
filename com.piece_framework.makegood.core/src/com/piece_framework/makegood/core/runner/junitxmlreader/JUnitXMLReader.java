@@ -127,9 +127,9 @@ public class JUnitXMLReader extends DefaultHandler {
         } else if (qualifiedName.equalsIgnoreCase("testcase")) { //$NON-NLS-1$
             endTestCase();
         } else if (qualifiedName.equalsIgnoreCase("failure")) { //$NON-NLS-1$
-            endProblem();
+            endFailure();
         } else if (qualifiedName.equalsIgnoreCase("error")) { //$NON-NLS-1$
-            endProblem();
+            endFailure();
         }
     }
 
@@ -212,7 +212,7 @@ public class JUnitXMLReader extends DefaultHandler {
         }
     }
 
-    private void endProblem() {
+    private void endFailure() {
         currentTestCase.setFailureTrace(contents.toString());
 
         for (JUnitXMLReaderListener listener: listeners) {
