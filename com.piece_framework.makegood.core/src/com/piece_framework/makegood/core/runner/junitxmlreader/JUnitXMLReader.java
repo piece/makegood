@@ -55,7 +55,7 @@ public class JUnitXMLReader extends DefaultHandler {
         finished = true;
     }
 
-    public void addReaderListener(JUnitXMLReaderListener listener) {
+    public void addListener(JUnitXMLReaderListener listener) {
         listeners.add(listener);
     }
 
