@@ -59,7 +59,7 @@ public class ResultViewController implements IMakeGoodEventListener, JUnitXMLRea
             public void run() {
                 parserException = null;
                 try {
-                    parser.start();
+                    parser.read();
                 } catch (ParserConfigurationException e) {
                     parserException = e;
                 } catch (SAXException e) {

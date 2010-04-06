@@ -540,7 +540,7 @@ SRC_DIR + "/Stagehand/TestRunner.php:186\n" +
                 Exception actualException = null;
 
                 try {
-                    parser.start();
+                    parser.read();
                 } catch (ParserConfigurationException e) {
                     actualException = e;
                 } catch (SAXException e) {
