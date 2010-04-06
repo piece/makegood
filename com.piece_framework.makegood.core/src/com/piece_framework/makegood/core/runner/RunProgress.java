@@ -7,6 +7,10 @@ public class RunProgress {
     private long processTimeForTestCase;
     private TestSuiteResult suite;
 
+    public RunProgress() {
+        suite = new TestSuiteResult(null);
+    }
+
     public void initialize(TestSuiteResult suite) {
         this.suite = suite;
         startTimeForTestCase = System.nanoTime();
