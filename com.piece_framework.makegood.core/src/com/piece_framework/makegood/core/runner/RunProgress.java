@@ -26,7 +26,7 @@ public class RunProgress {
         return suite.getAllTestCount();
     }
 
-    public int getEndTestCount() {
+    public int getTestCount() {
         return suite.getTestCount();
     }
 

@@ -508,7 +508,7 @@ public class ResultView extends ViewPart {
 
         private void show() {
             tests.setText(Messages.TestResultView_testsLabel + " " + //$NON-NLS-1$
-                          progress.getEndTestCount() + "/" + //$NON-NLS-1$
+                          progress.getTestCount() + "/" + //$NON-NLS-1$
                           progress.getAllTestCount() + " " + //$NON-NLS-1$
                           "(" +         //$NON-NLS-1$
                               Messages.TestResultView_realTime +
