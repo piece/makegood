@@ -53,7 +53,7 @@ public class ResultViewController implements IMakeGoodEventListener, JUnitXMLRea
         progress = new RunProgress();
 
         parser = new JUnitXMLReader(new File(log));
-        parser.addParserListener(this);
+        parser.addReaderListener(this);
         Thread parserThread = new Thread() {
             @Override
             public void run() {

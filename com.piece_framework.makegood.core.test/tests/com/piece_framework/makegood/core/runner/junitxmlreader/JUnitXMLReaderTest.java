@@ -475,7 +475,7 @@ SRC_DIR + "/Stagehand/TestRunner.php:186\n" +
                                 "realtime.xml"
                                 );
         JUnitXMLReader parser = new JUnitXMLReader(xmlFile);
-        parser.addParserListener(listener);
+        parser.addReaderListener(listener);
         startParser(parser, null);
 
         MockTestRunner testRunner = new MockTestRunner(xmlFile,
