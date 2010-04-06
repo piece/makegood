@@ -41,10 +41,6 @@ public class JUnitXMLReader extends DefaultHandler {
     public void start() throws ParserConfigurationException,
                                SAXException,
                                IOException {
-        currentTestSuite = null;
-        endTestCase();
-        results = new ArrayList<Result>();
-
         if (!log.exists()) {
             log.createNewFile();
         }
