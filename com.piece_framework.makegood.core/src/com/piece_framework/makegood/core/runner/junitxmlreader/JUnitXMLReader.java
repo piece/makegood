@@ -262,7 +262,9 @@ public class JUnitXMLReader extends DefaultHandler {
             startTestCase(currentTestCase);
         }
 
-        currentTestCase.setFailureType(attributes.getValue("type")); //$NON-NLS-1$
+        if (attributes.getIndex("type") != -1) { //$NON-NLS-1$
+            currentTestCase.setFailureType(attributes.getValue("type")); //$NON-NLS-1$
+        }
 
         return currentTestCase;
     }
@@ -278,7 +280,9 @@ public class JUnitXMLReader extends DefaultHandler {
             startTestCase(currentTestCase);
         }
 
-        currentTestCase.setFailureType(attributes.getValue("type")); //$NON-NLS-1$
+        if (attributes.getIndex("type") != -1) { //$NON-NLS-1$
+            currentTestCase.setFailureType(attributes.getValue("type")); //$NON-NLS-1$
+        }
 
         return currentTestCase;
     }
