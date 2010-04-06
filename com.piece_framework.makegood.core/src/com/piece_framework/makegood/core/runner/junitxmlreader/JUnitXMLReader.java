@@ -38,9 +38,8 @@ public class JUnitXMLReader extends DefaultHandler {
         this.log = log;
     }
 
-    public void read() throws ParserConfigurationException,
-                               SAXException,
-                               IOException {
+    public void read()
+        throws ParserConfigurationException, SAXException, IOException {
         if (!log.exists()) {
             log.createNewFile();
         }
