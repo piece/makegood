@@ -53,11 +53,11 @@ public class MakeGoodProperty {
     }
 
     public boolean usePHPUnit() {
-        return preferences.get(TESTING_FRAMEWORK_KEY, "").equals(TestingFramework.PHPUnit.name());
+        return preferences.get(TESTING_FRAMEWORK_KEY, "").equals(TestingFramework.PHPUnit.name()); //$NON-NLS-1$
     }
 
     public boolean useSimpleTest() {
-        return preferences.get(TESTING_FRAMEWORK_KEY, "").equals(TestingFramework.SimpleTest.name());
+        return preferences.get(TESTING_FRAMEWORK_KEY, "").equals(TestingFramework.SimpleTest.name()); //$NON-NLS-1$
     }
 
     public void setTestingFramework(TestingFramework testingFramework) {
@@ -65,7 +65,7 @@ public class MakeGoodProperty {
     }
 
     public TestingFramework getTestingFramework() {
-        String testingFramework = preferences.get(TESTING_FRAMEWORK_KEY, "");
+        String testingFramework = preferences.get(TESTING_FRAMEWORK_KEY, ""); //$NON-NLS-1$
         if (testingFramework.equals(TestingFramework.PHPUnit.name())) {
             return TestingFramework.PHPUnit;
         } else if (testingFramework.equals(TestingFramework.SimpleTest.name())) {
@@ -76,11 +76,11 @@ public class MakeGoodProperty {
     }
 
     public List<IFolder> getTestFolders() {
-        String[] testFolders = preferences.get(TEST_FOLDERS, "").split("\u0005");
+        String[] testFolders = preferences.get(TEST_FOLDERS, "").split("\u0005"); //$NON-NLS-1$ //$NON-NLS-2$
         List<IFolder> testFoldersList = new ArrayList<IFolder>();
         IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
         for (String testFolder: testFolders) {
-            if (!testFolder.equals("")) testFoldersList.add(root.getFolder(new Path(testFolder)));
+            if (!testFolder.equals("")) testFoldersList.add(root.getFolder(new Path(testFolder))); //$NON-NLS-1$
         }
         return Collections.unmodifiableList(testFoldersList);
     }
@@ -88,7 +88,7 @@ public class MakeGoodProperty {
     public void setTestFolders(List<IFolder> testFolders) {
         StringBuilder builder = new StringBuilder();
         for (IFolder testFolder: testFolders) {
-            if (builder.length() > 0) builder.append("\u0005");
+            if (builder.length() > 0) builder.append("\u0005"); //$NON-NLS-1$
             builder.append(testFolder.getFullPath().toString());
         }
         preferences.put(TEST_FOLDERS, builder.toString());

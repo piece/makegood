@@ -230,7 +230,7 @@ public class JUnitXMLReader extends DefaultHandler {
         }
 
         if (results.isEmpty()) {
-            suite.setAllTestCount(Integer.parseInt(attributes.getValue("tests")));
+            suite.setAllTestCount(Integer.parseInt(attributes.getValue("tests"))); //$NON-NLS-1$
         }
 
         return suite;

@@ -15,7 +15,7 @@ import org.eclipse.ui.internal.dialogs.PropertyDialog;
 import com.piece_framework.makegood.core.MakeGoodProperty;
 
 public class TestRunner {
-    private static String MODE_RUN ="run";
+    private static String MODE_RUN ="run"; //$NON-NLS-1$
     private static MakeGoodLaunchShortcut lastShortcut;
     private static Object lastTarget;
 

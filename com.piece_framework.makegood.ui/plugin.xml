@@ -171,7 +171,7 @@
          <command
                commandId="com.piece_framework.makegood.ui.commands.runAllTests"
                icon="icons/MakeGood.gif"
-               label="Run all tests"
+               label="%commands.runAllTests.label"
                style="push">
          </command>
       </menuContribution>
@@ -216,7 +216,7 @@
             categoryId="com.piece_framework.makegood.ui.commands.runTestCategory"
             defaultHandler="com.piece_framework.makegood.ui.handlers.RunAllTests"
             id="com.piece_framework.makegood.ui.commands.runAllTests"
-            name="Run all tests">
+            name="%commands.runAllTests.name">
       </command>
    </extension>
    <extension

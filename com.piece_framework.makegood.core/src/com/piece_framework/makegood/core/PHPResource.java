@@ -72,11 +72,11 @@ public class PHPResource {
     private static String getTestClass(IType type) {
         MakeGoodProperty property = new MakeGoodProperty(type.getResource());
         if (property.usePHPUnit()) {
-            return "PHPUnit_Framework_TestCase";
+            return "PHPUnit_Framework_TestCase"; //$NON-NLS-1$
         } else if (property.useSimpleTest()) {
-            return "UnitTestCase";
+            return "UnitTestCase"; //$NON-NLS-1$
         } else {
-            return "PHPUnit_Framework_TestCase";
+            return "PHPUnit_Framework_TestCase"; //$NON-NLS-1$
         }
     }
 }
