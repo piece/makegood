@@ -374,6 +374,16 @@
                toolbarPath="additions"
                tooltip="%resultView.rerunTest.tooltip">
          </action>
+         <action
+               class="com.piece_framework.makegood.ui.actions.RunAllTestsAction"
+               definitionId="com.piece_framework.makegood.ui.commands.runAllTests"
+               icon="icons/all-tests.gif"
+               id="com.piece_framework.makegood.ui.viewActions.resultView.runAllTests"
+               label="%resultView.runAllTests.label"
+               style="push"
+               toolbarPath="additions"
+               tooltip="%resultView.runAllTests.tooltip">
+         </action>
       </viewContribution>
    </extension>
    <extension
