@@ -583,7 +583,7 @@ public class ResultView extends ViewPart {
         private TestCaseResult getNextFailure(List<Result> targets) {
             for (Result result: targets) {
                 if (findSelected == null) {
-                    if (result.getName().equals(selected.getName())) {
+                    if (result == selected) {
                         findSelected = result;
                     }
                 } else {
@@ -607,7 +607,7 @@ public class ResultView extends ViewPart {
         private TestCaseResult getPreviousFailure(List<Result> targets) {
             for (Result result: targets) {
                 if (findSelected == null) {
-                    if (result.getName().equals(selected.getName())) {
+                    if (result == selected) {
                         return lastFailure;
                     } else {
                         if (result instanceof TestCaseResult
