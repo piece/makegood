@@ -52,16 +52,6 @@ public class EditorOpen {
         }
     }
 
-    public static IEditorPart open(FileWithLineRange range) {
-        if (range instanceof InternalFileWithLineRange) {
-            return open(((InternalFileWithLineRange) range).file);
-        } else if (range instanceof ExternalFileWithLineRange) {
-            return open(((ExternalFileWithLineRange) range).fileStore);
-        } else {
-            return null;
-        }
-    }
-
     public static IEditorPart open(IFile file, Integer line) {
         IEditorPart editorPart = open(file);
         if (editorPart == null) return null;
@@ -71,13 +61,6 @@ public class EditorOpen {
 
     public static IEditorPart open(IFileStore fileStore, Integer line) {
         IEditorPart editorPart = open(fileStore);
-        if (editorPart == null) return null;
-        gotoLine((ITextEditor) editorPart, line);
-        return editorPart;
-    }
-
-    public static IEditorPart open(FileWithLineRange range, Integer line) {
-        IEditorPart editorPart = open(range);
         if (editorPart == null) return null;
         gotoLine((ITextEditor) editorPart, line);
         return editorPart;

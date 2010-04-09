@@ -9,17 +9,21 @@
  * distribution, and is available at http://www.eclipse.org/legal/epl-v10.html
  */
 
-package com.piece_framework.makegood.ui.swt;
+package com.piece_framework.makegood.ui.views;
 
-import org.eclipse.core.filesystem.IFileStore;
+import java.util.regex.Pattern;
 
-import com.piece_framework.makegood.ui.ide.EditorOpen;
+abstract class ActiveTextListener {
+    Pattern pattern;
+    ActiveText text;
 
-public class ExternalFileWithLineRange extends FileWithLineRange {
-    public IFileStore fileStore;
-
-    @Override
-    public void openEditor() {
-        EditorOpen.open(fileStore, line);
+    ActiveTextListener(Pattern pattern) {
+        this.pattern = pattern;
     }
+
+    void setActiveText(ActiveText text) {
+        this.text = text;
+    }
+
+    abstract void generateActiveText();
 }

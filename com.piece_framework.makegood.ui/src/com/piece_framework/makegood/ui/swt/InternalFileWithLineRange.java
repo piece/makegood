@@ -13,6 +13,13 @@ package com.piece_framework.makegood.ui.swt;
 
 import org.eclipse.core.resources.IFile;
 
+import com.piece_framework.makegood.ui.ide.EditorOpen;
+
 public class InternalFileWithLineRange extends FileWithLineRange {
     public IFile file;
+
+    @Override
+    public void openEditor() {
+        EditorOpen.open(file, line);
+    }
 }

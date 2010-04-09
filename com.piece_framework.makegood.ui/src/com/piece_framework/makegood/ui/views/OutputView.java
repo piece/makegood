@@ -25,21 +25,26 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.progress.UIJob;
 
-import com.piece_framework.makegood.ui.swt.LinkedText;
 
 @SuppressWarnings("restriction")
 public class OutputView extends ViewPart {
     public static final String ID = "com.piece_framework.makegood.ui.views.outputView"; //$NON-NLS-1$
-    private LinkedText output;
+    private ActiveText output;
     private IDebugEventSetListener terminateListener;
 
     @Override
     public void createPartControl(Composite parent) {
-        output =
-            new LinkedText(
-                parent,
+        output = new ActiveText(parent);
+        output.addListener(
+            new EditorOpenActiveTextListener(
                 Pattern.compile("in (.+) on line (\\d+)", Pattern.MULTILINE) //$NON-NLS-1$
-            );
+            )
+        );
+        output.addListener(
+            new MethodCreationActiveTextListener(
+                Pattern.compile("Fatal error: Call to undefined method .+::(.+)\\(\\)", Pattern.MULTILINE) //$NON-NLS-1$
+            )
+        );
         terminateListener = new IDebugEventSetListener() {
             @Override
             public void handleDebugEvents(DebugEvent[] events) {

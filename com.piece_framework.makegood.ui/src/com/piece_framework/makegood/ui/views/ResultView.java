@@ -46,7 +46,6 @@ import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.Messages;
 import com.piece_framework.makegood.ui.ide.EditorOpen;
 import com.piece_framework.makegood.ui.ide.FileFind;
-import com.piece_framework.makegood.ui.swt.LinkedText;
 
 public class ResultView extends ViewPart {
     public static final String ID = "com.piece_framework.makegood.ui.views.resultView"; //$NON-NLS-1$
@@ -288,7 +287,14 @@ public class ResultView extends ViewPart {
             Activator.getImageDescriptor("icons/failure-trace.gif").createImage() //$NON-NLS-1$
         );
 
-        return new FailureTrace(traceParent);
+        FailureTrace failureTrace = new FailureTrace(traceParent);
+        failureTrace.addListener(
+            new EditorOpenActiveTextListener(
+                Pattern.compile("^(.+):(\\d+)$", Pattern.MULTILINE) //$NON-NLS-1$
+            )
+        );
+
+        return failureTrace;
     }
 
     public void nextResult() {
@@ -536,10 +542,9 @@ public class ResultView extends ViewPart {
         }
     }
 
-    private class FailureTrace extends LinkedText {
+    private class FailureTrace extends ActiveText {
         public FailureTrace(Composite parent) {
-            super(parent, Pattern.compile("^(.+):(\\d+)$", Pattern.MULTILINE)); //$NON-NLS-1$
-            hideScrollBar();
+            super(parent);
         }
 
         public void clearText() {
