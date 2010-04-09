@@ -5,7 +5,7 @@ import java.text.NumberFormat;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 
-import com.piece_framework.makegood.core.runner.Result;
+import com.piece_framework.makegood.core.result.Result;
 import com.piece_framework.makegood.ui.Activator;
 
 public class ResultLabelProvider extends LabelProvider {
@@ -41,9 +41,9 @@ public class ResultLabelProvider extends LabelProvider {
 
         Result result = (Result) element;
         Image icon = null;
-        if (result.hasFailure()) {
+        if (result.hasFailures()) {
             icon = failureIcon;
-        } else if (result.hasError()) {
+        } else if (result.hasErrors()) {
             icon = errorIcon;
         } else {
             icon = passIcon;

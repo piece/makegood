@@ -16,7 +16,6 @@ import java.util.regex.Pattern;
 
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 
 import com.piece_framework.makegood.ui.ide.FileFind;
@@ -41,7 +40,7 @@ class EditorOpenActiveTextListener extends ActiveTextListener {
             if (files.length > 0) {
                 InternalFileWithLineRange iStyle = new InternalFileWithLineRange();
                 iStyle.file = files[0];
-                iStyle.foreground = text.getDisplay().getSystemColor(SWT.COLOR_BLUE);
+                iStyle.foreground = new Color(text.getDisplay(), 0, 51, 153);
                 style = (FileWithLineRange) iStyle;
             } else {
                 ExternalFileWithLineRange eStyle = new ExternalFileWithLineRange();

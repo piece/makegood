@@ -5,8 +5,8 @@ import java.util.Collection;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
-import com.piece_framework.makegood.core.runner.Result;
-import com.piece_framework.makegood.core.runner.TestSuiteResult;
+import com.piece_framework.makegood.core.result.Result;
+import com.piece_framework.makegood.core.result.TestSuiteResult;
 
 public class ResultContentProvider implements ITreeContentProvider {
     @Override

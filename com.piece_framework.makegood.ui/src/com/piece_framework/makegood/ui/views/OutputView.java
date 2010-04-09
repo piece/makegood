@@ -25,7 +25,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.progress.UIJob;
 
-
 @SuppressWarnings("restriction")
 public class OutputView extends ViewPart {
     public static final String ID = "com.piece_framework.makegood.ui.views.outputView"; //$NON-NLS-1$

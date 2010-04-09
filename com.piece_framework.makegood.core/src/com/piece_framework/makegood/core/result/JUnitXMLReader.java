@@ -1,4 +1,4 @@
-package com.piece_framework.makegood.core.runner.junitxmlreader;
+package com.piece_framework.makegood.core.result;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -16,12 +16,6 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
-
-import com.piece_framework.makegood.core.runner.ErrorTestCaseResult;
-import com.piece_framework.makegood.core.runner.FailureTestCaseResult;
-import com.piece_framework.makegood.core.runner.TestCaseResult;
-import com.piece_framework.makegood.core.runner.Result;
-import com.piece_framework.makegood.core.runner.TestSuiteResult;
 
 public class JUnitXMLReader extends DefaultHandler {
     private File log;
@@ -169,7 +163,7 @@ public class JUnitXMLReader extends DefaultHandler {
 
     private void endTestSuite() {
         if (currentTestSuite != null) {
-            currentTestSuite = (TestSuiteResult) currentTestSuite.getParent();
+            currentTestSuite = (TestSuiteResult) currentTestSuite.parent;
         }
 
         for (JUnitXMLReaderListener listener: listeners) {

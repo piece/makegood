@@ -36,10 +36,9 @@ import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.contexts.IContextService;
 import org.eclipse.ui.part.ViewPart;
 
-import com.piece_framework.makegood.core.runner.Result;
-import com.piece_framework.makegood.core.runner.RunProgress;
-import com.piece_framework.makegood.core.runner.TestCaseResult;
-import com.piece_framework.makegood.core.runner.TestSuiteResult;
+import com.piece_framework.makegood.core.result.Result;
+import com.piece_framework.makegood.core.result.TestCaseResult;
+import com.piece_framework.makegood.core.result.TestSuiteResult;
 import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.Messages;
 import com.piece_framework.makegood.ui.ide.EditorOpen;
@@ -72,13 +71,9 @@ public class ResultView extends ViewPart {
         public boolean select(Viewer viewer, Object parentElement, Object element) {
             if (!(element instanceof Result)) return false;
             Result result = (Result) element;
-            return result.hasFailure() || result.hasError();
+            return result.hasFailures() || result.hasErrors();
         }
     };
-
-    public ResultView() {
-        // TODO Auto-generated constructor stub
-    }
 
     @Override
     public IViewSite getViewSite() {
@@ -178,7 +173,7 @@ public class ResultView extends ViewPart {
                 Object element = selection.getFirstElement();
                 if (!(element instanceof TestCaseResult)) return;
                 TestCaseResult testCase = (TestCaseResult)element;
-                if (!testCase.hasFailure() && !testCase.hasError()) return;
+                if (!testCase.hasFailures() && !testCase.hasErrors()) return;
                 failureTrace.setText(testCase.getFailureTrace());
             }
         });
@@ -593,7 +588,7 @@ public class ResultView extends ViewPart {
                     }
                 } else {
                     if (result instanceof TestCaseResult
-                        && (result.hasError() || result.hasFailure())
+                        && (result.hasErrors() || result.hasFailures())
                         ) {
                         return (TestCaseResult) result;
                     }
@@ -616,7 +611,7 @@ public class ResultView extends ViewPart {
                         return lastFailure;
                     } else {
                         if (result instanceof TestCaseResult
-                            && (result.hasError() || result.hasFailure())
+                            && (result.hasErrors() || result.hasFailures())
                             ) {
                             lastFailure = (TestCaseResult) result;
                         }

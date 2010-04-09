@@ -1,12 +1,16 @@
-package com.piece_framework.makegood.core.runner;
+package com.piece_framework.makegood.core.result;
 
 import java.util.List;
 
 public abstract class Result {
-    protected String name;
-    protected long time;
-    protected String file;
-    private Result parent;
+    private String name;
+    long time;
+    private String file;
+    Result parent;
+
+    public Result(String name) {
+        this.name = name;
+    }
 
     public String getName() {
         return name;
@@ -24,27 +28,17 @@ public abstract class Result {
 
     public abstract List<Result> getChildren();
 
-    public abstract Result getChild(String name);
-
-    public boolean hasError() {
+    public boolean hasErrors() {
         return getErrorCount() > 0;
     }
 
-    public boolean hasFailure() {
+    public boolean hasFailures() {
         return getFailureCount() > 0;
     }
 
-    public abstract void addChild(Result result);
+    void addChild(Result result) {}
 
-    public Result getParent() {
-        return parent;
-    }
-
-    public void setParent(Result parent) {
-        this.parent = parent;
-    }
-
-    public void setFile(String file) {
+    void setFile(String file) {
         this.file = file;
     }
 

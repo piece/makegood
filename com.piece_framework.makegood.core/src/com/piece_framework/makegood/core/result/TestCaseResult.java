@@ -1,4 +1,4 @@
-package com.piece_framework.makegood.core.runner;
+package com.piece_framework.makegood.core.result;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -8,14 +8,14 @@ public class TestCaseResult extends Result {
     private String className;
     private int line;
     private boolean isArtificial = false;
-    private String failureType;
+    String failureType;
     private String failureTrace;
 
     public TestCaseResult(String name) {
-        this.name = name;
+        super(name);
     }
 
-    public String getClassName() {
+    String getClassName() {
         return className;
     }
 
@@ -24,18 +24,13 @@ public class TestCaseResult extends Result {
     }
 
     @Override
-    public boolean hasError() {
+    public boolean hasErrors() {
         return false;
     }
 
     @Override
-    public boolean hasFailure() {
+    public boolean hasFailures() {
         return false;
-    }
-
-    @Override
-    public void addChild(Result result) throws UnsupportedOperationException {
-        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -44,41 +39,32 @@ public class TestCaseResult extends Result {
     }
 
     @Override
-    public Result getChild(String name) {
-        return null;
-    }
-
-    @Override
     public void setTime(long time) {
         this.time = time;
-        getParent().setTime(time);
+        parent.setTime(time);
     }
 
-    public void setClassName(String cassName) {
+    void setClassName(String cassName) {
         this.className = cassName;
     }
 
-    public void setLine(int line) {
+    void setLine(int line) {
         this.line = line;
     }
 
-    public boolean isArtificial() {
+    boolean isArtificial() {
         return isArtificial;
     }
 
-    public void setIsArtificial(boolean isArtificial) {
+    void setIsArtificial(boolean isArtificial) {
         this.isArtificial = isArtificial;
     }
 
-    public void setFailureType(String failureType) {
+    void setFailureType(String failureType) {
         this.failureType = failureType;
     }
 
-    public String getFailureType() {
-        return failureType;
-    }
-
-    public void setFailureTrace(String failureTrace) {
+    void setFailureTrace(String failureTrace) {
         this.failureTrace = failureTrace;
     }
 

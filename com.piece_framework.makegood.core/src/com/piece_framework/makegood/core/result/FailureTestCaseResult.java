@@ -9,7 +9,7 @@
  * distribution, and is available at http://www.eclipse.org/legal/epl-v10.html
  */
 
-package com.piece_framework.makegood.core.runner;
+package com.piece_framework.makegood.core.result;
 
 public class FailureTestCaseResult extends TestCaseResult {
     public FailureTestCaseResult(String name) {
@@ -17,14 +17,14 @@ public class FailureTestCaseResult extends TestCaseResult {
     }
 
     public FailureTestCaseResult(TestCaseResult currentTestCase) {
-        super(currentTestCase.name);
+        super(currentTestCase.getName());
         setFile(currentTestCase.getFile());
         setClassName(currentTestCase.getClassName());
         setLine(currentTestCase.getLine());
     }
 
     @Override
-    public boolean hasFailure() {
+    public boolean hasFailures() {
         return true;
     }
 

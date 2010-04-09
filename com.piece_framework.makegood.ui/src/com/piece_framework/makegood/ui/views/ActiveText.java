@@ -131,11 +131,11 @@ class ActiveText implements MouseListener, MouseMoveListener {
         }
 
         for (int i = 0; i < styles.size(); ++i) {
-            StyleRange range = styles.get(i);
-            int startOffset = range.start;
-            int endOffset = startOffset + range.length;
+            StyleRange style = styles.get(i);
+            int startOffset = style.start;
+            int endOffset = startOffset + style.length;
             if (offset >= startOffset && offset <= endOffset) {
-                return range;
+                return style;
             }
         }
 

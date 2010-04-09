@@ -1,4 +1,4 @@
-package com.piece_framework.makegood.core.runner;
+package com.piece_framework.makegood.core.result;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,7 +11,7 @@ public class TestSuiteResult extends Result {
     private int allTestCount;
 
     public TestSuiteResult(String name) {
-        this.name = name;
+        super(name);
         children = new ArrayList<Result>();
     }
 
@@ -54,13 +54,12 @@ public class TestSuiteResult extends Result {
     }
 
     @Override
-    public void addChild(Result result) {
+    void addChild(Result result) {
         if (result == null) {
             return;
         }
 
-        result.setParent(this);
-
+        result.parent = this;
         children.add(result);
     }
 
@@ -70,21 +69,10 @@ public class TestSuiteResult extends Result {
     }
 
     @Override
-    public Result getChild(String name) {
-        for (Result result: children) {
-            if (result.getName().equals(name)) {
-                return result;
-            }
-        }
-
-        return null;
-    }
-
-    @Override
     public void setTime(long time) {
         this.time += time;
-        if (getParent() != null) {
-            getParent().setTime(time);
+        if (parent != null) {
+            parent.setTime(time);
         }
     }
 

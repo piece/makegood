@@ -1,4 +1,4 @@
-package com.piece_framework.makegood.core.runner.junitxmlreader;
+package com.piece_framework.makegood.core.result;
 
 import java.io.File;
 import java.io.FileNotFoundException;

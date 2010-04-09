@@ -1,4 +1,4 @@
-package com.piece_framework.makegood.core.runner.junitxmlreader;
+package com.piece_framework.makegood.core.result;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -19,12 +19,12 @@ import org.junit.internal.runners.ErrorReportingRunner;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
-import com.piece_framework.makegood.core.runner.ErrorTestCaseResult;
-import com.piece_framework.makegood.core.runner.FailureTestCaseResult;
-import com.piece_framework.makegood.core.runner.TestCaseResult;
-import com.piece_framework.makegood.core.runner.Result;
-import com.piece_framework.makegood.core.runner.TestSuiteResult;
-import com.piece_framework.makegood.core.runner.junitxmlreader.JUnitXMLReader;
+import com.piece_framework.makegood.core.result.ErrorTestCaseResult;
+import com.piece_framework.makegood.core.result.FailureTestCaseResult;
+import com.piece_framework.makegood.core.result.JUnitXMLReader;
+import com.piece_framework.makegood.core.result.Result;
+import com.piece_framework.makegood.core.result.TestCaseResult;
+import com.piece_framework.makegood.core.result.TestSuiteResult;
 
 public class JUnitXMLReaderTest {
     private static final String BASE_DIR = "/home/matsu/GITWORK/stagehand-testrunner";
@@ -609,7 +609,7 @@ SRC_DIR + "/Stagehand/TestRunner.php:186\n" +
         assertTrue(result instanceof TestCaseResult);
 
         assertEquals(expectedProblemType, result.getClass());
-        assertEquals(expectedTypeClass, result.getFailureType());
+        assertEquals(expectedTypeClass, result.failureType);
         assertEquals(expectedContent, result.getFailureTrace());
 
         return result;

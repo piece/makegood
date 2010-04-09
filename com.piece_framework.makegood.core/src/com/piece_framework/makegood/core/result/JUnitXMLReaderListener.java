@@ -1,7 +1,5 @@
-package com.piece_framework.makegood.core.runner.junitxmlreader;
+package com.piece_framework.makegood.core.result;
 
-import com.piece_framework.makegood.core.runner.TestCaseResult;
-import com.piece_framework.makegood.core.runner.TestSuiteResult;
 
 public interface JUnitXMLReaderListener {
     public void startTestSuite(TestSuiteResult testSuite);

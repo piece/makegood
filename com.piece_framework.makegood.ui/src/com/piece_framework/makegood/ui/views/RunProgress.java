@@ -1,52 +1,54 @@
-package com.piece_framework.makegood.core.runner;
+package com.piece_framework.makegood.ui.views;
 
-public class RunProgress {
+import com.piece_framework.makegood.core.result.TestSuiteResult;
+
+class RunProgress {
     private boolean isInitialized;
     private long processTime;
     private long startTimeForTestCase;
     private long processTimeForTestCase;
     private TestSuiteResult suite;
 
-    public RunProgress() {
+    RunProgress() {
         suite = new TestSuiteResult(null);
     }
 
-    public void initialize(TestSuiteResult suite) {
+    void initialize(TestSuiteResult suite) {
         this.suite = suite;
         startTimeForTestCase = System.nanoTime();
         processTime = 0;
         isInitialized = true;
     }
 
-    public boolean isInitialized() {
+    boolean isInitialized() {
         return isInitialized;
     }
 
-    public int getAllTestCount() {
+    int getAllTestCount() {
         return suite.getAllTestCount();
     }
 
-    public int getTestCount() {
+    int getTestCount() {
         return suite.getTestCount();
     }
 
-    public int getPassCount() {
+    int getPassCount() {
         return suite.getPassCount();
     }
 
-    public int getFailureCount() {
+    int getFailureCount() {
         return suite.getFailureCount();
     }
 
-    public int getErrorCount() {
+    int getErrorCount() {
         return suite.getErrorCount();
     }
 
-    public long getProcessTime() {
+    long getProcessTime() {
         return processTime;
     }
 
-    public int getRate() {
+    int getRate() {
         if (suite.getAllTestCount() == 0) {
             return 0;
         }
@@ -55,7 +57,7 @@ public class RunProgress {
         return rate <= 100 ? rate : 100;
     }
 
-    public long getAverage() {
+    long getAverage() {
         if (suite.getTestCount() == 0) {
             return 0;
         }
@@ -63,20 +65,20 @@ public class RunProgress {
         return getProcessTime() / suite.getTestCount();
     }
 
-    public void startTestCase() {
+    void startTestCase() {
         startTimeForTestCase = System.nanoTime();
     }
 
-    public void endTestCase() {
+    void endTestCase() {
         processTimeForTestCase = System.nanoTime() - startTimeForTestCase;
         processTime += processTimeForTestCase;
     }
 
-    public long getProcessTimeForTestCase() {
+    long getProcessTimeForTestCase() {
         return processTimeForTestCase;
     }
 
-    public boolean hasFailures() {
-        return suite.hasFailure() || suite.hasError();
+    boolean hasFailures() {
+        return suite.hasFailures() || suite.hasErrors();
     }
 }

@@ -1,12 +1,12 @@
-package com.piece_framework.makegood.core.runner.junitxmlreader;
+package com.piece_framework.makegood.core.result;
 
 import static org.junit.Assert.assertEquals;
 import java.util.Arrays;
 import java.util.Iterator;
 
-import com.piece_framework.makegood.core.runner.TestCaseResult;
-import com.piece_framework.makegood.core.runner.TestSuiteResult;
-import com.piece_framework.makegood.core.runner.junitxmlreader.JUnitXMLReaderListener;
+import com.piece_framework.makegood.core.result.JUnitXMLReaderListener;
+import com.piece_framework.makegood.core.result.TestCaseResult;
+import com.piece_framework.makegood.core.result.TestSuiteResult;
 
 public class NamesAssertionJUnitXMLReaderListener implements JUnitXMLReaderListener {
     private Iterator<String> suiteNamesIterator;

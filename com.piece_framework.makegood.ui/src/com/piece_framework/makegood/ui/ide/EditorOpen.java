@@ -23,9 +23,6 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.texteditor.ITextEditor;
 
 import com.piece_framework.makegood.ui.Activator;
-import com.piece_framework.makegood.ui.swt.ExternalFileWithLineRange;
-import com.piece_framework.makegood.ui.swt.FileWithLineRange;
-import com.piece_framework.makegood.ui.swt.InternalFileWithLineRange;
 
 public class EditorOpen {
     public static IEditorPart open(IFile file) {
