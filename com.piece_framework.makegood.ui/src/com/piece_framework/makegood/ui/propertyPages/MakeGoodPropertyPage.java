@@ -139,7 +139,7 @@ public class MakeGoodPropertyPage extends PropertyPage implements IWorkbenchProp
         });
 
         Group testFoldersGroup = new Group(composite, SWT.LEFT | SWT.TOP);
-        testFoldersGroup.setText("Test Folders");
+        testFoldersGroup.setText(Messages.MakeGoodPropertyPage_testFoldersLabel);
         testFoldersGroup.setLayout(new GridLayout(2, false));
         {
             GridData gridData = new GridData();
@@ -220,7 +220,7 @@ public class MakeGoodPropertyPage extends PropertyPage implements IWorkbenchProp
         }
 
         Button addFolder = new Button(buttons, SWT.NONE);
-        addFolder.setText("&Add Folder...");
+        addFolder.setText(Messages.MakeGoodPropertyPage_addFolderLabel);
         addFolder.addSelectionListener(new SelectionListener() {
             @Override
             public void widgetDefaultSelected(SelectionEvent e) {
@@ -232,8 +232,8 @@ public class MakeGoodPropertyPage extends PropertyPage implements IWorkbenchProp
                                                                                    new WorkbenchLabelProvider(),
                                                                                    new WorkbenchContentProvider()
                                                                                    );
-                dialog.setTitle("Test Folder Selection");
-                dialog.setMessage("&Select the test folder:");
+                dialog.setTitle(Messages.MakeGoodPropertyPage_testFolderDialogTitle);
+                dialog.setMessage(Messages.MakeGoodPropertyPage_testFolderDialogMessage);
                 dialog.addFilter(new ViewerFilter() {
                     @Override
                     public boolean select(Viewer viewer,
@@ -265,7 +265,7 @@ public class MakeGoodPropertyPage extends PropertyPage implements IWorkbenchProp
         });
 
         remove = new Button(buttons, SWT.NONE);
-        remove.setText("&Remove");
+        remove.setText(Messages.MakeGoodPropertyPage_removeLabel);
         remove.setEnabled(false);
         remove.addSelectionListener(new SelectionListener() {
             @Override

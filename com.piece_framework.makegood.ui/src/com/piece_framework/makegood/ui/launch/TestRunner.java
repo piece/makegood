@@ -10,12 +10,14 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
+import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.internal.dialogs.PropertyDialog;
 
 import com.piece_framework.makegood.core.MakeGoodProperty;
 
 public class TestRunner {
-    private static String MODE_RUN ="run";
+    private static String MODE_RUN ="run"; //$NON-NLS-1$
     private static MakeGoodLaunchShortcut lastShortcut;
     private static Object lastTarget;
 
@@ -77,6 +79,19 @@ public class TestRunner {
             }
         }
         return null;
+    }
+
+    public static boolean runnableAllTests() {
+        IWorkbenchPart editorPart = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
+        if (editorPart == null) return false;
+
+        IResource resource = getResource(editorPart);
+        if (resource == null || !resource.getProject().exists()) return false;
+
+        MakeGoodProperty property = new MakeGoodProperty(resource);
+        if (property.getTestFolders().size() == 0) return false;
+
+        return true;
     }
 
     private static void runTests(Object target, MakeGoodLaunchShortcut shortcut) {

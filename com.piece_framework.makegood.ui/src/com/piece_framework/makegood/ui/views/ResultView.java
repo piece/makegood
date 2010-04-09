@@ -1,5 +1,8 @@
 package com.piece_framework.makegood.ui.views;
 
+import java.util.List;
+import java.util.regex.Pattern;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.IAction;
@@ -33,24 +36,21 @@ import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.contexts.IContextService;
 import org.eclipse.ui.part.ViewPart;
 
-import java.util.List;
-import java.util.regex.Pattern;
-
-import com.piece_framework.makegood.core.runner.ErrorTestCaseResult;
-import com.piece_framework.makegood.core.runner.FailureTestCaseResult;
+import com.piece_framework.makegood.core.runner.Result;
 import com.piece_framework.makegood.core.runner.RunProgress;
 import com.piece_framework.makegood.core.runner.TestCaseResult;
-import com.piece_framework.makegood.core.runner.Result;
 import com.piece_framework.makegood.core.runner.TestSuiteResult;
 import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.Messages;
 import com.piece_framework.makegood.ui.ide.EditorOpen;
 import com.piece_framework.makegood.ui.ide.FileFind;
+import com.piece_framework.makegood.ui.launch.TestRunner;
 
 public class ResultView extends ViewPart {
     public static final String ID = "com.piece_framework.makegood.ui.views.resultView"; //$NON-NLS-1$
     private static final String STOP_ACTION_ID = Activator.PLUGIN_ID + ".viewActions.resultView.stopTest"; //$NON-NLS-1$
     private static final String RERUN_ACTION_ID = Activator.PLUGIN_ID + ".viewActions.resultView.rerunTest"; //$NON-NLS-1$
+    private static final String RUNALLTESTS_ACTION_ID = Activator.PLUGIN_ID + ".viewActions.resultView.runAllTests"; //$NON-NLS-1$
     private static final String CONTEXT_ID = Activator.PLUGIN_ID + ".contexts.resultView"; //$NON-NLS-1$
 
     private RunProgressBar progressBar;
@@ -64,6 +64,7 @@ public class ResultView extends ViewPart {
     private ShowTimer showTimer;
     private IAction stopAction;
     private IAction rerunAction;
+    private IAction runAllTestsAction;
     private FailureTrace failureTrace;
 
     private ViewerFilter failureFilter = new ViewerFilter() {
@@ -96,6 +97,11 @@ public class ResultView extends ViewPart {
             if (rerunItem != null) {
                 rerunAction = rerunItem.getAction();
                 rerunAction.setEnabled(false);
+            }
+
+            ActionContributionItem runAllTestsItem = (ActionContributionItem) manager.find(RUNALLTESTS_ACTION_ID);
+            if (runAllTestsItem != null) {
+                runAllTestsAction = runAllTestsItem.getAction();
             }
         }
 
@@ -214,7 +220,9 @@ public class ResultView extends ViewPart {
 
     @Override
     public void setFocus() {
-        // TODO Auto-generated method stub
+        if (runAllTestsAction != null) {
+            runAllTestsAction.setEnabled(TestRunner.runnableAllTests());
+        }
     }
 
     public void reset() {
@@ -382,6 +390,7 @@ public class ResultView extends ViewPart {
 
         stopAction.setEnabled(true);
         rerunAction.setEnabled(false);
+        runAllTestsAction.setEnabled(false);
     }
 
     public void stop() {
@@ -389,6 +398,7 @@ public class ResultView extends ViewPart {
 
         stopAction.setEnabled(false);
         rerunAction.setEnabled(true);
+        runAllTestsAction.setEnabled(TestRunner.runnableAllTests());
     }
 
     private class ResultLabel {
@@ -578,7 +588,7 @@ public class ResultView extends ViewPart {
         private TestCaseResult getNextFailure(List<Result> targets) {
             for (Result result: targets) {
                 if (findSelected == null) {
-                    if (result.getName().equals(selected.getName())) {
+                    if (result == selected) {
                         findSelected = result;
                     }
                 } else {
@@ -602,7 +612,7 @@ public class ResultView extends ViewPart {
         private TestCaseResult getPreviousFailure(List<Result> targets) {
             for (Result result: targets) {
                 if (findSelected == null) {
-                    if (result.getName().equals(selected.getName())) {
+                    if (result == selected) {
                         return lastFailure;
                     } else {
                         if (result instanceof TestCaseResult

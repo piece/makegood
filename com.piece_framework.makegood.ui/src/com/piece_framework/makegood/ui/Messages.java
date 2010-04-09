@@ -6,12 +6,17 @@ public class Messages extends NLS {
     private static final String BUNDLE_NAME = "messages"; //$NON-NLS-1$
     public static String MakeGoodLaunchShortcut_messageTitle;
     public static String MakeGoodLaunchShortcut_notFoundTestsMessage;
+    public static String MakeGoodPropertyPage_addFolderLabel;
+    public static String MakeGoodPropertyPage_testFolderDialogMessage;
+    public static String MakeGoodPropertyPage_testFolderDialogTitle;
+    public static String MakeGoodPropertyPage_testFoldersLabel;
     public static String MakeGoodPropertyPage_testingFrameworkLabel;
     public static String MakeGoodPropertyPage_browseLabel;
     public static String MakeGoodPropertyPage_preloadScriptDialogMessage;
     public static String MakeGoodPropertyPage_preloadScriptDialogTitle;
     public static String MakeGoodPropertyPage_preloadScriptLabel;
     public static String MakeGoodPropertyPage_PHPUnit;
+    public static String MakeGoodPropertyPage_removeLabel;
     public static String MakeGoodPropertyPage_SimpleTest;
     public static String TestResultView_assertionsLabel;
     public static String TestResultView_errorsLabel;
