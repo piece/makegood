@@ -48,7 +48,7 @@ class RunProgress {
         return processTime;
     }
 
-    int getRate() {
+    int calculateRate() {
         if (suite.getAllTestCount() == 0) {
             return 0;
         }

@@ -334,7 +334,7 @@ public class ResultView extends ViewPart {
     }
 
     public void refresh(RunProgress progress, Result result) {
-        progressRate.setText(String.format("%3d", progress.getRate()) +     //$NON-NLS-1$
+        progressRate.setText(String.format("%3d", progress.calculateRate()) +     //$NON-NLS-1$
                      " " +      //$NON-NLS-1$
                      Messages.TestResultView_percent +
                      "  "       //$NON-NLS-1$
@@ -355,7 +355,7 @@ public class ResultView extends ViewPart {
         errorCount.setCount(progress.getErrorCount());
 
         if (progress.hasFailures()) progressBar.red();
-        progressBar.update(progress.getRate());
+        progressBar.update(progress.calculateRate());
 
         if (result != null) {
             resultTreeViewer.expandAll();
