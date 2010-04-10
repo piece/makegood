@@ -51,13 +51,13 @@ public class ResultView extends ViewPart {
     private static final String CONTEXT_ID = Activator.PLUGIN_ID + ".contexts.resultView"; //$NON-NLS-1$
 
     private RunProgressBar progressBar;
-    private Label tests;
-    private ResultLabel passes;
-    private ResultLabel failures;
-    private ResultLabel errors;
+    private Label testCount;
+    private ResultLabel passCount;
+    private ResultLabel failureCount;
+    private ResultLabel errorCount;
     private TreeViewer resultTreeViewer;
-    private Label rate;
-    private Label average;
+    private Label progressRate;
+    private Label processTimeAverage;
     private ShowTimer showTimer;
     private IAction stopAction;
     private IAction rerunAction;
@@ -112,36 +112,36 @@ public class ResultView extends ViewPart {
         row1.setLayoutData(createHorizontalFillGridData());
         row1.setLayout(new GridLayout(2, true));
 
-        tests = new Label(row1, SWT.LEFT | SWT.WRAP);
-        tests.setLayoutData(createHorizontalFillGridData());
+        testCount = new Label(row1, SWT.LEFT | SWT.WRAP);
+        testCount.setLayoutData(createHorizontalFillGridData());
 
         Composite progress = new Composite(row1, SWT.NONE);
         progress.setLayoutData(createHorizontalFillGridData());
         progress.setLayout(new GridLayout(3, false));
-        rate = new Label(progress, SWT.LEFT);
+        progressRate = new Label(progress, SWT.LEFT);
         progressBar = new RunProgressBar(progress);
         progressBar.setLayoutData(createHorizontalFillGridData());
-        average = new Label(progress, SWT.LEFT);
+        processTimeAverage = new Label(progress, SWT.LEFT);
 
         Composite row2 = new Composite(parent, SWT.NONE);
         row2.setLayoutData(createHorizontalFillGridData());
         row2.setLayout(new GridLayout(2, true));
 
-        Composite labels = new Composite(row2, SWT.NONE);
-        labels.setLayoutData(createHorizontalFillGridData());
-        labels.setLayout(new FillLayout(SWT.HORIZONTAL));
-        passes = new ResultLabel(
-                     labels,
+        Composite counter = new Composite(row2, SWT.NONE);
+        counter.setLayoutData(createHorizontalFillGridData());
+        counter.setLayout(new FillLayout(SWT.HORIZONTAL));
+        passCount = new ResultLabel(
+                     counter,
                      Messages.TestResultView_passesLabel,
                      Activator.getImageDescriptor("icons/pass-gray.gif").createImage() //$NON-NLS-1$
                  );
-        failures = new ResultLabel(
-                       labels,
+        failureCount = new ResultLabel(
+                       counter,
                        Messages.TestResultView_failuresLabel,
                        Activator.getImageDescriptor("icons/failure-gray.gif").createImage() //$NON-NLS-1$
                    );
-        errors = new ResultLabel(
-                     labels,
+        errorCount = new ResultLabel(
+                     counter,
                      Messages.TestResultView_errorsLabel,
                      Activator.getImageDescriptor("icons/error-gray.gif").createImage() //$NON-NLS-1$
                  );
@@ -218,11 +218,11 @@ public class ResultView extends ViewPart {
     }
 
     public void reset() {
-        rate.setText("  0 " +   //$NON-NLS-1$ 
+        progressRate.setText("  0 " +   //$NON-NLS-1$
                      Messages.TestResultView_percent +
                      "  "       //$NON-NLS-1$
                      );
-        average.setText(TimeFormatter.format(0,
+        processTimeAverage.setText(TimeFormatter.format(0,
                                              Messages.TestResultView_second,
                                              Messages.TestResultView_millisecond
                                              ) +
@@ -230,7 +230,7 @@ public class ResultView extends ViewPart {
                         Messages.TestResultView_averageTest +
                         "  "            //$NON-NLS-1$
                         );
-        tests.setText(Messages.TestResultView_testsLabel + " " + //$NON-NLS-1$
+        testCount.setText(Messages.TestResultView_testsLabel + " " + //$NON-NLS-1$
                       " 0/0 " + //$NON-NLS-1$
                       "(" +         //$NON-NLS-1$
                           Messages.TestResultView_realTime +
@@ -249,9 +249,9 @@ public class ResultView extends ViewPart {
                                              ) +
                       ")" //$NON-NLS-1$
                       );
-        passes.reset();
-        failures.reset();
-        errors.reset();
+        passCount.reset();
+        failureCount.reset();
+        errorCount.reset();
 
         progressBar.reset();
 
@@ -334,12 +334,12 @@ public class ResultView extends ViewPart {
     }
 
     public void refresh(RunProgress progress, Result result) {
-        rate.setText(String.format("%3d", progress.getRate()) +     //$NON-NLS-1$
+        progressRate.setText(String.format("%3d", progress.getRate()) +     //$NON-NLS-1$
                      " " +      //$NON-NLS-1$
                      Messages.TestResultView_percent +
                      "  "       //$NON-NLS-1$
                      );
-        average.setText(TimeFormatter.format(progress.getAverage(),
+        processTimeAverage.setText(TimeFormatter.format(progress.getAverage(),
                                              Messages.TestResultView_second,
                                              Messages.TestResultView_millisecond
                                              ) +
@@ -347,12 +347,12 @@ public class ResultView extends ViewPart {
                         Messages.TestResultView_averageTest +
                         "  "        //$NON-NLS-1$
                         );
-        average.getParent().layout();
+        processTimeAverage.getParent().layout();
 
         showTimer.show();
-        passes.setCount(progress.getPassCount());
-        failures.setCount(progress.getFailureCount());
-        errors.setCount(progress.getErrorCount());
+        passCount.setCount(progress.getPassCount());
+        failureCount.setCount(progress.getFailureCount());
+        errorCount.setCount(progress.getErrorCount());
 
         if (progress.hasFailures()) progressBar.red();
         progressBar.update(progress.getRate());
@@ -365,7 +365,7 @@ public class ResultView extends ViewPart {
     }
 
     public void start(RunProgress progress) {
-        showTimer = new ShowTimer(tests, progress, 200);
+        showTimer = new ShowTimer(testCount, progress, 200);
         showTimer.start();
 
         stopAction.setEnabled(true);
