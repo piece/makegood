@@ -8,7 +8,7 @@ import org.eclipse.ui.IViewPart;
 import com.piece_framework.makegood.ui.ide.ViewShow;
 import com.piece_framework.makegood.ui.views.ResultView;
 
-public class PreviousFailedTestActions implements IViewActionDelegate {
+public class PreviousFailedTestAction implements IViewActionDelegate {
     @Override
     public void init(IViewPart view) {
     }
