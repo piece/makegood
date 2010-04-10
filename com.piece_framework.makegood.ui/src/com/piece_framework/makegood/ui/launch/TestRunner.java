@@ -10,6 +10,7 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
+import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.internal.dialogs.PropertyDialog;
@@ -82,10 +83,14 @@ public class TestRunner {
     }
 
     public static boolean runnableAllTests() {
-        IWorkbenchPart editorPart = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
-        if (editorPart == null) return false;
+        IResource resource = null;
+        IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+        if (activePage.getActivePart() instanceof IEditorPart) {
+            resource = getResource(activePage.getActivePart());
+        } else if (activePage.getSelection() != null) {
+            resource = getResource(activePage.getSelection());
+        }
 
-        IResource resource = getResource(editorPart);
         if (resource == null || !resource.getProject().exists()) return false;
 
         MakeGoodProperty property = new MakeGoodProperty(resource);
