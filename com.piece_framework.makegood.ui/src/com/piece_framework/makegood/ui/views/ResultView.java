@@ -339,7 +339,7 @@ public class ResultView extends ViewPart {
                      Messages.TestResultView_percent +
                      "  "       //$NON-NLS-1$
                      );
-        processTimeAverage.setText(TimeFormatter.format(progress.getAverage(),
+        processTimeAverage.setText(TimeFormatter.format(progress.calculateProcessTimeAverage(),
                                              Messages.TestResultView_second,
                                              Messages.TestResultView_millisecond
                                              ) +

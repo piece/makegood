@@ -57,7 +57,7 @@ class RunProgress {
         return rate <= 100 ? rate : 100;
     }
 
-    long getAverage() {
+    long calculateProcessTimeAverage() {
         if (suite.getTestCount() == 0) {
             return 0;
         }
