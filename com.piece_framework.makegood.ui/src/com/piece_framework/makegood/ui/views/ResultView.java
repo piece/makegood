@@ -18,7 +18,6 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
-import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.graphics.Color;
@@ -28,7 +27,6 @@ import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Tree;
@@ -110,56 +108,55 @@ public class ResultView extends ViewPart {
 
         parent.setLayout(new GridLayout(1, false));
 
-        Composite progress = new Composite(parent, SWT.NULL);
+        Composite row1 = new Composite(parent, SWT.NONE);
+        row1.setLayoutData(createHorizontalFillGridData());
+        row1.setLayout(new GridLayout(2, true));
+
+        tests = new Label(row1, SWT.LEFT | SWT.WRAP);
+        tests.setLayoutData(createHorizontalFillGridData());
+
+        Composite progress = new Composite(row1, SWT.NONE);
         progress.setLayoutData(createHorizontalFillGridData());
         progress.setLayout(new GridLayout(3, false));
-
         rate = new Label(progress, SWT.LEFT);
         progressBar = new RunProgressBar(progress);
         progressBar.setLayoutData(createHorizontalFillGridData());
         average = new Label(progress, SWT.LEFT);
 
-        Composite summary = new Composite(parent, SWT.NULL);
-        summary.setLayoutData(createHorizontalFillGridData());
-        summary.setLayout(new GridLayout(2, true));
+        Composite row2 = new Composite(parent, SWT.NONE);
+        row2.setLayoutData(createHorizontalFillGridData());
+        row2.setLayout(new GridLayout(2, true));
 
-        tests = new Label(summary, SWT.LEFT | SWT.WRAP);
-        tests.setLayoutData(createHorizontalFillGridData());
-
-        Composite labels = new Composite(summary, SWT.NULL);
+        Composite labels = new Composite(row2, SWT.NONE);
         labels.setLayoutData(createHorizontalFillGridData());
         labels.setLayout(new FillLayout(SWT.HORIZONTAL));
-        passes = new ResultLabel(labels,
-                                 Messages.TestResultView_passesLabel,
-                                 Activator.getImageDescriptor("icons/pass-gray.gif").createImage() //$NON-NLS-1$
-                                 );
-        failures = new ResultLabel(labels,
-                                   Messages.TestResultView_failuresLabel,
-                                   Activator.getImageDescriptor("icons/failure-gray.gif").createImage() //$NON-NLS-1$
-                                   );
-        errors = new ResultLabel(labels,
-                                 Messages.TestResultView_errorsLabel,
-                                 Activator.getImageDescriptor("icons/error-gray.gif").createImage() //$NON-NLS-1$
-                                 );
+        passes = new ResultLabel(
+                     labels,
+                     Messages.TestResultView_passesLabel,
+                     Activator.getImageDescriptor("icons/pass-gray.gif").createImage() //$NON-NLS-1$
+                 );
+        failures = new ResultLabel(
+                       labels,
+                       Messages.TestResultView_failuresLabel,
+                       Activator.getImageDescriptor("icons/failure-gray.gif").createImage() //$NON-NLS-1$
+                   );
+        errors = new ResultLabel(
+                     labels,
+                     Messages.TestResultView_errorsLabel,
+                     Activator.getImageDescriptor("icons/error-gray.gif").createImage() //$NON-NLS-1$
+                 );
 
-        SashForm form = new SashForm(parent, SWT.HORIZONTAL);
-        form.setLayoutData(createBothFillGridData());
-        form.setLayout(new GridLayout(2, false));
+        new ResultLabel(
+            row2,
+            Messages.TestResultView_failureTraceLabel,
+            Activator.getImageDescriptor("icons/failure-trace.gif").createImage() //$NON-NLS-1$
+        );
 
-        Composite treeParent = new Composite(form, SWT.NULL);
-        treeParent.setLayoutData(createHorizontalFillGridData());
-        treeParent.setLayout(new GridLayout(1, false));
+        Composite row3 = new Composite(parent, SWT.NONE);
+        row3.setLayoutData(createBothFillGridData());
+        row3.setLayout(new GridLayout(2, true));
 
-        Composite result = new Composite(treeParent, SWT.NULL);
-        result.setLayoutData(createHorizontalFillGridData());
-        result.setLayout(new RowLayout());
-
-        new ResultLabel(result,
-                        Messages.TestResultView_resultsLabel,
-                        null
-                        );
-
-        Tree resultTree = new Tree(treeParent, SWT.BORDER);
+        Tree resultTree = new Tree(row3, SWT.BORDER);
         resultTree.setLayoutData(createBothFillGridData());
         resultTreeViewer = new TreeViewer(resultTree);
         resultTreeViewer.setContentProvider(new ResultContentProvider());
@@ -208,7 +205,7 @@ public class ResultView extends ViewPart {
             }
         });
 
-        failureTrace = createFailureTrace(form);
+        failureTrace = createFailureTrace(row3);
 
         reset();
     }
@@ -278,19 +275,7 @@ public class ResultView extends ViewPart {
     }
 
     private FailureTrace createFailureTrace(Composite parent) {
-        Composite traceParent = new Composite(parent, SWT.NULL);
-        traceParent.setLayoutData(createHorizontalFillGridData());
-        traceParent.setLayout(new GridLayout(1, false));
-        Composite trace = new Composite(traceParent, SWT.NULL);
-        trace.setLayoutData(createHorizontalFillGridData());
-        trace.setLayout(new RowLayout());
-        new ResultLabel(
-            trace,
-            Messages.TestResultView_failureTraceLabel,
-            Activator.getImageDescriptor("icons/failure-trace.gif").createImage() //$NON-NLS-1$
-        );
-
-        FailureTrace failureTrace = new FailureTrace(traceParent);
+        FailureTrace failureTrace = new FailureTrace(parent);
         failureTrace.addListener(
             new EditorOpenActiveTextListener(
                 Pattern.compile("^(.+):(\\d+)$", Pattern.MULTILINE) //$NON-NLS-1$
