@@ -83,20 +83,19 @@ public class TestRunner {
     }
 
     public static boolean runnableAllTests() {
-        IResource resource = null;
         IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
         if (activePage == null) return false;
 
+        IResource resource = null;
         if (activePage.getActivePart() instanceof IEditorPart) {
             resource = getResource(activePage.getActivePart());
         } else if (activePage.getSelection() != null) {
             resource = getResource(activePage.getSelection());
         }
 
-        if (resource == null || !resource.getProject().exists()) return false;
-
-        MakeGoodProperty property = new MakeGoodProperty(resource);
-        if (property.getTestFolders().size() == 0) return false;
+        if (resource == null) return false;
+        if (!resource.getProject().exists()) return false;
+        if (new MakeGoodProperty(resource).getTestFolders().size() == 0) return false;
 
         return true;
     }
