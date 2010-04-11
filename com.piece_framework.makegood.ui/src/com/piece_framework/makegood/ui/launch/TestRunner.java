@@ -85,6 +85,8 @@ public class TestRunner {
     public static boolean runnableAllTests() {
         IResource resource = null;
         IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+        if (activePage == null) return false;
+
         if (activePage.getActivePart() instanceof IEditorPart) {
             resource = getResource(activePage.getActivePart());
         } else if (activePage.getSelection() != null) {
