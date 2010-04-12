@@ -57,8 +57,6 @@ public class ResultViewController implements IMakeGoodEventListener, JUnitXMLRea
                 } catch (SAXException e) {
                     if (launch.getAttribute(StopTestAction.ID + ".stopsByAction") == null) {
                         hasErrors = true;
-                    } else {
-                        Activator.getDefault().getLog().log(new Status(IStatus.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
                     }
                 } catch (IOException e) {
                     Activator.getDefault().getLog().log(new Status(IStatus.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
@@ -84,10 +82,9 @@ public class ResultViewController implements IMakeGoodEventListener, JUnitXMLRea
 
     @Override
     public void terminate(ILaunch launch) {
-        if (launch.getAttribute("processTerminateOf" + getClass().getName()) != null) { //$NON-NLS-1$
-            return;
-        }
-        launch.setAttribute("processTerminateOf" + getClass().getName(), "done"); //$NON-NLS-1$ //$NON-NLS-2$
+        String terminateCalledMarker = getClass().getName() + ".terminateCalled"; //$NON-NLS-1$
+        if (launch.getAttribute(terminateCalledMarker) != null) return;
+        launch.setAttribute(terminateCalledMarker, "1"); //$NON-NLS-1$
 
         for (IProcess process: launch.getProcesses()) {
             try {
@@ -169,7 +166,7 @@ public class ResultViewController implements IMakeGoodEventListener, JUnitXMLRea
         };
         job.schedule();
 
-        progress.startTestCase();   // The method startTestCase() does not be invoked when the test runs.
+        progress.startTestCase();   // The method startTestCase() isn't invoked when a test runs.
     }
 
     @Override

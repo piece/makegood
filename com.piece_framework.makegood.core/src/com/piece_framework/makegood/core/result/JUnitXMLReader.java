@@ -19,7 +19,6 @@ import org.xml.sax.helpers.DefaultHandler;
 
 public class JUnitXMLReader extends DefaultHandler {
     private File log;
-    private boolean finished;
     private List<Result> results = new ArrayList<Result>();
     private TestSuiteResult currentTestSuite;
     private TestCaseResult currentTestCase;
@@ -46,7 +45,6 @@ public class JUnitXMLReader extends DefaultHandler {
 
     public void stop() {
         stopped = true;
-        finished = true;
     }
 
     public void addListener(JUnitXMLReaderListener listener) {
@@ -55,22 +53,6 @@ public class JUnitXMLReader extends DefaultHandler {
 
     public void removeParserListener(JUnitXMLReaderListener listener) {
         listeners.remove(listener);
-    }
-
-    public boolean isActive() {
-        if (stream == null) {
-            return false;
-        }
-
-        if (stream.closed) {
-            return false;
-        }
-
-        if (finished) {
-            return false;
-        }
-
-        return true;
     }
 
     @Override
@@ -122,7 +104,7 @@ public class JUnitXMLReader extends DefaultHandler {
 
     @Override
     public void endDocument() throws SAXException {
-        finished = true;
+        stop();
     }
 
     @Override
@@ -145,6 +127,19 @@ public class JUnitXMLReader extends DefaultHandler {
 
     public List<Result> getTestResults() {
         return Collections.unmodifiableList(results);
+    }
+
+    boolean isActive() {
+        if (stream == null) {
+            return false;
+        }
+        if (stream.closed) {
+            return false;
+        }
+        if (stopped) {
+            return false;
+        }
+        return true;
     }
 
     private void startTestSuite(TestSuiteResult suite) {
