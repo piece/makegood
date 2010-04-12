@@ -13,6 +13,8 @@ import org.eclipse.ui.IViewPart;
 import com.piece_framework.makegood.ui.Activator;
 
 public class StopTestAction implements IViewActionDelegate {
+    public static final String ID = "com.piece_framework.makegood.ui.viewActions.resultView.stopTest"; //$NON-NLS-1$
+
     @Override
     public void init(IViewPart view) {
     }
@@ -23,6 +25,8 @@ public class StopTestAction implements IViewActionDelegate {
         for (ILaunch launch: manager.getLaunches()) {
             boolean isMakeGood = launch.getLaunchConfiguration().getName().startsWith("MakeGood"); //$NON-NLS-1$
             if (isMakeGood) {
+                launch.setAttribute(ID + ".stopsByAction", "1");
+
                 try {
                     launch.terminate();
                 } catch (DebugException e) {
