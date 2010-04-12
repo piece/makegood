@@ -39,6 +39,8 @@ import com.piece_framework.makegood.core.result.TestCaseResult;
 import com.piece_framework.makegood.core.result.TestSuiteResult;
 import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.Messages;
+import com.piece_framework.makegood.ui.actions.RerunTestAction;
+import com.piece_framework.makegood.ui.actions.RunAllTestsAction;
 import com.piece_framework.makegood.ui.actions.StopTestAction;
 import com.piece_framework.makegood.ui.ide.EditorOpen;
 import com.piece_framework.makegood.ui.ide.FileFind;
@@ -46,9 +48,7 @@ import com.piece_framework.makegood.ui.launch.TestRunner;
 
 public class ResultView extends ViewPart {
     public static final String ID = "com.piece_framework.makegood.ui.views.resultView"; //$NON-NLS-1$
-    private static final String RERUN_ACTION_ID = Activator.PLUGIN_ID + ".viewActions.resultView.rerunTest"; //$NON-NLS-1$
-    private static final String RUNALLTESTS_ACTION_ID = Activator.PLUGIN_ID + ".viewActions.resultView.runAllTests"; //$NON-NLS-1$
-    private static final String CONTEXT_ID = Activator.PLUGIN_ID + ".contexts.resultView"; //$NON-NLS-1$
+    private static final String CONTEXT_ID = "com.piece_framework.makegood.ui.contexts.resultView"; //$NON-NLS-1$
 
     private RunProgressBar progressBar;
     private Label testCount;
@@ -80,19 +80,22 @@ public class ResultView extends ViewPart {
         // There is no hook point for disabling the actions...
         if (stopAction == null) {
             IToolBarManager manager = site.getActionBars().getToolBarManager();
-            ActionContributionItem stopItem = (ActionContributionItem) manager.find(StopTestAction.ID);
+            ActionContributionItem stopItem =
+                (ActionContributionItem) manager.find(StopTestAction.ID);
             if (stopItem != null) {
                 stopAction = stopItem.getAction();
                 stopAction.setEnabled(false);
             }
 
-            ActionContributionItem rerunItem = (ActionContributionItem) manager.find(RERUN_ACTION_ID);
+            ActionContributionItem rerunItem =
+                (ActionContributionItem) manager.find(RerunTestAction.ID);
             if (rerunItem != null) {
                 rerunAction = rerunItem.getAction();
                 rerunAction.setEnabled(false);
             }
 
-            ActionContributionItem runAllTestsItem = (ActionContributionItem) manager.find(RUNALLTESTS_ACTION_ID);
+            ActionContributionItem runAllTestsItem =
+                (ActionContributionItem) manager.find(RunAllTestsAction.ID);
             if (runAllTestsItem != null) {
                 runAllTestsAction = runAllTestsItem.getAction();
             }

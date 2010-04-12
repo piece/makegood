@@ -11,6 +11,8 @@ import org.eclipse.ui.PlatformUI;
 import com.piece_framework.makegood.ui.launch.TestRunner;
 
 public class RunAllTestsAction implements IViewActionDelegate {
+    public static final String ID = "com.piece_framework.makegood.ui.viewActions.resultView.runAllTests"; //$NON-NLS-1$
+
     @Override
     public void init(IViewPart view) {
     }
