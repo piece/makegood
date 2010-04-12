@@ -82,6 +82,7 @@ public class ResultViewController implements IMakeGoodEventListener, JUnitXMLRea
 
     @Override
     public void terminate(ILaunch launch) {
+        // TODO This marker is to avoid calling terminate() twice by PDT.
         String terminateCalledMarker = getClass().getName() + ".terminateCalled"; //$NON-NLS-1$
         if (launch.getAttribute(terminateCalledMarker) != null) return;
         launch.setAttribute(terminateCalledMarker, "1"); //$NON-NLS-1$
