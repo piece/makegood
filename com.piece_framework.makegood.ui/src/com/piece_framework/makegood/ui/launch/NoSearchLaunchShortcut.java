@@ -15,7 +15,7 @@ public abstract class NoSearchLaunchShortcut extends MakeGoodLaunchShortcut {
             return;
         }
 
-        IModelElement target = getTargetElement(editor);
+        IModelElement target = getTarget(editor);
         if (target.exists() == false) {
             Activator.getDefault().getLog().log(
                 new Status(
@@ -34,5 +34,5 @@ public abstract class NoSearchLaunchShortcut extends MakeGoodLaunchShortcut {
         super.launch(editor, mode);
     }
 
-    protected abstract IModelElement getTargetElement(IEditorPart editor);
+    protected abstract IModelElement getTarget(IEditorPart editor);
 }

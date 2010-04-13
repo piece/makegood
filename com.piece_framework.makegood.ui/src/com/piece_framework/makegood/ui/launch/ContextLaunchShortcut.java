@@ -7,7 +7,7 @@ public class ContextLaunchShortcut extends NoSearchLaunchShortcut {
     private IModelElement lastTarget;
 
     @Override
-    protected IModelElement getTargetElement(IEditorPart editor) {
+    protected IModelElement getTarget(IEditorPart editor) {
         if (lastTarget != null) {
             return lastTarget;
         }

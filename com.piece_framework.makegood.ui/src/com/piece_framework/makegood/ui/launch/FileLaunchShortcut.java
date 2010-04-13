@@ -5,7 +5,7 @@ import org.eclipse.ui.IEditorPart;
 
 public class FileLaunchShortcut extends NoSearchLaunchShortcut {
     @Override
-    protected IModelElement getTargetElement(IEditorPart editor) {
+    protected IModelElement getTarget(IEditorPart editor) {
         EditorParser parser = new EditorParser(editor);
         return parser.getSourceModule();
     }
