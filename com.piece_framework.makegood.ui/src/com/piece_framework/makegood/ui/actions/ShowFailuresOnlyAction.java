@@ -27,7 +27,7 @@ public class ShowFailuresOnlyAction implements IViewActionDelegate {
 
     @Override
     public void run(IAction action) {
-        ResultView view = (ResultView)ViewShow.find(ResultView.ID);
+        ResultView view = (ResultView) ViewShow.find(ResultView.ID);
         if (view != null) {
             view.filterResult(action.isChecked());
         }

@@ -658,7 +658,7 @@ SRC_DIR + "/Stagehand/TestRunner.php:186\n" +
         TestSuiteResult suite = (TestSuiteResult) result;
         List<Class> problems = new ArrayList<Class>();
         for (int i = 0; i < suite.getChildren().size(); ++i) {
-            TestCaseResult testCase = (TestCaseResult)suite.getChildren().get(i);
+            TestCaseResult testCase = (TestCaseResult) suite.getChildren().get(i);
             TestCaseResult problem =
                 assertProblem(
                     testCase,

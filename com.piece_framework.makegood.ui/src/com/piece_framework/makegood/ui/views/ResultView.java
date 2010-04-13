@@ -184,7 +184,7 @@ public class ResultView extends ViewPart {
                 IStructuredSelection selection = (IStructuredSelection) event.getSelection();
                 Object element = selection.getFirstElement();
                 if (!(element instanceof TestCaseResult)) return;
-                TestCaseResult testCase = (TestCaseResult)element;
+                TestCaseResult testCase = (TestCaseResult) element;
                 if (!testCase.hasFailures() && !testCase.hasErrors()) return;
                 failureTrace.setText(testCase.getFailureTrace());
             }

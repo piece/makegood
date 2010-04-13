@@ -56,7 +56,7 @@ public class OutputView extends ViewPart {
                     Object obj = events[i].getSource();
                     if (!(obj instanceof PHPDebugTarget)) continue;
                     if (events[i].getKind() != DebugEvent.TERMINATE) continue;
-                    final PHPDebugTarget target = (PHPDebugTarget)obj;
+                    final PHPDebugTarget target = (PHPDebugTarget) obj;
                     Job job = new UIJob("MakeGood Output") { //$NON-NLS-1$
                         @Override
                         public IStatus runInUIThread(IProgressMonitor monitor) {
