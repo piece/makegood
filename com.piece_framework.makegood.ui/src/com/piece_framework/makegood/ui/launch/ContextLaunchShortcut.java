@@ -13,15 +13,16 @@ public class ContextLaunchShortcut extends NoSearchLaunchShortcut {
         }
 
         EditorParser parser = new EditorParser(editor);
-        IModelElement element = parser.getModelElementOnSelection();
-        if (element == null) {
+        IModelElement target = parser.getModelElementOnSelection();
+        if (target == null) {
             return parser.getSourceModule();
         }
-        if (element.getElementType() == IModelElement.FIELD) {
-            element = element.getParent();
+
+        if (target.getElementType() == IModelElement.FIELD) {
+            target = target.getParent();
         }
 
-        lastTarget = element;
-        return element;
+        lastTarget = target;
+        return target;
     }
 }
