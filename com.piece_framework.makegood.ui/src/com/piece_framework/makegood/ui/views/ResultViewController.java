@@ -105,6 +105,7 @@ public class ResultViewController implements IMakeGoodEventListener, JUnitXMLRea
         }
 
         parser.stop();
+        // TODO Since PDT 2.1 always return 0 from IProcess.getExitValue(), We decided to use SAXException to check whether or not a PHP process exited with a fatal error.
         try {
             parserThread.join();
         } catch (InterruptedException e) {
