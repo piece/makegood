@@ -377,7 +377,7 @@
          <action
                class="com.piece_framework.makegood.ui.actions.RunAllTestsAction"
                definitionId="com.piece_framework.makegood.ui.commands.runAllTests"
-               icon="icons/all-tests.gif"
+               icon="icons/run-all.gif"
                id="com.piece_framework.makegood.ui.viewActions.resultView.runAllTests"
                label="%resultView.runAllTests.label"
                style="push"
