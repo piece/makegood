@@ -94,17 +94,10 @@ public class TestRunner {
         return null;
     }
 
-    public static boolean runnableAllTests() {
-        IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-        if (activePage == null) return false;
+    public static boolean runnableAllTests(Object target) {
+        if (target == null) return false;
 
-        IResource resource = null;
-        if (activePage.getActivePart() instanceof IEditorPart) {
-            resource = getResource(activePage.getActivePart());
-        } else if (activePage.getSelection() != null) {
-            resource = getResource(activePage.getSelection());
-        }
-
+        IResource resource = getResource(target);
         if (resource == null) return false;
         if (!resource.getProject().exists()) return false;
         if (new MakeGoodProperty(resource).getTestFolders().size() == 0) return false;

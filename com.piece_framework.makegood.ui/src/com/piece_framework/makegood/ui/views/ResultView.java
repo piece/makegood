@@ -56,6 +56,7 @@ import com.piece_framework.makegood.ui.actions.RunAllTestsAction;
 import com.piece_framework.makegood.ui.actions.StopTestAction;
 import com.piece_framework.makegood.ui.ide.EditorOpen;
 import com.piece_framework.makegood.ui.ide.FileFind;
+import com.piece_framework.makegood.ui.launch.AllTestsStatus;
 import com.piece_framework.makegood.ui.launch.TestRunner;
 
 public class ResultView extends ViewPart {
@@ -228,7 +229,7 @@ public class ResultView extends ViewPart {
     @Override
     public void setFocus() {
         if (runAllTestsAction != null) {
-            runAllTestsAction.setEnabled(TestRunner.runnableAllTests());
+            runAllTestsAction.setEnabled(AllTestsStatus.getInstance().runnable());
         }
     }
 
@@ -393,7 +394,7 @@ public class ResultView extends ViewPart {
 
         stopAction.setEnabled(false);
         rerunAction.setEnabled(true);
-        runAllTestsAction.setEnabled(TestRunner.runnableAllTests());
+        runAllTestsAction.setEnabled(AllTestsStatus.getInstance().runnable());
     }
 
     private class ResultLabel {
