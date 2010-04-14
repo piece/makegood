@@ -90,6 +90,8 @@ public class Startup implements IStartup {
 
     private void setEnabledRunAllTestsAction() {
         ResultView resultView = (ResultView) ViewShow.find(ResultView.ID);
-        resultView.setEnabledRunAllTestsAction(AllTestsStatus.getInstance().runnable());
+        if (resultView != null) {
+            resultView.setEnabledRunAllTestsAction(AllTestsStatus.getInstance().runnable());
+        }
     }
 }
