@@ -76,6 +76,8 @@ public class ResultView extends ViewPart {
     private IAction rerunAction;
     private IAction runAllTestsAction;
     private FailureTrace failureTrace;
+    private boolean isRunning;
+    private boolean enableRunAllTestsAction;
 
     private ViewerFilter failureFilter = new ViewerFilter() {
         @Override
@@ -111,6 +113,7 @@ public class ResultView extends ViewPart {
                 (ActionContributionItem) manager.find(RunAllTestsAction.ID);
             if (runAllTestsItem != null) {
                 runAllTestsAction = runAllTestsItem.getAction();
+                runAllTestsAction.setEnabled(false);
             }
         }
 
@@ -227,11 +230,7 @@ public class ResultView extends ViewPart {
     }
 
     @Override
-    public void setFocus() {
-        if (runAllTestsAction != null) {
-            runAllTestsAction.setEnabled(AllTestsStatus.getInstance().runnable());
-        }
-    }
+    public void setFocus() {}
 
     public void reset() {
         progressRate.setText("  0 " +   //$NON-NLS-1$
@@ -272,6 +271,12 @@ public class ResultView extends ViewPart {
         progressBar.reset();
 
         resultTreeViewer.setInput(null);
+    }
+
+    public void setEnabledRunAllTestsAction(boolean enabled) {
+        if (runAllTestsAction != null && !isRunning) {
+            runAllTestsAction.setEnabled(enabled);
+        }
     }
 
     private GridData createHorizontalFillGridData() {
@@ -386,7 +391,10 @@ public class ResultView extends ViewPart {
 
         stopAction.setEnabled(true);
         rerunAction.setEnabled(false);
+        enableRunAllTestsAction = runAllTestsAction.isEnabled();
         runAllTestsAction.setEnabled(false);
+
+        isRunning = true;
     }
 
     public void stop() {
@@ -394,7 +402,9 @@ public class ResultView extends ViewPart {
 
         stopAction.setEnabled(false);
         rerunAction.setEnabled(true);
-        runAllTestsAction.setEnabled(AllTestsStatus.getInstance().runnable());
+        runAllTestsAction.setEnabled(enableRunAllTestsAction);
+
+        isRunning = false;
     }
 
     private class ResultLabel {

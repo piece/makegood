@@ -13,6 +13,7 @@
 package com.piece_framework.makegood.ui.launch;
 
 import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IPartListener;
@@ -32,6 +33,8 @@ public class AllTestsStatus implements IPartListener {
         for (IWorkbenchWindow window: PlatformUI.getWorkbench().getWorkbenchWindows()) {
             for (IWorkbenchPage page: window.getPages()) {
                 page.addPartListener(this);
+
+                partActivated(page.getActivePart());
             }
         }
     }
@@ -53,12 +56,15 @@ public class AllTestsStatus implements IPartListener {
         if (part instanceof IEditorPart) {
             target = part;
         } else {
-            part.getSite().getSelectionProvider().addSelectionChangedListener(new ISelectionChangedListener() {
-                @Override
-                public void selectionChanged(SelectionChangedEvent event) {
-                    target = event.getSelection();
-                }
-            });
+            ISelectionProvider provider = part.getSite().getSelectionProvider();
+            if (provider != null) {
+                provider.addSelectionChangedListener(new ISelectionChangedListener() {
+                    @Override
+                    public void selectionChanged(SelectionChangedEvent event) {
+                        target = event.getSelection();
+                    }
+                });
+            }
         }
     }
 
