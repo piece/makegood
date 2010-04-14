@@ -30,13 +30,11 @@ public class Messages extends NLS {
     public static String MakeGoodPropertyPage_PHPUnit;
     public static String MakeGoodPropertyPage_removeLabel;
     public static String MakeGoodPropertyPage_SimpleTest;
-    public static String TestResultView_assertionsLabel;
     public static String TestResultView_errorsLabel;
     public static String TestResultView_failuresLabel;
     public static String TestResultView_failureTraceLabel;
     public static String TestResultView_passesLabel;
     public static String TestResultView_testsLabel;
-    public static String TestResultView_resultsLabel;
     public static String TestResultView_averageTest;
     public static String TestResultView_percent;
     public static String TestResultView_realTime;
