@@ -51,7 +51,7 @@ public class AllTestsStatus implements IPartListener {
         String id = part.getSite().getId();
         if (id.equals(ResultView.ID)
             || id.equals(OutputView.ID)
-            || id.equals("org.eclipse.debug.ui.PHPDebugOutput")) return;
+            || id.equals("org.eclipse.debug.ui.PHPDebugOutput")) return; //$NON-NLS-1$
 
         if (part instanceof IEditorPart) {
             target = part;
