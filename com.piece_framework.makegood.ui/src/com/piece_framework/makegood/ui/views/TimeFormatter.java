@@ -1,5 +1,6 @@
 /**
  * Copyright (c) 2010 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
+ *               2010 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -25,10 +26,10 @@ class TimeFormatter {
             timeForFormat = nanoTime / 1000000d;
             unit = unitOfMillisecond;
         } else if (nanoTime > 0){
-            return String.format("< 0.001 %s", unitOfMillisecond); //$NON-NLS-1$
+            return String.format("< 0.001%s", unitOfMillisecond); //$NON-NLS-1$
         } else {
-            return String.format("0.000 %s", unitOfMillisecond); //$NON-NLS-1$
+            return String.format("0.000%s", unitOfMillisecond); //$NON-NLS-1$
         }
-        return String.format("%.3f %s", timeForFormat, unit); //$NON-NLS-1$
+        return String.format("%.3f%s", timeForFormat, unit); //$NON-NLS-1$
     }
 }

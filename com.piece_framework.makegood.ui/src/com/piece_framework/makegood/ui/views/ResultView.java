@@ -64,7 +64,7 @@ public class ResultView extends ViewPart {
     private static final String CONTEXT_ID = "com.piece_framework.makegood.ui.contexts.resultView"; //$NON-NLS-1$
 
     private RunProgressBar progressBar;
-    private Label testCount;
+    private CLabel testCount;
     private ResultLabel passCount;
     private ResultLabel failureCount;
     private ResultLabel errorCount;
@@ -78,6 +78,8 @@ public class ResultView extends ViewPart {
     private FailureTrace failureTrace;
     private boolean isRunning;
     private boolean enableRunAllTestsAction;
+    private Label elapsedTime;
+    private Label processTime;
 
     private ViewerFilter failureFilter = new ViewerFilter() {
         @Override
@@ -131,16 +133,18 @@ public class ResultView extends ViewPart {
         row1.setLayoutData(createHorizontalFillGridData());
         row1.setLayout(new GridLayout(2, true));
 
-        testCount = new Label(row1, SWT.LEFT | SWT.WRAP);
-        testCount.setLayoutData(createHorizontalFillGridData());
-
         Composite progress = new Composite(row1, SWT.NONE);
         progress.setLayoutData(createHorizontalFillGridData());
-        progress.setLayout(new GridLayout(3, false));
+        progress.setLayout(new GridLayout(2, false));
         progressRate = new Label(progress, SWT.LEFT);
         progressBar = new RunProgressBar(progress);
         progressBar.setLayoutData(createHorizontalFillGridData());
-        processTimeAverage = new Label(progress, SWT.LEFT);
+        Composite clock = new Composite(row1, SWT.NONE);
+        clock.setLayoutData(createHorizontalFillGridData());
+        clock.setLayout(new FillLayout(SWT.HORIZONTAL));
+        processTimeAverage = new Label(clock, SWT.LEFT);
+        elapsedTime = new Label(clock, SWT.LEFT);
+        processTime = new Label(clock, SWT.LEFT);
 
         Composite row2 = new Composite(parent, SWT.NONE);
         row2.setLayoutData(createHorizontalFillGridData());
@@ -149,6 +153,7 @@ public class ResultView extends ViewPart {
         Composite counter = new Composite(row2, SWT.NONE);
         counter.setLayoutData(createHorizontalFillGridData());
         counter.setLayout(new FillLayout(SWT.HORIZONTAL));
+        testCount = new CLabel(counter, SWT.LEFT);
         passCount = new ResultLabel(
                      counter,
                      Messages.TestResultView_passesLabel,
@@ -233,43 +238,39 @@ public class ResultView extends ViewPart {
     public void setFocus() {}
 
     public void reset() {
-        progressRate.setText("  0 " +   //$NON-NLS-1$
-                     Messages.TestResultView_percent +
-                     "  "       //$NON-NLS-1$
-                     );
-        processTimeAverage.setText(TimeFormatter.format(0,
-                                             Messages.TestResultView_second,
-                                             Messages.TestResultView_millisecond
-                                             ) +
-                        " / " +         //$NON-NLS-1$
-                        Messages.TestResultView_averageTest +
-                        "  "            //$NON-NLS-1$
-                        );
-        testCount.setText(Messages.TestResultView_testsLabel + " " + //$NON-NLS-1$
-                      " 0/0 " + //$NON-NLS-1$
-                      "(" +         //$NON-NLS-1$
-                          Messages.TestResultView_realTime +
-                          " " +  //$NON-NLS-1$
-                          TimeFormatter.format(0,
-                                             Messages.TestResultView_second,
-                                             Messages.TestResultView_millisecond
-                                             ) +
-                          "," +     //$NON-NLS-1$
-                      " " +         //$NON-NLS-1$
-                          Messages.TestResultView_testTime +
-                          " " +  //$NON-NLS-1$
-                          TimeFormatter.format(0,
-                                             Messages.TestResultView_second,
-                                             Messages.TestResultView_millisecond
-                                             ) +
-                      ")" //$NON-NLS-1$
-                      );
+        progressRate.setText("  0" + Messages.TestResultView_percent + " "); //$NON-NLS-1$ //$NON-NLS-2$
+        progressBar.reset();
+        processTimeAverage.setText(
+            TimeFormatter.format(
+                0,
+                Messages.TestResultView_second,
+                Messages.TestResultView_millisecond
+            ) +
+            "/" + //$NON-NLS-1$
+            Messages.TestResultView_averageTest
+        );
+        elapsedTime.setText(
+            Messages.TestResultView_realTime +
+            ": " +  //$NON-NLS-1$
+            TimeFormatter.format(
+                0,
+                Messages.TestResultView_second,
+                Messages.TestResultView_millisecond
+            )
+        );
+        processTime.setText(
+            Messages.TestResultView_testTime +
+            ": " +  //$NON-NLS-1$
+            TimeFormatter.format(
+                0,
+                Messages.TestResultView_second,
+                Messages.TestResultView_millisecond
+            )
+        );
+        testCount.setText(Messages.TestResultView_testsLabel + ": 0/0"); //$NON-NLS-1$
         passCount.reset();
         failureCount.reset();
         errorCount.reset();
-
-        progressBar.reset();
-
         resultTreeViewer.setInput(null);
     }
 
@@ -355,28 +356,38 @@ public class ResultView extends ViewPart {
     }
 
     public void refresh(RunProgress progress, Result result) {
-        progressRate.setText(String.format("%3d", progress.calculateRate()) +     //$NON-NLS-1$
-                     " " +      //$NON-NLS-1$
-                     Messages.TestResultView_percent +
-                     "  "       //$NON-NLS-1$
-                     );
-        processTimeAverage.setText(TimeFormatter.format(progress.calculateProcessTimeAverage(),
-                                             Messages.TestResultView_second,
-                                             Messages.TestResultView_millisecond
-                                             ) +
-                        " / " +     //$NON-NLS-1$
-                        Messages.TestResultView_averageTest +
-                        "  "        //$NON-NLS-1$
-                        );
-        processTimeAverage.getParent().layout();
-
-        showTimer.show();
-        passCount.setCount(progress.getPassCount());
-        failureCount.setCount(progress.getFailureCount());
-        errorCount.setCount(progress.getErrorCount());
+        progressRate.setText(
+            String.format("%3d", progress.calculateRate()) + //$NON-NLS-1$
+            Messages.TestResultView_percent +
+            " " //$NON-NLS-1$
+        );
 
         if (progress.hasFailures()) progressBar.red();
         progressBar.update(progress.calculateRate());
+
+        processTimeAverage.setText(
+            TimeFormatter.format(
+                progress.calculateProcessTimeAverage(),
+                Messages.TestResultView_second,
+                Messages.TestResultView_millisecond
+            ) +
+            "/" + //$NON-NLS-1$
+            Messages.TestResultView_averageTest
+        );
+        processTimeAverage.getParent().layout();
+
+        showTimer.show();
+
+        testCount.setText(
+            Messages.TestResultView_testsLabel +
+            ": " + //$NON-NLS-1$
+            progress.getTestCount() +
+            "/" + //$NON-NLS-1$
+            progress.getAllTestCount()
+        );
+        passCount.setCount(progress.getPassCount());
+        failureCount.setCount(progress.getFailureCount());
+        errorCount.setCount(progress.getErrorCount());
 
         if (result != null) {
             resultTreeViewer.expandAll();
@@ -386,7 +397,7 @@ public class ResultView extends ViewPart {
     }
 
     public void start(RunProgress progress) {
-        showTimer = new ShowTimer(testCount, progress, 200);
+        showTimer = new ShowTimer(elapsedTime, processTime, progress, 200);
         showTimer.start();
 
         stopAction.setEnabled(true);
@@ -419,11 +430,11 @@ public class ResultView extends ViewPart {
         }
 
         private void setCount(int count) {
-            label.setText(text + " " + count); //$NON-NLS-1$
+            label.setText(text + ": " + count); //$NON-NLS-1$
         }
 
         private void reset() {
-            label.setText(text);
+            setCount(0);
         }
     }
 
@@ -500,17 +511,20 @@ public class ResultView extends ViewPart {
     }
 
     private class ShowTimer implements Runnable {
-        private Label tests;
+        private Label elapsedTime;
+        private Label processTime;
         private RunProgress progress;
         private int delay;
         private long startTime;
         private boolean stop;
 
-        private ShowTimer(Label tests,
-                          RunProgress progress,
-                          int delay
-                          ) {
-            this.tests = tests;
+        private ShowTimer(
+            Label elapsedTime,
+            Label processTime,
+            RunProgress progress,
+            int delay) {
+            this.elapsedTime = elapsedTime;
+            this.processTime = processTime;
             this.progress = progress;
             this.delay = delay;
         }
@@ -525,30 +539,28 @@ public class ResultView extends ViewPart {
         }
 
         private void schedule() {
-            tests.getDisplay().timerExec(delay, this);
+            elapsedTime.getDisplay().timerExec(delay, this);
         }
 
         private void show() {
-            tests.setText(Messages.TestResultView_testsLabel + " " + //$NON-NLS-1$
-                          progress.getTestCount() + "/" + //$NON-NLS-1$
-                          progress.getAllTestCount() + " " + //$NON-NLS-1$
-                          "(" +         //$NON-NLS-1$
-                              Messages.TestResultView_realTime +
-                              " " +     //$NON-NLS-1$
-                              TimeFormatter.format(System.nanoTime() - startTime,
-                                                   Messages.TestResultView_second,
-                                                   Messages.TestResultView_millisecond
-                                                   ) +
-                              "," +     //$NON-NLS-1$
-                          " " +         //$NON-NLS-1$
-                              Messages.TestResultView_testTime +
-                              " " +     //$NON-NLS-1$
-                              TimeFormatter.format(progress.getProcessTime(),
-                                                   Messages.TestResultView_second,
-                                                   Messages.TestResultView_millisecond
-                                                   ) +
-                          ")" //$NON-NLS-1$
-                          );
+            elapsedTime.setText(
+                Messages.TestResultView_realTime +
+                ": " + //$NON-NLS-1$
+                TimeFormatter.format(
+                    System.nanoTime() - startTime,
+                    Messages.TestResultView_second,
+                    Messages.TestResultView_millisecond
+                )
+            );
+            processTime.setText(
+                Messages.TestResultView_testTime +
+                ": " + //$NON-NLS-1$
+                TimeFormatter.format(
+                    progress.getProcessTime(),
+                    Messages.TestResultView_second,
+                    Messages.TestResultView_millisecond
+                )
+            );
         }
 
         @Override
