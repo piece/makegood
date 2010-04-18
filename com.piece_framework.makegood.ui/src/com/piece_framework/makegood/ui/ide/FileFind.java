@@ -25,22 +25,16 @@ import com.piece_framework.makegood.ui.Activator;
 
 public class FileFind {
     public static IFile[] findFiles(String file) {
-        try {
-            return ResourcesPlugin.getWorkspace()
-                                  .getRoot()
-                                  .findFilesForLocationURI(
-                                      new URI("file:///" + file.replaceAll("\\\\", "/")) //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                   );
-        } catch (URISyntaxException e) {
-            Activator.getDefault().getLog().log(new Status(IStatus.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
-            return null;
-        }
+        return ResourcesPlugin.getWorkspace().getRoot().findFilesForLocationURI(createURI(file));
     }
 
     public static IFileStore findFileStore(String file) {
+        return EFS.getLocalFileSystem().getStore(createURI(file));
+    }
+
+    private static URI createURI(String file) {
         try {
-            return EFS.getLocalFileSystem()
-                      .getStore(new URI("file:///" + file.replaceAll("\\\\", "/"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            return new URI("file:///" + file.replaceAll("\\\\", "/")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         } catch (URISyntaxException e) {
             Activator.getDefault().getLog().log(new Status(IStatus.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
             return null;
