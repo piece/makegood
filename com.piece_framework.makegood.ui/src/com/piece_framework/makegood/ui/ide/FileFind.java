@@ -27,9 +27,9 @@ public class FileFind {
     public static IFile[] findFiles(String file) {
         try {
             return ResourcesPlugin.getWorkspace()
-                                   .getRoot()
-                                   .findFilesForLocationURI(
-                                       new URI("file:///" + file) //$NON-NLS-1$
+                                  .getRoot()
+                                  .findFilesForLocationURI(
+                                      new URI("file:///" + file.replaceAll("\\\\", "/")) //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                                    );
         } catch (URISyntaxException e) {
             Activator.getDefault().getLog().log(new Status(IStatus.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
@@ -40,7 +40,7 @@ public class FileFind {
     public static IFileStore findFileStore(String file) {
         try {
             return EFS.getLocalFileSystem()
-                       .getStore(new URI("file:///" + file)); //$NON-NLS-1$
+                      .getStore(new URI("file:///" + file.replaceAll("\\\\", "/"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         } catch (URISyntaxException e) {
             Activator.getDefault().getLog().log(new Status(IStatus.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
             return null;
