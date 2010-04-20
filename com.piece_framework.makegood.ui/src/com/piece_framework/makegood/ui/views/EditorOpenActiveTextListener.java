@@ -14,11 +14,12 @@ package com.piece_framework.makegood.ui.views;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.eclipse.core.filesystem.IFileStore;
+import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.swt.graphics.Color;
 
-import com.piece_framework.makegood.ui.ide.FileFind;
 import com.piece_framework.makegood.ui.swt.ExternalFileWithLineRange;
 import com.piece_framework.makegood.ui.swt.FileWithLineRange;
 import com.piece_framework.makegood.ui.swt.InternalFileWithLineRange;
@@ -33,20 +34,20 @@ class EditorOpenActiveTextListener extends ActiveTextListener {
         Matcher matcher = pattern.matcher(text.getText());
 
         while (matcher.find()) {
-            IFile[] files = FileFind.findFiles(matcher.group(1));
-            if (files == null) continue;
-
             FileWithLineRange style;
-            if (files.length > 0) {
+            IFile file =
+                ResourcesPlugin.getWorkspace()
+                               .getRoot()
+                               .getFileForLocation(new Path(matcher.group(1)));
+            if (file != null) {
                 InternalFileWithLineRange iStyle = new InternalFileWithLineRange();
-                iStyle.file = files[0];
+                iStyle.file = file;
                 iStyle.foreground = new Color(text.getDisplay(), 0, 51, 153);
                 style = (FileWithLineRange) iStyle;
             } else {
                 ExternalFileWithLineRange eStyle = new ExternalFileWithLineRange();
-                IFileStore fileStore = FileFind.findFileStore(matcher.group(1));
-                if (fileStore == null) continue;
-                eStyle.fileStore = fileStore;
+                eStyle.fileStore =
+                    EFS.getLocalFileSystem().getStore(new Path(matcher.group(1)));
                 eStyle.foreground = new Color(text.getDisplay(), 114, 159, 207);
                 style = (FileWithLineRange) eStyle;
             }

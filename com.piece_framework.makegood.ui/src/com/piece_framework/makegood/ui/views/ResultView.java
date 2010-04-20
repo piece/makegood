@@ -15,7 +15,10 @@ package com.piece_framework.makegood.ui.views;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IToolBarManager;
@@ -55,7 +58,6 @@ import com.piece_framework.makegood.ui.actions.RerunTestAction;
 import com.piece_framework.makegood.ui.actions.RunAllTestsAction;
 import com.piece_framework.makegood.ui.actions.StopTestAction;
 import com.piece_framework.makegood.ui.ide.EditorOpen;
-import com.piece_framework.makegood.ui.ide.FileFind;
 import com.piece_framework.makegood.ui.launch.AllTestsStatus;
 import com.piece_framework.makegood.ui.launch.TestRunner;
 
@@ -207,23 +209,32 @@ public class ResultView extends ViewPart {
                     TestCaseResult testCase = (TestCaseResult) element;
                     String fileName = testCase.getFile();
                     if (fileName == null) return;
-                    IFile[] files = FileFind.findFiles(fileName);
-                    if (files == null) return;
-                    if (files.length > 0) {
-                        EditorOpen.open(files[0], testCase.getLine());
+                    IFile file =
+                        ResourcesPlugin.getWorkspace()
+                                       .getRoot()
+                                       .getFileForLocation(new Path(fileName));
+                    if (file != null) {
+                        EditorOpen.open(file, testCase.getLine());
                     } else {
-                        EditorOpen.open(FileFind.findFileStore(fileName), testCase.getLine());
+                        EditorOpen.open(
+                            EFS.getLocalFileSystem().getStore(new Path(fileName)),
+                            testCase.getLine()
+                        );
                     }
                 } else if (element instanceof TestSuiteResult) {
                     TestSuiteResult suite= (TestSuiteResult) element;
                     String fileName = suite.getFile();
                     if (fileName == null) return;
-                    IFile[] files = FileFind.findFiles(fileName);
-                    if (files == null) return;
-                    if (files.length > 0) {
-                        EditorOpen.open(files[0]);
+                    IFile file =
+                        ResourcesPlugin.getWorkspace()
+                                       .getRoot()
+                                       .getFileForLocation(new Path(fileName));
+                    if (file != null) {
+                        EditorOpen.open(file);
                     } else {
-                        EditorOpen.open(FileFind.findFileStore(fileName));
+                        EditorOpen.open(
+                            EFS.getLocalFileSystem().getStore(new Path(fileName))
+                        );
                     }
                 }
             }
