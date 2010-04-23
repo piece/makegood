@@ -24,8 +24,8 @@ import org.eclipse.core.runtime.Status;
 
 public class StagehandTestRunner {
     private static final String[] BUNDLE_INCLUDE_PATH = {
-        "/resources/php/PEAR/src",
-        "/resources/php/PEAR"
+        "/resources/php/PEAR/src", //$NON-NLS-1$
+        "/resources/php/PEAR" //$NON-NLS-1$
     };
 
     public static String[] getBundleIncludePath() {
