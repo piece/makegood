@@ -1,5 +1,6 @@
 /**
  * Copyright (c) 2010 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
+ *               2010 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -23,7 +24,7 @@ import org.eclipse.ui.IFileEditorInput;
 
 import com.piece_framework.makegood.core.MakeGoodProperty;
 import com.piece_framework.makegood.core.PHPResource;
-import com.piece_framework.makegood.launch.MakeGoodLaunchParameter;
+import com.piece_framework.makegood.launch.CommandLineGenerator;
 
 public class AllTestsLaunchShortcut extends MakeGoodLaunchShortcut {
 
@@ -44,7 +45,7 @@ public class AllTestsLaunchShortcut extends MakeGoodLaunchShortcut {
             return;
         }
 
-        MakeGoodLaunchParameter parameter = addTestFolders(resource);
+        CommandLineGenerator parameter = addTestFolders(resource);
         ISelection element = new StructuredSelection(parameter.getMainScriptResource());
 
         super.launch(element, mode);
@@ -67,9 +68,9 @@ public class AllTestsLaunchShortcut extends MakeGoodLaunchShortcut {
         super.launch(editor, mode);
     }
 
-    private MakeGoodLaunchParameter addTestFolders(IResource resource) {
+    private CommandLineGenerator addTestFolders(IResource resource) {
         MakeGoodProperty property = new MakeGoodProperty(resource);
-        MakeGoodLaunchParameter parameter = MakeGoodLaunchParameter.getInstance();
+        CommandLineGenerator parameter = CommandLineGenerator.getInstance();
         parameter.clearTargets();
         for (IFolder testFolder: property.getTestFolders()) {
             parameter.addTarget(testFolder);

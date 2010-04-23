@@ -1,5 +1,6 @@
 /**
  * Copyright (c) 2009-2010 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
+ *               2010 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -11,13 +12,6 @@
 
 package com.piece_framework.makegood.launch;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-
-import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
@@ -45,21 +39,6 @@ public class Activator extends AbstractUIPlugin {
     public void start(BundleContext context) throws Exception {
         super.start(context);
         plugin = this;
-
-        try {
-            URL launchersURL = Platform.getBundle(PLUGIN_ID).getEntry("launchers"); //$NON-NLS-1$
-            File launchersDirectory = new File(FileLocator.toFileURL(launchersURL).getPath());
-            MakeGoodLauncherRegistry.createRegistry(launchersDirectory);
-        } catch (IOException e) {
-            getLog().log(
-                new Status(
-                    Status.WARNING,
-                    PLUGIN_ID,
-                    e.getMessage(),
-                    e
-                )
-            );
-        }
     }
 
     /*
@@ -70,7 +49,7 @@ public class Activator extends AbstractUIPlugin {
         plugin = null;
         super.stop(context);
 
-        MakeGoodLauncherRegistry.deleteRegistry();
+        JUnitXMLRegistry.destroy();
     }
 
     /**

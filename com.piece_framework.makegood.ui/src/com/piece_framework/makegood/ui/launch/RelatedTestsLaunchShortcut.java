@@ -1,5 +1,6 @@
 /**
  * Copyright (c) 2010 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
+ *               2010 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -37,7 +38,7 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.texteditor.ITextEditor;
 
 import com.piece_framework.makegood.core.PHPResource;
-import com.piece_framework.makegood.launch.MakeGoodLaunchParameter;
+import com.piece_framework.makegood.launch.CommandLineGenerator;
 import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.Messages;
 
@@ -48,7 +49,7 @@ public class RelatedTestsLaunchShortcut extends MakeGoodLaunchShortcut {
             return;
         }
 
-        MakeGoodLaunchParameter parameter = MakeGoodLaunchParameter.getInstance();
+        CommandLineGenerator parameter = CommandLineGenerator.getInstance();
         parameter.clearTargets();
 
         launchTestsForProductCode(editor, mode);
@@ -89,7 +90,7 @@ public class RelatedTestsLaunchShortcut extends MakeGoodLaunchShortcut {
                     return;
                 }
 
-                MakeGoodLaunchParameter parameter = MakeGoodLaunchParameter.getInstance();
+                CommandLineGenerator parameter = CommandLineGenerator.getInstance();
                 parameter.clearTargets();
                 for (IResource test: tests) {
                     Debug.println(test);

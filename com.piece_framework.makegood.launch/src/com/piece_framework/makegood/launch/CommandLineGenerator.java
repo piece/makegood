@@ -33,19 +33,19 @@ import com.piece_framework.makegood.core.MakeGoodProperty;
 import com.piece_framework.makegood.core.PHPResource;
 import com.piece_framework.makegood.core.TestingFramework;
 
-public class MakeGoodLaunchParameter {
-    private static MakeGoodLaunchParameter parameter;
+public class CommandLineGenerator {
+    private static CommandLineGenerator soleInstance;
     private List<Object> targets;
     private boolean stopsOnFailure = false;
 
-    private MakeGoodLaunchParameter() {
+    private CommandLineGenerator() {
     }
 
-    public static MakeGoodLaunchParameter getInstance() {
-        if (parameter == null) {
-            parameter = new MakeGoodLaunchParameter();
+    public static CommandLineGenerator getInstance() {
+        if (soleInstance == null) {
+            soleInstance = new CommandLineGenerator();
         }
-        return parameter;
+        return soleInstance;
     }
 
     public void addTarget(Object object) {
@@ -77,7 +77,7 @@ public class MakeGoodLaunchParameter {
         return root.findMember(getMainScript());
     }
 
-    public String generateParameter(String log) {
+    public String generate(String log) {
         StringBuilder buffer = new StringBuilder();
 
         String preloadScript = getPreloadScript();
@@ -95,7 +95,7 @@ public class MakeGoodLaunchParameter {
 
         buffer.append(" --log-junit-realtime");
 
-        if (parameter.stopsOnFailure) {
+        if (soleInstance.stopsOnFailure) {
             buffer.append(" --stop-on-failure");
         }
 

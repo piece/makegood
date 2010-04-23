@@ -1,5 +1,6 @@
 /**
  * Copyright (c) 2010 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
+ *               2010 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -15,7 +16,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 
-import com.piece_framework.makegood.launch.MakeGoodLaunchParameter;
+import com.piece_framework.makegood.launch.CommandLineGenerator;
 
 public class ResourceLaunchShortcut extends MakeGoodLaunchShortcut {
     @Override
@@ -25,7 +26,7 @@ public class ResourceLaunchShortcut extends MakeGoodLaunchShortcut {
         }
 
         Object target = ((IStructuredSelection) selection).getFirstElement();
-        MakeGoodLaunchParameter parameter = MakeGoodLaunchParameter.getInstance();
+        CommandLineGenerator parameter = CommandLineGenerator.getInstance();
         parameter.clearTargets();
         parameter.addTarget(target);
 

@@ -1,5 +1,6 @@
 /**
  * Copyright (c) 2009 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
+ *               2010 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -26,7 +27,6 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchDelegate;
-import org.eclipse.debug.internal.core.LaunchConfiguration;
 
 public class MakeGoodLaunchConfigurationWorkingCopy implements ILaunchConfigurationWorkingCopy {
     private ILaunchConfigurationWorkingCopy original;
