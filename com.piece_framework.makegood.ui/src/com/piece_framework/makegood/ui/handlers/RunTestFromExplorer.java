@@ -63,7 +63,7 @@ public class RunTestFromExplorer extends AbstractHandler {
         if (resource instanceof IFolder) {
             return true;
         }
-        return PHPResource.isTrue(resource);
+        return PHPResource.isPHPSource(resource);
     }
 
     private ISelection getSelectionFromActivePage() {

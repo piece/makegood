@@ -25,7 +25,7 @@ import org.eclipse.dltk.core.ModelException;
 public class PHPResource {
     public static String CONTENT_TYPE = "org.eclipse.php.core.phpsource"; //$NON-NLS-1$
 
-    public static boolean isTrue(IResource target) {
+    public static boolean isPHPSource(IResource target) {
         if (!(target instanceof IFile)) {
             return false;
         }

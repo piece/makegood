@@ -132,7 +132,7 @@ public class MakeGoodPropertyPage extends PropertyPage implements IWorkbenchProp
                                           Object element
                                           ) {
                         if (element instanceof IFile) {
-                            return PHPResource.isTrue((IFile) element);
+                            return PHPResource.isPHPSource((IFile) element);
                         } else if (element instanceof IFolder) {
                             return true;
                         }

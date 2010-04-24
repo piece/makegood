@@ -158,7 +158,7 @@ public class CommandLineGenerator {
     private IFile findDummyFile(IFolder folder) {
         try {
             for (IResource resource: folder.members()) {
-                if (PHPResource.isTrue(resource)) {
+                if (PHPResource.isPHPSource(resource)) {
                     return (IFile) resource;
                 }
             }

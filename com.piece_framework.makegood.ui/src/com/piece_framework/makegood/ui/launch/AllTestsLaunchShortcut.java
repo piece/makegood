@@ -57,7 +57,7 @@ public class AllTestsLaunchShortcut extends MakeGoodLaunchShortcut {
             return;
         }
         IFile target = ((IFileEditorInput) editor.getEditorInput()).getFile();
-        if (!PHPResource.isTrue(target)) {
+        if (!PHPResource.isPHPSource(target)) {
             ISelection selection = new StructuredSelection(target);
             launch(selection, mode);
             return;
