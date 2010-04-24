@@ -63,7 +63,7 @@ public class PHPResource {
             return false;
         }
 
-        String testClass = getTestClass(type);
+        String testClass = getTestClassSuperType(type);
         for (String superClass: type.getSuperClasses()) {
             if (superClass.equals(testClass)) { //$NON-NLS-1$
                 return true;
@@ -80,7 +80,7 @@ public class PHPResource {
         return false;
     }
 
-    private static String getTestClass(IType type) {
+    private static String getTestClassSuperType(IType type) {
         MakeGoodProperty property = new MakeGoodProperty(type.getResource());
         if (property.usePHPUnit()) {
             return "PHPUnit_Framework_TestCase"; //$NON-NLS-1$
