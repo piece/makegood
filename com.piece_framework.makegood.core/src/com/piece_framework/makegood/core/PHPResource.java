@@ -34,7 +34,7 @@ public class PHPResource {
         return contentType.isAssociatedWith(target.getName());
     }
 
-    public static boolean includeTestClass(ISourceModule source) {
+    public static boolean includesTests(ISourceModule source) {
         if (source == null) {
             return false;
         }

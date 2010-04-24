@@ -67,7 +67,7 @@ public class RelatedTestsLaunchShortcut extends MakeGoodLaunchShortcut {
                 if (!(element instanceof ISourceModule)) {
                     return;
                 }
-                if (!PHPResource.includeTestClass((ISourceModule) element)) {
+                if (!PHPResource.includesTests((ISourceModule) element)) {
                     return;
                 }
 
@@ -78,7 +78,7 @@ public class RelatedTestsLaunchShortcut extends MakeGoodLaunchShortcut {
             public void endReporting() {
                 EditorParser parser = new EditorParser(editor);
                 ISourceModule source = parser.getSourceModule();
-                if (source != null && PHPResource.includeTestClass(source)) {
+                if (source != null && PHPResource.includesTests(source)) {
                     tests.add(source.getResource());
                 }
 

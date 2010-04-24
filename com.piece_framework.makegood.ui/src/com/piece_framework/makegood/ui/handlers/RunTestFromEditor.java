@@ -36,7 +36,7 @@ public class RunTestFromEditor extends AbstractHandler {
         }
 
         EditorParser parser = new EditorParser();
-        if (!PHPResource.includeTestClass(parser.getSourceModule())) {
+        if (!PHPResource.includesTests(parser.getSourceModule())) {
             return false;
         }
 
