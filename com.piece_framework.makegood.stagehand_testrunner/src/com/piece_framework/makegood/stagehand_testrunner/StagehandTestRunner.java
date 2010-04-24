@@ -23,6 +23,7 @@ import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.osgi.framework.Bundle;
 
 public class StagehandTestRunner {
     private static final String BUNDLE_BASE_DIR = "/resources/php"; //$NON-NLS-1$
@@ -61,19 +62,29 @@ public class StagehandTestRunner {
         return includePaths.toArray(new String[ includePaths.size() ]);
     }
 
-    public static String getCommandPath(String framework)
-        throws CoreException {
-        URL url;
+    public static String getCommandPath(String framework) throws CoreException {
+        Bundle bundle = Platform.getBundle(Activator.PLUGIN_ID);
+        if (bundle == null) {
+            throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Bundle [ " +  Activator.PLUGIN_ID + " ] is not found")); //$NON-NLS-1$
+        }
 
+        String commandPath = RUNNER_SCRIPTS.get(framework.toLowerCase());
+        if (commandPath == null) {
+            throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Testing Framework [ " +  framework + " ] is not supported")); //$NON-NLS-1$
+        }
+
+        URL commandURL = bundle.getEntry(commandPath);
+        if (commandURL == null) {
+            throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Command [ " +  commandPath + " ] is not found")); //$NON-NLS-1$
+        }
+
+        URL absoluteCommandURL;
         try {
-            url = FileLocator.resolve(
-                    Platform.getBundle(Activator.PLUGIN_ID)
-                            .getEntry(RUNNER_SCRIPTS.get(framework.toLowerCase()))
-            );
+            absoluteCommandURL = FileLocator.resolve(commandURL);
         } catch (IOException e) {
             throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
         }
 
-        return new File(url.getPath()).getAbsolutePath();
+        return new File(absoluteCommandURL.getPath()).getAbsolutePath();
     }
 }
