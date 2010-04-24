@@ -82,7 +82,7 @@ public class PHPResource {
 
     private static String getTestClassSuperType(IType type) {
         MakeGoodProperty property = new MakeGoodProperty(type.getResource());
-        if (property.usePHPUnit()) {
+        if (property.usingPHPUnit()) {
             return "PHPUnit_Framework_TestCase"; //$NON-NLS-1$
         } else if (property.useSimpleTest()) {
             return "UnitTestCase"; //$NON-NLS-1$

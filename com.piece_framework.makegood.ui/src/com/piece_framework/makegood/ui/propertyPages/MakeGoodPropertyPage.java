@@ -298,7 +298,7 @@ public class MakeGoodPropertyPage extends PropertyPage implements IWorkbenchProp
         });
 
         MakeGoodProperty property = new MakeGoodProperty(getProject());
-        if (property.usePHPUnit()) {
+        if (property.usingPHPUnit()) {
             phpUnit.setSelection(true);
         } else if (property.useSimpleTest()) {
             simpleTest.setSelection(true);
