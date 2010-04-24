@@ -300,7 +300,7 @@ public class MakeGoodPropertyPage extends PropertyPage implements IWorkbenchProp
         MakeGoodProperty property = new MakeGoodProperty(getProject());
         if (property.usingPHPUnit()) {
             phpUnit.setSelection(true);
-        } else if (property.useSimpleTest()) {
+        } else if (property.usingSimpleTest()) {
             simpleTest.setSelection(true);
         } else {
             phpUnit.setSelection(true);

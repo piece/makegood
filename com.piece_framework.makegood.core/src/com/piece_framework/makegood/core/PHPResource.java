@@ -84,7 +84,7 @@ public class PHPResource {
         MakeGoodProperty property = new MakeGoodProperty(type.getResource());
         if (property.usingPHPUnit()) {
             return "PHPUnit_Framework_TestCase"; //$NON-NLS-1$
-        } else if (property.useSimpleTest()) {
+        } else if (property.usingSimpleTest()) {
             return "UnitTestCase"; //$NON-NLS-1$
         } else {
             return "PHPUnit_Framework_TestCase"; //$NON-NLS-1$

@@ -67,7 +67,7 @@ public class MakeGoodProperty {
         return preferences.get(TESTING_FRAMEWORK_KEY, "").equals(TestingFramework.PHPUnit.name()); //$NON-NLS-1$
     }
 
-    public boolean useSimpleTest() {
+    public boolean usingSimpleTest() {
         return preferences.get(TESTING_FRAMEWORK_KEY, "").equals(TestingFramework.SimpleTest.name()); //$NON-NLS-1$
     }
 
