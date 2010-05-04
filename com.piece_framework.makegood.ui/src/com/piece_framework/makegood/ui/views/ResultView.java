@@ -60,8 +60,6 @@ import com.piece_framework.makegood.ui.actions.RerunTestAction;
 import com.piece_framework.makegood.ui.actions.RunAllTestsAction;
 import com.piece_framework.makegood.ui.actions.StopTestAction;
 import com.piece_framework.makegood.ui.ide.EditorOpen;
-import com.piece_framework.makegood.ui.launch.AllTestsStatus;
-import com.piece_framework.makegood.ui.launch.TestRunner;
 
 public class ResultView extends ViewPart {
     public static final String ID = "com.piece_framework.makegood.ui.views.resultView"; //$NON-NLS-1$
