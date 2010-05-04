@@ -95,7 +95,7 @@ public class TestRunner {
         return null;
     }
 
-    public static boolean runnableAllTests(Object target) {
+    public static boolean isRunnableAllTests(Object target) {
         if (target == null) return false;
 
         IResource resource = getResource(target);

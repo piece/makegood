@@ -69,7 +69,7 @@ public class AllTestsStatus implements IPartListener {
     }
 
     public boolean runnable() {
-        return TestRunner.runnableAllTests(target);
+        return TestRunner.isRunnableAllTests(target);
     }
 
     public Object getTarget() {
