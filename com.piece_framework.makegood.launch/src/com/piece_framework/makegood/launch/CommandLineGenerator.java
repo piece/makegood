@@ -37,7 +37,6 @@ import com.piece_framework.makegood.core.TestingFramework;
 public class CommandLineGenerator {
     private static CommandLineGenerator soleInstance;
     private List<Object> targets;
-    private boolean stopsOnFailure = false;
 
     private CommandLineGenerator() {
     }
@@ -96,7 +95,7 @@ public class CommandLineGenerator {
 
         buffer.append(" --log-junit-realtime");
 
-        if (soleInstance.stopsOnFailure) {
+        if (RuntimeConfiguration.getInstance().stopsOnFailure) {
             buffer.append(" --stop-on-failure");
         }
 
@@ -150,10 +149,6 @@ public class CommandLineGenerator {
     public TestingFramework getTestingFramework() {
         MakeGoodProperty property = new MakeGoodProperty(getTargetResource(targets.get(0)));
         return property.getTestingFramework();
-    }
-
-    public void setStopsOnFailure(boolean stopsOnFailure) {
-        this.stopsOnFailure = stopsOnFailure;
     }
 
     private IFile findDummyFile(IFolder folder) {

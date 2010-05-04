@@ -19,8 +19,6 @@ import org.eclipse.ui.IViewPart;
 import com.piece_framework.makegood.launch.RuntimeConfiguration;
 
 public class DebugAction implements IViewActionDelegate {
-    public static final String ID = "com.piece_framework.makegood.ui.viewActions.resultView.debugAction"; //$NON-NLS-1$
-
     @Override
     public void init(IViewPart view) {}
 

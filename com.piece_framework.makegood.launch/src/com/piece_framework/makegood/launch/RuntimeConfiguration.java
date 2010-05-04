@@ -15,6 +15,7 @@ import org.eclipse.debug.core.ILaunchManager;
 
 public class RuntimeConfiguration {
     public boolean debugs = false;
+    public boolean stopsOnFailure = false;
     private static RuntimeConfiguration soleInstance;
 
     public static RuntimeConfiguration getInstance() {

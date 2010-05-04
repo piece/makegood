@@ -16,7 +16,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IViewActionDelegate;
 import org.eclipse.ui.IViewPart;
 
-import com.piece_framework.makegood.launch.CommandLineGenerator;
+import com.piece_framework.makegood.launch.RuntimeConfiguration;
 
 public class StopOnFailureAction implements IViewActionDelegate {
     @Override
@@ -24,8 +24,7 @@ public class StopOnFailureAction implements IViewActionDelegate {
 
     @Override
     public void run(IAction action) {
-        CommandLineGenerator parameter = CommandLineGenerator.getInstance();
-        parameter.setStopsOnFailure(action.isChecked());
+        RuntimeConfiguration.getInstance().stopsOnFailure = action.isChecked();
     }
 
     @Override
