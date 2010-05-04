@@ -13,24 +13,29 @@
 package com.piece_framework.makegood.ui.launch;
 
 import org.eclipse.core.resources.IResource;
+import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.internal.ui.editor.EditorUtility;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.window.Window;
+import org.eclipse.php.internal.debug.core.launching.PHPLaunchUtilities;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.internal.dialogs.PropertyDialog;
 
 import com.piece_framework.makegood.core.MakeGoodProperty;
+import com.piece_framework.makegood.launch.RuntimeConfiguration;
+import com.piece_framework.makegood.ui.Messages;
 
 public class TestRunner {
-    private static String MODE_RUN ="run"; //$NON-NLS-1$
     private static MakeGoodLaunchShortcut lastShortcut;
     private static Object lastTarget;
 
@@ -114,11 +119,19 @@ public class TestRunner {
 
         lastShortcut = shortcut;
         lastTarget = target;
+        String launchMode = RuntimeConfiguration.getInstance().getLaunchMode();
+
+        if (ILaunchManager.DEBUG_MODE.equals(launchMode)) {
+            if (PHPLaunchUtilities.hasPHPDebugLaunch()) {
+                raiseError();
+                return;
+            }
+        }
 
         if (target instanceof ISelection) {
-            shortcut.launch((ISelection) target, MODE_RUN); //$NON-NLS-1$
+            shortcut.launch((ISelection) target, launchMode); //$NON-NLS-1$
         } else if (target instanceof IEditorPart) {
-            shortcut.launch((IEditorPart) target, MODE_RUN); //$NON-NLS-1$
+            shortcut.launch((IEditorPart) target, launchMode); //$NON-NLS-1$
         }
     }
 
@@ -136,6 +149,20 @@ public class TestRunner {
                 if (dialog.open() == Window.OK) {
                     runTests(target, shortcut);
                 }
+            }
+        });
+    }
+
+    private static void raiseError() {
+        final Display display = Display.getDefault();
+        display.syncExec(new Runnable() {
+            @Override
+            public void run() {
+                MessageDialog.openError(
+                    display.getActiveShell(),
+                    Messages.TestRunner_SessionAlreadyStarted_Title,
+                    Messages.TestRunner_SessionAlreadyStarted_Message
+                );
             }
         });
     }

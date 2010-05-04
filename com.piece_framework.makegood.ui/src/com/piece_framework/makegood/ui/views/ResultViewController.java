@@ -33,6 +33,7 @@ import com.piece_framework.makegood.core.result.JUnitXMLReader;
 import com.piece_framework.makegood.core.result.JUnitXMLReaderListener;
 import com.piece_framework.makegood.core.result.TestCaseResult;
 import com.piece_framework.makegood.core.result.TestSuiteResult;
+import com.piece_framework.makegood.launch.MakeGoodLaunchConfigurationDelegate;
 import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.actions.StopTestAction;
 import com.piece_framework.makegood.ui.ide.ViewShow;
@@ -46,17 +47,22 @@ public class ResultViewController implements IMakeGoodEventListener, JUnitXMLRea
 
     @Override
     public void create(final ILaunch launch) {
-        String log = null;
+        String junitXMLFile = null;
         try {
-            log = launch.getLaunchConfiguration().getAttribute("LOG_JUNIT", (String) null); //$NON-NLS-1$
+            junitXMLFile =
+                launch.getLaunchConfiguration()
+                      .getAttribute(
+                          MakeGoodLaunchConfigurationDelegate.JUNIT_XML_FILE,
+                          (String) null
+                       );
         } catch (CoreException e) {
             Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
         }
-        if (log == null) return;
+        if (junitXMLFile == null) return;
 
         progress = new RunProgress();
 
-        parser = new JUnitXMLReader(new File(log));
+        parser = new JUnitXMLReader(new File(junitXMLFile));
         parser.addListener(this);
         parserThread = new Thread() {
             @Override

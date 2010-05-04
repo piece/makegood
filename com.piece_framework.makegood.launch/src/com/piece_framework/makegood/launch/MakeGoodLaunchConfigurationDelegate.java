@@ -13,93 +13,111 @@
 package com.piece_framework.makegood.launch;
 
 import java.io.File;
-import java.util.HashSet;
-import java.util.Set;
-
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
-import org.eclipse.debug.core.ILaunchDelegate;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.Launch;
-import org.eclipse.debug.core.model.ILaunchConfigurationDelegate;
+import org.eclipse.debug.ui.DebugUITools;
+import org.eclipse.php.debug.core.debugger.parameters.IDebugParametersKeys;
+import org.eclipse.php.internal.debug.core.IPHPDebugConstants;
+import org.eclipse.php.internal.debug.core.launching.PHPExecutableLaunchDelegate;
+import org.eclipse.php.internal.debug.ui.PHPDebugPerspectiveFactory;
 
 import com.piece_framework.makegood.stagehand_testrunner.StagehandTestRunner;
 
-public class MakeGoodLaunchConfigurationDelegate implements ILaunchConfigurationDelegate {
-    public void launch(ILaunchConfiguration configuration,
-                       String mode,
-                       ILaunch launch,
-                       IProgressMonitor monitor
-                       ) throws CoreException {
-        ILaunchConfiguration stagehandTestRunnerLaunchConfiguration =
-            createStagehandTestRunnerLaunchConfiguration(launch, configuration);
+public class MakeGoodLaunchConfigurationDelegate extends PHPExecutableLaunchDelegate {
+    public static final String JUNIT_XML_FILE = "JUNIT_XML_FILE"; //$NON-NLS-1$
 
-        ILaunch stagehandTestRunnerLaunch = replaceLaunch(launch, stagehandTestRunnerLaunchConfiguration);
-
-        Set modes = new HashSet();
-        modes.add(mode);
-        ILaunchConfigurationType configurationType =
-            DebugPlugin.getDefault().getLaunchManager().getLaunchConfigurationType("org.eclipse.php.debug.core.launching.PHPExeLaunchConfigurationType"); //$NON-NLS-1$
-        ILaunchDelegate delegate = configurationType.getDelegates(modes)[0];
-
+    @Override
+    public void launch(
+        ILaunchConfiguration originalConfiguration,
+        String mode,
+        ILaunch originalLaunch,
+        IProgressMonitor monitor
+    ) throws CoreException {
         JUnitXMLRegistry.create();
-
-        delegate.getDelegate().launch(stagehandTestRunnerLaunchConfiguration,
-                                      mode,
-                                      stagehandTestRunnerLaunch,
-                                      monitor
-                                      );
+        ILaunchConfiguration configuration =
+            createConfiguration(originalConfiguration);
+        ILaunch launch = createLaunch(getLaunch(configuration, mode), configuration);
+        if (ILaunchManager.DEBUG_MODE.equals(mode)) {
+            switchToPHPDebugPerspective(configuration);
+        }
+        super.launch(configuration, mode, launch, monitor);
     }
 
-    private ILaunchConfiguration createStagehandTestRunnerLaunchConfiguration(ILaunch launch,
-                                                                              ILaunchConfiguration configuration
-                                                                              ) throws CoreException {
-        String configurationName = "MakeGood" + Long.toString(System.currentTimeMillis()); //$NON-NLS-1$
-        String log = JUnitXMLRegistry.getRegistry().getAbsolutePath().toString() +
-                     String.valueOf(File.separatorChar) +
-                     configurationName +
-                     ".xml"; //$NON-NLS-1$
-        CommandLineGenerator parameter = CommandLineGenerator.getInstance();
+    private ILaunchConfiguration createConfiguration(
+        ILaunchConfiguration configuration) throws CoreException {
+        String configurationName =
+            "MakeGood" + Long.toString(System.currentTimeMillis()); //$NON-NLS-1$
+        String junitXMLFile =
+            JUnitXMLRegistry.getRegistry().getAbsolutePath().toString() +
+            String.valueOf(File.separatorChar) +
+            configurationName +
+            ".xml"; //$NON-NLS-1$
+        CommandLineGenerator generator = CommandLineGenerator.getInstance();
 
         ILaunchConfigurationWorkingCopy workingCopy =
-            new MakeGoodLaunchConfigurationWorkingCopy(configuration.copy(configurationName));
-        workingCopy.setAttribute("ATTR_FILE", parameter.getMainScript()); //$NON-NLS-1$
-        workingCopy.setAttribute("ATTR_FILE_FULL_PATH", getCommandPath()); //$NON-NLS-1$
-        workingCopy.setAttribute("LOG_JUNIT", log); //$NON-NLS-1$
-        workingCopy.setAttribute("exeDebugArguments", parameter.generate(log)); //$NON-NLS-1$
+            new MakeGoodLaunchConfigurationWorkingCopy(
+                configuration.copy(configurationName)
+            );
+        workingCopy.setAttribute(
+            IPHPDebugConstants.ATTR_FILE, generator.getMainScript()
+        );
+        workingCopy.setAttribute(
+            IPHPDebugConstants.ATTR_FILE_FULL_PATH, getCommandPath()
+        );
+        workingCopy.setAttribute(JUNIT_XML_FILE, junitXMLFile);
+        workingCopy.setAttribute(
+            IDebugParametersKeys.EXE_CONFIG_PROGRAM_ARGUMENTS,
+            generator.generate(junitXMLFile)
+        );
 
         configuration.delete();
 
         return workingCopy;
     }
 
-    private ILaunch replaceLaunch(ILaunch launch, ILaunchConfiguration configuration) {
-        ILaunch newLaunch = new Launch(configuration,
-                                       launch.getLaunchMode(),
-                                       launch.getSourceLocator()
-                                       );
-        newLaunch.setAttribute(DebugPlugin.ATTR_CAPTURE_OUTPUT,
-                               launch.getAttribute(DebugPlugin.ATTR_CAPTURE_OUTPUT)
-                               );
-        newLaunch.setAttribute(DebugPlugin.ATTR_CONSOLE_ENCODING,
-                               launch.getAttribute(DebugPlugin.ATTR_CONSOLE_ENCODING)
-                               );
+    private ILaunch createLaunch(
+        ILaunch originalLaunch,
+        ILaunchConfiguration configuration) {
+        ILaunch launch =
+            new Launch(
+                configuration,
+                originalLaunch.getLaunchMode(),
+                originalLaunch.getSourceLocator()
+            );
+        launch.setAttribute(
+            DebugPlugin.ATTR_CAPTURE_OUTPUT,
+            originalLaunch.getAttribute(DebugPlugin.ATTR_CAPTURE_OUTPUT)
+        );
+        launch.setAttribute(
+            DebugPlugin.ATTR_CONSOLE_ENCODING,
+            originalLaunch.getAttribute(DebugPlugin.ATTR_CONSOLE_ENCODING)
+        );
 
         ILaunchManager manager = DebugPlugin.getDefault().getLaunchManager();
-        manager.removeLaunch(launch);
-        manager.addLaunch(newLaunch);
+        manager.removeLaunch(originalLaunch);
+        manager.addLaunch(launch);
 
-        return newLaunch;
+        return launch;
     }
 
     private String getCommandPath() throws CoreException {
         return StagehandTestRunner.getCommandPath(
                    CommandLineGenerator.getInstance().getTestingFramework().name()
                );
+    }
+
+    private void switchToPHPDebugPerspective(ILaunchConfiguration configuration)
+        throws CoreException {
+        DebugUITools.setLaunchPerspective(
+            configuration.getType(),
+            ILaunchManager.DEBUG_MODE,
+            PHPDebugPerspectiveFactory.PERSPECTIVE_ID
+        );
     }
 }

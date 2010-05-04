@@ -247,6 +247,11 @@
       </command>
       <command
             categoryId="com.piece_framework.makegood.ui.commands.resultViewCategory"
+            id="com.piece_framework.makegood.ui.commands.debug"
+            name="%commands.debug.name">
+      </command>
+      <command
+            categoryId="com.piece_framework.makegood.ui.commands.resultViewCategory"
             id="com.piece_framework.makegood.ui.commands.stopTest"
             name="%commands.stopTest.name">
       </command>
@@ -353,6 +358,16 @@
                style="toggle"
                toolbarPath="additions"
                tooltip="%resultView.stopOnFailure.tooltip">
+         </action>
+         <action
+               class="com.piece_framework.makegood.ui.actions.DebugAction"
+               definitionId="com.piece_framework.makegood.ui.commands.debug"
+               icon="icons/stop-on-failure.gif"
+               id="com.piece_framework.makegood.ui.viewActions.resultView.debug"
+               label="%resultView.debug.label"
+               style="toggle"
+               toolbarPath="additions"
+               tooltip="%resultView.debug.tooltip">
          </action>
          <action
                class="com.piece_framework.makegood.ui.actions.StopTestAction"

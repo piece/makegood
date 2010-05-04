@@ -52,8 +52,10 @@ import org.eclipse.ui.part.ViewPart;
 import com.piece_framework.makegood.core.result.Result;
 import com.piece_framework.makegood.core.result.TestCaseResult;
 import com.piece_framework.makegood.core.result.TestSuiteResult;
+import com.piece_framework.makegood.launch.RuntimeConfiguration;
 import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.Messages;
+import com.piece_framework.makegood.ui.actions.DebugAction;
 import com.piece_framework.makegood.ui.actions.RerunTestAction;
 import com.piece_framework.makegood.ui.actions.RunAllTestsAction;
 import com.piece_framework.makegood.ui.actions.StopTestAction;
@@ -77,6 +79,7 @@ public class ResultView extends ViewPart {
     private IAction stopAction;
     private IAction rerunAction;
     private IAction runAllTestsAction;
+    private IAction debugAction;
     private FailureTrace failureTrace;
     private boolean isRunning;
     private boolean enableRunAllTestsAction;
@@ -118,6 +121,13 @@ public class ResultView extends ViewPart {
             if (runAllTestsItem != null) {
                 runAllTestsAction = runAllTestsItem.getAction();
                 runAllTestsAction.setEnabled(false);
+            }
+
+            ActionContributionItem debugItem =
+                (ActionContributionItem) manager.find(DebugAction.ID);
+            if (debugItem != null) {
+                debugAction = debugItem.getAction();
+                debugAction.setEnabled(RuntimeConfiguration.getInstance().debugs);
             }
         }
 

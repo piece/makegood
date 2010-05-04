@@ -41,6 +41,9 @@ public class Messages extends NLS {
     public static String TestResultView_second;
     public static String TestResultView_millisecond;
     public static String TestResultView_testTime;
+    public static String TestRunner_SessionAlreadyStarted_Title;
+    public static String TestRunner_SessionAlreadyStarted_Message;
+
     static {
         // initialize resource bundle
         NLS.initializeMessages(BUNDLE_NAME, Messages.class);
