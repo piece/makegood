@@ -125,9 +125,9 @@ public class TestRunner {
         }
 
         if (target instanceof ISelection) {
-            shortcut.launch((ISelection) target, launchMode); //$NON-NLS-1$
+            shortcut.launch((ISelection) target, launchMode);
         } else if (target instanceof IEditorPart) {
-            shortcut.launch((IEditorPart) target, launchMode); //$NON-NLS-1$
+            shortcut.launch((IEditorPart) target, launchMode);
         }
     }
 
