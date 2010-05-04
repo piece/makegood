@@ -92,6 +92,7 @@ public class TestRunner {
                 return ((IFileEditorInput) editor.getEditorInput()).getFile();
             }
         }
+
         return null;
     }
 
@@ -131,17 +132,19 @@ public class TestRunner {
         }
     }
 
-    private static void showPropertyPage(final MakeGoodProperty property,
-                                         final Object target,
-                                         final MakeGoodLaunchShortcut shortcut
-                                         ) {
+    private static void showPropertyPage(
+        final MakeGoodProperty property,
+        final Object target,
+        final MakeGoodLaunchShortcut shortcut) {
         Display.getDefault().asyncExec(new Runnable() {
             @Override
             public void run() {
-                PropertyDialog dialog = PropertyDialog.createDialogOn(null,
-                                                                      "com.piece_framework.makegood.ui.propertyPages.makeGood", //$NON-NLS-1$
-                                                                      property.getProject()
-                                                                      );
+                PropertyDialog dialog =
+                    PropertyDialog.createDialogOn(
+                        null,
+                        "com.piece_framework.makegood.ui.propertyPages.makeGood", //$NON-NLS-1$
+                        property.getProject()
+                    );
                 if (dialog.open() == Window.OK) {
                     runTests(target, shortcut);
                 }
