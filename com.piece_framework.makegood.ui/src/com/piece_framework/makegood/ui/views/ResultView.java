@@ -58,6 +58,7 @@ import com.piece_framework.makegood.ui.Messages;
 import com.piece_framework.makegood.ui.actions.RerunTestAction;
 import com.piece_framework.makegood.ui.actions.RunAllTestsAction;
 import com.piece_framework.makegood.ui.actions.RunAllTestsWhenFileIsSavedAction;
+import com.piece_framework.makegood.ui.actions.StopOnFailureAction;
 import com.piece_framework.makegood.ui.actions.StopTestAction;
 import com.piece_framework.makegood.ui.ide.EditorOpen;
 
@@ -439,6 +440,14 @@ public class ResultView extends ViewPart {
             IAction runAllTestsWhenFileIsSavedAction = runAllTestsWhenFileIsSavedItem.getAction();
             runAllTestsWhenFileIsSavedAction.setChecked(
                 RuntimeConfiguration.getInstance().runsAllTestsWhenFileIsSaved
+            );
+        }
+
+        ActionContributionItem stopOnFailureItem =
+            (ActionContributionItem) manager.find(StopOnFailureAction.ID);
+        if (stopOnFailureItem != null) {
+            stopOnFailureItem.getAction().setChecked(
+                RuntimeConfiguration.getInstance().stopsOnFailure
             );
         }
     }
