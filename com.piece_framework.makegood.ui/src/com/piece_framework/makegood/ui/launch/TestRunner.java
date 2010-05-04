@@ -119,7 +119,7 @@ public class TestRunner {
 
         if (ILaunchManager.DEBUG_MODE.equals(launchMode)) {
             if (PHPLaunchUtilities.hasPHPDebugLaunch()) {
-                raiseError();
+                raiseSessionAlreadyStartedError();
                 return;
             }
         }
@@ -149,7 +149,7 @@ public class TestRunner {
         });
     }
 
-    private static void raiseError() {
+    private static void raiseSessionAlreadyStartedError() {
         final Display display = Display.getDefault();
         display.syncExec(new Runnable() {
             @Override
