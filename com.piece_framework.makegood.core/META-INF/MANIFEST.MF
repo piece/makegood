@@ -8,10 +8,8 @@ Bundle-Vendor: %Bundle-Vendor
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.debug.core,
- org.eclipse.php.debug.core,
  org.eclipse.dltk.core
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Export-Package: com.piece_framework.makegood.core,
- com.piece_framework.makegood.core.launch,
  com.piece_framework.makegood.core.result

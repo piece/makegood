@@ -16,6 +16,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
@@ -29,6 +30,8 @@ import org.eclipse.ui.progress.UIJob;
 
 import com.piece_framework.makegood.ui.ide.ViewShow;
 import com.piece_framework.makegood.ui.launch.AllTestsStatus;
+import com.piece_framework.makegood.ui.views.OutputDebugEventSetListener;
+import com.piece_framework.makegood.ui.views.ResultDebugEventSetListener;
 import com.piece_framework.makegood.ui.views.ResultView;
 
 public class Startup implements IStartup {
@@ -77,6 +80,9 @@ public class Startup implements IStartup {
             }
         };
         job.schedule();
+
+        DebugPlugin.getDefault().addDebugEventListener(new ResultDebugEventSetListener());
+        DebugPlugin.getDefault().addDebugEventListener(new OutputDebugEventSetListener());
     }
 
     private void addSelectionChangedListener(IWorkbenchPart part,

@@ -20,17 +20,22 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
-import org.eclipse.debug.core.Launch;
 import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.php.debug.core.debugger.parameters.IDebugParametersKeys;
 import org.eclipse.php.internal.debug.core.IPHPDebugConstants;
-import org.eclipse.php.internal.debug.core.launching.PHPExecutableLaunchDelegate;
+import org.eclipse.php.internal.debug.core.launching.PHPLaunch;
+import org.eclipse.php.internal.debug.core.launching.PHPLaunchDelegateProxy;
 import org.eclipse.php.internal.debug.ui.PHPDebugPerspectiveFactory;
 
 import com.piece_framework.makegood.stagehand_testrunner.StagehandTestRunner;
 
-public class MakeGoodLaunchConfigurationDelegate extends PHPExecutableLaunchDelegate {
+public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy {
     public static final String JUNIT_XML_FILE = "JUNIT_XML_FILE"; //$NON-NLS-1$
+
+    @Override
+    public ILaunch getLaunch(ILaunchConfiguration configuration, String mode) throws CoreException {
+        return new PHPLaunch(configuration, mode, null);
+    }
 
     @Override
     public void launch(
@@ -42,7 +47,7 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPExecutableLaunchDele
         JUnitXMLRegistry.create();
         ILaunchConfiguration configuration =
             createConfiguration(originalConfiguration);
-        ILaunch launch = createLaunch(getLaunch(configuration, mode), configuration);
+        ILaunch launch = createLaunch(originalLaunch, configuration);
         if (ILaunchManager.DEBUG_MODE.equals(mode)) {
             switchToPHPDebugPerspective(configuration);
         }
@@ -85,7 +90,7 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPExecutableLaunchDele
         ILaunch originalLaunch,
         ILaunchConfiguration configuration) {
         ILaunch launch =
-            new Launch(
+            new PHPLaunch(
                 configuration,
                 originalLaunch.getLaunchMode(),
                 originalLaunch.getSourceLocator()
@@ -106,7 +111,7 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPExecutableLaunchDele
         return launch;
     }
 
-    private String getCommandPath() throws CoreException {
+    public static String getCommandPath() throws CoreException {
         return StagehandTestRunner.getCommandPath(
                    CommandLineGenerator.getInstance().getTestingFramework().name()
                );

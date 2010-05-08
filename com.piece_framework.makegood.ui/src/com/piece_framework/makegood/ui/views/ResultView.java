@@ -344,7 +344,7 @@ public class ResultView extends ViewPart {
         return resultTreeViewer.getInput() != null;
     }
 
-    public void refresh(RunProgress progress, Result result) {
+    public void refresh(RunProgress progress, TestCaseResult currentTestCase) {
         progressRate.setText(
             String.format("%3d", progress.calculateRate()) + //$NON-NLS-1$
             Messages.TestResultView_percent +
@@ -378,9 +378,9 @@ public class ResultView extends ViewPart {
         failureCount.setCount(progress.getFailureCount());
         errorCount.setCount(progress.getErrorCount());
 
-        if (result != null) {
+        if (currentTestCase != null) {
             resultTreeViewer.expandAll();
-            resultTreeViewer.setSelection(new StructuredSelection(result));
+            resultTreeViewer.setSelection(new StructuredSelection(currentTestCase));
         }
         resultTreeViewer.refresh();
     }

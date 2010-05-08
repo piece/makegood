@@ -402,12 +402,6 @@
       </viewContribution>
    </extension>
    <extension
-         point="com.piece_framework.makegood.core.eventListeners">
-      <eventListener
-            listener="com.piece_framework.makegood.ui.views.ResultViewController">
-      </eventListener>
-   </extension>
-   <extension
          point="org.eclipse.ui.startup">
       <startup
             class="com.piece_framework.makegood.ui.Startup">
