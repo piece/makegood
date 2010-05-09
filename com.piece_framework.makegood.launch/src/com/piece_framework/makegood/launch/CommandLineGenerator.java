@@ -65,10 +65,9 @@ public class CommandLineGenerator {
             file = (IFile) resource;
         }
 
-        if (file != null) {
-            return file.getFullPath().toString();
-        }
-        return null;
+        if (file == null) return null;
+
+        return file.getFullPath().toString();
     }
 
     public IResource getMainScriptResource() {
