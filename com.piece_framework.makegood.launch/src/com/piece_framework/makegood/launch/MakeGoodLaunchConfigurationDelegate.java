@@ -13,6 +13,7 @@
 package com.piece_framework.makegood.launch;
 
 import java.io.File;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.debug.core.DebugPlugin;
@@ -31,6 +32,7 @@ import com.piece_framework.makegood.stagehand_testrunner.StagehandTestRunner;
 
 public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy {
     public static final String JUNIT_XML_FILE = "JUNIT_XML_FILE"; //$NON-NLS-1$
+    private static final String MAKEGOOD_LAUNCH_MARKER = "MAKEGOOD_LAUNCH_MARKER"; //$NON-NLS-1$
 
     @Override
     public ILaunch getLaunch(ILaunchConfiguration configuration, String mode) throws CoreException {
@@ -52,6 +54,18 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
             switchToPHPDebugPerspective(configuration);
         }
         super.launch(configuration, mode, launch, monitor);
+    }
+
+    public static boolean hasActiveLaunch() {
+        ILaunch[] launches = DebugPlugin.getDefault().getLaunchManager().getLaunches();
+        for (int i = 0; i < launches.length; i++) {
+            if (launches[i].isTerminated()) continue;
+            if (launches[i].getAttribute(MAKEGOOD_LAUNCH_MARKER) != null) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private ILaunchConfiguration createConfiguration(
@@ -103,6 +117,7 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
             DebugPlugin.ATTR_CONSOLE_ENCODING,
             originalLaunch.getAttribute(DebugPlugin.ATTR_CONSOLE_ENCODING)
         );
+        launch.setAttribute(MAKEGOOD_LAUNCH_MARKER, "1"); //$NON-NLS-1$
 
         ILaunchManager manager = DebugPlugin.getDefault().getLaunchManager();
         manager.removeLaunch(originalLaunch);

@@ -13,11 +13,6 @@
 package com.piece_framework.makegood.ui.launch;
 
 import org.eclipse.core.resources.IResource;
-import org.eclipse.debug.core.DebugPlugin;
-import org.eclipse.debug.core.ILaunch;
-import org.eclipse.debug.core.ILaunchManager;
-import org.eclipse.debug.core.model.IDebugTarget;
-import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.internal.ui.editor.EditorUtility;
@@ -25,13 +20,13 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.window.Window;
-import org.eclipse.php.internal.debug.core.model.IPHPDebugTarget;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.internal.dialogs.PropertyDialog;
 
 import com.piece_framework.makegood.core.MakeGoodProperty;
+import com.piece_framework.makegood.launch.MakeGoodLaunchConfigurationDelegate;
 import com.piece_framework.makegood.launch.RuntimeConfiguration;
 import com.piece_framework.makegood.ui.Messages;
 
@@ -118,16 +113,14 @@ public class TestRunner {
             return;
         }
 
+        if (MakeGoodLaunchConfigurationDelegate.hasActiveLaunch()) {
+            raiseTestSessionAlreadyExistsError();
+            return;
+        }
+
         lastShortcut = shortcut;
         lastTarget = target;
         String launchMode = RuntimeConfiguration.getInstance().getLaunchMode();
-
-        if (ILaunchManager.DEBUG_MODE.equals(launchMode)) {
-            if (hasDebugSession()) {
-                raiseDebugSessionAlreadyStartedError();
-                return;
-            }
-        }
 
         if (target instanceof ISelection) {
             shortcut.launch((ISelection) target, launchMode);
@@ -156,31 +149,17 @@ public class TestRunner {
         });
     }
 
-    private static void raiseDebugSessionAlreadyStartedError() {
+    private static void raiseTestSessionAlreadyExistsError() {
         final Display display = Display.getDefault();
         display.syncExec(new Runnable() {
             @Override
             public void run() {
                 MessageDialog.openError(
                     display.getActiveShell(),
-                    Messages.TestRunner_SessionAlreadyStarted_Title,
-                    Messages.TestRunner_SessionAlreadyStarted_Message
+                    Messages.TestRunner_TestSessionAlreadyExists_Title,
+                    Messages.TestRunner_TestSessionAlreadyExists_Message
                 );
             }
         });
-    }
-
-    private static boolean hasDebugSession() {
-        ILaunch[] launches = DebugPlugin.getDefault().getLaunchManager().getLaunches();
-        for (int i = 0; i < launches.length; i++) {
-            if (launches[i].isTerminated()) continue;
-            if (!ILaunchManager.DEBUG_MODE.equals(launches[i].getLaunchMode())) continue;
-            IDebugTarget debugTarget = launches[i].getDebugTarget();
-            if (debugTarget instanceof IPHPDebugTarget) {
-                return true;
-            }
-        }
-
-        return false;
     }
 }
