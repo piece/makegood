@@ -27,7 +27,6 @@ import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.IDebugEventSetListener;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.model.IProcess;
-import org.eclipse.php.internal.debug.core.model.IPHPDebugTarget;
 import org.eclipse.ui.progress.UIJob;
 import org.xml.sax.SAXException;
 
@@ -53,18 +52,19 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
         int size = events.length;
         for (int i = 0; i < size; ++i) {
             final Object source = events[i].getSource();
-            if (!(source instanceof IPHPDebugTarget || source instanceof IProcess)) continue;
+            ILaunch launch = MakeGoodLaunchConfigurationDelegate.getLaunch(source);
+            if (launch == null) continue;
+            if (!MakeGoodLaunchConfigurationDelegate.isMakeGoodLaunch(launch)) continue;
+
             if (events[i].getKind() == DebugEvent.CREATE) {
-                handleCreate(source);
+                handleCreate(launch);
             } else if (events[i].getKind() == DebugEvent.TERMINATE) {
-                handleTerminate(source);
+                handleTerminate(launch);
             }
         }
     }
 
-    private void handleCreate(Object source) {
-        final ILaunch launch = getLaunch(source);
-
+    private void handleCreate(final ILaunch launch) {
         // TODO This marker is to avoid calling create() twice by PDT.
         String createCalledMarker = getClass().getName() + ".createCalled"; //$NON-NLS-1$
         if (launch.getAttribute(createCalledMarker) != null) return;
@@ -120,9 +120,7 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
         job.schedule();
     }
 
-    private void handleTerminate(Object source) {
-        final ILaunch launch = getLaunch(source);
-
+    private void handleTerminate(ILaunch launch) {
         // TODO This marker is to avoid calling terminate() twice by PDT.
         String terminateCalledMarker = getClass().getName() + ".terminateCalled"; //$NON-NLS-1$
         if (launch.getAttribute(terminateCalledMarker) != null) return;
@@ -184,17 +182,6 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
             }
         };
         job.schedule();
-    }
-
-    private ILaunch getLaunch(Object eventSource) {
-        ILaunch launch = null;
-        if (eventSource instanceof IPHPDebugTarget) {
-            launch = ((IPHPDebugTarget) eventSource).getLaunch();
-        } else if (eventSource instanceof IProcess) {
-            launch = ((IProcess) eventSource).getLaunch();
-        }
-
-        return launch;
     }
 
     public class ResultJUnitXMLReaderListener implements JUnitXMLReaderListener {

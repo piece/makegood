@@ -17,10 +17,12 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.debug.core.DebugEvent;
 import org.eclipse.debug.core.IDebugEventSetListener;
+import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.php.internal.debug.core.model.IPHPDebugTarget;
 import org.eclipse.ui.progress.UIJob;
 
+import com.piece_framework.makegood.launch.MakeGoodLaunchConfigurationDelegate;
 import com.piece_framework.makegood.ui.ide.ViewShow;
 
 public class OutputDebugEventSetListener implements IDebugEventSetListener {
@@ -30,7 +32,10 @@ public class OutputDebugEventSetListener implements IDebugEventSetListener {
         int size = events.length;
         for (int i = 0; i < size; ++i) {
             final Object source = events[i].getSource();
-            if (!(source instanceof IPHPDebugTarget || source instanceof IProcess)) continue;
+            ILaunch launch = MakeGoodLaunchConfigurationDelegate.getLaunch(source);
+            if (launch == null) continue;
+            if (!MakeGoodLaunchConfigurationDelegate.isMakeGoodLaunch(launch)) continue;
+
             if (events[i].getKind() == DebugEvent.CREATE) {
                 Job job = new UIJob("MakeGood Output") { //$NON-NLS-1$
                     @Override

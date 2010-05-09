@@ -21,11 +21,13 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
+import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.php.debug.core.debugger.parameters.IDebugParametersKeys;
 import org.eclipse.php.internal.debug.core.IPHPDebugConstants;
 import org.eclipse.php.internal.debug.core.launching.PHPLaunch;
 import org.eclipse.php.internal.debug.core.launching.PHPLaunchDelegateProxy;
+import org.eclipse.php.internal.debug.core.model.IPHPDebugTarget;
 import org.eclipse.php.internal.debug.ui.PHPDebugPerspectiveFactory;
 
 import com.piece_framework.makegood.stagehand_testrunner.StagehandTestRunner;
@@ -66,6 +68,21 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
         }
 
         return false;
+    }
+
+    public static boolean isMakeGoodLaunch(ILaunch launch) {
+        return launch.getAttribute(MAKEGOOD_LAUNCH_MARKER) != null;
+    }
+
+    public static ILaunch getLaunch(Object eventSource) {
+        ILaunch launch = null;
+        if (eventSource instanceof IPHPDebugTarget) {
+            launch = ((IPHPDebugTarget) eventSource).getLaunch();
+        } else if (eventSource instanceof IProcess) {
+            launch = ((IProcess) eventSource).getLaunch();
+        }
+
+        return launch;
     }
 
     private ILaunchConfiguration createConfiguration(
