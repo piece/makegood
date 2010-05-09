@@ -14,6 +14,7 @@ package com.piece_framework.makegood.launch;
 
 import java.io.File;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.debug.core.DebugPlugin;
@@ -22,12 +23,15 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.model.IProcess;
+import org.eclipse.debug.core.model.ISourceLocator;
 import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.php.debug.core.debugger.parameters.IDebugParametersKeys;
 import org.eclipse.php.internal.debug.core.IPHPDebugConstants;
 import org.eclipse.php.internal.debug.core.launching.PHPLaunch;
 import org.eclipse.php.internal.debug.core.launching.PHPLaunchDelegateProxy;
 import org.eclipse.php.internal.debug.core.model.IPHPDebugTarget;
+import org.eclipse.php.internal.debug.core.sourcelookup.PHPSourceLookupDirector;
+import org.eclipse.php.internal.debug.core.sourcelookup.PHPSourcePathComputerDelegate;
 import org.eclipse.php.internal.debug.ui.PHPDebugPerspectiveFactory;
 
 import com.piece_framework.makegood.stagehand_testrunner.StagehandTestRunner;
@@ -112,6 +116,11 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
             generator.generate(junitXMLFile)
         );
 
+        IProject project = generator.getMainScriptResource().getProject();
+        if (project != null && project.exists()) {
+            workingCopy.setAttribute(IPHPDebugConstants.PHP_Project, project.getName());
+        }
+
         configuration.delete();
 
         return workingCopy;
@@ -119,12 +128,12 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
 
     private ILaunch createLaunch(
         ILaunch originalLaunch,
-        ILaunchConfiguration configuration) {
+        ILaunchConfiguration configuration) throws CoreException {
         ILaunch launch =
             new PHPLaunch(
                 configuration,
                 originalLaunch.getLaunchMode(),
-                originalLaunch.getSourceLocator()
+                createSourceLocator(configuration, originalLaunch.getLaunchMode())
             );
         launch.setAttribute(
             DebugPlugin.ATTR_CAPTURE_OUTPUT,
@@ -156,5 +165,22 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
             ILaunchManager.DEBUG_MODE,
             PHPDebugPerspectiveFactory.PERSPECTIVE_ID
         );
+    }
+
+    private ISourceLocator createSourceLocator(
+        ILaunchConfiguration configuration,
+        String launchMode) throws CoreException {
+        PHPSourceLookupDirector sourceLocator = null;
+        if (ILaunchManager.DEBUG_MODE.equals(launchMode)) {
+            sourceLocator = new PHPSourceLookupDirector();
+            sourceLocator.initializeParticipants();
+            sourceLocator.setSourceContainers(
+                new PHPSourcePathComputerDelegate().computeSourceContainers(
+                    configuration, null
+                )
+            );
+        }
+
+        return sourceLocator;
     }
 }
