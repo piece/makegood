@@ -58,7 +58,7 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
         super.launch(configuration, mode, launch, monitor);
     }
 
-    public static boolean hasActiveLaunch() {
+    public static boolean hasActiveLaunches() {
         ILaunch[] launches = DebugPlugin.getDefault().getLaunchManager().getLaunches();
         for (int i = 0; i < launches.length; i++) {
             if (launches[i].isTerminated()) continue;

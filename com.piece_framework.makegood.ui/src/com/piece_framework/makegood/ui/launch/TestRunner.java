@@ -113,7 +113,7 @@ public class TestRunner {
             return;
         }
 
-        if (MakeGoodLaunchConfigurationDelegate.hasActiveLaunch()) {
+        if (MakeGoodLaunchConfigurationDelegate.hasActiveLaunches()) {
             raiseTestSessionAlreadyExistsError();
             return;
         }
