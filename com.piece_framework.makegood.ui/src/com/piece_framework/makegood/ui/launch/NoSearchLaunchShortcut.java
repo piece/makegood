@@ -17,7 +17,7 @@ import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.texteditor.ITextEditor;
 
-import com.piece_framework.makegood.launch.CommandLineGenerator;
+import com.piece_framework.makegood.launch.LaunchTarget;
 import com.piece_framework.makegood.ui.Activator;
 
 public abstract class NoSearchLaunchShortcut extends MakeGoodLaunchShortcut {
@@ -39,7 +39,7 @@ public abstract class NoSearchLaunchShortcut extends MakeGoodLaunchShortcut {
             return;
         }
 
-        CommandLineGenerator parameter = CommandLineGenerator.getInstance();
+        LaunchTarget parameter = LaunchTarget.getInstance();
         parameter.clearTargets();
         parameter.addTarget(target);
 

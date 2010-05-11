@@ -24,7 +24,7 @@ import org.eclipse.ui.IFileEditorInput;
 
 import com.piece_framework.makegood.core.MakeGoodProperty;
 import com.piece_framework.makegood.core.PHPResource;
-import com.piece_framework.makegood.launch.CommandLineGenerator;
+import com.piece_framework.makegood.launch.LaunchTarget;
 
 public class AllTestsLaunchShortcut extends MakeGoodLaunchShortcut {
 
@@ -45,7 +45,7 @@ public class AllTestsLaunchShortcut extends MakeGoodLaunchShortcut {
             return;
         }
 
-        CommandLineGenerator parameter = addTestFolders(resource);
+        LaunchTarget parameter = addTestFolders(resource);
         ISelection element = new StructuredSelection(parameter.getMainScriptResource());
 
         super.launch(element, mode);
@@ -68,9 +68,9 @@ public class AllTestsLaunchShortcut extends MakeGoodLaunchShortcut {
         super.launch(editor, mode);
     }
 
-    private CommandLineGenerator addTestFolders(IResource resource) {
+    private LaunchTarget addTestFolders(IResource resource) {
         MakeGoodProperty property = new MakeGoodProperty(resource);
-        CommandLineGenerator parameter = CommandLineGenerator.getInstance();
+        LaunchTarget parameter = LaunchTarget.getInstance();
         parameter.clearTargets();
         for (IFolder testFolder: property.getTestFolders()) {
             parameter.addTarget(testFolder);

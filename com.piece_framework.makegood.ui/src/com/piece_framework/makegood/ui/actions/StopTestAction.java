@@ -22,10 +22,12 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IViewActionDelegate;
 import org.eclipse.ui.IViewPart;
 
+import com.piece_framework.makegood.launch.MakeGoodLaunchConfigurationDelegate;
 import com.piece_framework.makegood.ui.Activator;
 
 public class StopTestAction implements IViewActionDelegate {
     public static final String ID = "com.piece_framework.makegood.ui.viewActions.resultView.stopTest"; //$NON-NLS-1$
+    private static final String MAKEGOOD_IS_STOPPED_BY_ACTION_MARKER = "MAKEGOOD_IS_STOPPED_BY_ACTION_MARKER"; //$NON-NLS-1$
 
     @Override
     public void init(IViewPart view) {
@@ -35,28 +37,25 @@ public class StopTestAction implements IViewActionDelegate {
     public void run(IAction action) {
         ILaunchManager manager = DebugPlugin.getDefault().getLaunchManager();
         for (ILaunch launch: manager.getLaunches()) {
-            boolean isMakeGood = launch.getLaunchConfiguration().getName().startsWith("MakeGood"); //$NON-NLS-1$
-            if (isMakeGood) {
-                launch.setAttribute(ID + ".stopsByAction", "1");
+            if (!MakeGoodLaunchConfigurationDelegate.isMakeGoodLaunch(launch)) continue;
 
-                try {
-                    launch.terminate();
-                } catch (DebugException e) {
-                    Activator.getDefault().getLog().log(
-                        new Status(
-                            Status.ERROR,
-                            Activator.PLUGIN_ID,
-                            e.getMessage(),
-                            e
-                        )
-                    );
-                }
-                break;
+            launch.setAttribute(MAKEGOOD_IS_STOPPED_BY_ACTION_MARKER, Boolean.TRUE.toString());
+
+            try {
+                launch.terminate();
+            } catch (DebugException e) {
+                Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
             }
+
+            break;
         }
     }
 
     @Override
     public void selectionChanged(IAction action, ISelection selection) {
+    }
+
+    public static boolean isStoppedByAction(ILaunch launch) {
+        return Boolean.TRUE.toString().equals(launch.getAttribute(MAKEGOOD_IS_STOPPED_BY_ACTION_MARKER));
     }
 }

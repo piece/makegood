@@ -38,7 +38,7 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.texteditor.ITextEditor;
 
 import com.piece_framework.makegood.core.PHPResource;
-import com.piece_framework.makegood.launch.CommandLineGenerator;
+import com.piece_framework.makegood.launch.LaunchTarget;
 import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.Messages;
 
@@ -49,7 +49,7 @@ public class RelatedTestsLaunchShortcut extends MakeGoodLaunchShortcut {
             return;
         }
 
-        CommandLineGenerator parameter = CommandLineGenerator.getInstance();
+        LaunchTarget parameter = LaunchTarget.getInstance();
         parameter.clearTargets();
 
         launchTestsForProductCode(editor, mode);
@@ -90,7 +90,7 @@ public class RelatedTestsLaunchShortcut extends MakeGoodLaunchShortcut {
                     return;
                 }
 
-                CommandLineGenerator parameter = CommandLineGenerator.getInstance();
+                LaunchTarget parameter = LaunchTarget.getInstance();
                 parameter.clearTargets();
                 for (IResource test: tests) {
                     Debug.println(test);

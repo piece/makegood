@@ -33,16 +33,16 @@ import com.piece_framework.makegood.core.MakeGoodProperty;
 import com.piece_framework.makegood.core.PHPResource;
 import com.piece_framework.makegood.core.TestingFramework;
 
-public class CommandLineGenerator {
-    private static CommandLineGenerator soleInstance;
+public class LaunchTarget {
+    private static LaunchTarget soleInstance;
     private List<Object> targets;
 
-    private CommandLineGenerator() {
+    private LaunchTarget() {
     }
 
-    public static CommandLineGenerator getInstance() {
+    public static LaunchTarget getInstance() {
         if (soleInstance == null) {
-            soleInstance = new CommandLineGenerator();
+            soleInstance = new LaunchTarget();
         }
         return soleInstance;
     }
@@ -75,7 +75,7 @@ public class CommandLineGenerator {
         return root.findMember(getMainScript());
     }
 
-    public String generate(String log) {
+    public String getProgramArguments(String junitXMLFile) {
         StringBuilder buffer = new StringBuilder();
 
         String preloadScript = getPreloadScript();
@@ -87,8 +87,8 @@ public class CommandLineGenerator {
             }
         }
 
-        if (log != null) {
-            buffer.append(" --log-junit=\"" + log + "\""); //$NON-NLS-1$
+        if (junitXMLFile != null) {
+            buffer.append(" --log-junit=\"" + junitXMLFile + "\""); //$NON-NLS-1$
         }
 
         buffer.append(" --log-junit-realtime");

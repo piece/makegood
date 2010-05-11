@@ -16,7 +16,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 
-import com.piece_framework.makegood.launch.CommandLineGenerator;
+import com.piece_framework.makegood.launch.LaunchTarget;
 
 public class ResourceLaunchShortcut extends MakeGoodLaunchShortcut {
     @Override
@@ -26,7 +26,7 @@ public class ResourceLaunchShortcut extends MakeGoodLaunchShortcut {
         }
 
         Object target = ((IStructuredSelection) selection).getFirstElement();
-        CommandLineGenerator parameter = CommandLineGenerator.getInstance();
+        LaunchTarget parameter = LaunchTarget.getInstance();
         parameter.clearTargets();
         parameter.addTarget(target);
 

@@ -67,16 +67,12 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
     private void handleCreate(final ILaunch launch) {
         // TODO This marker is to avoid calling create() twice by PDT.
         String createCalledMarker = getClass().getName() + ".createCalled"; //$NON-NLS-1$
-        if (launch.getAttribute(createCalledMarker) != null) return;
-        launch.setAttribute(createCalledMarker, "1"); //$NON-NLS-1$
+        if (Boolean.TRUE.toString().equals(launch.getAttribute(createCalledMarker))) return;
+        launch.setAttribute(createCalledMarker, Boolean.TRUE.toString());
+
         String junitXMLFile = null;
         try {
-            junitXMLFile =
-                launch.getLaunchConfiguration()
-                      .getAttribute(
-                          MakeGoodLaunchConfigurationDelegate.JUNIT_XML_FILE,
-                          (String) null
-                       );
+            junitXMLFile = MakeGoodLaunchConfigurationDelegate.getJUnitXMLFile(launch);
         } catch (CoreException e) {
             Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
         }
@@ -95,7 +91,7 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
                 } catch (ParserConfigurationException e) {
                     Activator.getDefault().getLog().log(new Status(IStatus.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
                 } catch (SAXException e) {
-                    if (launch.getAttribute(StopTestAction.ID + ".stopsByAction") == null) {
+                    if (!StopTestAction.isStoppedByAction(launch)) {
                         hasErrors = true;
                     }
                 } catch (IOException e) {
@@ -123,8 +119,8 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
     private void handleTerminate(ILaunch launch) {
         // TODO This marker is to avoid calling terminate() twice by PDT.
         String terminateCalledMarker = getClass().getName() + ".terminateCalled"; //$NON-NLS-1$
-        if (launch.getAttribute(terminateCalledMarker) != null) return;
-        launch.setAttribute(terminateCalledMarker, "1"); //$NON-NLS-1$
+        if (Boolean.TRUE.toString().equals(launch.getAttribute(terminateCalledMarker))) return;
+        launch.setAttribute(terminateCalledMarker, Boolean.TRUE.toString());
 
         GET_EXIT_VALUE:
         for (IProcess process: launch.getProcesses()) {
@@ -145,7 +141,7 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
             } while (true);
 
             if (exitValue != 0) {
-                if (launch.getAttribute(StopTestAction.ID + ".stopsByAction") == null) {
+                if (!StopTestAction.isStoppedByAction(launch)) {
                     hasErrors = true;
                 } else {
                     Activator.getDefault().getLog().log(new Status(IStatus.WARNING, Activator.PLUGIN_ID, "A PHP process exit with a non-zero exit status [ " + exitValue + " ]")); //$NON-NLS-1$

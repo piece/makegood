@@ -37,7 +37,7 @@ import org.eclipse.php.internal.debug.ui.PHPDebugPerspectiveFactory;
 import com.piece_framework.makegood.stagehand_testrunner.StagehandTestRunner;
 
 public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy {
-    public static final String JUNIT_XML_FILE = "JUNIT_XML_FILE"; //$NON-NLS-1$
+    private static final String MAKEGOOD_JUNIT_XML_FILE = "MAKEGOOD_JUNIT_XML_FILE"; //$NON-NLS-1$
     private static final String MAKEGOOD_LAUNCH_MARKER = "MAKEGOOD_LAUNCH_MARKER"; //$NON-NLS-1$
 
     @Override
@@ -62,11 +62,11 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
         super.launch(configuration, mode, launch, monitor);
     }
 
-    public static boolean hasActiveLaunches() {
+    public static boolean hasActiveMakeGoodLaunches() {
         ILaunch[] launches = DebugPlugin.getDefault().getLaunchManager().getLaunches();
         for (int i = 0; i < launches.length; i++) {
             if (launches[i].isTerminated()) continue;
-            if (launches[i].getAttribute(MAKEGOOD_LAUNCH_MARKER) != null) {
+            if (isMakeGoodLaunch(launches[i])) {
                 return true;
             }
         }
@@ -75,7 +75,7 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
     }
 
     public static boolean isMakeGoodLaunch(ILaunch launch) {
-        return launch.getAttribute(MAKEGOOD_LAUNCH_MARKER) != null;
+        return Boolean.TRUE.toString().equals(launch.getAttribute(MAKEGOOD_LAUNCH_MARKER));
     }
 
     public static ILaunch getLaunch(Object eventSource) {
@@ -98,7 +98,7 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
             String.valueOf(File.separatorChar) +
             configurationName +
             ".xml"; //$NON-NLS-1$
-        CommandLineGenerator generator = CommandLineGenerator.getInstance();
+        LaunchTarget generator = LaunchTarget.getInstance();
 
         ILaunchConfigurationWorkingCopy workingCopy =
             new MakeGoodLaunchConfigurationWorkingCopy(
@@ -110,10 +110,10 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
         workingCopy.setAttribute(
             IPHPDebugConstants.ATTR_FILE_FULL_PATH, getCommandPath()
         );
-        workingCopy.setAttribute(JUNIT_XML_FILE, junitXMLFile);
+        workingCopy.setAttribute(MAKEGOOD_JUNIT_XML_FILE, junitXMLFile);
         workingCopy.setAttribute(
             IDebugParametersKeys.EXE_CONFIG_PROGRAM_ARGUMENTS,
-            generator.generate(junitXMLFile)
+            generator.getProgramArguments(junitXMLFile)
         );
 
         IProject project = generator.getMainScriptResource().getProject();
@@ -143,7 +143,7 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
             DebugPlugin.ATTR_CONSOLE_ENCODING,
             originalLaunch.getAttribute(DebugPlugin.ATTR_CONSOLE_ENCODING)
         );
-        launch.setAttribute(MAKEGOOD_LAUNCH_MARKER, "1"); //$NON-NLS-1$
+        launch.setAttribute(MAKEGOOD_LAUNCH_MARKER, Boolean.TRUE.toString());
 
         ILaunchManager manager = DebugPlugin.getDefault().getLaunchManager();
         manager.removeLaunch(originalLaunch);
@@ -154,8 +154,12 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
 
     public static String getCommandPath() throws CoreException {
         return StagehandTestRunner.getCommandPath(
-                   CommandLineGenerator.getInstance().getTestingFramework().name()
+                   LaunchTarget.getInstance().getTestingFramework().name()
                );
+    }
+
+    public static String getJUnitXMLFile(ILaunch launch) throws CoreException {
+        return launch.getLaunchConfiguration().getAttribute(MAKEGOOD_JUNIT_XML_FILE, (String) null);
     }
 
     private void switchToPHPDebugPerspective(ILaunchConfiguration configuration)
