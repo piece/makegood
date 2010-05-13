@@ -227,7 +227,7 @@ public class ResultView extends ViewPart {
     public void setFocus() {}
 
     public void reset() {
-        progressRate.setText("  0" + Messages.TestResultView_percent + " "); //$NON-NLS-1$ //$NON-NLS-2$
+        progressRate.setText("  0" + Messages.TestResultView_percent + "  "); //$NON-NLS-1$ //$NON-NLS-2$
         progressBar.reset();
         processTimeAverage.setText(
             TimeFormatter.format(
@@ -348,7 +348,7 @@ public class ResultView extends ViewPart {
         progressRate.setText(
             String.format("%3d", progress.calculateRate()) + //$NON-NLS-1$
             Messages.TestResultView_percent +
-            " " //$NON-NLS-1$
+            "  " //$NON-NLS-1$
         );
 
         if (progress.hasFailures()) progressBar.red();
