@@ -16,6 +16,7 @@ import org.eclipse.debug.core.ILaunchManager;
 public class RuntimeConfiguration {
     public boolean debugs = false;
     public boolean stopsOnFailure = false;
+    public boolean background = false;
     private static RuntimeConfiguration soleInstance;
 
     public static RuntimeConfiguration getInstance() {
@@ -27,7 +28,8 @@ public class RuntimeConfiguration {
     }
 
     public String getLaunchMode() {
-        return debugs ? ILaunchManager.DEBUG_MODE : ILaunchManager.RUN_MODE;
+        return background ? ILaunchManager.RUN_MODE :
+                            (debugs ? ILaunchManager.DEBUG_MODE : ILaunchManager.RUN_MODE);
     }
 
     private RuntimeConfiguration() {}

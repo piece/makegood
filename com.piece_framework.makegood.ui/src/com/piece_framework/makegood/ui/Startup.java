@@ -12,6 +12,7 @@
 
 package com.piece_framework.makegood.ui;
 
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -30,6 +31,7 @@ import org.eclipse.ui.progress.UIJob;
 
 import com.piece_framework.makegood.ui.ide.ViewShow;
 import com.piece_framework.makegood.ui.launch.AllTestsStatus;
+import com.piece_framework.makegood.ui.launch.RunAllTestsForResources;
 import com.piece_framework.makegood.ui.views.OutputDebugEventSetListener;
 import com.piece_framework.makegood.ui.views.ResultDebugEventSetListener;
 import com.piece_framework.makegood.ui.views.ResultView;
@@ -83,6 +85,10 @@ public class Startup implements IStartup {
 
         DebugPlugin.getDefault().addDebugEventListener(new ResultDebugEventSetListener());
         DebugPlugin.getDefault().addDebugEventListener(new OutputDebugEventSetListener());
+
+        RunAllTestsForResources runAllTestsListener = new RunAllTestsForResources();
+        DebugPlugin.getDefault().addDebugEventListener(runAllTestsListener);
+        ResourcesPlugin.getWorkspace().addResourceChangeListener(runAllTestsListener);
     }
 
     private void addSelectionChangedListener(IWorkbenchPart part,

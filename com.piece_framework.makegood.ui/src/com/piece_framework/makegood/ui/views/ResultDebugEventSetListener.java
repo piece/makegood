@@ -35,6 +35,7 @@ import com.piece_framework.makegood.core.result.JUnitXMLReaderListener;
 import com.piece_framework.makegood.core.result.TestCaseResult;
 import com.piece_framework.makegood.core.result.TestSuiteResult;
 import com.piece_framework.makegood.launch.MakeGoodLaunchConfigurationDelegate;
+import com.piece_framework.makegood.launch.RuntimeConfiguration;
 import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.actions.StopTestAction;
 import com.piece_framework.makegood.ui.ide.ViewShow;
@@ -104,8 +105,15 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
         Job job = new UIJob("MakeGood Reset Result View") { //$NON-NLS-1$
             @Override
             public IStatus runInUIThread(IProgressMonitor monitor) {
-                ViewShow.show(OutputView.ID);
-                ResultView resultView = (ResultView) ViewShow.show(ResultView.ID);
+                ResultView resultView = null;
+                if (RuntimeConfiguration.getInstance().background) {
+                    if (!ViewShow.isShown(OutputView.ID)) ViewShow.show(OutputView.ID);
+                    if (!ViewShow.isShown(ResultView.ID)) resultView = (ResultView) ViewShow.show(ResultView.ID);
+                    else resultView = (ResultView) ViewShow.find(ResultView.ID);
+                } else {
+                    ViewShow.show(OutputView.ID);
+                    resultView = (ResultView) ViewShow.show(ResultView.ID);
+                }
                 if (resultView == null) return Status.CANCEL_STATUS;
 
                 resultView.reset();
@@ -168,6 +176,8 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
                 resultView.stop();
                 resultView.refresh(progress, currentTestCase);
 
+                if (RuntimeConfiguration.getInstance().background) return Status.OK_STATUS;
+
                 if (hasErrors == true) {
                     ViewShow.show(OutputView.ID);
                     return Status.OK_STATUS;
@@ -206,7 +216,7 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
             Job job = new UIJob("MakeGood Refresh Result View") { //$NON-NLS-1$
                 @Override
                 public IStatus runInUIThread(IProgressMonitor monitor) {
-                    ResultView resultView = (ResultView) ViewShow.show(ResultView.ID);
+                    ResultView resultView = (ResultView) ViewShow.find(ResultView.ID);
                     if (resultView == null) return Status.CANCEL_STATUS;
     
                     if (!resultView.isSetTreeInput()) resultView.setTreeInput(junitXMLReader.getTestResults());
