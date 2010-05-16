@@ -35,7 +35,7 @@ public class MakeGoodProperty {
 
     public MakeGoodProperty(IResource resource) {
         project = resource.getProject();
-        preferences = new ProjectScope(project).getNode(Activator.PLUGIN_ID);
+        preferences = new ProjectScope(project).getNode(MakeGoodCorePlugin.PLUGIN_ID);
     }
 
     public MakeGoodProperty(String path) {
@@ -43,7 +43,7 @@ public class MakeGoodProperty {
         IResource resource = workspaceRoot.findMember(path);
         if (resource != null) {
             project = resource.getProject();
-            preferences = new ProjectScope(project).getNode(Activator.PLUGIN_ID);
+            preferences = new ProjectScope(project).getNode(MakeGoodCorePlugin.PLUGIN_ID);
         }
     }
 
@@ -109,10 +109,10 @@ public class MakeGoodProperty {
         try {
             preferences.flush();
         } catch (BackingStoreException e) {
-            Activator.getDefault().getLog().log(
+            MakeGoodCorePlugin.getDefault().getLog().log(
                 new Status(
                     Status.ERROR,
-                    Activator.PLUGIN_ID,
+                    MakeGoodCorePlugin.PLUGIN_ID,
                     e.getMessage(),
                     e
                 )
