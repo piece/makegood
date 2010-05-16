@@ -252,6 +252,11 @@
       </command>
       <command
             categoryId="com.piece_framework.makegood.ui.commands.resultViewCategory"
+            id="com.piece_framework.makegood.ui.commands.runAllTestsAutomatically"
+            name="%commands.runAllTestsAutomatically.name">
+      </command>
+      <command
+            categoryId="com.piece_framework.makegood.ui.commands.resultViewCategory"
             id="com.piece_framework.makegood.ui.commands.stopTest"
             name="%commands.stopTest.name">
       </command>
@@ -368,6 +373,16 @@
                style="toggle"
                toolbarPath="additions"
                tooltip="%resultView.debug.tooltip">
+         </action>
+         <action
+               class="com.piece_framework.makegood.ui.actions.RunAllTestsAutomaticallyAction"
+               definitionId="com.piece_framework.makegood.ui.commands.runAllTestsAutomatically"
+               icon="icons/run-all-automatically.gif"
+               id="com.piece_framework.makegood.ui.viewActions.resultView.runAllTestsAutomatically"
+               label="%resultView.runAllTestsAutomatically.label"
+               style="toggle"
+               toolbarPath="additions"
+               tooltip="%resultView.runAllTestsAutomatically.tooltip">
          </action>
          <action
                class="com.piece_framework.makegood.ui.actions.StopTestAction"

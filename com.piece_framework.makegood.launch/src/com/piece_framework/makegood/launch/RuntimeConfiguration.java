@@ -17,6 +17,7 @@ public class RuntimeConfiguration {
     public boolean debugs = false;
     public boolean stopsOnFailure = false;
     public boolean background = false;
+    public boolean auto = false;
     private static RuntimeConfiguration soleInstance;
 
     public static RuntimeConfiguration getInstance() {
