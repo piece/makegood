@@ -42,7 +42,7 @@ public class OutputDebugEventSetListener implements IDebugEventSetListener {
                     public IStatus runInUIThread(IProgressMonitor monitor) {
                         OutputView outputView = (OutputView) ViewShow.find(OutputView.ID);
                         if (outputView == null) return Status.CANCEL_STATUS;
-                        outputView.setText("");
+                        outputView.setText(""); //$NON-NLS-1$
 
                         return Status.OK_STATUS;
                     }

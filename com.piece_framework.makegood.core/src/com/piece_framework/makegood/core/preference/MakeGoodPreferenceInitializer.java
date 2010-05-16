@@ -1,6 +1,5 @@
 /**
  * Copyright (c) 2010 MATSUFUJI Hideharu <matsufuji2008@gmail.com>
- *
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -18,7 +17,7 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import com.piece_framework.makegood.core.MakeGoodCorePlugin;
 
 public class MakeGoodPreferenceInitializer extends AbstractPreferenceInitializer {
-    public static final String RUN_ALL_TESTS_AUTOMATICALLY = "run_all_tests_automatically";
+    public static final String RUN_ALL_TESTS_AUTOMATICALLY = "run_all_tests_automatically"; //$NON-NLS-1$
 
     @Override
     public void initializeDefaultPreferences() {

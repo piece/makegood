@@ -1,6 +1,5 @@
 /**
- * Copyright (c) 2010 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
- *               2010 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2010 MATSUFUJI Hideharu <matsufuji2008@gmail.com>
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -41,7 +40,7 @@ import com.piece_framework.makegood.ui.Activator;
 
 public class RunAllTestsForResources implements IDebugEventSetListener, IResourceChangeListener {
     private static final String WAIT_FOR_BUILD = IDebugUIConstants.PLUGIN_ID
-                                                 + ".wait_for_build";
+                                                 + ".wait_for_build"; //$NON-NLS-1$
     private String oldValueOfWaitForBuild;
     private Boolean oldValueOfOpenDebugViews;
     private Boolean oldValueOfOpenInBrowser;
@@ -65,10 +64,10 @@ public class RunAllTestsForResources implements IDebugEventSetListener, IResourc
 
     @Override
     public void resourceChanged(IResourceChangeEvent event) {
-        if (!RuntimeConfiguration.getInstance().auto) return;
-
         IResourceDelta[] children = event.getDelta().getAffectedChildren();
-        if (children.length == 0) return;
+        if (children.length == 0) {
+            return;
+        }
 
         final ISelection selection = new StructuredSelection(children[0].getResource());
         Job job = new UIJob("MakeGood Run All Tests For Resources") { //$NON-NLS-1$
