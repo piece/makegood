@@ -123,6 +123,10 @@ public class RunAllTestsForResources implements IDebugEventSetListener, IResourc
                                           new InstanceScope(),
                                           IDebugUIConstants.PLUGIN_ID
                                       );
+        boolean changedByUser = !MessageDialogWithToggle.NEVER.equals(
+                                    store.getString(WAIT_FOR_BUILD)
+                                );
+        if (changedByUser) return;
 
         store.putValue(WAIT_FOR_BUILD, oldValueOfWaitForBuild);
         savePreference(store);
@@ -138,6 +142,9 @@ public class RunAllTestsForResources implements IDebugEventSetListener, IResourc
                                           new InstanceScope(),
                                           PHPDebugPlugin.getID()
                                       );
+        boolean changedByUser = store.getBoolean(PHPDebugCorePreferenceNames.OPEN_DEBUG_VIEWS) != false
+                                || store.getBoolean(PHPDebugCorePreferenceNames.OPEN_IN_BROWSER) != false;
+        if (changedByUser) return;
 
         store.putValue(PHPDebugCorePreferenceNames.OPEN_DEBUG_VIEWS, oldValueOfOpenDebugViews.toString());
         store.putValue(PHPDebugCorePreferenceNames.OPEN_IN_BROWSER, oldValueOfOpenInBrowser.toString());
