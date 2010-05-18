@@ -436,11 +436,11 @@ public class ResultView extends ViewPart {
             runAllTestsAction.setEnabled(false);
         }
 
-        ActionContributionItem runAllTestsAutomaticallyItem =
+        ActionContributionItem runAllTestsWhenFileIsSavedItem =
             (ActionContributionItem) manager.find(RunAllTestsAutomaticallyAction.ID);
-        if (runAllTestsAutomaticallyItem != null) {
-            IAction runAllTestsAutomaticallyAction = runAllTestsAutomaticallyItem.getAction();
-            runAllTestsAutomaticallyAction.setChecked(
+        if (runAllTestsWhenFileIsSavedItem != null) {
+            IAction runAllTestsWhenFileIsSavedAction = runAllTestsWhenFileIsSavedItem.getAction();
+            runAllTestsWhenFileIsSavedAction.setChecked(
                 RuntimeConfiguration.getInstance().runsAllTestsWhenFileIsSaved
             );
         }

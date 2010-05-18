@@ -19,7 +19,7 @@ import org.eclipse.ui.IViewPart;
 import com.piece_framework.makegood.launch.RuntimeConfiguration;
 
 public class RunAllTestsAutomaticallyAction implements IViewActionDelegate {
-    public static final String ID = "com.piece_framework.makegood.ui.viewActions.resultView.runAllTestsAutomatically"; //$NON-NLS-1$
+    public static final String ID = "com.piece_framework.makegood.ui.viewActions.resultView.runAllTestsWhenFileIsSaved"; //$NON-NLS-1$
 
     @Override
     public void init(IViewPart view) {}

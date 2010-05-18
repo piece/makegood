@@ -54,7 +54,7 @@ public class MakeGoodPreferencePage extends PreferencePage implements IWorkbench
             new GridData(GridData.VERTICAL_ALIGN_BEGINNING)
         );
         runAllTestsWhenFileIsSaved.setText(
-            Messages.MakeGoodPreferencePage_runAllTestsAutomatically
+            Messages.MakeGoodPreferencePage_runAllTestsWhenFileIsSaved
         );
 
         IPreferenceStore store = MakeGoodCorePlugin.getDefault().getPreferenceStore();

@@ -252,8 +252,8 @@
       </command>
       <command
             categoryId="com.piece_framework.makegood.ui.commands.resultViewCategory"
-            id="com.piece_framework.makegood.ui.commands.runAllTestsAutomatically"
-            name="%commands.runAllTestsAutomatically.name">
+            id="com.piece_framework.makegood.ui.commands.runAllTestsWhenFileIsSaved"
+            name="%commands.runAllTestsWhenFileIsSaved.name">
       </command>
       <command
             categoryId="com.piece_framework.makegood.ui.commands.resultViewCategory"
@@ -376,13 +376,13 @@
          </action>
          <action
                class="com.piece_framework.makegood.ui.actions.RunAllTestsAutomaticallyAction"
-               definitionId="com.piece_framework.makegood.ui.commands.runAllTestsAutomatically"
+               definitionId="com.piece_framework.makegood.ui.commands.runAllTestsWhenFileIsSaved"
                icon="icons/run-all-automatically.gif"
-               id="com.piece_framework.makegood.ui.viewActions.resultView.runAllTestsAutomatically"
-               label="%resultView.runAllTestsAutomatically.label"
+               id="com.piece_framework.makegood.ui.viewActions.resultView.runAllTestsWhenFileIsSaved"
+               label="%resultView.runAllTestsWhenFileIsSaved.label"
                style="toggle"
                toolbarPath="additions"
-               tooltip="%resultView.runAllTestsAutomatically.tooltip">
+               tooltip="%resultView.runAllTestsWhenFileIsSaved.tooltip">
          </action>
          <action
                class="com.piece_framework.makegood.ui.actions.StopTestAction"
