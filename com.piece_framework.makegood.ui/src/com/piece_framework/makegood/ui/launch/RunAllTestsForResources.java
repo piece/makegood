@@ -58,7 +58,7 @@ public class RunAllTestsForResources implements IDebugEventSetListener, IResourc
             resetProgressMonitor();
             resetDebugView();
 
-            RuntimeConfiguration.getInstance().background = false;
+            RuntimeConfiguration.getInstance().isRunInBackground = false;
 
             break;
         }
@@ -79,7 +79,7 @@ public class RunAllTestsForResources implements IDebugEventSetListener, IResourc
                     restrictProgressMonitor();
                     restrictDebugView();
 
-                    RuntimeConfiguration.getInstance().background = true;
+                    RuntimeConfiguration.getInstance().isRunInBackground = true;
                     TestRunner.runAllTests(selection);
                 }
                 return Status.OK_STATUS;

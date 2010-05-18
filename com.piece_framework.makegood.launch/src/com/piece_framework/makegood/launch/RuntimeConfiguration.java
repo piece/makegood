@@ -19,7 +19,7 @@ import com.piece_framework.makegood.core.preference.MakeGoodPreferenceInitialize
 public class RuntimeConfiguration {
     public boolean debugs = false;
     public boolean stopsOnFailure = false;
-    public boolean background = false;
+    public boolean isRunInBackground = false;
     public boolean auto;
     private static RuntimeConfiguration soleInstance;
 
@@ -32,7 +32,7 @@ public class RuntimeConfiguration {
     }
 
     public String getLaunchMode() {
-        return background ? ILaunchManager.RUN_MODE :
+        return isRunInBackground ? ILaunchManager.RUN_MODE :
                             (debugs ? ILaunchManager.DEBUG_MODE : ILaunchManager.RUN_MODE);
     }
 

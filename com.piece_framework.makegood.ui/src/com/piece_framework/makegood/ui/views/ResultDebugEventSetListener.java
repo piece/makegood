@@ -106,7 +106,7 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
             @Override
             public IStatus runInUIThread(IProgressMonitor monitor) {
                 ResultView resultView = null;
-                if (RuntimeConfiguration.getInstance().background) {
+                if (RuntimeConfiguration.getInstance().isRunInBackground) {
                     if (!ViewShow.isShown(OutputView.ID)) ViewShow.show(OutputView.ID);
                     if (!ViewShow.isShown(ResultView.ID)) resultView = (ResultView) ViewShow.show(ResultView.ID);
                     else resultView = (ResultView) ViewShow.find(ResultView.ID);
@@ -176,7 +176,7 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
                 resultView.stop();
                 resultView.refresh(progress, currentTestCase);
 
-                if (RuntimeConfiguration.getInstance().background) return Status.OK_STATUS;
+                if (RuntimeConfiguration.getInstance().isRunInBackground) return Status.OK_STATUS;
 
                 if (hasErrors == true) {
                     ViewShow.show(OutputView.ID);
