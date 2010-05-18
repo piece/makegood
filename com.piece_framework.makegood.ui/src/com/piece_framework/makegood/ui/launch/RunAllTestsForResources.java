@@ -66,9 +66,7 @@ public class RunAllTestsForResources implements IDebugEventSetListener, IResourc
     public void resourceChanged(IResourceChangeEvent event) {
         if (MakeGoodLaunchConfigurationDelegate.hasActiveMakeGoodLaunches()) return;
         IResourceDelta[] children = event.getDelta().getAffectedChildren();
-        if (children.length == 0) {
-            return;
-        }
+        if (children.length == 0) return;
 
         final ISelection selection = new StructuredSelection(children[0].getResource());
         Job job = new UIJob("MakeGood Run All Tests For Resources") { //$NON-NLS-1$
