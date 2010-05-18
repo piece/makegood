@@ -154,6 +154,8 @@ public class TestRunner {
         display.syncExec(new Runnable() {
             @Override
             public void run() {
+                if (RuntimeConfiguration.getInstance().background) return;
+
                 MessageDialog.openError(
                     display.getActiveShell(),
                     Messages.TestRunner_TestSessionAlreadyExists_Title,

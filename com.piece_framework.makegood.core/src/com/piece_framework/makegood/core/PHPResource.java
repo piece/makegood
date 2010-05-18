@@ -46,10 +46,10 @@ public class PHPResource {
                 }
             }
         } catch (ModelException e) {
-            Activator.getDefault().getLog().log(
+            MakeGoodCorePlugin.getDefault().getLog().log(
                 new Status(
                     Status.WARNING,
-                    Activator.PLUGIN_ID,
+                    MakeGoodCorePlugin.PLUGIN_ID,
                     e.getMessage(),
                     e
                 )

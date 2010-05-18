@@ -252,6 +252,11 @@
       </command>
       <command
             categoryId="com.piece_framework.makegood.ui.commands.resultViewCategory"
+            id="com.piece_framework.makegood.ui.commands.runAllTestsAutomatically"
+            name="%commands.runAllTestsAutomatically.name">
+      </command>
+      <command
+            categoryId="com.piece_framework.makegood.ui.commands.resultViewCategory"
             id="com.piece_framework.makegood.ui.commands.stopTest"
             name="%commands.stopTest.name">
       </command>
@@ -370,6 +375,16 @@
                tooltip="%resultView.debug.tooltip">
          </action>
          <action
+               class="com.piece_framework.makegood.ui.actions.RunAllTestsAutomaticallyAction"
+               definitionId="com.piece_framework.makegood.ui.commands.runAllTestsAutomatically"
+               icon="icons/run-all-automatically.gif"
+               id="com.piece_framework.makegood.ui.viewActions.resultView.runAllTestsAutomatically"
+               label="%resultView.runAllTestsAutomatically.label"
+               style="toggle"
+               toolbarPath="additions"
+               tooltip="%resultView.runAllTestsAutomatically.tooltip">
+         </action>
+         <action
                class="com.piece_framework.makegood.ui.actions.StopTestAction"
                definitionId="com.piece_framework.makegood.ui.commands.stopTest"
                icon="icons/stop.gif"
@@ -406,6 +421,14 @@
       <startup
             class="com.piece_framework.makegood.ui.Startup">
       </startup>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="com.piece_framework.makegood.ui.preferencePages.MakeGoodPreferencePage"
+            id="com.piece_framework.makegood.ui.preferencePages.makeGood"
+            name="%preferencePages.makeGood.name">
+      </page>
    </extension>
 
 </plugin>
