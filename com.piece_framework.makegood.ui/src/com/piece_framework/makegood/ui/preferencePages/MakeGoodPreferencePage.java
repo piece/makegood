@@ -59,7 +59,7 @@ public class MakeGoodPreferencePage extends PreferencePage implements IWorkbench
 
         IPreferenceStore store = MakeGoodCorePlugin.getDefault().getPreferenceStore();
         runAllTestsAutomatically.setSelection(
-            store.getBoolean(MakeGoodPreferenceInitializer.RUN_ALL_TESTS_AUTOMATICALLY)
+            store.getBoolean(MakeGoodPreferenceInitializer.RUN_ALL_TESTS_WHEN_FILE_IS_SAVED)
         );
 
         return composite;
@@ -69,7 +69,7 @@ public class MakeGoodPreferencePage extends PreferencePage implements IWorkbench
     public boolean performOk() {
         IPreferenceStore store = MakeGoodCorePlugin.getDefault().getPreferenceStore();
         store.setValue(
-            MakeGoodPreferenceInitializer.RUN_ALL_TESTS_AUTOMATICALLY,
+            MakeGoodPreferenceInitializer.RUN_ALL_TESTS_WHEN_FILE_IS_SAVED,
             runAllTestsAutomatically.getSelection()
         );
         return true;
@@ -79,7 +79,7 @@ public class MakeGoodPreferencePage extends PreferencePage implements IWorkbench
     protected void performDefaults() {
         IPreferenceStore store = MakeGoodCorePlugin.getDefault().getPreferenceStore();
         runAllTestsAutomatically.setSelection(
-            store.getDefaultBoolean(MakeGoodPreferenceInitializer.RUN_ALL_TESTS_AUTOMATICALLY)
+            store.getDefaultBoolean(MakeGoodPreferenceInitializer.RUN_ALL_TESTS_WHEN_FILE_IS_SAVED)
         );
     }
 }

@@ -38,7 +38,7 @@ public class RuntimeConfiguration {
     private RuntimeConfiguration() {
         runsAllTestsWhenFileIsSaved =
             MakeGoodCorePlugin.getDefault().getPreferenceStore().getBoolean(
-                MakeGoodPreferenceInitializer.RUN_ALL_TESTS_AUTOMATICALLY
+                MakeGoodPreferenceInitializer.RUN_ALL_TESTS_WHEN_FILE_IS_SAVED
             );
     }
 }
