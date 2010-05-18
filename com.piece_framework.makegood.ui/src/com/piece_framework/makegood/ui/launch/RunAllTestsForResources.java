@@ -47,7 +47,7 @@ public class RunAllTestsForResources implements IDebugEventSetListener, IResourc
 
     @Override
     public void handleDebugEvents(DebugEvent[] events) {
-        if (!RuntimeConfiguration.getInstance().auto) return;
+        if (!RuntimeConfiguration.getInstance().runsAllTestsWhenFileIsSaved) return;
 
         for (DebugEvent event: events) {
             if (event.getKind() != DebugEvent.TERMINATE) continue;
@@ -66,7 +66,7 @@ public class RunAllTestsForResources implements IDebugEventSetListener, IResourc
 
     @Override
     public void resourceChanged(IResourceChangeEvent event) {
-        if (!RuntimeConfiguration.getInstance().auto) return;
+        if (!RuntimeConfiguration.getInstance().runsAllTestsWhenFileIsSaved) return;
         if (MakeGoodLaunchConfigurationDelegate.hasActiveMakeGoodLaunches()) return;
         IResourceDelta[] children = event.getDelta().getAffectedChildren();
         if (children.length == 0) return;

@@ -26,7 +26,7 @@ public class RunAllTestsAutomaticallyAction implements IViewActionDelegate {
 
     @Override
     public void run(IAction action) {
-        RuntimeConfiguration.getInstance().auto = action.isChecked();
+        RuntimeConfiguration.getInstance().runsAllTestsWhenFileIsSaved = action.isChecked();
     }
 
     @Override

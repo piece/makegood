@@ -20,7 +20,7 @@ public class RuntimeConfiguration {
     public boolean debugs = false;
     public boolean stopsOnFailure = false;
     public boolean isRunInBackground = false;
-    public boolean auto;
+    public boolean runsAllTestsWhenFileIsSaved;
     private static RuntimeConfiguration soleInstance;
 
     public static RuntimeConfiguration getInstance() {
@@ -37,8 +37,9 @@ public class RuntimeConfiguration {
     }
 
     private RuntimeConfiguration() {
-        auto = MakeGoodCorePlugin.getDefault().getPreferenceStore().getBoolean(
-                   MakeGoodPreferenceInitializer.RUN_ALL_TESTS_AUTOMATICALLY
-               );
+        runsAllTestsWhenFileIsSaved =
+            MakeGoodCorePlugin.getDefault().getPreferenceStore().getBoolean(
+                MakeGoodPreferenceInitializer.RUN_ALL_TESTS_AUTOMATICALLY
+            );
     }
 }

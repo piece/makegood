@@ -441,7 +441,7 @@ public class ResultView extends ViewPart {
         if (runAllTestsAutomaticallyItem != null) {
             IAction runAllTestsAutomaticallyAction = runAllTestsAutomaticallyItem.getAction();
             runAllTestsAutomaticallyAction.setChecked(
-                RuntimeConfiguration.getInstance().auto
+                RuntimeConfiguration.getInstance().runsAllTestsWhenFileIsSaved
             );
         }
     }
