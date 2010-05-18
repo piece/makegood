@@ -12,16 +12,16 @@
 package com.piece_framework.makegood.core.preference;
 
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
-import org.eclipse.jface.preference.IPreferenceStore;
 
 import com.piece_framework.makegood.core.MakeGoodCorePlugin;
 
 public class MakeGoodPreferenceInitializer extends AbstractPreferenceInitializer {
-    public static final String RUN_ALL_TESTS_WHEN_FILE_IS_SAVED = "run_all_tests_automatically"; //$NON-NLS-1$
+    public static final String RUN_ALL_TESTS_WHEN_FILE_IS_SAVED = "RUN_ALL_TESTS_WHEN_FILE_IS_SAVED"; //$NON-NLS-1$
 
     @Override
     public void initializeDefaultPreferences() {
-        IPreferenceStore store = MakeGoodCorePlugin.getDefault().getPreferenceStore();
-        store.setDefault(RUN_ALL_TESTS_WHEN_FILE_IS_SAVED, true);
+        MakeGoodCorePlugin.getDefault()
+                          .getPreferenceStore()
+                          .setDefault(RUN_ALL_TESTS_WHEN_FILE_IS_SAVED, true);
     }
 }
