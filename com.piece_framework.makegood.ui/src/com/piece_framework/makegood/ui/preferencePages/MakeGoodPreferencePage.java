@@ -28,7 +28,7 @@ import com.piece_framework.makegood.core.preference.MakeGoodPreferenceInitialize
 import com.piece_framework.makegood.ui.Messages;
 
 public class MakeGoodPreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
-    private Button runAllTestsAutomatically;
+    private Button runAllTestsWhenFileIsSaved;
 
     public MakeGoodPreferencePage() {}
 
@@ -49,16 +49,16 @@ public class MakeGoodPreferencePage extends PreferencePage implements IWorkbench
         composite.setLayout(new GridLayout());
         composite.setLayoutData(new GridData(GridData.FILL_BOTH));
 
-        runAllTestsAutomatically = new Button(composite, SWT.CHECK);
-        runAllTestsAutomatically.setLayoutData(
+        runAllTestsWhenFileIsSaved = new Button(composite, SWT.CHECK);
+        runAllTestsWhenFileIsSaved.setLayoutData(
             new GridData(GridData.VERTICAL_ALIGN_BEGINNING)
         );
-        runAllTestsAutomatically.setText(
+        runAllTestsWhenFileIsSaved.setText(
             Messages.MakeGoodPreferencePage_runAllTestsAutomatically
         );
 
         IPreferenceStore store = MakeGoodCorePlugin.getDefault().getPreferenceStore();
-        runAllTestsAutomatically.setSelection(
+        runAllTestsWhenFileIsSaved.setSelection(
             store.getBoolean(MakeGoodPreferenceInitializer.RUN_ALL_TESTS_WHEN_FILE_IS_SAVED)
         );
 
@@ -70,7 +70,7 @@ public class MakeGoodPreferencePage extends PreferencePage implements IWorkbench
         IPreferenceStore store = MakeGoodCorePlugin.getDefault().getPreferenceStore();
         store.setValue(
             MakeGoodPreferenceInitializer.RUN_ALL_TESTS_WHEN_FILE_IS_SAVED,
-            runAllTestsAutomatically.getSelection()
+            runAllTestsWhenFileIsSaved.getSelection()
         );
         return true;
     }
@@ -78,7 +78,7 @@ public class MakeGoodPreferencePage extends PreferencePage implements IWorkbench
     @Override
     protected void performDefaults() {
         IPreferenceStore store = MakeGoodCorePlugin.getDefault().getPreferenceStore();
-        runAllTestsAutomatically.setSelection(
+        runAllTestsWhenFileIsSaved.setSelection(
             store.getDefaultBoolean(MakeGoodPreferenceInitializer.RUN_ALL_TESTS_WHEN_FILE_IS_SAVED)
         );
     }
