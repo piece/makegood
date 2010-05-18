@@ -32,8 +32,7 @@ public class RuntimeConfiguration {
     }
 
     public String getLaunchMode() {
-        return isRunInBackground ? ILaunchManager.RUN_MODE :
-                            (debugs ? ILaunchManager.DEBUG_MODE : ILaunchManager.RUN_MODE);
+        return debugs ? ILaunchManager.DEBUG_MODE : ILaunchManager.RUN_MODE;
     }
 
     private RuntimeConfiguration() {
