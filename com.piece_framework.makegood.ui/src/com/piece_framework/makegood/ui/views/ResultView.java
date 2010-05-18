@@ -55,6 +55,7 @@ import com.piece_framework.makegood.core.preference.MakeGoodPreferenceInitialize
 import com.piece_framework.makegood.core.result.Result;
 import com.piece_framework.makegood.core.result.TestCaseResult;
 import com.piece_framework.makegood.core.result.TestSuiteResult;
+import com.piece_framework.makegood.launch.RuntimeConfiguration;
 import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.Messages;
 import com.piece_framework.makegood.ui.actions.RerunTestAction;
@@ -438,14 +439,10 @@ public class ResultView extends ViewPart {
         ActionContributionItem runAllTestsAutomaticallyItem =
             (ActionContributionItem) manager.find(RunAllTestsAutomaticallyAction.ID);
         if (runAllTestsAutomaticallyItem != null) {
-            IPreferenceStore store = MakeGoodCorePlugin.getDefault().getPreferenceStore();
             IAction runAllTestsAutomaticallyAction = runAllTestsAutomaticallyItem.getAction();
             runAllTestsAutomaticallyAction.setChecked(
-                store.getBoolean(
-                    MakeGoodPreferenceInitializer.RUN_ALL_TESTS_AUTOMATICALLY
-                )
+                RuntimeConfiguration.getInstance().auto
             );
-            runAllTestsAutomaticallyAction.run();
         }
     }
 
