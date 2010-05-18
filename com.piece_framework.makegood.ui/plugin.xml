@@ -375,7 +375,7 @@
                tooltip="%resultView.debug.tooltip">
          </action>
          <action
-               class="com.piece_framework.makegood.ui.actions.RunAllTestsAutomaticallyAction"
+               class="com.piece_framework.makegood.ui.actions.RunAllTestsWhenFileIsSavedAction"
                definitionId="com.piece_framework.makegood.ui.commands.runAllTestsWhenFileIsSaved"
                icon="icons/run-all-automatically.gif"
                id="com.piece_framework.makegood.ui.viewActions.resultView.runAllTestsWhenFileIsSaved"

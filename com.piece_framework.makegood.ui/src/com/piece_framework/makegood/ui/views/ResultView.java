@@ -60,7 +60,7 @@ import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.Messages;
 import com.piece_framework.makegood.ui.actions.RerunTestAction;
 import com.piece_framework.makegood.ui.actions.RunAllTestsAction;
-import com.piece_framework.makegood.ui.actions.RunAllTestsAutomaticallyAction;
+import com.piece_framework.makegood.ui.actions.RunAllTestsWhenFileIsSavedAction;
 import com.piece_framework.makegood.ui.actions.StopTestAction;
 import com.piece_framework.makegood.ui.ide.EditorOpen;
 
@@ -437,7 +437,7 @@ public class ResultView extends ViewPart {
         }
 
         ActionContributionItem runAllTestsWhenFileIsSavedItem =
-            (ActionContributionItem) manager.find(RunAllTestsAutomaticallyAction.ID);
+            (ActionContributionItem) manager.find(RunAllTestsWhenFileIsSavedAction.ID);
         if (runAllTestsWhenFileIsSavedItem != null) {
             IAction runAllTestsWhenFileIsSavedAction = runAllTestsWhenFileIsSavedItem.getAction();
             runAllTestsWhenFileIsSavedAction.setChecked(
