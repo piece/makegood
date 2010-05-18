@@ -64,6 +64,7 @@ public class RunAllTestsForResources implements IDebugEventSetListener, IResourc
 
     @Override
     public void resourceChanged(IResourceChangeEvent event) {
+        if (MakeGoodLaunchConfigurationDelegate.hasActiveMakeGoodLaunches()) return;
         IResourceDelta[] children = event.getDelta().getAffectedChildren();
         if (children.length == 0) {
             return;
