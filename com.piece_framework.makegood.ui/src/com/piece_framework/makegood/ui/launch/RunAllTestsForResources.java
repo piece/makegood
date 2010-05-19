@@ -75,7 +75,7 @@ public class RunAllTestsForResources implements IDebugEventSetListener, IResourc
         Job job = new UIJob("MakeGood Run All Tests For Resources") { //$NON-NLS-1$
             @Override
             public IStatus runInUIThread(IProgressMonitor monitor) {
-                if (TestRunner.isRunnableAllTests(selection)) {
+                if (ActivePart.isAllTestsRunnable(selection)) {
                     restrictProgressMonitor();
                     restrictDebugView();
 

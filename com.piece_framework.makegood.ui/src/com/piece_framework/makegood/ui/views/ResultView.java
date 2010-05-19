@@ -52,15 +52,20 @@ import org.eclipse.ui.part.ViewPart;
 import com.piece_framework.makegood.core.result.Result;
 import com.piece_framework.makegood.core.result.TestCaseResult;
 import com.piece_framework.makegood.core.result.TestSuiteResult;
+import com.piece_framework.makegood.launch.MakeGoodLaunchConfigurationDelegate;
 import com.piece_framework.makegood.launch.RuntimeConfiguration;
 import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.Messages;
+import com.piece_framework.makegood.ui.actions.DebugTestAction;
 import com.piece_framework.makegood.ui.actions.RerunTestAction;
 import com.piece_framework.makegood.ui.actions.RunAllTestsAction;
 import com.piece_framework.makegood.ui.actions.RunAllTestsWhenFileIsSavedAction;
+import com.piece_framework.makegood.ui.actions.ShowFailuresOnlyAction;
 import com.piece_framework.makegood.ui.actions.StopOnFailureAction;
 import com.piece_framework.makegood.ui.actions.StopTestAction;
 import com.piece_framework.makegood.ui.ide.EditorOpen;
+import com.piece_framework.makegood.ui.launch.ActivePart;
+import com.piece_framework.makegood.ui.launch.TestRunner;
 
 public class ResultView extends ViewPart {
     public static final String ID = "com.piece_framework.makegood.ui.views.resultView"; //$NON-NLS-1$
@@ -75,14 +80,13 @@ public class ResultView extends ViewPart {
     private Label progressRate;
     private Label processTimeAverage;
     private ShowTimer showTimer;
-    private IAction stopAction;
-    private IAction rerunAction;
+    private IAction stopTestAction;
+    private IAction rerunTestAction;
     private IAction runAllTestsAction;
     private FailureTrace failureTrace;
-    private boolean isRunning;
-    private boolean enableRunAllTestsAction;
     private Label elapsedTime;
     private Label processTime;
+    private boolean actionsInitialized = false;
 
     private ViewerFilter failureFilter = new ViewerFilter() {
         @Override
@@ -97,8 +101,7 @@ public class ResultView extends ViewPart {
     public IViewSite getViewSite() {
         IViewSite site = super.getViewSite();
 
-        // There is no hook point for disabling the actions...
-        if (stopAction == null) {
+        if (!actionsInitialized) {
             initializeActions(site);
         }
 
@@ -266,10 +269,10 @@ public class ResultView extends ViewPart {
         resultTreeViewer.setInput(null);
     }
 
-    public void setEnabledRunAllTestsAction(boolean enabled) {
-        if (runAllTestsAction != null && !isRunning) {
-            runAllTestsAction.setEnabled(enabled);
-        }
+    public void setRunAllTestsActionIsEnabled(boolean isEnabled) {
+        if (!actionsInitialized) return;
+        if (MakeGoodLaunchConfigurationDelegate.hasActiveMakeGoodLaunches()) return;
+        runAllTestsAction.setEnabled(isEnabled);
     }
 
     private GridData createHorizontalFillGridData() {
@@ -392,55 +395,29 @@ public class ResultView extends ViewPart {
         showTimer = new ShowTimer(elapsedTime, processTime, progress, 200);
         showTimer.start();
 
-        stopAction.setEnabled(true);
-        rerunAction.setEnabled(false);
-        enableRunAllTestsAction = runAllTestsAction.isEnabled();
+        stopTestAction.setEnabled(true);
+        rerunTestAction.setEnabled(false);
         runAllTestsAction.setEnabled(false);
-
-        isRunning = true;
     }
 
     public void stop() {
         showTimer.stop();
 
-        stopAction.setEnabled(false);
-        rerunAction.setEnabled(true);
-        runAllTestsAction.setEnabled(enableRunAllTestsAction);
-
-        isRunning = false;
+        stopTestAction.setEnabled(false);
+        rerunTestAction.setEnabled(true);
+        runAllTestsAction.setEnabled(ActivePart.getInstance().isAllTestsRunnable());
     }
 
     private void initializeActions(IViewSite site) {
         IToolBarManager manager = site.getActionBars().getToolBarManager();
 
-        ActionContributionItem stopItem =
-            (ActionContributionItem) manager.find(StopTestAction.ID);
-        if (stopItem != null) {
-            stopAction = stopItem.getAction();
-            stopAction.setEnabled(false);
-        }
-
-        ActionContributionItem rerunItem =
-            (ActionContributionItem) manager.find(RerunTestAction.ID);
-        if (rerunItem != null) {
-            rerunAction = rerunItem.getAction();
-            rerunAction.setEnabled(false);
-        }
-
-        ActionContributionItem runAllTestsItem =
-            (ActionContributionItem) manager.find(RunAllTestsAction.ID);
-        if (runAllTestsItem != null) {
-            runAllTestsAction = runAllTestsItem.getAction();
-            runAllTestsAction.setEnabled(false);
-        }
-
-        ActionContributionItem runAllTestsWhenFileIsSavedItem =
-            (ActionContributionItem) manager.find(RunAllTestsWhenFileIsSavedAction.ID);
-        if (runAllTestsWhenFileIsSavedItem != null) {
-            IAction runAllTestsWhenFileIsSavedAction = runAllTestsWhenFileIsSavedItem.getAction();
-            runAllTestsWhenFileIsSavedAction.setChecked(
-                RuntimeConfiguration.getInstance().runsAllTestsWhenFileIsSaved
+        ActionContributionItem showFailuresOnlyItem =
+            (ActionContributionItem) manager.find(ShowFailuresOnlyAction.ID);
+        if (showFailuresOnlyItem != null) {
+            showFailuresOnlyItem.getAction().setChecked(
+                RuntimeConfiguration.getInstance().showsFailuresOnly
             );
+            actionsInitialized = true;
         }
 
         ActionContributionItem stopOnFailureItem =
@@ -449,6 +426,43 @@ public class ResultView extends ViewPart {
             stopOnFailureItem.getAction().setChecked(
                 RuntimeConfiguration.getInstance().stopsOnFailure
             );
+        }
+
+        ActionContributionItem debugTestItem =
+            (ActionContributionItem) manager.find(DebugTestAction.ID);
+        if (debugTestItem != null) {
+            debugTestItem.getAction().setChecked(
+                RuntimeConfiguration.getInstance().debugsTest
+            );
+        }
+
+        ActionContributionItem runAllTestsWhenFileIsSavedItem =
+            (ActionContributionItem) manager.find(RunAllTestsWhenFileIsSavedAction.ID);
+        if (runAllTestsWhenFileIsSavedItem != null) {
+            runAllTestsWhenFileIsSavedItem.getAction().setChecked(
+                RuntimeConfiguration.getInstance().runsAllTestsWhenFileIsSaved
+            );
+        }
+
+        ActionContributionItem stopTestItem =
+            (ActionContributionItem) manager.find(StopTestAction.ID);
+        if (stopTestItem != null) {
+            stopTestAction = stopTestItem.getAction();
+            stopTestAction.setEnabled(false);
+        }
+
+        ActionContributionItem rerunTestItem =
+            (ActionContributionItem) manager.find(RerunTestAction.ID);
+        if (rerunTestItem != null) {
+            rerunTestAction = rerunTestItem.getAction();
+            rerunTestAction.setEnabled(TestRunner.hasLastTest());
+        }
+
+        ActionContributionItem runAllTestsItem =
+            (ActionContributionItem) manager.find(RunAllTestsAction.ID);
+        if (runAllTestsItem != null) {
+            runAllTestsAction = runAllTestsItem.getAction();
+            runAllTestsAction.setEnabled(false);
         }
     }
 

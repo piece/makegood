@@ -247,8 +247,8 @@
       </command>
       <command
             categoryId="com.piece_framework.makegood.ui.commands.resultViewCategory"
-            id="com.piece_framework.makegood.ui.commands.debug"
-            name="%commands.debug.name">
+            id="com.piece_framework.makegood.ui.commands.debugTest"
+            name="%commands.debugTest.name">
       </command>
       <command
             categoryId="com.piece_framework.makegood.ui.commands.resultViewCategory"
@@ -365,14 +365,14 @@
                tooltip="%resultView.stopOnFailure.tooltip">
          </action>
          <action
-               class="com.piece_framework.makegood.ui.actions.DebugAction"
-               definitionId="com.piece_framework.makegood.ui.commands.debug"
+               class="com.piece_framework.makegood.ui.actions.DebugTestAction"
+               definitionId="com.piece_framework.makegood.ui.commands.debugTest"
                icon="icons/stop-on-failure.gif"
-               id="com.piece_framework.makegood.ui.viewActions.resultView.debug"
-               label="%resultView.debug.label"
+               id="com.piece_framework.makegood.ui.viewActions.resultView.debugTest"
+               label="%resultView.debugTest.label"
                style="toggle"
                toolbarPath="additions"
-               tooltip="%resultView.debug.tooltip">
+               tooltip="%resultView.debugTest.tooltip">
          </action>
          <action
                class="com.piece_framework.makegood.ui.actions.RunAllTestsWhenFileIsSavedAction"

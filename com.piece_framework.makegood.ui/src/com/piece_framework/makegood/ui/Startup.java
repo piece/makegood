@@ -30,7 +30,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.progress.UIJob;
 
 import com.piece_framework.makegood.ui.ide.ViewShow;
-import com.piece_framework.makegood.ui.launch.AllTestsStatus;
+import com.piece_framework.makegood.ui.launch.ActivePart;
 import com.piece_framework.makegood.ui.launch.RunAllTestsForResources;
 import com.piece_framework.makegood.ui.views.OutputDebugEventSetListener;
 import com.piece_framework.makegood.ui.views.ResultDebugEventSetListener;
@@ -39,37 +39,38 @@ import com.piece_framework.makegood.ui.views.ResultView;
 public class Startup implements IStartup {
     @Override
     public void earlyStartup() {
-        AllTestsStatus.getInstance();
-
         final ISelectionChangedListener listener = new ISelectionChangedListener() {
             @Override
             public void selectionChanged(SelectionChangedEvent event) {
                 setEnabledRunAllTestsAction();
             }
         };
+        final IPartListener partListener =
+            new IPartListener() {
+                @Override
+                public void partActivated(IWorkbenchPart part) {
+                    ActivePart.getInstance().setPart(part);
+                    addSelectionChangedListener(part, listener);
+                    setEnabledRunAllTestsAction();
+                }
+
+                @Override
+                public void partBroughtToTop(IWorkbenchPart part) {}
+
+                @Override
+                public void partClosed(IWorkbenchPart part) {}
+
+                @Override
+                public void partDeactivated(IWorkbenchPart part) {}
+
+                @Override
+                public void partOpened(IWorkbenchPart part) {}
+            };
+
         for (IWorkbenchWindow window: PlatformUI.getWorkbench().getWorkbenchWindows()) {
             for (IWorkbenchPage page: window.getPages()) {
-                page.addPartListener(new IPartListener() {
-                    @Override
-                    public void partActivated(IWorkbenchPart part) {
-                        addSelectionChangedListener(part, listener);
-
-                        setEnabledRunAllTestsAction();
-                    }
-
-                    @Override
-                    public void partBroughtToTop(IWorkbenchPart part) {}
-
-                    @Override
-                    public void partClosed(IWorkbenchPart part) {}
-
-                    @Override
-                    public void partDeactivated(IWorkbenchPart part) {}
-
-                    @Override
-                    public void partOpened(IWorkbenchPart part) {}
-                });
-
+                ActivePart.getInstance().setPart(page.getActivePart());
+                page.addPartListener(partListener);
                 addSelectionChangedListener(page.getActivePart(), listener);
             }
         }
@@ -103,7 +104,7 @@ public class Startup implements IStartup {
     private void setEnabledRunAllTestsAction() {
         ResultView resultView = (ResultView) ViewShow.find(ResultView.ID);
         if (resultView != null) {
-            resultView.setEnabledRunAllTestsAction(AllTestsStatus.getInstance().runnable());
+            resultView.setRunAllTestsActionIsEnabled(ActivePart.getInstance().isAllTestsRunnable());
         }
     }
 }

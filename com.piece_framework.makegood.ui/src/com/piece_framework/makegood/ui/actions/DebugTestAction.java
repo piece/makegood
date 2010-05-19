@@ -18,13 +18,15 @@ import org.eclipse.ui.IViewPart;
 
 import com.piece_framework.makegood.launch.RuntimeConfiguration;
 
-public class DebugAction implements IViewActionDelegate {
+public class DebugTestAction implements IViewActionDelegate {
+    public static final String ID = "com.piece_framework.makegood.ui.viewActions.resultView.debugTest"; //$NON-NLS-1$
+
     @Override
     public void init(IViewPart view) {}
 
     @Override
     public void run(IAction action) {
-        RuntimeConfiguration.getInstance().debugs = action.isChecked();
+        RuntimeConfiguration.getInstance().debugsTest = action.isChecked();
     }
 
     @Override

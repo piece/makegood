@@ -16,13 +16,13 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 
 import com.piece_framework.makegood.javassist.monitor.WeavingMonitor;
-import com.piece_framework.makegood.ui.launch.AllTestsStatus;
+import com.piece_framework.makegood.ui.launch.ActivePart;
 import com.piece_framework.makegood.ui.launch.TestRunner;
 
 public class RunAllTests extends AbstractHandler {
     @Override
     public Object execute(ExecutionEvent event) throws ExecutionException {
-        TestRunner.runAllTests(AllTestsStatus.getInstance().getTarget());
+        TestRunner.runAllTests(ActivePart.getInstance().getLastTarget());
         return null;
     }
 
@@ -30,6 +30,6 @@ public class RunAllTests extends AbstractHandler {
     public boolean isEnabled() {
         if (!WeavingMonitor.endAll()) return false;
 
-        return AllTestsStatus.getInstance().runnable();
+        return ActivePart.getInstance().isAllTestsRunnable();
     }
 }

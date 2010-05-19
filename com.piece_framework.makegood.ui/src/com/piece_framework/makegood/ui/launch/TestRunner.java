@@ -12,17 +12,11 @@
 
 package com.piece_framework.makegood.ui.launch;
 
-import org.eclipse.core.resources.IResource;
-import org.eclipse.dltk.core.IModelElement;
-import org.eclipse.dltk.core.ISourceModule;
-import org.eclipse.dltk.internal.ui.editor.EditorUtility;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.internal.dialogs.PropertyDialog;
 
 import com.piece_framework.makegood.core.MakeGoodProperty;
@@ -72,42 +66,8 @@ public class TestRunner {
         runTests(lastTarget, lastShortcut);
     }
 
-    public static IResource getResource(Object target) {
-        if (target instanceof IStructuredSelection) {
-            IStructuredSelection selection = (IStructuredSelection) target;
-            if (selection.getFirstElement() instanceof IModelElement) {
-                return ((IModelElement) selection.getFirstElement()).getResource();
-            } else if (selection.getFirstElement() instanceof IResource) {
-                return (IResource) selection.getFirstElement();
-            }
-        } else if (target instanceof IEditorPart) {
-            ISourceModule source = EditorUtility.getEditorInputModelElement((IEditorPart) target, false);
-            if (source != null) {
-                return source.getResource();
-            }
-
-            IEditorPart editor = (IEditorPart) target;
-            if (editor.getEditorInput() instanceof IFileEditorInput) {
-                return ((IFileEditorInput) editor.getEditorInput()).getFile();
-            }
-        }
-
-        return null;
-    }
-
-    public static boolean isRunnableAllTests(Object target) {
-        if (target == null) return false;
-
-        IResource resource = getResource(target);
-        if (resource == null) return false;
-        if (!resource.getProject().exists()) return false;
-        if (new MakeGoodProperty(resource).getTestFolders().size() == 0) return false;
-
-        return true;
-    }
-
     private static void runTests(Object target, MakeGoodLaunchShortcut shortcut) {
-        MakeGoodProperty property = new MakeGoodProperty(getResource(target));
+        MakeGoodProperty property = new MakeGoodProperty(ActivePart.getResource(target));
         if (!property.exists()) {
             showPropertyPage(property, target, shortcut);
             return;

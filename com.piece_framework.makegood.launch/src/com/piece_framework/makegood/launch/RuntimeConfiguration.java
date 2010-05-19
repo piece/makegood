@@ -17,10 +17,11 @@ import com.piece_framework.makegood.core.MakeGoodCorePlugin;
 import com.piece_framework.makegood.core.preference.MakeGoodPreferenceInitializer;
 
 public class RuntimeConfiguration {
-    public boolean debugs = false;
+    public boolean debugsTest = false;
     public boolean stopsOnFailure = false;
     public boolean isRunInBackground = false;
     public boolean runsAllTestsWhenFileIsSaved;
+    public boolean showsFailuresOnly = false;
     private static RuntimeConfiguration soleInstance;
 
     public static RuntimeConfiguration getInstance() {
@@ -32,7 +33,7 @@ public class RuntimeConfiguration {
     }
 
     public String getLaunchMode() {
-        return debugs ? ILaunchManager.DEBUG_MODE : ILaunchManager.RUN_MODE;
+        return debugsTest ? ILaunchManager.DEBUG_MODE : ILaunchManager.RUN_MODE;
     }
 
     private RuntimeConfiguration() {
