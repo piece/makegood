@@ -78,8 +78,11 @@ public class TestRunner {
             return;
         }
 
-        lastShortcut = shortcut;
-        lastTarget = target;
+        if (!RuntimeConfiguration.getInstance().isRunInBackground) {
+            lastShortcut = shortcut;
+            lastTarget = target;
+        }
+
         String launchMode = RuntimeConfiguration.getInstance().getLaunchMode();
 
         if (target instanceof ISelection) {
