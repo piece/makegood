@@ -30,28 +30,23 @@ public class TestRunner {
     private static boolean isRunWhenFileIsSaved = false;
 
     public static void runRelatedTests(IEditorPart editorPart) {
-        MakeGoodLaunchShortcut shortcut = new RelatedTestsLaunchShortcut();
-        runTests(editorPart, shortcut);
+        runTests(editorPart, new RelatedTestsLaunchShortcut());
     }
 
     public static void runTestsInContext(IEditorPart editorPart) {
-        MakeGoodLaunchShortcut shortcut = new ContextLaunchShortcut();
-        runTests(editorPart, shortcut);
+        runTests(editorPart, new ContextLaunchShortcut());
     }
 
     public static void runTestsInClass(IEditorPart editorPart) {
-        MakeGoodLaunchShortcut shortcut = new ClassLaunchShortcut();
-        runTests(editorPart, shortcut);
+        runTests(editorPart, new ClassLaunchShortcut());
     }
 
     public static void runTestsInFile(IEditorPart editorPart) {
-        MakeGoodLaunchShortcut shortcut = new FileLaunchShortcut();
-        runTests(editorPart, shortcut);
+        runTests(editorPart, new FileLaunchShortcut());
     }
 
     public static void runTests(ISelection selection) {
-        MakeGoodLaunchShortcut shortcut = new ResourceLaunchShortcut();
-        runTests(selection, shortcut);
+        runTests(selection, new ResourceLaunchShortcut());
     }
 
     public static void runAllTests(Object target) {
