@@ -41,7 +41,7 @@ public class Startup implements IStartup {
         final ISelectionChangedListener listener = new ISelectionChangedListener() {
             @Override
             public void selectionChanged(SelectionChangedEvent event) {
-                setEnabledRunAllTestsAction();
+                updateStateOfRunAllTestsAction();
             }
         };
         final IPartListener partListener =
@@ -50,7 +50,7 @@ public class Startup implements IStartup {
                 public void partActivated(IWorkbenchPart part) {
                     ActivePart.getInstance().setPart(part);
                     addSelectionChangedListener(part, listener);
-                    setEnabledRunAllTestsAction();
+                    updateStateOfRunAllTestsAction();
                 }
 
                 @Override
@@ -77,7 +77,7 @@ public class Startup implements IStartup {
         Job job = new UIJob("MakeGood Set Enabled RunAllTests Action") { //$NON-NLS-1$
             @Override
             public IStatus runInUIThread(IProgressMonitor monitor) {
-                setEnabledRunAllTestsAction();
+                updateStateOfRunAllTestsAction();
                 return Status.OK_STATUS;
             }
         };
@@ -97,7 +97,7 @@ public class Startup implements IStartup {
         }
     }
 
-    private void setEnabledRunAllTestsAction() {
+    private void updateStateOfRunAllTestsAction() {
         ResultView resultView = (ResultView) ViewShow.find(ResultView.ID);
         if (resultView != null) {
             resultView.updateStateOfRunAllTestsAction();
