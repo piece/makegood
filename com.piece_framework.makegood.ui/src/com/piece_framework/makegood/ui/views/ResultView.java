@@ -269,10 +269,10 @@ public class ResultView extends ViewPart {
         resultTreeViewer.setInput(null);
     }
 
-    public void setRunAllTestsActionIsEnabled(boolean isEnabled) {
+    public void setRunAllTestsActionIsEnabled() {
         if (!actionsInitialized) return;
         if (MakeGoodLaunchConfigurationDelegate.hasActiveMakeGoodLaunches()) return;
-        runAllTestsAction.setEnabled(isEnabled);
+        runAllTestsAction.setEnabled(ActivePart.getInstance().isAllTestsRunnable());
     }
 
     private GridData createHorizontalFillGridData() {

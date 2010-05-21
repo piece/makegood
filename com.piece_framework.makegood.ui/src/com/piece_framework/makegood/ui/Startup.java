@@ -100,7 +100,7 @@ public class Startup implements IStartup {
     private void setEnabledRunAllTestsAction() {
         ResultView resultView = (ResultView) ViewShow.find(ResultView.ID);
         if (resultView != null) {
-            resultView.setRunAllTestsActionIsEnabled(ActivePart.getInstance().isAllTestsRunnable());
+            resultView.setRunAllTestsActionIsEnabled();
         }
     }
 }
