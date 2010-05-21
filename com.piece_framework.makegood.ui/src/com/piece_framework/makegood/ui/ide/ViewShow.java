@@ -54,15 +54,4 @@ public class ViewShow {
                          .getActivePage()
                          .findView(viewId);
     }
-
-    public static boolean isShown(String viewId) {
-        for (IViewReference reference: PlatformUI.getWorkbench()
-                                                 .getActiveWorkbenchWindow()
-                                                 .getActivePage()
-                                                 .getViewReferences()
-        ) {
-            if (reference.getId().equals(viewId)) return true;
-        }
-        return false;
-    }
 }
