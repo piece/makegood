@@ -14,7 +14,9 @@ package com.piece_framework.makegood.ui.ide;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.IViewPart;
+import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
@@ -22,11 +24,10 @@ import com.piece_framework.makegood.ui.Activator;
 
 public class ViewShow {
     public static IViewPart show(String viewId) {
+        IWorkbenchPage page = getActivePage();
+        if (page == null) return null;
         try {
-            return PlatformUI.getWorkbench()
-                             .getActiveWorkbenchWindow()
-                             .getActivePage()
-                             .showView(viewId);
+            return page.showView(viewId);
         } catch (PartInitException e) {
             Activator.getDefault().getLog().log(new Status(IStatus.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
             return null;
@@ -34,23 +35,26 @@ public class ViewShow {
     }
 
     public static void setFocus(IWorkbenchPart part) {
-        PlatformUI.getWorkbench()
-                  .getActiveWorkbenchWindow()
-                  .getActivePage()
-                  .activate(part);
+        IWorkbenchPage page = getActivePage();
+        if (page == null) return;
+        page.activate(part);
     }
 
     public static IWorkbenchPart getActivePart() {
-        return PlatformUI.getWorkbench()
-                  .getActiveWorkbenchWindow()
-                  .getActivePage()
-                  .getActivePart();
+        IWorkbenchPage page = getActivePage();
+        if (page == null) return null;
+        return page.getActivePart();
     }
 
     public static IViewPart find(String viewId) {
-        return PlatformUI.getWorkbench()
-                         .getActiveWorkbenchWindow()
-                         .getActivePage()
-                         .findView(viewId);
+        IWorkbenchPage page = getActivePage();
+        if (page == null) return null;
+        return page.findView(viewId);
+    }
+
+    private static IWorkbenchPage getActivePage() {
+        IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+        if (window == null) return null;
+        return window.getActivePage();
     }
 }
