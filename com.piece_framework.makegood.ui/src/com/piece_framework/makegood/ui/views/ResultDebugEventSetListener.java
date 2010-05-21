@@ -27,6 +27,7 @@ import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.IDebugEventSetListener;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.model.IProcess;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.progress.UIJob;
 import org.xml.sax.SAXException;
 
@@ -105,16 +106,13 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
         Job job = new UIJob("MakeGood Reset Result View") { //$NON-NLS-1$
             @Override
             public IStatus runInUIThread(IProgressMonitor monitor) {
+                IWorkbenchPart activePart = ViewShow.getActivePart();
                 ResultView resultView = null;
-                if (RuntimeConfiguration.getInstance().isRunInBackground) {
-                    if (!ViewShow.isShown(OutputView.ID)) ViewShow.show(OutputView.ID);
-                    if (!ViewShow.isShown(ResultView.ID)) resultView = (ResultView) ViewShow.show(ResultView.ID);
-                    else resultView = (ResultView) ViewShow.find(ResultView.ID);
-                } else {
-                    ViewShow.show(OutputView.ID);
-                    resultView = (ResultView) ViewShow.show(ResultView.ID);
-                }
+                ViewShow.show(OutputView.ID);
+                resultView = (ResultView) ViewShow.show(ResultView.ID);
                 if (resultView == null) return Status.CANCEL_STATUS;
+
+                ViewShow.activate(activePart);
 
                 resultView.reset();
                 resultView.start(progress);
@@ -170,20 +168,19 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
         Job job = new UIJob("MakeGood Show View") { //$NON-NLS-1$
             @Override
             public IStatus runInUIThread(IProgressMonitor monitor) {
-                ResultView resultView = (ResultView) ViewShow.find(ResultView.ID);
+                IWorkbenchPart activePart = ViewShow.getActivePart();
+                ResultView resultView = (ResultView) ViewShow.show(ResultView.ID);
                 if (resultView == null) return Status.CANCEL_STATUS;
 
                 resultView.stop();
                 resultView.refresh(progress, currentTestCase);
 
-                if (RuntimeConfiguration.getInstance().isRunInBackground) return Status.OK_STATUS;
-
                 if (hasErrors == true) {
                     ViewShow.show(OutputView.ID);
-                    return Status.OK_STATUS;
                 }
 
-                resultView.setFocus();
+                ViewShow.activate(activePart);
+
                 return Status.OK_STATUS;
             }
         };
@@ -216,9 +213,12 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
             Job job = new UIJob("MakeGood Refresh Result View") { //$NON-NLS-1$
                 @Override
                 public IStatus runInUIThread(IProgressMonitor monitor) {
+                    IWorkbenchPart activePart = ViewShow.getActivePart();
                     ResultView resultView = (ResultView) ViewShow.find(ResultView.ID);
                     if (resultView == null) return Status.CANCEL_STATUS;
-    
+
+                    ViewShow.activate(activePart);
+
                     if (!resultView.isSetTreeInput()) resultView.setTreeInput(junitXMLReader.getTestResults());
                     resultView.refresh(progress, currentTestCase);
                     return Status.OK_STATUS;

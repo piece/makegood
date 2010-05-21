@@ -15,6 +15,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IViewReference;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
@@ -31,6 +32,20 @@ public class ViewShow {
             Activator.getDefault().getLog().log(new Status(IStatus.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
             return null;
         }
+    }
+
+    public static void activate(IWorkbenchPart part) {
+        PlatformUI.getWorkbench()
+                  .getActiveWorkbenchWindow()
+                  .getActivePage()
+                  .activate(part);
+    }
+
+    public static IWorkbenchPart getActivePart() {
+        return PlatformUI.getWorkbench()
+                  .getActiveWorkbenchWindow()
+                  .getActivePage()
+                  .getActivePart();
     }
 
     public static IViewPart find(String viewId) {
