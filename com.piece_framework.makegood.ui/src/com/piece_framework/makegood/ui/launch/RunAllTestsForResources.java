@@ -38,31 +38,12 @@ import com.piece_framework.makegood.launch.MakeGoodLaunchConfigurationDelegate;
 import com.piece_framework.makegood.launch.RuntimeConfiguration;
 import com.piece_framework.makegood.ui.Activator;
 
-public class RunAllTestsForResources implements IDebugEventSetListener, IResourceChangeListener {
+public class RunAllTestsForResources implements IResourceChangeListener {
     private static final String WAIT_FOR_BUILD = IDebugUIConstants.PLUGIN_ID
                                                  + ".wait_for_build"; //$NON-NLS-1$
     private String oldValueOfWaitForBuild;
     private Boolean oldValueOfOpenDebugViews;
     private Boolean oldValueOfOpenInBrowser;
-
-    @Override
-    public void handleDebugEvents(DebugEvent[] events) {
-        if (!RuntimeConfiguration.getInstance().runsAllTestsWhenFileIsSaved) return;
-
-        for (DebugEvent event: events) {
-            if (event.getKind() != DebugEvent.TERMINATE) continue;
-            ILaunch launch = MakeGoodLaunchConfigurationDelegate.getLaunch(event.getSource());
-            if (launch == null) continue;
-            if (!MakeGoodLaunchConfigurationDelegate.isMakeGoodLaunch(launch)) continue;
-
-            resetProgressMonitor();
-            resetDebugView();
-
-            RuntimeConfiguration.getInstance().isRunInBackground = false;
-
-            break;
-        }
-    }
 
     @Override
     public void resourceChanged(IResourceChangeEvent event) {

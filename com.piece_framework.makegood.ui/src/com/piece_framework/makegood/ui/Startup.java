@@ -88,7 +88,6 @@ public class Startup implements IStartup {
         DebugPlugin.getDefault().addDebugEventListener(new OutputDebugEventSetListener());
 
         RunAllTestsForResources runAllTestsListener = new RunAllTestsForResources();
-        DebugPlugin.getDefault().addDebugEventListener(runAllTestsListener);
         ResourcesPlugin.getWorkspace().addResourceChangeListener(runAllTestsListener);
     }
 
