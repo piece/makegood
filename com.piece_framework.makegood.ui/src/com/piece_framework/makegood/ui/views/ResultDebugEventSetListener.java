@@ -179,7 +179,9 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
                     ViewShow.show(IConsoleConstants.ID_CONSOLE_VIEW);
                 }
 
-                ViewShow.setFocus(lastActivePart);
+                if (lastActivePart != null) {
+                    ViewShow.setFocus(lastActivePart);
+                }
 
                 return Status.OK_STATUS;
             }
@@ -217,7 +219,9 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
                     ResultView resultView = (ResultView) ViewShow.find(ResultView.ID);
                     if (resultView == null) return Status.CANCEL_STATUS;
 
-                    ViewShow.setFocus(lastActivePart);
+                    if (lastActivePart != null) {
+                        ViewShow.setFocus(lastActivePart);
+                    }
 
                     if (!resultView.isSetTreeInput()) resultView.setTreeInput(junitXMLReader.getTestResults());
                     resultView.refresh(progress, currentTestCase);
