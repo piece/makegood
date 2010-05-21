@@ -19,7 +19,6 @@ import com.piece_framework.makegood.core.preference.MakeGoodPreferenceInitialize
 public class RuntimeConfiguration {
     public boolean debugsTest = false;
     public boolean stopsOnFailure = false;
-    public boolean isRunInBackground = false;
     public boolean runsAllTestsWhenFileIsSaved;
     public boolean showsFailuresOnly = false;
     private static RuntimeConfiguration soleInstance;

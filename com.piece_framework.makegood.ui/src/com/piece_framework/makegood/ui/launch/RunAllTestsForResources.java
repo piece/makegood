@@ -37,9 +37,9 @@ public class RunAllTestsForResources implements IResourceChangeListener {
             @Override
             public IStatus runInUIThread(IProgressMonitor monitor) {
                 if (ActivePart.isAllTestsRunnable(selection)) {
-                    RuntimeConfiguration.getInstance().isRunInBackground = true;
                     TestRunner.runAllTests(selection);
                 }
+
                 return Status.OK_STATUS;
             }
         };
