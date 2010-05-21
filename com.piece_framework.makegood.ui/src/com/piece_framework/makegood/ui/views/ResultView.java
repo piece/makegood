@@ -269,7 +269,7 @@ public class ResultView extends ViewPart {
         resultTreeViewer.setInput(null);
     }
 
-    public void setRunAllTestsActionIsEnabled() {
+    public void updateStateOfRunAllTestsAction() {
         if (!actionsInitialized) return;
         if (MakeGoodLaunchConfigurationDelegate.hasActiveMakeGoodLaunches()) return;
         runAllTestsAction.setEnabled(ActivePart.getInstance().isAllTestsRunnable());
