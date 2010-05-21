@@ -25,7 +25,6 @@ import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.IWorkbenchPart;
 
 import com.piece_framework.makegood.core.MakeGoodProperty;
-import com.piece_framework.makegood.ui.views.OutputView;
 import com.piece_framework.makegood.ui.views.ResultView;
 
 public class ActivePart {
@@ -45,7 +44,6 @@ public class ActivePart {
     public void setPart(IWorkbenchPart part) {
         String id = part.getSite().getId();
         if (id.equals(ResultView.ID)
-            || id.equals(OutputView.ID)
             || id.equals("org.eclipse.debug.ui.PHPDebugOutput")) return; //$NON-NLS-1$
 
         if (part instanceof IEditorPart) {

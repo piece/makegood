@@ -32,7 +32,6 @@ import org.eclipse.ui.progress.UIJob;
 import com.piece_framework.makegood.ui.ide.ViewShow;
 import com.piece_framework.makegood.ui.launch.ActivePart;
 import com.piece_framework.makegood.ui.launch.RunAllTestsForResources;
-import com.piece_framework.makegood.ui.views.OutputDebugEventSetListener;
 import com.piece_framework.makegood.ui.views.ResultDebugEventSetListener;
 import com.piece_framework.makegood.ui.views.ResultView;
 
@@ -85,7 +84,6 @@ public class Startup implements IStartup {
         job.schedule();
 
         DebugPlugin.getDefault().addDebugEventListener(new ResultDebugEventSetListener());
-        DebugPlugin.getDefault().addDebugEventListener(new OutputDebugEventSetListener());
 
         ResourcesPlugin.getWorkspace().addResourceChangeListener(new RunAllTestsForResources());
     }

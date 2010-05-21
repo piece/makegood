@@ -30,14 +30,6 @@
             name="%views.resultView.name"
             restorable="true">
       </view>
-      <view
-            category="com.piece_framework.makegood.ui.views.makeGoodCategory"
-            class="com.piece_framework.makegood.ui.views.OutputView"
-            icon="icons/MakeGood.gif"
-            id="com.piece_framework.makegood.ui.views.outputView"
-            name="%views.outputView.name"
-            restorable="true">
-      </view>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
