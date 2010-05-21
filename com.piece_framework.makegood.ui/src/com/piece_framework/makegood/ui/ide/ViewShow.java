@@ -33,7 +33,7 @@ public class ViewShow {
         }
     }
 
-    public static void activate(IWorkbenchPart part) {
+    public static void setFocus(IWorkbenchPart part) {
         PlatformUI.getWorkbench()
                   .getActiveWorkbenchWindow()
                   .getActivePage()
