@@ -18,6 +18,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.ide,
  com.piece_framework.makegood.core,
  com.piece_framework.makegood.javassist,
- org.eclipse.core.filesystem
+ org.eclipse.core.filesystem,
+ org.eclipse.ui.console
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy

@@ -28,6 +28,7 @@ import org.eclipse.debug.core.IDebugEventSetListener;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.console.IConsoleConstants;
 import org.eclipse.ui.progress.UIJob;
 import org.xml.sax.SAXException;
 
@@ -108,7 +109,6 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
             public IStatus runInUIThread(IProgressMonitor monitor) {
                 IWorkbenchPart activePart = ViewShow.getActivePart();
                 ResultView resultView = null;
-                ViewShow.show(OutputView.ID);
                 resultView = (ResultView) ViewShow.show(ResultView.ID);
                 if (resultView == null) return Status.CANCEL_STATUS;
 
@@ -176,7 +176,7 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
                 resultView.refresh(progress, currentTestCase);
 
                 if (hasErrors == true) {
-                    ViewShow.show(OutputView.ID);
+                    ViewShow.show(IConsoleConstants.ID_CONSOLE_VIEW);
                 }
 
                 ViewShow.activate(activePart);
