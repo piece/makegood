@@ -87,8 +87,7 @@ public class Startup implements IStartup {
         DebugPlugin.getDefault().addDebugEventListener(new ResultDebugEventSetListener());
         DebugPlugin.getDefault().addDebugEventListener(new OutputDebugEventSetListener());
 
-        RunAllTestsForResources runAllTestsListener = new RunAllTestsForResources();
-        ResourcesPlugin.getWorkspace().addResourceChangeListener(runAllTestsListener);
+        ResourcesPlugin.getWorkspace().addResourceChangeListener(new RunAllTestsForResources());
     }
 
     private void addSelectionChangedListener(IWorkbenchPart part,
