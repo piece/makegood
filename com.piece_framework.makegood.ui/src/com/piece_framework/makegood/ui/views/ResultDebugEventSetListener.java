@@ -168,7 +168,7 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
         Job job = new UIJob("MakeGood Show View") { //$NON-NLS-1$
             @Override
             public IStatus runInUIThread(IProgressMonitor monitor) {
-                IWorkbenchPart activePart = ViewShow.getActivePart();
+                IWorkbenchPart lastActivePart = ViewShow.getActivePart();
                 ResultView resultView = (ResultView) ViewShow.show(ResultView.ID);
                 if (resultView == null) return Status.CANCEL_STATUS;
 
@@ -179,7 +179,7 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
                     ViewShow.show(IConsoleConstants.ID_CONSOLE_VIEW);
                 }
 
-                ViewShow.activate(activePart);
+                ViewShow.activate(lastActivePart);
 
                 return Status.OK_STATUS;
             }
@@ -213,11 +213,11 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
             Job job = new UIJob("MakeGood Refresh Result View") { //$NON-NLS-1$
                 @Override
                 public IStatus runInUIThread(IProgressMonitor monitor) {
-                    IWorkbenchPart activePart = ViewShow.getActivePart();
+                    IWorkbenchPart lastActivePart = ViewShow.getActivePart();
                     ResultView resultView = (ResultView) ViewShow.find(ResultView.ID);
                     if (resultView == null) return Status.CANCEL_STATUS;
 
-                    ViewShow.activate(activePart);
+                    ViewShow.activate(lastActivePart);
 
                     if (!resultView.isSetTreeInput()) resultView.setTreeInput(junitXMLReader.getTestResults());
                     resultView.refresh(progress, currentTestCase);
