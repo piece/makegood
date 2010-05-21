@@ -27,6 +27,7 @@ import com.piece_framework.makegood.ui.Messages;
 public class TestRunner {
     private static MakeGoodLaunchShortcut lastShortcut;
     private static Object lastTarget;
+    private static boolean isRunWhenFileIsSaved = false;
 
     public static void runRelatedTests(IEditorPart editorPart) {
         MakeGoodLaunchShortcut shortcut = new RelatedTestsLaunchShortcut();
@@ -54,8 +55,13 @@ public class TestRunner {
     }
 
     public static void runAllTests(Object target) {
-        MakeGoodLaunchShortcut shortcut = new AllTestsLaunchShortcut();
-        runTests(target, shortcut);
+        isRunWhenFileIsSaved = true;
+        runTests(target, new AllTestsLaunchShortcut());
+        isRunWhenFileIsSaved = false;
+    }
+
+    public static void runAllTests() {
+        runTests(ActivePart.getInstance().getLastTarget(), new AllTestsLaunchShortcut());
     }
 
     public static boolean hasLastTest() {
@@ -78,7 +84,7 @@ public class TestRunner {
             return;
         }
 
-        if (!RuntimeConfiguration.getInstance().isRunInBackground) {
+        if (!isRunWhenFileIsSaved) {
             lastShortcut = shortcut;
             lastTarget = target;
         }

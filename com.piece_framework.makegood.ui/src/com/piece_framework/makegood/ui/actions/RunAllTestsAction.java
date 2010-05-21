@@ -29,7 +29,7 @@ public class RunAllTestsAction implements IViewActionDelegate {
 
     @Override
     public void run(IAction action) {
-        TestRunner.runAllTests(ActivePart.getInstance().getLastTarget());
+        TestRunner.runAllTests();
     }
 
     @Override
