@@ -41,6 +41,7 @@ import com.piece_framework.makegood.launch.RuntimeConfiguration;
 import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.actions.StopTestAction;
 import com.piece_framework.makegood.ui.ide.ViewShow;
+import com.piece_framework.makegood.ui.launch.TestRunner;
 
 public class ResultDebugEventSetListener implements IDebugEventSetListener {
     private Thread parserThread;
@@ -107,12 +108,11 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
         Job job = new UIJob("MakeGood Reset Result View") { //$NON-NLS-1$
             @Override
             public IStatus runInUIThread(IProgressMonitor monitor) {
-                IWorkbenchPart activePart = ViewShow.getActivePart();
                 ResultView resultView = null;
                 resultView = (ResultView) ViewShow.show(ResultView.ID);
                 if (resultView == null) return Status.CANCEL_STATUS;
 
-                ViewShow.activate(activePart);
+                TestRunner.restoreFocusToLastActivePart();
 
                 resultView.reset();
                 resultView.start(progress);
