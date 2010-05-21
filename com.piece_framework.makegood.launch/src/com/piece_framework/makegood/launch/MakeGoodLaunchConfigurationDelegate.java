@@ -41,6 +41,11 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
     private static final String MAKEGOOD_LAUNCH_MARKER = "MAKEGOOD_LAUNCH_MARKER"; //$NON-NLS-1$
 
     @Override
+    public boolean buildForLaunch(ILaunchConfiguration configuration, String mode, IProgressMonitor monitor) throws CoreException {
+        return false;
+    }
+
+    @Override
     public ILaunch getLaunch(ILaunchConfiguration configuration, String mode) throws CoreException {
         return new PHPLaunch(configuration, mode, null);
     }
