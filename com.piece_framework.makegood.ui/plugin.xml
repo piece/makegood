@@ -234,6 +234,7 @@
       </command>
       <command
             categoryId="com.piece_framework.makegood.ui.commands.resultViewCategory"
+            defaultHandler="com.piece_framework.makegood.ui.handlers.StopOnFailure"
             id="com.piece_framework.makegood.ui.commands.stopOnFailure"
             name="%commands.stopOnFailure.name">
       </command>
@@ -244,16 +245,19 @@
       </command>
       <command
             categoryId="com.piece_framework.makegood.ui.commands.resultViewCategory"
+            defaultHandler="com.piece_framework.makegood.ui.handlers.RunAllTestsWhenFileIsSaved"
             id="com.piece_framework.makegood.ui.commands.runAllTestsWhenFileIsSaved"
             name="%commands.runAllTestsWhenFileIsSaved.name">
       </command>
       <command
             categoryId="com.piece_framework.makegood.ui.commands.resultViewCategory"
+            defaultHandler="com.piece_framework.makegood.ui.handlers.StopTest"
             id="com.piece_framework.makegood.ui.commands.stopTest"
             name="%commands.stopTest.name">
       </command>
       <command
             categoryId="com.piece_framework.makegood.ui.commands.resultViewCategory"
+            defaultHandler="com.piece_framework.makegood.ui.handlers.RerunTest"
             id="com.piece_framework.makegood.ui.commands.rerunTest"
             name="%commands.rerunTest.name">
       </command>
@@ -287,12 +291,6 @@
    <extension
          point="org.eclipse.ui.bindings">
       <key
-            commandId="com.piece_framework.makegood.ui.commands.runTestFromEditor"
-            contextId="org.eclipse.php.core.phpsource"
-            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="M3+M">
-      </key>
-      <key
             commandId="com.piece_framework.makegood.ui.commands.nextFailedTest"
             contextId="com.piece_framework.makegood.ui.contexts.resultView"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
@@ -309,6 +307,66 @@
             contextId="com.piece_framework.makegood.ui.contexts.resultView"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="M1+F">
+      </key>
+      <key
+            commandId="com.piece_framework.makegood.ui.commands.rerunTest"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M3+M R">
+      </key>
+      <key
+            commandId="com.piece_framework.makegood.ui.commands.runTestFromEditor"
+            contextId="org.eclipse.php.core.phpsource"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M3+M C">
+      </key>
+      <key
+            commandId="com.piece_framework.makegood.ui.commands.runAllTests"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M3+M A">
+      </key>
+      <key
+            commandId="com.piece_framework.makegood.ui.commands.runAllTestsWhenFileIsSaved"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M3+M U">
+      </key>
+      <key
+            commandId="com.piece_framework.makegood.ui.commands.runTestFromExplorer"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M3+M X">
+      </key>
+      <key
+            commandId="com.piece_framework.makegood.ui.commands.runTestFromEditorInClass"
+            contextId="org.eclipse.php.core.phpsource"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M3+M L">
+      </key>
+      <key
+            commandId="com.piece_framework.makegood.ui.commands.runTestFromEditorInFile"
+            contextId="org.eclipse.php.core.phpsource"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M3+M F">
+      </key>
+      <key
+            commandId="com.piece_framework.makegood.ui.commands.runRelatedTestFromEditor"
+            contextId="org.eclipse.php.core.phpsource"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M3+M D">
+      </key>
+      <key
+            commandId="com.piece_framework.makegood.ui.commands.stopOnFailure"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M3+M E">
+      </key>
+      <key
+            commandId="com.piece_framework.makegood.ui.commands.stopTest"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M3+M S">
       </key>
    </extension>
    <extension
