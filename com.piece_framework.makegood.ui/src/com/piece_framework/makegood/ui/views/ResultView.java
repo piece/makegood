@@ -518,15 +518,13 @@ public class ResultView extends ViewPart {
 
             bar = new Label(this, SWT.NONE);
             bar.setLayoutData(new GridData());
-
-            ControlAdapter listener = new ControlAdapter() {
-                @Override
-                public void controlResized(ControlEvent e) {
-                    update(rate);
-                }
-            };
-            bar.addControlListener(listener);
-            addControlListener(listener);
+            bar.addControlListener(
+                new ControlAdapter() {
+                    @Override
+                    public void controlResized(ControlEvent e) {
+                        update(rate);
+                    }
+            });
 
             reset();
         }
