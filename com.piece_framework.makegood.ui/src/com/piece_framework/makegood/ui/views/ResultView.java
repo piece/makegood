@@ -113,17 +113,25 @@ public class ResultView extends ViewPart {
         IContextService service = (IContextService) getSite().getService(IContextService.class);
         service.activateContext(CONTEXT_ID); //$NON-NLS-1$
 
-        parent.setLayout(new GridLayout(1, false));
+        parent.setLayout(adjustLayout(new GridLayout(1, false)));
 
         Composite row1 = new Composite(parent, SWT.NONE);
         row1.setLayoutData(createHorizontalFillGridData());
-        row1.setLayout(new GridLayout(2, true));
+        row1.setLayout(adjustLayout(new GridLayout(2, true)));
 
         Composite progress = new Composite(row1, SWT.NONE);
         progress.setLayoutData(createHorizontalFillGridData());
-        progress.setLayout(new GridLayout(2, false));
+        progress.setLayout(adjustLayout(new GridLayout(2, false)));
         progressRate = new Label(progress, SWT.LEFT);
-        progressBar = new RunProgressBar(progress);
+        Composite progressBarBorder = new Composite(progress, SWT.NONE);
+        progressBarBorder.setLayoutData(createHorizontalFillGridData());
+        GridLayout progressBarBorderLayout = new GridLayout();
+        progressBarBorderLayout.marginWidth = 2;
+        progressBarBorderLayout.marginHeight = 2;
+        progressBarBorderLayout.horizontalSpacing = 2;
+        progressBarBorderLayout.verticalSpacing = 2;
+        progressBarBorder.setLayout(progressBarBorderLayout);
+        progressBar = new RunProgressBar(progressBarBorder);
         progressBar.setLayoutData(createHorizontalFillGridData());
         Composite clock = new Composite(row1, SWT.NONE);
         clock.setLayoutData(createHorizontalFillGridData());
@@ -134,7 +142,7 @@ public class ResultView extends ViewPart {
 
         Composite row2 = new Composite(parent, SWT.NONE);
         row2.setLayoutData(createHorizontalFillGridData());
-        row2.setLayout(new GridLayout(2, true));
+        row2.setLayout(adjustLayout(new GridLayout(2, true)));
 
         Composite counter = new Composite(row2, SWT.NONE);
         counter.setLayoutData(createHorizontalFillGridData());
@@ -164,7 +172,7 @@ public class ResultView extends ViewPart {
 
         Composite row3 = new Composite(parent, SWT.NONE);
         row3.setLayoutData(createBothFillGridData());
-        row3.setLayout(new GridLayout(2, true));
+        row3.setLayout(adjustLayout(new GridLayout(2, true)));
 
         Tree resultTree = new Tree(row3, SWT.BORDER);
         resultTree.setLayoutData(createBothFillGridData());
@@ -466,6 +474,14 @@ public class ResultView extends ViewPart {
         }
     }
 
+    private GridLayout adjustLayout(GridLayout layout) {
+        layout.marginWidth = 0;
+        layout.marginHeight = 0;
+        layout.horizontalSpacing = 0;
+        layout.verticalSpacing = 0;
+        return layout;
+    }
+
     private class ResultLabel {
         private CLabel label;
         private String text;
@@ -496,17 +512,8 @@ public class ResultView extends ViewPart {
 
         private RunProgressBar(Composite parent) {
             super(parent, SWT.BORDER);
-            GridLayout layout = new GridLayout();
-            layout.marginTop = 0;
-            layout.marginBottom = 0;
-            layout.marginLeft = 0;
-            layout.marginRight = 0;
-            layout.marginHeight = 0;
-            layout.marginWidth = 0;
-            layout.verticalSpacing = 0;
-            layout.horizontalSpacing = 0;
-            setLayout(layout);
 
+            setLayout(adjustLayout(new GridLayout()));
             setBackground(new Color(parent.getDisplay(), NONE));
 
             bar = new Label(this, SWT.NONE);
