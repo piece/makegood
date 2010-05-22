@@ -505,7 +505,7 @@ public class ResultView extends ViewPart {
     private class RunProgressBar extends Composite {
         private final RGB GREEN = new RGB(95, 191, 95);
         private final RGB RED = new RGB(159, 63, 63);
-        private final RGB NONE = new RGB(255, 255, 255);
+        private final RGB WHITE = new RGB(255, 255, 255);
 
         private Label bar;
         private int rate;
@@ -514,7 +514,7 @@ public class ResultView extends ViewPart {
             super(parent, SWT.BORDER);
 
             setLayout(adjustLayout(new GridLayout()));
-            setBackground(new Color(parent.getDisplay(), NONE));
+            setBackground(new Color(parent.getDisplay(), WHITE));
 
             bar = new Label(this, SWT.NONE);
             bar.setLayoutData(new GridData());
