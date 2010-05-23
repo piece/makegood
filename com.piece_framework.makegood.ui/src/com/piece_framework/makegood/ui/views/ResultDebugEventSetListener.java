@@ -195,10 +195,10 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
                 progress.initialize(testSuite);
             }
         }
-    
+
         @Override
         public void endTestSuite() {}
-    
+
         @Override
         public void startTestCase(TestCaseResult testCase) {
             currentTestCase = testCase;
@@ -215,14 +215,14 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
             };
             job.schedule();
         }
-    
+
         @Override
         public void endTestCase() {
             if (!progress.isInitialized()) return;
-    
+
             progress.endTestCase();
             currentTestCase.setTime(progress.getProcessTimeForTestCase());
-    
+
             Job job = new UIJob("MakeGood Refresh Result View") { //$NON-NLS-1$
                 @Override
                 public IStatus runInUIThread(IProgressMonitor monitor) {
@@ -240,15 +240,15 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
                 }
             };
             job.schedule();
-    
+
             progress.startTestCase();   // The method startTestCase() isn't invoked when a test runs.
         }
-    
+
         @Override
         public void startFailure(TestCaseResult failure) {
             currentTestCase = failure;
         }
-    
+
         @Override
         public void endFailure() {}
     }
