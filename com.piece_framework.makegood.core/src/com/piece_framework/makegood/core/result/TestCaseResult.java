@@ -27,7 +27,7 @@ public class TestCaseResult extends Result {
         super(name);
     }
 
-    String getClassName() {
+    public String getClassName() {
         return className;
     }
 

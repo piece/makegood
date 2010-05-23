@@ -423,6 +423,14 @@ public class ResultView extends ViewPart {
         runAllTestsAction.setEnabled(ActivePart.getInstance().isAllTestsRunnable());
     }
 
+    void printCurrentlyRunningTest(TestCaseResult currentTestCase) {
+        setContentDescription(
+            currentTestCase.getClassName() +
+            " - " + //$NON-NLS-1$
+            currentTestCase.getName()
+        );
+    }
+
     private void initializeActions(IViewSite site) {
         IToolBarManager manager = site.getActionBars().getToolBarManager();
 

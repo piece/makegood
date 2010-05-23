@@ -202,6 +202,18 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
         @Override
         public void startTestCase(TestCaseResult testCase) {
             currentTestCase = testCase;
+
+            Job job = new UIJob("MakeGood Refresh Result View for Starting a Test Case") { //$NON-NLS-1$
+                @Override
+                public IStatus runInUIThread(IProgressMonitor monitor) {
+                    ResultView resultView = (ResultView) ViewShow.find(ResultView.ID);
+                    if (resultView == null) return Status.CANCEL_STATUS;
+
+                    resultView.printCurrentlyRunningTest(currentTestCase);
+                    return Status.OK_STATUS;
+                }
+            };
+            job.schedule();
         }
     
         @Override
