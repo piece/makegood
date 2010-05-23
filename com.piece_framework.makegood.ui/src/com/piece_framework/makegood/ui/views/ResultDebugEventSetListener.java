@@ -37,7 +37,6 @@ import com.piece_framework.makegood.core.result.JUnitXMLReaderListener;
 import com.piece_framework.makegood.core.result.TestCaseResult;
 import com.piece_framework.makegood.core.result.TestSuiteResult;
 import com.piece_framework.makegood.launch.MakeGoodLaunchConfigurationDelegate;
-import com.piece_framework.makegood.launch.RuntimeConfiguration;
 import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.actions.StopTestAction;
 import com.piece_framework.makegood.ui.ide.ViewShow;
