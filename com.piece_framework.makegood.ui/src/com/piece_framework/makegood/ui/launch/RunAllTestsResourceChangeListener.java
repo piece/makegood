@@ -25,7 +25,7 @@ import org.eclipse.ui.progress.UIJob;
 
 import com.piece_framework.makegood.launch.RuntimeConfiguration;
 
-public class RunAllTestsForResources implements IResourceChangeListener {
+public class RunAllTestsResourceChangeListener implements IResourceChangeListener {
     @Override
     public void resourceChanged(IResourceChangeEvent event) {
         if (!RuntimeConfiguration.getInstance().runsAllTestsWhenFileIsSaved) return;
