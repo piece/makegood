@@ -24,6 +24,7 @@ import org.eclipse.php.internal.debug.ui.PHPDebugPerspectiveFactory;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.console.IConsoleConstants;
 
 import com.piece_framework.makegood.core.MakeGoodProperty;
 import com.piece_framework.makegood.ui.views.ResultView;
@@ -46,6 +47,8 @@ public class ActivePart {
         String id = part.getSite().getId();
         if (ResultView.ID.equals(id)) return;
         if (PHPDebugPerspectiveFactory.ID_PHPDebugOutput.equals(id)) return;
+        if (PHPDebugPerspectiveFactory.ID_PHPBrowserOutput.equals(id)) return;
+        if (IConsoleConstants.ID_CONSOLE_VIEW.equals(id)) return;
 
         if (part instanceof IEditorPart) {
             lastTarget = part;
