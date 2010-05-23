@@ -17,6 +17,7 @@ import java.util.regex.Pattern;
 
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.action.ActionContributionItem;
@@ -280,7 +281,13 @@ public class ResultView extends ViewPart {
     public void updateStateOfRunAllTestsAction() {
         if (!actionsInitialized) return;
         if (MakeGoodLaunchConfigurationDelegate.hasActiveMakeGoodLaunches()) return;
+
         runAllTestsAction.setEnabled(ActivePart.getInstance().isAllTestsRunnable());
+
+        IProject activeProject = ActivePart.getInstance().getProject();
+        if (activeProject != null) {
+            setContentDescription(activeProject.getName());
+        }
     }
 
     private GridData createHorizontalFillGridData() {

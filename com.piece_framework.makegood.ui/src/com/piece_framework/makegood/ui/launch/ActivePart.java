@@ -12,6 +12,7 @@
 
 package com.piece_framework.makegood.ui.launch;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ISourceModule;
@@ -106,5 +107,14 @@ public class ActivePart {
         }
 
         return null;
+    }
+
+    public IProject getProject() {
+        if (lastTarget == null) return null;
+
+        IResource resource = getResource(lastTarget);
+        if (resource == null) return null;
+
+        return resource.getProject();
     }
 }
