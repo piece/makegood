@@ -64,7 +64,14 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
         if (ILaunchManager.DEBUG_MODE.equals(mode)) {
             switchToPHPDebugPerspective(configuration);
         }
-        super.launch(configuration, mode, launch, monitor);
+
+        try {
+            super.launch(configuration, mode, launch, monitor);
+        } catch (CoreException e) {
+            throw e;
+        } finally {
+            originalConfiguration.delete();
+        }
     }
 
     public static boolean hasActiveMakeGoodLaunches() {
@@ -125,8 +132,6 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
         if (project != null && project.exists()) {
             workingCopy.setAttribute(IPHPDebugConstants.PHP_Project, project.getName());
         }
-
-        configuration.delete();
 
         return workingCopy;
     }
