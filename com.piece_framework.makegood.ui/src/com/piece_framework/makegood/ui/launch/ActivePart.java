@@ -20,7 +20,7 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.php.internal.debug.core.launching.PHPLaunchUtilities;
+import org.eclipse.php.internal.debug.ui.PHPDebugPerspectiveFactory;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.IWorkbenchPart;
@@ -45,7 +45,7 @@ public class ActivePart {
     public void setPart(IWorkbenchPart part) {
         String id = part.getSite().getId();
         if (ResultView.ID.equals(id)) return;
-        if (PHPLaunchUtilities.ID_PHPDebugOutput.equals(id)) return;
+        if (PHPDebugPerspectiveFactory.ID_PHPDebugOutput.equals(id)) return;
 
         if (part instanceof IEditorPart) {
             lastTarget = part;
