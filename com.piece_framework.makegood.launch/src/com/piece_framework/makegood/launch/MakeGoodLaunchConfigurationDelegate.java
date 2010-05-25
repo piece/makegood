@@ -17,6 +17,8 @@ import java.io.File;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -39,6 +41,7 @@ import com.piece_framework.makegood.stagehand_testrunner.StagehandTestRunner;
 public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy {
     private static final String MAKEGOOD_JUNIT_XML_FILE = "MAKEGOOD_JUNIT_XML_FILE"; //$NON-NLS-1$
     private static final String MAKEGOOD_LAUNCH_MARKER = "MAKEGOOD_LAUNCH_MARKER"; //$NON-NLS-1$
+    private Boolean isLocked = false;
 
     @Override
     public boolean buildForLaunch(ILaunchConfiguration configuration, String mode, IProgressMonitor monitor) throws CoreException {
@@ -57,21 +60,69 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
         ILaunch originalLaunch,
         IProgressMonitor monitor
     ) throws CoreException {
-        JUnitXMLRegistry.create();
-        ILaunchConfiguration configuration =
-            createConfiguration(originalConfiguration);
-        ILaunch launch = createLaunch(originalLaunch, configuration);
+        synchronized (isLocked) {
+            if (isLocked) {
+                originalConfiguration.delete();
+                monitor.setCanceled(true);
+                monitor.done();
+                return;
+            }
+        }
+
+        isLocked = true;
+
+        try {
+            JUnitXMLRegistry.create();
+        } catch (SecurityException e) {
+            isLocked = false;
+            originalConfiguration.delete();
+            monitor.setCanceled(true);
+            monitor.done();
+            throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
+        }
+
+        ILaunchConfiguration configuration = null;
+        try {
+            configuration = createConfiguration(originalConfiguration);
+        } catch (CoreException e) {
+            isLocked = false;
+            originalConfiguration.delete();
+            monitor.setCanceled(true);
+            monitor.done();
+            throw e;
+        }
+
+        ILaunch launch = null;
+        try {
+            launch = createLaunch(originalLaunch, configuration);
+        } catch (CoreException e) {
+            isLocked = false;
+            monitor.setCanceled(true);
+            monitor.done();
+            throw e;
+        }
+
         if (ILaunchManager.DEBUG_MODE.equals(mode)) {
-            switchToPHPDebugPerspective(configuration);
+            try {
+                switchToPHPDebugPerspective(configuration);
+            } catch (CoreException e) {
+                isLocked = false;
+                monitor.setCanceled(true);
+                monitor.done();
+                throw e;
+            }
         }
 
         try {
             super.launch(configuration, mode, launch, monitor);
         } catch (CoreException e) {
+            isLocked = false;
+            monitor.setCanceled(true);
+            monitor.done();
             throw e;
-        } finally {
-            originalConfiguration.delete();
         }
+
+        isLocked = false;
     }
 
     public static boolean hasActiveMakeGoodLaunches() {
@@ -132,6 +183,8 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
         if (project != null && project.exists()) {
             workingCopy.setAttribute(IPHPDebugConstants.PHP_Project, project.getName());
         }
+
+        configuration.delete();
 
         return workingCopy;
     }
