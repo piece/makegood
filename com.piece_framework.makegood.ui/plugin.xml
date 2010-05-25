@@ -240,6 +240,7 @@
       </command>
       <command
             categoryId="com.piece_framework.makegood.ui.commands.resultViewCategory"
+            defaultHandler="com.piece_framework.makegood.ui.handlers.DebugTest"
             id="com.piece_framework.makegood.ui.commands.debugTest"
             name="%commands.debugTest.name">
       </command>
@@ -367,6 +368,12 @@
             contextId="org.eclipse.ui.contexts.window"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="M3+M S">
+      </key>
+      <key
+            commandId="com.piece_framework.makegood.ui.commands.debugTest"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M3+M B">
       </key>
    </extension>
    <extension
