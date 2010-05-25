@@ -49,8 +49,42 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
     }
 
     @Override
+    public boolean finalLaunchCheck(ILaunchConfiguration configuration, String mode, IProgressMonitor monitor) throws CoreException {
+        boolean result;
+        try {
+            result = super.finalLaunchCheck(configuration, mode, monitor);
+        } catch (CoreException e) {
+            configuration.delete();
+            throw e;
+        }
+
+        if (!result) {
+            configuration.delete();
+        }
+
+        return result;
+    }
+
+	@Override
     public ILaunch getLaunch(ILaunchConfiguration configuration, String mode) throws CoreException {
         return new PHPLaunch(configuration, mode, null);
+    }
+
+    @Override
+    public boolean preLaunchCheck(ILaunchConfiguration configuration, String mode, IProgressMonitor monitor) throws CoreException {
+        boolean result;
+        try {
+            result = super.preLaunchCheck(configuration, mode, monitor);
+        } catch (CoreException e) {
+            configuration.delete();
+            throw e;
+        }
+
+        if (!result) {
+            configuration.delete();
+        }
+
+        return result;
     }
 
     @Override
