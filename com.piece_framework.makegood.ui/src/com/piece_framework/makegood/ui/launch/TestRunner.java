@@ -82,7 +82,10 @@ public class TestRunner {
         }
 
         if (MakeGoodLaunchConfigurationDelegate.hasActiveMakeGoodLaunches()) {
-            raiseTestSessionAlreadyExistsError();
+            if (!isRunWhenFileIsSaved) {
+                raiseTestSessionAlreadyExistsError();
+            }
+
             return;
         }
 
