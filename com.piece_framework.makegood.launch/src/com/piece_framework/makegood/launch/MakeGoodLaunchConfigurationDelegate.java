@@ -98,7 +98,6 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
             if (isLocked) {
                 originalConfiguration.delete();
                 monitor.setCanceled(true);
-                monitor.done();
                 return;
             }
         }
@@ -111,7 +110,6 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
             isLocked = false;
             originalConfiguration.delete();
             monitor.setCanceled(true);
-            monitor.done();
             throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
         }
 
@@ -122,7 +120,6 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
             isLocked = false;
             originalConfiguration.delete();
             monitor.setCanceled(true);
-            monitor.done();
             throw e;
         }
 
@@ -132,7 +129,6 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
         } catch (CoreException e) {
             isLocked = false;
             monitor.setCanceled(true);
-            monitor.done();
             throw e;
         }
 
@@ -142,7 +138,6 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
             } catch (CoreException e) {
                 isLocked = false;
                 monitor.setCanceled(true);
-                monitor.done();
                 throw e;
             }
         }
@@ -152,7 +147,6 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
         } catch (CoreException e) {
             isLocked = false;
             monitor.setCanceled(true);
-            monitor.done();
             throw e;
         }
 
