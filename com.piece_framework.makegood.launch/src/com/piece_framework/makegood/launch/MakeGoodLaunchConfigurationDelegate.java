@@ -50,6 +50,13 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
 
     @Override
     public boolean finalLaunchCheck(ILaunchConfiguration configuration, String mode, IProgressMonitor monitor) throws CoreException {
+        synchronized (isLocked) {
+            if (isLocked) {
+                configuration.delete();
+                return false;
+            }
+        }
+
         boolean result;
         try {
             result = super.finalLaunchCheck(configuration, mode, monitor);
@@ -72,6 +79,13 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
 
     @Override
     public boolean preLaunchCheck(ILaunchConfiguration configuration, String mode, IProgressMonitor monitor) throws CoreException {
+        synchronized (isLocked) {
+            if (isLocked) {
+                configuration.delete();
+                return false;
+            }
+        }
+
         boolean result;
         try {
             result = super.preLaunchCheck(configuration, mode, monitor);
