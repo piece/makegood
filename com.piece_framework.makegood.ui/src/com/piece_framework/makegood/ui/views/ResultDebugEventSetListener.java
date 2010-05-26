@@ -179,7 +179,7 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
                     return Status.OK_STATUS;
                 }
 
-                if (lastActivePart != null) {
+                if (lastActivePart != null && !progress.hasFailures()) {
                     ViewShow.setFocus(lastActivePart);
                 }
 
