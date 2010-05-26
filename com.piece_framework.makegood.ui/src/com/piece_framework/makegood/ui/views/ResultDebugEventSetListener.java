@@ -203,6 +203,7 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
         @Override
         public void startTestCase(TestCaseResult testCase) {
             currentTestCase = testCase;
+            progress.startTestCase();
 
             Job job = new UIJob("MakeGood Test Case Start") { //$NON-NLS-1$
                 @Override
@@ -246,8 +247,6 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
                 }
             };
             job.schedule();
-
-            progress.startTestCase();   // The method startTestCase() isn't invoked when a test runs.
         }
 
         @Override
