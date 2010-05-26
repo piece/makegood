@@ -206,8 +206,13 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
             Job job = new UIJob("MakeGood Test Case Start") { //$NON-NLS-1$
                 @Override
                 public IStatus runInUIThread(IProgressMonitor monitor) {
+                    IWorkbenchPart lastActivePart = ViewShow.getActivePart();
                     ResultView resultView = (ResultView) ViewShow.find(ResultView.ID);
                     if (resultView == null) return Status.CANCEL_STATUS;
+
+                    if (lastActivePart != null) {
+                        ViewShow.setFocus(lastActivePart);
+                    }
 
                     resultView.printCurrentlyRunningTest(currentTestCase);
                     return Status.OK_STATUS;
