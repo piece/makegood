@@ -176,6 +176,7 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
 
                 if (hasErrors == true) {
                     ViewShow.show(IConsoleConstants.ID_CONSOLE_VIEW);
+                    return Status.OK_STATUS;
                 }
 
                 if (lastActivePart != null) {
