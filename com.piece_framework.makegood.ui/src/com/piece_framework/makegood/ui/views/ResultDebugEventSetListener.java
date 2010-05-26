@@ -104,7 +104,7 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
         };
         parserThread.start();
 
-        Job job = new UIJob("MakeGood Reset Result View") { //$NON-NLS-1$
+        Job job = new UIJob("MakeGood Test Start") { //$NON-NLS-1$
             @Override
             public IStatus runInUIThread(IProgressMonitor monitor) {
                 ResultView resultView = null;
@@ -164,7 +164,7 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
             Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
         }
 
-        Job job = new UIJob("MakeGood Show View") { //$NON-NLS-1$
+        Job job = new UIJob("MakeGood Test End") { //$NON-NLS-1$
             @Override
             public IStatus runInUIThread(IProgressMonitor monitor) {
                 IWorkbenchPart lastActivePart = ViewShow.getActivePart();
@@ -203,7 +203,7 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
         public void startTestCase(TestCaseResult testCase) {
             currentTestCase = testCase;
 
-            Job job = new UIJob("MakeGood Refresh Result View for Starting a Test Case") { //$NON-NLS-1$
+            Job job = new UIJob("MakeGood Test Case Start") { //$NON-NLS-1$
                 @Override
                 public IStatus runInUIThread(IProgressMonitor monitor) {
                     ResultView resultView = (ResultView) ViewShow.find(ResultView.ID);
@@ -223,7 +223,7 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
             progress.endTestCase();
             currentTestCase.setTime(progress.getProcessTimeForTestCase());
 
-            Job job = new UIJob("MakeGood Refresh Result View") { //$NON-NLS-1$
+            Job job = new UIJob("MakeGood Test Case End") { //$NON-NLS-1$
                 @Override
                 public IStatus runInUIThread(IProgressMonitor monitor) {
                     IWorkbenchPart lastActivePart = ViewShow.getActivePart();
