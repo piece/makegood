@@ -22,6 +22,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.core.ILaunchConfigurationListener;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.model.IProcess;
@@ -240,6 +241,10 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
                 originalLaunch.getLaunchMode(),
                 createSourceLocator(configuration, originalLaunch.getLaunchMode())
             );
+
+        // TODO A workaround to avoid raising a java.lang.ClassCastException: com.piece_framework.makegood.launch.MakeGoodLaunchConfigurationWorkingCopy cannot be cast to org.eclipse.debug.internal.core.LaunchConfiguration.
+        DebugPlugin.getDefault().getLaunchManager().removeLaunchConfigurationListener((ILaunchConfigurationListener) launch);
+
         launch.setAttribute(
             DebugPlugin.ATTR_CAPTURE_OUTPUT,
             originalLaunch.getAttribute(DebugPlugin.ATTR_CAPTURE_OUTPUT)
