@@ -48,11 +48,6 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
     private boolean preLaunchCheckCalled = false;
 
     @Override
-    public boolean buildForLaunch(ILaunchConfiguration configuration, String mode, IProgressMonitor monitor) throws CoreException {
-        return false;
-    }
-
-    @Override
     public boolean finalLaunchCheck(ILaunchConfiguration configuration, String mode, IProgressMonitor monitor) throws CoreException {
         synchronized (launchLock) {
             if (currentConfiguration != null) {
