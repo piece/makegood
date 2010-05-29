@@ -327,7 +327,7 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
         PHPSourceLookupDirector sourceLocator = null;
         if (ILaunchManager.DEBUG_MODE.equals(launchMode)) {
             sourceLocator = new PHPSourceLookupDirector();
-            sourceLocator.initializeParticipants();
+            sourceLocator.initializeDefaults(configuration);
             sourceLocator.setSourceContainers(
                 new PHPSourcePathComputerDelegate().computeSourceContainers(
                     configuration, null
