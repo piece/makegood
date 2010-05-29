@@ -233,7 +233,7 @@
             name="%commands.showFailuresOnly.name">
       </command>
       <command
-            categoryId="com.piece_framework.makegood.ui.commands.resultViewCategory"
+            categoryId="com.piece_framework.makegood.ui.commands.runTestCategory"
             defaultHandler="com.piece_framework.makegood.ui.handlers.StopOnFailure"
             id="com.piece_framework.makegood.ui.commands.stopOnFailure"
             name="%commands.stopOnFailure.name">
