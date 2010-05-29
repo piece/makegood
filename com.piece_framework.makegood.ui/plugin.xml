@@ -245,7 +245,7 @@
             name="%commands.debugTest.name">
       </command>
       <command
-            categoryId="com.piece_framework.makegood.ui.commands.resultViewCategory"
+            categoryId="com.piece_framework.makegood.ui.commands.runTestCategory"
             defaultHandler="com.piece_framework.makegood.ui.handlers.RunAllTestsWhenFileIsSaved"
             id="com.piece_framework.makegood.ui.commands.runAllTestsWhenFileIsSaved"
             name="%commands.runAllTestsWhenFileIsSaved.name">
