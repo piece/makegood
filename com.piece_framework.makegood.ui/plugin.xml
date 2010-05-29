@@ -307,7 +307,7 @@
             commandId="com.piece_framework.makegood.ui.commands.showFailuresOnly"
             contextId="com.piece_framework.makegood.ui.contexts.resultView"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="M1+F">
+            sequence="F">
       </key>
       <key
             commandId="com.piece_framework.makegood.ui.commands.rerunTest"
