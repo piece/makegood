@@ -257,7 +257,7 @@
             name="%commands.stopTest.name">
       </command>
       <command
-            categoryId="com.piece_framework.makegood.ui.commands.resultViewCategory"
+            categoryId="com.piece_framework.makegood.ui.commands.runTestCategory"
             defaultHandler="com.piece_framework.makegood.ui.handlers.RerunTest"
             id="com.piece_framework.makegood.ui.commands.rerunTest"
             name="%commands.rerunTest.name">
