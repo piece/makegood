@@ -251,7 +251,7 @@
             name="%commands.runAllTestsWhenFileIsSaved.name">
       </command>
       <command
-            categoryId="com.piece_framework.makegood.ui.commands.resultViewCategory"
+            categoryId="com.piece_framework.makegood.ui.commands.runTestCategory"
             defaultHandler="com.piece_framework.makegood.ui.handlers.StopTest"
             id="com.piece_framework.makegood.ui.commands.stopTest"
             name="%commands.stopTest.name">
