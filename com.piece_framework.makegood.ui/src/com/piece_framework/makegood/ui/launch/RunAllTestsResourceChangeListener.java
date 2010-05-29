@@ -29,10 +29,11 @@ public class RunAllTestsResourceChangeListener implements IResourceChangeListene
     @Override
     public void resourceChanged(IResourceChangeEvent event) {
         if (!RuntimeConfiguration.getInstance().runsAllTestsWhenFileIsSaved) return;
-        IResourceDelta[] children = event.getDelta().getAffectedChildren();
-        if (children.length == 0) return;
+        IResourceDelta[] deltas = event.getDelta().getAffectedChildren();
+        if (deltas.length == 0) return;
+        if (!shouldRunAllTests(deltas)) return;
 
-        final ISelection selection = new StructuredSelection(children[0].getResource());
+        final ISelection selection = new StructuredSelection(deltas[0].getResource());
         Job job = new UIJob("MakeGood Run All Tests For Resources") { //$NON-NLS-1$
             @Override
             public IStatus runInUIThread(IProgressMonitor monitor) {
@@ -44,5 +45,21 @@ public class RunAllTestsResourceChangeListener implements IResourceChangeListene
             }
         };
         job.schedule();
+    }
+
+    private boolean shouldRunAllTests(IResourceDelta[] deltas) {
+        for (IResourceDelta delta: deltas) {
+            if (delta.getKind() != IResourceDelta.CHANGED) return true;
+
+            int flags = delta.getFlags();
+            if ((flags & IResourceDelta.CONTENT) != 0) return true;
+            if ((flags & IResourceDelta.REPLACED) != 0) return true;
+            if ((flags & IResourceDelta.TYPE) != 0) return true;
+            if ((flags & IResourceDelta.LOCAL_CHANGED) != 0) return true;
+
+            return shouldRunAllTests(delta.getAffectedChildren());
+        }
+
+        return false;
     }
 }
