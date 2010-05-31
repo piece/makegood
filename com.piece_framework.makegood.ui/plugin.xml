@@ -384,7 +384,7 @@
          <action
                class="com.piece_framework.makegood.ui.actions.ShowFailuresOnlyAction"
                definitionId="com.piece_framework.makegood.ui.commands.showFailuresOnly"
-               icon="icons/filter-by-failures.gif"
+               icon="icons/showFailuresOnly.gif"
                id="com.piece_framework.makegood.ui.viewActions.resultView.showFailuresOnly"
                label="%resultView.showFailuresOnly.label"
                style="toggle"
@@ -394,7 +394,7 @@
          <action
                class="com.piece_framework.makegood.ui.actions.PreviousFailedTestAction"
                definitionId="com.piece_framework.makegood.ui.commands.previousFailedTest"
-               icon="icons/up-arrow.gif"
+               icon="icons/previousFailedTest.gif"
                id="com.piece_framework.makegood.ui.viewActions.resultView.previousFailedTest"
                label="%resultView.previousFailedTest.label"
                style="push"
@@ -404,7 +404,7 @@
          <action
                class="com.piece_framework.makegood.ui.actions.NextFailedTestAction"
                definitionId="com.piece_framework.makegood.ui.commands.nextFailedTest"
-               icon="icons/down-arrow.gif"
+               icon="icons/nextFailedTest.gif"
                id="com.piece_framework.makegood.ui.viewActions.resultView.nextFailedTest"
                label="%resultView.nextFailedTest.label"
                style="push"
@@ -414,7 +414,7 @@
          <action
                class="com.piece_framework.makegood.ui.actions.StopOnFailureAction"
                definitionId="com.piece_framework.makegood.ui.commands.stopOnFailure"
-               icon="icons/stop-on-failure.gif"
+               icon="icons/stopOnFailure.gif"
                id="com.piece_framework.makegood.ui.viewActions.resultView.stopOnFailure"
                label="%resultView.stopOnFailure.label"
                style="toggle"
@@ -424,7 +424,7 @@
          <action
                class="com.piece_framework.makegood.ui.actions.DebugTestAction"
                definitionId="com.piece_framework.makegood.ui.commands.debugTest"
-               icon="icons/debug.gif"
+               icon="icons/debugTest.gif"
                id="com.piece_framework.makegood.ui.viewActions.resultView.debugTest"
                label="%resultView.debugTest.label"
                style="toggle"
@@ -434,7 +434,7 @@
          <action
                class="com.piece_framework.makegood.ui.actions.RunAllTestsWhenFileIsSavedAction"
                definitionId="com.piece_framework.makegood.ui.commands.runAllTestsWhenFileIsSaved"
-               icon="icons/run-all-automatically.gif"
+               icon="icons/runAllTestsWhenFileIsSaved.gif"
                id="com.piece_framework.makegood.ui.viewActions.resultView.runAllTestsWhenFileIsSaved"
                label="%resultView.runAllTestsWhenFileIsSaved.label"
                style="toggle"
@@ -444,7 +444,7 @@
          <action
                class="com.piece_framework.makegood.ui.actions.StopTestAction"
                definitionId="com.piece_framework.makegood.ui.commands.stopTest"
-               icon="icons/stop.gif"
+               icon="icons/stopTest.gif"
                id="com.piece_framework.makegood.ui.viewActions.resultView.stopTest"
                label="%resultView.stopTest.label"
                style="push"
@@ -454,7 +454,7 @@
          <action
                class="com.piece_framework.makegood.ui.actions.RerunTestAction"
                definitionId="com.piece_framework.makegood.ui.commands.rerunTest"
-               icon="icons/rerun.gif"
+               icon="icons/rerunTest.gif"
                id="com.piece_framework.makegood.ui.viewActions.resultView.rerunTest"
                label="%resultView.rerunTest.label"
                style="push"
@@ -464,7 +464,7 @@
          <action
                class="com.piece_framework.makegood.ui.actions.RunAllTestsAction"
                definitionId="com.piece_framework.makegood.ui.commands.runAllTests"
-               icon="icons/run-all.gif"
+               icon="icons/runAllTests.gif"
                id="com.piece_framework.makegood.ui.viewActions.resultView.runAllTests"
                label="%resultView.runAllTests.label"
                style="push"
