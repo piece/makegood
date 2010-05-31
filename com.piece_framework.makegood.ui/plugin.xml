@@ -424,7 +424,7 @@
          <action
                class="com.piece_framework.makegood.ui.actions.DebugTestAction"
                definitionId="com.piece_framework.makegood.ui.commands.debugTest"
-               icon="icons/stop-on-failure.gif"
+               icon="icons/debug.gif"
                id="com.piece_framework.makegood.ui.viewActions.resultView.debugTest"
                label="%resultView.debugTest.label"
                style="toggle"
