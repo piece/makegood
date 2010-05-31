@@ -31,7 +31,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2009-2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.11.1
+ * @version    Release: 2.11.2
  * @since      File available since Release 2.10.0
  */
 
@@ -43,7 +43,7 @@ if (!@include_once 'simpletest/unit_tester.php') {
  * @package    Stagehand_TestRunner
  * @copyright  2009-2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.11.1
+ * @version    Release: 2.11.2
  * @since      Class available since Release 2.10.0
  */
 class Stagehand_TestRunner_SimpleTestMultipleClassesTest {}
@@ -54,7 +54,7 @@ class Stagehand_TestRunner_SimpleTestMultipleClassesTest {}
  * @package    Stagehand_TestRunner
  * @copyright  2009-2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.11.1
+ * @version    Release: 2.11.2
  * @since      Class available since Release 2.10.0
  */
 class Stagehand_TestRunner_SimpleTestMultipleClasses1Test extends UnitTestCase
@@ -76,7 +76,7 @@ class Stagehand_TestRunner_SimpleTestMultipleClasses1Test extends UnitTestCase
  * @package    Stagehand_TestRunner
  * @copyright  2009-2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.11.1
+ * @version    Release: 2.11.2
  * @since      Class available since Release 2.10.0
  */
 class Stagehand_TestRunner_SimpleTestMultipleClasses2Test extends UnitTestCase

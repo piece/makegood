@@ -4,7 +4,7 @@
 /**
  * PHP version 5
  *
- * Copyright (c) 2007-2010 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2010 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,73 +29,81 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_TestRunner
- * @copyright  2007-2010 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
  * @version    Release: 2.11.2
- * @link       http://www.phpunit.de/
- * @since      File available since Release 2.1.0
+ * @since      File available since Release 2.11.2
  */
 
 /**
- * A test collector for PHPUnit.
- *
  * @package    Stagehand_TestRunner
- * @copyright  2007-2010 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
  * @version    Release: 2.11.2
- * @link       http://www.phpunit.de/
- * @since      Class available since Release 2.1.0
+ * @since      Class available since Release 2.11.2
  */
-class Stagehand_TestRunner_Collector_PHPUnitCollector extends Stagehand_TestRunner_Collector
+class Stagehand_TestRunner_JUnitXMLWriter_XMLStreamWriter
 {
-    protected $exclude = '^PHPUnit';
-    protected $baseClass = 'PHPUnit_Framework_TestCase';
-    protected $suffix = 'Test(?:Case)?';
-    protected $include = 'Test(?:Case)?$';
+    protected $buffer;
+    protected $elements = array();
+    protected $isStartTagClosed = true;
 
-    /**
-     * @param string $testCase
-     * @since Method available since Release 2.11.0
-     */
-    public function collectTestCase($testCase)
+    public function __construct()
     {
-        if ($this->config->testsOnlySpecified()) {
-            $this->addTestCaseOnlySpecified($testCase);
-            return;
-        }
-
-        $this->suite->addTestSuite($testCase);
+        $this->buffer = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
     }
 
-    /**
-     * Creates the test suite object.
-     *
-     * @param string $name
-     * @return PHPUnit_Framework_TestSuite
-     */
-    protected function createTestSuite($name)
+    public function startElement($element)
     {
-        return new PHPUnit_Framework_TestSuite($name);
+        if (!$this->isStartTagClosed) {
+            $this->closeStartTag();
+        }
+
+        $this->elements[] = $element;
+        $this->buffer .= '<' . $element;
+        $this->isStartTagClosed = false;
     }
 
-    /**
-     * @param string $testCase
-     * @since Method available since Release 2.10.0
-     */
-    protected function addTestCaseOnlySpecified($testCase)
+    public function endElement()
     {
-        $test = new ReflectionClass($testCase);
-        if ($test->isAbstract()) {
-            return;
+        if (!$this->isStartTagClosed) {
+            $this->closeStartTag();
         }
 
-        if ($this->config->testsOnlySpecifiedMethods) {
-            $this->suite->addTestSuite(new Stagehand_TestRunner_Collector_PHPUnitCollector_MethodFilterTestSuite($test, $this->config));
-        } elseif ($this->config->testsOnlySpecifiedClasses) {
-            if ($this->config->inClassesToBeTested($test->getName())) {
-                $this->suite->addTestSuite($test);
-            }
+        $currentElement = array_pop($this->elements);
+        $this->buffer .= '</' . $currentElement . '>';
+    }
+
+    public function writeAttribute($attribute, $value)
+    {
+        $this->buffer .=
+            ' ' .
+            $attribute .
+            '="' .
+            htmlspecialchars($value, ENT_QUOTES, 'UTF-8') .
+            '"';
+    }
+
+    public function text($text)
+    {
+        if (!$this->isStartTagClosed) {
+            $this->closeStartTag();
         }
+
+        $this->buffer .= htmlspecialchars($text, ENT_QUOTES, 'UTF-8');
+    }
+
+    public function closeStartTag()
+    {
+        $this->buffer .= '>';
+        $this->isStartTagClosed = true;
+    }
+
+    public function flush()
+    {
+        $buffer = $this->buffer;
+        $this->buffer = '';
+        return $buffer;
     }
 }
 

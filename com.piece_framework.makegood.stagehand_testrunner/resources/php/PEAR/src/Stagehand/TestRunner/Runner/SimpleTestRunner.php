@@ -35,7 +35,7 @@
  * @copyright  2007-2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @copyright  2010 KUMAKURA Yousuke <kumatch@gmail.com>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.11.1
+ * @version    Release: 2.11.2
  * @link       http://simpletest.org/
  * @since      File available since Release 2.1.0
  */
@@ -50,23 +50,13 @@ require_once 'simpletest/reporter.php';
  * @copyright  2007-2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @copyright  2010 KUMAKURA Yousuke <kumatch@gmail.com>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.11.1
+ * @version    Release: 2.11.2
  * @link       http://simpletest.org/
  * @since      Class available since Release 2.1.0
  */
 class Stagehand_TestRunner_Runner_SimpleTestRunner extends Stagehand_TestRunner_Runner
 {
     protected $junitXMLFileHandle;
-
-    /**
-     * @since Method available since Release 2.10.0
-     */
-    public function __destruct()
-    {
-        if (is_resource($this->junitXMLFileHandle)) {
-            fclose($this->junitXMLFileHandle);
-        }
-    }
 
     /**
      * Runs tests based on the given TestSuite object.
@@ -101,6 +91,12 @@ class Stagehand_TestRunner_Runner_SimpleTestRunner extends Stagehand_TestRunner_
         $suite->run($reporter);
         $output = ob_get_contents();
         ob_end_clean();
+
+        if ($this->config->logsResultsInJUnitXML) {
+            if (is_resource($this->junitXMLFileHandle)) {
+                fclose($this->junitXMLFileHandle);
+            }
+        }
 
         if ($this->config->usesGrowl) {
             if (preg_match('/^(OK.+)/ms', $output, $matches)) {

@@ -33,7 +33,7 @@
  * @copyright  2010 KUMAKURA Yousuke <kumatch@gmail.com>
  * @copyright  2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.11.1
+ * @version    Release: 2.11.2
  * @since      File available since Release 2.11.0
  */
 
@@ -48,7 +48,7 @@ if (!@include_once 'simpletest/unit_tester.php') {
  * @copyright  2010 KUMAKURA Yousuke <kumatch@gmail.com>
  * @copyright  2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.11.1
+ * @version    Release: 2.11.2
  * @since      Class available since Release 2.11.0
  */
 class Stagehand_TestRunner_SimpleTestErrorAndPassTest extends UnitTestCase

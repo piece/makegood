@@ -31,7 +31,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2008-2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.11.1
+ * @version    Release: 2.11.2
  * @link       http://www.phpunit.de/
  * @since      File available since Release 1.2.0
  */
@@ -47,7 +47,7 @@ require_once 'PHPUnit/Framework/TestSuite.php';
  * @package    Stagehand_TestRunner
  * @copyright  2008-2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.11.1
+ * @version    Release: 2.11.2
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 1.2.0
  */

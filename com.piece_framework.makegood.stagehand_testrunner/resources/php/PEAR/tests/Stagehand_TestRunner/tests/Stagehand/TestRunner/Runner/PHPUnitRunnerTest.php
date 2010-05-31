@@ -31,7 +31,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2009-2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.11.1
+ * @version    Release: 2.11.2
  * @since      File available since Release 2.10.0
  */
 
@@ -39,7 +39,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2009-2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.11.1
+ * @version    Release: 2.11.2
  * @since      Class available since Release 2.10.0
  */
 class Stagehand_TestRunner_Runner_PHPUnitRunnerTest extends Stagehand_TestRunner_Runner_TestCase
@@ -253,6 +253,22 @@ class Stagehand_TestRunner_Runner_PHPUnitRunnerTest extends Stagehand_TestRunner
         $this->collector->collectTestCase('Stagehand_TestRunner_PHPUnitPassTest');
         $this->runTests();
         $this->assertTestCaseCount(5);
+    }
+
+    /**
+     * @test
+     * @since Method available since Release 2.11.2
+     */
+    public function notBreakTestDoxOutputIfTheSameTestMethodNamesExceptTrailingNumbers()
+    {
+        $this->config->addClassToBeTested('Stagehand_TestRunner_PHPUnitMultipleClasses1Test');
+        class_exists('Stagehand_TestRunner_PHPUnitMultipleClassesTest');
+        $this->collector->collectTestCase('Stagehand_TestRunner_PHPUnitMultipleClasses1Test');
+        $this->runTests();
+        $this->assertRegExp(
+            '/^Stagehand_TestRunner_PHPUnitMultipleClasses1\n \[x\] Pass 1\n \[x\] Pass 2$/m',
+            $this->output
+        );
     }
 }
 

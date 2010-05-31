@@ -31,7 +31,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2007-2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.11.1
+ * @version    Release: 2.11.2
  * @link       http://www.phpunit.de/
  * @since      File available since Release 2.1.0
  */
@@ -45,7 +45,7 @@ require_once 'PHPUnit/Util/TestDox/NamePrettifier.php';
  * @package    Stagehand_TestRunner
  * @copyright  2007-2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.11.1
+ * @version    Release: 2.11.2
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.1.0
  */
@@ -131,7 +131,7 @@ class Stagehand_TestRunner_Runner_PHPUnitRunner extends Stagehand_TestRunner_Run
      */
     protected function prettifier()
     {
-        return new PHPUnit_Util_TestDox_NamePrettifier();
+        return new Stagehand_TestRunner_Runner_PHPUnitRunner_TestDox_NamePrettifier();
     }
 
     /**
