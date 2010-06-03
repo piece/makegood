@@ -72,7 +72,9 @@ public class LaunchTarget {
 
     public IResource getMainScriptResource() {
         IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-        return root.findMember(getMainScript());
+        String mainScript = getMainScript();
+        if (mainScript == null) return null;
+        return root.findMember(mainScript);
     }
 
     public String getProgramArguments(String junitXMLFile) {

@@ -46,7 +46,10 @@ public class AllTestsLaunchShortcut extends MakeGoodLaunchShortcut {
         }
 
         LaunchTarget parameter = addTestFolders(resource);
-        ISelection element = new StructuredSelection(parameter.getMainScriptResource());
+        IResource mainScriptResource = parameter.getMainScriptResource();
+        if (mainScriptResource == null) return;
+
+        ISelection element = new StructuredSelection(mainScriptResource);
 
         super.launch(element, mode);
     }

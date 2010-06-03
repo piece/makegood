@@ -12,6 +12,7 @@
 
 package com.piece_framework.makegood.ui.launch;
 
+import org.eclipse.core.resources.IResource;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -30,7 +31,10 @@ public class ResourceLaunchShortcut extends MakeGoodLaunchShortcut {
         parameter.clearTargets();
         parameter.addTarget(target);
 
-        ISelection element = new StructuredSelection(parameter.getMainScriptResource());
+        IResource mainScriptResource = parameter.getMainScriptResource();
+        if (mainScriptResource == null) return;
+
+        ISelection element = new StructuredSelection(mainScriptResource);
         super.launch(element, mode);
     }
 }
