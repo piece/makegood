@@ -30,9 +30,7 @@ public class AllTestsLaunchShortcut extends MakeGoodLaunchShortcut {
 
     @Override
     public void launch(ISelection selection, String mode) {
-        if (!(selection instanceof IStructuredSelection)) {
-            return;
-        }
+        if (!(selection instanceof IStructuredSelection)) return;
 
         Object target = ((IStructuredSelection) selection).getFirstElement();
         IResource resource = null;
@@ -41,24 +39,18 @@ public class AllTestsLaunchShortcut extends MakeGoodLaunchShortcut {
         } else if (target instanceof IResource) {
             resource = (IResource) target;
         }
-        if (resource == null) {
-            return;
-        }
+        if (resource == null) return;
 
-        LaunchTarget parameter = addTestFolders(resource);
-        IResource mainScriptResource = parameter.getMainScriptResource();
+        IResource mainScriptResource = addTestFolders(resource).getMainScriptResource();
         if (mainScriptResource == null) return;
 
-        ISelection element = new StructuredSelection(mainScriptResource);
-
-        super.launch(element, mode);
+        super.launch(new StructuredSelection(mainScriptResource), mode);
     }
 
     @Override
     public void launch(IEditorPart editor, String mode) {
-        if (!(editor.getEditorInput() instanceof IFileEditorInput)) {
-            return;
-        }
+        if (!(editor.getEditorInput() instanceof IFileEditorInput)) return;
+
         IFile target = ((IFileEditorInput) editor.getEditorInput()).getFile();
         if (!PHPResource.isPHPSource(target)) {
             ISelection selection = new StructuredSelection(target);
@@ -73,11 +65,11 @@ public class AllTestsLaunchShortcut extends MakeGoodLaunchShortcut {
 
     private LaunchTarget addTestFolders(IResource resource) {
         MakeGoodProperty property = new MakeGoodProperty(resource);
-        LaunchTarget parameter = LaunchTarget.getInstance();
-        parameter.clearTargets();
+        LaunchTarget launchTarget = LaunchTarget.getInstance();
+        launchTarget.clearTargets();
         for (IFolder testFolder: property.getTestFolders()) {
-            parameter.addTarget(testFolder);
+            launchTarget.addTarget(testFolder);
         }
-        return parameter;
+        return launchTarget;
     }
 }

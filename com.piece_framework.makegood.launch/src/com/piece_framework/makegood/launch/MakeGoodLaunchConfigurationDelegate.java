@@ -15,6 +15,7 @@ package com.piece_framework.makegood.launch;
 import java.io.File;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -246,25 +247,35 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
             String.valueOf(File.separatorChar) +
             configurationName +
             ".xml"; //$NON-NLS-1$
-        LaunchTarget generator = LaunchTarget.getInstance();
 
         ILaunchConfigurationWorkingCopy workingCopy =
             new MakeGoodLaunchConfigurationWorkingCopy(
                 configuration.copy(configurationName)
             );
-        workingCopy.setAttribute(
-            IPHPDebugConstants.ATTR_FILE, generator.getMainScript()
-        );
+
+        LaunchTarget launchTarget = LaunchTarget.getInstance();
+        String mainScript = launchTarget.getMainScript();
+        if (mainScript == null) {
+            throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "The main script is not found.")); //$NON-NLS-1$
+        }
+
+        workingCopy.setAttribute(IPHPDebugConstants.ATTR_FILE, mainScript);
+
         workingCopy.setAttribute(
             IPHPDebugConstants.ATTR_FILE_FULL_PATH, getCommandPath()
         );
         workingCopy.setAttribute(MAKEGOOD_JUNIT_XML_FILE, junitXMLFile);
         workingCopy.setAttribute(
             IDebugParametersKeys.EXE_CONFIG_PROGRAM_ARGUMENTS,
-            generator.getProgramArguments(junitXMLFile)
+            launchTarget.getProgramArguments(junitXMLFile)
         );
 
-        IProject project = generator.getMainScriptResource().getProject();
+        IResource mainScriptResource = launchTarget.getMainScriptResource();
+        IProject project = mainScriptResource.getProject();
+        if (mainScriptResource == null) {
+            throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "The main script resource is not found.")); //$NON-NLS-1$
+        }
+
         if (project != null && project.exists()) {
             workingCopy.setAttribute(IPHPDebugConstants.PHP_Project, project.getName());
         }

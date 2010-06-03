@@ -22,19 +22,16 @@ import com.piece_framework.makegood.launch.LaunchTarget;
 public class ResourceLaunchShortcut extends MakeGoodLaunchShortcut {
     @Override
     public void launch(ISelection selection, String mode) {
-        if (!(selection instanceof IStructuredSelection)) {
-            return;
-        }
+        if (!(selection instanceof IStructuredSelection)) return;
 
         Object target = ((IStructuredSelection) selection).getFirstElement();
-        LaunchTarget parameter = LaunchTarget.getInstance();
-        parameter.clearTargets();
-        parameter.addTarget(target);
+        LaunchTarget launchTarget = LaunchTarget.getInstance();
+        launchTarget.clearTargets();
+        launchTarget.addTarget(target);
 
-        IResource mainScriptResource = parameter.getMainScriptResource();
+        IResource mainScriptResource = launchTarget.getMainScriptResource();
         if (mainScriptResource == null) return;
 
-        ISelection element = new StructuredSelection(mainScriptResource);
-        super.launch(element, mode);
+        super.launch(new StructuredSelection(mainScriptResource), mode);
     }
 }

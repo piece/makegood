@@ -29,18 +29,19 @@ public class RunAllTestsResourceChangeListener implements IResourceChangeListene
     @Override
     public void resourceChanged(IResourceChangeEvent event) {
         if (!RuntimeConfiguration.getInstance().runsAllTestsWhenFileIsSaved) return;
-        IResourceDelta[] deltas = event.getDelta().getAffectedChildren();
+        IResourceDelta delta = event.getDelta();
+        if (delta == null) return;
+        IResourceDelta[] deltas = delta.getAffectedChildren();
         if (deltas.length == 0) return;
         if (!shouldRunAllTests(deltas)) return;
 
         final ISelection selection = new StructuredSelection(deltas[0].getResource());
+        if (!ActivePart.isAllTestsRunnable(selection)) return;
+
         Job job = new UIJob("MakeGood Run All Tests For Resources") { //$NON-NLS-1$
             @Override
             public IStatus runInUIThread(IProgressMonitor monitor) {
-                if (ActivePart.isAllTestsRunnable(selection)) {
-                    TestRunner.runAllTests(selection);
-                }
-
+                TestRunner.runAllTests(selection);
                 return Status.OK_STATUS;
             }
         };
