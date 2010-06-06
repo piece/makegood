@@ -2,7 +2,7 @@
 <feature
       id="com.piece_framework.makegood_feature"
       label="%Feature.BundleName"
-      version="0.6.0.dev"
+      version="0.6.0"
       provider-name="%Feature.BundleProvider"
       plugin="com.piece_framework.makegood.core"
       image="makegood_120.jpg">
