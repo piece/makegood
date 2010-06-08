@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: com.piece_framework.makegood.ui;singleton:=true
-Bundle-Version: 0.6.0
+Bundle-Version: 1.0.0.dev
 Bundle-Activator: com.piece_framework.makegood.ui.Activator
 Bundle-Vendor: %Bundle-Vendor
 Require-Bundle: org.eclipse.ui,
