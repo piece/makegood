@@ -24,6 +24,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.IStartup;
 import org.osgi.framework.Bundle;
+import org.osgi.framework.Version;
 
 import com.piece_framework.makegood.javassist.BundleLoader;
 
@@ -47,8 +48,15 @@ public class Startup implements IStartup {
         }
 
         try {
+            Bundle bundle = Platform.getBundle("org.eclipse.php.ui");
+            Version baseVersion = Version.parseVersion("2.2.0");
+
             CtClass targetClass = ClassPool.getDefault().get("org.eclipse.php.internal.ui.preferences.includepath.PHPIPListLabelProvider"); //$NON-NLS-1$
-            addGetCPListElementTextMethod(targetClass);
+            if (bundle.getVersion().compareTo(baseVersion) >= 0) {
+                modifyGetCPListElementTextMethod(targetClass);
+            } else {
+                addGetCPListElementTextMethod(targetClass);
+            }
             modifyGetCPListElementBaseImage(targetClass);
             targetClass.toClass(getClass().getClassLoader(), null);
         } catch (NotFoundException e) {
@@ -86,6 +94,19 @@ public class Startup implements IStartup {
 "}" //$NON-NLS-1$
             ,targetClass);
         targetClass.addMethod(newMethod);
+    }
+
+    private void modifyGetCPListElementTextMethod(CtClass targetClass) throws NotFoundException, CannotCompileException {
+        CtMethod targetMethod = targetClass.getDeclaredMethod("getCPListElementText"); //$NON-NLS-1$
+        targetMethod.insertBefore(
+"org.eclipse.core.resources.IResource target = cpentry.getResource();" + //$NON-NLS-1$
+"if (target != null) {" + //$NON-NLS-1$
+"    com.piece_framework.makegood.include_path.ConfigurationIncludePath configuration = new com.piece_framework.makegood.include_path.ConfigurationIncludePath(target.getProject());" + //$NON-NLS-1$
+"    if (configuration.equalsDummyResource(target)) {" + //$NON-NLS-1$
+"        return com.piece_framework.makegood.include_path.ConfigurationIncludePath.text;" + //$NON-NLS-1$
+"    }" + //$NON-NLS-1$
+"}" //$NON-NLS-1$
+            );
     }
 
     private void modifyGetCPListElementBaseImage(CtClass targetClass) throws NotFoundException, CannotCompileException {
