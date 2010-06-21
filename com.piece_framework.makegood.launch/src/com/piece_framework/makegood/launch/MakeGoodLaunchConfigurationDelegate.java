@@ -29,6 +29,8 @@ import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.ISourceLocator;
+import org.eclipse.debug.internal.core.LaunchConfiguration;
+import org.eclipse.debug.internal.core.LaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.php.debug.core.debugger.parameters.IDebugParametersKeys;
 import org.eclipse.php.internal.debug.core.IPHPDebugConstants;
@@ -248,10 +250,12 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
             configurationName +
             ".xml"; //$NON-NLS-1$
 
-        ILaunchConfigurationWorkingCopy workingCopy =
-            new MakeGoodLaunchConfigurationWorkingCopy(
-                configuration.copy(configurationName)
-            );
+        ILaunchConfigurationWorkingCopy workingCopy = new LaunchConfigurationWorkingCopy((LaunchConfiguration) configuration) {
+            @Override
+            public synchronized ILaunchConfiguration doSave() throws CoreException {
+                return null;
+            }
+        };
 
         LaunchTarget launchTarget = LaunchTarget.getInstance();
         String mainScript = launchTarget.getMainScript();
@@ -292,9 +296,6 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
                 originalLaunch.getLaunchMode(),
                 createSourceLocator(configuration, originalLaunch.getLaunchMode())
             );
-
-        // TODO A workaround to avoid raising a java.lang.ClassCastException: com.piece_framework.makegood.launch.MakeGoodLaunchConfigurationWorkingCopy cannot be cast to org.eclipse.debug.internal.core.LaunchConfiguration.
-        DebugPlugin.getDefault().getLaunchManager().removeLaunchConfigurationListener((ILaunchConfigurationListener) launch);
 
         launch.setAttribute(
             DebugPlugin.ATTR_CAPTURE_OUTPUT,

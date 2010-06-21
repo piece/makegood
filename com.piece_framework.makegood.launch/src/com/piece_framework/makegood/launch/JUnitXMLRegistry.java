@@ -31,6 +31,8 @@ public class JUnitXMLRegistry {
     }
 
     public static void destroy() {
+        if (!registry.exists()) return;
+
         for (File file: registry.listFiles()) {
             file.delete();
         }
