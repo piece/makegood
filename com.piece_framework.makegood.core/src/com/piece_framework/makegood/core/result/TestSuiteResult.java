@@ -12,9 +12,9 @@
 
 package com.piece_framework.makegood.core.result;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class TestSuiteResult extends Result {
     private String fullPackageName;
@@ -24,7 +24,7 @@ public class TestSuiteResult extends Result {
 
     public TestSuiteResult(String name) {
         super(name);
-        children = new ArrayList<Result>();
+        children = new CopyOnWriteArrayList<Result>();
     }
 
     public String getFullPackageName() {
