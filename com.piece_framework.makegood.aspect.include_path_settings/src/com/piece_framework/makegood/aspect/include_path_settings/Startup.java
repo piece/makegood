@@ -27,9 +27,26 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.Version;
 
 import com.piece_framework.makegood.javassist.BundleLoader;
+import com.piece_framework.makegood.javassist.CannotWeaveException;
+import com.piece_framework.makegood.javassist.WeavingChecker;
 
 
 public class Startup implements IStartup {
+    private static final String PHPIPLISTLABELPROVIDER_GETCPLISTELEMENTTEXT =
+        "PHPIPListLabelProvider#getCPListElementText()";     //$NON-NLS-1$
+    private static final String PHPIPLISTLABELPROVIDER_GETCPLISTELEMENTBASEIMAGE =
+        "PHPIPListLabelProvider#getCPListElementBaseImage()";     //$NON-NLS-1$
+    private static final String PHPINCLUDEPATHSBLOCK_CREATECONTROL =
+        "PHPIncludePathsBlock#createControl()";     //$NON-NLS-1$
+    private WeavingChecker checker =
+        new WeavingChecker(
+            new String[] {
+                PHPIPLISTLABELPROVIDER_GETCPLISTELEMENTTEXT,
+                PHPIPLISTLABELPROVIDER_GETCPLISTELEMENTBASEIMAGE,
+                PHPINCLUDEPATHSBLOCK_CREATECONTROL
+            }
+        );
+
     @Override
     public void earlyStartup() {
         BundleLoader loader = new BundleLoader(
@@ -75,6 +92,12 @@ public class Startup implements IStartup {
             log(e);
         }
 
+        try {
+            checker.checkAll();
+        } catch (CannotWeaveException e) {
+            log(e);
+        }
+
         MonitorTarget.endWeaving = true;
     }
 
@@ -94,6 +117,7 @@ public class Startup implements IStartup {
 "}" //$NON-NLS-1$
             ,targetClass);
         targetClass.addMethod(newMethod);
+        checker.pass(PHPIPLISTLABELPROVIDER_GETCPLISTELEMENTTEXT);
     }
 
     private void modifyGetCPListElementTextMethod(CtClass targetClass) throws NotFoundException, CannotCompileException {
@@ -107,6 +131,7 @@ public class Startup implements IStartup {
 "    }" + //$NON-NLS-1$
 "}" //$NON-NLS-1$
             );
+        checker.pass(PHPIPLISTLABELPROVIDER_GETCPLISTELEMENTTEXT);
     }
 
     private void modifyGetCPListElementBaseImage(CtClass targetClass) throws NotFoundException, CannotCompileException {
@@ -120,6 +145,7 @@ public class Startup implements IStartup {
 "    }" + //$NON-NLS-1$
 "}" //$NON-NLS-1$
             );
+        checker.pass(PHPIPLISTLABELPROVIDER_GETCPLISTELEMENTBASEIMAGE);
     }
 
     private void modifyCreateControlMethod(CtClass targetClass) throws NotFoundException, CannotCompileException {
@@ -130,6 +156,7 @@ public class Startup implements IStartup {
                     expression.replace(
 "$_ = new com.piece_framework.makegood.aspect.include_path_settings.PHPIncludePathSourcePageForConfiguration($1);" //$NON-NLS-1$
                         );
+                    checker.pass(PHPINCLUDEPATHSBLOCK_CREATECONTROL);
                 }
             }
         });

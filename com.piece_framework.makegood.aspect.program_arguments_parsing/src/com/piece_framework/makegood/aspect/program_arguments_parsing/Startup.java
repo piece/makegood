@@ -26,8 +26,17 @@ import org.eclipse.ui.IStartup;
 import org.osgi.framework.Bundle;
 
 import com.piece_framework.makegood.javassist.BundleLoader;
+import com.piece_framework.makegood.javassist.CannotWeaveException;
+import com.piece_framework.makegood.javassist.WeavingChecker;
 
 public class Startup implements IStartup {
+    private static final String PHPLAUNCHUTILITIES_GETPROGRAMARGUMENTS =
+        "PHPLaunchUtilities#getProgramArguments()";     //$NON-NLS-1$
+    private WeavingChecker checker =
+        new WeavingChecker(
+            new String[] {PHPLAUNCHUTILITIES_GETPROGRAMARGUMENTS}
+        );
+
     @Override
     public void earlyStartup() {
         BundleLoader loader = new BundleLoader(
@@ -46,9 +55,12 @@ public class Startup implements IStartup {
             CtClass targetClass = ClassPool.getDefault().get("org.eclipse.php.internal.debug.core.launching.PHPLaunchUtilities"); //$NON-NLS-1$
             modifyGetProgramArguments(targetClass);
             targetClass.toClass(getClass().getClassLoader(), null);
+            checker.checkAll();
         } catch (NotFoundException e) {
             log(e);
         } catch (CannotCompileException e) {
+            log(e);
+        } catch (CannotWeaveException e) {
             log(e);
         }
 
@@ -64,6 +76,7 @@ public class Startup implements IStartup {
                     methodCall.replace(
 "$_ = org.eclipse.debug.core.DebugPlugin.parseArguments($0);" //$NON-NLS-1$
                         );
+                    checker.pass(PHPLAUNCHUTILITIES_GETPROGRAMARGUMENTS);
                 }
             }
         });

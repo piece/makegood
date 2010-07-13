@@ -27,8 +27,22 @@ import org.eclipse.ui.IStartup;
 import org.osgi.framework.Bundle;
 
 import com.piece_framework.makegood.javassist.BundleLoader;
+import com.piece_framework.makegood.javassist.CannotWeaveException;
+import com.piece_framework.makegood.javassist.WeavingChecker;
 
 public class Startup implements IStartup {
+    private static final String PHPSEARCHENGINE_FIND_CAST_ICONTAINER =
+        "PHPSearchEngine#find [cast IContainer]";     //$NON-NLS-1$
+    private static final String PHPSEARCHENGINE_FIND_CALL_FINDMEMBER =
+        "PHPSearchEngine#find [call findMember()]";     //$NON-NLS-1$
+    private WeavingChecker checker =
+        new WeavingChecker(
+            new String[] {
+                PHPSEARCHENGINE_FIND_CAST_ICONTAINER,
+                PHPSEARCHENGINE_FIND_CALL_FINDMEMBER
+            }
+        );
+
     @Override
     public void earlyStartup() {
         BundleLoader loader = new BundleLoader(
@@ -47,9 +61,12 @@ public class Startup implements IStartup {
             CtClass targetClass = ClassPool.getDefault().get("org.eclipse.php.internal.core.util.PHPSearchEngine"); //$NON-NLS-1$
             modifyFind(targetClass);
             targetClass.toClass(getClass().getClassLoader(), null);
+            checker.checkAll();
         } catch (NotFoundException e) {
             log(e);
         } catch (CannotCompileException e) {
+            log(e);
+        } catch (CannotWeaveException e) {
             log(e);
         }
 
@@ -72,6 +89,7 @@ public class Startup implements IStartup {
 "    $_ = ($r) includePath.getEntry();" + //$NON-NLS-1$
 "}" //$NON-NLS-1$
                     );
+                    checker.pass(PHPSEARCHENGINE_FIND_CAST_ICONTAINER);
                 }
             }
 
@@ -85,6 +103,7 @@ public class Startup implements IStartup {
 "    $_ = $proceed($$);" + //$NON-NLS-1$
 "}" //$NON-NLS-1$
                         );
+                    checker.pass(PHPSEARCHENGINE_FIND_CALL_FINDMEMBER);
                 }
             }
         });
