@@ -18,6 +18,7 @@ import javassist.CtMethod;
 import javassist.NotFoundException;
 import javassist.expr.ExprEditor;
 import javassist.expr.MethodCall;
+import javassist.expr.NewExpr;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
@@ -33,7 +34,8 @@ public class Startup implements IStartup {
         BundleLoader loader =
             new BundleLoader(
                 new String[]{
-                    "com.piece_framework.makegood.launch" //$NON-NLS-1$
+                    "com.piece_framework.makegood.launch", //$NON-NLS-1$
+                    "com.piece_framework.makegood.aspect.xdebug_launch" //$NON-NLS-1$
                 }
             );
         try {
@@ -44,7 +46,12 @@ public class Startup implements IStartup {
         }
 
         try {
-            fixLaunchToUseTestRunnerCommandAsPHPFile();
+            CtClass targetClass = ClassPool.getDefault().get("org.eclipse.php.internal.debug.core.launching.XDebugExeLaunchConfigurationDelegate"); //$NON-NLS-1$
+
+            fixLaunchToUseTestRunnerCommandAsPHPFile(targetClass);
+            fixLaunchToOutputContentsProperlyToConsoleView(targetClass);
+
+            targetClass.toClass(getClass().getClassLoader(), null);
         } catch (NotFoundException e) {
             log(e);
         } catch (CannotCompileException e) {
@@ -54,8 +61,7 @@ public class Startup implements IStartup {
         MonitorTarget.endWeaving = true;
     }
 
-    private void fixLaunchToUseTestRunnerCommandAsPHPFile() throws NotFoundException, CannotCompileException {
-        CtClass targetClass = ClassPool.getDefault().get("org.eclipse.php.internal.debug.core.launching.XDebugExeLaunchConfigurationDelegate"); //$NON-NLS-1$
+    private void fixLaunchToUseTestRunnerCommandAsPHPFile(CtClass targetClass) throws NotFoundException, CannotCompileException {
         CtMethod targetMethod = targetClass.getDeclaredMethod("launch"); //$NON-NLS-1$
         targetMethod.instrument(new ExprEditor() {
             @Override
@@ -68,8 +74,20 @@ public class Startup implements IStartup {
                 }
             }
         });
+    }
 
-        targetClass.toClass(getClass().getClassLoader(), null);
+    private void fixLaunchToOutputContentsProperlyToConsoleView(CtClass targetClass) throws NotFoundException, CannotCompileException {
+        CtMethod targetMethod = targetClass.getDeclaredMethod("launch"); //$NON-NLS-1$
+        targetMethod.instrument(new ExprEditor() {
+            @Override
+            public void edit(NewExpr newExpr) throws CannotCompileException {
+                if (newExpr.getClassName().equals("org.eclipse.php.internal.debug.core.zend.debugger.ProcessCrashDetector")) { //$NON-NLS-1$
+                    newExpr.replace(
+"$_ = new com.piece_framework.makegood.aspect.xdebug_launch.ProcessCrashDetector($$);" //$NON-NLS-1$
+                    );
+                }
+            }
+        });
     }
 
     private void log(Exception e) {
