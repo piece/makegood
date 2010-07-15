@@ -69,7 +69,11 @@ public class Startup implements IStartup {
                 if (m.getClassName().equals("org.eclipse.core.resources.IResource") //$NON-NLS-1$
                     && m.getMethodName().equals("getLocation")) { //$NON-NLS-1$
                     m.replace(
-"$_ = new org.eclipse.core.runtime.Path(com.piece_framework.makegood.launch.MakeGoodLaunchConfigurationDelegate.getCommandPath());" //$NON-NLS-1$
+"if (com.piece_framework.makegood.launch.MakeGoodLaunchConfigurationDelegate.isMakeGoodLaunch(launch)) {" + //$NON-NLS-1$
+"    $_ = new org.eclipse.core.runtime.Path(com.piece_framework.makegood.launch.MakeGoodLaunchConfigurationDelegate.getCommandPath());" + //$NON-NLS-1$
+"} else {" + //$NON-NLS-1$
+"    $_ = $proceed($$);" + //$NON-NLS-1$
+"}" //$NON-NLS-1$
                     );
                 }
             }
