@@ -27,8 +27,13 @@ import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.IDebugEventSetListener;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.model.IProcess;
+import org.eclipse.debug.internal.ui.views.console.ProcessConsole;
+import org.eclipse.debug.ui.IDebugUIConstants;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.console.ConsolePlugin;
+import org.eclipse.ui.console.IConsole;
 import org.eclipse.ui.console.IConsoleConstants;
+import org.eclipse.ui.console.IOConsoleOutputStream;
 import org.eclipse.ui.progress.UIJob;
 import org.xml.sax.SAXException;
 
@@ -81,6 +86,7 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
         }
         if (junitXMLFile == null) return;
 
+        preventConsoleViewFocusing();
         progress = new RunProgress();
 
         junitXMLReader = new JUnitXMLReader(new File(junitXMLFile));
@@ -187,6 +193,18 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
             }
         };
         job.schedule();
+    }
+
+    private void preventConsoleViewFocusing() {
+        for (IConsole console: ConsolePlugin.getDefault().getConsoleManager().getConsoles()) {
+            if (!(console instanceof ProcessConsole)) continue;
+            IOConsoleOutputStream stdoutStream = ((ProcessConsole) console).getStream(IDebugUIConstants.ID_STANDARD_OUTPUT_STREAM);
+            if (stdoutStream == null) continue;
+            stdoutStream.setActivateOnWrite(false);
+            IOConsoleOutputStream stderrStream = ((ProcessConsole) console).getStream(IDebugUIConstants.ID_STANDARD_ERROR_STREAM);
+            if (stderrStream == null) continue;
+            stderrStream.setActivateOnWrite(false);
+        }
     }
 
     public class ResultJUnitXMLReaderListener implements JUnitXMLReaderListener {
