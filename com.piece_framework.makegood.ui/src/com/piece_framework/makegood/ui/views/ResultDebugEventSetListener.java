@@ -29,7 +29,6 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.internal.ui.views.console.ProcessConsole;
 import org.eclipse.debug.ui.IDebugUIConstants;
-import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.console.ConsolePlugin;
 import org.eclipse.ui.console.IConsole;
 import org.eclipse.ui.console.IConsoleConstants;
@@ -173,8 +172,7 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
         Job job = new UIJob("MakeGood Test End") { //$NON-NLS-1$
             @Override
             public IStatus runInUIThread(IProgressMonitor monitor) {
-                IWorkbenchPart lastActivePart = ViewShow.getActivePart();
-                ResultView resultView = (ResultView) ViewShow.show(ResultView.ID);
+                ResultView resultView = (ResultView) ViewShow.find(ResultView.ID);
                 if (resultView == null) return Status.CANCEL_STATUS;
 
                 resultView.stop();
@@ -182,11 +180,6 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
 
                 if (hasErrors == true) {
                     ViewShow.show(IConsoleConstants.ID_CONSOLE_VIEW);
-                    return Status.OK_STATUS;
-                }
-
-                if (lastActivePart != null && !progress.hasFailures()) {
-                    ViewShow.setFocus(lastActivePart);
                 }
 
                 return Status.OK_STATUS;
@@ -226,13 +219,8 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
             Job job = new UIJob("MakeGood Test Case Start") { //$NON-NLS-1$
                 @Override
                 public IStatus runInUIThread(IProgressMonitor monitor) {
-                    IWorkbenchPart lastActivePart = ViewShow.getActivePart();
                     ResultView resultView = (ResultView) ViewShow.find(ResultView.ID);
                     if (resultView == null) return Status.CANCEL_STATUS;
-
-                    if (lastActivePart != null) {
-                        ViewShow.setFocus(lastActivePart);
-                    }
 
                     resultView.printCurrentlyRunningTest(currentTestCase);
                     return Status.OK_STATUS;
@@ -251,13 +239,8 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
             Job job = new UIJob("MakeGood Test Case End") { //$NON-NLS-1$
                 @Override
                 public IStatus runInUIThread(IProgressMonitor monitor) {
-                    IWorkbenchPart lastActivePart = ViewShow.getActivePart();
                     ResultView resultView = (ResultView) ViewShow.find(ResultView.ID);
                     if (resultView == null) return Status.CANCEL_STATUS;
-
-                    if (lastActivePart != null) {
-                        ViewShow.setFocus(lastActivePart);
-                    }
 
                     if (!resultView.isSetTreeInput()) resultView.setTreeInput(junitXMLReader.getTestResults());
                     resultView.refresh(progress, currentTestCase);
