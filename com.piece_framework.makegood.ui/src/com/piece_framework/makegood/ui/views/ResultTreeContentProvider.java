@@ -20,7 +20,7 @@ import org.eclipse.jface.viewers.Viewer;
 import com.piece_framework.makegood.core.result.Result;
 import com.piece_framework.makegood.core.result.TestSuiteResult;
 
-public class ResultContentProvider implements ITreeContentProvider {
+public class ResultTreeContentProvider implements ITreeContentProvider {
     @Override
     public Object[] getChildren(Object parentElement) {
         if (parentElement instanceof Result) {
