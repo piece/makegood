@@ -12,8 +12,6 @@
 
 package com.piece_framework.makegood.ui.views;
 
-import java.text.NumberFormat;
-
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 
