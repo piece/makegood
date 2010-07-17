@@ -24,6 +24,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.IStartup;
 import org.osgi.framework.Bundle;
+import org.osgi.framework.Version;
 
 import com.piece_framework.makegood.javassist.BundleLoader;
 import com.piece_framework.makegood.javassist.CannotWeaveException;
@@ -39,6 +40,13 @@ public class Startup implements IStartup {
 
     @Override
     public void earlyStartup() {
+        Bundle bundle = Platform.getBundle("org.eclipse.php.debug.core");
+        Version baseVersion = Version.parseVersion("2.2.0");
+        if (bundle.getVersion().compareTo(baseVersion) >= 0) {
+            MonitorTarget.endWeaving = true;
+            return;
+        }
+
         BundleLoader loader = new BundleLoader(
                 new String[]{"org.eclipse.php.debug.core", //$NON-NLS-1$
                              "org.eclipse.debug.core", //$NON-NLS-1$
