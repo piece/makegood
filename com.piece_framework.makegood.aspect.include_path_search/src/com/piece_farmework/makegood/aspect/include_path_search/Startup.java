@@ -25,6 +25,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.IStartup;
 import org.osgi.framework.Bundle;
+import org.osgi.framework.Version;
 
 import com.piece_framework.makegood.javassist.BundleLoader;
 import com.piece_framework.makegood.javassist.CannotWeaveException;
@@ -74,7 +75,16 @@ public class Startup implements IStartup {
     }
 
     private void modifyFind(CtClass targetClass) throws NotFoundException, CannotCompileException {
-        CtMethod targetMethod = targetClass.getDeclaredMethod("find"); //$NON-NLS-1$
+        Bundle bundle = Platform.getBundle("org.eclipse.php.core");
+        Version baseVersion = Version.parseVersion("2.2.0");
+        String targetMethodName = null;
+        if (bundle.getVersion().compareTo(baseVersion) >= 0) {
+            targetMethodName = "internalFind";
+        } else {
+            targetMethodName = "find";
+        }
+
+        CtMethod targetMethod = targetClass.getDeclaredMethod(targetMethodName);
         targetMethod.instrument(new ExprEditor() {
             public void edit(Cast cast) throws CannotCompileException {
                 CtClass castClass = null;
