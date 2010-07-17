@@ -59,4 +59,6 @@ public abstract class Result {
     public abstract int getErrorCount();
 
     public abstract int getFailureCount();
+
+    public abstract boolean fixed();
 }

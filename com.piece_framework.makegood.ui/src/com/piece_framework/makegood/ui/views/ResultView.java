@@ -46,6 +46,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Tree;
+import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.contexts.IContextService;
 import org.eclipse.ui.part.ViewPart;
@@ -361,10 +362,6 @@ public class ResultView extends ViewPart {
         resultTreeViewer.setInput(suites);
     }
 
-    public boolean isSetTreeInput() {
-        return resultTreeViewer.getInput() != null;
-    }
-
     public void refresh(RunProgress progress, TestCaseResult currentTestCase) {
         progressRate.setText(
             String.format("%3d", progress.calculateRate()) + //$NON-NLS-1$
@@ -388,22 +385,25 @@ public class ResultView extends ViewPart {
 
         showTimer.show();
 
-        testCount.setText(
-            Messages.TestResultView_testsLabel +
-            ": " + //$NON-NLS-1$
-            progress.getTestCount() +
-            "/" + //$NON-NLS-1$
-            progress.getAllTestCount()
-        );
         passCount.setCount(progress.getPassCount());
         failureCount.setCount(progress.getFailureCount());
         errorCount.setCount(progress.getErrorCount());
 
-        if (currentTestCase != null) {
-            resultTreeViewer.expandAll();
-            resultTreeViewer.setSelection(new StructuredSelection(currentTestCase));
-        }
         resultTreeViewer.refresh();
+    }
+
+    public void refreshOnStartTestCase(RunProgress progress, TestCaseResult currentTestCase) {
+        testCount.setText(
+            Messages.TestResultView_testsLabel +
+            ": " + //$NON-NLS-1$
+            (progress.getTestCount() + 1) +
+            "/" + //$NON-NLS-1$
+            progress.getAllTestCount()
+        );
+
+        resultTreeViewer.refresh();
+        resultTreeViewer.expandAll();
+        resultTreeViewer.setSelection(new StructuredSelection(currentTestCase));
     }
 
     public void start(RunProgress progress) {

@@ -50,14 +50,16 @@ public class ResultTreeLabelProvider extends LabelProvider {
         }
 
         Result result = (Result) element;
-        Image icon = null;
-        if (result.hasFailures()) {
-            icon = failureIcon;
-        } else if (result.hasErrors()) {
-            icon = errorIcon;
-        } else {
-            icon = passIcon;
+        if (!result.fixed()) {
+            return null;
         }
-        return icon;
+
+        if (result.hasFailures()) {
+            return failureIcon;
+        } else if (result.hasErrors()) {
+            return errorIcon;
+        } else {
+            return passIcon;
+        }
     }
 }

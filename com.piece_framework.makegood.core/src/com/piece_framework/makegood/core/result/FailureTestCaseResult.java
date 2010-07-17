@@ -30,6 +30,7 @@ public class FailureTestCaseResult extends TestCaseResult {
 
     @Override
     public int getFailureCount() {
+        if (!fixed) return 0;
         return 1;
     }
 }

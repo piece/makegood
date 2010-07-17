@@ -17,6 +17,7 @@ import java.io.IOException;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -203,16 +204,29 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
     public class ResultJUnitXMLReaderListener implements JUnitXMLReaderListener {
         @Override
         public void startTestSuite(TestSuiteResult testSuite) {
-            if (!progress.isInitialized()) {
-                progress.initialize(testSuite);
+            if (progress.isInitialized()) {
+                return;
             }
+
+            progress.initialize(testSuite);
+
+            Job job = new UIJob("MakeGood Result Tree Set") { //$NON-NLS-1$
+                @Override
+                public IStatus runInUIThread(IProgressMonitor monitor) {
+                    ResultView resultView = (ResultView) ViewShow.find(ResultView.ID);
+                    if (resultView == null) return Status.CANCEL_STATUS;
+                    resultView.setTreeInput(junitXMLReader.getTestResults());
+                    return Status.OK_STATUS;
+                }
+            };
+            job.schedule();
         }
 
         @Override
         public void endTestSuite() {}
 
         @Override
-        public void startTestCase(TestCaseResult testCase) {
+        public void startTestCase(final TestCaseResult testCase) {
             currentTestCase = testCase;
             progress.startTestCase();
 
@@ -221,12 +235,17 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
                 public IStatus runInUIThread(IProgressMonitor monitor) {
                     ResultView resultView = (ResultView) ViewShow.find(ResultView.ID);
                     if (resultView == null) return Status.CANCEL_STATUS;
-
                     resultView.printCurrentlyRunningTest(currentTestCase);
+                    resultView.refreshOnStartTestCase(progress, currentTestCase);
                     return Status.OK_STATUS;
                 }
             };
             job.schedule();
+            try {
+                job.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
 
         @Override
@@ -241,8 +260,6 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
                 public IStatus runInUIThread(IProgressMonitor monitor) {
                     ResultView resultView = (ResultView) ViewShow.find(ResultView.ID);
                     if (resultView == null) return Status.CANCEL_STATUS;
-
-                    if (!resultView.isSetTreeInput()) resultView.setTreeInput(junitXMLReader.getTestResults());
                     resultView.refresh(progress, currentTestCase);
                     return Status.OK_STATUS;
                 }

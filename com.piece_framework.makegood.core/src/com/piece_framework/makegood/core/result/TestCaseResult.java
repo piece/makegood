@@ -22,6 +22,8 @@ public class TestCaseResult extends Result {
     private boolean isArtificial = false;
     String failureType;
     private String failureTrace;
+    boolean fixed = false;
+    private ResultType resultType = ResultType.PASS;
 
     public TestCaseResult(String name) {
         super(name);
@@ -37,12 +39,12 @@ public class TestCaseResult extends Result {
 
     @Override
     public boolean hasErrors() {
-        return false;
+        return ResultType.ERROR.equals(resultType);
     }
 
     @Override
     public boolean hasFailures() {
-        return false;
+        return ResultType.FAILURE.equals(resultType);
     }
 
     @Override
@@ -86,16 +88,28 @@ public class TestCaseResult extends Result {
 
     @Override
     public int getTestCount() {
+        if (!fixed) return 0;
         return 1;
     }
 
     @Override
     public int getErrorCount() {
-        return 0;
+        if (!fixed) return 0;
+        return hasErrors() ? 1: 0;
     }
 
     @Override
     public int getFailureCount() {
-        return 0;
+        if (!fixed) return 0;
+        return hasFailures() ? 1 : 0;
+    }
+
+    @Override
+    public boolean fixed() {
+        return fixed;
+    }
+
+    void setResultType(ResultType resultType) {
+        this.resultType = resultType;
     }
 }

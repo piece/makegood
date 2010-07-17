@@ -30,6 +30,7 @@ public class ErrorTestCaseResult extends TestCaseResult {
 
     @Override
     public int getErrorCount() {
+        if (!fixed) return 0;
         return 1;
     }
 }

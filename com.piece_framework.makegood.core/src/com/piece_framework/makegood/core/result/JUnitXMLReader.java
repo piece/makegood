@@ -178,6 +178,10 @@ public class JUnitXMLReader extends DefaultHandler {
     }
 
     private void startTestCase(TestCaseResult testCase) {
+        if (currentTestSuite != null) {
+            currentTestSuite.addChild(testCase);
+        }
+
         currentTestCase = testCase;
 
         for (JUnitXMLReaderListener listener: listeners) {
@@ -186,10 +190,7 @@ public class JUnitXMLReader extends DefaultHandler {
     }
 
     private void endTestCase() {
-        if (currentTestSuite != null) {
-            currentTestSuite.addChild(currentTestCase);
-        }
-
+        currentTestCase.fixed = true;
         currentTestCase = null;
 
         for (JUnitXMLReaderListener listener: listeners) {
@@ -253,12 +254,15 @@ public class JUnitXMLReader extends DefaultHandler {
 
     private TestCaseResult createFailureTestCase(Attributes attributes) {
         if (currentTestCase != null) {
-            currentTestCase = new FailureTestCaseResult(currentTestCase);
+            currentTestCase.setResultType(ResultType.FAILURE);
+//            currentTestCase = new FailureTestCaseResult(currentTestCase);
+//            currentTestSuite.replaceLastChild(currentTestCase);
         } else {
-            currentTestCase = new FailureTestCaseResult("(Failure)"); //$NON-NLS-1$
+            currentTestCase = new TestCaseResult("(Failure)"); //$NON-NLS-1$
             currentTestCase.setClassName(currentTestSuite.getName());
             currentTestCase.setFile(currentTestSuite.getFile());
             currentTestCase.setIsArtificial(true);
+            currentTestCase.setResultType(ResultType.FAILURE);
             startTestCase(currentTestCase);
         }
 
@@ -271,12 +275,15 @@ public class JUnitXMLReader extends DefaultHandler {
 
     private TestCaseResult createErrorTestCase(Attributes attributes) {
         if (currentTestCase != null) {
-            currentTestCase = new ErrorTestCaseResult(currentTestCase);
+            currentTestCase.setResultType(ResultType.ERROR);
+//            currentTestCase = new ErrorTestCaseResult(currentTestCase);
+//            currentTestSuite.replaceLastChild(currentTestCase);
         } else {
-            currentTestCase = new ErrorTestCaseResult("(Error)"); //$NON-NLS-1$
+            currentTestCase = new TestCaseResult("(Error)"); //$NON-NLS-1$
             currentTestCase.setClassName(currentTestSuite.getName());
             currentTestCase.setFile(currentTestSuite.getFile());
             currentTestCase.setIsArtificial(true);
+            currentTestCase.setResultType(ResultType.ERROR);
             startTestCase(currentTestCase);
         }
 
