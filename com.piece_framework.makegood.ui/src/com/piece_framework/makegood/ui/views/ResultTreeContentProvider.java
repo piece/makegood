@@ -39,7 +39,8 @@ public class ResultTreeContentProvider implements ITreeContentProvider {
 
     @Override
     public boolean hasChildren(Object element) {
-        return (element instanceof TestSuiteResult);
+        if (!(element instanceof TestSuiteResult)) return false;
+        return !((TestSuiteResult) element).getChildren().isEmpty();
     }
 
     @Override
