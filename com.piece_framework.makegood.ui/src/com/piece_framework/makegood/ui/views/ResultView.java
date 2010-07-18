@@ -349,8 +349,8 @@ public class ResultView extends ViewPart {
         }
     }
 
-    public void filterResult(boolean filterOn) {
-        if (filterOn) {
+    public void filterResult(boolean showsFailuresOnly) {
+        if (showsFailuresOnly) {
             resultTreeViewer.addFilter(failureFilter);
         } else {
             resultTreeViewer.removeFilter(failureFilter);
