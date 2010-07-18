@@ -24,12 +24,11 @@ public class ResultTreeContentProvider implements ITreeContentProvider {
     @Override
     public Object[] getChildren(Object parentElement) {
         if (parentElement instanceof Result) {
-            Result testResult = (Result) parentElement;
-            return testResult.getChildren().toArray();
+            return ((Result) parentElement).getChildren().toArray();
         } else if (parentElement instanceof Collection) {
-            Collection collection = (Collection) parentElement;
-            return collection.toArray();
+            return ((Collection) parentElement).toArray();
         }
+
         return null;
     }
 
