@@ -255,8 +255,6 @@ public class JUnitXMLReader extends DefaultHandler {
     private TestCaseResult createFailureTestCase(Attributes attributes) {
         if (currentTestCase != null) {
             currentTestCase.setResultType(ResultType.FAILURE);
-//            currentTestCase = new FailureTestCaseResult(currentTestCase);
-//            currentTestSuite.replaceLastChild(currentTestCase);
         } else {
             currentTestCase = new TestCaseResult("(Failure)"); //$NON-NLS-1$
             currentTestCase.setClassName(currentTestSuite.getName());
@@ -276,8 +274,6 @@ public class JUnitXMLReader extends DefaultHandler {
     private TestCaseResult createErrorTestCase(Attributes attributes) {
         if (currentTestCase != null) {
             currentTestCase.setResultType(ResultType.ERROR);
-//            currentTestCase = new ErrorTestCaseResult(currentTestCase);
-//            currentTestSuite.replaceLastChild(currentTestCase);
         } else {
             currentTestCase = new TestCaseResult("(Error)"); //$NON-NLS-1$
             currentTestCase.setClassName(currentTestSuite.getName());
