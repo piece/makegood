@@ -64,9 +64,11 @@ public class PHPResource {
         }
 
         String testClass = getTestClassSuperType(type);
-        for (String superClass: type.getSuperClasses()) {
-            if (superClass.equals(testClass)) { //$NON-NLS-1$
-                return true;
+        if (type.getSuperClasses() != null) {
+            for (String superClass: type.getSuperClasses()) {
+                if (superClass.equals(testClass)) { //$NON-NLS-1$
+                    return true;
+                }
             }
         }
         ITypeHierarchy hierarchy = type.newTypeHierarchy(new NullProgressMonitor());
