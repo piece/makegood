@@ -1,5 +1,6 @@
 /**
  * Copyright (c) 2010 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
+ *               2010 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -22,12 +23,12 @@ import com.piece_framework.makegood.core.result.TestSuiteResult;
 public class NamesAssertionJUnitXMLReaderListener implements JUnitXMLReaderListener {
     private Iterator<String> suiteNamesIterator;
     private Iterator<String> caseNamesIterator;
-    private Iterator<Class> problemTypesIterator;
+    private Iterator<ResultType> problemTypesIterator;
 
     public NamesAssertionJUnitXMLReaderListener(
         String[] suiteNames,
         String[] caseNames,
-        Class[] problemTypes) {
+        ResultType[] problemTypes) {
         suiteNamesIterator = Arrays.asList(suiteNames).iterator();
         caseNamesIterator = Arrays.asList(caseNames).iterator();
         problemTypesIterator = Arrays.asList(problemTypes).iterator();
@@ -45,7 +46,7 @@ public class NamesAssertionJUnitXMLReaderListener implements JUnitXMLReaderListe
 
     @Override
     public void startFailure(TestCaseResult problem) {
-        assertEquals(problemTypesIterator.next(), problem.getClass());
+        assertEquals(problemTypesIterator.next(), problem.resultType);
     }
 
     @Override

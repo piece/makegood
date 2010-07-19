@@ -23,7 +23,7 @@ public class TestCaseResult extends Result {
     String failureType;
     private String failureTrace;
     boolean fixed = false;
-    private ResultType resultType = ResultType.PASS;
+    ResultType resultType = ResultType.PASS;
 
     public TestCaseResult(String name) {
         super(name);
