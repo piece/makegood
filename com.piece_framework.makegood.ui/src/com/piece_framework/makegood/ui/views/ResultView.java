@@ -425,7 +425,7 @@ public class ResultView extends ViewPart {
         runAllTestsAction.setEnabled(ActivePart.getInstance().isAllTestsRunnable());
     }
 
-    void printCurrentlyRunningTest(TestCaseResult currentTestCase) {
+    void printCurrentlyRunningTestCase(TestCaseResult currentTestCase) {
         String className = currentTestCase.getClassName();
         if (className != null) {
             setContentDescription(
