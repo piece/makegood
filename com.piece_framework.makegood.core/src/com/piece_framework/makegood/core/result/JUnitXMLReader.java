@@ -30,7 +30,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 public class JUnitXMLReader extends DefaultHandler {
     private File log;
-    private List<Result> results = new ArrayList<Result>();
+    private TestSuiteResult result;
     private TestSuiteResult currentTestSuite;
     private TestCaseResult currentTestCase;
     private StringBuilder failureTrace;
@@ -136,8 +136,8 @@ public class JUnitXMLReader extends DefaultHandler {
         super.fatalError(e);
     }
 
-    public List<Result> getTestResults() {
-        return Collections.unmodifiableList(results);
+    public TestSuiteResult getResult() {
+        return result;
     }
 
     boolean isActive() {
@@ -154,10 +154,10 @@ public class JUnitXMLReader extends DefaultHandler {
     }
 
     private void startTestSuite(TestSuiteResult suite) {
-        if (!results.isEmpty()) {
+        if (result != null) {
             currentTestSuite.addChild(suite);
         } else {
-            results.add(suite);
+            result = suite;
         }
 
         currentTestSuite = suite;
@@ -230,7 +230,7 @@ public class JUnitXMLReader extends DefaultHandler {
             suite.setPackageName(attributes.getValue("package")); //$NON-NLS-1$
         }
 
-        if (results.isEmpty()) {
+        if (result == null) {
             suite.setAllTestCount(Integer.parseInt(attributes.getValue("tests"))); //$NON-NLS-1$
         }
 

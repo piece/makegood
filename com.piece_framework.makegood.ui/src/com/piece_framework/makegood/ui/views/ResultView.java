@@ -357,8 +357,8 @@ public class ResultView extends ViewPart {
         }
     }
 
-    public void setTreeInput(java.util.List<Result> suites) {
-        resultTreeViewer.setInput(suites);
+    public void setTreeInput(TestSuiteResult result) {
+        resultTreeViewer.setInput(result);
     }
 
     public void refresh(RunProgress progress, TestCaseResult currentTestCase) {

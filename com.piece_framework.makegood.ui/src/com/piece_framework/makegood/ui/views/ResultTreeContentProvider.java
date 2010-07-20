@@ -12,8 +12,6 @@
 
 package com.piece_framework.makegood.ui.views;
 
-import java.util.Collection;
-
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
@@ -23,13 +21,7 @@ import com.piece_framework.makegood.core.result.TestSuiteResult;
 public class ResultTreeContentProvider implements ITreeContentProvider {
     @Override
     public Object[] getChildren(Object parentElement) {
-        if (parentElement instanceof Result) {
-            return ((Result) parentElement).getChildren().toArray();
-        } else if (parentElement instanceof Collection) {
-            return ((Collection) parentElement).toArray();
-        }
-
-        return null;
+        return ((Result) parentElement).getChildren().toArray();
     }
 
     @Override
