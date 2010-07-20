@@ -33,7 +33,7 @@ public class ShowFailuresOnlyAction implements IViewActionDelegate {
         RuntimeConfiguration.getInstance().showsFailuresOnly = action.isChecked();
         ResultView view = (ResultView) ViewShow.find(ResultView.ID);
         if (view != null) {
-            view.filterResult(RuntimeConfiguration.getInstance().showsFailuresOnly);
+            view.filterResults(RuntimeConfiguration.getInstance().showsFailuresOnly);
         }
     }
 

@@ -29,7 +29,7 @@ public class PreviousFailedTestAction implements IViewActionDelegate {
     public void run(IAction action) {
         ResultView view = (ResultView) ViewShow.find(ResultView.ID);
         if (view != null) {
-            view.previousResult();
+            view.moveToPreviousFailure();
         }
     }
 

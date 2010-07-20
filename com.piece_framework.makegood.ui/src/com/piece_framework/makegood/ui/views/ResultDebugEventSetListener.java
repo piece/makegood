@@ -52,6 +52,7 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
     private RunProgress progress;
     private JUnitXMLReader junitXMLReader;
     private TestCaseResult currentTestCase;
+    private Failures failures;
 
     @Override
     public void handleDebugEvents(DebugEvent[] events) {
@@ -87,6 +88,7 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
 
         preventConsoleViewFocusing();
         progress = new RunProgress();
+        failures = new Failures();
 
         junitXMLReader = new JUnitXMLReader(new File(junitXMLFile));
         junitXMLReader.addListener(new ResultJUnitXMLReaderListener());
@@ -119,6 +121,7 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
                 TestRunner.restoreFocusToLastActivePart();
 
                 resultView.reset();
+                resultView.setFailures(failures);
                 resultView.start(progress);
                 return Status.OK_STATUS;
             }
@@ -203,6 +206,8 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
     public class ResultJUnitXMLReaderListener implements JUnitXMLReaderListener {
         @Override
         public void startTestSuite(TestSuiteResult testSuite) {
+            failures.addResult(testSuite);
+
             if (progress.isInitialized()) {
                 return;
             }
@@ -226,6 +231,7 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
 
         @Override
         public void startTestCase(final TestCaseResult testCase) {
+            failures.addResult(testCase);
             currentTestCase = testCase;
             progress.startTestCase();
 
@@ -268,6 +274,7 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
 
         @Override
         public void startFailure(TestCaseResult failure) {
+            failures.markCurrentResultAsFailure();
             currentTestCase = failure;
         }
 

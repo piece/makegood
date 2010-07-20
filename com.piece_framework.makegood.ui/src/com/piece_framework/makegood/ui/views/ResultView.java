@@ -87,8 +87,9 @@ public class ResultView extends ViewPart {
     private Label elapsedTime;
     private Label processTime;
     private boolean actionsInitialized = false;
+    private Failures failures;
 
-    private ViewerFilter failureFilter = new ViewerFilter() {
+    private ViewerFilter failureViewFilter = new ViewerFilter() {
         @Override
         public boolean select(Viewer viewer, Object parentElement, Object element) {
             if (!(element instanceof Result)) return false;
@@ -317,45 +318,19 @@ public class ResultView extends ViewPart {
         return failureTrace;
     }
 
-    public void nextResult() {
-        IStructuredSelection selection = (IStructuredSelection) resultTreeViewer.getSelection();
-        Result selected = (Result) selection.getFirstElement();
-
-        Result result = (Result) resultTreeViewer.getInput();
-        if (result == null) return;
-        if (!result.hasChildren()) return;
-        if (selected == null) selected = result.getChildren().get(0);
-
-        FailureFilter search = new FailureFilter(result, selected);
-        Result next = search.getNextFailure();
-        if (next != null) {
-            resultTreeViewer.expandAll();
-            resultTreeViewer.setSelection(new StructuredSelection(next), true);
-        }
+    public void moveToNextFailure() {
+        moveToPreviousOrNextFailure(Failures.FIND_NEXT);
     }
 
-    public void previousResult() {
-        IStructuredSelection selection = (IStructuredSelection) resultTreeViewer.getSelection();
-        Result selected = (Result) selection.getFirstElement();
-
-        Result result = (Result) resultTreeViewer.getInput();
-        if (result == null) return;
-        if (!result.hasChildren()) return;
-        if (selected == null) selected = result.getChildren().get(0);
-
-        FailureFilter search = new FailureFilter(result, selected);
-        Result previous = search.getPreviousFailure();
-        if (previous != null) {
-            resultTreeViewer.expandAll();
-            resultTreeViewer.setSelection(new StructuredSelection(previous), true);
-        }
+    public void moveToPreviousFailure() {
+        moveToPreviousOrNextFailure(Failures.FIND_PREVIOUS);
     }
 
-    public void filterResult(boolean showsFailuresOnly) {
+    public void filterResults(boolean showsFailuresOnly) {
         if (showsFailuresOnly) {
-            resultTreeViewer.addFilter(failureFilter);
+            resultTreeViewer.addFilter(failureViewFilter);
         } else {
-            resultTreeViewer.removeFilter(failureFilter);
+            resultTreeViewer.removeFilter(failureViewFilter);
         }
     }
 
@@ -438,6 +413,10 @@ public class ResultView extends ViewPart {
         }
     }
 
+    void setFailures(Failures failures) {
+        this.failures = failures;
+    }
+
     private void initializeActions(IViewSite site) {
         IToolBarManager manager = site.getActionBars().getToolBarManager();
 
@@ -502,6 +481,18 @@ public class ResultView extends ViewPart {
         layout.horizontalSpacing = 0;
         layout.verticalSpacing = 0;
         return layout;
+    }
+
+    private void moveToPreviousOrNextFailure(int direction) {
+        Result rootResult = (Result) resultTreeViewer.getInput();
+        if (rootResult == null) return;
+        if (!rootResult.hasChildren()) return;
+        Result selectedResult = (Result) ((IStructuredSelection) resultTreeViewer.getSelection()).getFirstElement();
+        if (selectedResult == null) selectedResult = rootResult.getChildren().get(0);
+        Result previousOrNextResult = failures.find(selectedResult, direction);
+        if (previousOrNextResult == null) return;
+        resultTreeViewer.expandAll();
+        resultTreeViewer.setSelection(new StructuredSelection(previousOrNextResult), true);
     }
 
     private class ResultLabel {
@@ -653,77 +644,6 @@ public class ResultView extends ViewPart {
         public void clearText() {
             setText(""); //$NON-NLS-1$
             hideScrollBar();
-        }
-    }
-
-    private class FailureFilter {
-        private Result result;
-        private Result selected;
-        private Result findSelected;
-        private TestCaseResult lastFailure;
-
-        public FailureFilter(Result result, Result selected) {
-            this.result = result;
-            this.selected = selected;
-        }
-
-        public TestCaseResult getNextFailure() {
-            findSelected = null;
-            return getNextFailure(result);
-        }
-
-        public TestCaseResult getPreviousFailure() {
-            findSelected = null;
-            lastFailure = null;
-            return getPreviousFailure(result);
-        }
-
-        private TestCaseResult getNextFailure(Result result) {
-            if (findSelected == null) {
-                if (result == selected) {
-                    findSelected = result;
-                }
-            } else {
-                if (result instanceof TestCaseResult
-                    && (result.hasErrors() || result.hasFailures())) {
-                    return (TestCaseResult) result;
-                }
-            }
-
-            if (result instanceof TestSuiteResult) {
-                for (Result childResult: result.getChildren()) {
-                    TestCaseResult testCase = getNextFailure(childResult);
-                    if (testCase != null) {
-                        return testCase;
-                    }
-                }
-            }
-
-            return null;
-        }
-
-        private TestCaseResult getPreviousFailure(Result result) {
-            if (findSelected == null) {
-                if (result == selected) {
-                    return lastFailure;
-                } else {
-                    if (result instanceof TestCaseResult
-                        && (result.hasErrors() || result.hasFailures())) {
-                        lastFailure = (TestCaseResult) result;
-                    }
-                }
-            }
-
-            if (result instanceof TestSuiteResult) {
-                for (Result childResult: result.getChildren()) {
-                    TestCaseResult testCase = getPreviousFailure(childResult);
-                    if (testCase != null) {
-                        return testCase;
-                    }
-                }
-            }
-
-            return null;
         }
     }
 }
