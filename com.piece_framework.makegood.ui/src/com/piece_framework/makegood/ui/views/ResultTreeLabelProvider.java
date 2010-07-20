@@ -16,12 +16,14 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 
 import com.piece_framework.makegood.core.result.Result;
+import com.piece_framework.makegood.core.result.TestCaseResult;
 import com.piece_framework.makegood.ui.Activator;
 
 public class ResultTreeLabelProvider extends LabelProvider {
     private Image passIcon;
     private Image errorIcon;
     private Image failureIcon;
+    private Image inProgressIcon;
 
     public ResultTreeLabelProvider() {
         super();
@@ -29,6 +31,7 @@ public class ResultTreeLabelProvider extends LabelProvider {
         passIcon = Activator.getImageDescriptor("icons/pass-white.gif").createImage(); //$NON-NLS-1$
         errorIcon = Activator.getImageDescriptor("icons/error-white.gif").createImage(); //$NON-NLS-1$
         failureIcon = Activator.getImageDescriptor("icons/failure-white.gif").createImage(); //$NON-NLS-1$
+        inProgressIcon = Activator.getImageDescriptor("icons/inProgress.gif").createImage(); //$NON-NLS-1$
     }
 
     @Override
@@ -43,7 +46,11 @@ public class ResultTreeLabelProvider extends LabelProvider {
     public Image getImage(Object element) {
         Result result = (Result) element;
         if (!result.fixed()) {
-            return null;
+            if (result instanceof TestCaseResult) {
+                return inProgressIcon;
+            } else {
+                return null;
+            }
         }
 
         if (result.hasFailures()) {
