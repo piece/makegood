@@ -359,11 +359,11 @@ public class ResultView extends ViewPart {
         }
     }
 
-    public void setTreeInput(TestSuiteResult result) {
+    void setTreeInput(TestSuiteResult result) {
         resultTreeViewer.setInput(result);
     }
 
-    public void refresh(RunProgress progress, TestCaseResult currentTestCase) {
+    void refresh(RunProgress progress, TestCaseResult currentTestCase) {
         progressRate.setText(
             String.format("%3d", progress.calculateRate()) + //$NON-NLS-1$
             Messages.TestResultView_percent +
@@ -394,7 +394,7 @@ public class ResultView extends ViewPart {
         resultTreeViewer.setSelection(new StructuredSelection(currentTestCase));
     }
 
-    public void refreshOnStartTestCase(RunProgress progress, TestCaseResult currentTestCase) {
+    void refreshOnStartTestCase(RunProgress progress, TestCaseResult currentTestCase) {
         testCount.setText(
             Messages.TestResultView_testsLabel +
             ": " + //$NON-NLS-1$
@@ -408,7 +408,7 @@ public class ResultView extends ViewPart {
         resultTreeViewer.setSelection(new StructuredSelection(currentTestCase));
     }
 
-    public void start(RunProgress progress) {
+    void start(RunProgress progress) {
         showTimer = new ShowTimer(elapsedTime, processTime, progress, 200);
         showTimer.start();
 
@@ -417,7 +417,7 @@ public class ResultView extends ViewPart {
         runAllTestsAction.setEnabled(false);
     }
 
-    public void stop() {
+    void stop() {
         showTimer.stop();
 
         stopTestAction.setEnabled(false);
