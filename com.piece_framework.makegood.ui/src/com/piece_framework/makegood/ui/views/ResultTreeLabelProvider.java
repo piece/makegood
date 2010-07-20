@@ -33,22 +33,14 @@ public class ResultTreeLabelProvider extends LabelProvider {
 
     @Override
     public String getText(Object element) {
-        if (element instanceof Result) {
-            Result testResult = (Result) element;
-
-            return testResult.getName() + " (" +  //$NON-NLS-1$
-                   TimeFormatter.format(testResult.getTime(), "s", "ms") +  //$NON-NLS-1$ //$NON-NLS-2$
-                   ")";  //$NON-NLS-1$
-        }
-        return super.getText(element);
+        Result result = (Result) element;
+        return result.getName() + " (" +  //$NON-NLS-1$
+               TimeFormatter.format(result.getTime(), "s", "ms") +  //$NON-NLS-1$ //$NON-NLS-2$
+               ")";  //$NON-NLS-1$
     }
 
     @Override
     public Image getImage(Object element) {
-        if (!(element instanceof Result)) {
-            return super.getImage(element);
-        }
-
         Result result = (Result) element;
         if (!result.fixed()) {
             return null;
