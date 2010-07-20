@@ -108,16 +108,6 @@ public class TestSuiteResult extends Result {
         return getTestCount() - (getFailureCount() + getErrorCount());
     }
 
-//    void replaceLastChild(Result result) {
-//        if (result == null) {
-//            return;
-//        }
-//
-//        result.parent = this;
-//        children.remove(children.size() - 1);
-//        children.add(result);
-//    }
-
     @Override
     public boolean fixed() {
         for (Result result : children) {
