@@ -189,6 +189,7 @@ public class ResultView extends ViewPart {
                 Object element = selection.getFirstElement();
                 if (!(element instanceof TestCaseResult)) return;
                 TestCaseResult testCase = (TestCaseResult) element;
+                if (!testCase.fixed()) return;
                 if (!testCase.hasFailures() && !testCase.hasErrors()) return;
                 failureTrace.setText(testCase.getFailureTrace());
             }
