@@ -12,7 +12,6 @@
 
 package com.piece_framework.makegood.ui.views;
 
-import java.util.List;
 import java.util.regex.Pattern;
 
 import org.eclipse.core.filesystem.EFS;
