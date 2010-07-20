@@ -116,4 +116,9 @@ public class TestSuiteResult extends Result {
 
         return false;
     }
+
+    @Override
+    public boolean hasChildren() {
+        return children.size() > 0;
+    }
 }

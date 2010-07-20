@@ -112,4 +112,9 @@ public class TestCaseResult extends Result {
     void setResultType(ResultType resultType) {
         this.resultType = resultType;
     }
+
+    @Override
+    public boolean hasChildren() {
+        return false;
+    }
 }

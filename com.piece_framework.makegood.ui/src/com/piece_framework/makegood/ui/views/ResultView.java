@@ -321,11 +321,12 @@ public class ResultView extends ViewPart {
         IStructuredSelection selection = (IStructuredSelection) resultTreeViewer.getSelection();
         Result selected = (Result) selection.getFirstElement();
 
-        java.util.List<Result> results = (java.util.List<Result>) resultTreeViewer.getInput();
-        if (results == null || results.size() == 0) return;
-        if (selected == null) selected = results.get(0);
+        Result result = (Result) resultTreeViewer.getInput();
+        if (result == null) return;
+        if (!result.hasChildren()) return;
+        if (selected == null) selected = result.getChildren().get(0);
 
-        FailureFilter search = new FailureFilter(results, selected);
+        FailureFilter search = new FailureFilter(result, selected);
         Result next = search.getNextFailure();
         if (next != null) {
             resultTreeViewer.expandAll();
@@ -337,11 +338,12 @@ public class ResultView extends ViewPart {
         IStructuredSelection selection = (IStructuredSelection) resultTreeViewer.getSelection();
         Result selected = (Result) selection.getFirstElement();
 
-        java.util.List<Result> results = (java.util.List<Result>) resultTreeViewer.getInput();
-        if (results == null || results.size() == 0) return;
-        if (selected == null) selected = results.get(0);
+        Result result = (Result) resultTreeViewer.getInput();
+        if (result == null) return;
+        if (!result.hasChildren()) return;
+        if (selected == null) selected = result.getChildren().get(0);
 
-        FailureFilter search = new FailureFilter(results, selected);
+        FailureFilter search = new FailureFilter(result, selected);
         Result previous = search.getPreviousFailure();
         if (previous != null) {
             resultTreeViewer.expandAll();
@@ -389,6 +391,7 @@ public class ResultView extends ViewPart {
         errorCount.setCount(progress.getErrorCount());
 
         resultTreeViewer.refresh();
+        resultTreeViewer.setSelection(new StructuredSelection(currentTestCase));
     }
 
     public void refreshOnStartTestCase(RunProgress progress, TestCaseResult currentTestCase) {
@@ -649,72 +652,72 @@ public class ResultView extends ViewPart {
     }
 
     private class FailureFilter {
-        private List<Result> results;
+        private Result result;
         private Result selected;
         private Result findSelected;
         private TestCaseResult lastFailure;
 
-        public FailureFilter(List<Result> results, Result selected) {
-            this.results = results;
+        public FailureFilter(Result result, Result selected) {
+            this.result = result;
             this.selected = selected;
         }
 
         public TestCaseResult getNextFailure() {
             findSelected = null;
-            return getNextFailure(results);
+            return getNextFailure(result);
         }
 
         public TestCaseResult getPreviousFailure() {
             findSelected = null;
             lastFailure = null;
-            return getPreviousFailure(results);
+            return getPreviousFailure(result);
         }
 
-        private TestCaseResult getNextFailure(List<Result> targets) {
-            for (Result result: targets) {
-                if (findSelected == null) {
-                    if (result == selected) {
-                        findSelected = result;
-                    }
-                } else {
-                    if (result instanceof TestCaseResult
-                        && (result.hasErrors() || result.hasFailures())
-                        ) {
-                        return (TestCaseResult) result;
-                    }
+        private TestCaseResult getNextFailure(Result result) {
+            if (findSelected == null) {
+                if (result == selected) {
+                    findSelected = result;
                 }
+            } else {
+                if (result instanceof TestCaseResult
+                    && (result.hasErrors() || result.hasFailures())) {
+                    return (TestCaseResult) result;
+                }
+            }
 
-                if (result instanceof TestSuiteResult) {
-                    TestCaseResult testCase = getNextFailure(result.getChildren());
+            if (result instanceof TestSuiteResult) {
+                for (Result childResult: result.getChildren()) {
+                    TestCaseResult testCase = getNextFailure(childResult);
                     if (testCase != null) {
                         return testCase;
                     }
                 }
             }
+
             return null;
         }
 
-        private TestCaseResult getPreviousFailure(List<Result> targets) {
-            for (Result result: targets) {
-                if (findSelected == null) {
-                    if (result == selected) {
-                        return lastFailure;
-                    } else {
-                        if (result instanceof TestCaseResult
-                            && (result.hasErrors() || result.hasFailures())
-                            ) {
-                            lastFailure = (TestCaseResult) result;
-                        }
+        private TestCaseResult getPreviousFailure(Result result) {
+            if (findSelected == null) {
+                if (result == selected) {
+                    return lastFailure;
+                } else {
+                    if (result instanceof TestCaseResult
+                        && (result.hasErrors() || result.hasFailures())) {
+                        lastFailure = (TestCaseResult) result;
                     }
                 }
+            }
 
-                if (result instanceof TestSuiteResult) {
-                    TestCaseResult testCase = getPreviousFailure(result.getChildren());
+            if (result instanceof TestSuiteResult) {
+                for (Result childResult: result.getChildren()) {
+                    TestCaseResult testCase = getPreviousFailure(childResult);
                     if (testCase != null) {
                         return testCase;
                     }
                 }
             }
+
             return null;
         }
     }
