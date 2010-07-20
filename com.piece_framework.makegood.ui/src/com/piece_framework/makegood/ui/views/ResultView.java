@@ -426,11 +426,16 @@ public class ResultView extends ViewPart {
     }
 
     void printCurrentlyRunningTest(TestCaseResult currentTestCase) {
-        setContentDescription(
-            currentTestCase.getClassName() +
-            " - " + //$NON-NLS-1$
-            currentTestCase.getName()
-        );
+        String className = currentTestCase.getClassName();
+        if (className != null) {
+            setContentDescription(
+                currentTestCase.getClassName() +
+                " - " + //$NON-NLS-1$
+                currentTestCase.getName()
+            );
+        } else {
+            setContentDescription(currentTestCase.getName());
+        }
     }
 
     private void initializeActions(IViewSite site) {
