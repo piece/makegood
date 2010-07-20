@@ -86,28 +86,26 @@ public class JUnitXMLReaderTest {
         {
             String expectedTargetClass = "Stagehand_TestRunner_PHPUnitDataProviderTest";
             String expectedFile = EXAMPLES_DIR + "/Stagehand/TestRunner/PHPUnitDataProviderTest.php";
-            TestSuiteResult suite = assertTestSuite(firstSuite.getChildren().get(0),
-                                              expectedTargetClass,
-                                              4, 1, 0,
-                                              expectedFile,
-                                              1
-                                              );
-            TestSuiteResult childSuite = assertTestSuite(suite.getChildren().get(0),
-                                                   "passWithDataProvider",
-                                                   4, 1, 0,
-                                                   expectedFile,
-                                                   4
-                                                   );
-            assertTestCases(childSuite,
-                            expectedTargetClass,
-                            expectedFile,
-                            new String[] {"passWithDataProvider with data set #0",
-                                         "passWithDataProvider with data set #1",
-                                         "passWithDataProvider with data set #2",
-                                         "passWithDataProvider with data set #3"
-                                         },
-                            new int[] {82, 82, 82, 82}
-                            );
+
+            Result suite = firstSuite.getChildren().get(0);
+            assertTestSuite(suite, expectedTargetClass, 4, 1, 0, expectedFile, 1);
+
+            Result childSuite = suite.getChildren().get(0);
+            assertTestSuite(childSuite, "passWithDataProvider", 4, 1, 0, expectedFile, 4);
+
+            assertTestCases(
+                childSuite,
+                expectedTargetClass,
+                expectedFile,
+                new String[] {
+                    "passWithDataProvider with data set #0",
+                    "passWithDataProvider with data set #1",
+                    "passWithDataProvider with data set #2",
+                    "passWithDataProvider with data set #3"
+                },
+                new int[] {82, 82, 82, 82}
+            );
+
             String failureContent = "Stagehand_TestRunner_PHPUnitDataProviderTest::passWithDataProvider with data set #3 (1, 1, 3)\n" +
 "\n" +
 "Failed asserting that <integer:2> matches expected <integer:3>.\n" +
@@ -129,18 +127,18 @@ SRC_DIR + "/Stagehand/TestRunner.php:186\n" +
         {
             String expectedTargetClass = "Stagehand_TestRunner_PHPUnitDependsTest";
             String expectedFile = EXAMPLES_DIR + "/Stagehand/TestRunner/PHPUnitDependsTest.php";
-            TestSuiteResult suite = assertTestSuite(firstSuite.getChildren().get(1),
-                                              expectedTargetClass,
-                                              2, 1, 1,
-                                              expectedFile,
-                                              2
-                                              );
-            assertTestCases(suite,
-                            expectedTargetClass,
-                            expectedFile,
-                            new String[] {"pass", "(Error)"},
-                            new int[] {83, 0}
-                            );
+
+            Result suite = firstSuite.getChildren().get(1);
+            assertTestSuite(suite, expectedTargetClass, 2, 1, 1, expectedFile, 2);
+
+            assertTestCases(
+                suite,
+                expectedTargetClass,
+                expectedFile,
+                new String[] { "pass", "(Error)" },
+                new int[] {83, 0}
+            );
+
             String failureContent = "Stagehand_TestRunner_PHPUnitDependsTest::pass\n" +
 "\n" +
 "Failed asserting that <boolean:false> is true.\n" +
@@ -167,18 +165,18 @@ SRC_DIR + "/Stagehand/TestRunner.php:186\n" +
         {
             String expectedTargetClass = "Stagehand_TestRunner_PHPUnitErrorTest";
             String expectedFile = EXAMPLES_DIR + "/Stagehand/TestRunner/PHPUnitErrorTest.php";
-            TestSuiteResult suite = assertTestSuite(firstSuite.getChildren().get(2),
-                                              expectedTargetClass,
-                                              1, 0, 1,
-                                              expectedFile,
-                                              1
-                                              );
-            assertTestCases(suite,
-                            expectedTargetClass,
-                            expectedFile,
-                            new String[] {"isError"},
-                            new int[] {83}
-                            );
+
+            Result suite = firstSuite.getChildren().get(2);
+            assertTestSuite(suite, expectedTargetClass, 1, 0, 1, expectedFile, 1);
+
+            assertTestCases(
+                suite,
+                expectedTargetClass,
+                expectedFile,
+                new String[] {"isError"},
+                new int[] {83}
+            );
+
             String errorContent = "Stagehand_TestRunner_PHPUnitErrorTest::isError\n" +
 "\n" +
 "Undefined property: Stagehand_TestRunner_PHPUnitErrorTest::$foo\n" +
@@ -200,18 +198,18 @@ SRC_DIR + "/Stagehand/TestRunner.php:186\n" +
         {
             String expectedTargetClass = "Stagehand_TestRunner_PHPUnitExtendedTest";
             String expectedFile = EXAMPLES_DIR + "/Stagehand/TestRunner/PHPUnitExtendedTest.php";
-            TestSuiteResult suite = assertTestSuite(firstSuite.getChildren().get(3),
-                                              expectedTargetClass,
-                                              2, 0, 0,
-                                              expectedFile,
-                                              2
-                                              );
-            assertTestCases(suite,
-                            expectedTargetClass,
-                            expectedFile,
-                            new String[] {"testTestShouldPassExtended", "testTestShouldPassCommon"},
-                            new int[] {80, 80}
-                            );
+
+            Result suite = firstSuite.getChildren().get(3);
+            assertTestSuite(suite, expectedTargetClass, 2, 0, 0, expectedFile, 2);
+
+            assertTestCases(
+                suite,
+                expectedTargetClass,
+                expectedFile,
+                new String[] { "testTestShouldPassExtended", "testTestShouldPassCommon" },
+                new int[] { 80, 80 }
+            );
+
             assertProblems(
                 suite,
                 new ResultType[] { ResultType.PASS, ResultType.PASS },
@@ -223,18 +221,18 @@ SRC_DIR + "/Stagehand/TestRunner.php:186\n" +
         {
             String expectedTargetClass = "Stagehand_TestRunner_PHPUnitFailureTest";
             String expectedFile = EXAMPLES_DIR + "/Stagehand/TestRunner/PHPUnitFailureTest.php";
-            TestSuiteResult suite = assertTestSuite(firstSuite.getChildren().get(4),
-                                              expectedTargetClass,
-                                              1, 1, 0,
-                                              expectedFile,
-                                              1
-                                              );
-            assertTestCases(suite,
-                            expectedTargetClass,
-                            expectedFile,
-                            new String[] {"isFailure"},
-                            new int[] {83}
-                            );
+
+            Result suite = firstSuite.getChildren().get(4);
+            assertTestSuite(suite, expectedTargetClass, 1, 1, 0, expectedFile, 1);
+
+            assertTestCases(
+                suite,
+                expectedTargetClass,
+                expectedFile,
+                new String[] { "isFailure" },
+                new int[] { 83 }
+            );
+
             String failureContent = "Stagehand_TestRunner_PHPUnitFailureTest::isFailure\n" +
 "\n" +
 "This is an error message.\n" +
@@ -257,18 +255,18 @@ SRC_DIR + "/Stagehand/TestRunner.php:186\n" +
         {
             String expectedTargetClass = "Stagehand_TestRunner_PHPUnitImcompleteTest";
             String expectedFile = EXAMPLES_DIR + "/Stagehand/TestRunner/PHPUnitIncompleteTest.php";
-            TestSuiteResult suite = assertTestSuite(firstSuite.getChildren().get(5),
-                                              expectedTargetClass,
-                                              1, 0, 1,
-                                              expectedFile,
-                                              1
-                                              );
-            assertTestCases(suite,
-                            expectedTargetClass,
-                            expectedFile,
-                            new String[] {"testTestShouldBeImcomplete"},
-                            new int[] {80}
-                            );
+
+            Result suite = firstSuite.getChildren().get(5);
+            assertTestSuite(suite, expectedTargetClass, 1, 0, 1, expectedFile, 1);
+
+            assertTestCases(
+                suite,
+                expectedTargetClass,
+                expectedFile,
+                new String[] { "testTestShouldBeImcomplete" },
+                new int[] { 80 }
+            );
+
             String errorContent = "Incomplete Test" + EXAMPLES_DIR + "/Stagehand/TestRunner/PHPUnitIncompleteTest.php:82\n" +
 SRC_DIR + "/Stagehand/TestRunner/Runner/PHPUnitRunner.php:135\n" +
 SRC_DIR + "/Stagehand/TestRunner.php:390\n" +
@@ -286,18 +284,18 @@ SRC_DIR + "/Stagehand/TestRunner.php:186\n" +
         {
             String expectedTargetClass = "Stagehand_TestRunner_PHPUnitMultipleClasses1Test";
             String expectedFile = EXAMPLES_DIR + "/Stagehand/TestRunner/PHPUnitMultipleClassesTest.php";
-            TestSuiteResult suite = assertTestSuite(firstSuite.getChildren().get(6),
-                                              expectedTargetClass,
-                                              2, 0, 0,
-                                              expectedFile,
-                                              2
-                                              );
-            assertTestCases(suite,
-                            expectedTargetClass,
-                            expectedFile,
-                            new String[] {"pass1", "pass2"},
-                            new int[] {94, 102}
-                            );
+
+            Result suite = firstSuite.getChildren().get(6);
+            assertTestSuite(suite, expectedTargetClass, 2, 0, 0, expectedFile, 2);
+
+            assertTestCases(
+                suite,
+                expectedTargetClass,
+                expectedFile,
+                new String[] { "pass1", "pass2" },
+                new int[] {94, 102}
+            );
+
             assertProblems(
                  suite,
                  new ResultType[] { ResultType.PASS, ResultType.PASS },
@@ -309,18 +307,18 @@ SRC_DIR + "/Stagehand/TestRunner.php:186\n" +
         {
             String expectedTargetClass = "Stagehand_TestRunner_PHPUnitMultipleClasses2Test";
             String expectedFile = EXAMPLES_DIR + "/Stagehand/TestRunner/PHPUnitMultipleClassesTest.php";
-            TestSuiteResult suite = assertTestSuite(firstSuite.getChildren().get(7),
-                                              expectedTargetClass,
-                                              2, 0, 0,
-                                              expectedFile,
-                                              2
-                                              );
-            assertTestCases(suite,
-                            expectedTargetClass,
-                            expectedFile,
-                            new String[] {"pass1", "pass2"},
-                            new int[] {166, 174}
-                            );
+
+            Result suite = firstSuite.getChildren().get(7);
+            assertTestSuite(suite, expectedTargetClass, 2, 0, 0, expectedFile, 2);
+
+            assertTestCases(
+                suite,
+                expectedTargetClass,
+                expectedFile,
+                new String[] { "pass1", "pass2" },
+                new int[] { 166, 174 }
+            );
+
             assertProblems(
                 suite,
                 new ResultType[] { ResultType.PASS, ResultType.PASS },
@@ -332,18 +330,18 @@ SRC_DIR + "/Stagehand/TestRunner.php:186\n" +
         {
             String expectedTargetClass = "Stagehand_TestRunner_PHPUnitNoTestsTest";
             String expectedFile = EXAMPLES_DIR + "/Stagehand/TestRunner/PHPUnitNoTestsTest.php";
-            TestSuiteResult suite = assertTestSuite(firstSuite.getChildren().get(8),
-                                              expectedTargetClass,
-                                              1, 1, 0,
-                                              expectedFile,
-                                              1
-                                              );
-            assertTestCases(suite,
-                            null,
-                            null,
-                            new String[] {"Warning"},
-                            new int[] {0}
-                            );
+
+            Result suite = firstSuite.getChildren().get(8);
+            assertTestSuite(suite, expectedTargetClass, 1, 1, 0, expectedFile, 1);
+
+            assertTestCases(
+                suite,
+                null,
+                null,
+                new String[] { "Warning" },
+                new int[] { 0 }
+            );
+
             String failureContent = "Warning\n" + 
 "\n" +
 "No tests found in class \"Stagehand_TestRunner_PHPUnitNoTestsTest\".\n" +
@@ -364,18 +362,18 @@ SRC_DIR + "/Stagehand/TestRunner.php:186\n" +
         {
             String expectedTargetClass = "Stagehand_TestRunner_PHPUnitPassTest";
             String expectedFile = EXAMPLES_DIR + "/Stagehand/TestRunner/PHPUnitPassTest.php";
-            TestSuiteResult suite = assertTestSuite(firstSuite.getChildren().get(9),
-                                              expectedTargetClass,
-                                              3, 0, 0,
-                                              expectedFile,
-                                              3
-                                              );
-            assertTestCases(suite,
-                            expectedTargetClass,
-                            expectedFile,
-                            new String[] {"passWithAnAssertion", "passWithMultipleAssertions", "日本語を使用できる"},
-                            new int[] {83, 91, 100}
-                            );
+
+            Result suite = firstSuite.getChildren().get(9);
+            assertTestSuite(suite, expectedTargetClass, 3, 0, 0, expectedFile, 3);
+
+            assertTestCases(
+                suite,
+                expectedTargetClass,
+                expectedFile,
+                new String[] { "passWithAnAssertion", "passWithMultipleAssertions", "日本語を使用できる" },
+                new int[] { 83, 91, 100 }
+            );
+
             assertProblems(
                 suite,
                 new ResultType[] { ResultType.PASS, ResultType.PASS, ResultType.PASS },
@@ -387,18 +385,18 @@ SRC_DIR + "/Stagehand/TestRunner.php:186\n" +
         {
             String expectedTargetClass = "Stagehand_TestRunner_PHPUnitSkippedTest";
             String expectedFile = EXAMPLES_DIR + "/Stagehand/TestRunner/PHPUnitSkippedTest.php";
-            TestSuiteResult suite = assertTestSuite(firstSuite.getChildren().get(10),
-                                              expectedTargetClass,
-                                              1, 0, 1,
-                                              expectedFile,
-                                              1
-                                              );
-            assertTestCases(suite,
-                            expectedTargetClass,
-                            expectedFile,
-                            new String[] {"testTestShouldBeSkipped"},
-                            new int[] {80}
-                            );
+
+            Result suite = firstSuite.getChildren().get(10);
+            assertTestSuite(suite, expectedTargetClass, 1, 0, 1, expectedFile, 1);
+
+            assertTestCases(
+                suite,
+                expectedTargetClass,
+                expectedFile,
+                new String[] { "testTestShouldBeSkipped" },
+                new int[] { 80 }
+            );
+
             String errorContent = "Skipped Test" + EXAMPLES_DIR + "/Stagehand/TestRunner/PHPUnitSkippedTest.php:82\n" +
 SRC_DIR + "/Stagehand/TestRunner/Runner/PHPUnitRunner.php:135\n" +
 SRC_DIR + "/Stagehand/TestRunner.php:390\n" +
@@ -416,18 +414,18 @@ SRC_DIR + "/Stagehand/TestRunner.php:186\n" +
         {
             String expectedTargetClass = "Stagehand_TestRunner_PHPUnitTest1_PHPUnitPassTest";
             String expectedFile = EXAMPLES_DIR + "/Stagehand/TestRunner/PHPUnitTest1/PHPUnitPassTest.php";
-            TestSuiteResult suite = assertTestSuite(firstSuite.getChildren().get(11),
-                                              expectedTargetClass,
-                                              1, 0, 0,
-                                              expectedFile,
-                                              1
-                                              );
-            assertTestCases(suite,
-                            expectedTargetClass,
-                            expectedFile,
-                            new String[] {"testTestShouldPass"},
-                            new int[] {80}
-                            );
+
+            Result suite = firstSuite.getChildren().get(11);
+            assertTestSuite(suite, expectedTargetClass, 1, 0, 0, expectedFile, 1);
+
+            assertTestCases(
+                suite,
+                expectedTargetClass,
+                expectedFile,
+                new String[] { "testTestShouldPass" },
+                new int[] { 80 }
+            );
+
             assertProblems(
                 suite,
                 new ResultType[] { ResultType.PASS },
@@ -439,18 +437,18 @@ SRC_DIR + "/Stagehand/TestRunner.php:186\n" +
         {
             String expectedTargetClass = "Stagehand_TestRunner_PHPUnitTest2_PHPUnitPassTest";
             String expectedFile = EXAMPLES_DIR + "/Stagehand/TestRunner/PHPUnitTest2/PHPUnitPassTest.php";
-            TestSuiteResult suite = assertTestSuite(firstSuite.getChildren().get(12),
-                                              expectedTargetClass,
-                                              1, 0, 0,
-                                              expectedFile,
-                                              1
-                                              );
-            assertTestCases(suite,
-                            expectedTargetClass,
-                            expectedFile,
-                            new String[] {"testTestShouldPass"},
-                            new int[] {80}
-                            );
+
+            Result suite = firstSuite.getChildren().get(12);
+            assertTestSuite(suite, expectedTargetClass, 1, 0, 0, expectedFile, 1);
+
+            assertTestCases(
+                suite,
+                expectedTargetClass,
+                expectedFile,
+                new String[] { "testTestShouldPass" },
+                new int[] { 80 }
+            );
+
             assertProblems(
                 suite,
                 new ResultType[] { ResultType.PASS },
@@ -491,7 +489,7 @@ SRC_DIR + "/Stagehand/TestRunner.php:186\n" +
 
         parser.stop();
 
-        assertTrue(listener.clearAll());
+        assertTrue(listener.finished());
     }
 
     @Test
@@ -568,14 +566,14 @@ SRC_DIR + "/Stagehand/TestRunner.php:186\n" +
         parserThread.start();
     }
 
-    private TestSuiteResult assertTestSuite(Result result,
-                                      String expectedName,
-                                      int expectedTestCount,
-                                      int expectedFailureCount,
-                                      int expectedErrorCount,
-                                      String expectedFile,
-                                      int expectedTestResultsCount
-                                      ) {
+    private void assertTestSuite(
+        Result result,
+        String expectedName,
+        int expectedTestCount,
+        int expectedFailureCount,
+        int expectedErrorCount,
+        String expectedFile,
+        int expectedTestResultsCount) {
         assertTrue(result instanceof TestSuiteResult);
 
         TestSuiteResult suite = (TestSuiteResult) result;
@@ -585,10 +583,9 @@ SRC_DIR + "/Stagehand/TestRunner.php:186\n" +
         assertEquals(expectedErrorCount, suite.getErrorCount());
         assertEquals(expectedFile, suite.getFile());
         assertEquals(expectedTestResultsCount, suite.getChildren().size());
-        return suite;
     }
 
-    private TestCaseResult assertTestCase(
+    private void assertTestCase(
         Result result,
         String expectedName,
         String expectedTargetClass,
@@ -601,11 +598,9 @@ SRC_DIR + "/Stagehand/TestRunner.php:186\n" +
         assertEquals(expectedTargetClass, testCase.getClassName());
         assertEquals(expectedFile, testCase.getFile());
         assertEquals(expectedLine, testCase.getLine());
-
-        return testCase;
     }
 
-    private TestCaseResult assertProblem(
+    private void assertProblem(
         TestCaseResult result,
         ResultType expectedProblemType,
         String expectedTypeClass,
@@ -615,33 +610,24 @@ SRC_DIR + "/Stagehand/TestRunner.php:186\n" +
         assertEquals(expectedProblemType, result.resultType);
         assertEquals(expectedTypeClass, result.failureType);
         assertEquals(expectedContent, result.getFailureTrace());
-
-        return result;
     }
 
-    private TestCaseResult[] assertTestCases(Result result,
-                                       String expectedTargetClass,
-                                       String expectedFile,
-                                       String[] expectedNames,
-                                       int[] expectedLines
-                                       ) {
+    private void assertTestCases(
+        Result result,
+        String expectedTargetClass,
+        String expectedFile,
+        String[] expectedNames,
+        int[] expectedLines) {
         assertTrue(result instanceof TestSuiteResult);
 
         TestSuiteResult suite = (TestSuiteResult) result;
-        List<TestCaseResult> testCases = new ArrayList<TestCaseResult>();
         for (int i = 0; i < suite.getChildren().size(); ++i) {
-            TestCaseResult testCase = assertTestCase(suite.getChildren().get(i),
-                                               expectedNames[i],
-                                               expectedTargetClass,
-                                               expectedFile,
-                                               expectedLines[i]
-                                               );
-            testCases.add(testCase);
+            Result testCase = suite.getChildren().get(i);
+            assertTestCase(testCase, expectedNames[i], expectedTargetClass, expectedFile, expectedLines[i]);
         }
-        return testCases.toArray(new TestCaseResult[] {});
     }
 
-    private ResultType[] assertProblems(
+    private void assertProblems(
         Result result,
         ResultType[] expectedProblemTypes,
         String[] expectedTypeClasses,
@@ -652,16 +638,7 @@ SRC_DIR + "/Stagehand/TestRunner.php:186\n" +
         List<ResultType> problems = new ArrayList<ResultType>();
         for (int i = 0; i < suite.getChildren().size(); ++i) {
             TestCaseResult testCase = (TestCaseResult) suite.getChildren().get(i);
-            TestCaseResult problem =
-                assertProblem(
-                    testCase,
-                    expectedProblemTypes[i],
-                    expectedTypeClasses[i],
-                    expectedContents[i]
-                );
-            problems.add(problem.resultType);
+            assertProblem(testCase, expectedProblemTypes[i], expectedTypeClasses[i], expectedContents[i]);
         }
-
-        return problems.toArray(new ResultType[] {});
     }
 }
