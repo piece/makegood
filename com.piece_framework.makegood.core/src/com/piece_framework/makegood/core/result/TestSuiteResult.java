@@ -19,12 +19,11 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class TestSuiteResult extends Result {
     private String fullPackageName;
     private String packageName;
-    private List<Result> children;
+    private List<Result> children = new CopyOnWriteArrayList<Result>();
     private int allTestCount;
 
     public TestSuiteResult(String name) {
         super(name);
-        children = new CopyOnWriteArrayList<Result>();
     }
 
     public String getFullPackageName() {
