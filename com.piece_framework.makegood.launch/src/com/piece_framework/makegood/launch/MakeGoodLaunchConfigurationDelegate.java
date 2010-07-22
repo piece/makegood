@@ -36,7 +36,6 @@ import org.eclipse.php.internal.debug.core.IPHPDebugConstants;
 import org.eclipse.php.internal.debug.core.launching.PHPLaunch;
 import org.eclipse.php.internal.debug.core.launching.PHPLaunchDelegateProxy;
 import org.eclipse.php.internal.debug.core.model.IPHPDebugTarget;
-import org.eclipse.php.internal.debug.core.sourcelookup.PHPSourceLookupDirector;
 import org.eclipse.php.internal.debug.core.sourcelookup.PHPSourcePathComputerDelegate;
 import org.eclipse.php.internal.debug.ui.PHPDebugPerspectiveFactory;
 
