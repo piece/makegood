@@ -103,7 +103,7 @@ public class Startup implements IStartup {
 
                     String className;
                     if (version.getMinor() >= 2) {
-                        className = PLUGIN_ID + ".ProcessCrashDetector"; //$NON-NLS-1$
+                        className = PLUGIN_ID + ".helios.ProcessCrashDetector"; //$NON-NLS-1$
                     } else {
                         className = PLUGIN_ID + ".galileo.ProcessCrashDetector"; //$NON-NLS-1$
                     }

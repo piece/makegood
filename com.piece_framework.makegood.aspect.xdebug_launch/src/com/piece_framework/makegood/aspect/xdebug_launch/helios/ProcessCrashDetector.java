@@ -9,7 +9,7 @@
  *     IBM Corporation - initial API and implementation
  *     Zend Technologies
  *******************************************************************************/
-package com.piece_framework.makegood.aspect.xdebug_launch;
+package com.piece_framework.makegood.aspect.xdebug_launch.helios;
 
 import java.io.BufferedReader;
 import java.io.IOException;
