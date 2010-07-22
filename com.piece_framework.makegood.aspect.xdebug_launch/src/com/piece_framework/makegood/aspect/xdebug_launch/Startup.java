@@ -24,6 +24,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.osgi.service.resolver.BundleDescription;
+import org.eclipse.php.internal.debug.core.PHPDebugPlugin;
 import org.eclipse.ui.IStartup;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.Version;
@@ -31,13 +32,15 @@ import org.osgi.framework.Version;
 import com.piece_framework.makegood.javassist.BundleLoader;
 
 public class Startup implements IStartup {
+    private static final String PLUGIN_ID = "com.piece_framework.makegood.aspect.xdebug_launch"; //$NON-NLS-1$
+
     @Override
     public void earlyStartup() {
         BundleLoader loader =
             new BundleLoader(
                 new String[]{
                     "com.piece_framework.makegood.launch", //$NON-NLS-1$
-                    "com.piece_framework.makegood.aspect.xdebug_launch" //$NON-NLS-1$
+                    PLUGIN_ID
                 }
             );
         try {
@@ -88,21 +91,21 @@ public class Startup implements IStartup {
             @Override
             public void edit(NewExpr newExpr) throws CannotCompileException {
                 if (newExpr.getClassName().equals("org.eclipse.php.internal.debug.core.zend.debugger.ProcessCrashDetector")) { //$NON-NLS-1$
-                    BundleDescription bundle = Platform.getPlatformAdmin().getState().getBundle("org.eclipse.php.debug.core", null); //$NON-NLS-1$
+                    BundleDescription bundle = Platform.getPlatformAdmin().getState().getBundle(PHPDebugPlugin.ID, null);
                     if (bundle == null) {
-                        throw new CannotCompileException("The bundle org.eclipse.php.debug.core is not found."); //$NON-NLS-1$
+                        throw new CannotCompileException("The bundle " + PHPDebugPlugin.ID + " is not found."); //$NON-NLS-1$ //$NON-NLS-2$
                     }
 
                     Version version = bundle.getVersion();
                     if (version.getMajor() < 2) {
-                        throw new CannotCompileException("The version of the bundle org.eclipse.php.debug.core must be >= 2. The current version is " + version + "."); //$NON-NLS-1$ //$NON-NLS-2$
+                        throw new CannotCompileException("The version of the bundle " + PHPDebugPlugin.ID + " must be >= 2. The current version is " + version + "."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                     }
 
                     String className;
                     if (version.getMinor() >= 2) {
-                        className = "com.piece_framework.makegood.aspect.xdebug_launch.ProcessCrashDetector"; //$NON-NLS-1$
+                        className = PLUGIN_ID + ".ProcessCrashDetector"; //$NON-NLS-1$
                     } else {
-                        className = "com.piece_framework.makegood.aspect.xdebug_launch.galileo.ProcessCrashDetector"; //$NON-NLS-1$
+                        className = PLUGIN_ID + ".galileo.ProcessCrashDetector"; //$NON-NLS-1$
                     }
 
                     newExpr.replace("$_ = new " + className + "($$);"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -112,8 +115,8 @@ public class Startup implements IStartup {
     }
 
     private void log(Exception e) {
-        IStatus status = new Status(IStatus.ERROR, "com.piece_framework.makegood.aspect.xdebug_launch", 0, e.getMessage(), e); //$NON-NLS-1$
-        Bundle bundle = Platform.getBundle("com.piece_framework.makegood.aspect.xdebug_launch"); //$NON-NLS-1$
+        IStatus status = new Status(IStatus.ERROR, PLUGIN_ID, 0, e.getMessage(), e);
+        Bundle bundle = Platform.getBundle(PLUGIN_ID);
         Platform.getLog(bundle).log(status);
     }
 }
