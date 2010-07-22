@@ -23,8 +23,10 @@ import javassist.expr.NewExpr;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.osgi.service.resolver.BundleDescription;
 import org.eclipse.ui.IStartup;
 import org.osgi.framework.Bundle;
+import org.osgi.framework.Version;
 
 import com.piece_framework.makegood.javassist.BundleLoader;
 
@@ -86,9 +88,24 @@ public class Startup implements IStartup {
             @Override
             public void edit(NewExpr newExpr) throws CannotCompileException {
                 if (newExpr.getClassName().equals("org.eclipse.php.internal.debug.core.zend.debugger.ProcessCrashDetector")) { //$NON-NLS-1$
-                    newExpr.replace(
-"$_ = new com.piece_framework.makegood.aspect.xdebug_launch.ProcessCrashDetector($$);" //$NON-NLS-1$
-                    );
+                    BundleDescription bundle = Platform.getPlatformAdmin().getState().getBundle("org.eclipse.php.debug.core", null); //$NON-NLS-1$
+                    if (bundle == null) {
+                        throw new CannotCompileException("The bundle org.eclipse.php.debug.core is not found."); //$NON-NLS-1$
+                    }
+
+                    Version version = bundle.getVersion();
+                    if (version.getMajor() < 2) {
+                        throw new CannotCompileException("The version of the bundle org.eclipse.php.debug.core must be >= 2. The current version is " + version + "."); //$NON-NLS-1$ //$NON-NLS-2$
+                    }
+
+                    String className;
+                    if (version.getMinor() >= 2) {
+                        className = "com.piece_framework.makegood.aspect.xdebug_launch.ProcessCrashDetector"; //$NON-NLS-1$
+                    } else {
+                        className = "com.piece_framework.makegood.aspect.xdebug_launch.galileo.ProcessCrashDetector"; //$NON-NLS-1$
+                    }
+
+                    newExpr.replace("$_ = new " + className + "($$);"); //$NON-NLS-1$ //$NON-NLS-2$
                 }
             }
         });
