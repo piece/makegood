@@ -89,6 +89,7 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
         preventConsoleViewFocusing();
         progress = new RunProgress();
         failures = new Failures();
+        currentTestCase = null;
 
         junitXMLReader = new JUnitXMLReader(new File(junitXMLFile));
         junitXMLReader.addListener(new ResultJUnitXMLReaderListener());
@@ -179,7 +180,6 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
                 if (resultView == null) return Status.CANCEL_STATUS;
 
                 resultView.stop();
-                resultView.refresh(progress, currentTestCase);
 
                 if (hasErrors == true) {
                     ViewShow.show(IConsoleConstants.ID_CONSOLE_VIEW);

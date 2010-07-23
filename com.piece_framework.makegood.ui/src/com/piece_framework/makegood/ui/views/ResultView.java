@@ -359,8 +359,6 @@ public class ResultView extends ViewPart {
         );
         processTimeAverage.getParent().layout();
 
-        showTimer.show();
-
         passCount.setCount(progress.getPassCount());
         failureCount.setCount(progress.getFailureCount());
         errorCount.setCount(progress.getErrorCount());
