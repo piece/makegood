@@ -109,18 +109,26 @@ public class RelatedTestsLaunchShortcut extends MakeGoodLaunchShortcut {
         if (toolkit == null) {
             return;
         }
-        StringBuilder patternString = new StringBuilder();
+
+        SearchPattern pattern = null;
         for (IType type: types) {
             Debug.println(type.getElementName());
-            patternString.append(patternString.length() > 0 ? "|" : ""); //$NON-NLS-1$ //$NON-NLS-2$
-            patternString.append(type.getElementName());
+
+            SearchPattern patternForType =
+                SearchPattern.createPattern(
+                    type.getElementName(),
+                    IDLTKSearchConstants.TYPE,
+                    IDLTKSearchConstants.REFERENCES,
+                    SearchPattern.R_FULL_MATCH,
+                    toolkit
+                );
+            if (pattern == null) {
+                pattern = patternForType;
+            } else {
+                pattern = SearchPattern.createOrPattern(pattern, patternForType);
+            }
         }
-        SearchPattern pattern = SearchPattern.createPattern(patternString.toString(),
-                                                            IDLTKSearchConstants.TYPE,
-                                                            IDLTKSearchConstants.REFERENCES,
-                                                            SearchPattern.R_REGEXP_MATCH,
-                                                            toolkit
-                                                            );
+
         IDLTKSearchScope scope = SearchEngine.createSearchScope(types.get(0).getScriptProject());
         SearchEngine engine = new SearchEngine();
         try {

@@ -26,8 +26,17 @@ import org.eclipse.ui.IStartup;
 import org.osgi.framework.Bundle;
 
 import com.piece_framework.makegood.javassist.BundleLoader;
+import com.piece_framework.makegood.javassist.CannotWeaveException;
+import com.piece_framework.makegood.javassist.WeavingChecker;
 
 public class Startup implements IStartup {
+    private static final String XDEBUGEXELAUNCHCONFIGURATIONDELEGATE_LAUNCH_CALL_GETLOCATION =
+        "XDebugExeLaunchConfigurationDelegate#launch() [call getLocation()]";     //$NON-NLS-1$
+    private WeavingChecker checker =
+        new WeavingChecker(
+            new String[] {XDEBUGEXELAUNCHCONFIGURATIONDELEGATE_LAUNCH_CALL_GETLOCATION}
+        );
+
     @Override
     public void earlyStartup() {
         BundleLoader loader =
@@ -45,9 +54,12 @@ public class Startup implements IStartup {
 
         try {
             fixLaunchToUseTestRunnerCommandAsPHPFile();
+            checker.checkAll();
         } catch (NotFoundException e) {
             log(e);
         } catch (CannotCompileException e) {
+            log(e);
+        } catch (CannotWeaveException e) {
             log(e);
         }
 
@@ -65,6 +77,7 @@ public class Startup implements IStartup {
                     m.replace(
 "$_ = new org.eclipse.core.runtime.Path(com.piece_framework.makegood.launch.MakeGoodLaunchConfigurationDelegate.getCommandPath());" //$NON-NLS-1$
                     );
+                    checker.pass(XDEBUGEXELAUNCHCONFIGURATIONDELEGATE_LAUNCH_CALL_GETLOCATION);
                 }
             }
         });
