@@ -88,6 +88,7 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
 
         preventConsoleViewFocusing();
         progress = new RunProgress();
+        progress.start();
         failures = new Failures();
         currentTestCase = null;
 
@@ -122,7 +123,7 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
                 TestRunner.restoreFocusToLastActivePart();
 
                 resultView.reset();
-                resultView.start(progress, failures);
+                resultView.startTest(progress, failures);
                 return Status.OK_STATUS;
             }
         };
@@ -170,13 +171,15 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
             Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
         }
 
+        progress.end();
+
         Job job = new UIJob("MakeGood Test End") { //$NON-NLS-1$
             @Override
             public IStatus runInUIThread(IProgressMonitor monitor) {
                 ResultView resultView = (ResultView) ViewShow.find(ResultView.ID);
                 if (resultView == null) return Status.CANCEL_STATUS;
 
-                resultView.stop();
+                resultView.endTest();
 
                 if (hasErrors == true) {
                     ViewShow.show(IConsoleConstants.ID_CONSOLE_VIEW);
@@ -238,7 +241,7 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
                     ResultView resultView = (ResultView) ViewShow.find(ResultView.ID);
                     if (resultView == null) return Status.CANCEL_STATUS;
                     resultView.printCurrentlyRunningTestCase(currentTestCase);
-                    resultView.refreshOnStartTestCase(currentTestCase);
+                    resultView.updateOnStartTestCase(currentTestCase);
                     return Status.OK_STATUS;
                 }
             };
@@ -262,7 +265,7 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
                 public IStatus runInUIThread(IProgressMonitor monitor) {
                     ResultView resultView = (ResultView) ViewShow.find(ResultView.ID);
                     if (resultView == null) return Status.CANCEL_STATUS;
-                    resultView.refreshOnEndTestCase(currentTestCase);
+                    resultView.updateOnEndTestCase(currentTestCase);
                     return Status.OK_STATUS;
                 }
             };

@@ -45,7 +45,9 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Tree;
+import org.eclipse.ui.IPartListener2;
 import org.eclipse.ui.IViewSite;
+import org.eclipse.ui.IWorkbenchPartReference;
 import org.eclipse.ui.contexts.IContextService;
 import org.eclipse.ui.part.ViewPart;
 
@@ -67,7 +69,7 @@ import com.piece_framework.makegood.ui.ide.EditorOpen;
 import com.piece_framework.makegood.ui.launch.ActivePart;
 import com.piece_framework.makegood.ui.launch.TestRunner;
 
-public class ResultView extends ViewPart {
+public class ResultView extends ViewPart implements IPartListener2 {
     public static final String ID = "com.piece_framework.makegood.ui.views.resultView"; //$NON-NLS-1$
     private static final String CONTEXT_ID = "com.piece_framework.makegood.ui.contexts.resultView"; //$NON-NLS-1$
 
@@ -79,7 +81,7 @@ public class ResultView extends ViewPart {
     private TreeViewer resultTreeViewer;
     private Label progressRate;
     private Label processTimeAverage;
-    private ShowTimer showTimer;
+    private ElapsedTimer elapsedTimer;
     private IAction stopTestAction;
     private IAction rerunTestAction;
     private IAction runAllTestsAction;
@@ -100,20 +102,9 @@ public class ResultView extends ViewPart {
     };
 
     @Override
-    public IViewSite getViewSite() {
-        IViewSite site = super.getViewSite();
-
-        if (!actionsInitialized) {
-            initializeActions(site);
-        }
-
-        return site;
-    }
-
-    @Override
     public void createPartControl(final Composite parent) {
         IContextService service = (IContextService) getSite().getService(IContextService.class);
-        service.activateContext(CONTEXT_ID); //$NON-NLS-1$
+        service.activateContext(CONTEXT_ID);
 
         parent.setLayout(adjustLayout(new GridLayout(1, false)));
 
@@ -237,6 +228,10 @@ public class ResultView extends ViewPart {
 
         failureTrace = createFailureTrace(row3);
 
+        IViewSite site = getViewSite();
+        site.getPage().addPartListener((IPartListener2) this);
+        initializeActions(site);
+
         reset();
     }
 
@@ -327,6 +322,16 @@ public class ResultView extends ViewPart {
         moveToPreviousOrNextFailure(Failures.FIND_PREVIOUS);
     }
 
+    @Override
+    public void dispose() {
+        IViewSite site = getViewSite();
+        if (site != null) {
+            site.getPage().removePartListener((IPartListener2) this);
+        }
+
+        super.dispose();
+    }
+
     public void filterResults(boolean showsFailuresOnly) {
         if (showsFailuresOnly) {
             resultTreeViewer.addFilter(failureViewFilter);
@@ -335,56 +340,59 @@ public class ResultView extends ViewPart {
         }
     }
 
+    @Override
+    public void partActivated(IWorkbenchPartReference partRef) {
+        if (!ID.equals(partRef.getId())) return;
+        update();
+    }
+
+    @Override
+    public void partBroughtToTop(IWorkbenchPartReference partRef) {}
+
+    @Override
+    public void partClosed(IWorkbenchPartReference partRef) {}
+
+    @Override
+    public void partDeactivated(IWorkbenchPartReference partRef) {}
+
+    @Override
+    public void partOpened(IWorkbenchPartReference partRef) {
+        if (!ID.equals(partRef.getId())) return;
+        update();
+    }
+
+    @Override
+    public void partHidden(IWorkbenchPartReference partRef) {}
+
+    @Override
+    public void partVisible(IWorkbenchPartReference partRef) {
+        if (!ID.equals(partRef.getId())) return;
+        update();
+    }
+
+    @Override
+    public void partInputChanged(IWorkbenchPartReference partRef) {}
+
     void setTreeInput(TestSuiteResult result) {
         resultTreeViewer.setInput(result);
     }
 
-    void refreshOnEndTestCase(TestCaseResult currentTestCase) {
-        progressRate.setText(
-            String.format("%3d", runProgress.calculateRate()) + //$NON-NLS-1$
-            Messages.TestResultView_percent +
-            "  " //$NON-NLS-1$
-        );
-
-        if (runProgress.hasFailures()) progressBar.red();
-        progressBar.update(runProgress.calculateRate());
-
-        processTimeAverage.setText(
-            TimeFormatter.format(
-                runProgress.calculateProcessTimeAverage(),
-                Messages.TestResultView_second,
-                Messages.TestResultView_millisecond
-            ) +
-            "/" + //$NON-NLS-1$
-            Messages.TestResultView_averageTest
-        );
-        processTimeAverage.getParent().layout();
-
-        passCount.setCount(runProgress.getPassCount());
-        failureCount.setCount(runProgress.getFailureCount());
-        errorCount.setCount(runProgress.getErrorCount());
-
-        resultTreeViewer.refresh();
+    void updateOnEndTestCase(TestCaseResult currentTestCase) {
+        updateResult();
         resultTreeViewer.setSelection(new StructuredSelection(currentTestCase));
     }
 
-    void refreshOnStartTestCase(TestCaseResult currentTestCase) {
-        testCount.setText(
-            Messages.TestResultView_testsLabel +
-            ": " + //$NON-NLS-1$
-            (runProgress.getTestCount() + 1) +
-            "/" + //$NON-NLS-1$
-            runProgress.getAllTestCount()
-        );
+    void updateOnStartTestCase(TestCaseResult currentTestCase) {
+        updateTestCount();
 
         resultTreeViewer.refresh();
         resultTreeViewer.expandAll();
         resultTreeViewer.setSelection(new StructuredSelection(currentTestCase));
     }
 
-    void start(RunProgress runProgress, Failures failures) {
-        showTimer = new ShowTimer(elapsedTime, processTime, runProgress, 200);
-        showTimer.start();
+    void startTest(RunProgress runProgress, Failures failures) {
+        elapsedTimer = new ElapsedTimer(200);
+        elapsedTimer.schedule();
 
         this.runProgress = runProgress;
         this.failures = failures;
@@ -394,9 +402,7 @@ public class ResultView extends ViewPart {
         runAllTestsAction.setEnabled(false);
     }
 
-    void stop() {
-        showTimer.stop();
-
+    void endTest() {
         stopTestAction.setEnabled(false);
         rerunTestAction.setEnabled(TestRunner.hasLastTest());
         runAllTestsAction.setEnabled(ActivePart.getInstance().isAllTestsRunnable());
@@ -455,7 +461,7 @@ public class ResultView extends ViewPart {
             (ActionContributionItem) manager.find(StopTestAction.ID);
         if (stopTestItem != null) {
             stopTestAction = stopTestItem.getAction();
-            stopTestAction.setEnabled(false);
+            stopTestAction.setEnabled(MakeGoodLaunchConfigurationDelegate.hasActiveMakeGoodLaunches());
         }
 
         ActionContributionItem rerunTestItem =
@@ -469,7 +475,7 @@ public class ResultView extends ViewPart {
             (ActionContributionItem) manager.find(RunAllTestsAction.ID);
         if (runAllTestsItem != null) {
             runAllTestsAction = runAllTestsItem.getAction();
-            runAllTestsAction.setEnabled(false);
+            runAllTestsAction.setEnabled(ActivePart.getInstance().isAllTestsRunnable());
         }
     }
 
@@ -491,6 +497,79 @@ public class ResultView extends ViewPart {
         if (previousOrNextResult == null) return;
         resultTreeViewer.expandAll();
         resultTreeViewer.setSelection(new StructuredSelection(previousOrNextResult), true);
+    }
+
+    private void updateResult() {
+        progressRate.setText(
+            String.format("%3d", runProgress.calculateRate()) + //$NON-NLS-1$
+            Messages.TestResultView_percent +
+            "  " //$NON-NLS-1$
+        );
+
+        if (runProgress.hasFailures()) progressBar.red();
+        progressBar.update(runProgress.calculateRate());
+
+        processTimeAverage.setText(
+            TimeFormatter.format(
+                runProgress.calculateProcessTimeAverage(),
+                Messages.TestResultView_second,
+                Messages.TestResultView_millisecond
+            ) +
+            "/" + //$NON-NLS-1$
+            Messages.TestResultView_averageTest
+        );
+        processTimeAverage.getParent().layout();
+
+        processTime.setText(
+            Messages.TestResultView_testTime +
+            ": " + //$NON-NLS-1$
+            TimeFormatter.format(
+                runProgress.getProcessTime(),
+                Messages.TestResultView_second,
+                Messages.TestResultView_millisecond
+            )
+        );
+
+        passCount.setCount(runProgress.getPassCount());
+        failureCount.setCount(runProgress.getFailureCount());
+        errorCount.setCount(runProgress.getErrorCount());
+
+        resultTreeViewer.refresh();
+    }
+
+    private void updateElapsedTime() {
+        elapsedTime.setText(
+            Messages.TestResultView_realTime +
+            ": " + //$NON-NLS-1$
+            TimeFormatter.format(
+                runProgress.getElapsedTime(),
+                Messages.TestResultView_second,
+                Messages.TestResultView_millisecond
+            )
+        );
+    }
+
+    private void updateTestCount() {
+        testCount.setText(
+            Messages.TestResultView_testsLabel +
+            ": " + //$NON-NLS-1$
+            (runProgress.isRunning() ? runProgress.getTestCount() + 1 : runProgress.getTestCount()) +
+            "/" + //$NON-NLS-1$
+            runProgress.getAllTestCount()
+        );
+    }
+
+    private void update() {
+        IViewSite site = super.getViewSite();
+        if (site == null) return;
+
+        initializeActions(site);
+
+        if (runProgress != null) {
+            updateResult();
+            updateElapsedTime();
+            updateTestCount();
+        }
     }
 
     private class ResultLabel {
@@ -574,63 +653,27 @@ public class ResultView extends ViewPart {
         }
     }
 
-    private class ShowTimer implements Runnable {
-        private Label elapsedTime;
-        private Label processTime;
-        private RunProgress progress;
+    private class ElapsedTimer implements Runnable {
         private int delay;
-        private long startTime;
-        private boolean stop;
 
-        private ShowTimer(
-            Label elapsedTime,
-            Label processTime,
-            RunProgress progress,
-            int delay) {
-            this.elapsedTime = elapsedTime;
-            this.processTime = processTime;
-            this.progress = progress;
+        private ElapsedTimer(int delay) {
             this.delay = delay;
-        }
-
-        private void start() {
-            startTime = System.nanoTime();
-            schedule();
-        }
-
-        private void stop() {
-            stop = true;
         }
 
         private void schedule() {
             elapsedTime.getDisplay().timerExec(delay, this);
         }
 
-        private void show() {
-            elapsedTime.setText(
-                Messages.TestResultView_realTime +
-                ": " + //$NON-NLS-1$
-                TimeFormatter.format(
-                    System.nanoTime() - startTime,
-                    Messages.TestResultView_second,
-                    Messages.TestResultView_millisecond
-                )
-            );
-            processTime.setText(
-                Messages.TestResultView_testTime +
-                ": " + //$NON-NLS-1$
-                TimeFormatter.format(
-                    progress.getProcessTime(),
-                    Messages.TestResultView_second,
-                    Messages.TestResultView_millisecond
-                )
-            );
+        private void update() {
+            updateElapsedTime();
         }
 
         @Override
         public void run() {
-            show();
-            if (!stop) schedule();
+            update();
+            if (runProgress.isRunning()) {
+                schedule();
+            }
         }
     }
 

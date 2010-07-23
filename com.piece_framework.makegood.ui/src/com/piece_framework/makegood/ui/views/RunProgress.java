@@ -20,6 +20,9 @@ class RunProgress {
     private long startTimeForTestCase;
     private long processTimeForTestCase;
     private TestSuiteResult suite;
+    private long startTime;
+    private long endTime;
+    private boolean isRunning = false;
 
     RunProgress() {
         suite = new TestSuiteResult(null);
@@ -92,5 +95,27 @@ class RunProgress {
 
     boolean hasFailures() {
         return suite.hasFailures() || suite.hasErrors();
+    }
+
+    void start() {
+        isRunning = true;
+        startTime = System.nanoTime();
+    }
+
+    void end() {
+        endTime = System.nanoTime();
+        isRunning = false;
+    }
+
+    boolean isRunning() {
+        return isRunning;
+    }
+
+    long getElapsedTime() {
+        if (isRunning) {
+            return System.nanoTime() - startTime;
+        } else {
+            return endTime - startTime;
+        }
     }
 }
