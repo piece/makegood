@@ -88,6 +88,7 @@ public class ResultView extends ViewPart {
     private Label processTime;
     private boolean actionsInitialized = false;
     private Failures failures;
+    private RunProgress runProgress;
 
     private ViewerFilter failureViewFilter = new ViewerFilter() {
         @Override
@@ -338,19 +339,19 @@ public class ResultView extends ViewPart {
         resultTreeViewer.setInput(result);
     }
 
-    void refreshOnEndTestCase(RunProgress progress, TestCaseResult currentTestCase) {
+    void refreshOnEndTestCase(TestCaseResult currentTestCase) {
         progressRate.setText(
-            String.format("%3d", progress.calculateRate()) + //$NON-NLS-1$
+            String.format("%3d", runProgress.calculateRate()) + //$NON-NLS-1$
             Messages.TestResultView_percent +
             "  " //$NON-NLS-1$
         );
 
-        if (progress.hasFailures()) progressBar.red();
-        progressBar.update(progress.calculateRate());
+        if (runProgress.hasFailures()) progressBar.red();
+        progressBar.update(runProgress.calculateRate());
 
         processTimeAverage.setText(
             TimeFormatter.format(
-                progress.calculateProcessTimeAverage(),
+                runProgress.calculateProcessTimeAverage(),
                 Messages.TestResultView_second,
                 Messages.TestResultView_millisecond
             ) +
@@ -359,21 +360,21 @@ public class ResultView extends ViewPart {
         );
         processTimeAverage.getParent().layout();
 
-        passCount.setCount(progress.getPassCount());
-        failureCount.setCount(progress.getFailureCount());
-        errorCount.setCount(progress.getErrorCount());
+        passCount.setCount(runProgress.getPassCount());
+        failureCount.setCount(runProgress.getFailureCount());
+        errorCount.setCount(runProgress.getErrorCount());
 
         resultTreeViewer.refresh();
         resultTreeViewer.setSelection(new StructuredSelection(currentTestCase));
     }
 
-    void refreshOnStartTestCase(RunProgress progress, TestCaseResult currentTestCase) {
+    void refreshOnStartTestCase(TestCaseResult currentTestCase) {
         testCount.setText(
             Messages.TestResultView_testsLabel +
             ": " + //$NON-NLS-1$
-            (progress.getTestCount() + 1) +
+            (runProgress.getTestCount() + 1) +
             "/" + //$NON-NLS-1$
-            progress.getAllTestCount()
+            runProgress.getAllTestCount()
         );
 
         resultTreeViewer.refresh();
@@ -381,9 +382,12 @@ public class ResultView extends ViewPart {
         resultTreeViewer.setSelection(new StructuredSelection(currentTestCase));
     }
 
-    void start(RunProgress progress) {
-        showTimer = new ShowTimer(elapsedTime, processTime, progress, 200);
+    void start(RunProgress runProgress, Failures failures) {
+        showTimer = new ShowTimer(elapsedTime, processTime, runProgress, 200);
         showTimer.start();
+
+        this.runProgress = runProgress;
+        this.failures = failures;
 
         stopTestAction.setEnabled(true);
         rerunTestAction.setEnabled(false);
@@ -409,10 +413,6 @@ public class ResultView extends ViewPart {
         } else {
             setContentDescription(currentTestCase.getName());
         }
-    }
-
-    void setFailures(Failures failures) {
-        this.failures = failures;
     }
 
     private void initializeActions(IViewSite site) {

@@ -122,8 +122,7 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
                 TestRunner.restoreFocusToLastActivePart();
 
                 resultView.reset();
-                resultView.setFailures(failures);
-                resultView.start(progress);
+                resultView.start(progress, failures);
                 return Status.OK_STATUS;
             }
         };
@@ -241,7 +240,7 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
                     ResultView resultView = (ResultView) ViewShow.find(ResultView.ID);
                     if (resultView == null) return Status.CANCEL_STATUS;
                     resultView.printCurrentlyRunningTestCase(currentTestCase);
-                    resultView.refreshOnStartTestCase(progress, currentTestCase);
+                    resultView.refreshOnStartTestCase(currentTestCase);
                     return Status.OK_STATUS;
                 }
             };
@@ -265,7 +264,7 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
                 public IStatus runInUIThread(IProgressMonitor monitor) {
                     ResultView resultView = (ResultView) ViewShow.find(ResultView.ID);
                     if (resultView == null) return Status.CANCEL_STATUS;
-                    resultView.refreshOnEndTestCase(progress, currentTestCase);
+                    resultView.refreshOnEndTestCase(currentTestCase);
                     return Status.OK_STATUS;
                 }
             };
