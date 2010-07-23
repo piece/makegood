@@ -44,8 +44,13 @@ public class Startup implements IStartup {
             }
         );
 
+    private static Boolean alreadyRunning = Boolean.FALSE;
+
     @Override
     public void earlyStartup() {
+        if (alreadyRunning) return;
+        alreadyRunning = Boolean.TRUE;
+
         BundleLoader loader = new BundleLoader(
                 new String[]{"org.eclipse.php.core", //$NON-NLS-1$
                              "com.piece_framework.makegood.aspect.include_path_search", //$NON-NLS-1$

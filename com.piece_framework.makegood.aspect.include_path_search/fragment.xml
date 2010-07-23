@@ -13,5 +13,12 @@
             target="com.piece_farmework.makegood.aspect.include_path_search.MonitorTarget">
       </monitorTarget>
    </extension>
+   <extension
+         point="org.eclipse.php.core.goalEvaluatorFactories">
+        <factory
+            class="com.piece_farmework.makegood.aspect.include_path_search.MakeGoodGoalEvaluatorFactory"
+            priority="20">
+        </factory>
+   </extension>
 
 </fragment>
