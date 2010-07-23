@@ -338,7 +338,7 @@ public class ResultView extends ViewPart {
         resultTreeViewer.setInput(result);
     }
 
-    void refresh(RunProgress progress, TestCaseResult currentTestCase) {
+    void refreshOnEndTestCase(RunProgress progress, TestCaseResult currentTestCase) {
         progressRate.setText(
             String.format("%3d", progress.calculateRate()) + //$NON-NLS-1$
             Messages.TestResultView_percent +
