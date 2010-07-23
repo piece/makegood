@@ -156,8 +156,6 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
             if (exitValue != 0) {
                 if (!StopTestAction.isStoppedByAction(launch)) {
                     hasErrors = true;
-                } else {
-                    Activator.getDefault().getLog().log(new Status(IStatus.WARNING, Activator.PLUGIN_ID, "A PHP process exit with a non-zero exit status [ " + exitValue + " ]")); //$NON-NLS-1$ //$NON-NLS-2$
                 }
             }
 
