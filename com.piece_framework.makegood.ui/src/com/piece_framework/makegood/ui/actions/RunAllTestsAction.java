@@ -17,7 +17,6 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IViewActionDelegate;
 import org.eclipse.ui.IViewPart;
 
-import com.piece_framework.makegood.ui.launch.ActivePart;
 import com.piece_framework.makegood.ui.launch.TestRunner;
 
 public class RunAllTestsAction implements IViewActionDelegate {
