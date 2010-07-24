@@ -47,6 +47,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.IPartListener2;
 import org.eclipse.ui.IViewSite;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchPartReference;
 import org.eclipse.ui.contexts.IContextService;
 import org.eclipse.ui.part.ViewPart;
@@ -69,7 +70,7 @@ import com.piece_framework.makegood.ui.ide.EditorOpen;
 import com.piece_framework.makegood.ui.launch.ActivePart;
 import com.piece_framework.makegood.ui.launch.TestRunner;
 
-public class ResultView extends ViewPart implements IPartListener2 {
+public class ResultView extends ViewPart {
     public static final String ID = "com.piece_framework.makegood.ui.views.resultView"; //$NON-NLS-1$
     private static final String CONTEXT_ID = "com.piece_framework.makegood.ui.contexts.resultView"; //$NON-NLS-1$
 
@@ -91,6 +92,7 @@ public class ResultView extends ViewPart implements IPartListener2 {
     private boolean actionsInitialized = false;
     private Failures failures;
     private RunProgress runProgress;
+    private ResultViewPartListener partListenr = new ResultViewPartListener();
 
     private ViewerFilter failureViewFilter = new ViewerFilter() {
         @Override
@@ -229,7 +231,7 @@ public class ResultView extends ViewPart implements IPartListener2 {
         failureTrace = createFailureTrace(row3);
 
         IViewSite site = getViewSite();
-        site.getPage().addPartListener((IPartListener2) this);
+        site.getPage().addPartListener(partListenr);
         initializeActions(site);
 
         reset();
@@ -326,7 +328,7 @@ public class ResultView extends ViewPart implements IPartListener2 {
     public void dispose() {
         IViewSite site = getViewSite();
         if (site != null) {
-            site.getPage().removePartListener((IPartListener2) this);
+            site.getPage().removePartListener(partListenr);
         }
 
         super.dispose();
@@ -339,39 +341,6 @@ public class ResultView extends ViewPart implements IPartListener2 {
             resultTreeViewer.removeFilter(failureViewFilter);
         }
     }
-
-    @Override
-    public void partActivated(IWorkbenchPartReference partRef) {
-        if (!ID.equals(partRef.getId())) return;
-        update();
-    }
-
-    @Override
-    public void partBroughtToTop(IWorkbenchPartReference partRef) {}
-
-    @Override
-    public void partClosed(IWorkbenchPartReference partRef) {}
-
-    @Override
-    public void partDeactivated(IWorkbenchPartReference partRef) {}
-
-    @Override
-    public void partOpened(IWorkbenchPartReference partRef) {
-        if (!ID.equals(partRef.getId())) return;
-        update();
-    }
-
-    @Override
-    public void partHidden(IWorkbenchPartReference partRef) {}
-
-    @Override
-    public void partVisible(IWorkbenchPartReference partRef) {
-        if (!ID.equals(partRef.getId())) return;
-        update();
-    }
-
-    @Override
-    public void partInputChanged(IWorkbenchPartReference partRef) {}
 
     void setTreeInput(TestSuiteResult result) {
         resultTreeViewer.setInput(result);
@@ -686,5 +655,49 @@ public class ResultView extends ViewPart implements IPartListener2 {
             setText(""); //$NON-NLS-1$
             hideScrollBar();
         }
+    }
+
+    private class ResultViewPartListener implements IPartListener2 {
+        @Override
+        public void partActivated(IWorkbenchPartReference partRef) {
+            if (!ID.equals(partRef.getId())) {
+                IWorkbenchPart activePart = partRef.getPage().getActivePart();
+                if (activePart != null) {
+                    ActivePart.getInstance().setPart(activePart);
+                    updateStateOfRunAllTestsAction();
+                }
+
+                return;
+            }
+
+            update();
+        }
+
+        @Override
+        public void partBroughtToTop(IWorkbenchPartReference partRef) {}
+
+        @Override
+        public void partClosed(IWorkbenchPartReference partRef) {}
+
+        @Override
+        public void partDeactivated(IWorkbenchPartReference partRef) {}
+
+        @Override
+        public void partOpened(IWorkbenchPartReference partRef) {
+            if (!ID.equals(partRef.getId())) return;
+            update();
+        }
+
+        @Override
+        public void partHidden(IWorkbenchPartReference partRef) {}
+
+        @Override
+        public void partVisible(IWorkbenchPartReference partRef) {
+            if (!ID.equals(partRef.getId())) return;
+            update();
+        }
+
+        @Override
+        public void partInputChanged(IWorkbenchPartReference partRef) {}
     }
 }
