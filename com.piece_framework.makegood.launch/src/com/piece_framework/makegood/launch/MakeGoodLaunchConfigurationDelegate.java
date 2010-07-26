@@ -33,7 +33,6 @@ import org.eclipse.debug.internal.core.LaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.php.debug.core.debugger.parameters.IDebugParametersKeys;
 import org.eclipse.php.internal.debug.core.IPHPDebugConstants;
-import org.eclipse.php.internal.debug.core.launching.PHPLaunch;
 import org.eclipse.php.internal.debug.core.launching.PHPLaunchDelegateProxy;
 import org.eclipse.php.internal.debug.core.model.IPHPDebugTarget;
 import org.eclipse.php.internal.debug.core.sourcelookup.PHPSourcePathComputerDelegate;
@@ -64,20 +63,17 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
         try {
             result = super.finalLaunchCheck(configuration, mode, monitor);
         } catch (DebugException e) {
-            configuration.delete();
             synchronized (launchLock) {
                 preLaunchCheckCalled = false;
             }
             return false;
         } catch (CoreException e) {
-            configuration.delete();
             synchronized (launchLock) {
                 preLaunchCheckCalled = false;
             }
             throw e;
         }
         if (!result) {
-            configuration.delete();
             synchronized (launchLock) {
                 preLaunchCheckCalled = false;
             }
@@ -94,7 +90,7 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
             throw e;
         }
 
-        ILaunch launch = new PHPLaunch(configuration, mode, createSourceLocator(configuration, mode));
+        ILaunch launch = new MakeGoodLaunch(configuration, mode, createSourceLocator(configuration, mode));
         launch.setAttribute(MAKEGOOD_LAUNCH_MARKER, Boolean.TRUE.toString());
 
         return launch;
@@ -126,14 +122,12 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
                 preLaunchCheckCalled = true;
             }
         } catch (DebugException e) {
-            configuration.delete();
             synchronized (launchLock) {
                 preLaunchCheckCalled = false;
             }
             monitor.setCanceled(true);
             return false;
         } catch (CoreException e) {
-            configuration.delete();
             synchronized (launchLock) {
                 preLaunchCheckCalled = false;
             }
@@ -141,7 +135,6 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
             throw e;
         }
         if (!result) {
-            configuration.delete();
             synchronized (launchLock) {
                 preLaunchCheckCalled = false;
             }
@@ -203,7 +196,6 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
             synchronized (launchLock) {
                 preLaunchCheckCalled = false;
                 if (currentConfiguration != null) {
-                    currentConfiguration.delete();
                     currentConfiguration = null;
                 }
             }

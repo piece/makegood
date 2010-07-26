@@ -50,6 +50,7 @@ public class Activator extends AbstractUIPlugin {
         super.stop(context);
 
         JUnitXMLRegistry.destroy();
+        MakeGoodLaunch.clearLaunchConfigurations();
     }
 
     /**
