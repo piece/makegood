@@ -143,7 +143,10 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
             int exitValue = 0;
             do {
                 try {
-                    exitValue = process.getExitValue();
+                    if (process.isTerminated()) {
+                        exitValue = process.getExitValue();
+                    }
+
                     break;
                 } catch (DebugException e) {
                     Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
