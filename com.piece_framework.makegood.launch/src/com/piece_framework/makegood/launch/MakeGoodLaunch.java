@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.model.ISourceLocator;
@@ -43,5 +44,16 @@ public class MakeGoodLaunch extends PHPLaunch {
         for (int i = 0; i < launchConfigurations.size(); ++i) {
             launchConfigurations.get(i).delete();
         }
+    }
+
+    public static boolean hasActiveLaunches() {
+        for (ILaunch launch: DebugPlugin.getDefault().getLaunchManager().getLaunches()) {
+            if (launch.isTerminated()) continue;
+            if (launch instanceof MakeGoodLaunch) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

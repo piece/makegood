@@ -21,7 +21,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.internal.dialogs.PropertyDialog;
 
 import com.piece_framework.makegood.core.MakeGoodProperty;
-import com.piece_framework.makegood.launch.MakeGoodLaunchConfigurationDelegate;
+import com.piece_framework.makegood.launch.MakeGoodLaunch;
 import com.piece_framework.makegood.launch.RuntimeConfiguration;
 import com.piece_framework.makegood.ui.Messages;
 import com.piece_framework.makegood.ui.ide.ViewShow;
@@ -81,7 +81,7 @@ public class TestRunner {
             return;
         }
 
-        if (MakeGoodLaunchConfigurationDelegate.hasActiveMakeGoodLaunches()) {
+        if (MakeGoodLaunch.hasActiveLaunches()) {
             if (!isRunWhenFileIsSaved) {
                 raiseTestSessionAlreadyExistsError();
             }

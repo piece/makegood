@@ -21,7 +21,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.DebugException;
-import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
@@ -196,18 +195,6 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
                 }
             }
         }
-    }
-
-    public static boolean hasActiveMakeGoodLaunches() {
-        ILaunch[] launches = DebugPlugin.getDefault().getLaunchManager().getLaunches();
-        for (int i = 0; i < launches.length; i++) {
-            if (launches[i].isTerminated()) continue;
-            if (launches[i] instanceof MakeGoodLaunch) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     public static ILaunch getLaunch(Object eventSource) {

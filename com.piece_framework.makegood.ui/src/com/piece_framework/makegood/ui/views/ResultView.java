@@ -55,7 +55,7 @@ import org.eclipse.ui.part.ViewPart;
 import com.piece_framework.makegood.core.result.Result;
 import com.piece_framework.makegood.core.result.TestCaseResult;
 import com.piece_framework.makegood.core.result.TestSuiteResult;
-import com.piece_framework.makegood.launch.MakeGoodLaunchConfigurationDelegate;
+import com.piece_framework.makegood.launch.MakeGoodLaunch;
 import com.piece_framework.makegood.launch.RuntimeConfiguration;
 import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.Messages;
@@ -279,7 +279,7 @@ public class ResultView extends ViewPart {
 
     public void updateStateOfRunAllTestsAction() {
         if (!actionsInitialized) return;
-        if (MakeGoodLaunchConfigurationDelegate.hasActiveMakeGoodLaunches()) return;
+        if (MakeGoodLaunch.hasActiveLaunches()) return;
 
         runAllTestsAction.setEnabled(ActivePart.getInstance().isAllTestsRunnable());
 
@@ -430,7 +430,7 @@ public class ResultView extends ViewPart {
             (ActionContributionItem) manager.find(StopTestAction.ID);
         if (stopTestItem != null) {
             stopTestAction = stopTestItem.getAction();
-            stopTestAction.setEnabled(MakeGoodLaunchConfigurationDelegate.hasActiveMakeGoodLaunches());
+            stopTestAction.setEnabled(MakeGoodLaunch.hasActiveLaunches());
         }
 
         ActionContributionItem rerunTestItem =
