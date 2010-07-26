@@ -86,8 +86,18 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
     }
 
     @Override
-    public ILaunch getLaunch(ILaunchConfiguration configuration, String mode) throws CoreException {
-        return new PHPLaunch(configuration, mode, null);
+    public ILaunch getLaunch(ILaunchConfiguration originalConfiguration, String mode) throws CoreException {
+        ILaunchConfiguration configuration = null;
+        try {
+            configuration = createConfiguration(originalConfiguration);
+        } catch (CoreException e) {
+            throw e;
+        }
+
+        ILaunch launch = new PHPLaunch(configuration, mode, createSourceLocator(configuration, mode));
+        launch.setAttribute(MAKEGOOD_LAUNCH_MARKER, Boolean.TRUE.toString());
+
+        return launch;
     }
 
     @Override
@@ -144,21 +154,26 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
     public void launch(
         ILaunchConfiguration originalConfiguration,
         String mode,
-        ILaunch originalLaunch,
-        IProgressMonitor monitor
-    ) throws CoreException {
+        ILaunch launch,
+        IProgressMonitor monitor) throws CoreException {
+        ILaunchConfiguration configuration = launch.getLaunchConfiguration();
+        if (configuration == null) {
+            monitor.setCanceled(true);
+            return;
+        }
+
         synchronized (launchLock) {
             if (currentConfiguration != null) {
                 monitor.setCanceled(true);
                 return;
             }
 
-            if (!originalConfiguration.exists()) {
+            if (!configuration.exists()) {
                 monitor.setCanceled(true);
                 return;
             }
 
-            currentConfiguration = originalConfiguration;
+            currentConfiguration = configuration;
         }
 
         try {
@@ -167,22 +182,6 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
             } catch (SecurityException e) {
                 monitor.setCanceled(true);
                 throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
-            }
-
-            ILaunchConfiguration configuration = null;
-            try {
-                configuration = createConfiguration(originalConfiguration);
-            } catch (CoreException e) {
-                monitor.setCanceled(true);
-                throw e;
-            }
-
-            ILaunch launch = null;
-            try {
-                launch = createLaunch(originalLaunch, configuration);
-            } catch (CoreException e) {
-                monitor.setCanceled(true);
-                throw e;
             }
 
             if (ILaunchManager.DEBUG_MODE.equals(mode)) {
@@ -283,33 +282,6 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
         }
 
         return workingCopy;
-    }
-
-    private ILaunch createLaunch(
-        ILaunch originalLaunch,
-        ILaunchConfiguration configuration) throws CoreException {
-        ILaunch launch =
-            new PHPLaunch(
-                configuration,
-                originalLaunch.getLaunchMode(),
-                createSourceLocator(configuration, originalLaunch.getLaunchMode())
-            );
-
-        launch.setAttribute(
-            DebugPlugin.ATTR_CAPTURE_OUTPUT,
-            originalLaunch.getAttribute(DebugPlugin.ATTR_CAPTURE_OUTPUT)
-        );
-        launch.setAttribute(
-            DebugPlugin.ATTR_CONSOLE_ENCODING,
-            originalLaunch.getAttribute(DebugPlugin.ATTR_CONSOLE_ENCODING)
-        );
-        launch.setAttribute(MAKEGOOD_LAUNCH_MARKER, Boolean.TRUE.toString());
-
-        ILaunchManager manager = DebugPlugin.getDefault().getLaunchManager();
-        manager.removeLaunch(originalLaunch);
-        manager.addLaunch(launch);
-
-        return launch;
     }
 
     public static String getCommandPath() throws CoreException {
