@@ -42,7 +42,6 @@ import com.piece_framework.makegood.stagehand_testrunner.StagehandTestRunner;
 
 public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy {
     private static final String MAKEGOOD_JUNIT_XML_FILE = "MAKEGOOD_JUNIT_XML_FILE"; //$NON-NLS-1$
-    private static final String MAKEGOOD_LAUNCH_MARKER = "MAKEGOOD_LAUNCH_MARKER"; //$NON-NLS-1$
     private final Object launchLock = new Object();
     private ILaunchConfiguration currentConfiguration;
     private boolean preLaunchCheckCalled = false;
@@ -90,10 +89,7 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
             throw e;
         }
 
-        ILaunch launch = new MakeGoodLaunch(configuration, mode, createSourceLocator(configuration, mode));
-        launch.setAttribute(MAKEGOOD_LAUNCH_MARKER, Boolean.TRUE.toString());
-
-        return launch;
+        return new MakeGoodLaunch(configuration, mode, createSourceLocator(configuration, mode));
     }
 
     @Override
@@ -206,16 +202,12 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
         ILaunch[] launches = DebugPlugin.getDefault().getLaunchManager().getLaunches();
         for (int i = 0; i < launches.length; i++) {
             if (launches[i].isTerminated()) continue;
-            if (isMakeGoodLaunch(launches[i])) {
+            if (launches[i] instanceof MakeGoodLaunch) {
                 return true;
             }
         }
 
         return false;
-    }
-
-    public static boolean isMakeGoodLaunch(ILaunch launch) {
-        return Boolean.TRUE.toString().equals(launch.getAttribute(MAKEGOOD_LAUNCH_MARKER));
     }
 
     public static ILaunch getLaunch(Object eventSource) {

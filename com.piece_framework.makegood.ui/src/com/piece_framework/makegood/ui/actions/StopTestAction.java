@@ -22,7 +22,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IViewActionDelegate;
 import org.eclipse.ui.IViewPart;
 
-import com.piece_framework.makegood.launch.MakeGoodLaunchConfigurationDelegate;
+import com.piece_framework.makegood.launch.MakeGoodLaunch;
 import com.piece_framework.makegood.ui.Activator;
 
 public class StopTestAction implements IViewActionDelegate {
@@ -37,7 +37,7 @@ public class StopTestAction implements IViewActionDelegate {
     public void run(IAction action) {
         ILaunchManager manager = DebugPlugin.getDefault().getLaunchManager();
         for (ILaunch launch: manager.getLaunches()) {
-            if (!MakeGoodLaunchConfigurationDelegate.isMakeGoodLaunch(launch)) continue;
+            if (!(launch instanceof MakeGoodLaunch)) continue;
 
             launch.setAttribute(MAKEGOOD_IS_STOPPED_BY_ACTION_MARKER, Boolean.TRUE.toString());
 

@@ -40,6 +40,7 @@ import com.piece_framework.makegood.core.result.JUnitXMLReader;
 import com.piece_framework.makegood.core.result.JUnitXMLReaderListener;
 import com.piece_framework.makegood.core.result.TestCaseResult;
 import com.piece_framework.makegood.core.result.TestSuiteResult;
+import com.piece_framework.makegood.launch.MakeGoodLaunch;
 import com.piece_framework.makegood.launch.MakeGoodLaunchConfigurationDelegate;
 import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.actions.StopTestAction;
@@ -62,7 +63,7 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
             final Object source = events[i].getSource();
             ILaunch launch = MakeGoodLaunchConfigurationDelegate.getLaunch(source);
             if (launch == null) continue;
-            if (!MakeGoodLaunchConfigurationDelegate.isMakeGoodLaunch(launch)) continue;
+            if (!(launch instanceof MakeGoodLaunch)) continue;
 
             if (events[i].getKind() == DebugEvent.CREATE) {
                 handleCreate(launch);
