@@ -29,6 +29,7 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.internal.ui.views.console.ProcessConsole;
 import org.eclipse.debug.ui.IDebugUIConstants;
+import org.eclipse.php.internal.debug.core.model.IPHPDebugTarget;
 import org.eclipse.ui.console.ConsolePlugin;
 import org.eclipse.ui.console.IConsole;
 import org.eclipse.ui.console.IConsoleConstants;
@@ -61,7 +62,7 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
         int size = events.length;
         for (int i = 0; i < size; ++i) {
             final Object source = events[i].getSource();
-            ILaunch launch = MakeGoodLaunchConfigurationDelegate.getLaunch(source);
+            ILaunch launch = getLaunch(source);
             if (launch == null) continue;
             if (!(launch instanceof MakeGoodLaunch)) continue;
 
@@ -201,6 +202,16 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
             IOConsoleOutputStream stderrStream = ((ProcessConsole) console).getStream(IDebugUIConstants.ID_STANDARD_ERROR_STREAM);
             if (stderrStream == null) continue;
             stderrStream.setActivateOnWrite(false);
+        }
+    }
+
+    private ILaunch getLaunch(Object eventSource) {
+        if (eventSource instanceof IPHPDebugTarget) {
+            return ((IPHPDebugTarget) eventSource).getLaunch();
+        } else if (eventSource instanceof IProcess) {
+            return ((IProcess) eventSource).getLaunch();
+        } else {
+            return null;
         }
     }
 

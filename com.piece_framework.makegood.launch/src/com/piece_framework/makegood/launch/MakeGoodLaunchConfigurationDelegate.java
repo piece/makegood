@@ -25,7 +25,6 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
-import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.ISourceLocator;
 import org.eclipse.debug.internal.core.LaunchConfiguration;
 import org.eclipse.debug.internal.core.LaunchConfigurationWorkingCopy;
@@ -33,7 +32,6 @@ import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.php.debug.core.debugger.parameters.IDebugParametersKeys;
 import org.eclipse.php.internal.debug.core.IPHPDebugConstants;
 import org.eclipse.php.internal.debug.core.launching.PHPLaunchDelegateProxy;
-import org.eclipse.php.internal.debug.core.model.IPHPDebugTarget;
 import org.eclipse.php.internal.debug.core.sourcelookup.PHPSourcePathComputerDelegate;
 import org.eclipse.php.internal.debug.ui.PHPDebugPerspectiveFactory;
 
@@ -195,17 +193,6 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
                 }
             }
         }
-    }
-
-    public static ILaunch getLaunch(Object eventSource) {
-        ILaunch launch = null;
-        if (eventSource instanceof IPHPDebugTarget) {
-            launch = ((IPHPDebugTarget) eventSource).getLaunch();
-        } else if (eventSource instanceof IProcess) {
-            launch = ((IProcess) eventSource).getLaunch();
-        }
-
-        return launch;
     }
 
     private ILaunchConfiguration createConfiguration(
