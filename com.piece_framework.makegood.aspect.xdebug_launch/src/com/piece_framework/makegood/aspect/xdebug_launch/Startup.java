@@ -23,7 +23,6 @@ import javassist.expr.NewExpr;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.osgi.service.resolver.BundleDescription;
 import org.eclipse.php.internal.debug.core.PHPDebugPlugin;
 import org.eclipse.ui.IStartup;
 import org.osgi.framework.Bundle;
@@ -109,18 +108,17 @@ public class Startup implements IStartup {
             @Override
             public void edit(NewExpr newExpr) throws CannotCompileException {
                 if (newExpr.getClassName().equals("org.eclipse.php.internal.debug.core.zend.debugger.ProcessCrashDetector")) { //$NON-NLS-1$
-                    BundleDescription bundle = Platform.getPlatformAdmin().getState().getBundle(PHPDebugPlugin.ID, null);
+                    Bundle bundle = Platform.getBundle(PHPDebugPlugin.ID);
                     if (bundle == null) {
                         throw new CannotCompileException("The bundle " + PHPDebugPlugin.ID + " is not found."); //$NON-NLS-1$ //$NON-NLS-2$
                     }
 
-                    Version version = bundle.getVersion();
-                    if (version.getMajor() < 2) {
-                        throw new CannotCompileException("The version of the bundle " + PHPDebugPlugin.ID + " must be >= 2. The current version is " + version + "."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                    if (bundle.getVersion().getMajor() < 2) {
+                        throw new CannotCompileException("The version of the bundle " + PHPDebugPlugin.ID + " must be >= 2. The current version is " + bundle.getVersion() + "."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                     }
 
                     String className;
-                    if (version.getMinor() >= 2) {
+                    if (bundle.getVersion().compareTo(Version.parseVersion("2.2.0")) >= 0) { //$NON-NLS-1$
                         className = PLUGIN_ID + ".helios.ProcessCrashDetector"; //$NON-NLS-1$
                     } else {
                         className = PLUGIN_ID + ".galileo.ProcessCrashDetector"; //$NON-NLS-1$
