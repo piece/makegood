@@ -36,10 +36,15 @@ import com.piece_framework.makegood.javassist.WeavingChecker;
 public class Startup implements IStartup {
     private static final String PLUGIN_ID = "com.piece_framework.makegood.aspect.xdebug_launch"; //$NON-NLS-1$
     private static final String XDEBUGEXELAUNCHCONFIGURATIONDELEGATE_LAUNCH_CALL_GETLOCATION =
-        "XDebugExeLaunchConfigurationDelegate#launch() [call getLocation()]";     //$NON-NLS-1$
+        "XDebugExeLaunchConfigurationDelegate#launch() [call getLocation()]"; //$NON-NLS-1$
+    private static final String XDEBUGEXELAUNCHCONFIGURATIONDELEGATE_LAUNCH_NEW_PROCESSCRASHDETECTOR =
+        "XDebugExeLaunchConfigurationDelegate#launch() [new ProcessCrashDetector]"; //$NON-NLS-1$
     private WeavingChecker checker =
         new WeavingChecker(
-            new String[] {XDEBUGEXELAUNCHCONFIGURATIONDELEGATE_LAUNCH_CALL_GETLOCATION}
+            new String[] {
+                XDEBUGEXELAUNCHCONFIGURATIONDELEGATE_LAUNCH_CALL_GETLOCATION,
+                XDEBUGEXELAUNCHCONFIGURATIONDELEGATE_LAUNCH_NEW_PROCESSCRASHDETECTOR
+            }
         );
 
     @Override
@@ -121,6 +126,7 @@ public class Startup implements IStartup {
                     }
 
                     newExpr.replace("$_ = new " + className + "($$);"); //$NON-NLS-1$ //$NON-NLS-2$
+                    checker.pass(XDEBUGEXELAUNCHCONFIGURATIONDELEGATE_LAUNCH_NEW_PROCESSCRASHDETECTOR);
                 }
             }
         });
