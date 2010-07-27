@@ -53,7 +53,8 @@ public class Startup implements IStartup {
             new BundleLoader(
                 new String[]{
                     "com.piece_framework.makegood.launch", //$NON-NLS-1$
-                    PLUGIN_ID
+                    PLUGIN_ID,
+                    "org.eclipse.debug.core"
                 }
             );
         try {
