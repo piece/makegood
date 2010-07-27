@@ -26,24 +26,18 @@ public class PHPResource {
     public static String CONTENT_TYPE = "org.eclipse.php.core.phpsource"; //$NON-NLS-1$
 
     public static boolean isPHPSource(IResource target) {
-        if (!(target instanceof IFile)) {
-            return false;
-        }
+        if (!(target instanceof IFile)) return false;
 
         IContentType contentType = Platform.getContentTypeManager().getContentType(CONTENT_TYPE);
         return contentType.isAssociatedWith(target.getName());
     }
 
     public static boolean includesTests(ISourceModule source) {
-        if (source == null) {
-            return false;
-        }
+        if (source == null) return false;
 
         try {
             for (IType type : source.getAllTypes()) {
-                if (isTestClass(type)) {
-                    return true;
-                }
+                if (isTestClass(type)) return true;
             }
         } catch (ModelException e) {
             MakeGoodCorePlugin.getDefault().getLog().log(
@@ -59,22 +53,18 @@ public class PHPResource {
     }
 
     private static boolean isTestClass(IType type) throws ModelException {
-        if (type == null) {
-            return false;
-        }
+        if (type == null) return false;
 
         String testClass = getTestClassSuperType(type);
-        for (String superClass: type.getSuperClasses()) {
-            if (superClass.equals(testClass)) { //$NON-NLS-1$
-                return true;
+        if (type.getSuperClasses() != null) {
+            for (String superClass: type.getSuperClasses()) {
+                if (superClass.equals(testClass)) return true;
             }
         }
         ITypeHierarchy hierarchy = type.newTypeHierarchy(new NullProgressMonitor());
         if (hierarchy != null) {
             for (IType superClass : hierarchy.getAllSupertypes(type)) {
-                if (isTestClass(superClass)) {
-                    return true;
-                }
+                if (isTestClass(superClass))  return true;
             }
         }
         return false;

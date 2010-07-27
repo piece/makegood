@@ -30,9 +30,17 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.Version;
 
 import com.piece_framework.makegood.javassist.BundleLoader;
+import com.piece_framework.makegood.javassist.CannotWeaveException;
+import com.piece_framework.makegood.javassist.WeavingChecker;
 
 public class Startup implements IStartup {
     private static final String PLUGIN_ID = "com.piece_framework.makegood.aspect.xdebug_launch"; //$NON-NLS-1$
+    private static final String XDEBUGEXELAUNCHCONFIGURATIONDELEGATE_LAUNCH_CALL_GETLOCATION =
+        "XDebugExeLaunchConfigurationDelegate#launch() [call getLocation()]";     //$NON-NLS-1$
+    private WeavingChecker checker =
+        new WeavingChecker(
+            new String[] {XDEBUGEXELAUNCHCONFIGURATIONDELEGATE_LAUNCH_CALL_GETLOCATION}
+        );
 
     @Override
     public void earlyStartup() {
@@ -57,9 +65,12 @@ public class Startup implements IStartup {
             fixLaunchToOutputContentsProperlyToConsoleView(targetClass);
 
             targetClass.toClass(getClass().getClassLoader(), null);
+            checker.checkAll();
         } catch (NotFoundException e) {
             log(e);
         } catch (CannotCompileException e) {
+            log(e);
+        } catch (CannotWeaveException e) {
             log(e);
         }
 
@@ -80,6 +91,7 @@ public class Startup implements IStartup {
 "    $_ = $proceed($$);" + //$NON-NLS-1$
 "}" //$NON-NLS-1$
                     );
+                    checker.pass(XDEBUGEXELAUNCHCONFIGURATIONDELEGATE_LAUNCH_CALL_GETLOCATION);
                 }
             }
         });

@@ -24,11 +24,29 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.IStartup;
 import org.osgi.framework.Bundle;
+import org.osgi.framework.Version;
 
 import com.piece_framework.makegood.javassist.BundleLoader;
+import com.piece_framework.makegood.javassist.CannotWeaveException;
+import com.piece_framework.makegood.javassist.WeavingChecker;
 
 
 public class Startup implements IStartup {
+    private static final String PHPIPLISTLABELPROVIDER_GETCPLISTELEMENTTEXT =
+        "PHPIPListLabelProvider#getCPListElementText()";     //$NON-NLS-1$
+    private static final String PHPIPLISTLABELPROVIDER_GETCPLISTELEMENTBASEIMAGE =
+        "PHPIPListLabelProvider#getCPListElementBaseImage()";     //$NON-NLS-1$
+    private static final String PHPINCLUDEPATHSBLOCK_CREATECONTROL =
+        "PHPIncludePathsBlock#createControl()";     //$NON-NLS-1$
+    private WeavingChecker checker =
+        new WeavingChecker(
+            new String[] {
+                PHPIPLISTLABELPROVIDER_GETCPLISTELEMENTTEXT,
+                PHPIPLISTLABELPROVIDER_GETCPLISTELEMENTBASEIMAGE,
+                PHPINCLUDEPATHSBLOCK_CREATECONTROL
+            }
+        );
+
     @Override
     public void earlyStartup() {
         BundleLoader loader = new BundleLoader(
@@ -47,8 +65,15 @@ public class Startup implements IStartup {
         }
 
         try {
+            Bundle bundle = Platform.getBundle("org.eclipse.php.ui");
+            Version baseVersion = Version.parseVersion("2.2.0");
+
             CtClass targetClass = ClassPool.getDefault().get("org.eclipse.php.internal.ui.preferences.includepath.PHPIPListLabelProvider"); //$NON-NLS-1$
-            addGetCPListElementTextMethod(targetClass);
+            if (bundle.getVersion().compareTo(baseVersion) >= 0) {
+                modifyGetCPListElementTextMethod(targetClass);
+            } else {
+                addGetCPListElementTextMethod(targetClass);
+            }
             modifyGetCPListElementBaseImage(targetClass);
             targetClass.toClass(getClass().getClassLoader(), null);
         } catch (NotFoundException e) {
@@ -64,6 +89,12 @@ public class Startup implements IStartup {
         } catch (NotFoundException e) {
             log(e);
         } catch (CannotCompileException e) {
+            log(e);
+        }
+
+        try {
+            checker.checkAll();
+        } catch (CannotWeaveException e) {
             log(e);
         }
 
@@ -86,6 +117,21 @@ public class Startup implements IStartup {
 "}" //$NON-NLS-1$
             ,targetClass);
         targetClass.addMethod(newMethod);
+        checker.pass(PHPIPLISTLABELPROVIDER_GETCPLISTELEMENTTEXT);
+    }
+
+    private void modifyGetCPListElementTextMethod(CtClass targetClass) throws NotFoundException, CannotCompileException {
+        CtMethod targetMethod = targetClass.getDeclaredMethod("getCPListElementText"); //$NON-NLS-1$
+        targetMethod.insertBefore(
+"org.eclipse.core.resources.IResource target = cpentry.getResource();" + //$NON-NLS-1$
+"if (target != null) {" + //$NON-NLS-1$
+"    com.piece_framework.makegood.include_path.ConfigurationIncludePath configuration = new com.piece_framework.makegood.include_path.ConfigurationIncludePath(target.getProject());" + //$NON-NLS-1$
+"    if (configuration.equalsDummyResource(target)) {" + //$NON-NLS-1$
+"        return com.piece_framework.makegood.include_path.ConfigurationIncludePath.text;" + //$NON-NLS-1$
+"    }" + //$NON-NLS-1$
+"}" //$NON-NLS-1$
+            );
+        checker.pass(PHPIPLISTLABELPROVIDER_GETCPLISTELEMENTTEXT);
     }
 
     private void modifyGetCPListElementBaseImage(CtClass targetClass) throws NotFoundException, CannotCompileException {
@@ -99,6 +145,7 @@ public class Startup implements IStartup {
 "    }" + //$NON-NLS-1$
 "}" //$NON-NLS-1$
             );
+        checker.pass(PHPIPLISTLABELPROVIDER_GETCPLISTELEMENTBASEIMAGE);
     }
 
     private void modifyCreateControlMethod(CtClass targetClass) throws NotFoundException, CannotCompileException {
@@ -109,6 +156,7 @@ public class Startup implements IStartup {
                     expression.replace(
 "$_ = new com.piece_framework.makegood.aspect.include_path_settings.PHPIncludePathSourcePageForConfiguration($1);" //$NON-NLS-1$
                         );
+                    checker.pass(PHPINCLUDEPATHSBLOCK_CREATECONTROL);
                 }
             }
         });

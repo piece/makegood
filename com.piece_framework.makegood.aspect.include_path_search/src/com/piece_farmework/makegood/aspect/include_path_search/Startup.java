@@ -25,12 +25,32 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.IStartup;
 import org.osgi.framework.Bundle;
+import org.osgi.framework.Version;
 
 import com.piece_framework.makegood.javassist.BundleLoader;
+import com.piece_framework.makegood.javassist.CannotWeaveException;
+import com.piece_framework.makegood.javassist.WeavingChecker;
 
 public class Startup implements IStartup {
+    private static final String PHPSEARCHENGINE_FIND_CAST_ICONTAINER =
+        "PHPSearchEngine#find [cast IContainer]";     //$NON-NLS-1$
+    private static final String PHPSEARCHENGINE_FIND_CALL_FINDMEMBER =
+        "PHPSearchEngine#find [call findMember()]";     //$NON-NLS-1$
+    private WeavingChecker checker =
+        new WeavingChecker(
+            new String[] {
+                PHPSEARCHENGINE_FIND_CAST_ICONTAINER,
+                PHPSEARCHENGINE_FIND_CALL_FINDMEMBER
+            }
+        );
+
+    private static Boolean alreadyRunning = Boolean.FALSE;
+
     @Override
     public void earlyStartup() {
+        if (alreadyRunning) return;
+        alreadyRunning = Boolean.TRUE;
+
         BundleLoader loader = new BundleLoader(
                 new String[]{"org.eclipse.php.core", //$NON-NLS-1$
                              "com.piece_framework.makegood.aspect.include_path_search", //$NON-NLS-1$
@@ -47,9 +67,12 @@ public class Startup implements IStartup {
             CtClass targetClass = ClassPool.getDefault().get("org.eclipse.php.internal.core.util.PHPSearchEngine"); //$NON-NLS-1$
             modifyFind(targetClass);
             targetClass.toClass(getClass().getClassLoader(), null);
+            checker.checkAll();
         } catch (NotFoundException e) {
             log(e);
         } catch (CannotCompileException e) {
+            log(e);
+        } catch (CannotWeaveException e) {
             log(e);
         }
 
@@ -57,7 +80,16 @@ public class Startup implements IStartup {
     }
 
     private void modifyFind(CtClass targetClass) throws NotFoundException, CannotCompileException {
-        CtMethod targetMethod = targetClass.getDeclaredMethod("find"); //$NON-NLS-1$
+        Bundle bundle = Platform.getBundle("org.eclipse.php.core");
+        Version baseVersion = Version.parseVersion("2.2.0");
+        String targetMethodName = null;
+        if (bundle.getVersion().compareTo(baseVersion) >= 0) {
+            targetMethodName = "internalFind";
+        } else {
+            targetMethodName = "find";
+        }
+
+        CtMethod targetMethod = targetClass.getDeclaredMethod(targetMethodName);
         targetMethod.instrument(new ExprEditor() {
             public void edit(Cast cast) throws CannotCompileException {
                 CtClass castClass = null;
@@ -72,6 +104,7 @@ public class Startup implements IStartup {
 "    $_ = ($r) includePath.getEntry();" + //$NON-NLS-1$
 "}" //$NON-NLS-1$
                     );
+                    checker.pass(PHPSEARCHENGINE_FIND_CAST_ICONTAINER);
                 }
             }
 
@@ -85,6 +118,7 @@ public class Startup implements IStartup {
 "    $_ = $proceed($$);" + //$NON-NLS-1$
 "}" //$NON-NLS-1$
                         );
+                    checker.pass(PHPSEARCHENGINE_FIND_CALL_FINDMEMBER);
                 }
             }
         });
