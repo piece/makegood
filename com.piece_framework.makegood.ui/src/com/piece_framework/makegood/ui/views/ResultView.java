@@ -378,6 +378,8 @@ public class ResultView extends ViewPart {
     }
 
     void printCurrentlyRunningTestCase(TestCaseResult currentTestCase) {
+        org.eclipse.core.runtime.Assert.isNotNull(currentTestCase);
+
         String className = currentTestCase.getClassName();
         if (className != null) {
             setContentDescription(
