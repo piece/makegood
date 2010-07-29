@@ -31,7 +31,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2009-2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.11.2
+ * @version    Release: 2.12.0
  * @link       http://www.phpunit.de/
  * @since      File available since Release 2.7.0
  */
@@ -42,7 +42,7 @@ require_once 'PHPUnit/Framework/TestSuite.php';
  * @package    Stagehand_TestRunner
  * @copyright  2009-2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.11.2
+ * @version    Release: 2.12.0
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.7.0
  */
@@ -73,18 +73,6 @@ class Stagehand_TestRunner_Collector_PHPUnitCollector_MethodFilterTestSuite exte
         }
 
         parent::addTest($test, $groups);
-    }
-
-    /**
-     * @param ReflectionClass  $class
-     * @param ReflectionMethod $method
-     * @param array            $names
-     */
-    protected function addTestMethod(ReflectionClass $class, ReflectionMethod $method, array &$names)
-    {
-        if ($this->config->inMethodsToBeTested($class->getName(), $method->getName())) {
-            parent::addTestMethod($class, $method, $names);
-        }
     }
 }
 

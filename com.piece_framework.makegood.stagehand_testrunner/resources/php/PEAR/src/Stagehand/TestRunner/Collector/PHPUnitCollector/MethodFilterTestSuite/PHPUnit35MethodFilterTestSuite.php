@@ -31,41 +31,30 @@
  * @package    Stagehand_TestRunner
  * @copyright  2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.11.2
- * @since      File available since Release 2.11.0
+ * @version    Release: 2.12.0
+ * @link       http://www.phpunit.de/
+ * @since      File available since Release 2.12.0
  */
 
 /**
  * @package    Stagehand_TestRunner
  * @copyright  2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.11.2
- * @since      Class available since Release 2.11.0
+ * @version    Release: 2.12.0
+ * @link       http://www.phpunit.de/
+ * @since      Class available since Release 2.12.0
  */
-class Stagehand_TestRunner_Collector_CollectorFactory
+class Stagehand_TestRunner_Collector_PHPUnitCollector_MethodFilterTestSuite_PHPUnit35MethodFilterTestSuite extends Stagehand_TestRunner_Collector_PHPUnitCollector_MethodFilterTestSuite
 {
     /**
-     * @var Stagehand_TestRunner_Config
+     * @param ReflectionClass  $class
+     * @param ReflectionMethod $method
      */
-    protected $config;
-
-    /**
-     * @param Stagehand_TestRunner_Config $config
-     */
-    public function __construct(Stagehand_TestRunner_Config $config)
+    protected function addTestMethod(ReflectionClass $class, ReflectionMethod $method)
     {
-        $this->config = $config;
-    }
-
-    /**
-     * @return Stagehand_TestRunner_Collector
-     */
-    public function create()
-    {
-        $class = 'Stagehand_TestRunner_Collector_' .
-                 $this->config->framework .
-                 'Collector';
-        return new $class($this->config);
+        if ($this->config->inMethodsToBeTested($class->getName(), $method->getName())) {
+            parent::addTestMethod($class, $method);
+        }
     }
 }
 

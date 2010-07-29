@@ -31,7 +31,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2007-2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.11.2
+ * @version    Release: 2.12.0
  * @since      File available since Release 0.5.0
  */
 
@@ -41,7 +41,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2007-2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.11.2
+ * @version    Release: 2.12.0
  * @since      Class available since Release 0.5.0
  */
 class Stagehand_TestRunner extends Stagehand_CLIController
@@ -226,7 +226,7 @@ OPTIONS
      */
     protected function printVersion()
     {
-        echo "Stagehand_TestRunner 2.11.2 ({$this->config->framework})
+        echo "Stagehand_TestRunner 2.12.0 ({$this->config->framework})
 
 Copyright (c) 2005-2010 KUBO Atsuhiro <kubo@iteman.jp>,
               2007 Masahiko Sakamoto <msakamoto-sf@users.sourceforge.net>,
@@ -336,6 +336,9 @@ All rights reserved.
      */
     protected function runTests()
     {
+        if ($this->shouldPrepare()) {
+            $this->createPreparator()->prepare();
+        }
         $runner = $this->createRunner();
         $runner->run($this->createCollector()->collect());
         if ($this->config->usesGrowl) {
@@ -349,8 +352,8 @@ All rights reserved.
      */
     protected function createCollector()
     {
-        $factory = new Stagehand_TestRunner_Collector_CollectorFactory($this->config);
-        return $factory->create();
+        $class = 'Stagehand_TestRunner_Collector_' . $this->config->framework . 'Collector';
+        return new $class($this->config);
     }
 
     /**
@@ -381,6 +384,35 @@ All rights reserved.
             'Test Results by Stagehand_TestRunner',
             $notification->description
         );
+    }
+
+    /**
+     * @return boolean
+     * @since Method available since Release 2.12.0
+     */
+    protected function shouldPrepare()
+    {
+        $class = $this->getPreparetorClass();
+        return class_exists($class);
+    }
+
+    /**
+     * @return Stagehand_TestRunner_Preparator
+     * @since Method available since Release 2.12.0
+     */
+    protected function createPreparator()
+    {
+        $class = $this->getPreparetorClass();
+        return new $class();
+    }
+
+    /**
+     * @return string
+     * @since Method available since Release 2.12.0
+     */
+    protected function getPreparetorClass()
+    {
+        return 'Stagehand_TestRunner_Preparator_' . $this->config->framework . 'Preparator';
     }
 }
 

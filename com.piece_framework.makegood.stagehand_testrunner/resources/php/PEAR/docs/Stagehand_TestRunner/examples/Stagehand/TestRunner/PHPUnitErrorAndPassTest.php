@@ -31,13 +31,11 @@
  * @package    Stagehand_TestRunner
  * @copyright  2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.11.2
+ * @version    Release: 2.12.0
  * @since      File available since Release 2.11.0
  */
 
-if (!class_exists('PHPUnit_Framework_TestCase', false)) {
-    return;
-}
+if (!class_exists('PHPUnit_Framework_TestCase')) return;
 
 /**
  * TestCase for the PHPUnit runner.
@@ -45,7 +43,7 @@ if (!class_exists('PHPUnit_Framework_TestCase', false)) {
  * @package    Stagehand_TestRunner
  * @copyright  2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.11.2
+ * @version    Release: 2.12.0
  * @since      Class available since Release 2.11.0
  */
 class Stagehand_TestRunner_PHPUnitErrorAndPassTest extends PHPUnit_Framework_TestCase

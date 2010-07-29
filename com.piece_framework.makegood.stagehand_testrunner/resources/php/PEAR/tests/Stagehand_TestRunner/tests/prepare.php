@@ -4,7 +4,7 @@
 /**
  * PHP version 5
  *
- * Copyright (c) 2009 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2009-2010 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,9 +29,9 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_TestRunner
- * @copyright  2009 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2009-2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.11.2
+ * @version    Release: 2.12.0
  * @since      File available since Release 2.10.0
  */
 
@@ -47,7 +47,7 @@ set_include_path(
     get_include_path()
 );
 
-require_once 'PHPUnit/Framework.php';
+@require_once 'PHPUnit/Framework.php'; // TODO Remove this if Stagehand_TestRunner will not support PHPUnit 3.4.
 require_once 'Stagehand/Autoload.php';
 
 $loader = Stagehand_Autoload::legacyLoader();

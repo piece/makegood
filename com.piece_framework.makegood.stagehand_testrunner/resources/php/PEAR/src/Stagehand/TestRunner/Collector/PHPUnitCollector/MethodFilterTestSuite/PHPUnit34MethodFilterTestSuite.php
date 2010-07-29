@@ -32,43 +32,30 @@
  * @copyright  2009-2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
  * @version    Release: 2.12.0
- * @link       http://simpletest.org/
- * @since      File available since Release 2.10.0
+ * @link       http://www.phpunit.de/
+ * @since      File available since Release 2.12.0
  */
-
-require_once 'simpletest/scorer.php';
 
 /**
  * @package    Stagehand_TestRunner
  * @copyright  2009-2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
  * @version    Release: 2.12.0
- * @link       http://simpletest.org/
- * @since      Class available since Release 2.10.0
+ * @link       http://www.phpunit.de/
+ * @since      Class available since Release 2.12.0
  */
-class Stagehand_TestRunner_Runner_SimpleTestRunner_MethodFilterReporter extends SimpleReporterDecorator
+class Stagehand_TestRunner_Collector_PHPUnitCollector_MethodFilterTestSuite_PHPUnit34MethodFilterTestSuite extends Stagehand_TestRunner_Collector_PHPUnitCollector_MethodFilterTestSuite
 {
     /**
-     * @var Stagehand_TestRunner_Config
+     * @param ReflectionClass  $class
+     * @param ReflectionMethod $method
+     * @param array            $names
      */
-    protected $config;
-
-    /**
-     * @param Stagehand_TestRunner_Config $config
-     */
-    public function setConfig(Stagehand_TestRunner_Config $config)
+    protected function addTestMethod(ReflectionClass $class, ReflectionMethod $method, array &$names)
     {
-        $this->config = $config;
-    }
-
-    /**
-     * @param string $testCase
-     * @param string $method
-     * @return boolean
-     */
-    public function shouldInvoke($testCase, $method)
-    {
-        return $this->config->inMethodsToBeTested($testCase, $method);
+        if ($this->config->inMethodsToBeTested($class->getName(), $method->getName())) {
+            parent::addTestMethod($class, $method, $names);
+        }
     }
 }
 

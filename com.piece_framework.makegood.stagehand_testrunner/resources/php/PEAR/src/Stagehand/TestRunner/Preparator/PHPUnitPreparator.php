@@ -4,7 +4,7 @@
 /**
  * PHP version 5
  *
- * Copyright (c) 2009-2010 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2010 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,46 +29,30 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_TestRunner
- * @copyright  2009-2010 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
  * @version    Release: 2.12.0
- * @link       http://simpletest.org/
- * @since      File available since Release 2.10.0
+ * @since      File available since Release 2.12.0
  */
 
-require_once 'simpletest/scorer.php';
+require_once 'PHPUnit/Runner/Version.php';
 
 /**
  * @package    Stagehand_TestRunner
- * @copyright  2009-2010 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
  * @version    Release: 2.12.0
- * @link       http://simpletest.org/
- * @since      Class available since Release 2.10.0
+ * @since      Class available since Release 2.12.0
  */
-class Stagehand_TestRunner_Runner_SimpleTestRunner_MethodFilterReporter extends SimpleReporterDecorator
+class Stagehand_TestRunner_Preparator_PHPUnitPreparator implements Stagehand_TestRunner_Preparator
 {
-    /**
-     * @var Stagehand_TestRunner_Config
-     */
-    protected $config;
-
-    /**
-     * @param Stagehand_TestRunner_Config $config
-     */
-    public function setConfig(Stagehand_TestRunner_Config $config)
+    public function prepare()
     {
-        $this->config = $config;
-    }
-
-    /**
-     * @param string $testCase
-     * @param string $method
-     * @return boolean
-     */
-    public function shouldInvoke($testCase, $method)
-    {
-        return $this->config->inMethodsToBeTested($testCase, $method);
+        if (version_compare(PHPUnit_Runner_Version::id(), '3.5.0beta1', '>=')) {
+            require_once 'PHPUnit/Autoload.php';
+        } else {
+            require_once 'PHPUnit/Framework.php';
+        }
     }
 }
 

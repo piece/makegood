@@ -31,7 +31,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2007-2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.11.2
+ * @version    Release: 2.12.0
  * @link       http://www.phpunit.de/
  * @since      File available since Release 2.1.0
  */
@@ -42,7 +42,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2007-2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.11.2
+ * @version    Release: 2.12.0
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.1.0
  */
@@ -90,7 +90,11 @@ class Stagehand_TestRunner_Collector_PHPUnitCollector extends Stagehand_TestRunn
         }
 
         if ($this->config->testsOnlySpecifiedMethods) {
-            $this->suite->addTestSuite(new Stagehand_TestRunner_Collector_PHPUnitCollector_MethodFilterTestSuite($test, $this->config));
+            $this->suite->addTestSuite(
+                version_compare(PHPUnit_Runner_Version::id(), '3.5.0RC1', '>=')
+                    ? new Stagehand_TestRunner_Collector_PHPUnitCollector_MethodFilterTestSuite_PHPUnit35MethodFilterTestSuite($test, $this->config)
+                    : new Stagehand_TestRunner_Collector_PHPUnitCollector_MethodFilterTestSuite_PHPUnit34MethodFilterTestSuite($test, $this->config)
+            );
         } elseif ($this->config->testsOnlySpecifiedClasses) {
             if ($this->config->inClassesToBeTested($test->getName())) {
                 $this->suite->addTestSuite($test);
