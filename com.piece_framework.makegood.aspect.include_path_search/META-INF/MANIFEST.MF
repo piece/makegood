@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: com.piece_framework.makegood.aspect.include_path_search;singleton:=true
-Bundle-Version: 1.0.0.dev
+Bundle-Version: 0.7.0
 Bundle-Vendor: %Bundle-Vendor
 Fragment-Host: org.eclipse.php.core;bundle-version="2.1.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6

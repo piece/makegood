@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: com.piece_framework.makegood.javassist;singleton:=true
-Bundle-Version: 1.0.0.dev
+Bundle-Version: 0.7.0
 Bundle-Vendor: %Bundle-Vendor
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ClassPath: lib/javassist-3.11.0/javassist.jar,
