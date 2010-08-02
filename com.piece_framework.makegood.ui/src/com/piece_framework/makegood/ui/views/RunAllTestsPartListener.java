@@ -13,33 +13,19 @@
 package com.piece_framework.makegood.ui.views;
 
 import org.eclipse.jface.viewers.ISelectionChangedListener;
-import org.eclipse.jface.viewers.ISelectionProvider;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.ui.IPartListener2;
-import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchPartReference;
-import org.eclipse.ui.texteditor.AbstractTextEditor;
-
-import com.piece_framework.makegood.ui.ide.ViewShow;
-import com.piece_framework.makegood.ui.launch.ActivePart;
 
 public class RunAllTestsPartListener implements IPartListener2 {
-    private ISelectionChangedListener selectionChangedListener = new RunAllTestsSelectionChangedListener();
+    private ISelectionChangedListener selectionChangedListener;
+
+    public RunAllTestsPartListener(ISelectionChangedListener selectionChangedLister) {
+        this.selectionChangedListener = selectionChangedLister;
+    }
 
     @Override
     public void partActivated(IWorkbenchPartReference partRef) {
-        IWorkbenchPart activePart = partRef.getPage().getActivePart();
-        if (activePart == null) return;
-
-        if (!(activePart instanceof AbstractTextEditor)) {
-            ISelectionProvider provider = activePart.getSite().getSelectionProvider();
-            if (provider != null) {
-                provider.addSelectionChangedListener(selectionChangedListener);
-            }
-        }
-
-        ActivePart.getInstance().setPart(activePart);
-        updateStateOfRunAllTestsAction();
+        ((RunAllTestsSelectionChangedListener) selectionChangedListener).addListener(partRef.getPage());
     }
 
     @Override
@@ -68,19 +54,5 @@ public class RunAllTestsPartListener implements IPartListener2 {
 
     @Override
     public void partInputChanged(IWorkbenchPartReference partRef) {
-    }
-
-    private void updateStateOfRunAllTestsAction() {
-        ResultView resultView = (ResultView) ViewShow.find(ResultView.ID);
-        if (resultView != null) {
-            resultView.updateStateOfRunAllTestsAction();
-        }
-    }
-
-    private class RunAllTestsSelectionChangedListener implements ISelectionChangedListener {
-        @Override
-        public void selectionChanged(SelectionChangedEvent event) {
-            updateStateOfRunAllTestsAction();
-        }
     }
 }

@@ -14,24 +14,29 @@ package com.piece_framework.makegood.ui;
 
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.debug.core.DebugPlugin;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.ui.IPartListener2;
 import org.eclipse.ui.IStartup;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
+
 import com.piece_framework.makegood.ui.launch.RunAllTestsResourceChangeListener;
 import com.piece_framework.makegood.ui.views.ResultDebugEventSetListener;
 import com.piece_framework.makegood.ui.views.RunAllTestsPartListener;
+import com.piece_framework.makegood.ui.views.RunAllTestsSelectionChangedListener;
 
 public class Startup implements IStartup {
     @Override
     public void earlyStartup() {
-        IPartListener2 partListener = new RunAllTestsPartListener();
+        ISelectionChangedListener selectionChangedLister = new RunAllTestsSelectionChangedListener();
+        IPartListener2 partListener = new RunAllTestsPartListener(selectionChangedLister);
         for (IWorkbenchWindow window: PlatformUI.getWorkbench().getWorkbenchWindows()) {
             for (IWorkbenchPage page: window.getPages()) {
                 page.addPartListener(partListener);
+                ((RunAllTestsSelectionChangedListener) selectionChangedLister).addListener(page);
             }
-        }
+        };
 
         DebugPlugin.getDefault().addDebugEventListener(new ResultDebugEventSetListener());
         ResourcesPlugin.getWorkspace().addResourceChangeListener(new RunAllTestsResourceChangeListener());
