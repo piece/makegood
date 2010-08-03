@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %Bundle-Name
+Bundle-SymbolicName: com.piece_framework.makegood.aspect.org.eclipse.php.ui;singleton:=true
+Bundle-Version: 0.7.0
+Bundle-Vendor: %Bundle-Vendor
+Fragment-Host: org.eclipse.php.ui;bundle-version="2.1.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ClassPath: .
+Require-Bundle: com.piece_framework.makegood.javassist,
+ com.piece_framework.makegood.include_path
