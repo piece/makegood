@@ -34,8 +34,10 @@ public class MakeGoodProperty {
     private IProject project;
 
     public MakeGoodProperty(IResource resource) {
-        project = resource.getProject();
-        preferences = new ProjectScope(project).getNode(MakeGoodCorePlugin.PLUGIN_ID);
+        if (resource != null) {
+            project = resource.getProject();
+            preferences = new ProjectScope(project).getNode(MakeGoodCorePlugin.PLUGIN_ID);
+        }
     }
 
     public MakeGoodProperty(String path) {
