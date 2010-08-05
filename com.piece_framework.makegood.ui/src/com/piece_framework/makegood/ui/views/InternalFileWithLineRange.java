@@ -9,12 +9,16 @@
  * distribution, and is available at http://www.eclipse.org/legal/epl-v10.html
  */
 
-package com.piece_framework.makegood.ui.swt;
+package com.piece_framework.makegood.ui.views;
 
-import org.eclipse.swt.custom.StyleRange;
+import org.eclipse.core.resources.IFile;
 
-public abstract class FileWithLineRange extends StyleRange {
-    public Integer line;
 
-    public abstract void openEditor();
+public class InternalFileWithLineRange extends FileWithLineRange {
+    public IFile file;
+
+    @Override
+    public void openEditor() {
+        EditorOpen.open(file, line);
+    }
 }
