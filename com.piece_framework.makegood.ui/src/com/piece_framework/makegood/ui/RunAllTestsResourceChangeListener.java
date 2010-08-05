@@ -24,8 +24,8 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.progress.UIJob;
 
 import com.piece_framework.makegood.launch.RuntimeConfiguration;
-import com.piece_framework.makegood.ui.launch.ActivePart;
 import com.piece_framework.makegood.ui.launch.TestRunner;
+import com.piece_framework.makegood.ui.views.ActivePart;
 
 public class RunAllTestsResourceChangeListener implements IResourceChangeListener {
     @Override

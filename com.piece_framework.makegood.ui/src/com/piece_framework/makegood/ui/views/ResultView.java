@@ -73,7 +73,6 @@ import com.piece_framework.makegood.ui.actions.ShowFailuresOnlyAction;
 import com.piece_framework.makegood.ui.actions.StopOnFailureAction;
 import com.piece_framework.makegood.ui.actions.StopTestAction;
 import com.piece_framework.makegood.ui.ide.EditorOpen;
-import com.piece_framework.makegood.ui.launch.ActivePart;
 import com.piece_framework.makegood.ui.launch.TestRunner;
 import com.piece_framework.makegood.ui.swt.ActiveText;
 import com.piece_framework.makegood.ui.swt.ActiveTextListener;

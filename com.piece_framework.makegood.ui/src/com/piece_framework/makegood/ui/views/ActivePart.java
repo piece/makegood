@@ -10,7 +10,7 @@
  * distribution, and is available at http://www.eclipse.org/legal/epl-v10.html
  */
 
-package com.piece_framework.makegood.ui.launch;
+package com.piece_framework.makegood.ui.views;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -31,7 +31,6 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.console.IConsoleConstants;
 
 import com.piece_framework.makegood.core.MakeGoodProperty;
-import com.piece_framework.makegood.ui.views.ResultView;
 
 public class ActivePart {
     private static ActivePart soleInstance;
@@ -96,7 +95,7 @@ public class ActivePart {
         return lastTarget;
     }
 
-    static IResource getResource(Object target) {
+    public static IResource getResource(Object target) {
         if (target instanceof IStructuredSelection) {
             IStructuredSelection selection = (IStructuredSelection) target;
             if (selection.getFirstElement() instanceof IModelElement) {

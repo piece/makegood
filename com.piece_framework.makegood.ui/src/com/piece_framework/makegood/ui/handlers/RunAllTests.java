@@ -16,8 +16,8 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 
 import com.piece_framework.makegood.aspect.monitor.WeavingMonitor;
-import com.piece_framework.makegood.ui.launch.ActivePart;
 import com.piece_framework.makegood.ui.launch.TestRunner;
+import com.piece_framework.makegood.ui.views.ActivePart;
 
 public class RunAllTests extends AbstractHandler {
     @Override
