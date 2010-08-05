@@ -20,6 +20,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.swt.graphics.Color;
 
+import com.piece_framework.makegood.ui.swt.ActiveTextListener;
 import com.piece_framework.makegood.ui.swt.ExternalFileWithLineRange;
 import com.piece_framework.makegood.ui.swt.FileWithLineRange;
 import com.piece_framework.makegood.ui.swt.InternalFileWithLineRange;
@@ -30,7 +31,7 @@ class EditorOpenActiveTextListener extends ActiveTextListener {
     }
 
     @Override
-    void generateActiveText() {
+    public void generateActiveText() {
         Matcher matcher = pattern.matcher(text.getText());
 
         while (matcher.find()) {

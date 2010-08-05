@@ -9,15 +9,15 @@
  * distribution, and is available at http://www.eclipse.org/legal/epl-v10.html
  */
 
-package com.piece_framework.makegood.ui.views;
+package com.piece_framework.makegood.ui.swt;
 
 import java.util.regex.Pattern;
 
-abstract class ActiveTextListener {
-    Pattern pattern;
-    ActiveText text;
+public abstract class ActiveTextListener {
+    protected Pattern pattern;
+    protected ActiveText text;
 
-    ActiveTextListener(Pattern pattern) {
+    public ActiveTextListener(Pattern pattern) {
         this.pattern = pattern;
     }
 
@@ -25,5 +25,5 @@ abstract class ActiveTextListener {
         this.text = text;
     }
 
-    abstract void generateActiveText();
+    public abstract void generateActiveText();
 }

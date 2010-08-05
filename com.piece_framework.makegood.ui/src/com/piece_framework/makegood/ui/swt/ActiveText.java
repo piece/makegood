@@ -9,7 +9,7 @@
  * distribution, and is available at http://www.eclipse.org/legal/epl-v10.html
  */
 
-package com.piece_framework.makegood.ui.views;
+package com.piece_framework.makegood.ui.swt;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,16 +26,14 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 
-import com.piece_framework.makegood.ui.swt.FileWithLineRange;
-
-class ActiveText implements MouseListener, MouseMoveListener {
+public class ActiveText implements MouseListener, MouseMoveListener {
     private StyledText text;
     private Cursor handCursor;
     private Cursor arrowCursor;
     private List<StyleRange> styles;
     private List<ActiveTextListener> listeners = new ArrayList<ActiveTextListener>();
 
-    ActiveText(Composite parent) {
+    public ActiveText(Composite parent) {
         text = new StyledText(
                    parent,
                    SWT.MULTI | SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL
@@ -82,7 +80,7 @@ class ActiveText implements MouseListener, MouseMoveListener {
         text.setCursor(arrowCursor);
     }
 
-    void setText(String text) {
+    public void setText(String text) {
         initializeStyles();
         this.text.setText(text);
 
@@ -93,21 +91,21 @@ class ActiveText implements MouseListener, MouseMoveListener {
         showScrollBar();
     }
 
-    void addListener(ActiveTextListener listener) {
+    public void addListener(ActiveTextListener listener) {
         listener.setActiveText(this);
         listeners.add(listener);
     }
 
-    String getText() {
+    public String getText() {
         return text.getText();
     }
 
-    void addStyle(StyleRange style) {
+    public void addStyle(StyleRange style) {
         styles.add(style);
         text.setStyleRange(style);
     }
 
-    Display getDisplay() {
+    public Display getDisplay() {
         return text.getDisplay();
     }
 
@@ -116,7 +114,7 @@ class ActiveText implements MouseListener, MouseMoveListener {
         text.getHorizontalBar().setVisible(true);
     }
 
-    void hideScrollBar() {
+    protected void hideScrollBar() {
         text.getVerticalBar().setVisible(false);
         text.getHorizontalBar().setVisible(false);
     }
