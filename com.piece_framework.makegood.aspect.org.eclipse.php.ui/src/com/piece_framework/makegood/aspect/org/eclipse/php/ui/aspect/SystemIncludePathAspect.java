@@ -127,14 +127,14 @@ public class SystemIncludePathAspect extends Aspect {
                 public void edit(NewExpr expression) throws CannotCompileException {
                     if (expression.getClassName().equals("org.eclipse.php.internal.ui.preferences.includepath.PHPIncludePathSourcePage")) { //$NON-NLS-1$
                         expression.replace(
-"$_ = new com.piece_framework.makegood.aspect.org.eclipse.php.ui.PHPIncludePathSourcePageForConfiguration($1);" //$NON-NLS-1$
+"$_ = new com.piece_framework.makegood.aspect.org.eclipse.php.ui.aspect.PHPIncludePathSourcePageForConfiguration($1);" //$NON-NLS-1$
                         );
+
+                        pass(JOINPOINT_CREATECONTROL_NEW_PHPINCLUDEPATHSOURCEPAGE);
                     }
                 }
             }
         );
-
-        pass(JOINPOINT_CREATECONTROL_NEW_PHPINCLUDEPATHSOURCEPAGE);
     }
 
     @Override
