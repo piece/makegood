@@ -9,7 +9,7 @@
  * distribution, and is available at http://www.eclipse.org/legal/epl-v10.html
  */
 
-package com.piece_framework.makegood.aspect.org.eclipse.php.ui;
+package com.piece_framework.makegood.aspect.org.eclipse.php.ui.aspect;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -25,6 +25,7 @@ import org.eclipse.dltk.internal.ui.wizards.dialogfields.TreeListDialogField;
 import org.eclipse.php.internal.ui.preferences.includepath.PHPIPListLabelProvider;
 import org.eclipse.php.internal.ui.preferences.includepath.PHPIncludePathSourcePage;
 
+import com.piece_framework.makegood.aspect.org.eclipse.php.ui.Messages;
 import com.piece_framework.makegood.include_path.ConfigurationIncludePath;
 
 public class PHPIncludePathSourcePageForConfiguration extends PHPIncludePathSourcePage {
