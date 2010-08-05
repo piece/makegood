@@ -10,7 +10,7 @@
  * distribution, and is available at http://www.eclipse.org/legal/epl-v10.html
  */
 
-package com.piece_framework.makegood.ui.views;
+package com.piece_framework.makegood.ui;
 
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.ui.IPartListener2;
@@ -19,6 +19,7 @@ import org.eclipse.ui.IWorkbenchPartReference;
 import org.eclipse.ui.texteditor.AbstractTextEditor;
 
 import com.piece_framework.makegood.ui.launch.ActivePart;
+import com.piece_framework.makegood.ui.views.RunAllTestsSelectionChangedListener;
 
 public class RunAllTestsPartListener implements IPartListener2 {
     private ISelectionChangedListener selectionChangedListener;
