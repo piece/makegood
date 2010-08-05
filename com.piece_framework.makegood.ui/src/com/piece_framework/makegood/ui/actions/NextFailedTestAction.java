@@ -17,8 +17,8 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IViewActionDelegate;
 import org.eclipse.ui.IViewPart;
 
-import com.piece_framework.makegood.ui.ide.ViewShow;
 import com.piece_framework.makegood.ui.views.ResultView;
+import com.piece_framework.makegood.ui.views.ViewShow;
 
 public class NextFailedTestAction implements IViewActionDelegate {
     @Override

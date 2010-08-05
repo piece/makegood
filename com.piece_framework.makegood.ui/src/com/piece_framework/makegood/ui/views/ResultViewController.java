@@ -36,7 +36,6 @@ import com.piece_framework.makegood.core.result.TestSuiteResult;
 import com.piece_framework.makegood.launch.MakeGoodLaunch;
 import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.TestRun;
-import com.piece_framework.makegood.ui.ide.ViewShow;
 import com.piece_framework.makegood.ui.launch.TestRunner;
 
 public class ResultViewController implements IDebugEventSetListener {

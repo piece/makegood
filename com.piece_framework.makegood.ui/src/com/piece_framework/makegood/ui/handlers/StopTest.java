@@ -21,8 +21,8 @@ import org.eclipse.ui.IViewPart;
 
 import com.piece_framework.makegood.aspect.monitor.WeavingMonitor;
 import com.piece_framework.makegood.ui.actions.StopTestAction;
-import com.piece_framework.makegood.ui.ide.ViewShow;
 import com.piece_framework.makegood.ui.views.ResultView;
+import com.piece_framework.makegood.ui.views.ViewShow;
 
 public class StopTest extends AbstractHandler {
     @Override

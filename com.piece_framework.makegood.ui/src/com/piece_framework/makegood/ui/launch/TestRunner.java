@@ -24,8 +24,8 @@ import com.piece_framework.makegood.core.MakeGoodProperty;
 import com.piece_framework.makegood.launch.MakeGoodLaunch;
 import com.piece_framework.makegood.launch.RuntimeConfiguration;
 import com.piece_framework.makegood.ui.Messages;
-import com.piece_framework.makegood.ui.ide.ViewShow;
 import com.piece_framework.makegood.ui.views.ActivePart;
+import com.piece_framework.makegood.ui.views.ViewShow;
 
 public class TestRunner {
     private static MakeGoodLaunchShortcut lastShortcut;

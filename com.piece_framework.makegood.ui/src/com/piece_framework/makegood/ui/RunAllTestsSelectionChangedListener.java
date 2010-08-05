@@ -16,8 +16,8 @@ import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.ui.IWorkbenchPart;
 
-import com.piece_framework.makegood.ui.ide.ViewShow;
 import com.piece_framework.makegood.ui.views.ResultView;
+import com.piece_framework.makegood.ui.views.ViewShow;
 
 public class RunAllTestsSelectionChangedListener implements ISelectionChangedListener {
     @Override

@@ -18,8 +18,8 @@ import org.eclipse.ui.IViewActionDelegate;
 import org.eclipse.ui.IViewPart;
 
 import com.piece_framework.makegood.launch.RuntimeConfiguration;
-import com.piece_framework.makegood.ui.ide.ViewShow;
 import com.piece_framework.makegood.ui.views.ResultView;
+import com.piece_framework.makegood.ui.views.ViewShow;
 
 public class ShowFailuresOnlyAction implements IViewActionDelegate {
     public static final String ID = "com.piece_framework.makegood.ui.viewActions.resultView.showFailuresOnly"; //$NON-NLS-1$
