@@ -9,7 +9,7 @@
  * distribution, and is available at http://www.eclipse.org/legal/epl-v10.html
  */
 
-package com.piece_framework.makegood.ui.views;
+package com.piece_framework.makegood.ui.swt;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
@@ -22,7 +22,7 @@ import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 
-class RunProgressBar extends Composite implements PaintListener, ControlListener {
+public class RunProgressBar extends Composite implements PaintListener, ControlListener {
     private Color passColor;
     private Color failureColor;
     private Color stoppedColor;
@@ -30,7 +30,7 @@ class RunProgressBar extends Composite implements PaintListener, ControlListener
     private CLabel progressBar;
     private int progressRate;
 
-    RunProgressBar(Composite parent) {
+    public RunProgressBar(Composite parent) {
         super(parent, SWT.BORDER);
 
         passColor = new Color(getDisplay(), 105, 153, 61);
@@ -65,7 +65,7 @@ class RunProgressBar extends Composite implements PaintListener, ControlListener
         update(progressRate);
     }
 
-    void update(int progressRate) {
+    public void update(int progressRate) {
         int maxWidth = getSize().x;
 
         int width = progressBar.getSize().x;
@@ -92,7 +92,7 @@ class RunProgressBar extends Composite implements PaintListener, ControlListener
         this.progressRate = progressRate;
     }
 
-    void markAsFailed() {
+    public void markAsFailed() {
         progressBar.setBackground(
             new Color[] { gradientColor, failureColor },
             new int[] { 100 },
@@ -100,7 +100,7 @@ class RunProgressBar extends Composite implements PaintListener, ControlListener
         );
     }
 
-    void markAsStopped() {
+    public void markAsStopped() {
         progressBar.setBackground(
             new Color[] { gradientColor, stoppedColor },
             new int[] { 100 },
@@ -108,7 +108,7 @@ class RunProgressBar extends Composite implements PaintListener, ControlListener
         );
     }
 
-    void reset() {
+    public void reset() {
         progressBar.setBackground(
             new Color[] { gradientColor, passColor },
             new int[] { 100 },
