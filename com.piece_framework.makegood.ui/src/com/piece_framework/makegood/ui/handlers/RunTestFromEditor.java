@@ -24,8 +24,8 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 import com.piece_framework.makegood.aspect.monitor.WeavingMonitor;
 import com.piece_framework.makegood.core.PHPResource;
-import com.piece_framework.makegood.ui.launch.EditorParser;
 import com.piece_framework.makegood.ui.launch.TestRunner;
+import com.piece_framework.makegood.ui.views.EditorParser;
 
 public class RunTestFromEditor extends AbstractHandler {
     private LastCheckedSource lastCheckedSource;

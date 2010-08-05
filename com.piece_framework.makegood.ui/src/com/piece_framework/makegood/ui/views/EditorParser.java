@@ -9,7 +9,7 @@
  * distribution, and is available at http://www.eclipse.org/legal/epl-v10.html
  */
 
-package com.piece_framework.makegood.ui.launch;
+package com.piece_framework.makegood.ui.views;
 
 import java.util.ArrayList;
 import java.util.List;

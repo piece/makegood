@@ -42,6 +42,7 @@ import com.piece_framework.makegood.core.PHPResource;
 import com.piece_framework.makegood.launch.LaunchTarget;
 import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.Messages;
+import com.piece_framework.makegood.ui.views.EditorParser;
 
 public class RelatedTestsLaunchShortcut extends MakeGoodLaunchShortcut {
     @Override
