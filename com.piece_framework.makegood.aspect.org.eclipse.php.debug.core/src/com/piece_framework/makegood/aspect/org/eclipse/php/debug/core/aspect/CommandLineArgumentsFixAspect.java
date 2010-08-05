@@ -12,6 +12,9 @@
 
 package com.piece_framework.makegood.aspect.org.eclipse.php.debug.core.aspect;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javassist.CannotCompileException;
 import javassist.ClassPool;
 import javassist.CtClass;
@@ -34,6 +37,9 @@ public class CommandLineArgumentsFixAspect extends Aspect {
     private static final String[] JOINPOINTS = {
         JOINPOINT_CALL_SPLIT
     };
+    private static final String WEAVINGCLASS_PHPLAUNCHUTILITIES =
+        "org.eclipse.php.internal.debug.core.launching.PHPLaunchUtilities"; //$NON-NLS-1$
+    private List<String> weavingClasses = new ArrayList<String>();
 
     @Override
     protected void doWeave() throws NotFoundException, CannotCompileException {
@@ -44,11 +50,13 @@ public class CommandLineArgumentsFixAspect extends Aspect {
         );
 
         if (bundle.getVersion().compareTo(Version.parseVersion("2.2.0")) >= 0) { //$NON-NLS-1$
-            pass(JOINPOINT_CALL_SPLIT);
+            markJoinPointAsPassed(JOINPOINT_CALL_SPLIT);
             return;
+        } else {
+            weavingClasses.add(WEAVINGCLASS_PHPLAUNCHUTILITIES);
         }
 
-        CtClass weavingClass = ClassPool.getDefault().get("org.eclipse.php.internal.debug.core.launching.PHPLaunchUtilities"); //$NON-NLS-1$
+        CtClass weavingClass = ClassPool.getDefault().get(WEAVINGCLASS_PHPLAUNCHUTILITIES);
         weavingClass.getDeclaredMethod("getProgramArguments").instrument( //$NON-NLS-1$
             new ExprEditor() {
                 @Override
@@ -58,16 +66,21 @@ public class CommandLineArgumentsFixAspect extends Aspect {
 "$_ = org.eclipse.debug.core.DebugPlugin.parseArguments($0);" //$NON-NLS-1$
                         );
 
-                        pass(JOINPOINT_CALL_SPLIT);
+                        markJoinPointAsPassed(JOINPOINT_CALL_SPLIT);
                     }
                 }
             }
         );
-        addWeavedClass(weavingClass);
+        markClassAsWoven(weavingClass);
     }
 
     @Override
     protected String[] joinPoints() {
         return JOINPOINTS;
+    }
+
+    @Override
+    protected String[] weavingClasses() {
+        return weavingClasses.toArray(new String[ weavingClasses.size() ]);
     }
 }

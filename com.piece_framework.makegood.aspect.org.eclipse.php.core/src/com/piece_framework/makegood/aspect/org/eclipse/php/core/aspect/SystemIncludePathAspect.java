@@ -33,6 +33,11 @@ public class SystemIncludePathAspect extends Aspect {
         JOINPOINT_CAST_ICONTAINER,
         JOINPOINT_CALL_FINDMEMBER
     };
+    private static final String WEAVINGCLASS_PHPSEARCHENGINE =
+        "org.eclipse.php.internal.core.util.PHPSearchEngine"; //$NON-NLS-1$
+    private static final String[] WEAVINGCLASSES = {
+        WEAVINGCLASS_PHPSEARCHENGINE
+    };
 
     @Override
     protected void doWeave() throws NotFoundException, CannotCompileException {
@@ -42,7 +47,7 @@ public class SystemIncludePathAspect extends Aspect {
             bundle.getVersion().compareTo(Version.parseVersion("2.1.0")) >= 0
         );
 
-        CtClass weavingClass = ClassPool.getDefault().get("org.eclipse.php.internal.core.util.PHPSearchEngine"); //$NON-NLS-1$
+        CtClass weavingClass = ClassPool.getDefault().get(WEAVINGCLASS_PHPSEARCHENGINE);
         weavingClass.getDeclaredMethod(
             bundle.getVersion().compareTo(Version.parseVersion("2.2.0")) >= 0 ? "internalFind" : "find" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         ).instrument( //$NON-NLS-1$
@@ -67,7 +72,7 @@ public class SystemIncludePathAspect extends Aspect {
 "}" //$NON-NLS-1$
                         );
 
-                        pass(JOINPOINT_CAST_ICONTAINER);
+                        markJoinPointAsPassed(JOINPOINT_CAST_ICONTAINER);
                     }
                 }
 
@@ -82,15 +87,21 @@ public class SystemIncludePathAspect extends Aspect {
 "}" //$NON-NLS-1$
                         );
 
-                        pass(JOINPOINT_CALL_FINDMEMBER);
+                        markJoinPointAsPassed(JOINPOINT_CALL_FINDMEMBER);
                     }
                 }
             }
         );
+        markClassAsWoven(weavingClass);
     }
 
     @Override
     protected String[] joinPoints() {
         return JOINPOINTS;
+    }
+
+    @Override
+    protected String[] weavingClasses() {
+        return WEAVINGCLASSES;
     }
 }

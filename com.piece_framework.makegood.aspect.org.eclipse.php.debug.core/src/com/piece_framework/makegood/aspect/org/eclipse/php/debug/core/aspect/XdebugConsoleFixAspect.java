@@ -31,10 +31,15 @@ public class XdebugConsoleFixAspect extends Aspect {
     private static final String[] JOINPOINTS = {
         JOINPOINT_NEW_PROCESSCRASHDETECTOR
     };
+    private static final String WEAVINGCLASS_XDEBUGEXELAUNCHCONFIGURATIONDELEGATE =
+        "org.eclipse.php.internal.debug.core.launching.XDebugExeLaunchConfigurationDelegate"; //$NON-NLS-1$
+    private static final String[] WEAVINGCLASSES = {
+        WEAVINGCLASS_XDEBUGEXELAUNCHCONFIGURATIONDELEGATE
+    };
 
     @Override
     protected void doWeave() throws NotFoundException, CannotCompileException {
-        CtClass weavingClass = ClassPool.getDefault().get("org.eclipse.php.internal.debug.core.launching.XDebugExeLaunchConfigurationDelegate"); //$NON-NLS-1$
+        CtClass weavingClass = ClassPool.getDefault().get(WEAVINGCLASS_XDEBUGEXELAUNCHCONFIGURATIONDELEGATE);
         weavingClass.getDeclaredMethod("launch").instrument( //$NON-NLS-1$
             new ExprEditor() {
                 @Override
@@ -55,15 +60,21 @@ public class XdebugConsoleFixAspect extends Aspect {
 
                         newExpr.replace("$_ = new " + className + "($$);"); //$NON-NLS-1$ //$NON-NLS-2$
 
-                        pass(JOINPOINT_NEW_PROCESSCRASHDETECTOR);
+                        markJoinPointAsPassed(JOINPOINT_NEW_PROCESSCRASHDETECTOR);
                     }
                 }
             }
         );
+        markClassAsWoven(weavingClass);
     }
 
     @Override
     protected String[] joinPoints() {
         return JOINPOINTS;
+    }
+
+    @Override
+    protected String[] weavingClasses() {
+        return WEAVINGCLASSES;
     }
 }

@@ -34,10 +34,15 @@ public class SystemIncludePathAspect extends Aspect {
         JOINPOINT_CALL_GETLOCATION,
         JOINPOINT_CALL_MODIFYINCLUDEPATH
     };
+    private static final String WEAVINGCLASS_PHPINIUTIL =
+        "org.eclipse.php.internal.debug.core.phpIni.PHPINIUtil"; //$NON-NLS-1$
+    private static final String[] WEAVINGCLASSES = {
+        WEAVINGCLASS_PHPINIUTIL
+    };
 
     @Override
     protected void doWeave() throws NotFoundException, CannotCompileException {
-        CtClass weavingClass = ClassPool.getDefault().get("org.eclipse.php.internal.debug.core.phpIni.PHPINIUtil"); //$NON-NLS-1$
+        CtClass weavingClass = ClassPool.getDefault().get(WEAVINGCLASS_PHPINIUTIL);
         weavingClass.getDeclaredMethod("createPhpIniByProject").instrument( //$NON-NLS-1$
             new ExprEditor() {
                 @Override
@@ -62,7 +67,7 @@ public class SystemIncludePathAspect extends Aspect {
 "}" //$NON-NLS-1$
                         );
 
-                        pass(JOINPOINT_CAST_ICONTAINER);
+                        markJoinPointAsPassed(JOINPOINT_CAST_ICONTAINER);
                     }
                 }
 
@@ -76,7 +81,7 @@ public class SystemIncludePathAspect extends Aspect {
 "}" //$NON-NLS-1$
                         );
 
-                        pass(JOINPOINT_CALL_GETLOCATION);
+                        markJoinPointAsPassed(JOINPOINT_CALL_GETLOCATION);
                     } else if (methodCall.getMethodName().equals("modifyIncludePath")) { //$NON-NLS-1$
                         methodCall.replace(
 "com.piece_framework.makegood.aspect.org.eclipse.php.debug.core.aspect.PHPConfiguration phpConfiguration =" + //$NON-NLS-1$
@@ -90,16 +95,21 @@ public class SystemIncludePathAspect extends Aspect {
 "$_ = $proceed($1, transformedIncludePaths);" //$NON-NLS-1$
                         );
 
-                        pass(JOINPOINT_CALL_MODIFYINCLUDEPATH);
+                        markJoinPointAsPassed(JOINPOINT_CALL_MODIFYINCLUDEPATH);
                     }
                 }
             }
         );
-        addWeavedClass(weavingClass);
+        markClassAsWoven(weavingClass);
     }
 
     @Override
     protected String[] joinPoints() {
         return JOINPOINTS;
+    }
+
+    @Override
+    protected String[] weavingClasses() {
+        return WEAVINGCLASSES;
     }
 }

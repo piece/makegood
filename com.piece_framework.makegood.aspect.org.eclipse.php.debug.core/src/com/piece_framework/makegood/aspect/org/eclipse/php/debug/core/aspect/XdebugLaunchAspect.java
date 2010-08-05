@@ -26,9 +26,14 @@ public class XdebugLaunchAspect extends Aspect {
     private static final String[] JOINPOINTS = {
         JOINPOINT_CALL_GETLOCATION
     };
+    private static final String WEAVINGCLASS_XDEBUGEXELAUNCHCONFIGURATIONDELEGATE =
+        "org.eclipse.php.internal.debug.core.launching.XDebugExeLaunchConfigurationDelegate"; //$NON-NLS-1$
+    private static final String[] WEAVINGCLASSES = {
+        WEAVINGCLASS_XDEBUGEXELAUNCHCONFIGURATIONDELEGATE
+    };
 
     protected void doWeave() throws NotFoundException, CannotCompileException {
-        CtClass weavingClass = ClassPool.getDefault().get("org.eclipse.php.internal.debug.core.launching.XDebugExeLaunchConfigurationDelegate"); //$NON-NLS-1$
+        CtClass weavingClass = ClassPool.getDefault().get(WEAVINGCLASS_XDEBUGEXELAUNCHCONFIGURATIONDELEGATE);
         weavingClass.getDeclaredMethod("launch").instrument( //$NON-NLS-1$
             new ExprEditor() {
                 @Override
@@ -43,16 +48,21 @@ public class XdebugLaunchAspect extends Aspect {
 "}" //$NON-NLS-1$
                         );
 
-                        pass(JOINPOINT_CALL_GETLOCATION);
+                        markJoinPointAsPassed(JOINPOINT_CALL_GETLOCATION);
                     }
                 }
             }
         );
-        addWeavedClass(weavingClass);
+        markClassAsWoven(weavingClass);
     }
 
     @Override
     protected String[] joinPoints() {
         return JOINPOINTS;
+    }
+
+    @Override
+    protected String[] weavingClasses() {
+        return WEAVINGCLASSES;
     }
 }

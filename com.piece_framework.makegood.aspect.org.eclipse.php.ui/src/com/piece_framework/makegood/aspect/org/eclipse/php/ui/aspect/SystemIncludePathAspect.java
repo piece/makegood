@@ -41,6 +41,14 @@ public class SystemIncludePathAspect extends Aspect {
         JOINPOINT_GETCPLISTELEMENTBASEIMAGE_INSERTBEFORE,
         JOINPOINT_CREATECONTROL_NEW_PHPINCLUDEPATHSOURCEPAGE
     };
+    private static final String WEAVINGCLASS_PHPIPLISTLABELPROVIDER =
+        "org.eclipse.php.internal.ui.preferences.includepath.PHPIPListLabelProvider"; //$NON-NLS-1$
+    private static final String WEAVINGCLASS_PHPINCLUDEPATHSBLOCK =
+        "org.eclipse.php.internal.ui.preferences.includepath.PHPIncludePathsBlock"; //$NON-NLS-1$
+    private static final String[] WEAVINGCLASSES = {
+        WEAVINGCLASS_PHPIPLISTLABELPROVIDER,
+        WEAVINGCLASS_PHPINCLUDEPATHSBLOCK
+    };
 
     @Override
     protected void doWeave() throws NotFoundException, CannotCompileException {
@@ -50,18 +58,18 @@ public class SystemIncludePathAspect extends Aspect {
             bundle.getVersion().compareTo(Version.parseVersion("2.1.0")) >= 0
         );
 
-        CtClass weavingClass1 = ClassPool.getDefault().get("org.eclipse.php.internal.ui.preferences.includepath.PHPIPListLabelProvider"); //$NON-NLS-1$
+        CtClass weavingClass1 = ClassPool.getDefault().get(WEAVINGCLASS_PHPIPLISTLABELPROVIDER);
         if (bundle.getVersion().compareTo(Version.parseVersion("2.2.0")) >= 0) { //$NON-NLS-1$
             editGetCPListElementTextMethod(weavingClass1);
         } else {
             addGetCPListElementTextMethod(weavingClass1);
         }
         editGetCPListElementBaseImageMethod(weavingClass1);
-        addWeavedClass(weavingClass1);
+        markClassAsWoven(weavingClass1);
 
-        CtClass weavingClass2 = ClassPool.getDefault().get("org.eclipse.php.internal.ui.preferences.includepath.PHPIncludePathsBlock"); //$NON-NLS-1$
+        CtClass weavingClass2 = ClassPool.getDefault().get(WEAVINGCLASS_PHPINCLUDEPATHSBLOCK);
         editCreateControlMethod(weavingClass2);
-        addWeavedClass(weavingClass2);
+        markClassAsWoven(weavingClass2);
     }
 
     private void editGetCPListElementTextMethod(CtClass weavingClass) throws CannotCompileException, NotFoundException {
@@ -75,8 +83,8 @@ public class SystemIncludePathAspect extends Aspect {
 "}" //$NON-NLS-1$
         );
 
-        pass(JOINPOINT_GETCPLISTELEMENTTEXT_INSERTBEFORE);
-        pass(JOINPOINT_GETCPLISTELEMENTTEXT_ADDMETHOD);
+        markJoinPointAsPassed(JOINPOINT_GETCPLISTELEMENTTEXT_INSERTBEFORE);
+        markJoinPointAsPassed(JOINPOINT_GETCPLISTELEMENTTEXT_ADDMETHOD);
     }
 
     private void addGetCPListElementTextMethod(CtClass weavingClass) throws CannotCompileException {
@@ -98,8 +106,8 @@ public class SystemIncludePathAspect extends Aspect {
             )
         );
 
-        pass(JOINPOINT_GETCPLISTELEMENTTEXT_ADDMETHOD);
-        pass(JOINPOINT_GETCPLISTELEMENTTEXT_INSERTBEFORE);
+        markJoinPointAsPassed(JOINPOINT_GETCPLISTELEMENTTEXT_ADDMETHOD);
+        markJoinPointAsPassed(JOINPOINT_GETCPLISTELEMENTTEXT_INSERTBEFORE);
     }
 
     private void editGetCPListElementBaseImageMethod(CtClass weavingClass) throws CannotCompileException, NotFoundException {
@@ -113,7 +121,7 @@ public class SystemIncludePathAspect extends Aspect {
 "}" //$NON-NLS-1$
         );
 
-        pass(JOINPOINT_GETCPLISTELEMENTBASEIMAGE_INSERTBEFORE);
+        markJoinPointAsPassed(JOINPOINT_GETCPLISTELEMENTBASEIMAGE_INSERTBEFORE);
     }
 
     private void editCreateControlMethod(CtClass weavingClass) throws NotFoundException, CannotCompileException {
@@ -126,7 +134,7 @@ public class SystemIncludePathAspect extends Aspect {
 "$_ = new com.piece_framework.makegood.aspect.org.eclipse.php.ui.aspect.PHPIncludePathSourcePageForConfiguration($1);" //$NON-NLS-1$
                         );
 
-                        pass(JOINPOINT_CREATECONTROL_NEW_PHPINCLUDEPATHSOURCEPAGE);
+                        markJoinPointAsPassed(JOINPOINT_CREATECONTROL_NEW_PHPINCLUDEPATHSOURCEPAGE);
                     }
                 }
             }
@@ -136,5 +144,10 @@ public class SystemIncludePathAspect extends Aspect {
     @Override
     protected String[] joinPoints() {
         return JOINPOINTS;
+    }
+
+    @Override
+    protected String[] weavingClasses() {
+        return WEAVINGCLASSES;
     }
 }

@@ -23,7 +23,7 @@ import javassist.CtClass;
 import javassist.NotFoundException;
 
 public abstract class WeavingProcess {
-    private Map<CtClass, CtClass> weavedClasses = new IdentityHashMap<CtClass, CtClass>();
+    private Map<CtClass, CtClass> wovenClasses = new IdentityHashMap<CtClass, CtClass>();
 
     public void process() {
         boolean result = loadDependencies();
@@ -64,16 +64,16 @@ public abstract class WeavingProcess {
                 continue;
             }
 
-            for (CtClass weavedClass: aspect.getWeavedClasses()) {
-                weavedClasses.put(weavedClass, weavedClass);
+            for (CtClass wovenClass: aspect.getWovenClasses()) {
+                wovenClasses.put(wovenClass, wovenClass);
             }
         }
     }
 
     private void replaceClasses() {
-        for (CtClass weavedClass: weavedClasses.values()) {
+        for (CtClass wovenClass: wovenClasses.values()) {
             try {
-                weavedClass.toClass(getClass().getClassLoader(), null);
+                wovenClass.toClass(getClass().getClassLoader(), null);
             } catch (CannotCompileException e) {
                 log(e);
                 continue;
