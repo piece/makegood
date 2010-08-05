@@ -34,10 +34,10 @@ public class MakeGoodProperty {
     private IProject project;
 
     public MakeGoodProperty(IResource resource) {
-        if (resource != null) {
-            project = resource.getProject();
-            preferences = new ProjectScope(project).getNode(MakeGoodCorePlugin.PLUGIN_ID);
-        }
+        org.eclipse.core.runtime.Assert.isNotNull(resource);
+
+        project = resource.getProject();
+        preferences = new ProjectScope(project).getNode(MakeGoodCorePlugin.PLUGIN_ID);
     }
 
     public MakeGoodProperty(String path) {
