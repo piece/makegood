@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<fragment>
+   <extension
+         point="org.eclipse.ui.startup">
+      <startup
+            class="com.piece_framework.makegood.aspect.org.eclipse.php.core.FragmentWeavingProcess">
+      </startup>
+   </extension>
+   <extension
+         point="com.piece_framework.makegood.javassist.monitorTargets">
+      <monitorTarget
+            target="com.piece_framework.makegood.aspect.org.eclipse.php.core.MonitorTarget">
+      </monitorTarget>
+   </extension>
+   <extension
+         id="com.piece_framework.makegood.aspect.org.eclipse.php.core.MakeGoodGoalEvaluatorFactory"
+         point="org.eclipse.php.core.goalEvaluatorFactories">
+        <factory name="com.piece_framework.makegood.aspect.org.eclipse.php.core.MakeGoodGoalEvaluatorFactoryvaluatorFactory"
+            priority="20">
+        </factory>
+   </extension>
+
+</fragment>

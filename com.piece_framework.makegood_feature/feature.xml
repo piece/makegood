@@ -44,15 +44,7 @@
    </requires>
 
    <plugin
-         id="com.piece_framework.makegood.aspect.include_path_protection"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"
-         unpack="false"/>
-
-   <plugin
-         id="com.piece_framework.makegood.aspect.include_path_search"
+         id="com.piece_framework.makegood.aspect.org.eclipse.php.core"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -103,21 +95,13 @@
          unpack="false"/>
 
    <plugin
-         id="com.piece_framework.makegood.aspect.program_arguments_parsing"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"
-         unpack="false"/>
-
-   <plugin
          id="com.piece_framework.makegood.stagehand_testrunner"
          download-size="0"
          install-size="0"
          version="0.0.0"/>
 
    <plugin
-         id="com.piece_framework.makegood.aspect.xdebug_launch"
+         id="com.piece_framework.makegood.aspect.org.eclipse.php.debug.core"
          download-size="0"
          install-size="0"
          version="0.0.0"
