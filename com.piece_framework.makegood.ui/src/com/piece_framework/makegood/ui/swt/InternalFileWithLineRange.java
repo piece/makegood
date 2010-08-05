@@ -13,7 +13,7 @@ package com.piece_framework.makegood.ui.swt;
 
 import org.eclipse.core.resources.IFile;
 
-import com.piece_framework.makegood.ui.ide.EditorOpen;
+import com.piece_framework.makegood.ui.views.EditorOpen;
 
 public class InternalFileWithLineRange extends FileWithLineRange {
     public IFile file;

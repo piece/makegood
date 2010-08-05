@@ -13,7 +13,7 @@ package com.piece_framework.makegood.ui.swt;
 
 import org.eclipse.core.filesystem.IFileStore;
 
-import com.piece_framework.makegood.ui.ide.EditorOpen;
+import com.piece_framework.makegood.ui.views.EditorOpen;
 
 public class ExternalFileWithLineRange extends FileWithLineRange {
     public IFileStore fileStore;
