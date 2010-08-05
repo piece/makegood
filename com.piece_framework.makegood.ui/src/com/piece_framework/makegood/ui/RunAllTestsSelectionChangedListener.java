@@ -9,7 +9,7 @@
  * distribution, and is available at http://www.eclipse.org/legal/epl-v10.html
  */
 
-package com.piece_framework.makegood.ui.views;
+package com.piece_framework.makegood.ui;
 
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ISelectionProvider;
@@ -17,6 +17,7 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.ui.IWorkbenchPart;
 
 import com.piece_framework.makegood.ui.ide.ViewShow;
+import com.piece_framework.makegood.ui.views.ResultView;
 
 public class RunAllTestsSelectionChangedListener implements ISelectionChangedListener {
     @Override

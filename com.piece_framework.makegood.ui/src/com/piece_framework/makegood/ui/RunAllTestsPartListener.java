@@ -19,7 +19,6 @@ import org.eclipse.ui.IWorkbenchPartReference;
 import org.eclipse.ui.texteditor.AbstractTextEditor;
 
 import com.piece_framework.makegood.ui.launch.ActivePart;
-import com.piece_framework.makegood.ui.views.RunAllTestsSelectionChangedListener;
 
 public class RunAllTestsPartListener implements IPartListener2 {
     private ISelectionChangedListener selectionChangedListener;
