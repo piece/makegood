@@ -41,12 +41,7 @@ public class MakeGoodProperty {
     }
 
     public MakeGoodProperty(String path) {
-        IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
-        IResource resource = workspaceRoot.findMember(path);
-        if (resource != null) {
-            project = resource.getProject();
-            preferences = new ProjectScope(project).getNode(MakeGoodCorePlugin.PLUGIN_ID);
-        }
+        this(ResourcesPlugin.getWorkspace().getRoot());
     }
 
     public String getPreloadScript() {
