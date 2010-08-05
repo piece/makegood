@@ -25,7 +25,6 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.Version;
 
 import com.piece_framework.makegood.javassist.Aspect;
-import com.piece_framework.makegood.javassist.PreconditionViolationException;
 
 public class SystemIncludePathAspect extends Aspect {
     private static final String JOINPOINT_GETCPLISTELEMENTTEXT_INSERTBEFORE =
@@ -44,15 +43,12 @@ public class SystemIncludePathAspect extends Aspect {
     };
 
     @Override
-    protected void doWeave() throws NotFoundException, CannotCompileException, PreconditionViolationException {
+    protected void doWeave() throws NotFoundException, CannotCompileException {
         Bundle bundle = Platform.getBundle("org.eclipse.php.ui"); //$NON-NLS-1$
-        if (bundle == null) {
-            throw new PreconditionViolationException("The bundle org.eclipse.php.ui is not found."); //$NON-NLS-1$
-        }
-
-        if (bundle.getVersion().getMajor() < 2) {
-            throw new PreconditionViolationException("The version of the bundle org.eclipse.php.ui must be >= 2. The current version is " + bundle.getVersion() + "."); //$NON-NLS-1$ //$NON-NLS-2$
-        }
+        org.eclipse.core.runtime.Assert.isNotNull(bundle);
+        org.eclipse.core.runtime.Assert.isTrue(
+            bundle.getVersion().compareTo(Version.parseVersion("2.1.0")) >= 0
+        );
 
         CtClass weavingClass1 = ClassPool.getDefault().get("org.eclipse.php.internal.ui.preferences.includepath.PHPIPListLabelProvider"); //$NON-NLS-1$
         if (bundle.getVersion().compareTo(Version.parseVersion("2.2.0")) >= 0) { //$NON-NLS-1$

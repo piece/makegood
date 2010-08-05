@@ -19,7 +19,6 @@ import javassist.expr.ExprEditor;
 import javassist.expr.MethodCall;
 
 import com.piece_framework.makegood.javassist.Aspect;
-import com.piece_framework.makegood.javassist.PreconditionViolationException;
 
 public class XdebugLaunchAspect extends Aspect {
     private static final String JOINPOINT_CALL_GETLOCATION =
@@ -28,7 +27,7 @@ public class XdebugLaunchAspect extends Aspect {
         JOINPOINT_CALL_GETLOCATION
     };
 
-    protected void doWeave() throws NotFoundException, CannotCompileException, PreconditionViolationException {
+    protected void doWeave() throws NotFoundException, CannotCompileException {
         CtClass weavingClass = ClassPool.getDefault().get("org.eclipse.php.internal.debug.core.launching.XDebugExeLaunchConfigurationDelegate"); //$NON-NLS-1$
         weavingClass.getDeclaredMethod("launch").instrument( //$NON-NLS-1$
             new ExprEditor() {

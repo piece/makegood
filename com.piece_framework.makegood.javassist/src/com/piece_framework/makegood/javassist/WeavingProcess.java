@@ -62,9 +62,6 @@ public abstract class WeavingProcess {
             } catch (CannotWeaveException e) {
                 log(e);
                 continue;
-            } catch (PreconditionViolationException e) {
-                log(e);
-                continue;
             }
 
             for (CtClass weavedClass: aspect.getWeavedClasses()) {

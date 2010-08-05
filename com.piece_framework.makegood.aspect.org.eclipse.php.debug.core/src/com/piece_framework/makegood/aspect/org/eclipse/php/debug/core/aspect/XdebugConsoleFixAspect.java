@@ -24,7 +24,6 @@ import org.osgi.framework.Version;
 
 import com.piece_framework.makegood.aspect.org.eclipse.php.debug.core.Fragment;
 import com.piece_framework.makegood.javassist.Aspect;
-import com.piece_framework.makegood.javassist.PreconditionViolationException;
 
 public class XdebugConsoleFixAspect extends Aspect {
     private static final String JOINPOINT_NEW_PROCESSCRASHDETECTOR =
@@ -34,7 +33,7 @@ public class XdebugConsoleFixAspect extends Aspect {
     };
 
     @Override
-    protected void doWeave() throws NotFoundException, CannotCompileException, PreconditionViolationException {
+    protected void doWeave() throws NotFoundException, CannotCompileException {
         CtClass weavingClass = ClassPool.getDefault().get("org.eclipse.php.internal.debug.core.launching.XDebugExeLaunchConfigurationDelegate"); //$NON-NLS-1$
         weavingClass.getDeclaredMethod("launch").instrument( //$NON-NLS-1$
             new ExprEditor() {
@@ -42,13 +41,10 @@ public class XdebugConsoleFixAspect extends Aspect {
                 public void edit(NewExpr newExpr) throws CannotCompileException {
                     if (newExpr.getClassName().equals("org.eclipse.php.internal.debug.core.zend.debugger.ProcessCrashDetector")) { //$NON-NLS-1$
                         Bundle bundle = Platform.getBundle("org.eclipse.php.debug.core"); //$NON-NLS-1$
-                        if (bundle == null) {
-                            throw new CannotCompileException("The bundle org.eclipse.php.debug.core is not found."); //$NON-NLS-1$
-                        }
-
-                        if (bundle.getVersion().getMajor() < 2) {
-                            throw new CannotCompileException("The version of the bundle org.eclipse.php.debug.core must be >= 2. The current version is " + bundle.getVersion() + "."); //$NON-NLS-1$ //$NON-NLS-2$
-                        }
+                        org.eclipse.core.runtime.Assert.isNotNull(bundle);
+                        org.eclipse.core.runtime.Assert.isTrue(
+                            bundle.getVersion().compareTo(Version.parseVersion("2.1.0")) >= 0
+                        );
 
                         String className;
                         if (bundle.getVersion().compareTo(Version.parseVersion("2.2.0")) >= 0) { //$NON-NLS-1$

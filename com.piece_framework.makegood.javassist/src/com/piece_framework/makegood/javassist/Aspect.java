@@ -22,7 +22,7 @@ public abstract class Aspect {
     private List<CtClass> weavedClasses = new ArrayList<CtClass>();
     private List<String> passedJoinPoints = new ArrayList<String>();
 
-    public void weave() throws NotFoundException, CannotCompileException, CannotWeaveException, PreconditionViolationException {
+    public void weave() throws NotFoundException, CannotCompileException, CannotWeaveException {
         doWeave();
         verifyWeaving();
     }
@@ -31,7 +31,7 @@ public abstract class Aspect {
         return weavedClasses;
     }
 
-    protected abstract void doWeave() throws NotFoundException, CannotCompileException, PreconditionViolationException;
+    protected abstract void doWeave() throws NotFoundException, CannotCompileException;
 
     protected abstract String[] joinPoints();
 

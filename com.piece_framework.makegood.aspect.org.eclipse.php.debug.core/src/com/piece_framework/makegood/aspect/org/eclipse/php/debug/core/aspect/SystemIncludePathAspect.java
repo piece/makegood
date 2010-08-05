@@ -21,7 +21,6 @@ import javassist.expr.ExprEditor;
 import javassist.expr.MethodCall;
 
 import com.piece_framework.makegood.javassist.Aspect;
-import com.piece_framework.makegood.javassist.PreconditionViolationException;
 
 public class SystemIncludePathAspect extends Aspect {
     private static final String JOINPOINT_CAST_ICONTAINER =
@@ -37,7 +36,7 @@ public class SystemIncludePathAspect extends Aspect {
     };
 
     @Override
-    protected void doWeave() throws NotFoundException, CannotCompileException, PreconditionViolationException {
+    protected void doWeave() throws NotFoundException, CannotCompileException {
         CtClass weavingClass = ClassPool.getDefault().get("org.eclipse.php.internal.debug.core.phpIni.PHPINIUtil"); //$NON-NLS-1$
         weavingClass.getDeclaredMethod("createPhpIniByProject").instrument( //$NON-NLS-1$
             new ExprEditor() {
