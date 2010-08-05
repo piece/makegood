@@ -23,7 +23,6 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.texteditor.AbstractTextEditor;
 
-import com.piece_framework.makegood.ui.launch.RunAllTestsResourceChangeListener;
 import com.piece_framework.makegood.ui.views.ResultViewController;
 
 public class Startup implements IStartup {

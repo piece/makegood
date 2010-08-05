@@ -77,7 +77,7 @@ public class ActivePart {
         setPart(page.getActivePart());
     }
 
-    static boolean isAllTestsRunnable(Object target) {
+    public static boolean isAllTestsRunnable(Object target) {
         if (target == null) return false;
 
         IResource resource = getResource(target);

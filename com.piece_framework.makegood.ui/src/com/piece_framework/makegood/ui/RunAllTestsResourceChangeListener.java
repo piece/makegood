@@ -10,7 +10,7 @@
  * distribution, and is available at http://www.eclipse.org/legal/epl-v10.html
  */
 
-package com.piece_framework.makegood.ui.launch;
+package com.piece_framework.makegood.ui;
 
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
@@ -24,6 +24,8 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.progress.UIJob;
 
 import com.piece_framework.makegood.launch.RuntimeConfiguration;
+import com.piece_framework.makegood.ui.launch.ActivePart;
+import com.piece_framework.makegood.ui.launch.TestRunner;
 
 public class RunAllTestsResourceChangeListener implements IResourceChangeListener {
     @Override
