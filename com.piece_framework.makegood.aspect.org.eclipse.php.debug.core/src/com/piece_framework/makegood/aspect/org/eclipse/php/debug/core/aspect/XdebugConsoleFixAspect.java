@@ -18,6 +18,7 @@ import javassist.NotFoundException;
 import javassist.expr.ExprEditor;
 import javassist.expr.NewExpr;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.Platform;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.Version;
@@ -46,9 +47,10 @@ public class XdebugConsoleFixAspect extends Aspect {
                 public void edit(NewExpr newExpr) throws CannotCompileException {
                     if (newExpr.getClassName().equals("org.eclipse.php.internal.debug.core.zend.debugger.ProcessCrashDetector")) { //$NON-NLS-1$
                         Bundle bundle = Platform.getBundle("org.eclipse.php.debug.core"); //$NON-NLS-1$
-                        org.eclipse.core.runtime.Assert.isNotNull(bundle);
-                        org.eclipse.core.runtime.Assert.isTrue(
-                            bundle.getVersion().compareTo(Version.parseVersion("2.1.0")) >= 0
+                        Assert.isNotNull(bundle, "No bundle is found for org.eclipse.php.debug.core."); //$NON-NLS-1$
+                        Assert.isTrue(
+                            bundle.getVersion().compareTo(Version.parseVersion("2.1.0")) >= 0,
+                            "The version of the bundle org.eclipse.php.debug.core must be greater than or equal to 2.1.0." //$NON-NLS-1$
                         );
 
                         String className;

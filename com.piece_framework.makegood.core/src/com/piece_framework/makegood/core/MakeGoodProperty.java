@@ -21,6 +21,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ProjectScope;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
@@ -34,7 +35,7 @@ public class MakeGoodProperty {
     private IProject project;
 
     public MakeGoodProperty(IResource resource) {
-        org.eclipse.core.runtime.Assert.isNotNull(resource);
+        Assert.isNotNull(resource, "The given resource should be not null."); //$NON-NLS-1$
 
         project = resource.getProject();
         preferences = new ProjectScope(project).getNode(MakeGoodCorePlugin.PLUGIN_ID);

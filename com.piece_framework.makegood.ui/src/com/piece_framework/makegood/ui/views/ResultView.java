@@ -18,6 +18,7 @@ import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.IAction;
@@ -378,7 +379,7 @@ public class ResultView extends ViewPart {
     }
 
     void printCurrentlyRunningTestCase(TestCaseResult currentTestCase) {
-        org.eclipse.core.runtime.Assert.isNotNull(currentTestCase);
+        Assert.isNotNull(currentTestCase, "The given test case should be not null."); //$NON-NLS-1$
 
         String className = currentTestCase.getClassName();
         if (className != null) {

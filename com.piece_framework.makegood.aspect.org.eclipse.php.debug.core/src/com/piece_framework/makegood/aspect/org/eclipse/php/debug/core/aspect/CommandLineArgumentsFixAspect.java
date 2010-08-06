@@ -22,6 +22,7 @@ import javassist.NotFoundException;
 import javassist.expr.ExprEditor;
 import javassist.expr.MethodCall;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.Platform;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.Version;
@@ -44,9 +45,10 @@ public class CommandLineArgumentsFixAspect extends Aspect {
     @Override
     protected void doWeave() throws NotFoundException, CannotCompileException {
         Bundle bundle = Platform.getBundle("org.eclipse.php.debug.core"); //$NON-NLS-1$
-        org.eclipse.core.runtime.Assert.isNotNull(bundle);
-        org.eclipse.core.runtime.Assert.isTrue(
-            bundle.getVersion().compareTo(Version.parseVersion("2.1.0")) >= 0
+        Assert.isNotNull(bundle, "No bundle is found for org.eclipse.php.debug.core."); //$NON-NLS-1$
+        Assert.isTrue(
+            bundle.getVersion().compareTo(Version.parseVersion("2.1.0")) >= 0,
+            "The version of the bundle org.eclipse.php.debug.core must be greater than or equal to 2.1.0." //$NON-NLS-1$
         );
 
         if (bundle.getVersion().compareTo(Version.parseVersion("2.2.0")) >= 0) { //$NON-NLS-1$
