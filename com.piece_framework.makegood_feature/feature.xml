@@ -52,14 +52,6 @@
          unpack="false"/>
 
    <plugin
-         id="com.piece_framework.makegood.aspect.include_path_settings"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"
-         unpack="false"/>
-
-   <plugin
          id="com.piece_framework.makegood.core"
          download-size="0"
          install-size="0"
@@ -102,6 +94,14 @@
 
    <plugin
          id="com.piece_framework.makegood.aspect.org.eclipse.php.debug.core"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="com.piece_framework.makegood.aspect.org.eclipse.php.ui"
          download-size="0"
          install-size="0"
          version="0.0.0"
