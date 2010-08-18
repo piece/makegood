@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.decorators">
+      <decorator
+            class="com.piece_framework.makegood.include_path.decorators.SystemIncludePathLabelDecorator"
+            id="com.piece_framework.makegood.include_path.decorators.systemIncludePathDecorator"
+            label="System Include Path"
+            lightweight="false"
+            state="true">
+         <enablement>
+             <objectClass name="org.eclipse.php.internal.core.includepath.IncludePath"/>
+         </enablement>
+      </decorator>
+   </extension>
+
+</plugin>
