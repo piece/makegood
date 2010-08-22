@@ -14,18 +14,27 @@ package com.piece_framework.makegood.ui.views;
 
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.ui.IPartListener2;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchPartReference;
+import org.eclipse.ui.texteditor.AbstractTextEditor;
+
+import com.piece_framework.makegood.ui.launch.ActivePart;
 
 public class RunAllTestsPartListener implements IPartListener2 {
     private ISelectionChangedListener selectionChangedListener;
 
-    public RunAllTestsPartListener(ISelectionChangedListener selectionChangedLister) {
-        this.selectionChangedListener = selectionChangedLister;
+    public RunAllTestsPartListener(ISelectionChangedListener selectionChangedListener) {
+        this.selectionChangedListener = selectionChangedListener;
     }
 
     @Override
     public void partActivated(IWorkbenchPartReference partRef) {
-        ((RunAllTestsSelectionChangedListener) selectionChangedListener).addListener(partRef.getPage());
+        IWorkbenchPart activePart = partRef.getPage().getActivePart();
+        if (activePart == null) return;
+        ActivePart.getInstance().setPart(activePart);
+        if (!(activePart instanceof AbstractTextEditor)) {
+            ((RunAllTestsSelectionChangedListener) selectionChangedListener).addListener(activePart);
+        }
     }
 
     @Override

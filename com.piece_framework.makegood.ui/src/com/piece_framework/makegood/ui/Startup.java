@@ -18,8 +18,10 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.ui.IPartListener2;
 import org.eclipse.ui.IStartup;
 import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.texteditor.AbstractTextEditor;
 
 import com.piece_framework.makegood.ui.launch.RunAllTestsResourceChangeListener;
 import com.piece_framework.makegood.ui.views.ResultDebugEventSetListener;
@@ -29,12 +31,15 @@ import com.piece_framework.makegood.ui.views.RunAllTestsSelectionChangedListener
 public class Startup implements IStartup {
     @Override
     public void earlyStartup() {
-        ISelectionChangedListener selectionChangedLister = new RunAllTestsSelectionChangedListener();
-        IPartListener2 partListener = new RunAllTestsPartListener(selectionChangedLister);
+        ISelectionChangedListener selectionChangedListener = new RunAllTestsSelectionChangedListener();
+        IPartListener2 partListener = new RunAllTestsPartListener(selectionChangedListener);
         for (IWorkbenchWindow window: PlatformUI.getWorkbench().getWorkbenchWindows()) {
             for (IWorkbenchPage page: window.getPages()) {
                 page.addPartListener(partListener);
-                ((RunAllTestsSelectionChangedListener) selectionChangedLister).addListener(page);
+                IWorkbenchPart activePart = page.getActivePart();
+                if (activePart != null && !(activePart instanceof AbstractTextEditor)) {
+                    ((RunAllTestsSelectionChangedListener) selectionChangedListener).addListener(activePart);
+                }
             }
         };
 

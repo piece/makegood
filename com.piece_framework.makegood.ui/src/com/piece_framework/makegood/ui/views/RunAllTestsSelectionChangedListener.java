@@ -14,12 +14,9 @@ package com.piece_framework.makegood.ui.views;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
-import org.eclipse.ui.texteditor.AbstractTextEditor;
 
 import com.piece_framework.makegood.ui.ide.ViewShow;
-import com.piece_framework.makegood.ui.launch.ActivePart;
 
 public class RunAllTestsSelectionChangedListener implements ISelectionChangedListener {
     @Override
@@ -30,17 +27,10 @@ public class RunAllTestsSelectionChangedListener implements ISelectionChangedLis
         }
     }
 
-    public void addListener(IWorkbenchPage page) {
-        IWorkbenchPart activePart = page.getActivePart();
-        if (activePart == null) return;
-
-        if (!(activePart instanceof AbstractTextEditor)) {
-            ISelectionProvider provider = activePart.getSite().getSelectionProvider();
-            if (provider != null) {
-                provider.addSelectionChangedListener(this);
-            }
+    public void addListener(IWorkbenchPart activePart) {
+        ISelectionProvider provider = activePart.getSite().getSelectionProvider();
+        if (provider != null) {
+            provider.addSelectionChangedListener(this);
         }
-
-        ActivePart.getInstance().setPart(activePart);
     }
 }
