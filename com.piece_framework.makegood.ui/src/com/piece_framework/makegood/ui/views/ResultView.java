@@ -34,6 +34,7 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
+import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.graphics.Color;
@@ -160,13 +161,7 @@ public class ResultView extends ViewPart {
                      Activator.getImageDescriptor("icons/error-gray.gif").createImage() //$NON-NLS-1$
                  );
 
-        new ResultLabel(
-            row2,
-            Messages.TestResultView_failureTraceLabel,
-            Activator.getImageDescriptor("icons/failure-trace.gif").createImage() //$NON-NLS-1$
-        );
-
-        Composite row3 = new Composite(parent, SWT.NONE);
+        SashForm row3 = new SashForm(parent, SWT.NONE);
         row3.setLayoutData(createBothFillGridData());
         row3.setLayout(adjustLayout(new GridLayout(2, true)));
 
@@ -229,7 +224,15 @@ public class ResultView extends ViewPart {
             }
         });
 
-        failureTrace = createFailureTrace(row3);
+        Composite row3Right = new Composite(row3, SWT.NONE);
+        row3Right.setLayoutData(createHorizontalFillGridData());
+        row3Right.setLayout(adjustLayout(new GridLayout(1, true)));
+        new ResultLabel(
+            row3Right,
+            Messages.TestResultView_failureTraceLabel,
+            Activator.getImageDescriptor("icons/failure-trace.gif").createImage() //$NON-NLS-1$
+        );
+        failureTrace = createFailureTrace(row3Right);
 
         IViewSite site = getViewSite();
         site.getPage().addPartListener(partListenr);
