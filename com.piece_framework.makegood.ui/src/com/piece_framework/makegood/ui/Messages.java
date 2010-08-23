@@ -37,7 +37,6 @@ public class Messages extends NLS {
     public static String TestResultView_passesLabel;
     public static String TestResultView_testsLabel;
     public static String TestResultView_averageTest;
-    public static String TestResultView_percent;
     public static String TestResultView_realTime;
     public static String TestResultView_second;
     public static String TestResultView_millisecond;
