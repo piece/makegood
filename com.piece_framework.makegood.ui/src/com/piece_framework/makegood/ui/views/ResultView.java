@@ -37,7 +37,10 @@ import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.RGB;
@@ -82,7 +85,6 @@ public class ResultView extends ViewPart {
     private ResultLabel failureCount;
     private ResultLabel errorCount;
     private TreeViewer resultTreeViewer;
-    private Label progressRate;
     private Label processTimeAverage;
     private ElapsedTimer elapsedTimer;
     private IAction stopTestAction;
@@ -119,7 +121,6 @@ public class ResultView extends ViewPart {
         Composite progress = new Composite(row1, SWT.NONE);
         progress.setLayoutData(createHorizontalFillGridData());
         progress.setLayout(adjustLayout(new GridLayout(2, false)));
-        progressRate = new Label(progress, SWT.LEFT);
         Composite progressBarBorder = new Composite(progress, SWT.NONE);
         progressBarBorder.setLayoutData(createHorizontalFillGridData());
         GridLayout progressBarBorderLayout = new GridLayout();
@@ -245,7 +246,6 @@ public class ResultView extends ViewPart {
     public void setFocus() {}
 
     public void reset() {
-        progressRate.setText("  0" + Messages.TestResultView_percent + "  "); //$NON-NLS-1$ //$NON-NLS-2$
         progressBar.reset();
         processTimeAverage.setText(
             TimeFormatter.format(
@@ -475,12 +475,6 @@ public class ResultView extends ViewPart {
     }
 
     private void updateResult() {
-        progressRate.setText(
-            String.format("%3d", runProgress.calculateRate()) + //$NON-NLS-1$
-            Messages.TestResultView_percent +
-            "  " //$NON-NLS-1$
-        );
-
         if (runProgress.hasFailures()) progressBar.red();
         progressBar.update(runProgress.calculateRate());
 
@@ -590,6 +584,32 @@ public class ResultView extends ViewPart {
                         update(rate);
                     }
             });
+            bar.addPaintListener(
+                new PaintListener() {
+                    @Override
+                    public void paintControl(PaintEvent e) {
+                        String text = rate + "%"; //$NON-NLS-1$
+                        Point size = getSize();
+                        FontMetrics fontMetrics = e.gc.getFontMetrics();
+                        int width = fontMetrics.getAverageCharWidth() * text.length();
+                        int height = fontMetrics.getHeight();
+                        e.gc.drawText(text, (size.x - width) / 2 , (size.y - height) / 2, true);
+                    }
+                }
+            );
+            addPaintListener(
+                new PaintListener() {
+                    @Override
+                    public void paintControl(PaintEvent e) {
+                        String text = rate + "%"; //$NON-NLS-1$
+                        Point size = getSize();
+                        FontMetrics fontMetrics = e.gc.getFontMetrics();
+                        int width = fontMetrics.getAverageCharWidth() * text.length();
+                        int height = fontMetrics.getHeight();
+                        e.gc.drawText(text, (size.x - width) / 2 , (size.y - height) / 2, true);
+                    }
+                }
+            );
 
             reset();
         }
@@ -611,6 +631,7 @@ public class ResultView extends ViewPart {
                     Point size = bar.getSize();
                     size.x = barWidth;
                     bar.setSize(size);
+                    redraw();
                 }
             });
 
