@@ -13,22 +13,19 @@
 package com.piece_framework.makegood.ui.views;
 
 class TimeFormatter {
-    static String format(long nanoTime,
-                         String unitOfSecond,
-                         String unitOfMillisecond
-                         ) {
+    static String format(long nanoTime) {
         double timeForFormat = 0.0d;
         String unit = null;
         if (nanoTime >= 1000000000) {
             timeForFormat = nanoTime / 1000000000d;
-            unit = unitOfSecond;
+            unit = "s"; //$NON-NLS-1$
         } else if (nanoTime < 1000000000 && nanoTime >= 1000){
             timeForFormat = nanoTime / 1000000d;
-            unit = unitOfMillisecond;
+            unit = "ms";  //$NON-NLS-1$
         } else if (nanoTime > 0){
-            return String.format("< 0.001%s", unitOfMillisecond); //$NON-NLS-1$
+            return "< 0.001ms"; //$NON-NLS-1$
         } else {
-            return String.format("0.000%s", unitOfMillisecond); //$NON-NLS-1$
+            return "0.000ms"; //$NON-NLS-1$
         }
         return String.format("%.3f%s", timeForFormat, unit); //$NON-NLS-1$
     }

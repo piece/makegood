@@ -248,31 +248,19 @@ public class ResultView extends ViewPart {
     public void reset() {
         progressBar.reset();
         processTimeAverage.setText(
-            TimeFormatter.format(
-                0,
-                Messages.TestResultView_second,
-                Messages.TestResultView_millisecond
-            ) +
-            "/" + //$NON-NLS-1$
+            TimeFormatter.format(0)
+            + "/" + //$NON-NLS-1$
             Messages.TestResultView_averageTest
         );
         elapsedTime.setText(
             Messages.TestResultView_realTime +
             ": " +  //$NON-NLS-1$
-            TimeFormatter.format(
-                0,
-                Messages.TestResultView_second,
-                Messages.TestResultView_millisecond
-            )
+            TimeFormatter.format(0)
         );
         processTime.setText(
             Messages.TestResultView_testTime +
             ": " +  //$NON-NLS-1$
-            TimeFormatter.format(
-                0,
-                Messages.TestResultView_second,
-                Messages.TestResultView_millisecond
-            )
+            TimeFormatter.format(0)
         );
         testCount.setText(Messages.TestResultView_testsLabel + ": 0/0"); //$NON-NLS-1$
         passCount.reset();
@@ -479,11 +467,7 @@ public class ResultView extends ViewPart {
         progressBar.update(runProgress.calculateRate());
 
         processTimeAverage.setText(
-            TimeFormatter.format(
-                runProgress.calculateProcessTimeAverage(),
-                Messages.TestResultView_second,
-                Messages.TestResultView_millisecond
-            ) +
+            TimeFormatter.format(runProgress.calculateProcessTimeAverage()) +
             "/" + //$NON-NLS-1$
             Messages.TestResultView_averageTest
         );
@@ -492,11 +476,7 @@ public class ResultView extends ViewPart {
         processTime.setText(
             Messages.TestResultView_testTime +
             ": " + //$NON-NLS-1$
-            TimeFormatter.format(
-                runProgress.getProcessTime(),
-                Messages.TestResultView_second,
-                Messages.TestResultView_millisecond
-            )
+            TimeFormatter.format(runProgress.getProcessTime())
         );
 
         passCount.setCount(runProgress.getPassCount());
@@ -510,11 +490,7 @@ public class ResultView extends ViewPart {
         elapsedTime.setText(
             Messages.TestResultView_realTime +
             ": " + //$NON-NLS-1$
-            TimeFormatter.format(
-                runProgress.getElapsedTime(),
-                Messages.TestResultView_second,
-                Messages.TestResultView_millisecond
-            )
+            TimeFormatter.format(runProgress.getElapsedTime())
         );
     }
 

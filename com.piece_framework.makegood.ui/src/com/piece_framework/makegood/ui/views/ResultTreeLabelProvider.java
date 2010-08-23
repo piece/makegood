@@ -38,7 +38,7 @@ public class ResultTreeLabelProvider extends LabelProvider {
     public String getText(Object element) {
         Result result = (Result) element;
         return result.getName() + " (" +  //$NON-NLS-1$
-               TimeFormatter.format(result.getTime(), "s", "ms") +  //$NON-NLS-1$ //$NON-NLS-2$
+               TimeFormatter.format(result.getTime()) +
                ")";  //$NON-NLS-1$
     }
 
