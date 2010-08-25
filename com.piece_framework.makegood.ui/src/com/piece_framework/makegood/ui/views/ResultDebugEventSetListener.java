@@ -55,6 +55,7 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
     private JUnitXMLReader junitXMLReader;
     private TestCaseResult currentTestCase;
     private Failures failures;
+    private boolean isStoppedByAction;
 
     @Override
     public void handleDebugEvents(DebugEvent[] events) {
@@ -100,14 +101,13 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
             @Override
             public void run() {
                 hasErrors = false;
+                isStoppedByAction = false;
                 try {
                     junitXMLReader.read();
                 } catch (ParserConfigurationException e) {
                     Activator.getDefault().getLog().log(new Status(IStatus.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
                 } catch (SAXException e) {
-                    if (!StopTestAction.isStoppedByAction(launch)) {
-                        hasErrors = true;
-                    }
+                    hasErrors = true;
                 } catch (IOException e) {
                     Activator.getDefault().getLog().log(new Status(IStatus.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
                 }
@@ -160,9 +160,7 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
             } while (true);
 
             if (exitValue != 0) {
-                if (!StopTestAction.isStoppedByAction(launch)) {
-                    hasErrors = true;
-                }
+                hasErrors = true;
             }
 
             break;
@@ -178,6 +176,10 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
 
         progress.end();
 
+        if (StopTestAction.isStoppedByAction(launch)) {
+            isStoppedByAction = true;
+        }
+
         Job job = new UIJob("MakeGood Test End") { //$NON-NLS-1$
             @Override
             public IStatus runInUIThread(IProgressMonitor monitor) {
@@ -186,7 +188,7 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
 
                 resultView.endTest();
 
-                if (hasErrors == true) {
+                if (hasErrors == true && !isStoppedByAction) {
                     ViewShow.show(IConsoleConstants.ID_CONSOLE_VIEW);
                 }
 
