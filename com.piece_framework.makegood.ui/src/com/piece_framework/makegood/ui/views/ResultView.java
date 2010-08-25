@@ -129,8 +129,8 @@ public class ResultView extends ViewPart {
         clock.setLayoutData(createHorizontalFillGridData());
         clock.setLayout(new FillLayout(SWT.HORIZONTAL));
         processTimeAverage = new Label(clock, SWT.LEFT);
-        elapsedTime = new Label(clock, SWT.LEFT);
         processTime = new Label(clock, SWT.LEFT);
+        elapsedTime = new Label(clock, SWT.LEFT);
 
         Composite row2 = new Composite(parent, SWT.NONE);
         row2.setLayoutData(createHorizontalFillGridData());
