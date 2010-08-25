@@ -358,6 +358,10 @@ public class ResultView extends ViewPart {
     }
 
     void endTest() {
+        if (runProgress.getAllTestCount() == 0) {
+            setContentDescription(Messages.TestResultView_noTestsFound);
+        }
+
         stopTestAction.setEnabled(false);
         rerunTestAction.setEnabled(TestRunner.hasLastTest());
         runAllTestsAction.setEnabled(ActivePart.getInstance().isAllTestsRunnable());

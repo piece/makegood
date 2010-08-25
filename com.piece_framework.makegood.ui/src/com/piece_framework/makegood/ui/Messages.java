@@ -39,6 +39,7 @@ public class Messages extends NLS {
     public static String TestResultView_averageTest;
     public static String TestResultView_realTime;
     public static String TestResultView_testTime;
+    public static String TestResultView_noTestsFound;
     public static String TestRunner_TestSessionAlreadyExists_Title;
     public static String TestRunner_TestSessionAlreadyExists_Message;
 
