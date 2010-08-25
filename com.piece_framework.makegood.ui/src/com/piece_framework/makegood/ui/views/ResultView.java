@@ -35,15 +35,7 @@ import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.custom.SashForm;
-import org.eclipse.swt.events.ControlAdapter;
-import org.eclipse.swt.events.ControlEvent;
-import org.eclipse.swt.events.PaintEvent;
-import org.eclipse.swt.events.PaintListener;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -131,6 +123,8 @@ public class ResultView extends ViewPart {
         progressBarBorder.setLayout(progressBarBorderLayout);
         progressBar = new RunProgressBar(progressBarBorder);
         progressBar.setLayoutData(createHorizontalFillGridData());
+        progressBar.setLayout(adjustLayout(new GridLayout()));
+        progressBar.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_WHITE));
         Composite clock = new Composite(row1, SWT.NONE);
         clock.setLayoutData(createHorizontalFillGridData());
         clock.setLayout(new FillLayout(SWT.HORIZONTAL));
@@ -463,7 +457,9 @@ public class ResultView extends ViewPart {
     }
 
     private void updateResult() {
-        if (runProgress.hasFailures()) progressBar.red();
+        if (runProgress.hasFailures()) {
+            progressBar.markAsFailed();
+        }
         progressBar.update(runProgress.calculateRate());
 
         processTimeAverage.setText(
@@ -534,94 +530,6 @@ public class ResultView extends ViewPart {
 
         private void reset() {
             setCount(0);
-        }
-    }
-
-    private class RunProgressBar extends Composite {
-        private final RGB GREEN = new RGB(95, 191, 95);
-        private final RGB RED = new RGB(159, 63, 63);
-        private final RGB WHITE = new RGB(255, 255, 255);
-
-        private Label bar;
-        private int rate;
-
-        private RunProgressBar(Composite parent) {
-            super(parent, SWT.BORDER);
-
-            setLayout(adjustLayout(new GridLayout()));
-            setBackground(new Color(parent.getDisplay(), WHITE));
-
-            bar = new Label(this, SWT.NONE);
-            bar.setLayoutData(new GridData());
-            bar.addControlListener(
-                new ControlAdapter() {
-                    @Override
-                    public void controlResized(ControlEvent e) {
-                        update(rate);
-                    }
-            });
-            bar.addPaintListener(
-                new PaintListener() {
-                    @Override
-                    public void paintControl(PaintEvent e) {
-                        String text = rate + "%"; //$NON-NLS-1$
-                        Point size = getSize();
-                        FontMetrics fontMetrics = e.gc.getFontMetrics();
-                        int width = fontMetrics.getAverageCharWidth() * text.length();
-                        int height = fontMetrics.getHeight();
-                        e.gc.drawText(text, (size.x - width) / 2 , (size.y - height) / 2, true);
-                    }
-                }
-            );
-            addPaintListener(
-                new PaintListener() {
-                    @Override
-                    public void paintControl(PaintEvent e) {
-                        String text = rate + "%"; //$NON-NLS-1$
-                        Point size = getSize();
-                        FontMetrics fontMetrics = e.gc.getFontMetrics();
-                        int width = fontMetrics.getAverageCharWidth() * text.length();
-                        int height = fontMetrics.getHeight();
-                        e.gc.drawText(text, (size.x - width) / 2 , (size.y - height) / 2, true);
-                    }
-                }
-            );
-
-            reset();
-        }
-
-        private void update(int rate) {
-            int maxWidth = getSize().x;
-
-            int width = bar.getSize().x;
-            if (rate < 100) {
-                width = (int) (maxWidth * ((double) rate / 100d));
-            } else if (rate >= 100) {
-                width = maxWidth;
-            }
-            final int barWidth = width;
-
-            getDisplay().asyncExec(new Runnable() {
-                @Override
-                public void run() {
-                    Point size = bar.getSize();
-                    size.x = barWidth;
-                    bar.setSize(size);
-                    redraw();
-                }
-            });
-
-            this.rate = rate;
-        }
-
-        private void red() {
-            bar.setBackground(new Color(getDisplay(), RED));
-        }
-
-        private void reset() {
-            update(0);
-
-            bar.setBackground(new Color(getDisplay(), GREEN));
         }
     }
 
