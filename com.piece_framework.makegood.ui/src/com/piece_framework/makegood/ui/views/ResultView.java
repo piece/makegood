@@ -334,7 +334,6 @@ public class ResultView extends ViewPart {
 
     void updateOnEndTestCase(TestCaseResult currentTestCase) {
         updateResult();
-        resultTreeViewer.setSelection(new StructuredSelection(currentTestCase));
     }
 
     void updateOnStartTestCase(TestCaseResult currentTestCase) {
@@ -342,7 +341,6 @@ public class ResultView extends ViewPart {
 
         resultTreeViewer.refresh();
         resultTreeViewer.expandAll();
-        resultTreeViewer.setSelection(new StructuredSelection(currentTestCase));
     }
 
     void startTest(RunProgress runProgress, Failures failures) {
@@ -357,9 +355,13 @@ public class ResultView extends ViewPart {
         runAllTestsAction.setEnabled(false);
     }
 
-    void endTest() {
+    void endTest(TestCaseResult currentTestCase) {
         if (runProgress.getAllTestCount() == 0) {
             setContentDescription(Messages.TestResultView_noTestsFound);
+        }
+
+        if (currentTestCase != null) {
+            resultTreeViewer.setSelection(new StructuredSelection(currentTestCase));
         }
 
         stopTestAction.setEnabled(false);

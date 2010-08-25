@@ -37,13 +37,13 @@ class Failures {
         Integer indexOfCriterion = resultIndexes.get(criterion);
         if (indexOfCriterion == null) return null;
 
-        if (direction == FIND_PREVIOUS) {
+        if (direction == FIND_NEXT) {
             for (int i = failureIndexes.size() - 1; i >=0; --i) {
                 Integer indexOfFailure = failureIndexes.get(i);
                 if (indexOfFailure >= indexOfCriterion) continue;
                 return orderedResults.get(indexOfFailure);
             }
-        } else if (direction == FIND_NEXT) {
+        } else if (direction == FIND_PREVIOUS) {
             for (int i = 0; i < failureIndexes.size(); ++i) {
                 Integer indexOfFailure = failureIndexes.get(i);
                 if (indexOfFailure <= indexOfCriterion) continue;
