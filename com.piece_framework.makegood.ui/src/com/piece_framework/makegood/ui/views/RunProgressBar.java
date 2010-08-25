@@ -26,6 +26,7 @@ import org.eclipse.swt.widgets.Label;
 class RunProgressBar extends Composite implements PaintListener, ControlListener {
     private Color passColor;
     private Color failureColor;
+    private Color stoppedColor;
     private Label progressBar;
     private int progressRate;
 
@@ -34,6 +35,7 @@ class RunProgressBar extends Composite implements PaintListener, ControlListener
 
         passColor = new Color(getDisplay(), 95, 191, 95);
         failureColor = new Color(getDisplay(), 159, 63, 63);
+        stoppedColor = new Color(getDisplay(), 120, 120, 120);
         addPaintListener(this);
 
         progressBar = new Label(this, SWT.NONE);
@@ -91,6 +93,10 @@ class RunProgressBar extends Composite implements PaintListener, ControlListener
 
     void markAsFailed() {
         progressBar.setBackground(failureColor);
+    }
+
+    void markAsStopped() {
+        progressBar.setBackground(stoppedColor);
     }
 
     void reset() {

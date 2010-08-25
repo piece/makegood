@@ -378,6 +378,10 @@ public class ResultView extends ViewPart {
         }
     }
 
+    void markAsStopped() {
+        progressBar.markAsStopped();
+    }
+
     private void initializeActions(IViewSite site) {
         IToolBarManager manager = site.getActionBars().getToolBarManager();
 

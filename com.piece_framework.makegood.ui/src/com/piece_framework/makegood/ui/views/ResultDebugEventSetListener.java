@@ -188,8 +188,11 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
 
                 resultView.endTest();
 
-                if (hasErrors == true && !isStoppedByAction) {
-                    ViewShow.show(IConsoleConstants.ID_CONSOLE_VIEW);
+                if (hasErrors) {
+                    resultView.markAsStopped();
+                    if (!isStoppedByAction) {
+                        ViewShow.show(IConsoleConstants.ID_CONSOLE_VIEW);
+                    }
                 }
 
                 return Status.OK_STATUS;
