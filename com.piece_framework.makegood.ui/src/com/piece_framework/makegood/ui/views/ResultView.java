@@ -386,6 +386,10 @@ public class ResultView extends ViewPart {
         progressBar.markAsStopped();
     }
 
+    void markAsFailed() {
+        progressBar.markAsFailed();
+    }
+
     private void initializeActions(IViewSite site) {
         IToolBarManager manager = site.getActionBars().getToolBarManager();
 
@@ -465,9 +469,6 @@ public class ResultView extends ViewPart {
     }
 
     private void updateResult() {
-        if (runProgress.hasFailures()) {
-            progressBar.markAsFailed();
-        }
         progressBar.update(runProgress.calculateRate());
 
         processTimeAverage.setText(

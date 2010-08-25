@@ -285,6 +285,9 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
                 public IStatus runInUIThread(IProgressMonitor monitor) {
                     ResultView resultView = (ResultView) ViewShow.find(ResultView.ID);
                     if (resultView == null) return Status.CANCEL_STATUS;
+                    if (progress.hasFailures()) {
+                        resultView.markAsFailed();
+                    }
                     resultView.updateOnEndTestCase(currentTestCase);
                     return Status.OK_STATUS;
                 }
