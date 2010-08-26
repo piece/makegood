@@ -124,7 +124,6 @@ public class ResultView extends ViewPart {
         progressBar = new RunProgressBar(progressBarBorder);
         progressBar.setLayoutData(createHorizontalFillGridData());
         progressBar.setLayout(adjustLayout(new GridLayout()));
-        progressBar.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_WHITE));
         Composite clock = new Composite(row1, SWT.NONE);
         clock.setLayoutData(createHorizontalFillGridData());
         clock.setLayout(new FillLayout(SWT.HORIZONTAL));
