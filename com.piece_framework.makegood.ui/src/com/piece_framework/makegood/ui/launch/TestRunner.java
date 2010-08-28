@@ -71,7 +71,9 @@ public class TestRunner {
     }
 
     public static void restoreFocusToLastActivePart() {
-        ViewShow.setFocus(lastActivePart);
+        if (lastActivePart != null) {
+            ViewShow.setFocus(lastActivePart);
+        }
     }
 
     private static void runTests(Object target, MakeGoodLaunchShortcut shortcut) {
