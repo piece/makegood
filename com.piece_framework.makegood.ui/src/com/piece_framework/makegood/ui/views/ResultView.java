@@ -369,7 +369,7 @@ public class ResultView extends ViewPart {
     }
 
     void printCurrentlyRunningTestCase(TestCaseResult currentTestCase) {
-        Assert.isNotNull(currentTestCase, "The given test case should be not null."); //$NON-NLS-1$
+        Assert.isNotNull(currentTestCase, "The given test case should not be null."); //$NON-NLS-1$
 
         String className = currentTestCase.getClassName();
         if (className != null) {

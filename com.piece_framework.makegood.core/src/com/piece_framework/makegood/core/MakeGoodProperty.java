@@ -35,7 +35,7 @@ public class MakeGoodProperty {
     private IProject project;
 
     public MakeGoodProperty(IResource resource) {
-        Assert.isNotNull(resource, "The given resource should be not null."); //$NON-NLS-1$
+        Assert.isNotNull(resource, "The given resource should not be null."); //$NON-NLS-1$
 
         project = resource.getProject();
         preferences = new ProjectScope(project).getNode(MakeGoodCorePlugin.PLUGIN_ID);
