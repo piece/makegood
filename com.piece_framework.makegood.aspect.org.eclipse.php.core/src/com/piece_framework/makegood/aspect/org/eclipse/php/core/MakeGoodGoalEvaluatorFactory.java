@@ -15,6 +15,11 @@ import org.eclipse.dltk.ti.IGoalEvaluatorFactory;
 import org.eclipse.dltk.ti.goals.GoalEvaluator;
 import org.eclipse.dltk.ti.goals.IGoal;
 
+/**
+ * An implementation of the IGoalEvaluatorFactory interface to avoid raising internal
+ * errors during "Processing Dirty Regions" and "Semantic Highlighting Job" in an PHP
+ * Editor view.
+ */
 public class MakeGoodGoalEvaluatorFactory implements IGoalEvaluatorFactory {
     @Override
     public GoalEvaluator createEvaluator(IGoal goal) {
