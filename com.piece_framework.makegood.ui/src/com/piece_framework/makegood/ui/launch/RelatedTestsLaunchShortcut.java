@@ -26,7 +26,6 @@ import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.search.IDLTKSearchConstants;
-import org.eclipse.dltk.core.search.IDLTKSearchScope;
 import org.eclipse.dltk.core.search.SearchEngine;
 import org.eclipse.dltk.core.search.SearchMatch;
 import org.eclipse.dltk.core.search.SearchParticipant;
@@ -45,70 +44,54 @@ import com.piece_framework.makegood.ui.Messages;
 public class RelatedTestsLaunchShortcut extends MakeGoodLaunchShortcut {
     @Override
     public void launch(IEditorPart editor, String mode) {
-        if (!(editor instanceof ITextEditor)) {
-            return;
-        }
-
-        LaunchTarget parameter = LaunchTarget.getInstance();
-        parameter.clearTargets();
-
-        launchTestsForProductCode(editor, mode);
+        if (!(editor instanceof ITextEditor)) return;
+        LaunchTarget.getInstance().clearTargets();
+        launchTestsRelatedTo(editor, mode);
     }
 
-    private void launchTestsForProductCode(final IEditorPart editor,
-                                           final String mode
-                                           ) {
+    private void launchTestsRelatedTo(final IEditorPart editor, final String mode) {
         SearchRequestor requestor = new SearchRequestor() {
             Set<IResource> tests = new HashSet<IResource>();
 
             @Override
             public void acceptSearchMatch(SearchMatch match) throws CoreException {
                 IModelElement element = DLTKCore.create(match.getResource());
-                if (!(element instanceof ISourceModule)) {
-                    return;
-                }
-                if (!PHPResource.includesTests((ISourceModule) element)) {
-                    return;
-                }
-
+                if (!(element instanceof ISourceModule)) return;
+                if (!PHPResource.includesTests((ISourceModule) element)) return;
                 tests.add(match.getResource());
             }
 
             @Override
             public void endReporting() {
-                EditorParser parser = new EditorParser(editor);
-                ISourceModule source = parser.getSourceModule();
+                ISourceModule source = new EditorParser(editor).getSourceModule();
                 if (source != null && PHPResource.includesTests(source)) {
                     tests.add(source.getResource());
                 }
 
                 if (tests.size() == 0) {
-                    MessageDialog.openInformation(editor.getEditorSite().getShell(),
-                                                  Messages.MakeGoodLaunchShortcut_messageTitle,
-                                                  Messages.MakeGoodLaunchShortcut_notFoundTestsMessage
-                                                  );
+                    MessageDialog.openInformation(
+                        editor.getEditorSite().getShell(),
+                        Messages.MakeGoodLaunchShortcut_messageTitle,
+                        Messages.MakeGoodLaunchShortcut_notFoundTestsMessage
+                    );
                     return;
                 }
 
-                LaunchTarget parameter = LaunchTarget.getInstance();
-                parameter.clearTargets();
+                LaunchTarget launchTarget = LaunchTarget.getInstance();
+                launchTarget.clearTargets();
                 for (IResource test: tests) {
                     Debug.println(test);
-                    parameter.addTarget(test);
+                    launchTarget.addTarget(test);
                 }
                 RelatedTestsLaunchShortcut.super.launch(editor, mode);
             }
         };
 
         List<IType> types = new EditorParser(editor).getTypes();
-        if (types == null || types.size() == 0) {
-            return;
-        }
+        if (types == null || types.size() == 0) return;
 
         IDLTKLanguageToolkit toolkit = DLTKLanguageManager.getLanguageToolkit(types.get(0));
-        if (toolkit == null) {
-            return;
-        }
+        if (toolkit == null) return;
 
         SearchPattern pattern = null;
         for (IType type: types) {
@@ -129,24 +112,16 @@ public class RelatedTestsLaunchShortcut extends MakeGoodLaunchShortcut {
             }
         }
 
-        IDLTKSearchScope scope = SearchEngine.createSearchScope(types.get(0).getScriptProject());
-        SearchEngine engine = new SearchEngine();
         try {
-            engine.search(pattern,
-                          new SearchParticipant[] {SearchEngine.getDefaultSearchParticipant()},
-                          scope,
-                          requestor,
-                          null
-                          );
-        } catch (CoreException e) {
-            Activator.getDefault().getLog().log(
-                new Status(
-                    Status.ERROR,
-                    Activator.PLUGIN_ID,
-                    e.getMessage(),
-                    e
-                )
+            new SearchEngine().search(
+                pattern,
+                new SearchParticipant[] { SearchEngine.getDefaultSearchParticipant() },
+                SearchEngine.createSearchScope(types.get(0).getScriptProject()),
+                requestor,
+                null
             );
+        } catch (CoreException e) {
+            Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
         }
     }
 }
