@@ -53,23 +53,29 @@ public class PHPResource {
                 )
             );
         }
+
         return false;
     }
 
-    private static boolean isTestClass(IType type, String testClass) throws ModelException {
+    private static boolean isTestClass(IType type, String testClassSuperType) throws ModelException {
         if (type == null) return false;
 
         if (type.getSuperClasses() != null) {
             for (String superClass: type.getSuperClasses()) {
-                if (superClass.equals(testClass)) return true;
+                if (superClass.equals(testClassSuperType)) {
+                    return true;
+                }
             }
         }
+
         ITypeHierarchy hierarchy = type.newTypeHierarchy(new NullProgressMonitor());
-        if (hierarchy != null) {
-            for (IType superClass : hierarchy.getAllSupertypes(type)) {
-                if (isTestClass(superClass, testClass))  return true;
+        if (hierarchy == null) return false;
+        for (IType superClass : hierarchy.getAllSupertypes(type)) {
+            if (isTestClass(superClass, testClassSuperType)) {
+                return true;
             }
         }
+
         return false;
     }
 
