@@ -14,9 +14,9 @@
       </monitorTarget>
    </extension>
    <extension
-         id="com.piece_framework.makegood.aspect.org.eclipse.php.core.MakeGoodGoalEvaluatorFactory"
          point="org.eclipse.php.core.goalEvaluatorFactories">
-        <factory name="com.piece_framework.makegood.aspect.org.eclipse.php.core.MakeGoodGoalEvaluatorFactoryvaluatorFactory"
+        <factory
+            class="com.piece_framework.makegood.aspect.org.eclipse.php.core.MakeGoodGoalEvaluatorFactory"
             priority="20">
         </factory>
    </extension>
