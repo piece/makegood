@@ -14,6 +14,7 @@ package com.piece_framework.makegood.aspect.org.eclipse.php.debug.core;
 import org.eclipse.ui.IStartup;
 
 import com.piece_framework.makegood.aspect.org.eclipse.php.debug.core.aspect.CommandLineArgumentsFixAspect;
+import com.piece_framework.makegood.aspect.org.eclipse.php.debug.core.aspect.LaunchWithMissingUserLibrariesFix;
 import com.piece_framework.makegood.aspect.org.eclipse.php.debug.core.aspect.SystemIncludePathAspect;
 import com.piece_framework.makegood.aspect.org.eclipse.php.debug.core.aspect.XdebugConsoleFixAspect;
 import com.piece_framework.makegood.aspect.org.eclipse.php.debug.core.aspect.XdebugLaunchAspect;
@@ -26,14 +27,16 @@ public class FragmentWeavingProcess extends WeavingProcess implements IStartup {
         new XdebugLaunchAspect(),
         new XdebugConsoleFixAspect(),
         new SystemIncludePathAspect(),
-        new CommandLineArgumentsFixAspect()
+        new CommandLineArgumentsFixAspect(),
+        new LaunchWithMissingUserLibrariesFix()
     };
     private static final String[] DEPENDENCIES = {
         "com.piece_framework.makegood.launch", //$NON-NLS-1$
         Fragment.ID,
         "org.eclipse.debug.core", //$NON-NLS-1$
         "org.eclipse.php.debug.core", //$NON-NLS-1$
-        "org.eclipse.equinox.common" //$NON-NLS-1$
+        "org.eclipse.equinox.common", //$NON-NLS-1$
+        "org.eclipse.dltk.core" //$NON-NLS-1$
     };
 
     @Override
