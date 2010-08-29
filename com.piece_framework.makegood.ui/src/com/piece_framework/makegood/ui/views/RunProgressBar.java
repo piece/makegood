@@ -84,6 +84,7 @@ class RunProgressBar extends Composite implements PaintListener, ControlListener
                     size.x = barWidth;
                     progressBar.setSize(size);
                     redraw();
+                    progressBar.redraw();
                 }
             }
         );
