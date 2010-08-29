@@ -1,5 +1,6 @@
 /**
  * Copyright (c) 2009-2010 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
+ *               2010 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -34,10 +35,13 @@ public class PHPResource {
 
     public static boolean includesTests(ISourceModule source) {
         if (source == null) return false;
+        IResource resource = source.getResource();
+        if (resource == null) return false;
+        String testClassSuperType = getTestClassSuperType(resource);
 
         try {
             for (IType type : source.getAllTypes()) {
-                if (isTestClass(type)) return true;
+                if (isTestClass(type, testClassSuperType)) return true;
             }
         } catch (ModelException e) {
             MakeGoodCorePlugin.getDefault().getLog().log(
@@ -52,10 +56,9 @@ public class PHPResource {
         return false;
     }
 
-    private static boolean isTestClass(IType type) throws ModelException {
+    private static boolean isTestClass(IType type, String testClass) throws ModelException {
         if (type == null) return false;
 
-        String testClass = getTestClassSuperType(type);
         if (type.getSuperClasses() != null) {
             for (String superClass: type.getSuperClasses()) {
                 if (superClass.equals(testClass)) return true;
@@ -64,14 +67,14 @@ public class PHPResource {
         ITypeHierarchy hierarchy = type.newTypeHierarchy(new NullProgressMonitor());
         if (hierarchy != null) {
             for (IType superClass : hierarchy.getAllSupertypes(type)) {
-                if (isTestClass(superClass))  return true;
+                if (isTestClass(superClass, testClass))  return true;
             }
         }
         return false;
     }
 
-    private static String getTestClassSuperType(IType type) {
-        MakeGoodProperty property = new MakeGoodProperty(type.getResource());
+    private static String getTestClassSuperType(IResource resource) {
+        MakeGoodProperty property = new MakeGoodProperty(resource);
         if (property.usingPHPUnit()) {
             return "PHPUnit_Framework_TestCase"; //$NON-NLS-1$
         } else if (property.usingSimpleTest()) {
