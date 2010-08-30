@@ -60,8 +60,9 @@ public class PHPResource {
     private static boolean isTestClass(IType type, String testClassSuperType) throws ModelException {
         if (type == null) return false;
 
-        if (type.getSuperClasses() != null) {
-            for (String superClass: type.getSuperClasses()) {
+        String[] superClasses = type.getSuperClasses();
+        if (superClasses != null) {
+            for (String superClass: superClasses) {
                 if (superClass.equals(testClassSuperType)) {
                     return true;
                 }
