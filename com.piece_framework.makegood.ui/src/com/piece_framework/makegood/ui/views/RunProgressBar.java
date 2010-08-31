@@ -12,6 +12,7 @@
 package com.piece_framework.makegood.ui.views;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.events.PaintEvent;
@@ -19,27 +20,26 @@ import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 
 class RunProgressBar extends Composite implements PaintListener, ControlListener {
     private Color passColor;
     private Color failureColor;
     private Color stoppedColor;
-    private Label progressBar;
+    private Color gradientColor;
+    private CLabel progressBar;
     private int progressRate;
 
     RunProgressBar(Composite parent) {
         super(parent, SWT.BORDER);
 
-        passColor = new Color(getDisplay(), 95, 191, 95);
-        failureColor = new Color(getDisplay(), 159, 63, 63);
+        passColor = new Color(getDisplay(), 105, 153, 61);
+        failureColor = new Color(getDisplay(), 209, 19, 24);
         stoppedColor = new Color(getDisplay(), 120, 120, 120);
+        gradientColor = new Color(getDisplay(), 255, 255, 255);
         addPaintListener(this);
 
-        progressBar = new Label(this, SWT.NONE);
-        progressBar.setLayoutData(new GridData());
+        progressBar = new CLabel(this, SWT.NONE);
         progressBar.addControlListener(this);
         progressBar.addPaintListener(this);
 
@@ -93,15 +93,27 @@ class RunProgressBar extends Composite implements PaintListener, ControlListener
     }
 
     void markAsFailed() {
-        progressBar.setBackground(failureColor);
+        progressBar.setBackground(
+            new Color[] { gradientColor, failureColor },
+            new int[] { 100 },
+            true
+        );
     }
 
     void markAsStopped() {
-        progressBar.setBackground(stoppedColor);
+        progressBar.setBackground(
+            new Color[] { gradientColor, stoppedColor },
+            new int[] { 100 },
+            true
+        );
     }
 
     void reset() {
-        progressBar.setBackground(passColor);
+        progressBar.setBackground(
+            new Color[] { gradientColor, passColor },
+            new int[] { 100 },
+            true
+        );
         update(0);
     }
 }
