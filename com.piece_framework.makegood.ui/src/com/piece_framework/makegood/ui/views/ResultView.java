@@ -359,8 +359,10 @@ public class ResultView extends ViewPart {
             setContentDescription(Messages.TestResultView_noTestsFound);
         }
 
-        if (currentTestCase != null) {
-            resultTreeViewer.setSelection(new StructuredSelection(currentTestCase));
+        resultTreeViewer.collapseAll();
+        Result topResult = (Result) resultTreeViewer.getTree().getTopItem().getData();
+        if (topResult != null) {
+            resultTreeViewer.setSelection(new StructuredSelection(topResult));
         }
 
         stopTestAction.setEnabled(false);
@@ -465,8 +467,8 @@ public class ResultView extends ViewPart {
         if (selectedResult == null) selectedResult = rootResult.getChildren().get(0);
         Result previousOrNextResult = failures.find(selectedResult, direction);
         if (previousOrNextResult == null) return;
-        resultTreeViewer.expandAll();
         resultTreeViewer.setSelection(new StructuredSelection(previousOrNextResult), true);
+        resultTreeViewer.expandToLevel(previousOrNextResult, TreeViewer.ALL_LEVELS);
     }
 
     private void updateResult() {

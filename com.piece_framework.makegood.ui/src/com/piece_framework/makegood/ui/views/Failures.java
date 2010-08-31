@@ -16,6 +16,7 @@ import java.util.IdentityHashMap;
 import java.util.List;
 
 import com.piece_framework.makegood.core.result.Result;
+import com.piece_framework.makegood.core.result.TestSuiteResult;
 
 class Failures {
     static final int FIND_PREVIOUS = 1;
@@ -36,6 +37,10 @@ class Failures {
     Result find(Result criterion, int direction) {
         Integer indexOfCriterion = resultIndexes.get(criterion);
         if (indexOfCriterion == null) return null;
+
+        if (criterion instanceof TestSuiteResult) {
+            indexOfCriterion += criterion.getChildren().size() + 1;
+        }
 
         if (direction == FIND_NEXT) {
             for (int i = failureIndexes.size() - 1; i >=0; --i) {

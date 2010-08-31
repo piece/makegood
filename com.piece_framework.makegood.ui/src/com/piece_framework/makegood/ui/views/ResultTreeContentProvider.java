@@ -32,7 +32,7 @@ public class ResultTreeContentProvider implements ITreeContentProvider {
 
     @Override
     public Object getParent(Object element) {
-        return null;
+        return ((Result) element).getParent();
     }
 
     @Override

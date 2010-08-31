@@ -63,4 +63,8 @@ public abstract class Result {
     public abstract boolean fixed();
 
     public abstract boolean hasChildren();
+
+    public Result getParent() {
+        return parent;
+    }
 }
