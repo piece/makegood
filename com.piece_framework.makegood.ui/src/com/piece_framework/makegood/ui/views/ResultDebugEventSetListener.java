@@ -186,7 +186,7 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
                 ResultView resultView = (ResultView) ViewShow.find(ResultView.ID);
                 if (resultView == null) return Status.CANCEL_STATUS;
 
-                resultView.endTest(currentTestCase);
+                resultView.endTest();
 
                 if (hasErrors) {
                     resultView.markAsStopped();
