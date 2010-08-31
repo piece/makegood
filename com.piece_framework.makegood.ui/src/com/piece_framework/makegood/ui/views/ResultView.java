@@ -460,13 +460,14 @@ public class ResultView extends ViewPart {
     }
 
     private void moveToPreviousOrNextFailure(int direction) {
-        Result rootResult = (Result) resultTreeViewer.getInput();
-        if (rootResult == null) return;
-        if (!rootResult.hasChildren()) return;
         Result selectedResult = (Result) ((IStructuredSelection) resultTreeViewer.getSelection()).getFirstElement();
-        if (selectedResult == null) selectedResult = rootResult.getChildren().get(0);
+        if (selectedResult == null) {
+            selectedResult = (Result) resultTreeViewer.getTree().getTopItem().getData();
+        }
+
         Result previousOrNextResult = failures.find(selectedResult, direction);
         if (previousOrNextResult == null) return;
+
         resultTreeViewer.setSelection(new StructuredSelection(previousOrNextResult), true);
         resultTreeViewer.expandToLevel(previousOrNextResult, TreeViewer.ALL_LEVELS);
     }
