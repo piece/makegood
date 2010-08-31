@@ -23,7 +23,8 @@ import org.eclipse.dltk.ti.goals.IGoal;
 public class MakeGoodGoalEvaluatorFactory implements IGoalEvaluatorFactory {
     @Override
     public GoalEvaluator createEvaluator(IGoal goal) {
-        new FragmentWeavingProcess().earlyStartup();
+        if (MonitorTarget.endWeaving) return null;
+        new FragmentWeavingProcess().process();
         return null;
     }
 }

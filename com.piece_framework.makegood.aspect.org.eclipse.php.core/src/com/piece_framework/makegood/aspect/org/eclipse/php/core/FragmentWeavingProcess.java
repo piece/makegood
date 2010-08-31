@@ -25,12 +25,20 @@ public class FragmentWeavingProcess extends WeavingProcess implements IStartup {
         "org.eclipse.php.core", //$NON-NLS-1$
         "org.eclipse.core.resources" //$NON-NLS-1$
     };
+    private static final Object processLock = new Object();
 
     @Override
     public void earlyStartup() {
-        if (MonitorTarget.endWeaving) return;
         process();
-        MonitorTarget.endWeaving = true;
+    }
+
+    @Override
+    public void process() {
+        synchronized (processLock) {
+            if (MonitorTarget.endWeaving) return;
+            super.process();
+            MonitorTarget.endWeaving = true;
+        }
     }
 
     @Override
