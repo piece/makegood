@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Test
+Bundle-SymbolicName: com.piece_framework.makegood.core.test
+Bundle-Version: 1.0.0.qualifier
+Export-Package: com.piece_framework.makegood.core.result
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: org.junit4,
+ com.piece_framework.makegood.core
