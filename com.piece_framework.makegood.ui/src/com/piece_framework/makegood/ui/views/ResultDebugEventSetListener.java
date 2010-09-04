@@ -70,14 +70,14 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
             if (!(launch instanceof MakeGoodLaunch)) continue;
 
             if (events[i].getKind() == DebugEvent.CREATE) {
-                handleCreate(launch);
+                handleCreateEvent(launch);
             } else if (events[i].getKind() == DebugEvent.TERMINATE) {
-                handleTerminate(launch);
+                handleTerminateEvent(launch);
             }
         }
     }
 
-    private void handleCreate(final ILaunch launch) {
+    private void handleCreateEvent(final ILaunch launch) {
         // TODO This marker is to avoid calling create() twice by PDT.
         if (createEventFired(launch)) return;
         markAsCreateEventFired(launch);
@@ -135,7 +135,7 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
         job.schedule();
     }
 
-    private void handleTerminate(ILaunch launch) {
+    private void handleTerminateEvent(ILaunch launch) {
         // TODO This code is to avoid calling terminate() twice by PDT.
         if (terminateEventFired(launch)) return;
         markAsTerminateEventFired(launch);
