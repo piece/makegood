@@ -49,6 +49,8 @@ import com.piece_framework.makegood.ui.ide.ViewShow;
 import com.piece_framework.makegood.ui.launch.TestRunner;
 
 public class ResultDebugEventSetListener implements IDebugEventSetListener {
+    private static final String MAKEGOOD_RESULTDEBUGEVENTSETLISTENER_MARKER_CREATE = "MAKEGOOD_RESULTDEBUGEVENTSETLISTENER_MARKER_CREATE"; //$NON-NLS-1$
+    private static final String MAKEGOOD_RESULTDEBUGEVENTSETLISTENER_MARKER_TERMINATE = "MAKEGOOD_RESULTDEBUGEVENTSETLISTENER_MARKER_TERMINATE"; //$NON-NLS-1$
     private Thread parserThread;
     private boolean hasErrors;
     private RunProgress progress;
@@ -77,9 +79,10 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
 
     private void handleCreate(final ILaunch launch) {
         // TODO This marker is to avoid calling create() twice by PDT.
-        String createCalledMarker = getClass().getName() + ".createCalled"; //$NON-NLS-1$
-        if (Boolean.TRUE.toString().equals(launch.getAttribute(createCalledMarker))) return;
-        launch.setAttribute(createCalledMarker, Boolean.TRUE.toString());
+        if (createEventFired(launch)) return;
+        markAsCreateEventFired(launch);
+
+        if (terminateEventFired(launch)) return;
 
         String junitXMLFile = null;
         try {
@@ -133,10 +136,11 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
     }
 
     private void handleTerminate(ILaunch launch) {
-        // TODO This marker is to avoid calling terminate() twice by PDT.
-        String terminateCalledMarker = getClass().getName() + ".terminateCalled"; //$NON-NLS-1$
-        if (Boolean.TRUE.toString().equals(launch.getAttribute(terminateCalledMarker))) return;
-        launch.setAttribute(terminateCalledMarker, Boolean.TRUE.toString());
+        // TODO This code is to avoid calling terminate() twice by PDT.
+        if (terminateEventFired(launch)) return;
+        markAsTerminateEventFired(launch);
+
+        if (!createEventFired(launch)) return;
 
         GET_EXIT_VALUE:
         for (IProcess process: launch.getProcesses()) {
@@ -221,6 +225,26 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
         } else {
             return null;
         }
+    }
+
+    private void markAsCreateEventFired(ILaunch launch) {
+        launch.setAttribute(MAKEGOOD_RESULTDEBUGEVENTSETLISTENER_MARKER_CREATE, Boolean.TRUE.toString());
+    }
+
+    private boolean createEventFired(ILaunch launch) {
+        String isCreated = launch.getAttribute(MAKEGOOD_RESULTDEBUGEVENTSETLISTENER_MARKER_CREATE);
+        if (isCreated == null) return false;
+        return Boolean.TRUE.toString().equals(isCreated);
+    }
+
+    private void markAsTerminateEventFired(ILaunch launch) {
+        launch.setAttribute(MAKEGOOD_RESULTDEBUGEVENTSETLISTENER_MARKER_TERMINATE, Boolean.TRUE.toString());
+    }
+
+    private boolean terminateEventFired(ILaunch launch) {
+        String isTerminated = launch.getAttribute(MAKEGOOD_RESULTDEBUGEVENTSETLISTENER_MARKER_TERMINATE);
+        if (isTerminated == null) return false;
+        return Boolean.TRUE.toString().equals(isTerminated);
     }
 
     public class ResultJUnitXMLReaderListener implements JUnitXMLReaderListener {

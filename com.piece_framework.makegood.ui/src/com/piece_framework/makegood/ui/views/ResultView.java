@@ -42,6 +42,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Tree;
+import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.IPartListener2;
 import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.IWorkbenchPart;
@@ -360,9 +361,13 @@ public class ResultView extends ViewPart {
         }
 
         resultTreeViewer.collapseAll();
-        Result topResult = (Result) resultTreeViewer.getTree().getTopItem().getData();
-        if (topResult != null) {
-            resultTreeViewer.setSelection(new StructuredSelection(topResult));
+
+        TreeItem topItem = resultTreeViewer.getTree().getTopItem();
+        if (topItem != null) {
+            Result topResult = (Result) topItem.getData();
+            if (topResult != null) {
+                resultTreeViewer.setSelection(new StructuredSelection(topResult));
+            }
         }
 
         stopTestAction.setEnabled(false);
