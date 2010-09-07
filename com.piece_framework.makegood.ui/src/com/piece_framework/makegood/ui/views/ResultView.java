@@ -356,7 +356,7 @@ public class ResultView extends ViewPart {
     }
 
     void endTest() {
-        if (runProgress.isInitialized() && runProgress.getAllTestCount() == 0) {
+        if (runProgress.isCompleted() && runProgress.getAllTestCount() == 0) {
             setContentDescription(Messages.TestResultView_noTestsFound);
         }
 

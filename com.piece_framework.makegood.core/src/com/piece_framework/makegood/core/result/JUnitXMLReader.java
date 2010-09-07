@@ -115,6 +115,10 @@ public class JUnitXMLReader extends DefaultHandler {
     @Override
     public void endDocument() throws SAXException {
         stop();
+
+        for (JUnitXMLReaderListener listener: listeners) {
+            listener.endTest();
+        }
     }
 
     @Override

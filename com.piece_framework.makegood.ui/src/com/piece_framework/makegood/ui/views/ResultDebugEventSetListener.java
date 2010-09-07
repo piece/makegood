@@ -327,5 +327,10 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
 
         @Override
         public void endFailure() {}
+
+        @Override
+        public void endTest() {
+            progress.markAsCompleted();
+        }
     }
 }

@@ -61,6 +61,10 @@ public class NamesAssertionJUnitXMLReaderListener implements JUnitXMLReaderListe
     public void endFailure() {
     }
 
+    @Override
+    public void endTest() {
+    }
+
     public boolean finished() {
         return !suiteNamesIterator.hasNext()
                && !caseNamesIterator.hasNext()

@@ -23,6 +23,7 @@ class RunProgress {
     private long startTime;
     private long endTime;
     private boolean isRunning = false;
+    private boolean isCompleted = false;
 
     RunProgress() {
         suite = new TestSuiteResult(null);
@@ -117,5 +118,13 @@ class RunProgress {
         } else {
             return endTime - startTime;
         }
+    }
+
+    void markAsCompleted() {
+        isCompleted = true;
+    }
+
+    boolean isCompleted() {
+        return isCompleted;
     }
 }

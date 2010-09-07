@@ -25,4 +25,6 @@ public interface JUnitXMLReaderListener {
     public void startFailure(TestCaseResult failure);
 
     public void endFailure();
+
+    public void endTest();
 }
