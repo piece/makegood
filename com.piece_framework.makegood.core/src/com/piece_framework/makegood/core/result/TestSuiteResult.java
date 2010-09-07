@@ -120,4 +120,14 @@ public class TestSuiteResult extends Result {
     public boolean hasChildren() {
         return children.size() > 0;
     }
+
+    @Override
+    public int getSize() {
+        int count = 1;
+        for (Result result : children) {
+            count += result.getSize();
+        }
+
+        return count;
+    }
 }

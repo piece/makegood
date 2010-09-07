@@ -39,7 +39,7 @@ class Failures {
         if (indexOfCriterion == null) return null;
 
         if (criterion instanceof TestSuiteResult) {
-            indexOfCriterion += criterion.getChildren().size() + 1;
+            indexOfCriterion += criterion.getSize();
         }
 
         if (direction == FIND_NEXT) {

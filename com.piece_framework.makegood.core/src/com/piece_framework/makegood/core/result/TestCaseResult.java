@@ -117,4 +117,9 @@ public class TestCaseResult extends Result {
     public boolean hasChildren() {
         return false;
     }
+
+    @Override
+    public int getSize() {
+        return 1;
+    }
 }

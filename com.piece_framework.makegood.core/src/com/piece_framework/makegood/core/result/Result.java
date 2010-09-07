@@ -67,4 +67,6 @@ public abstract class Result {
     public Result getParent() {
         return parent;
     }
+
+    public abstract int getSize();
 }
