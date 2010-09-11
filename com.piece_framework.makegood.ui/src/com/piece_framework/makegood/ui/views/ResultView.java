@@ -71,6 +71,7 @@ import com.piece_framework.makegood.ui.launch.TestRunner;
 public class ResultView extends ViewPart {
     public static final String ID = "com.piece_framework.makegood.ui.views.resultView"; //$NON-NLS-1$
     private static final String CONTEXT_ID = "com.piece_framework.makegood.ui.contexts.resultView"; //$NON-NLS-1$
+    private static final Pattern STACK_TRACE_LINE_PATTERN = Pattern.compile("^(.+):(\\d+)$", Pattern.MULTILINE); //$NON-NLS-1$
 
     private RunProgressBar progressBar;
     private CLabel testCount;
@@ -293,12 +294,7 @@ public class ResultView extends ViewPart {
 
     private FailureTrace createFailureTrace(Composite parent) {
         FailureTrace failureTrace = new FailureTrace(parent);
-        failureTrace.addListener(
-            new EditorOpenActiveTextListener(
-                Pattern.compile("^(.+):(\\d+)$", Pattern.MULTILINE) //$NON-NLS-1$
-            )
-        );
-
+        failureTrace.addListener(new EditorOpenActiveTextListener(STACK_TRACE_LINE_PATTERN));
         return failureTrace;
     }
 
