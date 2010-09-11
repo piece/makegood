@@ -49,9 +49,7 @@ public class PHPConfiguration {
             }
         }
 
-        for (String includePath: StagehandTestRunner.getBundleIncludePath()) {
-            newIncludePaths.add(includePath);
-        }
+        newIncludePaths.add(StagehandTestRunner.getBundleIncludePath());
 
         return newIncludePaths.toArray(new String[newIncludePaths.size()]);
     }

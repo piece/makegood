@@ -27,10 +27,7 @@ import org.osgi.framework.Bundle;
 
 public class StagehandTestRunner {
     private static final String BUNDLE_BASE_DIR = "/resources/php"; //$NON-NLS-1$
-    private static final String[] BUNDLE_INCLUDE_PATH = {
-        BUNDLE_BASE_DIR + "/PEAR/src", //$NON-NLS-1$
-        BUNDLE_BASE_DIR + "/PEAR" //$NON-NLS-1$
-    };
+    private static final String BUNDLE_INCLUDE_PATH = BUNDLE_BASE_DIR + "/PEAR"; //$NON-NLS-1$
     private static final String BUNDLE_BIN_DIR = BUNDLE_BASE_DIR + "/bin"; //$NON-NLS-1$
     private static final HashMap<String, String> RUNNER_SCRIPTS =
         new HashMap<String, String>();
@@ -42,24 +39,16 @@ public class StagehandTestRunner {
         RUNNER_SCRIPTS.put("phpspec", BUNDLE_BIN_DIR + "/phpspecrunner.php"); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
-    public static String[] getBundleIncludePath() {
-        List<String> includePaths = new ArrayList<String>();
-        for (String path: BUNDLE_INCLUDE_PATH) {
-            URL url;
-
-            try {
-                url = FileLocator.resolve(
-                          Platform.getBundle(Activator.PLUGIN_ID).getEntry(path)
-                      );
-            } catch (IOException e) {
-                Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
-                break;
-            }
-
-            includePaths.add(new File(url.getPath()).getAbsolutePath());
+    public static String getBundleIncludePath() {
+        URL url;
+        try {
+            url = FileLocator.resolve(Platform.getBundle(Activator.PLUGIN_ID).getEntry(BUNDLE_INCLUDE_PATH));
+        } catch (IOException e) {
+            Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
+            return null;
         }
 
-        return includePaths.toArray(new String[ includePaths.size() ]);
+        return new File(url.getPath()).getAbsolutePath();
     }
 
     public static String getCommandPath(String framework) throws CoreException {
