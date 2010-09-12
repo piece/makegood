@@ -24,16 +24,11 @@ import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
-import org.eclipse.debug.core.ILaunchManager;
-import org.eclipse.debug.core.model.ISourceLocator;
 import org.eclipse.debug.internal.core.LaunchConfiguration;
 import org.eclipse.debug.internal.core.LaunchConfigurationWorkingCopy;
-import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.php.debug.core.debugger.parameters.IDebugParametersKeys;
 import org.eclipse.php.internal.debug.core.IPHPDebugConstants;
 import org.eclipse.php.internal.debug.core.launching.PHPLaunchDelegateProxy;
-import org.eclipse.php.internal.debug.core.sourcelookup.PHPSourcePathComputerDelegate;
-import org.eclipse.php.internal.debug.ui.PHPDebugPerspectiveFactory;
 
 import com.piece_framework.makegood.stagehand_testrunner.StagehandTestRunner;
 
@@ -86,7 +81,7 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
             throw e;
         }
 
-        return new MakeGoodLaunch(configuration, mode, createSourceLocator(configuration, mode));
+        return new MakeGoodLaunch(configuration, mode, null);
     }
 
     @Override
@@ -170,15 +165,6 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
                 throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
             }
 
-            if (ILaunchManager.DEBUG_MODE.equals(mode)) {
-                try {
-                    switchToPHPDebugPerspective(configuration);
-                } catch (CoreException e) {
-                    monitor.setCanceled(true);
-                    throw e;
-                }
-            }
-
             try {
                 super.launch(configuration, mode, launch, monitor);
             } catch (CoreException e) {
@@ -250,31 +236,5 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
 
     public static String getJUnitXMLFile(ILaunch launch) throws CoreException {
         return launch.getLaunchConfiguration().getAttribute(MAKEGOOD_JUNIT_XML_FILE, (String) null);
-    }
-
-    private void switchToPHPDebugPerspective(ILaunchConfiguration configuration)
-        throws CoreException {
-        DebugUITools.setLaunchPerspective(
-            configuration.getType(),
-            ILaunchManager.DEBUG_MODE,
-            PHPDebugPerspectiveFactory.PERSPECTIVE_ID
-        );
-    }
-
-    private ISourceLocator createSourceLocator(
-        ILaunchConfiguration configuration,
-        String launchMode) throws CoreException {
-        PHPSourceLookupDirector sourceLocator = null;
-        if (ILaunchManager.DEBUG_MODE.equals(launchMode)) {
-            sourceLocator = new PHPSourceLookupDirector();
-            sourceLocator.initializeDefaults(configuration);
-            sourceLocator.setSourceContainers(
-                new PHPSourcePathComputerDelegate().computeSourceContainers(
-                    configuration, null
-                )
-            );
-        }
-
-        return sourceLocator;
     }
 }

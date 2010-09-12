@@ -6,11 +6,34 @@
          point="org.eclipse.debug.core.launchConfigurationTypes">
       <launchConfigurationType
             delegate="com.piece_framework.makegood.launch.MakeGoodLaunchConfigurationDelegate"
-            id="com.piece_framework.makegood.launch.launchConfigurationTypes.makeGood"
-            modes="run,debug"
-            name="%launchConfigurationTypes.makeGood.name"
-            public="false">
+            id="com.piece_framework.makegood.launch.makegoodLaunchConfigurationType"
+            modes="run"
+            name="MakeGood Launch Configuration Delegate">
       </launchConfigurationType>
+   </extension>
+   <extension
+         point="org.eclipse.debug.core.launchDelegates">
+      <launchDelegate
+            delegate="com.piece_framework.makegood.launch.MakeGoodLaunchConfigurationDelegate"
+            id="com.piece_framework.makegood.launch.makegoodLaunchDelegate"
+            modes="debug"
+            name="MakeGood Launch Delegate"
+            sourceLocatorId="com.piece_framework.makegood.launch.makegoodSourceLocator"
+            sourcePathComputerId="org.eclipse.php.debug.core.sourcePathComputer.php"
+            type="com.piece_framework.makegood.launch.makegoodLaunchConfigurationType">
+         <modeCombination
+               modes="debug"
+               perspective="org.eclipse.php.debug.ui.PHPDebugPerspective">
+         </modeCombination>
+      </launchDelegate>
+   </extension>
+   <extension
+         point="org.eclipse.debug.core.sourceLocators">
+      <sourceLocator
+            class="com.piece_framework.makegood.launch.PHPSourceLookupDirector"
+            id="com.piece_framework.makegood.launch.makegoodSourceLocator"
+            name="MakeGood Source Locator">
+      </sourceLocator>
    </extension>
 
 </plugin>
