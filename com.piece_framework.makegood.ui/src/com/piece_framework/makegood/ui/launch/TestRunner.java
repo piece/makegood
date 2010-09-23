@@ -17,20 +17,17 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.internal.dialogs.PropertyDialog;
 
 import com.piece_framework.makegood.core.MakeGoodProperty;
 import com.piece_framework.makegood.launch.MakeGoodLaunch;
 import com.piece_framework.makegood.launch.RuntimeConfiguration;
 import com.piece_framework.makegood.ui.Messages;
-import com.piece_framework.makegood.ui.ide.ViewShow;
 
 public class TestRunner {
     private static MakeGoodLaunchShortcut lastShortcut;
     private static Object lastTarget;
     private static boolean isRunWhenFileIsSaved = false;
-    private static IWorkbenchPart lastActivePart;
 
     public static void runRelatedTests(IEditorPart editorPart) {
         runTests(editorPart, new RelatedTestsLaunchShortcut());
@@ -70,12 +67,6 @@ public class TestRunner {
         runTests(lastTarget, lastShortcut);
     }
 
-    public static void restoreFocusToLastActivePart() {
-        if (lastActivePart != null) {
-            ViewShow.setFocus(lastActivePart);
-        }
-    }
-
     private static void runTests(Object target, MakeGoodLaunchShortcut shortcut) {
         MakeGoodProperty property = new MakeGoodProperty(ActivePart.getResource(target));
         if (!property.exists()) {
@@ -95,8 +86,6 @@ public class TestRunner {
             lastShortcut = shortcut;
             lastTarget = target;
         }
-
-        lastActivePart = ViewShow.getActivePart();
 
         String launchMode = RuntimeConfiguration.getInstance().getLaunchMode();
 
