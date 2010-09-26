@@ -368,6 +368,7 @@ public class ResultView extends ViewPart {
 
         stopTestAction.setEnabled(false);
         rerunTestAction.setEnabled(TestRunner.hasLastTest());
+        ActivePart.getInstance().setPart();
         runAllTestsAction.setEnabled(ActivePart.getInstance().isAllTestsRunnable());
     }
 

@@ -24,7 +24,10 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.php.internal.debug.ui.PHPDebugPerspectiveFactory;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
+import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.console.IConsoleConstants;
 
 import com.piece_framework.makegood.core.MakeGoodProperty;
@@ -64,6 +67,14 @@ public class ActivePart {
                 });
             }
         }
+    }
+
+    public void setPart() {
+        IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+        if (window == null) return;
+        IWorkbenchPage page = window.getActivePage();
+        if (page == null) return;
+        setPart(page.getActivePart());
     }
 
     static boolean isAllTestsRunnable(Object target) {
