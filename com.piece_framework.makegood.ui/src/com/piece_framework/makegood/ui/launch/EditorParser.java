@@ -26,19 +26,12 @@ import org.eclipse.dltk.internal.ui.editor.EditorUtility;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.texteditor.ITextEditor;
 
 import com.piece_framework.makegood.ui.Activator;
 
 public class EditorParser {
     private IEditorPart editor;
-
-    public EditorParser() {
-        IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-        this.editor = page.getActiveEditor();
-    }
 
     public EditorParser(IEditorPart editor) {
         this.editor = editor;

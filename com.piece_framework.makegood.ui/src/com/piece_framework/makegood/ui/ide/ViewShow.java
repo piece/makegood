@@ -24,7 +24,9 @@ import com.piece_framework.makegood.ui.Activator;
 
 public class ViewShow {
     public static IViewPart show(String viewId) {
-        IWorkbenchPage page = getActivePage();
+        IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+        if (window == null) return null;
+        IWorkbenchPage page = window.getActivePage();
         if (page == null) return null;
         try {
             return page.showView(viewId);
@@ -35,26 +37,26 @@ public class ViewShow {
     }
 
     public static void setFocus(IWorkbenchPart part) {
-        IWorkbenchPage page = getActivePage();
+        IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+        if (window == null) return;
+        IWorkbenchPage page = window.getActivePage();
         if (page == null) return;
         page.activate(part);
     }
 
     public static IWorkbenchPart getActivePart() {
-        IWorkbenchPage page = getActivePage();
+        IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+        if (window == null) return null;
+        IWorkbenchPage page = window.getActivePage();
         if (page == null) return null;
         return page.getActivePart();
     }
 
     public static IViewPart find(String viewId) {
-        IWorkbenchPage page = getActivePage();
-        if (page == null) return null;
-        return page.findView(viewId);
-    }
-
-    private static IWorkbenchPage getActivePage() {
         IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
         if (window == null) return null;
-        return window.getActivePage();
+        IWorkbenchPage page = window.getActivePage();
+        if (page == null) return null;
+        return page.findView(viewId);
     }
 }

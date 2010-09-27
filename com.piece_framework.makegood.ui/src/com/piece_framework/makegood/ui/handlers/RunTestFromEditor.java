@@ -15,6 +15,10 @@ package com.piece_framework.makegood.ui.handlers;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import com.piece_framework.makegood.core.PHPResource;
@@ -31,14 +35,15 @@ public class RunTestFromEditor extends AbstractHandler {
 
     @Override
     public boolean isEnabled() {
-        if (!WeavingMonitor.endAll()) {
-            return false;
-        }
+        if (!WeavingMonitor.endAll()) return false;
 
-        EditorParser parser = new EditorParser();
-        if (!PHPResource.includesTests(parser.getSourceModule())) {
-            return false;
-        }
+        IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+        if (window == null) return false;
+        IWorkbenchPage page = window.getActivePage();
+        if (page == null) return false;
+        IEditorPart editor = page.getActiveEditor();
+        if (editor == null) return false;
+        if (!PHPResource.includesTests(new EditorParser(editor).getSourceModule())) return false;
 
         return super.isEnabled();
     }

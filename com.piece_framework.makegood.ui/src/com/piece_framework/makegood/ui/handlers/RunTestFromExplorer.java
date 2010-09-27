@@ -21,6 +21,7 @@ import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 
@@ -33,18 +34,28 @@ public class RunTestFromExplorer extends AbstractHandler {
     public Object execute(ExecutionEvent event) throws ExecutionException {
         ISelection selection = HandlerUtil.getActiveMenuSelection(event);
         if (selection == null) {
-            selection = getSelectionFromActivePage();
+            IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+            if (window == null) return null;
+            IWorkbenchPage page = window.getActivePage();
+            if (page == null) return null;
+            selection = page.getSelection();
+            if (selection == null) return null;
         }
+
         TestRunner.runTests(selection);
         return null;
     }
 
     @Override
     public boolean isEnabled() {
-        if (!WeavingMonitor.endAll()) {
-            return false;
-        }
-        ISelection selection = getSelectionFromActivePage();
+        if (!WeavingMonitor.endAll()) return false;
+        IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+        if (window == null) return false;
+        IWorkbenchPage page = window.getActivePage();
+        if (page == null) return false;
+        ISelection selection = page.getSelection();
+        if (selection == null) return false;
+
         if (!(selection instanceof IStructuredSelection)) {
             return super.isEnabled();
         }
@@ -56,18 +67,8 @@ public class RunTestFromExplorer extends AbstractHandler {
         } else if (element instanceof IModelElement) {
             resource = ((IModelElement) element).getResource();
         }
-
-        if (resource == null) {
-            return false;
-        }
-        if (resource instanceof IFolder) {
-            return true;
-        }
+        if (resource == null) return false;
+        if (resource instanceof IFolder) return true;
         return PHPResource.isPHPSource(resource);
-    }
-
-    private ISelection getSelectionFromActivePage() {
-        IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-        return page.getSelection();
     }
 }

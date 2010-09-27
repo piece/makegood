@@ -14,6 +14,10 @@ package com.piece_framework.makegood.ui.handlers;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.dltk.core.IModelElement;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import com.piece_framework.makegood.ui.launch.EditorParser;
@@ -28,18 +32,22 @@ public class RunTestFromEditorInClass extends RunTestFromEditor {
 
     @Override
     public boolean isEnabled() {
-        if (!super.isEnabled()) {
-            return false;
-        }
+        if (!super.isEnabled()) return false;
 
-        EditorParser parser = new EditorParser();
-        IModelElement element = parser.getModelElementOnSelection();
+        IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+        if (window == null) return false;
+        IWorkbenchPage page = window.getActivePage();
+        if (page == null) return false;
+        IEditorPart editor = page.getActiveEditor();
+        if (editor == null) return false;
+        IModelElement element = new EditorParser(editor).getModelElementOnSelection();
         if (element.getElementType() == IModelElement.TYPE
             || element.getElementType() == IModelElement.METHOD
             || element.getElementType() == IModelElement.FIELD
             ) {
             return true;
         }
+
         return false;
     }
 }
