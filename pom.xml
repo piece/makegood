@@ -109,7 +109,7 @@
               <goal>build-qualifier</goal>
             </goals>
             <configuration>
-              <format>'v'yyyyMMdd'-'HHmm</format>
+              <format>'v'yyyyMMddHHmm</format>
             </configuration>
           </execution>
         </executions>
