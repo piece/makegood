@@ -31,75 +31,31 @@
  * @package    Stagehand_TestRunner
  * @copyright  2009-2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.13.0
- * @link       http://simpletest.org/
- * @since      File available since Release 2.10.0
+ * @version    Release: 2.14.0
+ * @link       http://www.phpunit.de/
+ * @since      File available since Release 2.12.0
  */
-
-require_once 'simpletest/test_case.php';
 
 /**
  * @package    Stagehand_TestRunner
  * @copyright  2009-2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.13.0
- * @link       http://simpletest.org/
- * @since      Class available since Release 2.10.0
+ * @version    Release: 2.14.0
+ * @link       http://www.phpunit.de/
+ * @since      Class available since Release 2.12.0
  */
-class Stagehand_TestRunner_Runner_SimpleTestRunner_TestSuite extends TestSuite
+class Stagehand_TestRunner_TestSuite_PHPUnit34MethodFilterTestSuite extends Stagehand_TestRunner_TestSuite_PHPUnitMethodFilterTestSuite
 {
     /**
-     * @var Stagehand_TestRunner_Config
+     * @param ReflectionClass  $class
+     * @param ReflectionMethod $method
+     * @param array            $names
      */
-    protected $config;
-
-    /**
-     * @return integer
-     */
-    public function countTests()
+    protected function addTestMethod(ReflectionClass $class, ReflectionMethod $method, array &$names)
     {
-        $testCount = 0;
-        foreach ($this->_test_cases as $testCase) {
-            $testCount += $this->countTestsInTestCase($testCase);
+        if ($this->config->isTestingMethod($class->getName(), $method->getName())) {
+            parent::addTestMethod($class, $method, $names);
         }
-
-        return $testCount;
-    }
-
-    /**
-     * @param SimpleTestCase $testCase
-     * @return integer
-     * @since Method available since Release 2.11.1
-     */
-    public function countTestsInTestCase(SimpleTestCase $testCase)
-    {
-        $tests = $testCase->getTests();
-        $testCount = 0;
-        if ($this->config->testsOnlySpecified()) {
-            if ($this->config->testsOnlySpecifiedMethods) {
-                foreach ($tests as $method) {
-                    if ($this->config->isTestingMethod(get_class($testCase), $method)) {
-                        ++$testCount;
-                    }
-                }
-            } elseif ($this->config->testsOnlySpecifiedClasses) {
-                if ($this->config->isTestingClass(get_class($testCase))) {
-                    $testCount = count($tests);
-                }
-            }
-        } else {
-            $testCount = count($tests);
-        }
-
-        return $testCount;
-    }
-
-    /**
-     * @param Stagehand_TestRunner_Config $config
-     */
-    public function setConfig(Stagehand_TestRunner_Config $config)
-    {
-        $this->config = $config;
     }
 }
 

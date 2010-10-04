@@ -31,48 +31,85 @@
  * @package    Stagehand_TestRunner
  * @copyright  2009-2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.13.0
- * @link       http://www.phpunit.de/
- * @since      File available since Release 2.7.0
+ * @version    Release: 2.14.0
+ * @link       http://simpletest.org/
+ * @since      File available since Release 2.10.0
  */
 
-require_once 'PHPUnit/Framework/TestSuite.php';
+require_once 'simpletest/test_case.php';
 
 /**
  * @package    Stagehand_TestRunner
  * @copyright  2009-2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.13.0
- * @link       http://www.phpunit.de/
- * @since      Class available since Release 2.7.0
+ * @version    Release: 2.14.0
+ * @link       http://simpletest.org/
+ * @since      Class available since Release 2.10.0
  */
-class Stagehand_TestRunner_Collector_PHPUnitCollector_MethodFilterTestSuite extends PHPUnit_Framework_TestSuite
+class Stagehand_TestRunner_TestSuite_SimpleTestTestSuite extends TestSuite
 {
+    /**
+     * @var Stagehand_TestRunner_Config
+     */
     protected $config;
 
     /**
-     * @param ReflectionClass             $theClass
-     * @param Stagehand_TestRunner_Config $config
+     * @return integer
      */
-    public function __construct(ReflectionClass $theClass, Stagehand_TestRunner_Config $config)
+    public function countTests()
     {
-        $this->config = $config;
-        parent::__construct($theClass);
+        $testCount = 0;
+        foreach ($this->_test_cases as $testCase) {
+            $testCount += $this->countTestsInTestCase($testCase);
+        }
+
+        return $testCount;
     }
 
     /**
-     * @param PHPUnit_Framework_Test $test
-     * @param array                  $groups
+     * @param SimpleTestCase $testCase
+     * @return integer
+     * @since Method available since Release 2.11.1
      */
-    public function addTest(PHPUnit_Framework_Test $test, $groups = array())
+    public function countTestsInTestCase(SimpleTestCase $testCase)
     {
-        if ($test instanceof PHPUnit_Framework_Warning
-            && preg_match('/^No tests found in class/', $test->getMessage())
-            ) {
-            return;
+        $tests = $this->getTestsInTestCase($testCase);
+        $testCount = 0;
+        if ($this->config->testsOnlySpecified()) {
+            if ($this->config->testsOnlySpecifiedMethods) {
+                foreach ($tests as $method) {
+                    if ($this->config->isTestingMethod(get_class($testCase), $method)) {
+                        ++$testCount;
+                    }
+                }
+            } elseif ($this->config->testsOnlySpecifiedClasses) {
+                if ($this->config->isTestingClass(get_class($testCase))) {
+                    $testCount = count($tests);
+                }
+            }
+        } else {
+            $testCount = count($tests);
         }
 
-        parent::addTest($test, $groups);
+        return $testCount;
+    }
+
+    /**
+     * @param Stagehand_TestRunner_Config $config
+     */
+    public function setConfig(Stagehand_TestRunner_Config $config)
+    {
+        $this->config = $config;
+    }
+
+    /**
+     * @param SimpleTestCase $testCase
+     * @return integer
+     * @since Method available since Release 2.14.0
+     */
+    protected function getTestsInTestCase(SimpleTestCase $testCase)
+    {
+        return $testCase->getTests();
     }
 }
 

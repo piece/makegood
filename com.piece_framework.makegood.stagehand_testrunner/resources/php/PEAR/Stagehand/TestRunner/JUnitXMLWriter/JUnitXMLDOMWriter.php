@@ -31,7 +31,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2009-2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.13.0
+ * @version    Release: 2.14.0
  * @since      File available since Release 2.10.0
  */
 
@@ -39,7 +39,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2009-2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.13.0
+ * @version    Release: 2.14.0
  * @since      Class available since Release 2.10.0
  */
 class Stagehand_TestRunner_JUnitXMLWriter_JUnitXMLDOMWriter implements Stagehand_TestRunner_JUnitXMLWriter
@@ -199,7 +199,7 @@ class Stagehand_TestRunner_JUnitXMLWriter_JUnitXMLDOMWriter implements Stagehand
      */
     protected function writeFailureOrError($text, $type, $failureOrError)
     {
-        $error = $this->xmlWriter->createElement($failureOrError, $this->utf8Converter->convert($text));
+        $error = $this->xmlWriter->createElement($failureOrError, htmlspecialchars($text, ENT_QUOTES, 'UTF-8')); // TODO Since the DOM implementation ignores ENT_QUOTES, single quotes and double quotes is output as is.
         $this->getCurrentElement()->appendChild($error);
         if (!is_null($type)) {
             $error->setAttribute('type', $this->utf8Converter->convert($type));

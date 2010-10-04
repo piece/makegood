@@ -4,7 +4,7 @@
 /**
  * PHP version 5
  *
- * Copyright (c) 2008-2010 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2010 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,25 +29,21 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_TestRunner
- * @copyright  2008-2010 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
  * @version    Release: 2.14.0
- * @since      File available since Release 2.3.0
+ * @since      File available since Release 2.14.0
  */
 
 /**
- * The base class for test runners.
- *
  * @package    Stagehand_TestRunner
- * @copyright  2008-2010 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
  * @version    Release: 2.14.0
- * @since      Class available since Release 2.3.0
+ * @since      Class available since Release 2.14.0
  */
-abstract class Stagehand_TestRunner_Runner
+class Stagehand_TestRunner_TestRunner
 {
-    protected $notification;
-
     /**
      * @var Stagehand_TestRunner_Config
      */
@@ -55,29 +51,77 @@ abstract class Stagehand_TestRunner_Runner
 
     /**
      * @param Stagehand_TestRunner_Config $config
-     * @since Method available since Release 2.10.0
      */
     public function __construct(Stagehand_TestRunner_Config $config)
     {
         $this->config = $config;
-        $this->notification = new stdClass();
     }
 
     /**
      * Runs tests.
      *
-     * @param mixed $suite
+     * @since Method available since Release 2.1.0
      */
-    abstract public function run($suite);
+    public function run()
+    {
+        $this->createPreparator()->prepare();
+
+        $runner = $this->createRunner();
+        $runner->run($this->createCollector()->collect());
+
+        if ($this->config->usesGrowl) {
+            $this->notifyGrowlOfResults($runner->getNotification());
+        }
+    }
 
     /**
-     * Gets a notification object for Growl.
-     *
-     * @return stdClass
+     * @return Stagehand_TestRunner_Preparator
+     * @since Method available since Release 2.12.0
      */
-    public function getNotification()
+    protected function createPreparator()
     {
-        return $this->notification;
+        $factory = new Stagehand_TestRunner_Preparator_PreparatorFactory($this->config);
+        return $factory->create();
+    }
+
+    /**
+     * @return Stagehand_TestRunner_Collector
+     * @since Method available since Release 2.11.0
+     */
+    protected function createCollector()
+    {
+        $factory = new Stagehand_TestRunner_Collector_CollectorFactory($this->config);
+        return $factory->create();
+    }
+
+    /**
+     * @return Stagehand_TestRunner_Runner
+     * @since Method available since Release 2.11.0
+     */
+    protected function createRunner()
+    {
+        $factory = new Stagehand_TestRunner_Runner_RunnerFactory($this->config);
+        return $factory->create();
+    }
+
+    /**
+     * @param stdClass $notification
+     * @since Method available since Release 2.11.0
+     */
+    protected function notifyGrowlOfResults(stdClass $notification)
+    {
+        $growl = new Net_Growl(
+                     new Net_Growl_Application(
+                         'Stagehand_TestRunner',
+                         array('Green', 'Red'),
+                         $this->config->growlPassword
+                     )
+                 );
+        $growl->notify(
+            $notification->name,
+            'Test Results by Stagehand_TestRunner',
+            $notification->description
+        );
     }
 }
 

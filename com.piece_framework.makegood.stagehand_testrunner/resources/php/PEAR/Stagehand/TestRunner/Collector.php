@@ -31,7 +31,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2007-2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.13.0
+ * @version    Release: 2.14.0
  * @since      File available since Release 2.1.0
  */
 
@@ -41,13 +41,13 @@
  * @package    Stagehand_TestRunner
  * @copyright  2007-2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.13.0
+ * @version    Release: 2.14.0
  * @since      Class available since Release 2.1.0
  */
 abstract class Stagehand_TestRunner_Collector
 {
     protected $exclude;
-    protected $baseClass;
+    protected $superTypes;
     protected $suffix;
     protected $include;
     protected $config;
@@ -145,27 +145,72 @@ abstract class Stagehand_TestRunner_Collector
      */
     protected function collectTestCasesFromFile($file)
     {
-        if (!preg_match('/' . $this->suffix . '\.php$/', $file)) {
-            return;
+        if (!$this->shouldTreatFileAsTest($file)) return;
+
+        foreach ($this->findNewClasses($file) as $newClass) {
+            if ($this->shouldTreatClassAsTest($newClass)) {
+                $this->collectTestCase($newClass);
+            }
+        }
+    }
+
+    /**
+     * @param string $file
+     * @return boolean
+     * @since Method available since Release 2.14.0
+     */
+    protected function shouldTreatFileAsTest($file)
+    {
+        if (is_null($this->config->testFileSuffix)) {
+            $suffix = $this->suffix;
+        } else {
+            $suffix = $this->config->testFileSuffix;
         }
 
+        return (boolean)preg_match('/' . str_replace('/', '\/', $suffix) . '\.php$/', $file);
+    }
+
+    /**
+     * @param string $class
+     * @return boolean
+     * @since Method available since Release 2.14.0
+     */
+    protected function shouldTreatClassAsTest($class)
+    {
+        return $this->validateSuperType($class)
+               && $this->allowDeny->evaluate($class) == Stagehand_AccessControl_AccessState::ALLOW;
+    }
+
+    /**
+     * @param string $class
+     * @return boolean
+     * @since Method available since Release 2.14.0
+     */
+    protected function validateSuperType($class)
+    {
+        foreach ($this->superTypes as $superType) {
+            if ($class == $superType) {
+                return false;
+            }
+
+            if (is_subclass_of($class, $superType)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param string $file
+     * @return boolean
+     * @since Method available since Release 2.14.0
+     */
+    protected function findNewClasses($file)
+    {
         $currentClasses = get_declared_classes();
-
-        if (!include_once($file)) {
-            return;
-        }
-
-        $newClasses = array_values(array_diff(get_declared_classes(), $currentClasses));
-        for ($i = 0, $count = count($newClasses); $i < $count; ++$i) {
-            if (!is_subclass_of($newClasses[$i], $this->baseClass)) {
-                continue;
-            }
-
-            if ($this->allowDeny->evaluate($newClasses[$i]) ==
-                Stagehand_AccessControl_AccessState::ALLOW) {
-                $this->collectTestCase($newClasses[$i]);
-            }
-        }
+        if (!include_once($file)) return array();
+        return array_values(array_diff(get_declared_classes(), $currentClasses));
     }
 }
 

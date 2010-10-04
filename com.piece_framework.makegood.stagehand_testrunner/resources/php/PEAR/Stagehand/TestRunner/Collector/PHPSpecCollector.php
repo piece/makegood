@@ -31,7 +31,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2007-2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.13.0
+ * @version    Release: 2.14.0
  * @link       http://www.phpspec.org/
  * @since      File available since Release 2.1.0
  */
@@ -42,13 +42,13 @@
  * @package    Stagehand_TestRunner
  * @copyright  2007-2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.13.0
+ * @version    Release: 2.14.0
  * @link       http://www.phpspec.org/
  * @since      Class available since Release 2.1.0
  */
 class Stagehand_TestRunner_Collector_PHPSpecCollector extends Stagehand_TestRunner_Collector
 {
-    protected $baseClass = 'PHPSpec_Context';
+    protected $superTypes = array('PHPSpec_Context');
     protected $suffix = 'Spec';
     protected $include = '(^[Dd]escribe|[Ss]pec$)';
 

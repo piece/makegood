@@ -4,7 +4,7 @@
 /**
  * PHP version 5
  *
- * Copyright (c) 2009-2010 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2010 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,57 +29,32 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_TestRunner
- * @copyright  2009-2010 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
  * @version    Release: 2.14.0
- * @since      File available since Release 2.7.0
+ * @link       http://www.phpunit.de/
+ * @since      File available since Release 2.12.0
  */
-
-require_once 'PHPUnit/Extensions/PhptTestCase.php';
 
 /**
- * A test collector for PHPT.
- *
  * @package    Stagehand_TestRunner
- * @copyright  2009-2010 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
  * @version    Release: 2.14.0
- * @since      Class available since Release 2.7.0
+ * @link       http://www.phpunit.de/
+ * @since      Class available since Release 2.12.0
  */
-class Stagehand_TestRunner_Collector_PHPTCollector extends Stagehand_TestRunner_Collector
+class Stagehand_TestRunner_TestSuite_PHPUnit35MethodFilterTestSuite extends Stagehand_TestRunner_TestSuite_PHPUnitMethodFilterTestSuite
 {
     /**
-     * @param string $testCase
-     * @since Method available since Release 2.11.0
+     * @param ReflectionClass  $class
+     * @param ReflectionMethod $method
      */
-    public function collectTestCase($testCase)
+    protected function addTestMethod(ReflectionClass $class, ReflectionMethod $method)
     {
-        $this->suite->addTest(new PHPUnit_Extensions_PhptTestCase($testCase));
-    }
-
-    /**
-     * Creates the test suite object.
-     *
-     * @param string $name
-     * @return PHPUnit_Framework_TestSuite
-     */
-    protected function createTestSuite($name)
-    {
-        return new PHPUnit_Framework_TestSuite($name);
-    }
-
-    /**
-     * Collects all test cases included in the given file.
-     *
-     * @param string $file
-     */
-    protected function collectTestCasesFromFile($file)
-    {
-        if (!preg_match('/\.phpt$/', $file)) {
-            return;
+        if ($this->config->isTestingMethod($class->getName(), $method->getName())) {
+            parent::addTestMethod($class, $method);
         }
-
-        $this->collectTestCase($file);
     }
 }
 

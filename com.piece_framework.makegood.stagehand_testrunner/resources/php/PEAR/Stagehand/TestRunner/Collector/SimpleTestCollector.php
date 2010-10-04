@@ -33,7 +33,7 @@
  * @copyright  2007 Masahiko Sakamoto <msakamoto-sf@users.sourceforge.net>
  * @copyright  2007-2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.13.0
+ * @version    Release: 2.14.0
  * @link       http://simpletest.org/
  * @since      File available since Release 2.1.0
  */
@@ -47,16 +47,16 @@ require_once 'simpletest/test_case.php';
  * @copyright  2007 Masahiko Sakamoto <msakamoto-sf@users.sourceforge.net>
  * @copyright  2007-2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.13.0
+ * @version    Release: 2.14.0
  * @link       http://simpletest.org/
  * @since      Class available since Release 2.1.0
  */
 class Stagehand_TestRunner_Collector_SimpleTestCollector extends Stagehand_TestRunner_Collector
 {
-    protected $exclude = '^(UnitTestCase$|PHPUnit)';
-    protected $baseClass = 'UnitTestCase';
+    protected $superTypes = array('SimpleTestCase');
     protected $suffix = 'Test(?:Case)?';
     protected $include = 'Test(?:Case)?$';
+    protected $suiteClass = 'Stagehand_TestRunner_TestSuite_SimpleTestTestSuite';
 
     /**
      * @param string $testCase
@@ -80,7 +80,7 @@ class Stagehand_TestRunner_Collector_SimpleTestCollector extends Stagehand_TestR
      */
     protected function createTestSuite($name)
     {
-        $suite = new Stagehand_TestRunner_Runner_SimpleTestRunner_TestSuite($name);
+        $suite = new $this->suiteClass($name);
         $suite->setConfig($this->config);
         return $suite;
     }

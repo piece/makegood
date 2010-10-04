@@ -32,7 +32,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2007-2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.13.0
+ * @version    Release: 2.14.0
  * @since      File available since Release 2.0.0
  */
 
@@ -65,8 +65,8 @@ $loader = Stagehand_Autoload::legacyLoader();
 $loader->addNamespace('Stagehand');
 Stagehand_Autoload::register($loader);
 
-$runner = new Stagehand_TestRunner(Stagehand_TestRunner_Framework::PHPSPEC);
-$result = $runner->run();
+$controller = new Stagehand_TestRunner_TestRunnerCLIController(Stagehand_TestRunner_Framework::PHPSPEC);
+$result = $controller->run();
 
 exit($result);
 

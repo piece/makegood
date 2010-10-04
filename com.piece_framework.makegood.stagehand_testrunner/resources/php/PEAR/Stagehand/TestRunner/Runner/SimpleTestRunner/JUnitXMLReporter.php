@@ -31,7 +31,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2009-2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.13.0
+ * @version    Release: 2.14.0
  * @link       http://simpletest.org/
  * @since      File available since Release 2.10.0
  */
@@ -42,7 +42,7 @@ require_once 'simpletest/scorer.php';
  * @package    Stagehand_TestRunner
  * @copyright  2009-2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.13.0
+ * @version    Release: 2.14.0
  * @link       http://simpletest.org/
  * @since      Class available since Release 2.10.0
  */
@@ -54,11 +54,12 @@ class Stagehand_TestRunner_Runner_SimpleTestRunner_JUnitXMLReporter extends Simp
     protected $xmlWriter;
 
     /**
-     * @var Stagehand_TestRunner_Runner_SimpleTestRunner_TestSuite
+     * @var Stagehand_TestRunner_TestSuite_SimpleTestTestSuite
      */
     protected $suite;
     protected $methodStartTime;
     protected $assertionCount;
+    protected $reportedFailure;
 
     /**
      * @var Stagehand_TestRunner_Config
@@ -74,9 +75,9 @@ class Stagehand_TestRunner_Runner_SimpleTestRunner_JUnitXMLReporter extends Simp
     }
 
     /**
-     * @param Stagehand_TestRunner_Runner_SimpleTestRunner_TestSuite $suite
+     * @param Stagehand_TestRunner_TestSuite_SimpleTestTestSuite $suite
      */
-    public function setTestSuite(Stagehand_TestRunner_Runner_SimpleTestRunner_TestSuite $suite)
+    public function setTestSuite(Stagehand_TestRunner_TestSuite_SimpleTestTestSuite $suite)
     {
         $this->suite = $suite;
     }
@@ -141,6 +142,7 @@ class Stagehand_TestRunner_Runner_SimpleTestRunner_JUnitXMLReporter extends Simp
         );
         $this->methodStartTime = microtime(true);
         $this->assertionCount = 0;
+        $this->reportedFailure = false;
     }
 
     /**
@@ -185,9 +187,11 @@ class Stagehand_TestRunner_Runner_SimpleTestRunner_JUnitXMLReporter extends Simp
      */
     public function paintFail($message)
     {
+        if ($this->reportedFailure) return;
         parent::paintFail($message);
         $this->paintFailureOrError($message, 'failure');
         ++$this->assertionCount;
+        $this->reportedFailure = true;
     }
 
     /**

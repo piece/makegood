@@ -35,7 +35,7 @@
  * @copyright  2007-2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @copyright  2010 KUMAKURA Yousuke <kumatch@gmail.com>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.13.0
+ * @version    Release: 2.14.0
  * @link       http://simpletest.org/
  * @since      File available since Release 2.1.0
  */
@@ -50,13 +50,14 @@ require_once 'simpletest/reporter.php';
  * @copyright  2007-2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @copyright  2010 KUMAKURA Yousuke <kumatch@gmail.com>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.13.0
+ * @version    Release: 2.14.0
  * @link       http://simpletest.org/
  * @since      Class available since Release 2.1.0
  */
 class Stagehand_TestRunner_Runner_SimpleTestRunner extends Stagehand_TestRunner_Runner
 {
     protected $junitXMLFileHandle;
+    protected $junitXMLReporterClass = 'Stagehand_TestRunner_Runner_SimpleTestRunner_JUnitXMLReporter';
 
     /**
      * Runs tests based on the given TestSuite object.
@@ -80,7 +81,7 @@ class Stagehand_TestRunner_Runner_SimpleTestRunner extends Stagehand_TestRunner_
                              );
             }
 
-            $junitXMLReporter = new Stagehand_TestRunner_Runner_SimpleTestRunner_JUnitXMLReporter($this->config);
+            $junitXMLReporter = new $this->junitXMLReporterClass($this->config);
             $junitXMLReporter->setXMLWriter($xmlWriter);
             $junitXMLReporter->setTestSuite($suite);
             $junitXMLReporter->setConfig($this->config);

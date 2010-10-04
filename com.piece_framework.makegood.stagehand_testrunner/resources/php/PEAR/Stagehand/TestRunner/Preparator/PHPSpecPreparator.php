@@ -31,7 +31,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.13.0
+ * @version    Release: 2.14.0
  * @since      File available since Release 2.12.0
  */
 
@@ -39,10 +39,10 @@
  * @package    Stagehand_TestRunner
  * @copyright  2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.13.0
+ * @version    Release: 2.14.0
  * @since      Class available since Release 2.12.0
  */
-class Stagehand_TestRunner_Preparator_PHPSpecPreparator implements Stagehand_TestRunner_Preparator
+class Stagehand_TestRunner_Preparator_PHPSpecPreparator extends Stagehand_TestRunner_Preparator
 {
     public function prepare()
     {

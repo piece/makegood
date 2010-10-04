@@ -31,31 +31,48 @@
  * @package    Stagehand_TestRunner
  * @copyright  2009-2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.13.0
+ * @version    Release: 2.14.0
  * @link       http://www.phpunit.de/
- * @since      File available since Release 2.12.0
+ * @since      File available since Release 2.7.0
  */
+
+require_once 'PHPUnit/Framework/TestSuite.php';
 
 /**
  * @package    Stagehand_TestRunner
  * @copyright  2009-2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.13.0
+ * @version    Release: 2.14.0
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 2.12.0
+ * @since      Class available since Release 2.7.0
  */
-class Stagehand_TestRunner_Collector_PHPUnitCollector_MethodFilterTestSuite_PHPUnit34MethodFilterTestSuite extends Stagehand_TestRunner_Collector_PHPUnitCollector_MethodFilterTestSuite
+class Stagehand_TestRunner_TestSuite_PHPUnitMethodFilterTestSuite extends PHPUnit_Framework_TestSuite
 {
+    protected $config;
+
     /**
-     * @param ReflectionClass  $class
-     * @param ReflectionMethod $method
-     * @param array            $names
+     * @param ReflectionClass             $theClass
+     * @param Stagehand_TestRunner_Config $config
      */
-    protected function addTestMethod(ReflectionClass $class, ReflectionMethod $method, array &$names)
+    public function __construct(ReflectionClass $theClass, Stagehand_TestRunner_Config $config)
     {
-        if ($this->config->isTestingMethod($class->getName(), $method->getName())) {
-            parent::addTestMethod($class, $method, $names);
+        $this->config = $config;
+        parent::__construct($theClass);
+    }
+
+    /**
+     * @param PHPUnit_Framework_Test $test
+     * @param array                  $groups
+     */
+    public function addTest(PHPUnit_Framework_Test $test, $groups = array())
+    {
+        if ($test instanceof PHPUnit_Framework_Warning
+            && preg_match('/^No tests found in class/', $test->getMessage())
+            ) {
+            return;
         }
+
+        parent::addTest($test, $groups);
     }
 }
 
