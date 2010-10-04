@@ -5,7 +5,7 @@
 /**
  * PHP version 5
  *
- * Copyright (c) 2007-2010 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2010 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,10 +30,10 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_TestRunner
- * @copyright  2007-2010 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
  * @version    Release: 2.14.0
- * @since      File available since Release 1.0.0
+ * @since      File available since Release 2.14.0
  */
 
 // Finds the preload option and preloads a file as a PHP script if it is specified.
@@ -65,7 +65,7 @@ $loader = Stagehand_Autoload::legacyLoader();
 $loader->addNamespace('Stagehand');
 Stagehand_Autoload::register($loader);
 
-$controller = new Stagehand_TestRunner_TestRunnerCLIController(Stagehand_TestRunner_Framework::PHPUNIT);
+$controller = new Stagehand_TestRunner_TestRunnerCLIController(Stagehand_TestRunner_Framework::CAKE);
 $result = $controller->run();
 
 exit($result);
