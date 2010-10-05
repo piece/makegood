@@ -85,7 +85,7 @@ public class PHPResource {
         if (property.usingPHPUnit()) {
             return "PHPUnit_Framework_TestCase"; //$NON-NLS-1$
         } else if (property.usingSimpleTest()) {
-            return "UnitTestCase"; //$NON-NLS-1$
+            return "SimpleTestCase"; //$NON-NLS-1$
         } else {
             return "PHPUnit_Framework_TestCase"; //$NON-NLS-1$
         }
