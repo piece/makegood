@@ -146,8 +146,7 @@ public class LaunchTarget {
     }
 
     public TestingFramework getTestingFramework() {
-        MakeGoodProperty property = new MakeGoodProperty(getTargetResource(targets.get(0)));
-        return property.getTestingFramework();
+        return new MakeGoodProperty(getTargetResource(targets.get(0))).getTestingFramework();
     }
 
     private IFile findDummyFile(IFolder folder) {
@@ -179,8 +178,7 @@ public class LaunchTarget {
     }
 
     private String getPreloadScript() {
-        MakeGoodProperty property = new MakeGoodProperty(getTargetResource(targets.get(0)));
-        return property.getPreloadScript();
+        return new MakeGoodProperty(getTargetResource(targets.get(0))).getPreloadScript();
     }
 
     private IResource getTargetResource(Object target) {
