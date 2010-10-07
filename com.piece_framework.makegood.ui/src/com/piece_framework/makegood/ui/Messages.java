@@ -28,6 +28,10 @@ public class Messages extends NLS {
     public static String MakeGoodPropertyPage_preloadScriptDialogTitle;
     public static String MakeGoodPropertyPage_preloadScriptLabel;
     public static String MakeGoodPropertyPage_PHPUnit;
+    public static String MakeGoodPropertyPage_phpunitConfigFileDialogTitle;
+    public static String MakeGoodPropertyPage_phpunitConfigFileDialogMessage;
+    public static String MakeGoodPropertyPage_phpunitConfigFileLabel;
+    public static String MakeGoodPropertyPage_phpunitConfigFileBrowseLabel;
     public static String MakeGoodPropertyPage_removeLabel;
     public static String MakeGoodPropertyPage_SimpleTest;
     public static String MakeGoodPreferencePage_runAllTestsWhenFileIsSaved;

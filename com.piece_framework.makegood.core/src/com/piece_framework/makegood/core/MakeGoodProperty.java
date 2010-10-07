@@ -31,6 +31,7 @@ public class MakeGoodProperty {
     private static String PRELOAD_SCRIPT_KEY = "preload_script"; //$NON-NLS-1$
     private static String TESTING_FRAMEWORK_KEY = "testing_framework"; //$NON-NLS-1$
     private static String TEST_FOLDERS = "test_folders"; //$NON-NLS-1$
+    private static String PHPUNIT_CONFIG_FILE = "phpunit_config_file"; //$NON-NLS-1$
     private IEclipsePreferences preferences;
     private IProject project;
 
@@ -116,5 +117,13 @@ public class MakeGoodProperty {
                 )
             );
         }
+    }
+
+    public String getPHPUnitConfigFile() {
+        return preferences.get(PHPUNIT_CONFIG_FILE, ""); //$NON-NLS-1$
+    }
+
+    public void setPHPUnitConfigFile(String phpunitConfigFile) {
+        preferences.put(PHPUNIT_CONFIG_FILE, phpunitConfigFile);
     }
 }

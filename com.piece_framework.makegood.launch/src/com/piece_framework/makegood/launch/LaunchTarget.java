@@ -84,18 +84,27 @@ public class LaunchTarget {
             IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
             IResource preloadResource = root.findMember(preloadScript);
             if (preloadResource != null) {
-                buffer.append("-p \"" + preloadResource.getLocation().toString() + "\""); //$NON-NLS-1$
+                buffer.append("-p \"" + preloadResource.getLocation().toString() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
             }
         }
 
         if (junitXMLFile != null) {
-            buffer.append(" --log-junit=\"" + junitXMLFile + "\""); //$NON-NLS-1$
+            buffer.append(" --log-junit=\"" + junitXMLFile + "\""); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
-        buffer.append(" --log-junit-realtime");
+        buffer.append(" --log-junit-realtime"); //$NON-NLS-1$
 
         if (RuntimeConfiguration.getInstance().stopsOnFailure) {
-            buffer.append(" --stop-on-failure");
+            buffer.append(" --stop-on-failure"); //$NON-NLS-1$
+        }
+
+        String phpunitConfigFile = getPHPUnitConfigFile();
+        if (!"".equals(phpunitConfigFile)) { //$NON-NLS-1$
+            IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+            IResource phpunitConfilgFileResource = root.findMember(phpunitConfigFile);
+            if (phpunitConfilgFileResource != null) {
+                buffer.append(" --phpunit-config=\"" + phpunitConfilgFileResource.getLocation().toString() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
+            }
         }
 
         StringBuilder classes = new StringBuilder();
@@ -133,7 +142,7 @@ public class LaunchTarget {
                 methods.append(targetValue);
             }
 
-            resources.append(" \"" + getTargetResource(target).getLocation().toString() + "\""); //$NON-NLS-1$
+            resources.append(" \"" + getTargetResource(target).getLocation().toString() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         buffer.append(classes.length() > 0 ?
@@ -190,4 +199,9 @@ public class LaunchTarget {
         }
         return resource;
     }
+
+    private String getPHPUnitConfigFile() {
+        return new MakeGoodProperty(getTargetResource(targets.get(0))).getPHPUnitConfigFile();
+    }
+
 }
