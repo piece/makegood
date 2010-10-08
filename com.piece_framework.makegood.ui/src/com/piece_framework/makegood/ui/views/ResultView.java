@@ -31,6 +31,7 @@ import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeContentProvider;
+import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -661,6 +662,50 @@ public class ResultView extends ViewPart {
 
         @Override
         public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
+        }
+    }
+
+    private class ResultTreeLabelProvider extends LabelProvider {
+        private Image passIcon;
+        private Image errorIcon;
+        private Image failureIcon;
+        private Image inProgressIcon;
+
+        public ResultTreeLabelProvider() {
+            super();
+
+            passIcon = Activator.getImageDescriptor("icons/pass-white.gif").createImage(); //$NON-NLS-1$
+            errorIcon = Activator.getImageDescriptor("icons/error-white.gif").createImage(); //$NON-NLS-1$
+            failureIcon = Activator.getImageDescriptor("icons/failure-white.gif").createImage(); //$NON-NLS-1$
+            inProgressIcon = Activator.getImageDescriptor("icons/inProgress.gif").createImage(); //$NON-NLS-1$
+        }
+
+        @Override
+        public String getText(Object element) {
+            Result result = (Result) element;
+            return result.getName() + " (" +  //$NON-NLS-1$
+            TimeFormatter.format(result.getTime()) +
+            ")";  //$NON-NLS-1$
+        }
+
+        @Override
+        public Image getImage(Object element) {
+            Result result = (Result) element;
+            if (!result.fixed()) {
+                if (result instanceof TestCaseResult) {
+                    return inProgressIcon;
+                } else {
+                    return null;
+                }
+            }
+
+            if (result.hasFailures()) {
+                return failureIcon;
+            } else if (result.hasErrors()) {
+                return errorIcon;
+            } else {
+                return passIcon;
+            }
         }
     }
 }
