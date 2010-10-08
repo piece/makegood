@@ -15,6 +15,7 @@ package com.piece_framework.makegood.ui.views;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.eclipse.core.filesystem.EFS;
@@ -40,6 +41,7 @@ import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
@@ -74,6 +76,10 @@ import com.piece_framework.makegood.ui.ide.EditorOpen;
 import com.piece_framework.makegood.ui.launch.ActivePart;
 import com.piece_framework.makegood.ui.launch.TestRunner;
 import com.piece_framework.makegood.ui.swt.ActiveText;
+import com.piece_framework.makegood.ui.swt.ActiveTextListener;
+import com.piece_framework.makegood.ui.swt.ExternalFileWithLineRange;
+import com.piece_framework.makegood.ui.swt.FileWithLineRange;
+import com.piece_framework.makegood.ui.swt.InternalFileWithLineRange;
 import com.piece_framework.makegood.ui.swt.RunProgressBar;
 
 public class ResultView extends ViewPart {
@@ -731,6 +737,43 @@ public class ResultView extends ViewPart {
                 return "0.000ms"; //$NON-NLS-1$
             }
             return String.format("%.3f%s", timeForFormat, unit); //$NON-NLS-1$
+        }
+    }
+
+    private class EditorOpenActiveTextListener extends ActiveTextListener {
+        public EditorOpenActiveTextListener(Pattern pattern) {
+            super(pattern);
+        }
+
+        @Override
+        public void generateActiveText() {
+            Matcher matcher = pattern.matcher(text.getText());
+
+            while (matcher.find()) {
+                FileWithLineRange style;
+                IFile file =
+                    ResourcesPlugin.getWorkspace()
+                    .getRoot()
+                    .getFileForLocation(new Path(matcher.group(1)));
+                if (file != null) {
+                    InternalFileWithLineRange iStyle = new InternalFileWithLineRange();
+                    iStyle.file = file;
+                    iStyle.foreground = new Color(text.getDisplay(), 0, 51, 153);
+                    style = (FileWithLineRange) iStyle;
+                } else {
+                    ExternalFileWithLineRange eStyle = new ExternalFileWithLineRange();
+                    eStyle.fileStore =
+                        EFS.getLocalFileSystem().getStore(new Path(matcher.group(1)));
+                    eStyle.foreground = new Color(text.getDisplay(), 114, 159, 207);
+                    style = (FileWithLineRange) eStyle;
+                }
+
+                style.start = matcher.start();
+                style.length = matcher.group().length();
+                style.line = Integer.valueOf(matcher.group(2));
+
+                this.text.addStyle(style);
+            }
         }
     }
 }
