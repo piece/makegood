@@ -62,7 +62,7 @@ public class MakeGoodPropertyPage extends PropertyPage implements IWorkbenchProp
     private Button phpunitButton;
     private Button simpletestButton;
     private TreeViewer testFolderTreeViewer;
-    private Button removeTestFolderButton;
+    private Button testFolderRemoveButton;
     private Composite contents;
 
     @Override
@@ -86,8 +86,8 @@ public class MakeGoodPropertyPage extends PropertyPage implements IWorkbenchProp
         }
 
         phpunitButton = new Button(frameworkGroup, SWT.RADIO);
-        phpunitButton.setText(Messages.MakeGoodPropertyPage_PHPUnit);
-        Composite phpunitSettings = new Composite(frameworkGroup, SWT.LEFT);
+        phpunitButton.setText(Messages.MakeGoodPropertyPage_phpunit);
+        Composite phpunitSettings = new Composite(frameworkGroup, SWT.NONE);
         {
             GridLayout layout = new GridLayout();
             layout.numColumns = 3;
@@ -101,7 +101,7 @@ public class MakeGoodPropertyPage extends PropertyPage implements IWorkbenchProp
         Button browsePHPUnitConfigFileButton = new Button(phpunitSettings, SWT.NONE);
         browsePHPUnitConfigFileButton.setText(Messages.MakeGoodPropertyPage_phpunitConfigFileBrowseLabel);
         browsePHPUnitConfigFileButton.addSelectionListener(
-            new PreloadScriptSelectionListener(
+            new FileSelectionListener(
                 phpunitConfigFileText,
                 Messages.MakeGoodPropertyPage_phpunitConfigFileDialogTitle,
                 Messages.MakeGoodPropertyPage_phpunitConfigFileDialogMessage,
@@ -121,16 +121,16 @@ public class MakeGoodPropertyPage extends PropertyPage implements IWorkbenchProp
         );
 
         simpletestButton = new Button(frameworkGroup, SWT.RADIO);
-        simpletestButton.setText(Messages.MakeGoodPropertyPage_SimpleTest);
+        simpletestButton.setText(Messages.MakeGoodPropertyPage_simpletest);
 
         Label preloadScriptLabel = new Label(contents, SWT.NONE);
         preloadScriptLabel.setText(Messages.MakeGoodPropertyPage_preloadScriptLabel);
         preloadScriptText = new Text(contents, SWT.SINGLE | SWT.BORDER);
         preloadScriptText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-        Button browsePreloadScriptButton = new Button(contents, SWT.NONE);
-        browsePreloadScriptButton.setText(Messages.MakeGoodPropertyPage_browseLabel);
-        browsePreloadScriptButton.addSelectionListener(
-            new PreloadScriptSelectionListener(
+        Button preloadScriptBrowseButton = new Button(contents, SWT.NONE);
+        preloadScriptBrowseButton.setText(Messages.MakeGoodPropertyPage_preloadScriptBrowseLabel);
+        preloadScriptBrowseButton.addSelectionListener(
+            new FileSelectionListener(
                 preloadScriptText,
                 Messages.MakeGoodPropertyPage_preloadScriptDialogTitle,
                 Messages.MakeGoodPropertyPage_preloadScriptDialogMessage,
@@ -150,7 +150,7 @@ public class MakeGoodPropertyPage extends PropertyPage implements IWorkbenchProp
         );
 
         Group testFolderGroup = new Group(contents, SWT.LEFT | SWT.TOP);
-        testFolderGroup.setText(Messages.MakeGoodPropertyPage_testFoldersLabel);
+        testFolderGroup.setText(Messages.MakeGoodPropertyPage_testFolderLabel);
         testFolderGroup.setLayout(new GridLayout(2, false));
         {
             GridData gridData = new GridData();
@@ -176,7 +176,7 @@ public class MakeGoodPropertyPage extends PropertyPage implements IWorkbenchProp
         testFolderTreeViewer.addSelectionChangedListener(new ISelectionChangedListener() {
             @Override
             public void selectionChanged(SelectionChangedEvent event) {
-                removeTestFolderButton.setEnabled(event.getSelection() != null);
+                testFolderRemoveButton.setEnabled(event.getSelection() != null);
             }
         });
 
@@ -188,14 +188,14 @@ public class MakeGoodPropertyPage extends PropertyPage implements IWorkbenchProp
             testFolderButtons.setLayoutData(gridData);
         }
 
-        Button addTestFolderButton = new Button(testFolderButtons, SWT.NONE);
-        addTestFolderButton.setText(Messages.MakeGoodPropertyPage_addFolderLabel);
-        addTestFolderButton.addSelectionListener(new AddTestFolderSelectionListener());
+        Button testFolderAddButton = new Button(testFolderButtons, SWT.NONE);
+        testFolderAddButton.setText(Messages.MakeGoodPropertyPage_testFolderAddLabel);
+        testFolderAddButton.addSelectionListener(new AddTestFolderSelectionListener());
 
-        removeTestFolderButton = new Button(testFolderButtons, SWT.NONE);
-        removeTestFolderButton.setText(Messages.MakeGoodPropertyPage_removeLabel);
-        removeTestFolderButton.setEnabled(false);
-        removeTestFolderButton.addSelectionListener(new RemoveTestFolderSelectionListener());
+        testFolderRemoveButton = new Button(testFolderButtons, SWT.NONE);
+        testFolderRemoveButton.setText(Messages.MakeGoodPropertyPage_testFolderRemoveLabel);
+        testFolderRemoveButton.setEnabled(false);
+        testFolderRemoveButton.addSelectionListener(new RemoveTestFolderSelectionListener());
 
         MakeGoodProperty property = new MakeGoodProperty(getProject());
         if (property.usingPHPUnit()) {
@@ -240,13 +240,13 @@ public class MakeGoodPropertyPage extends PropertyPage implements IWorkbenchProp
         return project;
     }
 
-    private class PreloadScriptSelectionListener implements SelectionListener {
+    private class FileSelectionListener implements SelectionListener {
         private Text subject;
         private String dialogTitle;
         private String dialogMessage;
         private ViewerFilter viewerFilter;
 
-        PreloadScriptSelectionListener(
+        private FileSelectionListener(
             Text subject,
             String dialogTitle,
             String dialogMessage,
