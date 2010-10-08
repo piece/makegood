@@ -12,6 +12,9 @@
 
 package com.piece_framework.makegood.ui.views;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import org.eclipse.core.filesystem.EFS;
@@ -27,6 +30,7 @@ import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -625,5 +629,38 @@ public class ResultView extends ViewPart {
 
         @Override
         public void partInputChanged(IWorkbenchPartReference partRef) {}
+    }
+
+    private class ResultTreeContentProvider implements ITreeContentProvider {
+        @Override
+        public Object[] getChildren(Object parentElement) {
+            List<Result> children = new ArrayList<Result>(((Result) parentElement).getChildren());
+            Collections.reverse(children);
+            return children.toArray(new Result[ children.size() ]);
+        }
+
+        @Override
+        public Object getParent(Object element) {
+            return ((Result) element).getParent();
+        }
+
+        @Override
+        public boolean hasChildren(Object element) {
+            if (!(element instanceof TestSuiteResult)) return false;
+            return !((TestSuiteResult) element).getChildren().isEmpty();
+        }
+
+        @Override
+        public Object[] getElements(Object inputElement) {
+            return getChildren(inputElement);
+        }
+
+        @Override
+        public void dispose() {
+        }
+
+        @Override
+        public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
+        }
     }
 }
