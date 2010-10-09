@@ -22,26 +22,18 @@ import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 
-public class ActiveText implements MouseListener, MouseMoveListener {
-    private StyledText text;
+public class ActiveText extends StyledText implements MouseListener, MouseMoveListener {
     private Cursor handCursor;
     private Cursor arrowCursor;
     private List<StyleRange> styles;
     private List<ActiveTextListener> listeners = new ArrayList<ActiveTextListener>();
 
-    public ActiveText(Composite parent) {
-        text = new StyledText(
-                   parent,
-                   SWT.MULTI | SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL
-               );
-        text.setLayoutData(new GridData(GridData.FILL_BOTH));
-        text.setEditable(false);
-        text.addMouseListener(this);
-        text.addMouseMoveListener(this);
+    public ActiveText(Composite parent, int style) {
+        super(parent, style);
+        addMouseListener(this);
+        addMouseMoveListener(this);
 
         handCursor = new Cursor(parent.getDisplay(), SWT.CURSOR_HAND);
         arrowCursor = new Cursor(parent.getDisplay(), SWT.CURSOR_ARROW);
@@ -68,21 +60,22 @@ public class ActiveText implements MouseListener, MouseMoveListener {
     public void mouseMove(MouseEvent e) {
         StyleRange style = findStyle(new Point(e.x, e.y));
         if (style == null) {
-            text.setCursor(arrowCursor);
+            setCursor(arrowCursor);
             return;
         }
 
         if (style instanceof FileWithLineRange) {
-            text.setCursor(handCursor);
+            setCursor(handCursor);
             return;
         }
 
-        text.setCursor(arrowCursor);
+        setCursor(arrowCursor);
     }
 
+    @Override
     public void setText(String text) {
         initializeStyles();
-        this.text.setText(text);
+        super.setText(text);
 
         for (ActiveTextListener listener: listeners) {
             listener.generateActiveText();
@@ -96,34 +89,26 @@ public class ActiveText implements MouseListener, MouseMoveListener {
         listeners.add(listener);
     }
 
-    public String getText() {
-        return text.getText();
-    }
-
     public void addStyle(StyleRange style) {
         styles.add(style);
-        text.setStyleRange(style);
-    }
-
-    public Display getDisplay() {
-        return text.getDisplay();
+        setStyleRange(style);
     }
 
     void showScrollBar() {
-        text.getVerticalBar().setVisible(true);
-        text.getHorizontalBar().setVisible(true);
+        getVerticalBar().setVisible(true);
+        getHorizontalBar().setVisible(true);
     }
 
     protected void hideScrollBar() {
-        text.getVerticalBar().setVisible(false);
-        text.getHorizontalBar().setVisible(false);
+        getVerticalBar().setVisible(false);
+        getHorizontalBar().setVisible(false);
     }
 
     private StyleRange findStyle(Point point) {
         int offset;
 
         try {
-            offset = text.getOffsetAtLocation(point);
+            offset = getOffsetAtLocation(point);
         } catch (IllegalArgumentException e) {
             return null;
         }

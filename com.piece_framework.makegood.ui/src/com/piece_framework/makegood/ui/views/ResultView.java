@@ -301,7 +301,10 @@ public class ResultView extends ViewPart {
     }
 
     private FailureTrace createFailureTrace(Composite parent) {
-        FailureTrace failureTrace = new FailureTrace(parent);
+        FailureTrace failureTrace =
+            new FailureTrace(parent, SWT.MULTI | SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
+        failureTrace.setLayoutData(new GridData(GridData.FILL_BOTH));
+        failureTrace.setEditable(false);
         failureTrace.addListener(new EditorOpenActiveTextListener(STACK_TRACE_LINE_PATTERN));
         return failureTrace;
     }
@@ -581,8 +584,8 @@ public class ResultView extends ViewPart {
     }
 
     private class FailureTrace extends ActiveText {
-        public FailureTrace(Composite parent) {
-            super(parent);
+        public FailureTrace(Composite parent, int style) {
+            super(parent, style);
         }
 
         public void clearText() {
