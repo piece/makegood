@@ -549,7 +549,7 @@ public class ResultView extends ViewPart {
         private CLabel label;
         private String text;
 
-        private ResultLabel(Composite parent, String text, Image icon) {
+        public ResultLabel(Composite parent, String text, Image icon) {
             label = new CLabel(parent, SWT.LEFT);
             label.setText(text);
             if (icon != null) label.setImage(icon);
@@ -568,7 +568,7 @@ public class ResultView extends ViewPart {
     private class ElapsedTimer implements Runnable {
         private int delay;
 
-        private ElapsedTimer(int delay) {
+        public ElapsedTimer(int delay) {
             this.delay = delay;
         }
 
