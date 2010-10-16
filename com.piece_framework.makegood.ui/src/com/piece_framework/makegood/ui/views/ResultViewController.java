@@ -49,9 +49,9 @@ import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.actions.StopTestAction;
 import com.piece_framework.makegood.ui.ide.ViewShow;
 
-public class ResultDebugEventSetListener implements IDebugEventSetListener {
-    private static final String MAKEGOOD_RESULTDEBUGEVENTSETLISTENER_MARKER_CREATE = "MAKEGOOD_RESULTDEBUGEVENTSETLISTENER_MARKER_CREATE"; //$NON-NLS-1$
-    private static final String MAKEGOOD_RESULTDEBUGEVENTSETLISTENER_MARKER_TERMINATE = "MAKEGOOD_RESULTDEBUGEVENTSETLISTENER_MARKER_TERMINATE"; //$NON-NLS-1$
+public class ResultViewController implements IDebugEventSetListener {
+    private static final String MAKEGOOD_RESULTVIEWCONTROLLER_MARKER_CREATE = "MAKEGOOD_RESULTVIEWCONTROLLER_MARKER_CREATE"; //$NON-NLS-1$
+    private static final String MAKEGOOD_RESULTVIEWCONTROLLER_MARKER_TERMINATE = "MAKEGOOD_RESULTVIEWCONTROLLER_MARKER_TERMINATE"; //$NON-NLS-1$
     private Thread parserThread;
     private boolean hasErrors;
     private RunProgress progress;
@@ -232,21 +232,21 @@ public class ResultDebugEventSetListener implements IDebugEventSetListener {
     }
 
     private void markAsCreateEventFired(ILaunch launch) {
-        launch.setAttribute(MAKEGOOD_RESULTDEBUGEVENTSETLISTENER_MARKER_CREATE, Boolean.TRUE.toString());
+        launch.setAttribute(MAKEGOOD_RESULTVIEWCONTROLLER_MARKER_CREATE, Boolean.TRUE.toString());
     }
 
     private boolean createEventFired(ILaunch launch) {
-        String isCreated = launch.getAttribute(MAKEGOOD_RESULTDEBUGEVENTSETLISTENER_MARKER_CREATE);
+        String isCreated = launch.getAttribute(MAKEGOOD_RESULTVIEWCONTROLLER_MARKER_CREATE);
         if (isCreated == null) return false;
         return Boolean.TRUE.toString().equals(isCreated);
     }
 
     private void markAsTerminateEventFired(ILaunch launch) {
-        launch.setAttribute(MAKEGOOD_RESULTDEBUGEVENTSETLISTENER_MARKER_TERMINATE, Boolean.TRUE.toString());
+        launch.setAttribute(MAKEGOOD_RESULTVIEWCONTROLLER_MARKER_TERMINATE, Boolean.TRUE.toString());
     }
 
     private boolean terminateEventFired(ILaunch launch) {
-        String isTerminated = launch.getAttribute(MAKEGOOD_RESULTDEBUGEVENTSETLISTENER_MARKER_TERMINATE);
+        String isTerminated = launch.getAttribute(MAKEGOOD_RESULTVIEWCONTROLLER_MARKER_TERMINATE);
         if (isTerminated == null) return false;
         return Boolean.TRUE.toString().equals(isTerminated);
     }

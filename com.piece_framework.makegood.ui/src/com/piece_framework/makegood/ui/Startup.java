@@ -24,7 +24,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.texteditor.AbstractTextEditor;
 
 import com.piece_framework.makegood.ui.launch.RunAllTestsResourceChangeListener;
-import com.piece_framework.makegood.ui.views.ResultDebugEventSetListener;
+import com.piece_framework.makegood.ui.views.ResultViewController;
 import com.piece_framework.makegood.ui.views.RunAllTestsPartListener;
 import com.piece_framework.makegood.ui.views.RunAllTestsSelectionChangedListener;
 
@@ -43,7 +43,7 @@ public class Startup implements IStartup {
             }
         };
 
-        DebugPlugin.getDefault().addDebugEventListener(new ResultDebugEventSetListener());
+        DebugPlugin.getDefault().addDebugEventListener(new ResultViewController());
         ResourcesPlugin.getWorkspace().addResourceChangeListener(new RunAllTestsResourceChangeListener());
     }
 }
