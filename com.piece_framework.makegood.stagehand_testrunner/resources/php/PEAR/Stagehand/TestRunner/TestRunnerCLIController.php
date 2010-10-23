@@ -31,7 +31,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2007-2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.14.2
+ * @version    Release: 2.15.0
  * @since      File available since Release 0.5.0
  */
 
@@ -41,7 +41,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2007-2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.14.2
+ * @version    Release: 2.15.0
  * @since      Class available since Release 0.5.0
  */
 class Stagehand_TestRunner_TestRunnerCLIController extends Stagehand_CLIController
@@ -276,7 +276,7 @@ OPTIONS
      */
     protected function printVersion()
     {
-        echo "Stagehand_TestRunner 2.14.2 ({$this->config->framework})
+        echo "Stagehand_TestRunner 2.15.0 ({$this->config->framework})
 
 Copyright (c) 2005-2010 KUBO Atsuhiro <kubo@iteman.jp>,
               2007 Masahiko Sakamoto <msakamoto-sf@users.sourceforge.net>,

@@ -31,7 +31,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2009-2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.14.2
+ * @version    Release: 2.15.0
  * @link       http://simpletest.org/
  * @since      File available since Release 2.10.0
  */
@@ -40,7 +40,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2009-2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.14.2
+ * @version    Release: 2.15.0
  * @link       http://simpletest.org/
  * @since      Class available since Release 2.10.0
  */
