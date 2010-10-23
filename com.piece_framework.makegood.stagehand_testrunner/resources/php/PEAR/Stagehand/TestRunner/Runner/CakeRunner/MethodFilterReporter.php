@@ -4,7 +4,7 @@
 /**
  * PHP version 5
  *
- * Copyright (c) 2008-2010 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2010 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,69 +29,36 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_TestRunner
- * @copyright  2008-2010 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
  * @version    Release: 2.14.2
- * @since      File available since Release 2.4.0
+ * @link       http://simpletest.org/
+ * @since      File available since Release 2.14.2
  */
 
 /**
- * A utility for coloring.
- *
  * @package    Stagehand_TestRunner
- * @copyright  2008-2010 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
  * @version    Release: 2.14.2
- * @since      Class available since Release 2.4.0
+ * @link       http://simpletest.org/
+ * @since      Class available since Release 2.14.2
  */
-class Stagehand_TestRunner_Coloring
+class Stagehand_TestRunner_Runner_CakeRunner_MethodFilterReporter extends Stagehand_TestRunner_Runner_SimpleTestRunner_MethodFilterReporter
 {
     /**
-     * @param string $text
-     * @return text
+     * @param string $testCase
+     * @param string $method
+     * @return boolean
      */
-    public static function green($text)
+    public function shouldInvoke($testCase, $method)
     {
-        $oldErrorReportingLevel = error_reporting(error_reporting() & ~E_STRICT);
-        $green = Console_Color::convert("%g$text%n");
-        error_reporting($oldErrorReportingLevel);
-        return $green;
-    }
+        $test = SimpleTest::getContext()->getTest();
+        if (($test instanceof CakeTestCase) && in_array(strtolower($method), $test->methods)) {
+            return true;
+        }
 
-    /**
-     * @param string $text
-     * @return text
-     */
-    public static function red($text)
-    {
-        $oldErrorReportingLevel = error_reporting(error_reporting() & ~E_STRICT);
-        $red = Console_Color::convert("%r$text%n");
-        error_reporting($oldErrorReportingLevel);
-        return $red;
-    }
-
-    /**
-     * @param string $text
-     * @return text
-     */
-    public static function magenta($text)
-    {
-        $oldErrorReportingLevel = error_reporting(error_reporting() & ~E_STRICT);
-        $magenta = Console_Color::convert("%m$text%n");
-        error_reporting($oldErrorReportingLevel);
-        return $magenta;
-    }
-
-    /**
-     * @param string $text
-     * @return text
-     */
-    public static function yellow($text)
-    {
-        $oldErrorReportingLevel = error_reporting(error_reporting() & ~E_STRICT);
-        $yellow = Console_Color::convert("%y$text%n");
-        error_reporting($oldErrorReportingLevel);
-        return $yellow;
+        return parent::shouldInvoke($testCase, $method);
     }
 }
 

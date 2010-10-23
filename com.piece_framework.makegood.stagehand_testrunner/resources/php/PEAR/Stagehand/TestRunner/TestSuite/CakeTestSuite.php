@@ -31,7 +31,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.14.1
+ * @version    Release: 2.14.2
  * @since      File available since Release 2.14.0
  */
 
@@ -39,7 +39,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.14.1
+ * @version    Release: 2.14.2
  * @since      Class available since Release 2.14.0
  */
 class Stagehand_TestRunner_TestSuite_CakeTestSuite extends Stagehand_TestRunner_TestSuite_SimpleTestTestSuite
@@ -52,6 +52,7 @@ class Stagehand_TestRunner_TestSuite_CakeTestSuite extends Stagehand_TestRunner_
     {
         $tests = array();
         foreach (parent::getTestsInTestCase($testCase) as $test) {
+            if (!($testCase instanceof CakeTestCase)) continue;
             if (!in_array(strtolower($test), $testCase->methods)) {
                 $tests[] = $test;
             }

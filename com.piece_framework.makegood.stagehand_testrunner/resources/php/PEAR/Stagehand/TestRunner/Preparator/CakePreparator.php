@@ -31,7 +31,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.14.1
+ * @version    Release: 2.14.2
  * @since      File available since Release 2.14.0
  */
 
@@ -39,16 +39,18 @@
  * @package    Stagehand_TestRunner
  * @copyright  2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.14.1
+ * @version    Release: 2.14.2
  * @since      Class available since Release 2.14.0
  */
 class Stagehand_TestRunner_Preparator_CakePreparator extends Stagehand_TestRunner_Preparator
 {
-    protected static $isInvoked = false;
-
     public function prepare()
     {
-        if (self::$isInvoked) return;
+        if (defined('STAGEHAND_TESTRUNNER_PREPARATOR_CAKEPREPARATOR_PREPARECALLEDMARKER')) {
+            return;
+        }
+
+        define('STAGEHAND_TESTRUNNER_PREPARATOR_CAKEPREPARATOR_PREPARECALLEDMARKER', true);
 
         if (!defined('DISABLE_AUTO_DISPATCH')) {
             define('DISABLE_AUTO_DISPATCH', true);
@@ -78,8 +80,6 @@ class Stagehand_TestRunner_Preparator_CakePreparator extends Stagehand_TestRunne
         new Stagehand_TestRunner_Preparator_CakePreparator_TestRunnerShellDispatcher(array('-root', $rootPath, '-app', $appPath));
         require_once $corePath . '/tests/lib/test_manager.php';
         new TestManager();
-
-        self::$isInvoked = true;
     }
 }
 

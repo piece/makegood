@@ -35,7 +35,7 @@
  * @copyright  2007-2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @copyright  2010 KUMAKURA Yousuke <kumatch@gmail.com>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.14.1
+ * @version    Release: 2.14.2
  * @link       http://simpletest.org/
  * @since      File available since Release 2.1.0
  */
@@ -48,7 +48,7 @@
  * @copyright  2007-2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @copyright  2010 KUMAKURA Yousuke <kumatch@gmail.com>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.14.1
+ * @version    Release: 2.14.2
  * @link       http://simpletest.org/
  * @since      Class available since Release 2.1.0
  */
@@ -175,7 +175,7 @@ class Stagehand_TestRunner_Runner_SimpleTestRunner extends Stagehand_TestRunner_
         $reporters[] = $reporter;
 
         if ($this->config->testsOnlySpecifiedMethods) {
-            $reporters[] = new Stagehand_TestRunner_Runner_SimpleTestRunner_MethodFilterReporter($reporters[ count($reporters) - 1 ]);
+            $reporters[] = $this->createMethodFilterReporter($reporters[ count($reporters) - 1 ]);
             $reporters[ count($reporters) - 1 ]->setConfig($this->config);
         }
 
@@ -189,6 +189,16 @@ class Stagehand_TestRunner_Runner_SimpleTestRunner extends Stagehand_TestRunner_
         }
 
         return $reporters[ count($reporters) - 1 ];
+    }
+
+    /**
+     * @param mixed $reporter
+     * @return SimpleReporterDecorator
+     * @since Method available since Release 2.14.2
+     */
+    protected function createMethodFilterReporter($reporter)
+    {
+        return new Stagehand_TestRunner_Runner_SimpleTestRunner_MethodFilterReporter($reporter);
     }
 }
 
