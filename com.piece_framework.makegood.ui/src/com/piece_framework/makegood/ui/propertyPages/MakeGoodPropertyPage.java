@@ -214,15 +214,12 @@ public class MakeGoodPropertyPage extends PropertyPage {
         testFolderRemoveButton.addSelectionListener(new RemoveTestFolderSelectionListener());
 
         MakeGoodProperty property = new MakeGoodProperty(getProject());
-        if (property.usingPHPUnit()) {
+        if (property.getTestingFramework().equals(TestingFramework.PHPUnit)) {
             phpunitButton.setSelection(true);
             enablePHPUnitSettings();
-        } else if (property.usingSimpleTest()) {
+        } else if (property.getTestingFramework().equals(TestingFramework.SimpleTest)) {
             simpletestButton.setSelection(true);
             disablePHPUnitSettings();
-        } else {
-            phpunitButton.setSelection(true);
-            enablePHPUnitSettings();
         }
         phpunitConfigFileText.setText(property.getPHPUnitConfigFile());
         preloadScriptText.setText(property.getPreloadScript());
