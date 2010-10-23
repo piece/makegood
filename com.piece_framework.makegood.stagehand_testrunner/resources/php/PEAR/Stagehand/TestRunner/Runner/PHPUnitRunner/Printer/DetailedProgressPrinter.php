@@ -31,7 +31,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2008-2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.15.0
+ * @version    Release: 2.16.0
  * @link       http://www.phpunit.de/
  * @since      File available since Release 1.2.0
  */
@@ -47,12 +47,18 @@ require_once 'PHPUnit/Framework/TestSuite.php';
  * @package    Stagehand_TestRunner
  * @copyright  2008-2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.15.0
+ * @version    Release: 2.16.0
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 1.2.0
  */
 class Stagehand_TestRunner_Runner_PHPUnitRunner_Printer_DetailedProgressPrinter extends PHPUnit_TextUI_ResultPrinter
 {
+    /**
+     * @var integer
+     * @since Property available since Release 2.16.0
+     */
+    protected $lastEvent = -1;
+
     /**
      * An error occurred.
      *
@@ -153,6 +159,19 @@ class Stagehand_TestRunner_Runner_PHPUnitRunner_Printer_DetailedProgressPrinter 
         }
 
         parent::startTestSuite($suite);
+        $this->lastEvent = PHPUnit_TextUI_ResultPrinter::EVENT_TESTSUITE_START;
+    }
+
+    /**
+     * A testsuite ended.
+     *
+     * @param  PHPUnit_Framework_TestSuite $suite
+     * @since  Method available since Release 2.16.0
+     */
+    public function endTestSuite(PHPUnit_Framework_TestSuite $suite)
+    {
+        parent::startTestSuite($suite);
+        $this->lastEvent = PHPUnit_TextUI_ResultPrinter::EVENT_TESTSUITE_END;
     }
 
     /**
@@ -169,6 +188,7 @@ class Stagehand_TestRunner_Runner_PHPUnitRunner_Printer_DetailedProgressPrinter 
 
         $this->write('  ' . $test->getName() . ' ... ');
 
+        $this->lastEvent = PHPUnit_TextUI_ResultPrinter::EVENT_TEST_START;
         parent::startTest($test);
     }
 
@@ -189,6 +209,7 @@ class Stagehand_TestRunner_Runner_PHPUnitRunner_Printer_DetailedProgressPrinter 
         }
 
         parent::endTest($test, $time);
+        $this->lastEvent = PHPUnit_TextUI_ResultPrinter::EVENT_TEST_END;
     }
 
     /**

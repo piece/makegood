@@ -4,7 +4,7 @@
 /**
  * PHP version 5
  *
- * Copyright (c) 2009-2010 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2009-2011 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,17 +29,17 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_TestRunner
- * @copyright  2009-2010 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2009-2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.15.0
+ * @version    Release: 2.16.0
  * @since      File available since Release 2.10.0
  */
 
 /**
  * @package    Stagehand_TestRunner
- * @copyright  2009-2010 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2009-2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.15.0
+ * @version    Release: 2.16.0
  * @since      Class available since Release 2.10.0
  */
 class Stagehand_TestRunner_JUnitXMLWriter_JUnitXMLStreamWriter implements Stagehand_TestRunner_JUnitXMLWriter
@@ -120,9 +120,8 @@ class Stagehand_TestRunner_JUnitXMLWriter_JUnitXMLStreamWriter implements Stageh
         }
         if ($class->hasMethod($methodName)) {
             $method = $class->getMethod($methodName);
-
-            $this->xmlWriter->writeAttribute('class', $this->utf8Converter->convert($class->getName()));
-            $this->xmlWriter->writeAttribute('file', $this->utf8Converter->convert($class->getFileName()));
+            $this->xmlWriter->writeAttribute('class', $this->utf8Converter->convert($method->getDeclaringClass()->getName()));
+            $this->xmlWriter->writeAttribute('file', $this->utf8Converter->convert($method->getDeclaringClass()->getFileName()));
             $this->xmlWriter->writeAttribute('line', $method->getStartLine());
         }
 
@@ -133,19 +132,25 @@ class Stagehand_TestRunner_JUnitXMLWriter_JUnitXMLStreamWriter implements Stageh
     /**
      * @param string $text
      * @param string $type
+     * @param string $file
+     * @param string $line
+     * @param string $message
      */
-    public function writeError($text, $type = null)
+    public function writeError($text, $type = null, $file = null, $line = null, $message = null)
     {
-        $this->writeFailureOrError($text, $type, 'error');
+        $this->writeFailureOrError($text, $type, 'error', $file, $line, $message);
     }
 
     /**
      * @param string $text
      * @param string $type
+     * @param string $file
+     * @param string $line
+     * @param string $message
      */
-    public function writeFailure($text, $type = null)
+    public function writeFailure($text, $type = null, $file = null, $line = null, $message = null)
     {
-        $this->writeFailureOrError($text, $type, 'failure');
+        $this->writeFailureOrError($text, $type, 'failure', $file, $line, $message);
     }
 
     /**
@@ -172,12 +177,24 @@ class Stagehand_TestRunner_JUnitXMLWriter_JUnitXMLStreamWriter implements Stageh
      * @param string $text
      * @param string $type
      * @param string $failureOrError
+     * @param string $file
+     * @param string $line
+     * @param string $message
      */
-    protected function writeFailureOrError($text, $type, $failureOrError)
+    protected function writeFailureOrError($text, $type, $failureOrError, $file, $line, $message)
     {
         $this->xmlWriter->startElement($failureOrError);
         if (!is_null($type)) {
             $this->xmlWriter->writeAttribute('type', $this->utf8Converter->convert($type));
+        }
+        if (!is_null($file)) {
+            $this->xmlWriter->writeAttribute('file', $this->utf8Converter->convert($file));
+        }
+        if (!is_null($line)) {
+            $this->xmlWriter->writeAttribute('line', $line);
+        }
+        if (!is_null($message)) {
+            $this->xmlWriter->writeAttribute('message', $this->utf8Converter->convert($message));
         }
         $this->xmlWriter->text($this->utf8Converter->convert($text));
         $this->xmlWriter->endElement();

@@ -4,7 +4,7 @@
 /**
  * PHP version 5
  *
- * Copyright (c) 2009-2010 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2009-2011 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,17 +29,17 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_TestRunner
- * @copyright  2009-2010 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2009-2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.15.0
+ * @version    Release: 2.16.0
  * @since      File available since Release 2.10.0
  */
 
 /**
  * @package    Stagehand_TestRunner
- * @copyright  2009-2010 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2009-2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.15.0
+ * @version    Release: 2.16.0
  * @since      Class available since Release 2.10.0
  */
 interface Stagehand_TestRunner_JUnitXMLWriter
@@ -62,14 +62,20 @@ interface Stagehand_TestRunner_JUnitXMLWriter
     /**
      * @param string $text
      * @param string $type
+     * @param string $file
+     * @param string $line
+     * @param string $message
      */
-    public function writeError($text, $type = null);
+    public function writeError($text, $type = null, $file = null, $line = null, $message = null);
 
     /**
      * @param string $text
      * @param string $type
+     * @param string $file
+     * @param string $line
+     * @param string $message
      */
-    public function writeFailure($text, $type = null);
+    public function writeFailure($text, $type = null, $file = null, $line = null, $message = null);
 
     /**
      * @param float   $time

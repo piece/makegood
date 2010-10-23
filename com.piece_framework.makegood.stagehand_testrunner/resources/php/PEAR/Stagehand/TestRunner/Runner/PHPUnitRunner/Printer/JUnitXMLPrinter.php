@@ -4,7 +4,7 @@
 /**
  * PHP version 5
  *
- * Copyright (c) 2009-2010 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2009-2011 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,9 +29,9 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_TestRunner
- * @copyright  2009-2010 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2009-2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.15.0
+ * @version    Release: 2.16.0
  * @link       http://www.phpunit.de/
  * @since      File available since Release 2.10.0
  */
@@ -51,9 +51,9 @@ require_once 'PHPUnit/Util/XML.php';
  * A result printer for PHPUnit.
  *
  * @package    Stagehand_TestRunner
- * @copyright  2009-2010 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2009-2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.15.0
+ * @version    Release: 2.16.0
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.10.0
  */
@@ -97,7 +97,7 @@ class Stagehand_TestRunner_Runner_PHPUnitRunner_Printer_JUnitXMLPrinter extends 
      */
     public function addIncompleteTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
-        $this->addFailureOrError($test, $e, $time, 'error', 'Incomplete Test: ');
+        $this->addFailureOrError($test, $e, $time, 'error');
     }
 
     /**
@@ -109,7 +109,7 @@ class Stagehand_TestRunner_Runner_PHPUnitRunner_Printer_JUnitXMLPrinter extends 
      */
     public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
-        $this->addFailureOrError($test, $e, $time, 'error', 'Skipped Test: ');
+        $this->addFailureOrError($test, $e, $time, 'error');
     }
 
     /**
@@ -122,7 +122,14 @@ class Stagehand_TestRunner_Runner_PHPUnitRunner_Printer_JUnitXMLPrinter extends 
             $this->testSuitesWrote = true;
         }
 
-        $this->xmlWriter->startTestSuite($suite->getName(), count($suite));
+        $name = $suite->getName();
+        if (preg_match('/^(.+)::(.+)/', $name, $matches)) {
+            $this->currentTestClassName = $matches[1];
+        } else {
+            $this->currentTestClassName = $name;
+        }
+
+        $this->xmlWriter->startTestSuite($name, count($suite));
     }
 
     /**
@@ -165,20 +172,6 @@ class Stagehand_TestRunner_Runner_PHPUnitRunner_Printer_JUnitXMLPrinter extends 
     }
 
     /**
-     * @param string    $message
-     * @param Exception $e
-     * @param string    $failureOrError
-     */
-    protected function writeFailureOrError($message, Exception $e, $failureOrError)
-    {
-        $this->xmlWriter->{ 'write' . $failureOrError }(
-            $message .
-            PHPUnit_Util_Filter::getFilteredStacktrace($e, false),
-            get_class($e)
-        );
-    }
-
-    /**
      * @param PHPUnit_Framework_Test $test
      * @param Exception              $e
      * @param float                  $time
@@ -189,8 +182,7 @@ class Stagehand_TestRunner_Runner_PHPUnitRunner_Printer_JUnitXMLPrinter extends 
         PHPUnit_Framework_Test $test,
         Exception $e,
         $time,
-        $failureOrError,
-        $message = null)
+        $failureOrError)
     {
         $testIsArtificial = false;
         if (!$this->testStarted) {
@@ -198,20 +190,55 @@ class Stagehand_TestRunner_Runner_PHPUnitRunner_Printer_JUnitXMLPrinter extends 
             $testIsArtificial = true;
         }
 
-        if (is_null($message)) {
-            if ($test instanceof PHPUnit_Framework_SelfDescribing) {
-                $message = $test->toString() . "\n\n";
-            } else {
-                $message = '';
-            }
+        if ($test instanceof PHPUnit_Framework_SelfDescribing) {
+            $message = $test->toString() . "\n\n";
+        } else {
+            $message = '';
         }
 
         $message .= PHPUnit_Framework_TestFailure::exceptionToString($e) . "\n";
-        $this->writeFailureOrError($message, $e, $failureOrError);
+
+        if ($test instanceof PHPUnit_Framework_Warning) {
+            $testClass = new ReflectionClass($this->currentTestClassName);
+            $file = $testClass->getFileName();
+            $line = 1;
+        } else {
+            list($file, $line) = $this->findFileAndLineOfFailureOrError($e, new ReflectionClass($test));
+        }
+        $trace = PHPUnit_Util_Filter::getFilteredStacktrace($e, false);
+        $this->xmlWriter->{ 'write' . $failureOrError }(
+            $message .
+            $trace,
+            get_class($e),
+            $file,
+            $line,
+            $message,
+            $trace
+        );
 
         if ($testIsArtificial) {
             $this->endTest($test, 0);
         }
+    }
+
+    /**
+     * @param Exception $e
+     * @param ReflectionClass $class
+     * @return array
+     * @since Method available since Release 2.16.0
+     */
+    protected function findFileAndLineOfFailureOrError(Exception $e, ReflectionClass $class)
+    {
+        if ($class->getName() == 'PHPUnit_Framework_TestCase') return;
+        if ($e->getFile() == $class->getFileName()) {
+            return array($e->getFile(), $e->getLine());
+        }
+        foreach ($e->getTrace() as $trace) {
+            if (array_key_exists('file', $trace) && $trace['file'] == $class->getFileName()) {
+                return array($trace['file'], $trace['line']);
+            }
+        }
+        return $this->findFileAndLineOfFailureOrError($e, $class->getParentClass());
     }
 }
 

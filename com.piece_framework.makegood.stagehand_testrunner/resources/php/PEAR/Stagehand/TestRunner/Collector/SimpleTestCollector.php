@@ -5,7 +5,7 @@
  * PHP version 5
  *
  * Copyright (c) 2007 Masahiko Sakamoto <msakamoto-sf@users.sourceforge.net>,
- *               2007-2010 KUBO Atsuhiro <kubo@iteman.jp>,
+ *               2007-2011 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,9 +31,9 @@
  *
  * @package    Stagehand_TestRunner
  * @copyright  2007 Masahiko Sakamoto <msakamoto-sf@users.sourceforge.net>
- * @copyright  2007-2010 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2007-2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.15.0
+ * @version    Release: 2.16.0
  * @link       http://simpletest.org/
  * @since      File available since Release 2.1.0
  */
@@ -43,17 +43,16 @@
  *
  * @package    Stagehand_TestRunner
  * @copyright  2007 Masahiko Sakamoto <msakamoto-sf@users.sourceforge.net>
- * @copyright  2007-2010 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2007-2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.15.0
+ * @version    Release: 2.16.0
  * @link       http://simpletest.org/
  * @since      Class available since Release 2.1.0
  */
 class Stagehand_TestRunner_Collector_SimpleTestCollector extends Stagehand_TestRunner_Collector
 {
     protected $superTypes = array('SimpleTestCase');
-    protected $suffix = 'Test(?:Case)?';
-    protected $include = 'Test(?:Case)?$';
+    protected $filePattern = 'Test(?:Case)?\.php$';
     protected $suiteClass = 'Stagehand_TestRunner_TestSuite_SimpleTestTestSuite';
 
     /**

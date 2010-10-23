@@ -4,7 +4,7 @@
 /**
  * PHP version 5
  *
- * Copyright (c) 2010 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2010-2011 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,17 +29,17 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_TestRunner
- * @copyright  2010 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2010-2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.15.0
+ * @version    Release: 2.16.0
  * @since      File available since Release 2.11.2
  */
 
 /**
  * @package    Stagehand_TestRunner
- * @copyright  2010 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2010-2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.15.0
+ * @version    Release: 2.16.0
  * @since      Class available since Release 2.11.2
  */
 class Stagehand_TestRunner_JUnitXMLWriter_XMLStreamWriter
@@ -80,7 +80,7 @@ class Stagehand_TestRunner_JUnitXMLWriter_XMLStreamWriter
             ' ' .
             $attribute .
             '="' .
-            htmlspecialchars($value, ENT_QUOTES, 'UTF-8') .
+            str_replace("\x0a", '&#10;', htmlspecialchars($this->normalizeNewLines($value), ENT_QUOTES, 'UTF-8')) .
             '"';
     }
 
@@ -104,6 +104,16 @@ class Stagehand_TestRunner_JUnitXMLWriter_XMLStreamWriter
         $buffer = $this->buffer;
         $this->buffer = '';
         return $buffer;
+    }
+
+    /**
+     * @param string $value
+     * @return string
+     * @since Method available since Release 2.16.0
+     */
+    protected function normalizeNewLines($value)
+    {
+        return preg_replace(array('/\x0d\x0a/', '/\x0d/', '/\x0a/'), "\x0a", $value);
     }
 }
 

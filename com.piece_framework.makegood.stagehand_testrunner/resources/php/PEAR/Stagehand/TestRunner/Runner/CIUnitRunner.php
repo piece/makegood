@@ -1,11 +1,10 @@
-#!/usr/bin/env php
 <?php
 /* vim: set expandtab tabstop=4 shiftwidth=4: */
 
 /**
  * PHP version 5
  *
- * Copyright (c) 2007-2010 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2011 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,45 +29,24 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_TestRunner
- * @copyright  2007-2010 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
  * @version    Release: 2.16.0
- * @since      File available since Release 2.0.0
+ * @link       http://www.phpunit.de/
+ * @since      File available since Release 2.16.0
  */
 
-// Finds the preload option and preloads a file as a PHP script if it is specified.
-$preload = create_function('', '
-do {
-    for ($i = 1, $count = count($_SERVER[\'argv\']); $i < $count; ++$i) {
-        if ($_SERVER[\'argv\'][$i] == \'-p\') {
-            $preloadFileIndex = $i + 1;
-            break 2;
-        }
-    }
-    return;
-} while (false);
-if (!array_key_exists($preloadFileIndex, $_SERVER[\'argv\'])) {
-    return;
+/**
+ * @package    Stagehand_TestRunner
+ * @copyright  2011 KUBO Atsuhiro <kubo@iteman.jp>
+ * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
+ * @version    Release: 2.16.0
+ * @link       http://www.phpunit.de/
+ * @since      Class available since Release 2.16.0
+ */
+class Stagehand_TestRunner_Runner_CIUnitRunner extends Stagehand_TestRunner_Runner_PHPUnitRunner
+{
 }
-$preloadFile = $_SERVER[\'argv\'][$preloadFileIndex];
-$result = include_once $preloadFile;
-if (!$result) {
-    echo "ERROR: Cannot load [ $preloadFile ]. Make sure the file path and permission are correct.\n";
-    exit(1);
-}
-');
-$preload();
-
-require_once 'Stagehand/Autoload.php';
-
-$loader = Stagehand_Autoload::legacyLoader();
-$loader->addNamespace('Stagehand');
-Stagehand_Autoload::register($loader);
-
-$controller = new Stagehand_TestRunner_TestRunnerCLIController(Stagehand_TestRunner_Framework::PHPSPEC);
-$result = $controller->run();
-
-exit($result);
 
 /*
  * Local Variables:

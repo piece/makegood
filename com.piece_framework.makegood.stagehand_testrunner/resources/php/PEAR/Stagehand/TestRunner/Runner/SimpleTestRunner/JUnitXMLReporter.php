@@ -4,7 +4,7 @@
 /**
  * PHP version 5
  *
- * Copyright (c) 2009-2010 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2009-2011 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,18 +29,18 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_TestRunner
- * @copyright  2009-2010 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2009-2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.15.0
+ * @version    Release: 2.16.0
  * @link       http://simpletest.org/
  * @since      File available since Release 2.10.0
  */
 
 /**
  * @package    Stagehand_TestRunner
- * @copyright  2009-2010 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2009-2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.15.0
+ * @version    Release: 2.16.0
  * @link       http://simpletest.org/
  * @since      Class available since Release 2.10.0
  */
@@ -187,7 +187,11 @@ class Stagehand_TestRunner_Runner_SimpleTestRunner_JUnitXMLReporter extends Simp
     {
         if ($this->reportedFailure) return;
         parent::paintFail($message);
-        $this->paintFailureOrError($message, 'failure');
+        if (preg_match('!^(.*) at \[(.+) line (\d+)]$!', $message, $matches)) {
+            $this->xmlWriter->writeFailure($matches[1], null, $matches[2], $matches[3], $matches[1]);
+        } else {
+            $this->xmlWriter->writeFailure($message);
+        }
         ++$this->assertionCount;
         $this->reportedFailure = true;
     }
@@ -198,7 +202,11 @@ class Stagehand_TestRunner_Runner_SimpleTestRunner_JUnitXMLReporter extends Simp
     public function paintError($message)
     {
         parent::paintError($message);
-        $this->paintFailureOrError($message, 'error');
+        if (preg_match('!^Unexpected PHP error \[(.*)\] severity \[.*\] in \[(.+) line (\d+)]$!', $message, $matches)) {
+            $this->xmlWriter->writeError($matches[1], null, $matches[2], $matches[3], $matches[1]);
+        } else {
+            $this->xmlWriter->writeError($message);
+        }
     }
 
     /**
@@ -207,7 +215,17 @@ class Stagehand_TestRunner_Runner_SimpleTestRunner_JUnitXMLReporter extends Simp
     public function paintException(Exception $e)
     {
         parent::paintException($e);
-        $this->paintFailureOrError(get_class($e) . ': ' . $e->getMessage(), 'error');
+        $failureTrace = $this->buildFailureTrace($e->getTrace());
+        $this->xmlWriter->writeError(
+            get_class($e) . ': ' . $e->getMessage() . PHP_EOL . PHP_EOL .
+            $e->getFile() . ':' . $e->getLine() . PHP_EOL .
+            $failureTrace,
+            null,
+            $e->getFile(),
+            $e->getLine(),
+            $e->getMessage(),
+            $failureTrace
+        );
     }
 
     /**
@@ -216,7 +234,11 @@ class Stagehand_TestRunner_Runner_SimpleTestRunner_JUnitXMLReporter extends Simp
     public function paintSkip($message)
     {
         parent::paintSkip($message);
-        $this->paintFailureOrError('Skip: ' . $message, 'error');
+        if (preg_match('!^(.*) at \[(.+) line (\d+)]$!', $message, $matches)) {
+            $this->xmlWriter->writeError($matches[1], null, $matches[2], $matches[3], $matches[1]);
+        } else {
+            $this->xmlWriter->writeError($message);
+        }
     }
 
     /**
@@ -239,18 +261,6 @@ class Stagehand_TestRunner_Runner_SimpleTestRunner_JUnitXMLReporter extends Simp
         }
 
         return $failureTrace;
-    }
-
-    /**
-     * @param string $message
-     * @param string $failureOrError
-     */
-    protected function paintFailureOrError($message, $failureOrError)
-    {
-        $this->xmlWriter->{ 'write' . $failureOrError }(
-            $message . "\n\n" .
-            $this->buildFailureTrace(debug_backtrace())
-        );
     }
 }
 

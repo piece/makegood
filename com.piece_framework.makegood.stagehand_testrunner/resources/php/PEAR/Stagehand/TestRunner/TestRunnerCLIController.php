@@ -4,7 +4,7 @@
 /**
  * PHP version 5
  *
- * Copyright (c) 2007-2010 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2007-2011 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,9 +29,9 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_TestRunner
- * @copyright  2007-2010 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2007-2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.15.0
+ * @version    Release: 2.16.0
  * @since      File available since Release 0.5.0
  */
 
@@ -39,9 +39,9 @@
  * A testrunner script to run tests automatically.
  *
  * @package    Stagehand_TestRunner
- * @copyright  2007-2010 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2007-2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.15.0
+ * @version    Release: 2.16.0
  * @since      Class available since Release 0.5.0
  */
 class Stagehand_TestRunner_TestRunnerCLIController extends Stagehand_CLIController
@@ -58,7 +58,9 @@ class Stagehand_TestRunner_TestRunnerCLIController extends Stagehand_CLIControll
             'phpunit-config=',
             'cakephp-app-path=',
             'cakephp-core-path=',
-            'test-file-suffix='
+            'test-file-pattern=',
+            'test-file-suffix=',
+            'ciunit-path=',
         );
     protected $config;
 
@@ -142,6 +144,13 @@ class Stagehand_TestRunner_TestRunnerCLIController extends Stagehand_CLIControll
             $this->validateDirectory($value, $option);
             $this->config->cakephpCorePath = $value;
             return true;
+        case '--ciunit-path':
+            $this->validateDirectory($value, $option);
+            $this->config->ciunitPath = $value;
+            return true;
+        case '--test-file-pattern':
+            $this->config->testFilePattern = $value;
+            return true;
         case '--test-file-suffix':
             $this->config->testFileSuffix = $value;
             return true;
@@ -220,32 +229,32 @@ OPTIONS
 
   -m METHOD1,METHOD2,...
      Runs only the specified tests in the specified file.
-     (PHPUnit and SimpleTest)
+     (PHPUnit, CIUnit, SimpleTest, CakePHP)
 
   --classes=CLASS1,CLASS2,...
      Runs only the specified test classes in the specified file.
-     (PHPUnit and SimpleTest)
+     (PHPUnit, CIUnit, SimpleTest, CakePHP)
 
   --log-junit=FILE
      Logs test results into the specified file in the JUnit XML format.
-     (PHPUnit, SimpleTest, and PHPT)
+     (PHPUnit, CIUnit, SimpleTest, CakePHP, and PHPT)
 
   --log-junit-realtime
      Logs test results in real-time into the specified file in the JUnit XML format.
-     (PHPUnit, SimpleTest, and PHPT)
+     (PHPUnit, CIUnit, SimpleTest, CakePHP, and PHPT)
 
   -v
      Prints detailed progress report.
-     (PHPUnit and PHPT)
+     (PHPUnit, CIUnit, and PHPT)
 
   --stop-on-failure
      Stops the test run when the first failure or error is raised.
-     (PHPUnit, SimpleTest, and PHPT)
+     (PHPUnit, CIUnit, SimpleTest, CakePHP, and PHPT)
 
   --phpunit-config=FILE
      Configures the PHPUnit runtime environment by the specified XML configuration
      file.
-     (PHPUnit)
+     (PHPUnit and CIUnit)
 
   --cakephp-app-path=DIRECTORY
      Specifies the path of your app folder.
@@ -258,16 +267,27 @@ OPTIONS
      folder is used. (/path/to/app/../cake)
      (CakePHP)
 
+  --ciunit-path=DIRECTORY
+     Specifies the path of your CIUnit tests directory.
+     By default, the current working directory is used.
+     (CIUnit)
+
+  --test-file-pattern=PATTERN
+     Specifies the pattern of your test files by a regular expression literal.
+     The default values are:
+       PHPUnit: Test(?:Case)?\.php$
+       CIUnit:  ^test.+\.php$
+       SimpleTest: Test(?:Case)?\.php$
+       CakePHP: \.test\.php$
+       PHPT: -
+       PHPSpec: Spec\.php$
+     (PHPUnit, CIUnit, SimpleTest, CakePHP, and PHPSpec)
+
   --test-file-suffix=SUFFIX
+     (deprecated in Stagehand_TestRunner 2.16.0)
      Specifies the suffix of your test files by a regular expression literal.
      The regular expression literal must not contain *.php*.
-     The default values are:
-       PHPUnit: Test(?:Case)?
-       SimpleTest: Test(?:Case)?
-       CakePHP: \.test
-       PHPT: -
-       PHPSpec: Spec
-     (PHPUnit, SimpleTest, CakePHP, and PHPSpec)
+     (PHPUnit, CIUnit, SimpleTest, CakePHP, and PHPSpec)
 ";
     }
 
@@ -276,9 +296,9 @@ OPTIONS
      */
     protected function printVersion()
     {
-        echo "Stagehand_TestRunner 2.15.0 ({$this->config->framework})
+        echo "Stagehand_TestRunner 2.16.0 ({$this->config->framework})
 
-Copyright (c) 2005-2010 KUBO Atsuhiro <kubo@iteman.jp>,
+Copyright (c) 2005-2011 KUBO Atsuhiro <kubo@iteman.jp>,
               2007 Masahiko Sakamoto <msakamoto-sf@users.sourceforge.net>,
               2010 KUMAKURA Yousuke <kumatch@gmail.com>,
 All rights reserved.
