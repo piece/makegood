@@ -30,6 +30,7 @@ import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
@@ -57,7 +58,9 @@ import com.piece_framework.makegood.ui.Messages;
 
 public class MakeGoodPropertyPage extends PropertyPage {
     private Text preloadScriptText;
+    private Label phpunitConfigFileLabel;
     private Text phpunitConfigFileText;
+    private Button browsePHPUnitConfigFileButton;
     private Button phpunitButton;
     private Button simpletestButton;
     private TreeViewer testFolderTreeViewer;
@@ -86,6 +89,13 @@ public class MakeGoodPropertyPage extends PropertyPage {
 
         phpunitButton = new Button(frameworkGroup, SWT.RADIO);
         phpunitButton.setText(Messages.MakeGoodPropertyPage_phpunit);
+        phpunitButton.addSelectionListener(
+            new SelectionAdapter() {
+                public void widgetSelected(SelectionEvent e) {
+                    enablePHPUnitSettings();
+                }
+            }
+        );
         Composite phpunitSettings = new Composite(frameworkGroup, SWT.NONE);
         {
             GridLayout layout = new GridLayout();
@@ -93,11 +103,11 @@ public class MakeGoodPropertyPage extends PropertyPage {
             phpunitSettings.setLayout(layout);
         }
         phpunitSettings.setLayoutData(new GridData(GridData.FILL_BOTH));
-        Label phpunitConfigFileLabel = new Label(phpunitSettings, SWT.NONE);
+        phpunitConfigFileLabel = new Label(phpunitSettings, SWT.NONE);
         phpunitConfigFileLabel.setText(Messages.MakeGoodPropertyPage_phpunitConfigFileLabel);
         phpunitConfigFileText = new Text(phpunitSettings, SWT.SINGLE | SWT.BORDER);
         phpunitConfigFileText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-        Button browsePHPUnitConfigFileButton = new Button(phpunitSettings, SWT.NONE);
+        browsePHPUnitConfigFileButton = new Button(phpunitSettings, SWT.NONE);
         browsePHPUnitConfigFileButton.setText(Messages.MakeGoodPropertyPage_phpunitConfigFileBrowseLabel);
         browsePHPUnitConfigFileButton.addSelectionListener(
             new FileSelectionListener(
@@ -121,6 +131,13 @@ public class MakeGoodPropertyPage extends PropertyPage {
 
         simpletestButton = new Button(frameworkGroup, SWT.RADIO);
         simpletestButton.setText(Messages.MakeGoodPropertyPage_simpletest);
+        simpletestButton.addSelectionListener(
+            new SelectionAdapter() {
+                public void widgetSelected(SelectionEvent e) {
+                    disablePHPUnitSettings();
+                }
+            }
+        );
 
         Label preloadScriptLabel = new Label(contents, SWT.NONE);
         preloadScriptLabel.setText(Messages.MakeGoodPropertyPage_preloadScriptLabel);
@@ -199,10 +216,13 @@ public class MakeGoodPropertyPage extends PropertyPage {
         MakeGoodProperty property = new MakeGoodProperty(getProject());
         if (property.usingPHPUnit()) {
             phpunitButton.setSelection(true);
+            enablePHPUnitSettings();
         } else if (property.usingSimpleTest()) {
             simpletestButton.setSelection(true);
+            disablePHPUnitSettings();
         } else {
             phpunitButton.setSelection(true);
+            enablePHPUnitSettings();
         }
         phpunitConfigFileText.setText(property.getPHPUnitConfigFile());
         preloadScriptText.setText(property.getPreloadScript());
@@ -237,6 +257,20 @@ public class MakeGoodPropertyPage extends PropertyPage {
             project = ((IScriptProject) getElement()).getProject();
         }
         return project;
+    }
+
+    private void enablePHPUnitSettings() {
+        setPHPUnitSettingsEnabled(true);
+    }
+
+    private void disablePHPUnitSettings() {
+        setPHPUnitSettingsEnabled(false);
+    }
+
+    private void setPHPUnitSettingsEnabled(boolean enabled) {
+        phpunitConfigFileLabel.setEnabled(enabled);
+        phpunitConfigFileText.setEnabled(enabled);
+        browsePHPUnitConfigFileButton.setEnabled(enabled);
     }
 
     private class FileSelectionListener implements SelectionListener {
