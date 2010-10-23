@@ -98,12 +98,14 @@ public class LaunchTarget {
             buffer.append(" --stop-on-failure"); //$NON-NLS-1$
         }
 
-        String phpunitConfigFile = getPHPUnitConfigFile();
-        if (!"".equals(phpunitConfigFile)) { //$NON-NLS-1$
-            IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-            IResource phpunitConfilgFileResource = root.findMember(phpunitConfigFile);
-            if (phpunitConfilgFileResource != null) {
-                buffer.append(" --phpunit-config=\"" + phpunitConfilgFileResource.getLocation().toString() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
+        if (getTestingFramework() == TestingFramework.PHPUnit) {
+            String phpunitConfigFile = getPHPUnitConfigFile();
+            if (!"".equals(phpunitConfigFile)) { //$NON-NLS-1$
+                IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+                IResource phpunitConfilgFileResource = root.findMember(phpunitConfigFile);
+                if (phpunitConfilgFileResource != null) {
+                    buffer.append(" --phpunit-config=\"" + phpunitConfilgFileResource.getLocation().toString() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
+                }
             }
         }
 
