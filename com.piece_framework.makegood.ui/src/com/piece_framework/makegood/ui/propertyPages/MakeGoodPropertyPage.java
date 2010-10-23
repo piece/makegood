@@ -60,7 +60,7 @@ public class MakeGoodPropertyPage extends PropertyPage {
     private Text preloadScriptText;
     private Label phpunitConfigFileLabel;
     private Text phpunitConfigFileText;
-    private Button browsePHPUnitConfigFileButton;
+    private Button phpunitConfigFileBrowseButton;
     private Button phpunitButton;
     private Button simpletestButton;
     private TreeViewer testFolderTreeViewer;
@@ -107,9 +107,9 @@ public class MakeGoodPropertyPage extends PropertyPage {
         phpunitConfigFileLabel.setText(Messages.MakeGoodPropertyPage_phpunitConfigFileLabel);
         phpunitConfigFileText = new Text(phpunitSettings, SWT.SINGLE | SWT.BORDER);
         phpunitConfigFileText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-        browsePHPUnitConfigFileButton = new Button(phpunitSettings, SWT.NONE);
-        browsePHPUnitConfigFileButton.setText(Messages.MakeGoodPropertyPage_phpunitConfigFileBrowseLabel);
-        browsePHPUnitConfigFileButton.addSelectionListener(
+        phpunitConfigFileBrowseButton = new Button(phpunitSettings, SWT.NONE);
+        phpunitConfigFileBrowseButton.setText(Messages.MakeGoodPropertyPage_phpunitConfigFileBrowseLabel);
+        phpunitConfigFileBrowseButton.addSelectionListener(
             new FileSelectionListener(
                 phpunitConfigFileText,
                 Messages.MakeGoodPropertyPage_phpunitConfigFileDialogTitle,
@@ -270,7 +270,7 @@ public class MakeGoodPropertyPage extends PropertyPage {
     private void setPHPUnitSettingsEnabled(boolean enabled) {
         phpunitConfigFileLabel.setEnabled(enabled);
         phpunitConfigFileText.setEnabled(enabled);
-        browsePHPUnitConfigFileButton.setEnabled(enabled);
+        phpunitConfigFileBrowseButton.setEnabled(enabled);
     }
 
     private class FileSelectionListener implements SelectionListener {
