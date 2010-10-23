@@ -31,17 +31,11 @@
  * @package    Stagehand_TestRunner
  * @copyright  2009-2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.16.0
+ * @version    Release: 2.17.0
  * @link       http://www.phpunit.de/
  * @since      File available since Release 2.10.0
  */
 
-require_once 'PHPUnit/Framework/SelfDescribing.php';
-require_once 'PHPUnit/Framework/Test.php';
-require_once 'PHPUnit/Framework/TestCase.php';
-require_once 'PHPUnit/Framework/TestFailure.php';
-require_once 'PHPUnit/Framework/TestListener.php';
-require_once 'PHPUnit/Framework/TestSuite.php';
 require_once 'PHPUnit/Util/Class.php';
 require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/Printer.php';
@@ -53,7 +47,7 @@ require_once 'PHPUnit/Util/XML.php';
  * @package    Stagehand_TestRunner
  * @copyright  2009-2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.16.0
+ * @version    Release: 2.17.0
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.10.0
  */
@@ -77,7 +71,7 @@ class Stagehand_TestRunner_Runner_PHPUnitRunner_Printer_JUnitXMLPrinter extends 
      */
     public function addError(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
-        $this->addFailureOrError($test, $e, $time, 'error');
+        $this->writeError($test, $e, $time);
     }
 
     /**
@@ -87,7 +81,7 @@ class Stagehand_TestRunner_Runner_PHPUnitRunner_Printer_JUnitXMLPrinter extends 
      */
     public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time)
     {
-        $this->addFailureOrError($test, $e, $time, 'failure');
+        $this->writeFailure($test, $e, $time);
     }
 
     /**
@@ -97,7 +91,7 @@ class Stagehand_TestRunner_Runner_PHPUnitRunner_Printer_JUnitXMLPrinter extends 
      */
     public function addIncompleteTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
-        $this->addFailureOrError($test, $e, $time, 'error');
+        $this->writeError($test, $e, $time);
     }
 
     /**
@@ -109,7 +103,7 @@ class Stagehand_TestRunner_Runner_PHPUnitRunner_Printer_JUnitXMLPrinter extends 
      */
     public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
-        $this->addFailureOrError($test, $e, $time, 'error');
+        $this->writeError($test, $e, $time);
     }
 
     /**
@@ -173,16 +167,33 @@ class Stagehand_TestRunner_Runner_PHPUnitRunner_Printer_JUnitXMLPrinter extends 
 
     /**
      * @param PHPUnit_Framework_Test $test
-     * @param Exception              $e
-     * @param float                  $time
-     * @param string                 $failureOrError
-     * @param string                 $message
+     * @param Exception $e
+     * @param float $time
+     * @since Method available since Release 2.17.0
      */
-    protected function addFailureOrError(
-        PHPUnit_Framework_Test $test,
-        Exception $e,
-        $time,
-        $failureOrError)
+    protected function writeError(PHPUnit_Framework_Test $test, Exception $e, $time)
+    {
+        $this->writeFailureOrError($test, $e, $time, 'error');
+    }
+
+    /**
+     * @param PHPUnit_Framework_Test $test
+     * @param Exception $e
+     * @param float $time
+     * @since Method available since Release 2.17.0
+     */
+    protected function writeFailure(PHPUnit_Framework_Test $test, Exception $e, $time)
+    {
+        $this->writeFailureOrError($test, $e, $time, 'failure');
+    }
+
+    /**
+     * @param PHPUnit_Framework_Test $test
+     * @param Exception $e
+     * @param float $time
+     * @param string $failureOrError
+     */
+    protected function writeFailureOrError(PHPUnit_Framework_Test $test, Exception $e, $time, $failureOrError)
     {
         $testIsArtificial = false;
         if (!$this->testStarted) {

@@ -4,8 +4,7 @@
 /**
  * PHP version 5
  *
- * Copyright (c) 2007 Masahiko Sakamoto <msakamoto-sf@users.sourceforge.net>,
- *               2007-2011 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2010 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,57 +29,35 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_TestRunner
- * @copyright  2007 Masahiko Sakamoto <msakamoto-sf@users.sourceforge.net>
- * @copyright  2007-2011 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
  * @version    Release: 2.17.0
- * @link       http://simpletest.org/
- * @since      File available since Release 2.1.0
+ * @since      File available since Release 2.12.0
  */
 
 /**
- * A test collector for SimpleTest.
- *
  * @package    Stagehand_TestRunner
- * @copyright  2007 Masahiko Sakamoto <msakamoto-sf@users.sourceforge.net>
- * @copyright  2007-2011 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
  * @version    Release: 2.17.0
- * @link       http://simpletest.org/
- * @since      Class available since Release 2.1.0
+ * @since      Class available since Release 2.12.0
  */
-class Stagehand_TestRunner_Collector_SimpleTestCollector extends Stagehand_TestRunner_Collector
+abstract class Stagehand_TestRunner_Preparer
 {
-    protected $superTypes = array('SimpleTestCase');
-    protected $filePattern = 'Test(?:Case)?\.php$';
-    protected $suiteClass = 'Stagehand_TestRunner_TestSuite_SimpleTestTestSuite';
+    /**
+     * @var Stagehand_TestRunner_Config
+     */
+    protected $config;
 
     /**
-     * @param string $testCase
-     * @since Method available since Release 2.11.0
+     * @param Stagehand_TestRunner_Config $config
      */
-    public function collectTestCase($testCase)
+    public function __construct(Stagehand_TestRunner_Config $config)
     {
-        $test = new ReflectionClass($testCase);
-        if ($test->isAbstract()) {
-            return;
-        }
-
-        $this->suite->add(new $testCase());
+        $this->config = $config;
     }
 
-    /**
-     * Creates the test suite object.
-     *
-     * @param string $name
-     * @return TestSuite
-     */
-    protected function createTestSuite($name)
-    {
-        $suite = new $this->suiteClass($name);
-        $suite->setConfig($this->config);
-        return $suite;
-    }
+    abstract public function prepare();
 }
 
 /*

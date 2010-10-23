@@ -4,8 +4,7 @@
 /**
  * PHP version 5
  *
- * Copyright (c) 2007 Masahiko Sakamoto <msakamoto-sf@users.sourceforge.net>,
- *               2007-2011 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2011 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,56 +29,35 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_TestRunner
- * @copyright  2007 Masahiko Sakamoto <msakamoto-sf@users.sourceforge.net>
- * @copyright  2007-2011 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
  * @version    Release: 2.17.0
- * @link       http://simpletest.org/
- * @since      File available since Release 2.1.0
+ * @link       http://www.phpunit.de/
+ * @since      File available since Release 2.17.0
  */
 
 /**
- * A test collector for SimpleTest.
- *
  * @package    Stagehand_TestRunner
- * @copyright  2007 Masahiko Sakamoto <msakamoto-sf@users.sourceforge.net>
- * @copyright  2007-2011 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
  * @version    Release: 2.17.0
- * @link       http://simpletest.org/
- * @since      Class available since Release 2.1.0
+ * @link       http://www.phpunit.de/
+ * @since      Class available since Release 2.17.0
  */
-class Stagehand_TestRunner_Collector_SimpleTestCollector extends Stagehand_TestRunner_Collector
+class Stagehand_TestRunner_TestSuite_PHPUnit35GroupFilterTestSuite extends Stagehand_TestRunner_TestSuite_PHPUnitGroupFilterTestSuite
 {
-    protected $superTypes = array('SimpleTestCase');
-    protected $filePattern = 'Test(?:Case)?\.php$';
-    protected $suiteClass = 'Stagehand_TestRunner_TestSuite_SimpleTestTestSuite';
-
     /**
-     * @param string $testCase
-     * @since Method available since Release 2.11.0
+     * @param ReflectionClass  $class
+     * @param ReflectionMethod $method
      */
-    public function collectTestCase($testCase)
+    protected function addTestMethod(ReflectionClass $class, ReflectionMethod $method)
     {
-        $test = new ReflectionClass($testCase);
-        if ($test->isAbstract()) {
+        if ($this->shouldExclude($class, $method)) {
+            $this->markAsExcluded();
             return;
         }
 
-        $this->suite->add(new $testCase());
-    }
-
-    /**
-     * Creates the test suite object.
-     *
-     * @param string $name
-     * @return TestSuite
-     */
-    protected function createTestSuite($name)
-    {
-        $suite = new $this->suiteClass($name);
-        $suite->setConfig($this->config);
-        return $suite;
+        parent::addTestMethod($class, $method);
     }
 }
 

@@ -4,7 +4,7 @@
 /**
  * PHP version 5
  *
- * Copyright (c) 2010 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2011 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,20 +29,38 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_TestRunner
- * @copyright  2010 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.16.0
- * @since      File available since Release 2.12.0
+ * @version    Release: 2.17.0
+ * @link       http://www.phpunit.de/
+ * @since      File available since Release 2.17.0
  */
 
 /**
  * @package    Stagehand_TestRunner
- * @copyright  2010 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.16.0
- * @since      Class available since Release 2.12.0
+ * @version    Release: 2.17.0
+ * @link       http://www.phpunit.de/
+ * @since      Class available since Release 2.17.0
  */
-class Stagehand_TestRunner_Preparator_PHPTPreparator extends Stagehand_TestRunner_Preparator_PHPUnitPreparator {}
+class Stagehand_TestRunner_TestSuite_PHPUnit34GroupFilterTestSuite extends Stagehand_TestRunner_TestSuite_PHPUnitGroupFilterTestSuite
+{
+    /**
+     * @param ReflectionClass  $class
+     * @param ReflectionMethod $method
+     * @param array            $names
+     */
+    protected function addTestMethod(ReflectionClass $class, ReflectionMethod $method, array &$names)
+    {
+        if ($this->shouldExclude($class, $method)) {
+            $this->markAsExcluded();
+            return;
+        }
+
+        parent::addTestMethod($class, $method, $names);
+    }
+}
 
 /*
  * Local Variables:

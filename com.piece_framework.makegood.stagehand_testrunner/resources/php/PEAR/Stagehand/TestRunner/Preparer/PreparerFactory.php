@@ -31,18 +31,18 @@
  * @package    Stagehand_TestRunner
  * @copyright  2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.16.0
- * @since      File available since Release 2.12.0
+ * @version    Release: 2.17.0
+ * @since      File available since Release 2.14.0
  */
 
 /**
  * @package    Stagehand_TestRunner
  * @copyright  2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.16.0
- * @since      Class available since Release 2.12.0
+ * @version    Release: 2.17.0
+ * @since      Class available since Release 2.14.0
  */
-abstract class Stagehand_TestRunner_Preparator
+class Stagehand_TestRunner_Preparer_PreparerFactory
 {
     /**
      * @var Stagehand_TestRunner_Config
@@ -57,7 +57,14 @@ abstract class Stagehand_TestRunner_Preparator
         $this->config = $config;
     }
 
-    abstract public function prepare();
+    /**
+     * @return Stagehand_TestRunner_Collector
+     */
+    public function create()
+    {
+        $class = 'Stagehand_TestRunner_Preparer_' . $this->config->framework . 'Preparer';
+        return new $class($this->config);
+    }
 }
 
 /*

@@ -31,10 +31,12 @@
  * @package    Stagehand_TestRunner
  * @copyright  2007-2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.16.0
+ * @version    Release: 2.17.0
  * @link       http://www.phpunit.de/
  * @since      File available since Release 2.1.0
  */
+
+require_once 'PHPUnit/Runner/BaseTestRunner.php';
 
 /**
  * A test collector for PHPUnit.
@@ -42,7 +44,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2007-2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.16.0
+ * @version    Release: 2.17.0
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.1.0
  */
@@ -57,12 +59,32 @@ class Stagehand_TestRunner_Collector_PHPUnitCollector extends Stagehand_TestRunn
      */
     public function collectTestCase($testCase)
     {
-        if ($this->config->testsOnlySpecified()) {
-            $this->addTestCaseOnlySpecified($testCase);
+        $testClass = new ReflectionClass($testCase);
+        if ($testClass->isAbstract()) {
             return;
         }
 
-        $this->suite->addTestSuite($testCase);
+        if ($this->config->testsOnlySpecified()) {
+            $this->addTestCaseOnlySpecified($testClass);
+            return;
+        }
+
+        $suiteMethod = false;
+        if ($testClass->hasMethod(PHPUnit_Runner_BaseTestRunner::SUITE_METHODNAME)) {
+            $method = $testClass->getMethod(PHPUnit_Runner_BaseTestRunner::SUITE_METHODNAME);
+            if ($method->isStatic()) {
+                $this->suite->addTest($method->invoke(null, $testClass->getName()));
+                $suiteMethod = true;
+            }
+        }
+
+        if (!$suiteMethod) {
+            $this->suite->addTest(
+                version_compare(PHPUnit_Runner_Version::id(), '3.5.0RC1', '>=')
+                    ? new Stagehand_TestRunner_TestSuite_PHPUnit35GroupFilterTestSuite($testClass, $this->config)
+                    : new Stagehand_TestRunner_TestSuite_PHPUnit34GroupFilterTestSuite($testClass, $this->config)
+            );
+        }
     }
 
     /**
@@ -77,25 +99,20 @@ class Stagehand_TestRunner_Collector_PHPUnitCollector extends Stagehand_TestRunn
     }
 
     /**
-     * @param string $testCase
+     * @param ReflectionClass $testClass
      * @since Method available since Release 2.10.0
      */
-    protected function addTestCaseOnlySpecified($testCase)
+    protected function addTestCaseOnlySpecified(ReflectionClass $testClass)
     {
-        $test = new ReflectionClass($testCase);
-        if ($test->isAbstract()) {
-            return;
-        }
-
         if ($this->config->testsOnlySpecifiedMethods) {
             $this->suite->addTestSuite(
                 version_compare(PHPUnit_Runner_Version::id(), '3.5.0RC1', '>=')
-                    ? new Stagehand_TestRunner_TestSuite_PHPUnit35MethodFilterTestSuite($test, $this->config)
-                    : new Stagehand_TestRunner_TestSuite_PHPUnit34MethodFilterTestSuite($test, $this->config)
+                    ? new Stagehand_TestRunner_TestSuite_PHPUnit35MethodFilterTestSuite($testClass, $this->config)
+                    : new Stagehand_TestRunner_TestSuite_PHPUnit34MethodFilterTestSuite($testClass, $this->config)
             );
         } elseif ($this->config->testsOnlySpecifiedClasses) {
-            if ($this->config->isTestingClass($test->getName())) {
-                $this->suite->addTestSuite($test);
+            if ($this->config->isTestingClass($testClass->getName())) {
+                $this->suite->addTestSuite($testClass);
             }
         }
     }

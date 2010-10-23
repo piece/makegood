@@ -31,7 +31,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.16.0
+ * @version    Release: 2.17.0
  * @since      File available since Release 2.14.0
  */
 
@@ -39,7 +39,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.16.0
+ * @version    Release: 2.17.0
  * @since      Class available since Release 2.14.0
  */
 class Stagehand_TestRunner_TestRunner
@@ -64,7 +64,7 @@ class Stagehand_TestRunner_TestRunner
      */
     public function run()
     {
-        $this->createPreparator()->prepare();
+        $this->createPreparer()->prepare();
 
         $runner = $this->createRunner();
         $runner->run($this->createCollector()->collect());
@@ -75,12 +75,12 @@ class Stagehand_TestRunner_TestRunner
     }
 
     /**
-     * @return Stagehand_TestRunner_Preparator
+     * @return Stagehand_TestRunner_Preparer
      * @since Method available since Release 2.12.0
      */
-    protected function createPreparator()
+    protected function createPreparer()
     {
-        $factory = new Stagehand_TestRunner_Preparator_PreparatorFactory($this->config);
+        $factory = new Stagehand_TestRunner_Preparer_PreparerFactory($this->config);
         return $factory->create();
     }
 

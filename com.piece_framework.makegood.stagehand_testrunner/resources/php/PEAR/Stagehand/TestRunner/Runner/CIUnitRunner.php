@@ -31,7 +31,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.16.0
+ * @version    Release: 2.17.0
  * @link       http://www.phpunit.de/
  * @since      File available since Release 2.16.0
  */
@@ -40,7 +40,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.16.0
+ * @version    Release: 2.17.0
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.16.0
  */

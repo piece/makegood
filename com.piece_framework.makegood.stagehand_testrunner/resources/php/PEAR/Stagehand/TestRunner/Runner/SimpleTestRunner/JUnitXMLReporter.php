@@ -31,7 +31,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2009-2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.16.0
+ * @version    Release: 2.17.0
  * @link       http://simpletest.org/
  * @since      File available since Release 2.10.0
  */
@@ -40,7 +40,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2009-2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.16.0
+ * @version    Release: 2.17.0
  * @link       http://simpletest.org/
  * @since      Class available since Release 2.10.0
  */
@@ -63,6 +63,24 @@ class Stagehand_TestRunner_Runner_SimpleTestRunner_JUnitXMLReporter extends Simp
      * @var Stagehand_TestRunner_Config
      */
     protected $config;
+
+    /**
+     * @var boolean
+     * @since Property available since Release 2.17.0
+     */
+    protected $caseStarted = false;
+
+    /**
+     * @var boolean
+     * @since Property available since Release 2.17.0
+     */
+    protected $caseIsArtificial = false;
+
+    /**
+     * @var boolean
+     * @since Property available since Release 2.17.0
+     */
+    protected $methodStarted = false;
 
     /**
      * @param Stagehand_TestRunner_JUnitXMLWriter $xmlWriter
@@ -117,6 +135,7 @@ class Stagehand_TestRunner_Runner_SimpleTestRunner_JUnitXMLReporter extends Simp
             $testName,
             $this->suite->countTestsInTestCase(SimpleTest::getContext()->getTest())
         );
+        $this->caseStarted = true;
     }
 
     /**
@@ -126,6 +145,7 @@ class Stagehand_TestRunner_Runner_SimpleTestRunner_JUnitXMLReporter extends Simp
     {
         parent::paintCaseEnd($testName);
         $this->xmlWriter->endTestSuite();
+        $this->caseStarted = false;
     }
 
     /**
@@ -133,6 +153,12 @@ class Stagehand_TestRunner_Runner_SimpleTestRunner_JUnitXMLReporter extends Simp
      */
     public function paintMethodStart($testName)
     {
+        $this->caseIsArtificial = false;
+        if (!$this->caseStarted) {
+            $this->paintCaseStart(SimpleTest::getContext()->getTest()->getLabel());
+            $this->caseIsArtificial = true;
+        }
+
         parent::paintMethodStart($testName);
         $this->xmlWriter->startTestCase(
             $testName,
@@ -141,6 +167,7 @@ class Stagehand_TestRunner_Runner_SimpleTestRunner_JUnitXMLReporter extends Simp
         $this->methodStartTime = microtime(true);
         $this->assertionCount = 0;
         $this->reportedFailure = false;
+        $this->methodStarted = true;
     }
 
     /**
@@ -151,6 +178,11 @@ class Stagehand_TestRunner_Runner_SimpleTestRunner_JUnitXMLReporter extends Simp
         $elapsedTime = microtime(true) - $this->methodStartTime;
         parent::paintMethodEnd($testName);
         $this->xmlWriter->endTestCase($elapsedTime, $this->assertionCount);
+        $this->methodStarted = false;
+
+        if ($this->caseIsArtificial) {
+            $this->paintCaseEnd(SimpleTest::getContext()->getTest()->getLabel());
+        }
     }
 
     /**
@@ -188,9 +220,9 @@ class Stagehand_TestRunner_Runner_SimpleTestRunner_JUnitXMLReporter extends Simp
         if ($this->reportedFailure) return;
         parent::paintFail($message);
         if (preg_match('!^(.*) at \[(.+) line (\d+)]$!', $message, $matches)) {
-            $this->xmlWriter->writeFailure($matches[1], null, $matches[2], $matches[3], $matches[1]);
+            $this->writeFailure($matches[1], null, $matches[2], $matches[3], $matches[1]);
         } else {
-            $this->xmlWriter->writeFailure($message);
+            $this->writeFailure($message);
         }
         ++$this->assertionCount;
         $this->reportedFailure = true;
@@ -203,9 +235,9 @@ class Stagehand_TestRunner_Runner_SimpleTestRunner_JUnitXMLReporter extends Simp
     {
         parent::paintError($message);
         if (preg_match('!^Unexpected PHP error \[(.*)\] severity \[.*\] in \[(.+) line (\d+)]$!', $message, $matches)) {
-            $this->xmlWriter->writeError($matches[1], null, $matches[2], $matches[3], $matches[1]);
+            $this->writeError($matches[1], null, $matches[2], $matches[3], $matches[1]);
         } else {
-            $this->xmlWriter->writeError($message);
+            $this->writeError($message);
         }
     }
 
@@ -216,15 +248,14 @@ class Stagehand_TestRunner_Runner_SimpleTestRunner_JUnitXMLReporter extends Simp
     {
         parent::paintException($e);
         $failureTrace = $this->buildFailureTrace($e->getTrace());
-        $this->xmlWriter->writeError(
+        $this->writeError(
             get_class($e) . ': ' . $e->getMessage() . PHP_EOL . PHP_EOL .
             $e->getFile() . ':' . $e->getLine() . PHP_EOL .
             $failureTrace,
             null,
             $e->getFile(),
             $e->getLine(),
-            $e->getMessage(),
-            $failureTrace
+            $e->getMessage()
         );
     }
 
@@ -235,9 +266,9 @@ class Stagehand_TestRunner_Runner_SimpleTestRunner_JUnitXMLReporter extends Simp
     {
         parent::paintSkip($message);
         if (preg_match('!^(.*) at \[(.+) line (\d+)]$!', $message, $matches)) {
-            $this->xmlWriter->writeError($matches[1], null, $matches[2], $matches[3], $matches[1]);
+            $this->writeError($matches[1], null, $matches[2], $matches[3], $matches[1]);
         } else {
-            $this->xmlWriter->writeError($message);
+            $this->writeError($message);
         }
     }
 
@@ -261,6 +292,61 @@ class Stagehand_TestRunner_Runner_SimpleTestRunner_JUnitXMLReporter extends Simp
         }
 
         return $failureTrace;
+    }
+
+    /**
+     * @param string $text
+     * @param string $type
+     * @param string $file
+     * @param string $line
+     * @param string $message
+     * @since Method available since Release 2.17.0
+     */
+    protected function writeFailure($text, $type = null, $file = null, $line = null, $message = null)
+    {
+        $this->writeFailureOrError($text, $type, $file, $line, $message, 'failure');
+    }
+
+    /**
+     * @param string $text
+     * @param string $type
+     * @param string $file
+     * @param string $line
+     * @param string $message
+     * @since Method available since Release 2.17.0
+     */
+    protected function writeError($text, $type = null, $file = null, $line = null, $message = null)
+    {
+        $this->writeFailureOrError($text, $type, $file, $line, $message, 'error');
+    }
+
+    /**
+     * @param string $text
+     * @param string $type
+     * @param string $file
+     * @param string $line
+     * @param string $message
+     * @param string $failureOrError
+     * @since Method available since Release 2.17.0
+     */
+    protected function writeFailureOrError($text, $type, $file, $line, $message, $failureOrError)
+    {
+        $methodIsArtificial = false;
+        if (!$this->methodStarted) {
+            if (SimpleTest::getContext()->getTest()->_should_skip) {
+                $testName = 'skip';
+            } else {
+                $testName = 'ARTIFICIAL';
+            }
+            $this->paintMethodStart($testName);
+            $methodIsArtificial = true;
+        }
+
+        $this->xmlWriter->{ 'write' . $failureOrError }($text, $type, $file, $line, $message);
+
+        if ($methodIsArtificial) {
+            $this->paintMethodEnd($testName);
+        }
     }
 }
 

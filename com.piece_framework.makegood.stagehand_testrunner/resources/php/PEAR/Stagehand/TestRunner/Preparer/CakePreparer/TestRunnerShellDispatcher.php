@@ -31,22 +31,30 @@
  * @package    Stagehand_TestRunner
  * @copyright  2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.16.0
- * @since      File available since Release 2.12.0
+ * @version    Release: 2.17.0
+ * @since      File available since Release 2.14.0
  */
 
 /**
  * @package    Stagehand_TestRunner
  * @copyright  2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.16.0
- * @since      Class available since Release 2.12.0
+ * @version    Release: 2.17.0
+ * @since      Class available since Release 2.14.0
  */
-class Stagehand_TestRunner_Preparator_PHPSpecPreparator extends Stagehand_TestRunner_Preparator
+class Stagehand_TestRunner_Preparer_CakePreparer_TestRunnerShellDispatcher extends ShellDispatcher
 {
-    public function prepare()
+    public function _initEnvironment()
     {
-        require_once 'PHPSpec/Framework.php';
+        $this->__bootstrap();
+    }
+
+    public function dispatch()
+    {
+    }
+
+    function _stop($status = 0)
+    {
     }
 }
 
