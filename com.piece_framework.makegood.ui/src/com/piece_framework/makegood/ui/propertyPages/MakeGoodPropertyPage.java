@@ -43,7 +43,6 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.ISharedImages;
-import org.eclipse.ui.IWorkbenchPropertyPage;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.CheckedTreeSelectionDialog;
 import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
@@ -56,7 +55,7 @@ import com.piece_framework.makegood.core.PHPResource;
 import com.piece_framework.makegood.core.TestingFramework;
 import com.piece_framework.makegood.ui.Messages;
 
-public class MakeGoodPropertyPage extends PropertyPage implements IWorkbenchPropertyPage {
+public class MakeGoodPropertyPage extends PropertyPage {
     private Text preloadScriptText;
     private Text phpunitConfigFileText;
     private Button phpunitButton;
