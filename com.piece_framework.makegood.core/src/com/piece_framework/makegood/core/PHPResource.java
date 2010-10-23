@@ -82,11 +82,12 @@ public class PHPResource {
 
     private static String getTestClassSuperType(IResource resource) {
         MakeGoodProperty property = new MakeGoodProperty(resource);
-        if (property.getTestingFramework().equals(TestingFramework.PHPUnit)) {
+        switch (property.getTestingFramework()) {
+        case PHPUnit:
             return "PHPUnit_Framework_TestCase"; //$NON-NLS-1$
-        } else if (property.getTestingFramework().equals(TestingFramework.SimpleTest)) {
+        case SimpleTest:
             return "SimpleTestCase"; //$NON-NLS-1$
-        } else {
+        default:
             return null;
         }
     }
