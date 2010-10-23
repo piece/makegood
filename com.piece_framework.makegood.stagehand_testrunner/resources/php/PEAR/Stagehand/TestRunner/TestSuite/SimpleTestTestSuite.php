@@ -31,18 +31,16 @@
  * @package    Stagehand_TestRunner
  * @copyright  2009-2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.14.0
+ * @version    Release: 2.14.1
  * @link       http://simpletest.org/
  * @since      File available since Release 2.10.0
  */
-
-require_once 'simpletest/test_case.php';
 
 /**
  * @package    Stagehand_TestRunner
  * @copyright  2009-2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.14.0
+ * @version    Release: 2.14.1
  * @link       http://simpletest.org/
  * @since      Class available since Release 2.10.0
  */

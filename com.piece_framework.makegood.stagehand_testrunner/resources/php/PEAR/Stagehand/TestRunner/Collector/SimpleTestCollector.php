@@ -33,12 +33,10 @@
  * @copyright  2007 Masahiko Sakamoto <msakamoto-sf@users.sourceforge.net>
  * @copyright  2007-2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.14.0
+ * @version    Release: 2.14.1
  * @link       http://simpletest.org/
  * @since      File available since Release 2.1.0
  */
-
-require_once 'simpletest/test_case.php';
 
 /**
  * A test collector for SimpleTest.
@@ -47,7 +45,7 @@ require_once 'simpletest/test_case.php';
  * @copyright  2007 Masahiko Sakamoto <msakamoto-sf@users.sourceforge.net>
  * @copyright  2007-2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.14.0
+ * @version    Release: 2.14.1
  * @link       http://simpletest.org/
  * @since      Class available since Release 2.1.0
  */
