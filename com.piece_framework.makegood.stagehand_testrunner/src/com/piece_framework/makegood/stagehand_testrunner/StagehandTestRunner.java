@@ -35,8 +35,6 @@ public class StagehandTestRunner {
     static {
         RUNNER_SCRIPTS.put("phpunit", BUNDLE_BIN_DIR + "/phpunitrunner.php"); //$NON-NLS-1$ //$NON-NLS-2$
         RUNNER_SCRIPTS.put("simpletest", BUNDLE_BIN_DIR + "/simpletestrunner.php"); //$NON-NLS-1$ //$NON-NLS-2$
-        RUNNER_SCRIPTS.put("phpt", BUNDLE_BIN_DIR + "/phptrunner.php"); //$NON-NLS-1$ //$NON-NLS-2$
-        RUNNER_SCRIPTS.put("phpspec", BUNDLE_BIN_DIR + "/phpspecrunner.php"); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     public static String getBundleIncludePath() {
