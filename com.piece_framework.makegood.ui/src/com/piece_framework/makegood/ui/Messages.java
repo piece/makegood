@@ -34,6 +34,15 @@ public class Messages extends NLS {
     public static String MakeGoodPropertyPage_phpunitConfigFileBrowseLabel;
     public static String MakeGoodPropertyPage_testFolderRemoveLabel;
     public static String MakeGoodPropertyPage_simpletest;
+    public static String MakeGoodPropertyPage_cakephp;
+    public static String MakeGoodPropertyPage_cakephpAppPathDialogTitle;
+    public static String MakeGoodPropertyPage_cakephpAppPathDialogMessage;
+    public static String MakeGoodPropertyPage_cakephpAppPathLabel;
+    public static String MakeGoodPropertyPage_cakephpAppPathBrowseLabel;
+    public static String MakeGoodPropertyPage_cakephpCorePathDialogTitle;
+    public static String MakeGoodPropertyPage_cakephpCorePathDialogMessage;
+    public static String MakeGoodPropertyPage_cakephpCorePathLabel;
+    public static String MakeGoodPropertyPage_cakephpCorePathBrowseLabel;
     public static String MakeGoodPreferencePage_runAllTestsWhenFileIsSaved;
     public static String TestResultView_errorsLabel;
     public static String TestResultView_failuresLabel;

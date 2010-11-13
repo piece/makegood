@@ -58,7 +58,7 @@ public class LaunchTarget {
     public String getMainScript() {
         IFile file = null;
 
-        IResource resource = getTargetResource(targets.get(0));
+        IResource resource = getTargetResource();
         if (resource instanceof IFolder) {
             file = findDummyFile((IFolder) resource);
         } else if (resource instanceof IFile) {
@@ -101,10 +101,28 @@ public class LaunchTarget {
         if (getTestingFramework() == TestingFramework.PHPUnit) {
             String phpunitConfigFile = getPHPUnitConfigFile();
             if (!"".equals(phpunitConfigFile)) { //$NON-NLS-1$
-                IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-                IResource phpunitConfilgFileResource = root.findMember(phpunitConfigFile);
-                if (phpunitConfilgFileResource != null) {
-                    buffer.append(" --phpunit-config=\"" + phpunitConfilgFileResource.getLocation().toString() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
+                IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(phpunitConfigFile);
+                if (resource != null) {
+                    buffer.append(" --phpunit-config=\"" + resource.getLocation().toString() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
+                }
+            }
+        } else if (getTestingFramework() == TestingFramework.CakePHP) {
+            String cakephpAppPath = getCakePHPAppPath();
+            if ("".equals(cakephpAppPath)) { //$NON-NLS-1$
+                cakephpAppPath = getDefaultCakePHPAppPath();
+            }
+            if (!"".equals(cakephpAppPath)) { //$NON-NLS-1$
+                IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(cakephpAppPath);
+                if (resource != null) {
+                    buffer.append(" --cakephp-app-path=\"" + resource.getLocation().toString() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
+                }
+            }
+
+            String cakephpCorePath = getCakePHPCorePath();
+            if (!"".equals(cakephpCorePath)) { //$NON-NLS-1$
+                IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(cakephpCorePath);
+                if (resource != null) {
+                    buffer.append(" --cakephp-core-path=\"" + resource.getLocation().toString() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
                 }
             }
         }
@@ -157,7 +175,7 @@ public class LaunchTarget {
     }
 
     public TestingFramework getTestingFramework() {
-        return new MakeGoodProperty(getTargetResource(targets.get(0))).getTestingFramework();
+        return createMakeGoodProperty().getTestingFramework();
     }
 
     private IFile findDummyFile(IFolder folder) {
@@ -189,7 +207,7 @@ public class LaunchTarget {
     }
 
     private String getPreloadScript() {
-        return new MakeGoodProperty(getTargetResource(targets.get(0))).getPreloadScript();
+        return createMakeGoodProperty().getPreloadScript();
     }
 
     private IResource getTargetResource(Object target) {
@@ -202,8 +220,29 @@ public class LaunchTarget {
         return resource;
     }
 
-    private String getPHPUnitConfigFile() {
-        return new MakeGoodProperty(getTargetResource(targets.get(0))).getPHPUnitConfigFile();
+    private IResource getTargetResource() {
+        return getTargetResource(targets.get(0));
     }
 
+    private String getPHPUnitConfigFile() {
+        return createMakeGoodProperty().getPHPUnitConfigFile();
+    }
+
+    private String getCakePHPAppPath() {
+        return createMakeGoodProperty().getCakePHPAppPath();
+    }
+
+    private String getDefaultCakePHPAppPath() {
+        IResource resource = createMakeGoodProperty().getProject().findMember("/app"); //$NON-NLS-1$
+        if (resource == null) return ""; //$NON-NLS-1$
+        return resource.getFullPath().toString();
+    }
+
+    private String getCakePHPCorePath() {
+        return createMakeGoodProperty().getCakePHPCorePath();
+    }
+
+    private MakeGoodProperty createMakeGoodProperty() {
+        return new MakeGoodProperty(getTargetResource());
+    }
 }

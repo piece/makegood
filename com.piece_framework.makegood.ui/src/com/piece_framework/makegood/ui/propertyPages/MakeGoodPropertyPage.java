@@ -57,12 +57,21 @@ import com.piece_framework.makegood.core.TestingFramework;
 import com.piece_framework.makegood.ui.Messages;
 
 public class MakeGoodPropertyPage extends PropertyPage {
+    private static final int SELECTION_ALLOW_FILE = 1;
+    private static final int SELECTION_ALLOW_FOLDER = 2;
     private Text preloadScriptText;
     private Label phpunitConfigFileLabel;
     private Text phpunitConfigFileText;
     private Button phpunitConfigFileBrowseButton;
     private Button phpunitButton;
     private Button simpletestButton;
+    private Button cakephpButton;
+    private Label cakephpAppPathLabel;
+    private Text cakephpAppPathText;
+    private Button cakephpAppPathBrowseButton;
+    private Label cakephpCorePathLabel;
+    private Text cakephpCorePathText;
+    private Button cakephpCorePathBrowseButton;
     private TreeViewer testFolderTreeViewer;
     private Button testFolderRemoveButton;
     private Composite contents;
@@ -114,18 +123,8 @@ public class MakeGoodPropertyPage extends PropertyPage {
                 phpunitConfigFileText,
                 Messages.MakeGoodPropertyPage_phpunitConfigFileDialogTitle,
                 Messages.MakeGoodPropertyPage_phpunitConfigFileDialogMessage,
-                new ViewerFilter() {
-                    @Override
-                    public boolean select(Viewer viewer, Object parentElement, Object element) {
-                        if (element instanceof IFile) {
-                            return true;
-                        } else if (element instanceof IFolder) {
-                            return true;
-                        } else {
-                            return false;
-                        }
-                    }
-                }
+                SELECTION_ALLOW_FILE,
+                new FileViewerFilter()
             )
         );
 
@@ -134,9 +133,56 @@ public class MakeGoodPropertyPage extends PropertyPage {
         simpletestButton.addSelectionListener(
             new SelectionAdapter() {
                 public void widgetSelected(SelectionEvent e) {
-                    disablePHPUnitSettings();
+                    enableSimpleTestSettings();
                 }
             }
+        );
+
+        cakephpButton = new Button(frameworkGroup, SWT.RADIO);
+        cakephpButton.setText(Messages.MakeGoodPropertyPage_cakephp);
+        cakephpButton.addSelectionListener(
+            new SelectionAdapter() {
+                public void widgetSelected(SelectionEvent e) {
+                    enableCakePHPSettings();
+                }
+            }
+        );
+        Composite cakephpSettings = new Composite(frameworkGroup, SWT.NONE);
+        {
+            GridLayout layout = new GridLayout();
+            layout.numColumns = 3;
+            cakephpSettings.setLayout(layout);
+        }
+        cakephpSettings.setLayoutData(new GridData(GridData.FILL_BOTH));
+        cakephpAppPathLabel = new Label(cakephpSettings, SWT.NONE);
+        cakephpAppPathLabel.setText(Messages.MakeGoodPropertyPage_cakephpAppPathLabel);
+        cakephpAppPathText = new Text(cakephpSettings, SWT.SINGLE | SWT.BORDER);
+        cakephpAppPathText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+        cakephpAppPathBrowseButton = new Button(cakephpSettings, SWT.NONE);
+        cakephpAppPathBrowseButton.setText(Messages.MakeGoodPropertyPage_cakephpAppPathBrowseLabel);
+        cakephpAppPathBrowseButton.addSelectionListener(
+            new FileSelectionListener(
+                cakephpAppPathText,
+                Messages.MakeGoodPropertyPage_cakephpAppPathDialogTitle,
+                Messages.MakeGoodPropertyPage_cakephpAppPathDialogMessage,
+                SELECTION_ALLOW_FOLDER,
+                new FileViewerFilter()
+            )
+        );
+        cakephpCorePathLabel = new Label(cakephpSettings, SWT.NONE);
+        cakephpCorePathLabel.setText(Messages.MakeGoodPropertyPage_cakephpCorePathLabel);
+        cakephpCorePathText = new Text(cakephpSettings, SWT.SINGLE | SWT.BORDER);
+        cakephpCorePathText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+        cakephpCorePathBrowseButton = new Button(cakephpSettings, SWT.NONE);
+        cakephpCorePathBrowseButton.setText(Messages.MakeGoodPropertyPage_cakephpCorePathBrowseLabel);
+        cakephpCorePathBrowseButton.addSelectionListener(
+            new FileSelectionListener(
+                cakephpCorePathText,
+                Messages.MakeGoodPropertyPage_cakephpCorePathDialogTitle,
+                Messages.MakeGoodPropertyPage_cakephpCorePathDialogMessage,
+                SELECTION_ALLOW_FOLDER,
+                new FileViewerFilter()
+            )
         );
 
         Label preloadScriptLabel = new Label(contents, SWT.NONE);
@@ -150,18 +196,8 @@ public class MakeGoodPropertyPage extends PropertyPage {
                 preloadScriptText,
                 Messages.MakeGoodPropertyPage_preloadScriptDialogTitle,
                 Messages.MakeGoodPropertyPage_preloadScriptDialogMessage,
-                new ViewerFilter() {
-                    @Override
-                    public boolean select(Viewer viewer, Object parentElement, Object element) {
-                        if (element instanceof IFile) {
-                            return PHPResource.isPHPSource((IFile) element);
-                        } else if (element instanceof IFolder) {
-                            return true;
-                        } else {
-                            return false;
-                        }
-                    }
-                }
+                SELECTION_ALLOW_FILE,
+                new PHPResourceViewerFilter()
             )
         );
 
@@ -221,9 +257,16 @@ public class MakeGoodPropertyPage extends PropertyPage {
             break;
         case SimpleTest:
             simpletestButton.setSelection(true);
-            disablePHPUnitSettings();
+            enableSimpleTestSettings();
+            break;
+        case CakePHP:
+            cakephpButton.setSelection(true);
+            enableCakePHPSettings();
+            break;
         }
         phpunitConfigFileText.setText(property.getPHPUnitConfigFile());
+        cakephpAppPathText.setText(property.getCakePHPAppPath());
+        cakephpCorePathText.setText(property.getCakePHPCorePath());
         preloadScriptText.setText(property.getPreloadScript());
         testFolderTreeViewer.setInput(property.getTestFolders());
 
@@ -238,9 +281,13 @@ public class MakeGoodPropertyPage extends PropertyPage {
             testingFramework = TestingFramework.PHPUnit;
         } else if (simpletestButton.getSelection()) {
             testingFramework = TestingFramework.SimpleTest;
+        } else if (cakephpButton.getSelection()) {
+            testingFramework = TestingFramework.CakePHP;
         }
         property.setTestingFramework(testingFramework);
         property.setPHPUnitConfigFile(phpunitConfigFileText.getText());
+        property.setCakePHPAppPath(cakephpAppPathText.getText());
+        property.setCakePHPCorePath(cakephpCorePathText.getText());
         property.setPreloadScript(preloadScriptText.getText());
         property.setTestFolders((List<IFolder>) testFolderTreeViewer.getInput());
         property.flush();
@@ -259,6 +306,8 @@ public class MakeGoodPropertyPage extends PropertyPage {
     }
 
     private void enablePHPUnitSettings() {
+        disableSimpleTestSettings();
+        disableCakePHPSettings();
         setPHPUnitSettingsEnabled(true);
     }
 
@@ -272,20 +321,56 @@ public class MakeGoodPropertyPage extends PropertyPage {
         phpunitConfigFileBrowseButton.setEnabled(enabled);
     }
 
+    private void enableSimpleTestSettings() {
+        disablePHPUnitSettings();
+        disableCakePHPSettings();
+        setSimpleTestSettingsEnabled(true);
+    }
+
+    private void disableSimpleTestSettings() {
+        setSimpleTestSettingsEnabled(false);
+    }
+
+    private void setSimpleTestSettingsEnabled(boolean enabled) {
+    }
+
+    private void enableCakePHPSettings() {
+        disablePHPUnitSettings();
+        disableSimpleTestSettings();
+        setCakePHPSettingsEnabled(true);
+    }
+
+    private void disableCakePHPSettings() {
+        setCakePHPSettingsEnabled(false);
+    }
+
+    private void setCakePHPSettingsEnabled(boolean enabled) {
+        cakephpAppPathLabel.setEnabled(enabled);
+        cakephpAppPathText.setEnabled(enabled);
+        cakephpAppPathBrowseButton.setEnabled(enabled);
+        cakephpCorePathLabel.setEnabled(enabled);
+        cakephpCorePathText.setEnabled(enabled);
+        cakephpCorePathBrowseButton.setEnabled(enabled);
+    }
+
     private class FileSelectionListener implements SelectionListener {
         private Text subject;
         private String dialogTitle;
         private String dialogMessage;
         private ViewerFilter viewerFilter;
+        private int allowedResource;
 
         private FileSelectionListener(
             Text subject,
             String dialogTitle,
             String dialogMessage,
-            ViewerFilter viewerFilter) {
+            int allowedResource,
+            ViewerFilter viewerFilter
+        ) {
             this.subject = subject;
             this.dialogTitle = dialogTitle;
             this.dialogMessage = dialogMessage;
+            this.allowedResource = allowedResource;
             this.viewerFilter = viewerFilter;
         }
 
@@ -325,10 +410,15 @@ public class MakeGoodPropertyPage extends PropertyPage {
 
             if (dialog.open() == Window.OK && dialog.getFirstResult() != null) {
                 String text = ""; //$NON-NLS-1$
-                IFile result = (IFile) dialog.getFirstResult();
-                if (result != null) {
-                    text = result.getFullPath().toString();
+                Object selectedResource = dialog.getFirstResult();
+                if (selectedResource != null) {
+                    if ((selectedResource instanceof IFile) && (allowedResource & SELECTION_ALLOW_FILE) == SELECTION_ALLOW_FILE) {
+                        text = ((IFile) selectedResource).getFullPath().toString();
+                    } else if ((selectedResource instanceof IFolder) && (allowedResource & SELECTION_ALLOW_FOLDER) == SELECTION_ALLOW_FOLDER) {
+                        text = ((IFolder) selectedResource).getFullPath().toString();
+                    }
                 }
+
                 subject.setText(text);
             }
         }
@@ -443,6 +533,32 @@ public class MakeGoodPropertyPage extends PropertyPage {
                 if (!removedFolder.equals(folder)) folders.add(folder);
             }
             testFolderTreeViewer.setInput(folders);
+        }
+    }
+
+    private class FileViewerFilter extends ViewerFilter {
+        @Override
+        public boolean select(Viewer viewer, Object parentElement, Object element) {
+            if (element instanceof IFile) {
+                return true;
+            } else if (element instanceof IFolder) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+
+    private class PHPResourceViewerFilter extends ViewerFilter {
+        @Override
+        public boolean select(Viewer viewer, Object parentElement, Object element) {
+            if (element instanceof IFile) {
+                return PHPResource.isPHPSource((IFile) element);
+            } else if (element instanceof IFolder) {
+                return true;
+            } else {
+                return false;
+            }
         }
     }
 }

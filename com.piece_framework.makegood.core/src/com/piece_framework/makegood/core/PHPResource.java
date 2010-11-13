@@ -12,6 +12,9 @@
 
 package com.piece_framework.makegood.core;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -37,11 +40,13 @@ public class PHPResource {
         if (source == null) return false;
         IResource resource = source.getResource();
         if (resource == null) return false;
-        String testClassSuperType = getTestClassSuperType(resource);
+        List<String> testClassSuperTypes = getTestClassSuperType(resource);
 
         try {
             for (IType type : source.getAllTypes()) {
-                if (isTestClass(type, testClassSuperType)) return true;
+                for (String testClassSuperType: testClassSuperTypes) {
+                    if (isTestClass(type, testClassSuperType)) return true;
+                }
             }
         } catch (ModelException e) {
             MakeGoodCorePlugin.getDefault().getLog().log(
@@ -80,15 +85,20 @@ public class PHPResource {
         return false;
     }
 
-    private static String getTestClassSuperType(IResource resource) {
+    private static List<String> getTestClassSuperType(IResource resource) {
+        List<String> testClassSuperTypes = new ArrayList<String>();
         MakeGoodProperty property = new MakeGoodProperty(resource);
         switch (property.getTestingFramework()) {
         case PHPUnit:
-            return "PHPUnit_Framework_TestCase"; //$NON-NLS-1$
+            testClassSuperTypes.add("PHPUnit_Framework_TestCase"); //$NON-NLS-1$
         case SimpleTest:
-            return "SimpleTestCase"; //$NON-NLS-1$
+            testClassSuperTypes.add("SimpleTestCase"); //$NON-NLS-1$
+        case CakePHP:
+            testClassSuperTypes.add("CakeTestCase"); //$NON-NLS-1$
+            testClassSuperTypes.add("CakeWebTestCase"); //$NON-NLS-1$
         default:
-            return null;
         }
+
+        return testClassSuperTypes;
     }
 }
