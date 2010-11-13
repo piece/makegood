@@ -12,25 +12,36 @@
 
 package com.piece_framework.makegood.aspect.org.eclipse.php.debug.core.aspect;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javassist.CannotCompileException;
 import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.NotFoundException;
 import javassist.expr.Cast;
 import javassist.expr.ExprEditor;
+import javassist.expr.Instanceof;
 import javassist.expr.MethodCall;
+
+import org.eclipse.core.runtime.Platform;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.Version;
 
 import com.piece_framework.makegood.javassist.Aspect;
 
 public class SystemIncludePathAspect extends Aspect {
     private static final String JOINPOINT_CAST_ICONTAINER =
         "PHPINIUtil#createPhpIniByProject() [cast IContainer]"; //$NON-NLS-1$
+    private static final String JOINPOINT_INSTANCEOF_ICONTAINER =
+        "PHPINIUtil#createPhpIniByProject() [instanceof IContainer]"; //$NON-NLS-1$
     private static final String JOINPOINT_CALL_GETLOCATION =
         "PHPINIUtil#createPhpIniByProject() [call getLocation()]"; //$NON-NLS-1$
     private static final String JOINPOINT_CALL_MODIFYINCLUDEPATH =
         "PHPINIUtil#createPhpIniByProject() [call modifyIncludePath()]"; //$NON-NLS-1$
     private static final String[] JOINPOINTS = {
         JOINPOINT_CAST_ICONTAINER,
+        JOINPOINT_INSTANCEOF_ICONTAINER,
         JOINPOINT_CALL_GETLOCATION,
         JOINPOINT_CALL_MODIFYINCLUDEPATH
     };
@@ -45,6 +56,26 @@ public class SystemIncludePathAspect extends Aspect {
         CtClass weavingClass = ClassPool.getDefault().get(WEAVINGCLASS_PHPINIUTIL);
         weavingClass.getDeclaredMethod("createPhpIniByProject").instrument( //$NON-NLS-1$
             new ExprEditor() {
+                @Override
+                public void edit(Instanceof instance) throws CannotCompileException {
+                    CtClass instanceofClass;
+                    try {
+                        instanceofClass = instance.getType();
+                    } catch (NotFoundException e) {
+                        return;
+                    }
+
+                    if (instanceofClass == null) return;
+
+                    if (instanceofClass.getName().equals("org.eclipse.core.resources.IContainer")) { //$NON-NLS-1$
+                        instance.replace(
+"$_ = (pathObject.getEntry() instanceof org.eclipse.core.resources.IResource);" //$NON-NLS-1$
+                        );
+
+                        markJoinPointAsPassed(JOINPOINT_INSTANCEOF_ICONTAINER);
+                    }
+                }
+
                 @Override
                 public void edit(Cast cast) throws CannotCompileException {
                     CtClass castClass;
@@ -105,6 +136,14 @@ public class SystemIncludePathAspect extends Aspect {
 
     @Override
     protected String[] joinPoints() {
+        Bundle bundle = Platform.getBundle("org.eclipse.php.debug.core"); //$NON-NLS-1$
+        if (bundle.getVersion().compareTo(Version.parseVersion("2.2.0.v20100826")) < 0) {
+            List<String> joinPoints = new ArrayList<String>();
+            for (String joinPoint: JOINPOINTS) {
+                if (!joinPoint.equals(JOINPOINT_INSTANCEOF_ICONTAINER)) joinPoints.add(joinPoint);
+            }
+            return joinPoints.toArray(new String[JOINPOINTS.length - 1]);
+        }
         return JOINPOINTS;
     }
 
