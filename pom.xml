@@ -35,7 +35,7 @@
   </licenses>
 
   <properties>
-    <tycho-version>0.9.0</tycho-version>
+    <tycho-version>0.10.0</tycho-version>
     <platform-version-name>helios</platform-version-name>
     <eclipse-site>http://download.eclipse.org/releases/${platform-version-name}</eclipse-site>
   </properties>
