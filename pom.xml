@@ -10,7 +10,7 @@
 
   <groupId>com.piece-framework</groupId>
   <artifactId>makegood-parent</artifactId>
-  <version>1.1.0.qualifier</version>
+  <version>1.2.0.qualifier</version>
   <packaging>pom</packaging>
 
   <name>MakeGood Parent</name>
@@ -47,6 +47,8 @@
     <module>com.piece_framework.makegood.stagehand_testrunner</module>
     <module>com.piece_framework.makegood.ui</module>
     <module>com.piece_framework.makegood.aspect</module>
+    <module>com.piece_framework.makegood.aspect.com.piece_framework.makegood.core</module>
+    <module>com.piece_framework.makegood.aspect.com.piece_framework.makegood.launch</module>
     <module>com.piece_framework.makegood.aspect.org.eclipse.php.core</module>
     <module>com.piece_framework.makegood.aspect.org.eclipse.php.debug.core</module>
     <module>com.piece_framework.makegood.aspect.org.eclipse.php.ui</module>
