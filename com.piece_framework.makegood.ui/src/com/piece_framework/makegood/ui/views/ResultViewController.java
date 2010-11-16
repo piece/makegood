@@ -146,26 +146,14 @@ public class ResultViewController implements IDebugEventSetListener {
 
         if (!createEventFired(launch)) return;
 
-        GET_EXIT_VALUE:
         for (IProcess process: launch.getProcesses()) {
             int exitValue = 0;
-            do {
-                try {
-                    if (process.isTerminated()) {
-                        exitValue = process.getExitValue();
-                    }
-
-                    break;
-                } catch (DebugException e) {
-                    Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
-                }
-
-                try {
-                    Thread.sleep(200);
-                } catch (InterruptedException e) {
-                    break GET_EXIT_VALUE;
-                }
-            } while (true);
+            try {
+                if (!process.isTerminated()) continue;
+                exitValue = process.getExitValue();
+            } catch (DebugException e) {
+                Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
+            }
 
             if (exitValue != 0) {
                 hasErrors = true;
