@@ -25,7 +25,7 @@ import org.osgi.framework.Version;
 
 import com.piece_framework.makegood.javassist.Aspect;
 
-public class LaunchWithMissingUserLibrariesFix extends Aspect {
+public class LaunchWithMissingUserLibrariesFixAspect extends Aspect {
     private static final String JOINPOINT_CALL_GETBUILDPATHENTRIES =
         "PHPINIUtil#createPhpIniByProject() [call getBuildpathEntries()]"; //$NON-NLS-1$
     private static final String[] JOINPOINTS = {
