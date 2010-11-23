@@ -30,7 +30,6 @@ import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.internal.ui.views.console.ProcessConsole;
 import org.eclipse.debug.ui.IDebugUIConstants;
 import org.eclipse.php.internal.debug.core.model.IPHPDebugTarget;
-import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.console.ConsolePlugin;
 import org.eclipse.ui.console.IConsole;
 import org.eclipse.ui.console.IConsoleConstants;
@@ -48,6 +47,7 @@ import com.piece_framework.makegood.launch.MakeGoodLaunchConfigurationDelegate;
 import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.actions.StopTestAction;
 import com.piece_framework.makegood.ui.ide.ViewShow;
+import com.piece_framework.makegood.ui.launch.TestRunner;
 
 public class ResultViewController implements IDebugEventSetListener {
     private static final String MAKEGOOD_RESULTVIEWCONTROLLER_MARKER_CREATE = "MAKEGOOD_RESULTVIEWCONTROLLER_MARKER_CREATE"; //$NON-NLS-1$
@@ -122,14 +122,11 @@ public class ResultViewController implements IDebugEventSetListener {
         Job job = new UIJob("MakeGood Test Start") { //$NON-NLS-1$
             @Override
             public IStatus runInUIThread(IProgressMonitor monitor) {
-                IWorkbenchPart lastActivePart = ViewShow.getActivePart();
                 ResultView resultView = null;
                 resultView = (ResultView) ViewShow.show(ResultView.ID);
                 if (resultView == null) return Status.CANCEL_STATUS;
 
-                if (lastActivePart != null) {
-                    ViewShow.setFocus(lastActivePart);
-                }
+                TestRunner.restoreFocusToLastActivePart();
 
                 resultView.reset();
                 resultView.startTest(progress, failures);
