@@ -13,6 +13,7 @@ package com.piece_framework.makegood.aspect.org.eclipse.php.core;
 
 import org.eclipse.ui.IStartup;
 
+import com.piece_framework.makegood.aspect.org.eclipse.php.core.aspect.MultibyteCharactersAspect;
 import com.piece_framework.makegood.aspect.org.eclipse.php.core.aspect.SystemIncludePathAspect;
 import com.piece_framework.makegood.javassist.Aspect;
 import com.piece_framework.makegood.javassist.WeavingProcess;
@@ -20,6 +21,7 @@ import com.piece_framework.makegood.javassist.WeavingProcess;
 public class FragmentWeavingProcess extends WeavingProcess implements IStartup {
     private static final Aspect[] ASPECTS = {
         new SystemIncludePathAspect(),
+        new MultibyteCharactersAspect()
     };
     private static final String[] DEPENDENCIES = {
         "org.eclipse.php.core", //$NON-NLS-1$
