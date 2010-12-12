@@ -12,9 +12,12 @@
 
 package com.piece_framework.makegood.launch;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.internal.content.ContentTypeManager;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
@@ -22,13 +25,14 @@ import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
-import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.osgi.framework.debug.Debug;
 import org.eclipse.php.core.compiler.PHPFlags;
+import org.eclipse.php.internal.core.documentModel.provisional.contenttype.ContentTypeIdForPHP;
 import org.eclipse.php.internal.core.typeinference.PHPClassType;
 
 import com.piece_framework.makegood.core.MakeGoodProperty;
@@ -152,25 +156,36 @@ public class LaunchTarget {
                         continue;
                     }
                     for (IType type: types) {
-                        classes.append(classes.length() > 0 ? "," : ""); //$NON-NLS-1$ //$NON-NLS-2$
-                        classes.append(PHPClassType.fromIType(type).getTypeName());
+                        if (classes.length() > 0) {
+                            classes.append(","); //$NON-NLS-1$
+                        }
+
+                        classes.append(urlencode(PHPClassType.fromIType(type).getTypeName()));
                     }
                 } else if (PHPFlags.isClass(flags)) {
-                    classes.append(classes.length() > 0 ? "," : ""); //$NON-NLS-1$ //$NON-NLS-2$
-                    classes.append(PHPClassType.fromIType((IType) target).getTypeName());
+                    if (classes.length() > 0) {
+                        classes.append(","); //$NON-NLS-1$
+                    }
+
+                    classes.append(urlencode(PHPClassType.fromIType((IType) target).getTypeName()));
                 }
             } else if (target instanceof IMethod) {
-                methods.append(methods.length() > 0 ? "," : ""); //$NON-NLS-1$ //$NON-NLS-2$
+                if (methods.length() > 0) {
+                    methods.append(","); //$NON-NLS-1$
+                }
+
                 methods.append(
-                    PHPClassType.fromIType(((IMethod) target).getDeclaringType()).getTypeName() +
-                    "::" + //$NON-NLS-1$
-                    ((IMethod) target).getElementName()
+                    urlencode(
+                        PHPClassType.fromIType(((IMethod) target).getDeclaringType()).getTypeName() +
+                        "::" + //$NON-NLS-1$
+                        ((IMethod) target).getElementName()
+                    )
                 );
             }
         }
 
         if (classes.length() > 0) {
-            buffer.append(" --classes=\"" + classes.toString()  + "\""); //$NON-NLS-1$ //$NON-NLS-2$
+            buffer.append(" --classes=\"" + classes.toString() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         if (methods.length() > 0) {
@@ -252,5 +267,25 @@ public class LaunchTarget {
 
     private MakeGoodProperty createMakeGoodProperty() {
         return new MakeGoodProperty(getTargetResource());
+    }
+
+    private String getEncoding()
+    {
+        // TODO use the encoding of the current contents instead of the default charset.
+        IContentType contentType = ContentTypeManager.getInstance().getContentType(ContentTypeIdForPHP.ContentTypeID_PHP);
+        if (contentType == null) return ResourcesPlugin.getEncoding();
+        String defaultCharset = contentType.getDefaultCharset();
+        if (defaultCharset == null) return ResourcesPlugin.getEncoding();
+        return defaultCharset;
+    }
+
+    private String urlencode(String subject)
+    {
+        try {
+            return URLEncoder.encode(subject, getEncoding());
+        } catch (UnsupportedEncodingException e) {
+            Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
+            return subject;
+        }
     }
 }
