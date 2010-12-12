@@ -28,7 +28,7 @@ public abstract class NoSearchLaunchShortcut extends MakeGoodLaunchShortcut {
         }
 
         IModelElement target = getTarget(editor);
-        if (target.exists() == false) {
+        if (!target.exists()) {
             Activator.getDefault().getLog().log(
                 new Status(
                     Status.WARNING,

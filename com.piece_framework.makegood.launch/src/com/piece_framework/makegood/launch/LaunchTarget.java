@@ -133,26 +133,8 @@ public class LaunchTarget {
         StringBuilder methods = new StringBuilder();
         StringBuilder resources = new StringBuilder();
         for (Object target: targets) {
-            if (target instanceof ISourceModule) {
-                try {
-                    for (IType type: ((ISourceModule) target).getAllTypes()) {
-                        int flags;
-                        try {
-                            flags = type.getFlags();
-                        } catch (ModelException e) {
-                            Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
-                            continue;
-                        }
-
-                        if (PHPFlags.isNamespace(flags)) continue;
-                        classes.append(classes.length() > 0 ? "," : ""); //$NON-NLS-1$ //$NON-NLS-2$
-                        classes.append(PHPClassType.fromIType(type).getTypeName());
-                    }
-                } catch (ModelException e) {
-                    Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
-                    continue;
-                }
-            } else if (target instanceof IType) {
+            resources.append(" \"" + getTargetResource(target).getLocation().toString() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
+            if (target instanceof IType) {
                 int flags;
                 try {
                     flags = ((IType) target).getFlags();
@@ -185,12 +167,16 @@ public class LaunchTarget {
                     ((IMethod) target).getElementName()
                 );
             }
-
-            resources.append(" \"" + getTargetResource(target).getLocation().toString() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
-        buffer.append(classes.length() > 0 ? (" --classes=\"" + classes.toString()  + "\"") : ""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        buffer.append(methods.length() > 0 ? (" -m \"" + methods.toString() + "\"") : ""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        if (classes.length() > 0) {
+            buffer.append(" --classes=\"" + classes.toString()  + "\""); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (methods.length() > 0) {
+            buffer.append(" -m \"" + methods.toString() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
         buffer.append(" -R " + resources.toString()); //$NON-NLS-1$
         Debug.println(buffer.toString());
         return buffer.toString();
