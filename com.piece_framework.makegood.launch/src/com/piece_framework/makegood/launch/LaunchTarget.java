@@ -28,6 +28,8 @@ import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.osgi.framework.debug.Debug;
+import org.eclipse.php.core.compiler.PHPFlags;
+import org.eclipse.php.internal.core.typeinference.PHPClassType;
 
 import com.piece_framework.makegood.core.MakeGoodProperty;
 import com.piece_framework.makegood.core.PHPResource;
@@ -134,41 +136,61 @@ public class LaunchTarget {
             if (target instanceof ISourceModule) {
                 try {
                     for (IType type: ((ISourceModule) target).getAllTypes()) {
-                        String targetValue = type.getElementName();
+                        int flags;
+                        try {
+                            flags = type.getFlags();
+                        } catch (ModelException e) {
+                            Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
+                            continue;
+                        }
+
+                        if (PHPFlags.isNamespace(flags)) continue;
                         classes.append(classes.length() > 0 ? "," : ""); //$NON-NLS-1$ //$NON-NLS-2$
-                        classes.append(targetValue);
+                        classes.append(PHPClassType.fromIType(type).getTypeName());
                     }
                 } catch (ModelException e) {
-                    Activator.getDefault().getLog().log(
-                        new Status(
-                            Status.WARNING,
-                            Activator.PLUGIN_ID,
-                            e.getMessage(),
-                            e
-                        )
-                    );
+                    Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
+                    continue;
                 }
-            }
-            if (target instanceof IType) {
-                String targetValue = ((IType) target).getElementName();
-                classes.append(classes.length() > 0 ? "," : ""); //$NON-NLS-1$ //$NON-NLS-2$
-                classes.append(targetValue);
-            }
-            if (target instanceof IMethod) {
-                IMethod method = (IMethod) target;
-                String targetValue = method.getParent().getElementName() + "::" + //$NON-NLS-1$
-                                     method.getElementName();
+            } else if (target instanceof IType) {
+                int flags;
+                try {
+                    flags = ((IType) target).getFlags();
+                } catch (ModelException e) {
+                    Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
+                    continue;
+                }
+
+                if (PHPFlags.isNamespace(flags)) {
+                    IType[] types;
+                    try {
+                        types = ((IType) target).getTypes();
+                    } catch (ModelException e) {
+                        Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
+                        continue;
+                    }
+                    for (IType type: types) {
+                        classes.append(classes.length() > 0 ? "," : ""); //$NON-NLS-1$ //$NON-NLS-2$
+                        classes.append(PHPClassType.fromIType(type).getTypeName());
+                    }
+                } else if (PHPFlags.isClass(flags)) {
+                    classes.append(classes.length() > 0 ? "," : ""); //$NON-NLS-1$ //$NON-NLS-2$
+                    classes.append(PHPClassType.fromIType((IType) target).getTypeName());
+                }
+            } else if (target instanceof IMethod) {
                 methods.append(methods.length() > 0 ? "," : ""); //$NON-NLS-1$ //$NON-NLS-2$
-                methods.append(targetValue);
+                methods.append(
+                    PHPClassType.fromIType(((IMethod) target).getDeclaringType()).getTypeName() +
+                    "::" + //$NON-NLS-1$
+                    ((IMethod) target).getElementName()
+                );
             }
 
             resources.append(" \"" + getTargetResource(target).getLocation().toString() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
-        buffer.append(classes.length() > 0 ?
-                      " --classes " + classes.toString() : ""); //$NON-NLS-1$ //$NON-NLS-2$
-        buffer.append(methods.length() > 0 ?
-                      " -m " + methods.toString() : ""); //$NON-NLS-1$ //$NON-NLS-2$
+        buffer.append(classes.length() > 0 ? (" --classes=\"" + classes.toString()  + "\"") : ""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        buffer.append(methods.length() > 0 ? (" -m \"" + methods.toString() + "\"") : ""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         buffer.append(" -R " + resources.toString()); //$NON-NLS-1$
         Debug.println(buffer.toString());
         return buffer.toString();
