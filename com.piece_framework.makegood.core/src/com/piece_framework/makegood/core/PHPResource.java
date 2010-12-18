@@ -91,12 +91,16 @@ public class PHPResource {
         switch (property.getTestingFramework()) {
         case PHPUnit:
             testClassSuperTypes.add("PHPUnit_Framework_TestCase"); //$NON-NLS-1$
+            break;
         case SimpleTest:
             testClassSuperTypes.add("SimpleTestCase"); //$NON-NLS-1$
+            break;
         case CakePHP:
             testClassSuperTypes.add("CakeTestCase"); //$NON-NLS-1$
             testClassSuperTypes.add("CakeWebTestCase"); //$NON-NLS-1$
+            break;
         default:
+            break;
         }
 
         return testClassSuperTypes;
