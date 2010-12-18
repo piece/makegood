@@ -25,6 +25,7 @@ import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.IType;
+import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.search.IDLTKSearchConstants;
 import org.eclipse.dltk.core.search.SearchEngine;
 import org.eclipse.dltk.core.search.SearchMatch;
@@ -32,7 +33,8 @@ import org.eclipse.dltk.core.search.SearchParticipant;
 import org.eclipse.dltk.core.search.SearchPattern;
 import org.eclipse.dltk.core.search.SearchRequestor;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.osgi.framework.debug.Debug;
+import org.eclipse.php.core.compiler.PHPFlags;
+import org.eclipse.php.internal.core.typeinference.PHPClassType;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.texteditor.ITextEditor;
 
@@ -52,13 +54,18 @@ public class RelatedTestsLaunchShortcut extends MakeGoodLaunchShortcut {
     private void launchTestsRelatedTo(final IEditorPart editor, final String mode) {
         SearchRequestor requestor = new SearchRequestor() {
             Set<IResource> tests = new HashSet<IResource>();
+            Set<IResource> searchMatches = new HashSet<IResource>();
 
             @Override
             public void acceptSearchMatch(SearchMatch match) throws CoreException {
-                IModelElement element = DLTKCore.create(match.getResource());
+                IResource resource = match.getResource();
+                if (searchMatches.contains(resource)) return;
+                searchMatches.add(resource);
+
+                IModelElement element = DLTKCore.create(resource);
                 if (!(element instanceof ISourceModule)) return;
                 if (!PHPResource.includesTests((ISourceModule) element)) return;
-                tests.add(match.getResource());
+                tests.add(resource);
             }
 
             @Override
@@ -80,7 +87,6 @@ public class RelatedTestsLaunchShortcut extends MakeGoodLaunchShortcut {
                 LaunchTarget launchTarget = LaunchTarget.getInstance();
                 launchTarget.clearTargets();
                 for (IResource test: tests) {
-                    Debug.println(test);
                     launchTarget.addTarget(test);
                 }
                 RelatedTestsLaunchShortcut.super.launch(editor, mode);
@@ -95,11 +101,19 @@ public class RelatedTestsLaunchShortcut extends MakeGoodLaunchShortcut {
 
         SearchPattern pattern = null;
         for (IType type: types) {
-            Debug.println(type.getElementName());
+            int flags;
+            try {
+                flags = type.getFlags();
+            } catch (ModelException e) {
+                Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
+                continue;
+            }
+
+            if (!PHPFlags.isClass(flags)) continue;
 
             SearchPattern patternForType =
                 SearchPattern.createPattern(
-                    type.getElementName(),
+                    PHPClassType.fromIType(type).getTypeName(),
                     IDLTKSearchConstants.TYPE,
                     IDLTKSearchConstants.REFERENCES,
                     SearchPattern.R_FULL_MATCH,
