@@ -24,11 +24,17 @@ import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.debug.core.model.ILaunchConfigurationDelegate2;
 import org.eclipse.debug.internal.core.LaunchConfiguration;
 import org.eclipse.debug.internal.core.LaunchConfigurationWorkingCopy;
 import org.eclipse.php.debug.core.debugger.parameters.IDebugParametersKeys;
 import org.eclipse.php.internal.debug.core.IPHPDebugConstants;
+import org.eclipse.php.internal.debug.core.PHPDebugPlugin;
 import org.eclipse.php.internal.debug.core.launching.PHPLaunchDelegateProxy;
+import org.eclipse.php.internal.debug.core.preferences.PHPDebugCorePreferenceNames;
+import org.eclipse.php.internal.debug.core.preferences.PHPDebuggersRegistry;
+import org.eclipse.php.internal.debug.core.preferences.PHPProjectPreferences;
+import org.eclipse.php.internal.debug.core.preferences.PHPexeItem;
 
 import com.piece_framework.makegood.stagehand_testrunner.StagehandTestRunner;
 
@@ -37,6 +43,7 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
     private final Object launchLock = new Object();
     private ILaunchConfiguration currentConfiguration;
     private boolean preLaunchCheckCalled = false;
+    private String delegateClass;
 
     @Override
     public boolean finalLaunchCheck(ILaunchConfiguration configuration, String mode, IProgressMonitor monitor) throws CoreException {
@@ -81,6 +88,7 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
             throw e;
         }
 
+        delegateClass = configuration.getAttribute(PHPDebugCorePreferenceNames.CONFIGURATION_DELEGATE_CLASS, ""); //$NON-NLS-1$
         return new MakeGoodLaunch(configuration, mode, null);
     }
 
@@ -181,6 +189,28 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
         }
     }
 
+    @Override
+    /**
+     * @since 1.2.0
+     */
+    protected ILaunchConfigurationDelegate2 getConfigurationDelegate(ILaunchConfiguration configuration) throws CoreException {
+        if (launchConfigurationDelegate == null) {
+            try {
+                if (delegateClass.length() == 0) {
+                    throw new IllegalArgumentException();
+                }
+
+                launchConfigurationDelegate = (ILaunchConfigurationDelegate2) Class
+                .forName(delegateClass).newInstance();
+            } catch (Throwable t) {
+                throw new CoreException(new Status(IStatus.ERROR,
+                        PHPDebugPlugin.ID, 0,
+                        "Launch configuration delegate loading error.", t));
+            }
+        }
+        return launchConfigurationDelegate;
+    }
+
     private ILaunchConfiguration createConfiguration(
         ILaunchConfiguration configuration) throws CoreException {
         String configurationName =
@@ -223,6 +253,7 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
 
         if (project != null && project.exists()) {
             workingCopy.setAttribute(IPHPDebugConstants.PHP_Project, project.getName());
+            rewriteBasicConfigurationAttributes(workingCopy, project);
         }
 
         return workingCopy;
@@ -236,5 +267,19 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
 
     public static String getJUnitXMLFile(ILaunch launch) throws CoreException {
         return launch.getLaunchConfiguration().getAttribute(MAKEGOOD_JUNIT_XML_FILE, (String) null);
+    }
+
+    private void rewriteBasicConfigurationAttributes(ILaunchConfigurationWorkingCopy workingCopy, IProject project) {
+        PHPexeItem phpexeItem = PHPDebugPlugin.getPHPexeItem(project);
+        if (phpexeItem == null) {
+            phpexeItem = PHPDebugPlugin.getWorkspaceDefaultExe();
+        }
+
+        workingCopy.setAttribute(PHPDebugCorePreferenceNames.PHP_DEBUGGER_ID, phpexeItem.getDebuggerID());
+        workingCopy.setAttribute(PHPDebugCorePreferenceNames.CONFIGURATION_DELEGATE_CLASS, PHPDebuggersRegistry.getDebuggerConfiguration(phpexeItem.getDebuggerID()).getScriptLaunchDelegateClass());
+        workingCopy.setAttribute(IPHPDebugConstants.ATTR_EXECUTABLE_LOCATION, phpexeItem.getExecutable().getAbsolutePath().toString());
+        workingCopy.setAttribute(IPHPDebugConstants.ATTR_INI_LOCATION, phpexeItem.getINILocation() != null ? phpexeItem.getINILocation().toString() : null);
+        workingCopy.setAttribute(IPHPDebugConstants.RUN_WITH_DEBUG_INFO, PHPDebugPlugin.getDebugInfoOption());
+        workingCopy.setAttribute(IDebugParametersKeys.FIRST_LINE_BREAKPOINT, PHPProjectPreferences.getStopAtFirstLine(project));
     }
 }
