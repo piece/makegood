@@ -25,6 +25,7 @@ import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ITypeHierarchy;
 import org.eclipse.dltk.core.ModelException;
+import org.eclipse.php.internal.core.typeinference.PHPClassType;
 
 public class PHPResource {
     public static String CONTENT_TYPE = "org.eclipse.php.core.phpsource"; //$NON-NLS-1$
@@ -43,45 +44,35 @@ public class PHPResource {
         List<String> testClassSuperTypes = getTestClassSuperType(resource);
 
         try {
-            for (IType type : source.getAllTypes()) {
+            for (IType type: source.getAllTypes()) {
+                if (!PHPFlags.isClass(type.getFlags())) continue;
                 for (String testClassSuperType: testClassSuperTypes) {
-                    if (isTestClass(type, testClassSuperType)) return true;
+                    if (hasTests(type, testClassSuperType)) {
+                        return true;
+                    }
                 }
             }
         } catch (ModelException e) {
-            MakeGoodCorePlugin.getDefault().getLog().log(
-                new Status(
-                    Status.WARNING,
-                    MakeGoodCorePlugin.PLUGIN_ID,
-                    e.getMessage(),
-                    e
-                )
-            );
+            MakeGoodCorePlugin.getDefault().getLog().log(new Status(Status.WARNING, MakeGoodCorePlugin.PLUGIN_ID, e.getMessage(), e));
         }
 
         return false;
     }
 
-    private static boolean isTestClass(IType type, String testClassSuperType) throws ModelException {
-        if (type == null) return false;
-
-        String[] superClasses = type.getSuperClasses();
-        if (superClasses != null) {
-            for (String superClass: superClasses) {
-                if (superClass.equals(testClassSuperType)) {
-                    return true;
-                }
-            }
-        }
-
-        ITypeHierarchy hierarchy = type.newTypeHierarchy(new NullProgressMonitor());
+    /**
+     * @since 1.2.0
+     */
+    public static boolean hasTests(IType type, String testClassSuperType) throws ModelException {
+        // TODO Type Hierarchy by PDT 2.1 does not work with namespaces.
+        ITypeHierarchy hierarchy = type.newSupertypeHierarchy(new NullProgressMonitor());
         if (hierarchy == null) return false;
-        for (IType superClass : hierarchy.getAllSupertypes(type)) {
-            if (isTestClass(superClass, testClassSuperType)) {
+        IType[] supertypes = hierarchy.getAllSuperclasses(type);
+        if (supertypes == null) return false;
+        for (IType supertype: supertypes) {
+            if (PHPClassType.fromIType(supertype).getTypeName().equals(testClassSuperType)) {
                 return true;
             }
         }
-
         return false;
     }
 

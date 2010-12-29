@@ -270,10 +270,7 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
     }
 
     private void rewriteBasicConfigurationAttributes(ILaunchConfigurationWorkingCopy workingCopy, IProject project) {
-        PHPexeItem phpexeItem = PHPDebugPlugin.getPHPexeItem(project);
-        if (phpexeItem == null) {
-            phpexeItem = PHPDebugPlugin.getWorkspaceDefaultExe();
-        }
+        PHPexeItem phpexeItem = PHPexeItemFactory.create(project);
 
         workingCopy.setAttribute(PHPDebugCorePreferenceNames.PHP_DEBUGGER_ID, phpexeItem.getDebuggerID());
         workingCopy.setAttribute(PHPDebugCorePreferenceNames.CONFIGURATION_DELEGATE_CLASS, PHPDebuggersRegistry.getDebuggerConfiguration(phpexeItem.getDebuggerID()).getScriptLaunchDelegateClass());

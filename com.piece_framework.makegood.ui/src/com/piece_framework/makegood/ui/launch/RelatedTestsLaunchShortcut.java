@@ -33,11 +33,11 @@ import org.eclipse.dltk.core.search.SearchParticipant;
 import org.eclipse.dltk.core.search.SearchPattern;
 import org.eclipse.dltk.core.search.SearchRequestor;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.php.core.compiler.PHPFlags;
 import org.eclipse.php.internal.core.typeinference.PHPClassType;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.texteditor.ITextEditor;
 
+import com.piece_framework.makegood.core.PHPFlags;
 import com.piece_framework.makegood.core.PHPResource;
 import com.piece_framework.makegood.launch.LaunchTarget;
 import com.piece_framework.makegood.ui.Activator;
