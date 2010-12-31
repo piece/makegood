@@ -64,14 +64,14 @@ public class RelatedTestsLaunchShortcut extends MakeGoodLaunchShortcut {
 
                 IModelElement element = DLTKCore.create(resource);
                 if (!(element instanceof ISourceModule)) return;
-                if (!PHPResource.includesTests((ISourceModule) element)) return;
+                if (!PHPResource.hasTests((ISourceModule) element)) return;
                 tests.add(resource);
             }
 
             @Override
             public void endReporting() {
                 ISourceModule source = new EditorParser(editor).getSourceModule();
-                if (source != null && PHPResource.includesTests(source)) {
+                if (source != null && PHPResource.hasTests(source)) {
                     tests.add(source.getResource());
                 }
 

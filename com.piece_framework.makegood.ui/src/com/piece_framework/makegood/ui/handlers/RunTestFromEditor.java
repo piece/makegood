@@ -43,7 +43,7 @@ public class RunTestFromEditor extends AbstractHandler {
         if (page == null) return false;
         IEditorPart editor = page.getActiveEditor();
         if (editor == null) return false;
-        if (!PHPResource.includesTests(new EditorParser(editor).getSourceModule())) return false;
+        if (!PHPResource.hasTests(new EditorParser(editor).getSourceModule())) return false;
 
         return super.isEnabled();
     }
