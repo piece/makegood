@@ -38,6 +38,43 @@ public class PHPexeItemFactoryAspect extends Aspect {
         WEAVINGCLASS_PHPEXEITEMFACTORY
     };
 
+    /**
+     * @see org.eclipse.php.internal.debug.ui.launching.PHPExeLaunchShortcut#getDefaultPHPExe(IProject project)
+     */
+    private static final String PHPEXEITEMFACTORY_METHOD_CREATE_HELIOS =
+"{" + //$NON-NLS-1$
+"    org.eclipse.core.resources.IProject project = $1;" + //$NON-NLS-1$
+"    org.eclipse.php.internal.debug.core.preferences.PHPexeItem phpexeItem = org.eclipse.php.internal.debug.core.PHPDebugPlugin.getPHPexeItem(project);" + //$NON-NLS-1$
+"    if (phpexeItem == null) {" + //$NON-NLS-1$
+"        return org.eclipse.php.internal.debug.core.PHPDebugPlugin.getWorkspaceDefaultExe();" + //$NON-NLS-1$
+"    }" + //$NON-NLS-1$
+"    return phpexeItem;" + //$NON-NLS-1$
+"}"; //$NON-NLS-1$
+
+    /**
+     * @see org.eclipse.php.internal.debug.ui.launching.PHPExeLaunchShortcut#getDefaultPHPExe(IProject project)
+     * @see org.eclipse.php.internal.debug.ui.launching.PHPExeLaunchShortcut#createPreferenceScopes(IProject project)
+     */
+    private static final String PHPEXEITEMFACTORY_METHOD_CREATE_GALILEO =
+"{" + //$NON-NLS-1$
+"    org.eclipse.core.resources.IProject project = $1;" + //$NON-NLS-1$
+"    String phpDebuggerId = org.eclipse.php.internal.debug.core.PHPDebugPlugin.getCurrentDebuggerId();" + //$NON-NLS-1$
+"    org.eclipse.php.internal.debug.core.preferences.PHPexeItem defaultItem = org.eclipse.php.internal.debug.core.preferences.PHPexes.getInstance().getDefaultItem(phpDebuggerId);" + //$NON-NLS-1$
+"    if (defaultItem == null) return null;" + //$NON-NLS-1$
+"    String phpExe = defaultItem.getName();" + //$NON-NLS-1$
+"    if (project != null) {" + //$NON-NLS-1$
+"        org.eclipse.core.runtime.preferences.IScopeContext[] preferenceScopes = new org.eclipse.core.runtime.preferences.IScopeContext[] { new org.eclipse.core.resources.ProjectScope(project), new org.eclipse.core.runtime.preferences.InstanceScope(), new org.eclipse.core.runtime.preferences.DefaultScope() };" + //$NON-NLS-1$
+"        if (preferenceScopes[0] instanceof org.eclipse.core.resources.ProjectScope) {" + //$NON-NLS-1$
+"            org.eclipse.core.runtime.preferences.IEclipsePreferences node = preferenceScopes[0].getNode(org.eclipse.php.internal.debug.core.preferences.PHPProjectPreferences.getPreferenceNodeQualifier());" + //$NON-NLS-1$
+"            if (node != null) {" + //$NON-NLS-1$
+"                phpDebuggerId = node.get(org.eclipse.php.internal.debug.core.preferences.PHPDebugCorePreferenceNames.PHP_DEBUGGER_ID, phpDebuggerId);" + //$NON-NLS-1$
+"                phpExe = node.get(org.eclipse.php.internal.debug.core.preferences.PHPDebugCorePreferenceNames.DEFAULT_PHP, phpExe);" + //$NON-NLS-1$
+"            }" + //$NON-NLS-1$
+"        }" + //$NON-NLS-1$
+"    }" + //$NON-NLS-1$
+"    return org.eclipse.php.internal.debug.core.preferences.PHPexes.getInstance().getItem(phpDebuggerId, phpExe);" + //$NON-NLS-1$
+"}"; //$NON-NLS-1$
+
     @Override
     protected void doWeave() throws NotFoundException, CannotCompileException {
         Bundle bundle = Platform.getBundle("org.eclipse.php.core"); //$NON-NLS-1$
@@ -51,8 +88,8 @@ public class PHPexeItemFactoryAspect extends Aspect {
         CtMethod weavingMethod = weavingClass.getDeclaredMethod("create"); //$NON-NLS-1$
         weavingMethod.setBody(
             bundle.getVersion().compareTo(Version.parseVersion("2.2.0")) >= 0 ? //$NON-NLS-1$
-                "return com.piece_framework.makegood.aspect.com.piece_framework.makegood.launch.aspect.HeliosPHPexeItemFactory.create($$);" : //$NON-NLS-1$
-                "return com.piece_framework.makegood.aspect.com.piece_framework.makegood.launch.aspect.GalileoPHPexeItemFactory.create($$);" //$NON-NLS-1$
+                PHPEXEITEMFACTORY_METHOD_CREATE_HELIOS :
+                PHPEXEITEMFACTORY_METHOD_CREATE_GALILEO
         );
         markJoinPointAsPassed(JOINPOINT_CREATE_SETBODY);
         markClassAsWoven(weavingClass);
