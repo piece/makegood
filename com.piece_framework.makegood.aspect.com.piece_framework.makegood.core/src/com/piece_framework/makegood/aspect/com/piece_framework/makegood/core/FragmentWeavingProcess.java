@@ -25,8 +25,7 @@ public class FragmentWeavingProcess extends WeavingProcess implements IStartup {
         new PHPFlagsAspect()
     };
     private static final String[] DEPENDENCIES = {
-        "com.piece_framework.makegood.core", //$NON-NLS-1$
-        Fragment.ID
+        "com.piece_framework.makegood.core" //$NON-NLS-1$
     };
 
     @Override

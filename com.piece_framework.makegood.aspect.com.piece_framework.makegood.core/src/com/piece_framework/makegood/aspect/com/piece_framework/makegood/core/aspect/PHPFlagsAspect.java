@@ -54,16 +54,16 @@ public class PHPFlagsAspect extends Aspect {
         CtMethod weavingMethod1 = weavingClass.getDeclaredMethod("isClass"); //$NON-NLS-1$
         weavingMethod1.setBody(
             bundle.getVersion().compareTo(Version.parseVersion("2.2.0")) >= 0 ? //$NON-NLS-1$
-                "return com.piece_framework.makegood.aspect.com.piece_framework.makegood.core.aspect.HeliosPHPFlags.isClass($$);" : //$NON-NLS-1$
-                "return com.piece_framework.makegood.aspect.com.piece_framework.makegood.core.aspect.GalileoPHPFlags.isClass($$);" //$NON-NLS-1$
+                "return org.eclipse.php.core.compiler.PHPFlags.isClass($$);" : //$NON-NLS-1$
+                "return org.eclipse.php.internal.core.compiler.PHPFlags.isClass($$);" //$NON-NLS-1$
         );
         markJoinPointAsPassed(JOINPOINT_ISCLASS_SETBODY);
 
         CtMethod weavingMethod2 = weavingClass.getDeclaredMethod("isNamespace"); //$NON-NLS-1$
         weavingMethod2.setBody(
             bundle.getVersion().compareTo(Version.parseVersion("2.2.0")) >= 0 ? //$NON-NLS-1$
-                "return com.piece_framework.makegood.aspect.com.piece_framework.makegood.core.aspect.HeliosPHPFlags.isNamespace($$);" : //$NON-NLS-1$
-                "return com.piece_framework.makegood.aspect.com.piece_framework.makegood.core.aspect.GalileoPHPFlags.isNamespace($$);" //$NON-NLS-1$
+                "return org.eclipse.php.core.compiler.PHPFlags.isNamespace($$);" : //$NON-NLS-1$
+                "return org.eclipse.php.internal.core.compiler.PHPFlags.isNamespace($$);" //$NON-NLS-1$
         );
         markJoinPointAsPassed(JOINPOINT_ISNAMESPACE_SETBODY);
 
