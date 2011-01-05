@@ -108,4 +108,20 @@
          fragment="true"
          unpack="false"/>
 
+   <plugin
+         id="com.piece_framework.makegood.aspect.com.piece_framework.makegood.core"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="com.piece_framework.makegood.aspect.com.piece_framework.makegood.launch"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"
+         unpack="false"/>
+
 </feature>
