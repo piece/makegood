@@ -41,7 +41,7 @@ public class SystemIncludePathAspect extends Aspect {
         CtClass weavingClass = ClassPool.getDefault().get(WEAVINGCLASS_PHPSEARCHENGINE);
         weavingClass.getDeclaredMethod(
             PDTVersion.getInstance().compareTo("2.2.0") >= 0 ? "internalFind" : "find" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        ).instrument( //$NON-NLS-1$
+        ).instrument(
             new ExprEditor() {
                 @Override
                 public void edit(Cast cast) throws CannotCompileException {
