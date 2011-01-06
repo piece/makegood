@@ -24,11 +24,8 @@ import javassist.expr.ExprEditor;
 import javassist.expr.Instanceof;
 import javassist.expr.MethodCall;
 
-import org.eclipse.core.runtime.Platform;
-import org.osgi.framework.Bundle;
-import org.osgi.framework.Version;
-
 import com.piece_framework.makegood.javassist.Aspect;
+import com.piece_framework.makegood.javassist.PDTVersion;
 
 public class SystemIncludePathAspect extends Aspect {
     private static final String JOINPOINT_CAST_ICONTAINER =
@@ -136,8 +133,7 @@ public class SystemIncludePathAspect extends Aspect {
 
     @Override
     protected String[] joinPoints() {
-        Bundle bundle = Platform.getBundle("org.eclipse.php.debug.core"); //$NON-NLS-1$
-        if (bundle.getVersion().compareTo(Version.parseVersion("2.2.0.v20100826")) < 0) {
+        if (PDTVersion.getInstance().compareTo("2.2.0.v20100826") < 0) { //$NON-NLS-1$
             List<String> joinPoints = new ArrayList<String>();
             for (String joinPoint: JOINPOINTS) {
                 if (!joinPoint.equals(JOINPOINT_INSTANCEOF_ICONTAINER)) joinPoints.add(joinPoint);

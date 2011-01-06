@@ -17,12 +17,8 @@ import javassist.CtClass;
 import javassist.CtMethod;
 import javassist.NotFoundException;
 
-import org.eclipse.core.runtime.Assert;
-import org.eclipse.core.runtime.Platform;
-import org.osgi.framework.Bundle;
-import org.osgi.framework.Version;
-
 import com.piece_framework.makegood.javassist.Aspect;
+import com.piece_framework.makegood.javassist.PDTVersion;
 
 /**
  * @since 1.2.0
@@ -42,18 +38,11 @@ public class PHPFlagsAspect extends Aspect {
 
     @Override
     protected void doWeave() throws NotFoundException, CannotCompileException {
-        Bundle bundle = Platform.getBundle("org.eclipse.php.core"); //$NON-NLS-1$
-        Assert.isNotNull(bundle, "No bundle is found for org.eclipse.php.core."); //$NON-NLS-1$
-        Assert.isTrue(
-            bundle.getVersion().compareTo(Version.parseVersion("2.1.0")) >= 0, //$NON-NLS-1$
-            "The version of the bundle org.eclipse.php.core must be greater than or equal to 2.1.0." //$NON-NLS-1$
-        );
-
         CtClass weavingClass = ClassPool.getDefault().get(WEAVINGCLASS_PHPFLAGS);
 
         CtMethod weavingMethod1 = weavingClass.getDeclaredMethod("isClass"); //$NON-NLS-1$
         weavingMethod1.setBody(
-            bundle.getVersion().compareTo(Version.parseVersion("2.2.0")) >= 0 ? //$NON-NLS-1$
+            PDTVersion.getInstance().compareTo("2.2.0") >= 0 ? //$NON-NLS-1$
                 "return org.eclipse.php.core.compiler.PHPFlags.isClass($$);" : //$NON-NLS-1$
                 "return org.eclipse.php.internal.core.compiler.PHPFlags.isClass($$);" //$NON-NLS-1$
         );
@@ -61,7 +50,7 @@ public class PHPFlagsAspect extends Aspect {
 
         CtMethod weavingMethod2 = weavingClass.getDeclaredMethod("isNamespace"); //$NON-NLS-1$
         weavingMethod2.setBody(
-            bundle.getVersion().compareTo(Version.parseVersion("2.2.0")) >= 0 ? //$NON-NLS-1$
+            PDTVersion.getInstance().compareTo("2.2.0") >= 0 ? //$NON-NLS-1$
                 "return org.eclipse.php.core.compiler.PHPFlags.isNamespace($$);" : //$NON-NLS-1$
                 "return org.eclipse.php.internal.core.compiler.PHPFlags.isNamespace($$);" //$NON-NLS-1$
         );

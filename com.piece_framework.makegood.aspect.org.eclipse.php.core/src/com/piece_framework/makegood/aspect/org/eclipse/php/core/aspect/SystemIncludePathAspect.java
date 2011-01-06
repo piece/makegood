@@ -20,12 +20,8 @@ import javassist.expr.Cast;
 import javassist.expr.ExprEditor;
 import javassist.expr.MethodCall;
 
-import org.eclipse.core.runtime.Assert;
-import org.eclipse.core.runtime.Platform;
-import org.osgi.framework.Bundle;
-import org.osgi.framework.Version;
-
 import com.piece_framework.makegood.javassist.Aspect;
+import com.piece_framework.makegood.javassist.PDTVersion;
 
 public class SystemIncludePathAspect extends Aspect {
     private static final String JOINPOINT_CAST_ICONTAINER = "PHPSearchEngine#find [cast IContainer]"; //$NON-NLS-1$
@@ -42,16 +38,9 @@ public class SystemIncludePathAspect extends Aspect {
 
     @Override
     protected void doWeave() throws NotFoundException, CannotCompileException {
-        Bundle bundle = Platform.getBundle("org.eclipse.php.core"); //$NON-NLS-1$
-        Assert.isNotNull(bundle, "No bundle is found for org.eclipse.php.core."); //$NON-NLS-1$
-        Assert.isTrue(
-            bundle.getVersion().compareTo(Version.parseVersion("2.1.0")) >= 0,
-            "The version of the bundle org.eclipse.php.core must be greater than or equal to 2.1.0." //$NON-NLS-1$
-        );
-
         CtClass weavingClass = ClassPool.getDefault().get(WEAVINGCLASS_PHPSEARCHENGINE);
         weavingClass.getDeclaredMethod(
-            bundle.getVersion().compareTo(Version.parseVersion("2.2.0")) >= 0 ? "internalFind" : "find" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            PDTVersion.getInstance().compareTo("2.2.0") >= 0 ? "internalFind" : "find" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         ).instrument( //$NON-NLS-1$
             new ExprEditor() {
                 @Override

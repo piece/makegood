@@ -11,11 +11,6 @@
 
 package com.piece_framework.makegood.aspect.org.eclipse.php.core.aspect;
 
-import org.eclipse.core.runtime.Assert;
-import org.eclipse.core.runtime.Platform;
-import org.osgi.framework.Bundle;
-import org.osgi.framework.Version;
-
 import javassist.CannotCompileException;
 import javassist.ClassPool;
 import javassist.CtClass;
@@ -26,6 +21,7 @@ import javassist.expr.ExprEditor;
 import javassist.expr.FieldAccess;
 
 import com.piece_framework.makegood.javassist.Aspect;
+import com.piece_framework.makegood.javassist.PDTVersion;
 
 /**
  * @since 1.2.0
@@ -94,14 +90,7 @@ public class MultibyteCharactersAspect extends Aspect {
 
     public MultibyteCharactersAspect() {
         super();
-        Bundle bundle = Platform.getBundle("org.eclipse.php.core"); //$NON-NLS-1$
-        Assert.isNotNull(bundle, "No bundle is found for org.eclipse.php.core."); //$NON-NLS-1$
-        Assert.isTrue(
-            bundle.getVersion().compareTo(Version.parseVersion("2.1.0")) >= 0,
-            "The version of the bundle org.eclipse.php.core must be greater than or equal to 2.1.0." //$NON-NLS-1$
-        );
-
-        if (bundle.getVersion().compareTo(Version.parseVersion("2.2.0")) >= 0) {
+        if (PDTVersion.getInstance().compareTo("2.2.0") >= 0) {
             shouldWeave = true;
         }
     }

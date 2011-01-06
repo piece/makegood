@@ -20,12 +20,8 @@ import javassist.NotFoundException;
 import javassist.expr.ExprEditor;
 import javassist.expr.NewExpr;
 
-import org.eclipse.core.runtime.Assert;
-import org.eclipse.core.runtime.Platform;
-import org.osgi.framework.Bundle;
-import org.osgi.framework.Version;
-
 import com.piece_framework.makegood.javassist.Aspect;
+import com.piece_framework.makegood.javassist.PDTVersion;
 
 public class SystemIncludePathAspect extends Aspect {
     private static final String JOINPOINT_GETCPLISTELEMENTTEXT_INSERTBEFORE =
@@ -53,15 +49,8 @@ public class SystemIncludePathAspect extends Aspect {
 
     @Override
     protected void doWeave() throws NotFoundException, CannotCompileException {
-        Bundle bundle = Platform.getBundle("org.eclipse.php.ui"); //$NON-NLS-1$
-        Assert.isNotNull(bundle, "No bundle is found for org.eclipse.php.ui."); //$NON-NLS-1$
-        Assert.isTrue(
-            bundle.getVersion().compareTo(Version.parseVersion("2.1.0")) >= 0,
-            "The version of the bundle org.eclipse.php.ui must be greater than or equal to 2.1.0." //$NON-NLS-1$
-        );
-
         CtClass weavingClass1 = ClassPool.getDefault().get(WEAVINGCLASS_PHPIPLISTLABELPROVIDER);
-        if (bundle.getVersion().compareTo(Version.parseVersion("2.2.0")) >= 0) { //$NON-NLS-1$
+        if (PDTVersion.getInstance().compareTo("2.2.0") >= 0) { //$NON-NLS-1$
             editGetCPListElementTextMethod(weavingClass1);
         } else {
             addGetCPListElementTextMethod(weavingClass1);

@@ -18,13 +18,9 @@ import javassist.NotFoundException;
 import javassist.expr.ExprEditor;
 import javassist.expr.NewExpr;
 
-import org.eclipse.core.runtime.Assert;
-import org.eclipse.core.runtime.Platform;
-import org.osgi.framework.Bundle;
-import org.osgi.framework.Version;
-
 import com.piece_framework.makegood.aspect.org.eclipse.php.debug.core.Fragment;
 import com.piece_framework.makegood.javassist.Aspect;
+import com.piece_framework.makegood.javassist.PDTVersion;
 
 public class XdebugConsoleFixAspect extends Aspect {
     private static final String JOINPOINT_NEW_PROCESSCRASHDETECTOR =
@@ -46,15 +42,8 @@ public class XdebugConsoleFixAspect extends Aspect {
                 @Override
                 public void edit(NewExpr newExpr) throws CannotCompileException {
                     if (newExpr.getClassName().equals("org.eclipse.php.internal.debug.core.zend.debugger.ProcessCrashDetector")) { //$NON-NLS-1$
-                        Bundle bundle = Platform.getBundle("org.eclipse.php.debug.core"); //$NON-NLS-1$
-                        Assert.isNotNull(bundle, "No bundle is found for org.eclipse.php.debug.core."); //$NON-NLS-1$
-                        Assert.isTrue(
-                            bundle.getVersion().compareTo(Version.parseVersion("2.1.0")) >= 0,
-                            "The version of the bundle org.eclipse.php.debug.core must be greater than or equal to 2.1.0." //$NON-NLS-1$
-                        );
-
                         String className;
-                        if (bundle.getVersion().compareTo(Version.parseVersion("2.2.0")) >= 0) { //$NON-NLS-1$
+                        if (PDTVersion.getInstance().compareTo("2.2.0") >= 0) { //$NON-NLS-1$
                             className = Fragment.ID + ".aspect.HeliosProcessCrashDetector"; //$NON-NLS-1$
                         } else {
                             className = Fragment.ID + ".aspect.GalileoProcessCrashDetector"; //$NON-NLS-1$

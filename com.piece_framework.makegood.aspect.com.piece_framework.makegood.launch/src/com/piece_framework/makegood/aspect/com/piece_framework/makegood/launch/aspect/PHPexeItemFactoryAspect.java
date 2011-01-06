@@ -17,12 +17,10 @@ import javassist.CtClass;
 import javassist.CtMethod;
 import javassist.NotFoundException;
 
-import org.eclipse.core.runtime.Assert;
-import org.eclipse.core.runtime.Platform;
-import org.osgi.framework.Bundle;
-import org.osgi.framework.Version;
+import org.eclipse.core.resources.IProject;
 
 import com.piece_framework.makegood.javassist.Aspect;
+import com.piece_framework.makegood.javassist.PDTVersion;
 
 /**
  * @since 1.2.0
@@ -74,17 +72,10 @@ public class PHPexeItemFactoryAspect extends Aspect {
 
     @Override
     protected void doWeave() throws NotFoundException, CannotCompileException {
-        Bundle bundle = Platform.getBundle("org.eclipse.php.core"); //$NON-NLS-1$
-        Assert.isNotNull(bundle, "No bundle is found for org.eclipse.php.core."); //$NON-NLS-1$
-        Assert.isTrue(
-            bundle.getVersion().compareTo(Version.parseVersion("2.1.0")) >= 0, //$NON-NLS-1$
-            "The version of the bundle org.eclipse.php.core must be greater than or equal to 2.1.0." //$NON-NLS-1$
-        );
-
         CtClass weavingClass = ClassPool.getDefault().get(WEAVINGCLASS_PHPEXEITEMFACTORY);
         CtMethod weavingMethod = weavingClass.getDeclaredMethod("create"); //$NON-NLS-1$
         weavingMethod.setBody(
-            bundle.getVersion().compareTo(Version.parseVersion("2.2.0")) >= 0 ? //$NON-NLS-1$
+            PDTVersion.getInstance().compareTo("2.2.0") >= 0 ? //$NON-NLS-1$
                 PHPEXEITEMFACTORY_METHOD_CREATE_HELIOS :
                 PHPEXEITEMFACTORY_METHOD_CREATE_GALILEO
         );
