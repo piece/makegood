@@ -63,13 +63,10 @@ public class PHPexeItemFactoryAspect extends Aspect {
 "    if (defaultItem == null) return null;" + //$NON-NLS-1$
 "    String phpExe = defaultItem.getName();" + //$NON-NLS-1$
 "    if (project != null) {" + //$NON-NLS-1$
-"        org.eclipse.core.runtime.preferences.IScopeContext[] preferenceScopes = new org.eclipse.core.runtime.preferences.IScopeContext[] { new org.eclipse.core.resources.ProjectScope(project), new org.eclipse.core.runtime.preferences.InstanceScope(), new org.eclipse.core.runtime.preferences.DefaultScope() };" + //$NON-NLS-1$
-"        if (preferenceScopes[0] instanceof org.eclipse.core.resources.ProjectScope) {" + //$NON-NLS-1$
-"            org.eclipse.core.runtime.preferences.IEclipsePreferences node = preferenceScopes[0].getNode(org.eclipse.php.internal.debug.core.preferences.PHPProjectPreferences.getPreferenceNodeQualifier());" + //$NON-NLS-1$
-"            if (node != null) {" + //$NON-NLS-1$
-"                phpDebuggerId = node.get(org.eclipse.php.internal.debug.core.preferences.PHPDebugCorePreferenceNames.PHP_DEBUGGER_ID, phpDebuggerId);" + //$NON-NLS-1$
-"                phpExe = node.get(org.eclipse.php.internal.debug.core.preferences.PHPDebugCorePreferenceNames.DEFAULT_PHP, phpExe);" + //$NON-NLS-1$
-"            }" + //$NON-NLS-1$
+"        org.eclipse.core.runtime.preferences.IEclipsePreferences node = org.eclipse.php.internal.debug.core.preferences.PHPProjectPreferences.getProjectScope(project).getNode(org.eclipse.php.internal.debug.core.preferences.PHPProjectPreferences.getPreferenceNodeQualifier());" + //$NON-NLS-1$
+"        if (node != null) {" + //$NON-NLS-1$
+"            phpDebuggerId = node.get(org.eclipse.php.internal.debug.core.preferences.PHPDebugCorePreferenceNames.PHP_DEBUGGER_ID, phpDebuggerId);" + //$NON-NLS-1$
+"            phpExe = node.get(org.eclipse.php.internal.debug.core.preferences.PHPDebugCorePreferenceNames.DEFAULT_PHP, phpExe);" + //$NON-NLS-1$
 "        }" + //$NON-NLS-1$
 "    }" + //$NON-NLS-1$
 "    return org.eclipse.php.internal.debug.core.preferences.PHPexes.getInstance().getItem(phpDebuggerId, phpExe);" + //$NON-NLS-1$
