@@ -58,6 +58,7 @@ public class FragmentWeavingProcess extends WeavingProcess implements IStartup {
                    new String[] {} :
                    new String[] {
                        "com.piece_framework.makegood.launch", //$NON-NLS-1$
+                       "org.eclipse.core.resources", //$NON-NLS-1$
                        "org.eclipse.php.debug.core", //$NON-NLS-1$
                        "org.eclipse.equinox.preferences" //$NON-NLS-1$
                    };
