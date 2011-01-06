@@ -90,7 +90,7 @@ public class MultibyteCharactersAspect extends Aspect {
 
     public MultibyteCharactersAspect() {
         super();
-        if (PDTVersion.getInstance().compareTo("2.2.0") >= 0) {
+        if (PDTVersion.getInstance().compareTo("2.2.0") >= 0) { //$NON-NLS-1$
             shouldWeave = true;
         }
     }
