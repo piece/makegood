@@ -15,6 +15,7 @@ package com.piece_framework.makegood.ui.handlers;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -27,6 +28,8 @@ import com.piece_framework.makegood.ui.launch.EditorParser;
 import com.piece_framework.makegood.ui.launch.TestRunner;
 
 public class RunTestFromEditor extends AbstractHandler {
+    private LastCheckedSource lastCheckedSource;
+
     @Override
     public Object execute(ExecutionEvent event) throws ExecutionException {
         TestRunner.runTestsInContext(HandlerUtil.getActiveEditor(event));
@@ -43,8 +46,42 @@ public class RunTestFromEditor extends AbstractHandler {
         if (page == null) return false;
         IEditorPart editor = page.getActiveEditor();
         if (editor == null) return false;
-        if (!PHPResource.hasTests(new EditorParser(editor).getSourceModule())) return false;
+
+        ISourceModule sourceModule = new EditorParser(editor).getSourceModule();
+        if (sourceModule == null) {
+            lastCheckedSource = null;
+            return false;
+        }
+
+        if (lastCheckedSource == null || !lastCheckedSource.equals(sourceModule)) {
+            lastCheckedSource = new LastCheckedSource(sourceModule, PHPResource.hasTests(sourceModule));
+        }
+
+        if (!lastCheckedSource.hasTests()) {
+            return false;
+        }
 
         return super.isEnabled();
+    }
+
+    /**
+     * @since 1.2.0
+     */
+    private class LastCheckedSource {
+        private ISourceModule sourceModule;
+        private boolean hasTests;
+
+        public LastCheckedSource(ISourceModule sourceModule, boolean hasTests) {
+            this.sourceModule = sourceModule;
+            this.hasTests = hasTests;
+        }
+
+        public boolean equals(ISourceModule sourceModule) {
+            return this.sourceModule.equals(sourceModule);
+        }
+
+        public boolean hasTests() {
+            return hasTests;
+        }
     }
 }
