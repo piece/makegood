@@ -12,9 +12,6 @@
 
 package com.piece_framework.makegood.aspect.org.eclipse.php.debug.core.aspect;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javassist.CannotCompileException;
 import javassist.ClassPool;
 import javassist.CtClass;
@@ -23,7 +20,6 @@ import javassist.expr.ExprEditor;
 import javassist.expr.MethodCall;
 
 import com.piece_framework.makegood.javassist.Aspect;
-import com.piece_framework.makegood.javassist.PDTVersion;
 
 /**
  * @see <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=298606">Bug 298606 - Can't use the arguments with spaces.</a>
@@ -36,17 +32,12 @@ public class CommandLineArgumentsFixAspect extends Aspect {
     };
     private static final String WEAVINGCLASS_PHPLAUNCHUTILITIES =
         "org.eclipse.php.internal.debug.core.launching.PHPLaunchUtilities"; //$NON-NLS-1$
-    private List<String> weavingClasses = new ArrayList<String>();
+    private static final String[] WEAVINGCLASSES = {
+        WEAVINGCLASS_PHPLAUNCHUTILITIES
+    };
 
     @Override
     protected void doWeave() throws NotFoundException, CannotCompileException {
-        if (PDTVersion.getInstance().compareTo("2.2.0") >= 0) { //$NON-NLS-1$
-            markJoinPointAsPassed(JOINPOINT_CALL_SPLIT);
-            return;
-        } else {
-            weavingClasses.add(WEAVINGCLASS_PHPLAUNCHUTILITIES);
-        }
-
         CtClass weavingClass = ClassPool.getDefault().get(WEAVINGCLASS_PHPLAUNCHUTILITIES);
         weavingClass.getDeclaredMethod("getProgramArguments").instrument( //$NON-NLS-1$
             new ExprEditor() {
@@ -72,6 +63,6 @@ public class CommandLineArgumentsFixAspect extends Aspect {
 
     @Override
     protected String[] weavingClasses() {
-        return weavingClasses.toArray(new String[ weavingClasses.size() ]);
+        return WEAVINGCLASSES;
     }
 }

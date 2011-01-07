@@ -12,9 +12,6 @@
 
 package com.piece_framework.makegood.aspect.org.eclipse.php.debug.core.aspect;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javassist.CannotCompileException;
 import javassist.ClassPool;
 import javassist.CtClass;
@@ -36,12 +33,6 @@ public class SystemIncludePathAspect extends Aspect {
         "PHPINIUtil#createPhpIniByProject() [call getLocation()]"; //$NON-NLS-1$
     private static final String JOINPOINT_CALL_MODIFYINCLUDEPATH =
         "PHPINIUtil#createPhpIniByProject() [call modifyIncludePath()]"; //$NON-NLS-1$
-    private static final String[] JOINPOINTS = {
-        JOINPOINT_CAST_ICONTAINER,
-        JOINPOINT_INSTANCEOF_ICONTAINER,
-        JOINPOINT_CALL_GETLOCATION,
-        JOINPOINT_CALL_MODIFYINCLUDEPATH
-    };
     private static final String WEAVINGCLASS_PHPINIUTIL =
         "org.eclipse.php.internal.debug.core.phpIni.PHPINIUtil"; //$NON-NLS-1$
     private static final String[] WEAVINGCLASSES = {
@@ -133,14 +124,18 @@ public class SystemIncludePathAspect extends Aspect {
 
     @Override
     protected String[] joinPoints() {
-        if (PDTVersion.getInstance().compareTo("2.2.0.v20100826") < 0) { //$NON-NLS-1$
-            List<String> joinPoints = new ArrayList<String>();
-            for (String joinPoint: JOINPOINTS) {
-                if (!joinPoint.equals(JOINPOINT_INSTANCEOF_ICONTAINER)) joinPoints.add(joinPoint);
-            }
-            return joinPoints.toArray(new String[JOINPOINTS.length - 1]);
-        }
-        return JOINPOINTS;
+        return PDTVersion.getInstance().compareTo("2.2.0.v20100826") < 0 ? //$NON-NLS-1$
+            new String[] {
+                JOINPOINT_CAST_ICONTAINER,
+                JOINPOINT_CALL_GETLOCATION,
+                JOINPOINT_CALL_MODIFYINCLUDEPATH
+            } :
+            new String[] {
+                JOINPOINT_CAST_ICONTAINER,
+                JOINPOINT_INSTANCEOF_ICONTAINER,
+                JOINPOINT_CALL_GETLOCATION,
+                JOINPOINT_CALL_MODIFYINCLUDEPATH
+            };
     }
 
     @Override

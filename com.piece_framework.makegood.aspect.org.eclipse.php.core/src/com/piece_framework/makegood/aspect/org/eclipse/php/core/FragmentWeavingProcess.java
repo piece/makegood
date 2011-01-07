@@ -16,18 +16,15 @@ import org.eclipse.ui.IStartup;
 import com.piece_framework.makegood.aspect.org.eclipse.php.core.aspect.MultibyteCharactersAspect;
 import com.piece_framework.makegood.aspect.org.eclipse.php.core.aspect.SystemIncludePathAspect;
 import com.piece_framework.makegood.javassist.Aspect;
+import com.piece_framework.makegood.javassist.PDTVersion;
 import com.piece_framework.makegood.javassist.WeavingProcess;
 
 public class FragmentWeavingProcess extends WeavingProcess implements IStartup {
-    private static final Aspect[] ASPECTS = {
-        new SystemIncludePathAspect(),
-        new MultibyteCharactersAspect()
-    };
+    private static final Object processLock = new Object();
     private static final String[] DEPENDENCIES = {
         "org.eclipse.php.core", //$NON-NLS-1$
         "org.eclipse.core.resources" //$NON-NLS-1$
     };
-    private static final Object processLock = new Object();
 
     @Override
     public void earlyStartup() {
@@ -50,7 +47,14 @@ public class FragmentWeavingProcess extends WeavingProcess implements IStartup {
 
     @Override
     protected Aspect[] aspects() {
-        return ASPECTS;
+        return PDTVersion.getInstance().compareTo("2.2.0") >= 0 ? //$NON-NLS-1$
+                    new Aspect[] {
+                        new SystemIncludePathAspect(),
+                        new MultibyteCharactersAspect()
+                    } :
+                    new Aspect[] {
+                        new SystemIncludePathAspect()
+                    };
     }
 
     @Override

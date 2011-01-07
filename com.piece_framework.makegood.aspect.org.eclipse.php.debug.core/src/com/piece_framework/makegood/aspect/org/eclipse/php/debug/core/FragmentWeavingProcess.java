@@ -19,24 +19,16 @@ import com.piece_framework.makegood.aspect.org.eclipse.php.debug.core.aspect.Sys
 import com.piece_framework.makegood.aspect.org.eclipse.php.debug.core.aspect.XdebugConsoleFixAspect;
 import com.piece_framework.makegood.aspect.org.eclipse.php.debug.core.aspect.XdebugLaunchAspect;
 import com.piece_framework.makegood.javassist.Aspect;
+import com.piece_framework.makegood.javassist.PDTVersion;
 import com.piece_framework.makegood.javassist.WeavingProcess;
 
 public class FragmentWeavingProcess extends WeavingProcess implements IStartup {
     private static final String PLUGIN_ID = "com.piece_framework.makegood.aspect.org.eclipse.php.debug.core"; //$NON-NLS-1$
-    private static final Aspect[] ASPECTS = {
-        new XdebugLaunchAspect(),
-        new XdebugConsoleFixAspect(),
-        new SystemIncludePathAspect(),
-        new CommandLineArgumentsFixAspect(),
-        new LaunchWithMissingUserLibrariesFixAspect()
-    };
     private static final String[] DEPENDENCIES = {
-        "com.piece_framework.makegood.launch", //$NON-NLS-1$
         Fragment.ID,
-        "org.eclipse.debug.core", //$NON-NLS-1$
-        "org.eclipse.php.debug.core", //$NON-NLS-1$
+        "org.eclipse.dltk.core", //$NON-NLS-1$
         "org.eclipse.equinox.common", //$NON-NLS-1$
-        "org.eclipse.dltk.core" //$NON-NLS-1$
+        "org.eclipse.debug.core" //$NON-NLS-1$
     };
 
     @Override
@@ -52,7 +44,20 @@ public class FragmentWeavingProcess extends WeavingProcess implements IStartup {
 
     @Override
     protected Aspect[] aspects() {
-        return ASPECTS;
+        return PDTVersion.getInstance().compareTo("2.2.0") >= 0 ? //$NON-NLS-1$
+                    new Aspect[] {
+                        new XdebugLaunchAspect(),
+                        new XdebugConsoleFixAspect(),
+                        new SystemIncludePathAspect(),
+                        new LaunchWithMissingUserLibrariesFixAspect()
+                    } :
+                    new Aspect[] {
+                        new XdebugLaunchAspect(),
+                        new XdebugConsoleFixAspect(),
+                        new SystemIncludePathAspect(),
+                        new CommandLineArgumentsFixAspect(),
+                        new LaunchWithMissingUserLibrariesFixAspect()
+                    };
     }
 
     @Override

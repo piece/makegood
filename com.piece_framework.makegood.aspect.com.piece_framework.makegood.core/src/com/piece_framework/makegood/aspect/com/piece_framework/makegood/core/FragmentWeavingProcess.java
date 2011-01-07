@@ -15,7 +15,6 @@ import org.eclipse.ui.IStartup;
 
 import com.piece_framework.makegood.aspect.com.piece_framework.makegood.core.aspect.PHPFlagsAspect;
 import com.piece_framework.makegood.javassist.Aspect;
-import com.piece_framework.makegood.javassist.PDTVersion;
 import com.piece_framework.makegood.javassist.WeavingProcess;
 
 /**
@@ -24,6 +23,10 @@ import com.piece_framework.makegood.javassist.WeavingProcess;
 public class FragmentWeavingProcess extends WeavingProcess implements IStartup {
     private static final Aspect[] ASPECTS = {
         new PHPFlagsAspect()
+    };
+    private static final String[] DEPENDENCIES = {
+        "com.piece_framework.makegood.core", //$NON-NLS-1$
+        "org.eclipse.php.core" //$NON-NLS-1$
     };
 
     @Override
@@ -44,13 +47,6 @@ public class FragmentWeavingProcess extends WeavingProcess implements IStartup {
 
     @Override
     protected String[] dependencies() {
-        return PDTVersion.getInstance().compareTo("2.2.0") >= 0 ? //$NON-NLS-1$
-                   new String[] {
-                       "com.piece_framework.makegood.core" //$NON-NLS-1$
-                   } :
-                   new String[] {
-                       "com.piece_framework.makegood.core", //$NON-NLS-1$
-                       "org.eclipse.php.core" //$NON-NLS-1$
-                   };
+        return DEPENDENCIES;
     }
 }

@@ -21,7 +21,6 @@ import javassist.expr.ExprEditor;
 import javassist.expr.FieldAccess;
 
 import com.piece_framework.makegood.javassist.Aspect;
-import com.piece_framework.makegood.javassist.PDTVersion;
 
 /**
  * @since 1.2.0
@@ -86,18 +85,13 @@ public class MultibyteCharactersAspect extends Aspect {
 "private static final String ZZ_CMAP_PACKED_MULTIBYTECHARACTERS = \"\\\11\\\0\\\1\\\12\\\1\\\20\\\2\\\0\\\1\\\11\\\22\\\0\\\1\\\12\\\1\\\24\\\1\\\73\\\1\\\70\\\1\\\67\\\1\\\30\\\1\\\31\\\1\\\17\\\1\\\57\\\1\\\61\\\1\\\26\\\1\\\23\\\1\\\13\\\1\\\4\\\1\\\2\\\1\\\27\\\1\\\5\\\7\\\76\\\2\\\1\\\1\\\55\\\1\\\14\\\1\\\25\\\1\\\21\\\1\\\22\\\1\\\71\\\1\\\72\\\1\\\36\\\1\\\7\\\1\\\45\\\1\\\40\\\1\\\3\\\1\\\43\\\1\\\60\\\1\\\52\\\1\\\41\\\1\\\63\\\1\\\53\\\1\\\46\\\1\\\65\\\1\\\37\\\1\\\34\\\1\\\54\\\1\\\64\\\1\\\35\\\1\\\50\\\1\\\42\\\1\\\44\\\1\\\56\\\1\\\51\\\1\\\6\\\1\\\62\\\1\\\10\\\1\\\16\\\1\\\74\\\1\\\16\\\1\\\33\\\1\\\47\\\1\\\75\\\1\\\36\\\1\\\7\\\1\\\45\\\1\\\40\\\1\\\3\\\1\\\43\\\1\\\60\\\1\\\52\\\1\\\41\\\1\\\63\\\1\\\53\\\1\\\46\\\1\\\65\\\1\\\37\\\1\\\34\\\1\\\54\\\1\\\64\\\1\\\35\\\1\\\50\\\1\\\42\\\1\\\44\\\1\\\56\\\1\\\51\\\1\\\6\\\1\\\62\\\1\\\10\\\1\\\66\\\1\\\32\\\1\\\15\\\1\\\13\\\uff81\\\10\";"; //$NON-NLS-1$
     private static final String PHPLEXER_METHOD_UNPACKCMAP_PHP4 = PHPASTLEXER_METHOD_UNPACKCMAP_PHP4;
     private static final String PHPLEXER_FIELD_CMAP_PHP4 = PHPASTLEXER_FIELD_CMAP_PHP53;
-    private boolean shouldWeave = false;
 
     public MultibyteCharactersAspect() {
         super();
-        if (PDTVersion.getInstance().compareTo("2.2.0") >= 0) { //$NON-NLS-1$
-            shouldWeave = true;
-        }
     }
 
     @Override
     protected void doWeave() throws NotFoundException, CannotCompileException {
-        if (!shouldWeave) return;
         doWeavePHP53();
         doWeavePHP5();
         doWeavePHP4();
@@ -105,13 +99,11 @@ public class MultibyteCharactersAspect extends Aspect {
 
     @Override
     protected String[] joinPoints() {
-        if (!shouldWeave) return new String[] {};
         return JOINPOINTS;
     }
 
     @Override
     protected String[] weavingClasses() {
-        if (!shouldWeave) return new String[] {};
         return WEAVINGCLASSES;
     }
 
