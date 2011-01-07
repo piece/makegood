@@ -19,8 +19,8 @@ import javassist.NotFoundException;
 
 import org.eclipse.core.resources.IProject;
 
-import com.piece_framework.makegood.javassist.Aspect;
-import com.piece_framework.makegood.javassist.PDTVersion;
+import com.piece_framework.makegood.aspect.Aspect;
+import com.piece_framework.makegood.aspect.PDTVersion;
 
 /**
  * @since 1.2.0

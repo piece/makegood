@@ -13,9 +13,9 @@ package com.piece_framework.makegood.aspect.com.piece_framework.makegood.core;
 
 import org.eclipse.ui.IStartup;
 
+import com.piece_framework.makegood.aspect.Aspect;
+import com.piece_framework.makegood.aspect.WeavingProcess;
 import com.piece_framework.makegood.aspect.com.piece_framework.makegood.core.aspect.PHPFlagsAspect;
-import com.piece_framework.makegood.javassist.Aspect;
-import com.piece_framework.makegood.javassist.WeavingProcess;
 
 /**
  * @since 1.2.0

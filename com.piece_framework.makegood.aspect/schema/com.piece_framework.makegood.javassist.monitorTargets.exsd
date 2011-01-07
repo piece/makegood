@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Schema file written by PDE -->
-<schema targetNamespace="com.piece_framework.makegood.javassist" xmlns="http://www.w3.org/2001/XMLSchema">
+<schema targetNamespace="com.piece_framework.makegood.aspect" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="com.piece_framework.makegood.javassist" id="com.piece_framework.makegood.javassist.monitorTarget" name="MakeGood monitor target"/>
+         <meta.schema plugin="com.piece_framework.makegood.aspect" id="com.piece_framework.makegood.aspect.monitorTarget" name="MakeGood monitor target"/>
       </appinfo>
       <documentation>
          [Enter description of this extension point.]
@@ -55,7 +55,7 @@
                   
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn=":com.piece_framework.makegood.javassist.monitor.IMonitorTarget"/>
+                  <meta.attribute kind="java" basedOn=":com.piece_framework.makegood.aspect.monitor.IMonitorTarget"/>
                </appinfo>
             </annotation>
          </attribute>

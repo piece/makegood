@@ -11,7 +11,7 @@
 
 package com.piece_framework.makegood.aspect.com.piece_framework.makegood.launch;
 
-import com.piece_framework.makegood.javassist.monitor.IMonitorTarget;
+import com.piece_framework.makegood.aspect.monitor.IMonitorTarget;
 
 /**
  * @since 1.2.0

@@ -8,7 +8,7 @@
       </startup>
    </extension>
    <extension
-         point="com.piece_framework.makegood.javassist.monitorTargets">
+         point="com.piece_framework.makegood.aspect.monitorTargets">
       <monitorTarget
             target="com.piece_framework.makegood.aspect.org.eclipse.php.ui.MonitorTarget">
       </monitorTarget>

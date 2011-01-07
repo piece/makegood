@@ -13,9 +13,9 @@ package com.piece_framework.makegood.aspect.org.eclipse.php.ui;
 
 import org.eclipse.ui.IStartup;
 
+import com.piece_framework.makegood.aspect.Aspect;
+import com.piece_framework.makegood.aspect.WeavingProcess;
 import com.piece_framework.makegood.aspect.org.eclipse.php.ui.aspect.SystemIncludePathAspect;
-import com.piece_framework.makegood.javassist.Aspect;
-import com.piece_framework.makegood.javassist.WeavingProcess;
 
 public class FragmentWeavingProcess extends WeavingProcess implements IStartup {
     private static final Aspect[] ASPECTS = {

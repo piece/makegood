@@ -20,8 +20,8 @@ import javassist.NotFoundException;
 import javassist.expr.ExprEditor;
 import javassist.expr.NewExpr;
 
-import com.piece_framework.makegood.javassist.Aspect;
-import com.piece_framework.makegood.javassist.PDTVersion;
+import com.piece_framework.makegood.aspect.Aspect;
+import com.piece_framework.makegood.aspect.PDTVersion;
 
 public class SystemIncludePathAspect extends Aspect {
     private static final String JOINPOINT_GETCPLISTELEMENTTEXT_INSERTBEFORE =

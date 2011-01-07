@@ -13,11 +13,11 @@ package com.piece_framework.makegood.aspect.org.eclipse.php.core;
 
 import org.eclipse.ui.IStartup;
 
+import com.piece_framework.makegood.aspect.Aspect;
+import com.piece_framework.makegood.aspect.PDTVersion;
+import com.piece_framework.makegood.aspect.WeavingProcess;
 import com.piece_framework.makegood.aspect.org.eclipse.php.core.aspect.MultibyteCharactersAspect;
 import com.piece_framework.makegood.aspect.org.eclipse.php.core.aspect.SystemIncludePathAspect;
-import com.piece_framework.makegood.javassist.Aspect;
-import com.piece_framework.makegood.javassist.PDTVersion;
-import com.piece_framework.makegood.javassist.WeavingProcess;
 
 public class FragmentWeavingProcess extends WeavingProcess implements IStartup {
     private static final Object processLock = new Object();

@@ -13,10 +13,10 @@ package com.piece_framework.makegood.aspect.com.piece_framework.makegood.launch;
 
 import org.eclipse.ui.IStartup;
 
+import com.piece_framework.makegood.aspect.Aspect;
+import com.piece_framework.makegood.aspect.PDTVersion;
+import com.piece_framework.makegood.aspect.WeavingProcess;
 import com.piece_framework.makegood.aspect.com.piece_framework.makegood.launch.aspect.PHPexeItemFactoryAspect;
-import com.piece_framework.makegood.javassist.Aspect;
-import com.piece_framework.makegood.javassist.PDTVersion;
-import com.piece_framework.makegood.javassist.WeavingProcess;
 
 /**
  * @since 1.2.0

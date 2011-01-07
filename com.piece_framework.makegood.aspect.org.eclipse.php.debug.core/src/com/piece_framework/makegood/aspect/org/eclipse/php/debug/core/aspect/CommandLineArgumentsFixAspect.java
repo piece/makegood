@@ -19,7 +19,7 @@ import javassist.NotFoundException;
 import javassist.expr.ExprEditor;
 import javassist.expr.MethodCall;
 
-import com.piece_framework.makegood.javassist.Aspect;
+import com.piece_framework.makegood.aspect.Aspect;
 
 /**
  * @see <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=298606">Bug 298606 - Can't use the arguments with spaces.</a>

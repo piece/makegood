@@ -9,7 +9,7 @@
  * distribution, and is available at http://www.eclipse.org/legal/epl-v10.html
  */
 
-package com.piece_framework.makegood.javassist.monitor;
+package com.piece_framework.makegood.aspect.monitor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +23,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 
 public class WeavingMonitor {
-    private static final String PLUGIN_ID = "com.piece_framework.makegood.javassist";    //$NON-NLS-1$
+    private static final String PLUGIN_ID = "com.piece_framework.makegood.aspect";    //$NON-NLS-1$
     private static final String EXTENSION_POINT_ID = PLUGIN_ID + ".monitorTargets";      //$NON-NLS-1$
     private static List<IMonitorTarget> targets;
 

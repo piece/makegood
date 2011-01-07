@@ -11,7 +11,7 @@
 
 package com.piece_framework.makegood.aspect.org.eclipse.php.core;
 
-import com.piece_framework.makegood.javassist.monitor.IMonitorTarget;
+import com.piece_framework.makegood.aspect.monitor.IMonitorTarget;
 
 public class MonitorTarget implements IMonitorTarget {
     static boolean endWeaving = false;

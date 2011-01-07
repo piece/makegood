@@ -46,7 +46,7 @@
     <module>com.piece_framework.makegood.launch</module>
     <module>com.piece_framework.makegood.stagehand_testrunner</module>
     <module>com.piece_framework.makegood.ui</module>
-    <module>com.piece_framework.makegood.javassist</module>
+    <module>com.piece_framework.makegood.aspect</module>
     <module>com.piece_framework.makegood.aspect.org.eclipse.php.core</module>
     <module>com.piece_framework.makegood.aspect.org.eclipse.php.debug.core</module>
     <module>com.piece_framework.makegood.aspect.org.eclipse.php.ui</module>

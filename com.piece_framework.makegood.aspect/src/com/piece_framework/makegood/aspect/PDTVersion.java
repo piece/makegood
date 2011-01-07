@@ -9,7 +9,7 @@
  * distribution, and is available at http://www.eclipse.org/legal/epl-v10.html
  */
 
-package com.piece_framework.makegood.javassist;
+package com.piece_framework.makegood.aspect;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.Platform;

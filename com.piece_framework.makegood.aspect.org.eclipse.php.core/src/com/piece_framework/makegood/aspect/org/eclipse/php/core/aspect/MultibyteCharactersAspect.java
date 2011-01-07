@@ -20,7 +20,7 @@ import javassist.NotFoundException;
 import javassist.expr.ExprEditor;
 import javassist.expr.FieldAccess;
 
-import com.piece_framework.makegood.javassist.Aspect;
+import com.piece_framework.makegood.aspect.Aspect;
 
 /**
  * @since 1.2.0

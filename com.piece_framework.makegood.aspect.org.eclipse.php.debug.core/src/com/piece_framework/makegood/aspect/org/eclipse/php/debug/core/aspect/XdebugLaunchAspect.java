@@ -18,7 +18,7 @@ import javassist.NotFoundException;
 import javassist.expr.ExprEditor;
 import javassist.expr.MethodCall;
 
-import com.piece_framework.makegood.javassist.Aspect;
+import com.piece_framework.makegood.aspect.Aspect;
 
 public class XdebugLaunchAspect extends Aspect {
     private static final String JOINPOINT_CALL_GETLOCATION =
