@@ -47,6 +47,7 @@ public class FragmentWeavingProcess extends WeavingProcess implements IStartup {
         return PDTVersion.getInstance().compareTo("2.2.0") >= 0 ? //$NON-NLS-1$
                    new String[] {
                        "com.piece_framework.makegood.launch", //$NON-NLS-1$
+                       "org.eclipse.core.resources", //$NON-NLS-1$
                        "org.eclipse.php.debug.core" //$NON-NLS-1$
                    } :
                    new String[] {
