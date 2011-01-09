@@ -24,6 +24,11 @@ import org.eclipse.php.internal.debug.core.launching.PHPLaunch;
 public class MakeGoodLaunch extends PHPLaunch {
     private static List<ILaunchConfiguration> launchConfigurations = new ArrayList<ILaunchConfiguration>();
 
+    /**
+     * @since 1.2.0
+     */
+    private boolean isActive = false;
+
     public MakeGoodLaunch(ILaunchConfiguration launchConfiguration, String mode, ISourceLocator locator) {
         super(launchConfiguration, mode, locator);
     }
@@ -48,12 +53,33 @@ public class MakeGoodLaunch extends PHPLaunch {
 
     public static boolean hasActiveLaunches() {
         for (ILaunch launch: DebugPlugin.getDefault().getLaunchManager().getLaunches()) {
-            if (launch.isTerminated()) continue;
-            if (launch instanceof MakeGoodLaunch) {
+            if (!(launch instanceof MakeGoodLaunch)) return false;
+            if (((MakeGoodLaunch) launch).isActive()) {
                 return true;
             }
         }
 
         return false;
+    }
+
+    /**
+     * @since 1.2.0
+     */
+    public boolean isActive() {
+        return isActive;
+    }
+
+    /**
+     * @since 1.2.0
+     */
+    public void activate() {
+        isActive = true;
+    }
+
+    /**
+     * @since 1.2.0
+     */
+    public void deactivate() {
+        isActive = false;
     }
 }

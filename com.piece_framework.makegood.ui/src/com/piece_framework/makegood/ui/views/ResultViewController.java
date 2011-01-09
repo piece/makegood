@@ -57,14 +57,14 @@ public class ResultViewController implements IDebugEventSetListener {
             if (!(launch instanceof MakeGoodLaunch)) continue;
 
             if (events[i].getKind() == DebugEvent.CREATE) {
-                handleCreateEvent(launch);
+                handleCreateEvent((MakeGoodLaunch) launch);
             } else if (events[i].getKind() == DebugEvent.TERMINATE) {
-                handleTerminateEvent(launch);
+                handleTerminateEvent((MakeGoodLaunch) launch);
             }
         }
     }
 
-    private void handleCreateEvent(final ILaunch launch) {
+    private void handleCreateEvent(final MakeGoodLaunch launch) {
         if (testRun != null) return;
 
         try {
@@ -73,6 +73,7 @@ public class ResultViewController implements IDebugEventSetListener {
             Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
             return;
         }
+        launch.activate();
         testRun.start();
 
         preventConsoleViewFocusing();
@@ -94,7 +95,7 @@ public class ResultViewController implements IDebugEventSetListener {
         job.schedule();
     }
 
-    private void handleTerminateEvent(ILaunch launch) {
+    private void handleTerminateEvent(final MakeGoodLaunch launch) {
         if (testRun == null) return;
         if (!launch.equals(testRun.getLaunch())) return;
 
@@ -105,6 +106,7 @@ public class ResultViewController implements IDebugEventSetListener {
             public IStatus runInUIThread(IProgressMonitor monitor) {
                 ResultView resultView = (ResultView) ViewShow.find(ResultView.ID);
                 if (resultView == null) {
+                    launch.deactivate();
                     testRun = null;
                     return Status.CANCEL_STATUS;
                 }
@@ -118,6 +120,7 @@ public class ResultViewController implements IDebugEventSetListener {
                     }
                 }
 
+                launch.deactivate();
                 testRun = null;
 
                 return Status.OK_STATUS;
