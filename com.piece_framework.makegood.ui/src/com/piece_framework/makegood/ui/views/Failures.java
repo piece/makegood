@@ -18,7 +18,7 @@ import java.util.List;
 import com.piece_framework.makegood.core.result.Result;
 import com.piece_framework.makegood.core.result.TestSuiteResult;
 
-class Failures {
+public class Failures {
     static final int FIND_PREVIOUS = 1;
     static final int FIND_NEXT = 2;
     private List<Result> orderedResults = new ArrayList<Result>();

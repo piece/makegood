@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2009-2010 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
- *               2010 KUBO Atsuhiro <kubo@iteman.jp>,
+ *               2010-2011 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -12,18 +12,12 @@
 
 package com.piece_framework.makegood.ui.views;
 
-import java.io.File;
-import java.io.IOException;
-
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.debug.core.DebugEvent;
-import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.IDebugEventSetListener;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.model.IProcess;
@@ -35,30 +29,22 @@ import org.eclipse.ui.console.IConsole;
 import org.eclipse.ui.console.IConsoleConstants;
 import org.eclipse.ui.console.IOConsoleOutputStream;
 import org.eclipse.ui.progress.UIJob;
-import org.xml.sax.SAXException;
 
-import com.piece_framework.makegood.core.result.JUnitXMLReader;
 import com.piece_framework.makegood.core.result.JUnitXMLReaderListener;
-import com.piece_framework.makegood.core.result.RunProgress;
 import com.piece_framework.makegood.core.result.TestCaseResult;
 import com.piece_framework.makegood.core.result.TestSuiteResult;
 import com.piece_framework.makegood.launch.MakeGoodLaunch;
-import com.piece_framework.makegood.launch.MakeGoodLaunchConfigurationDelegate;
 import com.piece_framework.makegood.ui.Activator;
-import com.piece_framework.makegood.ui.actions.StopTestAction;
+import com.piece_framework.makegood.ui.TestRun;
 import com.piece_framework.makegood.ui.ide.ViewShow;
 import com.piece_framework.makegood.ui.launch.TestRunner;
 
 public class ResultViewController implements IDebugEventSetListener {
-    private static final String MAKEGOOD_RESULTVIEWCONTROLLER_MARKER_CREATE = "MAKEGOOD_RESULTVIEWCONTROLLER_MARKER_CREATE"; //$NON-NLS-1$
-    private static final String MAKEGOOD_RESULTVIEWCONTROLLER_MARKER_TERMINATE = "MAKEGOOD_RESULTVIEWCONTROLLER_MARKER_TERMINATE"; //$NON-NLS-1$
-    private Thread parserThread;
-    private boolean hasErrors;
-    private RunProgress progress;
-    private JUnitXMLReader junitXMLReader;
-    private TestCaseResult currentTestCase;
-    private Failures failures;
-    private boolean isStoppedByAction;
+
+    /**
+     * @since 1.2.0
+     */
+    private TestRun testRun;
 
     @Override
     public void handleDebugEvents(DebugEvent[] events) {
@@ -79,45 +65,17 @@ public class ResultViewController implements IDebugEventSetListener {
     }
 
     private void handleCreateEvent(final ILaunch launch) {
-        // TODO This marker is to avoid calling create() twice by PDT.
-        if (createEventFired(launch)) return;
-        markAsCreateEventFired(launch);
+        if (testRun != null) return;
 
-        if (terminateEventFired(launch)) return;
-
-        String junitXMLFile = null;
         try {
-            junitXMLFile = MakeGoodLaunchConfigurationDelegate.getJUnitXMLFile(launch);
+            testRun = new TestRun(launch, new ResultJUnitXMLReaderListener());
         } catch (CoreException e) {
             Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
+            return;
         }
-        if (junitXMLFile == null) return;
+        testRun.start();
 
         preventConsoleViewFocusing();
-        progress = new RunProgress();
-        progress.start();
-        failures = new Failures();
-        currentTestCase = null;
-
-        junitXMLReader = new JUnitXMLReader(new File(junitXMLFile));
-        junitXMLReader.addListener(new ResultJUnitXMLReaderListener());
-        parserThread = new Thread() {
-            @Override
-            public void run() {
-                hasErrors = false;
-                isStoppedByAction = false;
-                try {
-                    junitXMLReader.read();
-                } catch (ParserConfigurationException e) {
-                    Activator.getDefault().getLog().log(new Status(IStatus.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
-                } catch (SAXException e) {
-                    hasErrors = true;
-                } catch (IOException e) {
-                    Activator.getDefault().getLog().log(new Status(IStatus.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
-                }
-            }
-        };
-        parserThread.start();
 
         Job job = new UIJob("MakeGood Test Start") { //$NON-NLS-1$
             @Override
@@ -129,7 +87,7 @@ public class ResultViewController implements IDebugEventSetListener {
                 TestRunner.restoreFocusToLastActivePart();
 
                 resultView.reset();
-                resultView.startTest(progress, failures);
+                resultView.startTest(testRun.getRunProgress(), testRun.getFailures());
                 return Status.OK_STATUS;
             }
         };
@@ -137,56 +95,30 @@ public class ResultViewController implements IDebugEventSetListener {
     }
 
     private void handleTerminateEvent(ILaunch launch) {
-        // TODO This code is to avoid calling terminate() twice by PDT.
-        if (terminateEventFired(launch)) return;
-        markAsTerminateEventFired(launch);
+        if (testRun == null) return;
+        if (!launch.equals(testRun.getLaunch())) return;
 
-        if (!createEventFired(launch)) return;
-
-        for (IProcess process: launch.getProcesses()) {
-            int exitValue = 0;
-            try {
-                if (!process.isTerminated()) continue;
-                exitValue = process.getExitValue();
-            } catch (DebugException e) {
-                Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
-            }
-
-            if (exitValue != 0) {
-                hasErrors = true;
-            }
-
-            break;
-        }
-
-        junitXMLReader.stop();
-        // TODO Since PDT 2.1 always returns 0 from IProcess.getExitValue(), We decided to use SAXException to check whether or not a PHP process exited with a fatal error.
-        try {
-            parserThread.join();
-        } catch (InterruptedException e) {
-            Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
-        }
-
-        progress.end();
-
-        if (StopTestAction.isStoppedByAction(launch)) {
-            isStoppedByAction = true;
-        }
+        testRun.end();
 
         Job job = new UIJob("MakeGood Test End") { //$NON-NLS-1$
             @Override
             public IStatus runInUIThread(IProgressMonitor monitor) {
                 ResultView resultView = (ResultView) ViewShow.find(ResultView.ID);
-                if (resultView == null) return Status.CANCEL_STATUS;
+                if (resultView == null) {
+                    testRun = null;
+                    return Status.CANCEL_STATUS;
+                }
 
                 resultView.endTest();
 
-                if (hasErrors) {
+                if (testRun.hasErrors()) {
                     resultView.markAsStopped();
-                    if (!isStoppedByAction) {
+                    if (!testRun.isStoppedByAction()) {
                         ViewShow.show(IConsoleConstants.ID_CONSOLE_VIEW);
                     }
                 }
+
+                testRun = null;
 
                 return Status.OK_STATUS;
             }
@@ -216,43 +148,23 @@ public class ResultViewController implements IDebugEventSetListener {
         }
     }
 
-    private void markAsCreateEventFired(ILaunch launch) {
-        launch.setAttribute(MAKEGOOD_RESULTVIEWCONTROLLER_MARKER_CREATE, Boolean.TRUE.toString());
-    }
-
-    private boolean createEventFired(ILaunch launch) {
-        String isCreated = launch.getAttribute(MAKEGOOD_RESULTVIEWCONTROLLER_MARKER_CREATE);
-        if (isCreated == null) return false;
-        return Boolean.TRUE.toString().equals(isCreated);
-    }
-
-    private void markAsTerminateEventFired(ILaunch launch) {
-        launch.setAttribute(MAKEGOOD_RESULTVIEWCONTROLLER_MARKER_TERMINATE, Boolean.TRUE.toString());
-    }
-
-    private boolean terminateEventFired(ILaunch launch) {
-        String isTerminated = launch.getAttribute(MAKEGOOD_RESULTVIEWCONTROLLER_MARKER_TERMINATE);
-        if (isTerminated == null) return false;
-        return Boolean.TRUE.toString().equals(isTerminated);
-    }
-
     public class ResultJUnitXMLReaderListener implements JUnitXMLReaderListener {
         @Override
         public void startTestSuite(TestSuiteResult testSuite) {
-            failures.addResult(testSuite);
+            testRun.getFailures().addResult(testSuite);
 
-            if (progress.isInitialized()) {
+            if (testRun.getRunProgress().isInitialized()) {
                 return;
             }
 
-            progress.initialize(testSuite);
+            testRun.getRunProgress().initialize(testSuite);
 
             Job job = new UIJob("MakeGood Result Tree Set") { //$NON-NLS-1$
                 @Override
                 public IStatus runInUIThread(IProgressMonitor monitor) {
                     ResultView resultView = (ResultView) ViewShow.find(ResultView.ID);
                     if (resultView == null) return Status.CANCEL_STATUS;
-                    resultView.setTreeInput(junitXMLReader.getResult());
+                    resultView.setTreeInput(testRun.getResult());
                     return Status.OK_STATUS;
                 }
             };
@@ -264,17 +176,17 @@ public class ResultViewController implements IDebugEventSetListener {
 
         @Override
         public void startTestCase(final TestCaseResult testCase) {
-            failures.addResult(testCase);
-            currentTestCase = testCase;
-            progress.startTestCase();
+            testRun.getFailures().addResult(testCase);
+            testRun.setCurrentTestCase(testCase);
+            testRun.getRunProgress().startTestCase();
 
             Job job = new UIJob("MakeGood Test Case Start") { //$NON-NLS-1$
                 @Override
                 public IStatus runInUIThread(IProgressMonitor monitor) {
                     ResultView resultView = (ResultView) ViewShow.find(ResultView.ID);
                     if (resultView == null) return Status.CANCEL_STATUS;
-                    resultView.printCurrentlyRunningTestCase(currentTestCase);
-                    resultView.updateOnStartTestCase(currentTestCase);
+                    resultView.printCurrentlyRunningTestCase(testRun.getCurrentTestCase());
+                    resultView.updateOnStartTestCase(testRun.getCurrentTestCase());
                     return Status.OK_STATUS;
                 }
             };
@@ -288,20 +200,20 @@ public class ResultViewController implements IDebugEventSetListener {
 
         @Override
         public void endTestCase() {
-            if (!progress.isInitialized()) return;
+            if (!testRun.getRunProgress().isInitialized()) return;
 
-            progress.endTestCase();
-            currentTestCase.setTime(progress.getProcessTimeForTestCase());
+            testRun.getRunProgress().endTestCase();
+            testRun.getCurrentTestCase().setTime(testRun.getRunProgress().getProcessTimeForTestCase());
 
             Job job = new UIJob("MakeGood Test Case End") { //$NON-NLS-1$
                 @Override
                 public IStatus runInUIThread(IProgressMonitor monitor) {
                     ResultView resultView = (ResultView) ViewShow.find(ResultView.ID);
                     if (resultView == null) return Status.CANCEL_STATUS;
-                    if (progress.hasFailures()) {
+                    if (testRun.getRunProgress().hasFailures()) {
                         resultView.markAsFailed();
                     }
-                    resultView.updateOnEndTestCase(currentTestCase);
+                    resultView.updateOnEndTestCase(testRun.getCurrentTestCase());
                     return Status.OK_STATUS;
                 }
             };
@@ -310,8 +222,8 @@ public class ResultViewController implements IDebugEventSetListener {
 
         @Override
         public void startFailure(TestCaseResult failure) {
-            failures.markCurrentResultAsFailure();
-            currentTestCase = failure;
+            testRun.getFailures().markCurrentResultAsFailure();
+            testRun.setCurrentTestCase(failure);
         }
 
         @Override
@@ -319,7 +231,7 @@ public class ResultViewController implements IDebugEventSetListener {
 
         @Override
         public void endTest() {
-            progress.markAsCompleted();
+            testRun.getRunProgress().markAsCompleted();
         }
     }
 }
