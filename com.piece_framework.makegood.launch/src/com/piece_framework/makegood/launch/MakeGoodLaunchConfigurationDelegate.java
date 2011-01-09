@@ -246,11 +246,11 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
         );
 
         IResource mainScriptResource = launchTarget.getMainScriptResource();
-        IProject project = mainScriptResource.getProject();
         if (mainScriptResource == null) {
             throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "The main script resource is not found.")); //$NON-NLS-1$
         }
 
+        IProject project = mainScriptResource.getProject();
         if (project != null && project.exists()) {
             workingCopy.setAttribute(IPHPDebugConstants.PHP_Project, project.getName());
             rewriteBasicConfigurationAttributes(workingCopy, project);
