@@ -48,6 +48,11 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
     @Override
     public boolean finalLaunchCheck(ILaunchConfiguration configuration, String mode, IProgressMonitor monitor) throws CoreException {
         synchronized (launchLock) {
+            if (MakeGoodLaunch.hasActiveLaunch()) {
+                monitor.setCanceled(true);
+                return false;
+            }
+
             if (currentConfiguration != null) {
                 return false;
             }
@@ -95,6 +100,11 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
     @Override
     public boolean preLaunchCheck(ILaunchConfiguration configuration, String mode, IProgressMonitor monitor) throws CoreException {
         synchronized (launchLock) {
+            if (MakeGoodLaunch.hasActiveLaunch()) {
+                monitor.setCanceled(true);
+                return false;
+            }
+
             if (currentConfiguration != null) {
                 monitor.setCanceled(true);
                 return false;
@@ -152,6 +162,11 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
         }
 
         synchronized (launchLock) {
+            if (MakeGoodLaunch.hasActiveLaunch()) {
+                monitor.setCanceled(true);
+                return;
+            }
+
             if (currentConfiguration != null) {
                 monitor.setCanceled(true);
                 return;
