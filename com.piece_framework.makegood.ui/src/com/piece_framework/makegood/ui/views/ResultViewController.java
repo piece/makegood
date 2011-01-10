@@ -40,7 +40,6 @@ import com.piece_framework.makegood.ui.ide.ViewShow;
 import com.piece_framework.makegood.ui.launch.TestRunner;
 
 public class ResultViewController implements IDebugEventSetListener {
-
     /**
      * @since 1.2.0
      */
@@ -65,10 +64,14 @@ public class ResultViewController implements IDebugEventSetListener {
     }
 
     private void handleCreateEvent(final MakeGoodLaunch launch) {
-        if (testRun != null) return;
+        synchronized (this) {
+            if (testRun != null) return;
+        }
 
         try {
-            testRun = new TestRun(launch, new ResultJUnitXMLReaderListener());
+            synchronized (this) {
+                testRun = new TestRun(launch, new ResultJUnitXMLReaderListener());
+            }
         } catch (CoreException e) {
             Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
             return;
@@ -96,7 +99,9 @@ public class ResultViewController implements IDebugEventSetListener {
     }
 
     private void handleTerminateEvent(final MakeGoodLaunch launch) {
-        if (testRun == null) return;
+        synchronized (this) {
+            if (testRun == null) return;
+        }
         if (!launch.equals(testRun.getLaunch())) return;
 
         testRun.end();
@@ -107,7 +112,9 @@ public class ResultViewController implements IDebugEventSetListener {
                 ResultView resultView = (ResultView) ViewShow.find(ResultView.ID);
                 if (resultView == null) {
                     launch.deactivate();
-                    testRun = null;
+                    synchronized (ResultViewController.this) {
+                        testRun = null;
+                    }
                     return Status.CANCEL_STATUS;
                 }
 
@@ -121,7 +128,9 @@ public class ResultViewController implements IDebugEventSetListener {
                 }
 
                 launch.deactivate();
-                testRun = null;
+                synchronized (ResultViewController.this) {
+                    testRun = null;
+                }
 
                 return Status.OK_STATUS;
             }

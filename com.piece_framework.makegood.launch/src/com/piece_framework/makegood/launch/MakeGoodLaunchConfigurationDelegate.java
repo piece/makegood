@@ -47,12 +47,12 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
 
     @Override
     public boolean finalLaunchCheck(ILaunchConfiguration configuration, String mode, IProgressMonitor monitor) throws CoreException {
-        synchronized (launchLock) {
-            if (MakeGoodLaunch.hasActiveLaunch()) {
-                monitor.setCanceled(true);
-                return false;
-            }
+        if (MakeGoodLaunch.hasActiveLaunch()) {
+            monitor.setCanceled(true);
+            return false;
+        }
 
+        synchronized (launchLock) {
             if (currentConfiguration != null) {
                 monitor.setCanceled(true);
                 return false;
@@ -101,12 +101,12 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
 
     @Override
     public boolean preLaunchCheck(ILaunchConfiguration configuration, String mode, IProgressMonitor monitor) throws CoreException {
-        synchronized (launchLock) {
-            if (MakeGoodLaunch.hasActiveLaunch()) {
-                monitor.setCanceled(true);
-                return false;
-            }
+        if (MakeGoodLaunch.hasActiveLaunch()) {
+            monitor.setCanceled(true);
+            return false;
+        }
 
+        synchronized (launchLock) {
             if (currentConfiguration != null) {
                 monitor.setCanceled(true);
                 return false;
@@ -157,6 +157,11 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
         String mode,
         ILaunch launch,
         IProgressMonitor monitor) throws CoreException {
+        if (MakeGoodLaunch.hasActiveLaunch()) {
+            monitor.setCanceled(true);
+            return;
+        }
+
         ILaunchConfiguration configuration = launch.getLaunchConfiguration();
         if (configuration == null) {
             monitor.setCanceled(true);
@@ -164,11 +169,6 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
         }
 
         synchronized (launchLock) {
-            if (MakeGoodLaunch.hasActiveLaunch()) {
-                monitor.setCanceled(true);
-                return;
-            }
-
             if (currentConfiguration != null) {
                 monitor.setCanceled(true);
                 return;
