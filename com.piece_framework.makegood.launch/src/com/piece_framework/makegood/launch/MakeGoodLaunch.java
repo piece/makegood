@@ -65,7 +65,7 @@ public class MakeGoodLaunch extends PHPLaunch {
     /**
      * @since 1.2.0
      */
-    public boolean isActive() {
+    private boolean isActive() {
         return isActive;
     }
 
