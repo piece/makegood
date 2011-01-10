@@ -51,7 +51,7 @@ public class MakeGoodLaunch extends PHPLaunch {
         }
     }
 
-    public static boolean hasActiveLaunches() {
+    public static boolean hasActiveLaunch() {
         for (ILaunch launch: DebugPlugin.getDefault().getLaunchManager().getLaunches()) {
             if (!(launch instanceof MakeGoodLaunch)) return false;
             if (((MakeGoodLaunch) launch).isActive()) {

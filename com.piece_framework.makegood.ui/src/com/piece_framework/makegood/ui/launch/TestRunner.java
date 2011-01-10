@@ -83,7 +83,7 @@ public class TestRunner {
             return;
         }
 
-        if (MakeGoodLaunch.hasActiveLaunches()) {
+        if (MakeGoodLaunch.hasActiveLaunch()) {
             if (!isRunWhenFileIsSaved) {
                 raiseTestSessionAlreadyExistsError();
             }

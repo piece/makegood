@@ -280,7 +280,7 @@ public class ResultView extends ViewPart {
 
     public void updateStateOfRunAllTestsAction() {
         if (!actionsInitialized) return;
-        if (MakeGoodLaunch.hasActiveLaunches()) return;
+        if (MakeGoodLaunch.hasActiveLaunch()) return;
 
         runAllTestsAction.setEnabled(ActivePart.getInstance().isAllTestsRunnable());
 
@@ -452,7 +452,7 @@ public class ResultView extends ViewPart {
             (ActionContributionItem) manager.find(StopTestAction.ID);
         if (stopTestItem != null) {
             stopTestAction = stopTestItem.getAction();
-            stopTestAction.setEnabled(MakeGoodLaunch.hasActiveLaunches());
+            stopTestAction.setEnabled(MakeGoodLaunch.hasActiveLaunch());
         }
 
         ActionContributionItem rerunTestItem =
