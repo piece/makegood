@@ -54,10 +54,12 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
             }
 
             if (currentConfiguration != null) {
+                monitor.setCanceled(true);
                 return false;
             }
 
             if (!configuration.exists()) {
+                monitor.setCanceled(true);
                 return false;
             }
         }
