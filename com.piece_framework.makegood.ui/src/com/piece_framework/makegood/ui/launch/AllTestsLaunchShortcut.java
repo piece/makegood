@@ -27,7 +27,6 @@ import com.piece_framework.makegood.core.PHPResource;
 import com.piece_framework.makegood.launch.LaunchTarget;
 
 public class AllTestsLaunchShortcut extends MakeGoodLaunchShortcut {
-
     @Override
     public void launch(ISelection selection, String mode) {
         if (!(selection instanceof IStructuredSelection)) return;
