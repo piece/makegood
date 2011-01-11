@@ -9,7 +9,7 @@
  * distribution, and is available at http://www.eclipse.org/legal/epl-v10.html
  */
 
-package com.piece_framework.makegood.ui;
+package com.piece_framework.makegood.launch;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,7 +30,6 @@ import com.piece_framework.makegood.core.result.JUnitXMLReaderListener;
 import com.piece_framework.makegood.core.result.RunProgress;
 import com.piece_framework.makegood.core.result.TestCaseResult;
 import com.piece_framework.makegood.core.result.TestSuiteResult;
-import com.piece_framework.makegood.launch.MakeGoodLaunchConfigurationDelegate;
 
 /**
  * @since 1.2.0
