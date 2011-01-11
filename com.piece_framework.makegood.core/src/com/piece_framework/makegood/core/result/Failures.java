@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.IdentityHashMap;
 import java.util.List;
 
-
 public class Failures {
     public static final int FIND_PREVIOUS = 1;
     public static final int FIND_NEXT = 2;
