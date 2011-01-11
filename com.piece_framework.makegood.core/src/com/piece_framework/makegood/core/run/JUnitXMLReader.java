@@ -197,7 +197,7 @@ public class JUnitXMLReader extends DefaultHandler {
     }
 
     private void endTestCase() {
-        currentTestCase.fixed = true;
+        currentTestCase.fix();
         currentTestCase = null;
 
         for (JUnitXMLReaderListener listener: listeners) {
