@@ -10,7 +10,7 @@
  * distribution, and is available at http://www.eclipse.org/legal/epl-v10.html
  */
 
-package com.piece_framework.makegood.core.result;
+package com.piece_framework.makegood.core.run;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -30,6 +30,10 @@ import org.junit.Test;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
+import com.piece_framework.makegood.core.result.Result;
+import com.piece_framework.makegood.core.result.ResultType;
+import com.piece_framework.makegood.core.result.TestCaseResult;
+import com.piece_framework.makegood.core.result.TestSuiteResult;
 import com.piece_framework.makegood.core.run.JUnitXMLReader;
 
 public class JUnitXMLReaderTest {
@@ -609,8 +613,8 @@ SRC_DIR + "/Stagehand/TestRunner.php:186\n" +
         String expectedContent) {
         assertTrue(result instanceof TestCaseResult);
 
-        assertEquals(expectedProblemType, result.resultType);
-        assertEquals(expectedTypeClass, result.failureType);
+        assertEquals(expectedProblemType, result.getResultType());
+        assertEquals(expectedTypeClass, result.getFailureType());
         assertEquals(expectedContent, result.getFailureTrace());
     }
 

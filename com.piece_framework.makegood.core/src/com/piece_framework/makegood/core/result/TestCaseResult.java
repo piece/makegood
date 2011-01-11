@@ -20,10 +20,10 @@ public class TestCaseResult extends Result {
     private String className;
     private int line;
     private boolean isArtificial = false;
-    String failureType;
+    private String failureType;
     private String failureTrace;
     public boolean fixed = false;
-    ResultType resultType = ResultType.PASS;
+    private ResultType resultType = ResultType.PASS;
 
     public TestCaseResult(String name) {
         super(name);
@@ -78,6 +78,13 @@ public class TestCaseResult extends Result {
         this.failureType = failureType;
     }
 
+    /**
+     * @since 1.2.0
+     */
+    public String getFailureType() {
+        return failureType;
+    }
+
     public void setFailureTrace(String failureTrace) {
         this.failureTrace = failureTrace;
     }
@@ -111,6 +118,13 @@ public class TestCaseResult extends Result {
 
     public void setResultType(ResultType resultType) {
         this.resultType = resultType;
+    }
+
+    /**
+     * @since 1.2.0
+     */
+    public ResultType getResultType() {
+        return resultType;
     }
 
     @Override

@@ -10,12 +10,13 @@
  * distribution, and is available at http://www.eclipse.org/legal/epl-v10.html
  */
 
-package com.piece_framework.makegood.core.result;
+package com.piece_framework.makegood.core.run;
 
 import static org.junit.Assert.assertEquals;
 import java.util.Arrays;
 import java.util.Iterator;
 
+import com.piece_framework.makegood.core.result.ResultType;
 import com.piece_framework.makegood.core.result.TestCaseResult;
 import com.piece_framework.makegood.core.result.TestSuiteResult;
 import com.piece_framework.makegood.core.run.JUnitXMLReaderListener;
@@ -46,7 +47,7 @@ public class NamesAssertionJUnitXMLReaderListener implements JUnitXMLReaderListe
 
     @Override
     public void startFailure(TestCaseResult problem) {
-        assertEquals(problemTypesIterator.next(), problem.resultType);
+        assertEquals(problemTypesIterator.next(), problem.getResultType());
     }
 
     @Override
