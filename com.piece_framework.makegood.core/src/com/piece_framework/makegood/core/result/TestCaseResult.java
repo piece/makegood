@@ -22,7 +22,7 @@ public class TestCaseResult extends Result {
     private boolean isArtificial = false;
     private String failureType;
     private String failureTrace;
-    private boolean fixed = false;
+    private boolean isFixed = false;
     private ResultType resultType = ResultType.PASS;
 
     public TestCaseResult(String name) {
@@ -95,25 +95,25 @@ public class TestCaseResult extends Result {
 
     @Override
     public int getTestCount() {
-        if (!fixed) return 0;
+        if (!isFixed) return 0;
         return 1;
     }
 
     @Override
     public int getErrorCount() {
-        if (!fixed) return 0;
+        if (!isFixed) return 0;
         return hasErrors() ? 1: 0;
     }
 
     @Override
     public int getFailureCount() {
-        if (!fixed) return 0;
+        if (!isFixed) return 0;
         return hasFailures() ? 1 : 0;
     }
 
     @Override
     public boolean isFixed() {
-        return fixed;
+        return isFixed;
     }
 
     public void setResultType(ResultType resultType) {
@@ -141,6 +141,6 @@ public class TestCaseResult extends Result {
      * @since 1.2.0
      */
     public void fix() {
-        fixed = true;
+        isFixed = true;
     }
 }
