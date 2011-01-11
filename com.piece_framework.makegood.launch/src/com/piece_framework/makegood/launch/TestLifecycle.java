@@ -34,7 +34,7 @@ import com.piece_framework.makegood.core.run.Progress;
 /**
  * @since 1.2.0
  */
-public class TestRun {
+public class TestLifecycle {
     private Progress progress = new Progress();
     private boolean hasErrors = false;
     private Failures failures = new Failures();
@@ -43,7 +43,7 @@ public class TestRun {
     private Thread parserThread;
     private TestCaseResult currentTestCase;
 
-    public TestRun(ILaunch launch, JUnitXMLReaderListener junitXMLReaderListener) throws CoreException {
+    public TestLifecycle(ILaunch launch, JUnitXMLReaderListener junitXMLReaderListener) throws CoreException {
         this.launch = launch;
 
         junitXMLReader = new JUnitXMLReader(new File(MakeGoodLaunchConfigurationDelegate.getJUnitXMLFile(launch)));
