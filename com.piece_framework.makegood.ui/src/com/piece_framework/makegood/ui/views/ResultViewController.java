@@ -91,7 +91,7 @@ public class ResultViewController implements IDebugEventSetListener {
                 TestRunner.restoreFocusToLastActivePart();
 
                 resultView.reset();
-                resultView.startTest(testRun.getRunProgress(), testRun.getFailures());
+                resultView.startTest(testRun.getProgress(), testRun.getFailures());
                 return Status.OK_STATUS;
             }
         };
@@ -102,7 +102,7 @@ public class ResultViewController implements IDebugEventSetListener {
         synchronized (this) {
             if (testRun == null) return;
         }
-        if (!launch.equals(testRun.getLaunch())) return;
+        if (testRun.validateLaunchIdentity(launch)) return;
 
         testRun.end();
 
@@ -163,13 +163,13 @@ public class ResultViewController implements IDebugEventSetListener {
     public class ResultJUnitXMLReaderListener implements JUnitXMLReaderListener {
         @Override
         public void startTestSuite(TestSuiteResult testSuite) {
-            testRun.getFailures().addResult(testSuite);
+            testRun.startTestSuite(testSuite);
 
-            if (testRun.getRunProgress().isInitialized()) {
+            if (testRun.isProgressInitialized()) {
                 return;
             }
 
-            testRun.getRunProgress().initialize(testSuite);
+            testRun.initializeProgress(testSuite);
 
             Job job = new UIJob("MakeGood Result Tree Set") { //$NON-NLS-1$
                 @Override
@@ -188,9 +188,7 @@ public class ResultViewController implements IDebugEventSetListener {
 
         @Override
         public void startTestCase(final TestCaseResult testCase) {
-            testRun.getFailures().addResult(testCase);
-            testRun.setCurrentTestCase(testCase);
-            testRun.getRunProgress().startTestCase();
+            testRun.startTestCase(testCase);
 
             Job job = new UIJob("MakeGood Test Case Start") { //$NON-NLS-1$
                 @Override
@@ -212,17 +210,16 @@ public class ResultViewController implements IDebugEventSetListener {
 
         @Override
         public void endTestCase() {
-            if (!testRun.getRunProgress().isInitialized()) return;
+            if (!testRun.isProgressInitialized()) return;
 
-            testRun.getRunProgress().endTestCase();
-            testRun.getCurrentTestCase().setTime(testRun.getRunProgress().getProcessTimeForTestCase());
+            testRun.endTestCase();
 
             Job job = new UIJob("MakeGood Test Case End") { //$NON-NLS-1$
                 @Override
                 public IStatus runInUIThread(IProgressMonitor monitor) {
                     ResultView resultView = (ResultView) ViewShow.find(ResultView.ID);
                     if (resultView == null) return Status.CANCEL_STATUS;
-                    if (testRun.getRunProgress().hasFailures()) {
+                    if (testRun.hasFailures()) {
                         resultView.markAsFailed();
                     }
                     resultView.updateOnEndTestCase(testRun.getCurrentTestCase());
@@ -234,8 +231,7 @@ public class ResultViewController implements IDebugEventSetListener {
 
         @Override
         public void startFailure(TestCaseResult failure) {
-            testRun.getFailures().markCurrentResultAsFailure();
-            testRun.setCurrentTestCase(failure);
+            testRun.startFailure(failure);
         }
 
         @Override
@@ -243,7 +239,7 @@ public class ResultViewController implements IDebugEventSetListener {
 
         @Override
         public void endTest() {
-            testRun.getRunProgress().markAsCompleted();
+            testRun.endTest();
         }
     }
 }

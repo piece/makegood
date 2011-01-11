@@ -349,11 +349,11 @@ public class ResultView extends ViewPart {
         resultTreeViewer.expandAll();
     }
 
-    void startTest(Progress runProgress, Failures failures) {
+    void startTest(Progress progress, Failures failures) {
         elapsedTimer = new ElapsedTimer(200);
         elapsedTimer.schedule();
 
-        this.progress = runProgress;
+        this.progress = progress;
         this.failures = failures;
 
         stopTestAction.setEnabled(true);

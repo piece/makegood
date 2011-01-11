@@ -35,7 +35,7 @@ import com.piece_framework.makegood.core.run.Progress;
  * @since 1.2.0
  */
 public class TestRun {
-    private Progress runProgress = new Progress();
+    private Progress progress = new Progress();
     private boolean hasErrors = false;
     private Failures failures = new Failures();
     private ILaunch launch;
@@ -66,7 +66,7 @@ public class TestRun {
     }
 
     public void start() {
-        runProgress.start();
+        progress.start();
         parserThread.start();
     }
 
@@ -96,11 +96,11 @@ public class TestRun {
             Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
         }
 
-        runProgress.end();
+        progress.end();
     }
 
-    public Progress getRunProgress() {
-        return runProgress;
+    public Progress getProgress() {
+        return progress;
     }
 
     public boolean hasErrors() {
@@ -124,7 +124,43 @@ public class TestRun {
         currentTestCase = testCase;
     }
 
-    public Object getLaunch() {
-        return launch;
+    public void endTest() {
+        progress.markAsCompleted();
+    }
+
+    public void startFailure(TestCaseResult failure) {
+        failures.markCurrentResultAsFailure();
+        currentTestCase = failure;
+    }
+
+    public void endTestCase() {
+        progress.endTestCase();
+        currentTestCase.setTime(progress.getProcessTimeForTestCase());
+    }
+
+    public boolean hasFailures() {
+        return progress.hasFailures();
+    }
+
+    public boolean isProgressInitialized() {
+        return progress.isInitialized();
+    }
+
+    public void startTestCase(TestCaseResult testCase) {
+        failures.addResult(testCase);
+        currentTestCase = testCase;
+        progress.startTestCase();
+    }
+
+    public void initializeProgress(TestSuiteResult testSuite) {
+        progress.initialize(testSuite);
+    }
+
+    public void startTestSuite(TestSuiteResult testSuite) {
+        failures.addResult(testSuite);
+    }
+
+    public boolean validateLaunchIdentity(MakeGoodLaunch launch) {
+        return this.launch.equals(launch);
     }
 }
