@@ -9,32 +9,30 @@
  * distribution, and is available at http://www.eclipse.org/legal/epl-v10.html
  */
 
-package com.piece_framework.makegood.ui.views;
+package com.piece_framework.makegood.core.result;
 
 import java.util.ArrayList;
 import java.util.IdentityHashMap;
 import java.util.List;
 
-import com.piece_framework.makegood.core.result.Result;
-import com.piece_framework.makegood.core.result.TestSuiteResult;
 
 public class Failures {
-    static final int FIND_PREVIOUS = 1;
-    static final int FIND_NEXT = 2;
+    public static final int FIND_PREVIOUS = 1;
+    public static final int FIND_NEXT = 2;
     private List<Result> orderedResults = new ArrayList<Result>();
     private IdentityHashMap<Result, Integer> resultIndexes = new IdentityHashMap<Result, Integer>();
     private List<Integer> failureIndexes = new ArrayList<Integer>();
 
-    void addResult(Result result) {
+    public void addResult(Result result) {
         orderedResults.add(result);
         resultIndexes.put(result, orderedResults.size() - 1);
     }
 
-    void markCurrentResultAsFailure() {
+    public void markCurrentResultAsFailure() {
         failureIndexes.add(orderedResults.size() - 1);
     }
 
-    Result find(Result criterion, int direction) {
+    public Result find(Result criterion, int direction) {
         Integer indexOfCriterion = resultIndexes.get(criterion);
         if (indexOfCriterion == null) return null;
 

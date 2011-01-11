@@ -24,13 +24,13 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.model.IProcess;
 import org.xml.sax.SAXException;
 
+import com.piece_framework.makegood.core.result.Failures;
 import com.piece_framework.makegood.core.result.JUnitXMLReader;
 import com.piece_framework.makegood.core.result.JUnitXMLReaderListener;
 import com.piece_framework.makegood.core.result.RunProgress;
 import com.piece_framework.makegood.core.result.TestCaseResult;
 import com.piece_framework.makegood.core.result.TestSuiteResult;
 import com.piece_framework.makegood.launch.MakeGoodLaunchConfigurationDelegate;
-import com.piece_framework.makegood.ui.views.Failures;
 
 /**
  * @since 1.2.0
