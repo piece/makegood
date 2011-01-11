@@ -96,7 +96,7 @@ public class ResultView extends ViewPart {
     private Label processTime;
     private boolean actionsInitialized = false;
     private Failures failures;
-    private Progress runProgress;
+    private Progress progress;
     private ResultViewPartListener partListenr = new ResultViewPartListener();
 
     private ViewerFilter failureViewFilter = new ViewerFilter() {
@@ -353,7 +353,7 @@ public class ResultView extends ViewPart {
         elapsedTimer = new ElapsedTimer(200);
         elapsedTimer.schedule();
 
-        this.runProgress = runProgress;
+        this.progress = runProgress;
         this.failures = failures;
 
         stopTestAction.setEnabled(true);
@@ -362,7 +362,7 @@ public class ResultView extends ViewPart {
     }
 
     void endTest() {
-        if (runProgress.isCompleted() && runProgress.getAllTestCount() == 0) {
+        if (progress.isCompleted() && progress.getAllTestCount() == 0) {
             setContentDescription(Messages.TestResultView_noTestsFound);
         }
 
@@ -485,10 +485,10 @@ public class ResultView extends ViewPart {
     }
 
     private void updateResult() {
-        progressBar.update(runProgress.calculateRate());
+        progressBar.update(progress.calculateRate());
 
         processTimeAverage.setText(
-            TimeFormatter.format(runProgress.calculateProcessTimeAverage()) +
+            TimeFormatter.format(progress.calculateProcessTimeAverage()) +
             "/" + //$NON-NLS-1$
             Messages.TestResultView_averageTest
         );
@@ -497,12 +497,12 @@ public class ResultView extends ViewPart {
         processTime.setText(
             Messages.TestResultView_testTime +
             ": " + //$NON-NLS-1$
-            TimeFormatter.format(runProgress.getProcessTime())
+            TimeFormatter.format(progress.getProcessTime())
         );
 
-        passCount.setCount(runProgress.getPassCount());
-        failureCount.setCount(runProgress.getFailureCount());
-        errorCount.setCount(runProgress.getErrorCount());
+        passCount.setCount(progress.getPassCount());
+        failureCount.setCount(progress.getFailureCount());
+        errorCount.setCount(progress.getErrorCount());
 
         resultTreeViewer.refresh();
     }
@@ -511,7 +511,7 @@ public class ResultView extends ViewPart {
         elapsedTime.setText(
             Messages.TestResultView_realTime +
             ": " + //$NON-NLS-1$
-            TimeFormatter.format(runProgress.getElapsedTime())
+            TimeFormatter.format(progress.getElapsedTime())
         );
     }
 
@@ -519,9 +519,9 @@ public class ResultView extends ViewPart {
         testCount.setText(
             Messages.TestResultView_testsLabel +
             ": " + //$NON-NLS-1$
-            (runProgress.isRunning() ? runProgress.getTestCount() + 1 : runProgress.getTestCount()) +
+            (progress.isRunning() ? progress.getTestCount() + 1 : progress.getTestCount()) +
             "/" + //$NON-NLS-1$
-            runProgress.getAllTestCount()
+            progress.getAllTestCount()
         );
     }
 
@@ -531,7 +531,7 @@ public class ResultView extends ViewPart {
 
         initializeActions(site);
 
-        if (runProgress != null) {
+        if (progress != null) {
             updateResult();
             updateElapsedTime();
             updateTestCount();
@@ -576,7 +576,7 @@ public class ResultView extends ViewPart {
         @Override
         public void run() {
             update();
-            if (runProgress.isRunning()) {
+            if (progress.isRunning()) {
                 schedule();
             }
         }
