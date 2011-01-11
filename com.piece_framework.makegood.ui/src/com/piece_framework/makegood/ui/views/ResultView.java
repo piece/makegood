@@ -61,7 +61,7 @@ import com.piece_framework.makegood.core.result.Failures;
 import com.piece_framework.makegood.core.result.Result;
 import com.piece_framework.makegood.core.result.TestCaseResult;
 import com.piece_framework.makegood.core.result.TestSuiteResult;
-import com.piece_framework.makegood.core.run.RunProgress;
+import com.piece_framework.makegood.core.run.Progress;
 import com.piece_framework.makegood.launch.MakeGoodLaunch;
 import com.piece_framework.makegood.launch.RuntimeConfiguration;
 import com.piece_framework.makegood.ui.Activator;
@@ -96,7 +96,7 @@ public class ResultView extends ViewPart {
     private Label processTime;
     private boolean actionsInitialized = false;
     private Failures failures;
-    private RunProgress runProgress;
+    private Progress runProgress;
     private ResultViewPartListener partListenr = new ResultViewPartListener();
 
     private ViewerFilter failureViewFilter = new ViewerFilter() {
@@ -349,7 +349,7 @@ public class ResultView extends ViewPart {
         resultTreeViewer.expandAll();
     }
 
-    void startTest(RunProgress runProgress, Failures failures) {
+    void startTest(Progress runProgress, Failures failures) {
         elapsedTimer = new ElapsedTimer(200);
         elapsedTimer.schedule();
 

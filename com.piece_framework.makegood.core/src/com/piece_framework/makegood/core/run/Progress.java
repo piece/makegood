@@ -14,7 +14,7 @@ package com.piece_framework.makegood.core.run;
 
 import com.piece_framework.makegood.core.result.TestSuiteResult;
 
-public class RunProgress {
+public class Progress {
     private boolean isInitialized;
     private long processTime;
     private long startTimeForTestCase;
@@ -25,7 +25,7 @@ public class RunProgress {
     private boolean isRunning = false;
     private boolean isCompleted = false;
 
-    public RunProgress() {
+    public Progress() {
         suite = new TestSuiteResult(null);
     }
 

@@ -29,13 +29,13 @@ import com.piece_framework.makegood.core.result.JUnitXMLReader;
 import com.piece_framework.makegood.core.result.JUnitXMLReaderListener;
 import com.piece_framework.makegood.core.result.TestCaseResult;
 import com.piece_framework.makegood.core.result.TestSuiteResult;
-import com.piece_framework.makegood.core.run.RunProgress;
+import com.piece_framework.makegood.core.run.Progress;
 
 /**
  * @since 1.2.0
  */
 public class TestRun {
-    private RunProgress runProgress = new RunProgress();
+    private Progress runProgress = new Progress();
     private boolean hasErrors = false;
     private Failures failures = new Failures();
     private ILaunch launch;
@@ -99,7 +99,7 @@ public class TestRun {
         runProgress.end();
     }
 
-    public RunProgress getRunProgress() {
+    public Progress getRunProgress() {
         return runProgress;
     }
 
