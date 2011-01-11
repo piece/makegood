@@ -65,6 +65,7 @@ public class TestSuiteResult extends Result {
     }
 
     @Override
+    public
     void addChild(Result result) {
         if (result == null) {
             return;

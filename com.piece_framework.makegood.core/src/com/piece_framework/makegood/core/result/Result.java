@@ -18,7 +18,7 @@ public abstract class Result {
     private String name;
     long time;
     private String file;
-    Result parent;
+    public Result parent;
 
     public Result(String name) {
         this.name = name;
@@ -50,7 +50,7 @@ public abstract class Result {
 
     void addChild(Result result) {}
 
-    void setFile(String file) {
+    public void setFile(String file) {
         this.file = file;
     }
 

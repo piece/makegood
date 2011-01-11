@@ -30,9 +30,9 @@ import org.eclipse.ui.console.IConsoleConstants;
 import org.eclipse.ui.console.IOConsoleOutputStream;
 import org.eclipse.ui.progress.UIJob;
 
-import com.piece_framework.makegood.core.result.JUnitXMLReaderListener;
 import com.piece_framework.makegood.core.result.TestCaseResult;
 import com.piece_framework.makegood.core.result.TestSuiteResult;
+import com.piece_framework.makegood.core.run.JUnitXMLReaderListener;
 import com.piece_framework.makegood.launch.MakeGoodLaunch;
 import com.piece_framework.makegood.launch.TestRun;
 import com.piece_framework.makegood.ui.Activator;

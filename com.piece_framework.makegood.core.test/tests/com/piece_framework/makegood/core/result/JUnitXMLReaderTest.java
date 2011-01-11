@@ -30,6 +30,8 @@ import org.junit.Test;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
+import com.piece_framework.makegood.core.run.JUnitXMLReader;
+
 public class JUnitXMLReaderTest {
     private static final String BASE_DIR = "/home/matsu/GITWORK/stagehand-testrunner";
     private static final String EXAMPLES_DIR = BASE_DIR + "/examples";

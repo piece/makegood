@@ -11,7 +11,7 @@
 
 package com.piece_framework.makegood.core.result;
 
-enum ResultType {
+public enum ResultType {
     PASS,
     FAILURE,
     ERROR

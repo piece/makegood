@@ -22,7 +22,7 @@ public class TestCaseResult extends Result {
     private boolean isArtificial = false;
     String failureType;
     private String failureTrace;
-    boolean fixed = false;
+    public boolean fixed = false;
     ResultType resultType = ResultType.PASS;
 
     public TestCaseResult(String name) {
@@ -58,27 +58,27 @@ public class TestCaseResult extends Result {
         parent.setTime(time);
     }
 
-    void setClassName(String cassName) {
+    public void setClassName(String cassName) {
         this.className = cassName;
     }
 
-    void setLine(int line) {
+    public void setLine(int line) {
         this.line = line;
     }
 
-    boolean isArtificial() {
+    public boolean isArtificial() {
         return isArtificial;
     }
 
-    void setIsArtificial(boolean isArtificial) {
+    public void setIsArtificial(boolean isArtificial) {
         this.isArtificial = isArtificial;
     }
 
-    void setFailureType(String failureType) {
+    public void setFailureType(String failureType) {
         this.failureType = failureType;
     }
 
-    void setFailureTrace(String failureTrace) {
+    public void setFailureTrace(String failureTrace) {
         this.failureTrace = failureTrace;
     }
 
@@ -109,7 +109,7 @@ public class TestCaseResult extends Result {
         return fixed;
     }
 
-    void setResultType(ResultType resultType) {
+    public void setResultType(ResultType resultType) {
         this.resultType = resultType;
     }
 
