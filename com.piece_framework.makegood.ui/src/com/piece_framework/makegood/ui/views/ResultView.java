@@ -59,9 +59,9 @@ import org.eclipse.ui.part.ViewPart;
 
 import com.piece_framework.makegood.core.result.Failures;
 import com.piece_framework.makegood.core.result.Result;
-import com.piece_framework.makegood.core.result.RunProgress;
 import com.piece_framework.makegood.core.result.TestCaseResult;
 import com.piece_framework.makegood.core.result.TestSuiteResult;
+import com.piece_framework.makegood.core.run.RunProgress;
 import com.piece_framework.makegood.launch.MakeGoodLaunch;
 import com.piece_framework.makegood.launch.RuntimeConfiguration;
 import com.piece_framework.makegood.ui.Activator;

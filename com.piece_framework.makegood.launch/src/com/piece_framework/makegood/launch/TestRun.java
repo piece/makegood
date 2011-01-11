@@ -27,9 +27,9 @@ import org.xml.sax.SAXException;
 import com.piece_framework.makegood.core.result.Failures;
 import com.piece_framework.makegood.core.result.JUnitXMLReader;
 import com.piece_framework.makegood.core.result.JUnitXMLReaderListener;
-import com.piece_framework.makegood.core.result.RunProgress;
 import com.piece_framework.makegood.core.result.TestCaseResult;
 import com.piece_framework.makegood.core.result.TestSuiteResult;
+import com.piece_framework.makegood.core.run.RunProgress;
 
 /**
  * @since 1.2.0
