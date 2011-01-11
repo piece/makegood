@@ -30,7 +30,6 @@ import com.piece_framework.makegood.core.result.RunProgress;
 import com.piece_framework.makegood.core.result.TestCaseResult;
 import com.piece_framework.makegood.core.result.TestSuiteResult;
 import com.piece_framework.makegood.launch.MakeGoodLaunchConfigurationDelegate;
-import com.piece_framework.makegood.ui.actions.StopTestAction;
 import com.piece_framework.makegood.ui.views.Failures;
 
 /**
@@ -107,10 +106,6 @@ public class TestRun {
 
     public boolean hasErrors() {
         return hasErrors;
-    }
-
-    public boolean isStoppedByAction() {
-        return StopTestAction.isStoppedByAction(launch);
     }
 
     public TestSuiteResult getResult() {

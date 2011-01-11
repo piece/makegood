@@ -36,6 +36,7 @@ import com.piece_framework.makegood.core.result.TestSuiteResult;
 import com.piece_framework.makegood.launch.MakeGoodLaunch;
 import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.TestRun;
+import com.piece_framework.makegood.ui.actions.StopTestAction;
 import com.piece_framework.makegood.ui.launch.TestRunner;
 
 public class ResultViewController implements IDebugEventSetListener {
@@ -121,7 +122,7 @@ public class ResultViewController implements IDebugEventSetListener {
 
                 if (testRun.hasErrors()) {
                     resultView.markAsStopped();
-                    if (!testRun.isStoppedByAction()) {
+                    if (!StopTestAction.isStoppedByAction(launch)) {
                         ViewShow.show(IConsoleConstants.ID_CONSOLE_VIEW);
                     }
                 }
