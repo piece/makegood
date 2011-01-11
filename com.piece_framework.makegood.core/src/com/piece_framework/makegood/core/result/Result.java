@@ -15,10 +15,10 @@ package com.piece_framework.makegood.core.result;
 import java.util.List;
 
 public abstract class Result {
-    private String name;
-    long time;
-    private String file;
-    public Result parent;
+    protected String name;
+    protected long time;
+    protected String file;
+    protected Result parent;
 
     public Result(String name) {
         this.name = name;

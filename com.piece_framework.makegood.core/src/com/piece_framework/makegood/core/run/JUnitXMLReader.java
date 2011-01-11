@@ -176,7 +176,7 @@ public class JUnitXMLReader extends DefaultHandler {
 
     private void endTestSuite() {
         if (currentTestSuite != null) {
-            currentTestSuite = (TestSuiteResult) currentTestSuite.parent;
+            currentTestSuite = (TestSuiteResult) currentTestSuite.getParent();
         }
 
         for (JUnitXMLReaderListener listener: listeners) {
