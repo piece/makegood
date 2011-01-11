@@ -60,7 +60,7 @@ public abstract class Result {
 
     public abstract int getFailureCount();
 
-    public abstract boolean fixed();
+    public abstract boolean isFixed();
 
     public abstract boolean hasChildren();
 

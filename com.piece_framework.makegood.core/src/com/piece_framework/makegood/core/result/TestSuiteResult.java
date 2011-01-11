@@ -109,9 +109,9 @@ public class TestSuiteResult extends Result {
     }
 
     @Override
-    public boolean fixed() {
+    public boolean isFixed() {
         for (Result result : children) {
-            if (result.fixed()) return true;
+            if (result.isFixed()) return true;
         }
 
         return false;

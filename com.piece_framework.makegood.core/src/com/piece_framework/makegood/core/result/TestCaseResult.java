@@ -112,7 +112,7 @@ public class TestCaseResult extends Result {
     }
 
     @Override
-    public boolean fixed() {
+    public boolean isFixed() {
         return fixed;
     }
 

@@ -182,7 +182,7 @@ public class ResultView extends ViewPart {
                 Object element = selection.getFirstElement();
                 if (!(element instanceof TestCaseResult)) return;
                 TestCaseResult testCase = (TestCaseResult) element;
-                if (!testCase.fixed()) return;
+                if (!testCase.isFixed()) return;
                 if (!testCase.hasFailures() && !testCase.hasErrors()) return;
                 failureTrace.setText(testCase.getFailureTrace());
             }
@@ -696,7 +696,7 @@ public class ResultView extends ViewPart {
         @Override
         public Image getImage(Object element) {
             Result result = (Result) element;
-            if (!result.fixed()) {
+            if (!result.isFixed()) {
                 if (result instanceof TestCaseResult) {
                     return inProgressIcon;
                 } else {
