@@ -9,11 +9,14 @@
  * distribution, and is available at http://www.eclipse.org/legal/epl-v10.html
  */
 
-package com.piece_framework.makegood.core.result;
+package com.piece_framework.makegood.core.run;
 
 import java.util.ArrayList;
 import java.util.IdentityHashMap;
 import java.util.List;
+
+import com.piece_framework.makegood.core.result.Result;
+import com.piece_framework.makegood.core.result.TestSuiteResult;
 
 public class Failures {
     public static final int FIND_PREVIOUS = 1;

@@ -24,9 +24,9 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.model.IProcess;
 import org.xml.sax.SAXException;
 
-import com.piece_framework.makegood.core.result.Failures;
 import com.piece_framework.makegood.core.result.TestCaseResult;
 import com.piece_framework.makegood.core.result.TestSuiteResult;
+import com.piece_framework.makegood.core.run.Failures;
 import com.piece_framework.makegood.core.run.JUnitXMLReader;
 import com.piece_framework.makegood.core.run.JUnitXMLReaderListener;
 import com.piece_framework.makegood.core.run.Progress;

@@ -57,10 +57,10 @@ import org.eclipse.ui.IWorkbenchPartReference;
 import org.eclipse.ui.contexts.IContextService;
 import org.eclipse.ui.part.ViewPart;
 
-import com.piece_framework.makegood.core.result.Failures;
 import com.piece_framework.makegood.core.result.Result;
 import com.piece_framework.makegood.core.result.TestCaseResult;
 import com.piece_framework.makegood.core.result.TestSuiteResult;
+import com.piece_framework.makegood.core.run.Failures;
 import com.piece_framework.makegood.core.run.Progress;
 import com.piece_framework.makegood.launch.MakeGoodLaunch;
 import com.piece_framework.makegood.launch.RuntimeConfiguration;
