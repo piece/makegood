@@ -102,7 +102,7 @@ public class ResultViewController implements IDebugEventSetListener {
         synchronized (this) {
             if (testLifecycle == null) return;
         }
-        if (testLifecycle.validateLaunchIdentity(launch)) return;
+        if (!testLifecycle.validateLaunchIdentity(launch)) return;
 
         testLifecycle.end();
 
