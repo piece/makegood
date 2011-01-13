@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2009-2010 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
- *               2010 KUBO Atsuhiro <kubo@iteman.jp>,
+ *               2010-2011 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -64,6 +64,7 @@ import com.piece_framework.makegood.core.run.Failures;
 import com.piece_framework.makegood.core.run.Progress;
 import com.piece_framework.makegood.launch.MakeGoodLaunch;
 import com.piece_framework.makegood.launch.RuntimeConfiguration;
+import com.piece_framework.makegood.launch.TestLifecycle;
 import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.Messages;
 import com.piece_framework.makegood.ui.actions.DebugTestAction;
@@ -273,7 +274,7 @@ public class ResultView extends ViewPart {
 
     public void updateStateOfRunAllTestsAction() {
         if (!actionsInitialized) return;
-        if (MakeGoodLaunch.hasActiveLaunch()) return;
+        if (TestLifecycle.isRunning()) return;
 
         runAllTestsAction.setEnabled(ActivePart.getInstance().isAllTestsRunnable());
 

@@ -40,48 +40,27 @@ import com.piece_framework.makegood.stagehand_testrunner.StagehandTestRunner;
 
 public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy {
     private static final String MAKEGOOD_JUNIT_XML_FILE = "MAKEGOOD_JUNIT_XML_FILE"; //$NON-NLS-1$
-    private final Object launchLock = new Object();
-    private ILaunchConfiguration currentConfiguration;
-    private boolean preLaunchCheckCalled = false;
     private String delegateClass;
 
     @Override
     public boolean finalLaunchCheck(ILaunchConfiguration configuration, String mode, IProgressMonitor monitor) throws CoreException {
-        if (MakeGoodLaunch.hasActiveLaunch()) {
-            monitor.setCanceled(true);
+        if (!configuration.exists()) {
+            cancelLaunch(monitor);
             return false;
-        }
-
-        synchronized (launchLock) {
-            if (currentConfiguration != null) {
-                monitor.setCanceled(true);
-                return false;
-            }
-
-            if (!configuration.exists()) {
-                monitor.setCanceled(true);
-                return false;
-            }
         }
 
         boolean result;
         try {
             result = super.finalLaunchCheck(configuration, mode, monitor);
         } catch (DebugException e) {
-            synchronized (launchLock) {
-                preLaunchCheckCalled = false;
-            }
+            cancelLaunch(monitor);
             return false;
         } catch (CoreException e) {
-            synchronized (launchLock) {
-                preLaunchCheckCalled = false;
-            }
+            cancelLaunch(monitor);
             throw e;
         }
         if (!result) {
-            synchronized (launchLock) {
-                preLaunchCheckCalled = false;
-            }
+            cancelLaunch(monitor);
         }
         return result;
     }
@@ -92,6 +71,7 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
         try {
             configuration = createConfiguration(originalConfiguration);
         } catch (CoreException e) {
+            cancelLaunch();
             throw e;
         }
 
@@ -101,52 +81,23 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
 
     @Override
     public boolean preLaunchCheck(ILaunchConfiguration configuration, String mode, IProgressMonitor monitor) throws CoreException {
-        if (MakeGoodLaunch.hasActiveLaunch()) {
-            monitor.setCanceled(true);
+        if (!configuration.exists()) {
+            cancelLaunch(monitor);
             return false;
-        }
-
-        synchronized (launchLock) {
-            if (currentConfiguration != null) {
-                monitor.setCanceled(true);
-                return false;
-            }
-
-            if (!configuration.exists()) {
-                monitor.setCanceled(true);
-                return false;
-            }
         }
 
         boolean result;
         try {
-            synchronized (launchLock) {
-                if (preLaunchCheckCalled) {
-                    monitor.setCanceled(true);
-                    return false;
-                }
-
-                result = super.preLaunchCheck(configuration, mode, monitor);
-                preLaunchCheckCalled = true;
-            }
+            result = super.preLaunchCheck(configuration, mode, monitor);
         } catch (DebugException e) {
-            synchronized (launchLock) {
-                preLaunchCheckCalled = false;
-            }
-            monitor.setCanceled(true);
+            cancelLaunch(monitor);
             return false;
         } catch (CoreException e) {
-            synchronized (launchLock) {
-                preLaunchCheckCalled = false;
-            }
-            monitor.setCanceled(true);
+            cancelLaunch(monitor);
             throw e;
         }
         if (!result) {
-            synchronized (launchLock) {
-                preLaunchCheckCalled = false;
-            }
-            monitor.setCanceled(true);
+            cancelLaunch(monitor);
         }
         return result;
     }
@@ -157,52 +108,29 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
         String mode,
         ILaunch launch,
         IProgressMonitor monitor) throws CoreException {
-        if (MakeGoodLaunch.hasActiveLaunch()) {
-            monitor.setCanceled(true);
-            return;
-        }
-
         ILaunchConfiguration configuration = launch.getLaunchConfiguration();
         if (configuration == null) {
-            monitor.setCanceled(true);
+            cancelLaunch(monitor);
             return;
         }
 
-        synchronized (launchLock) {
-            if (currentConfiguration != null) {
-                monitor.setCanceled(true);
-                return;
-            }
-
-            if (!configuration.exists()) {
-                monitor.setCanceled(true);
-                return;
-            }
-
-            currentConfiguration = configuration;
+        if (!configuration.exists()) {
+            cancelLaunch(monitor);
+            return;
         }
 
         try {
-            try {
-                JUnitXMLRegistry.create();
-            } catch (SecurityException e) {
-                monitor.setCanceled(true);
-                throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
-            }
+            JUnitXMLRegistry.create();
+        } catch (SecurityException e) {
+            cancelLaunch(monitor);
+            throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
+        }
 
-            try {
-                super.launch(configuration, mode, launch, monitor);
-            } catch (CoreException e) {
-                monitor.setCanceled(true);
-                throw e;
-            }
-        } finally {
-            synchronized (launchLock) {
-                preLaunchCheckCalled = false;
-                if (currentConfiguration != null) {
-                    currentConfiguration = null;
-                }
-            }
+        try {
+            super.launch(configuration, mode, launch, monitor);
+        } catch (CoreException e) {
+            cancelLaunch(monitor);
+            throw e;
         }
     }
 
@@ -296,5 +224,14 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
         workingCopy.setAttribute(IPHPDebugConstants.ATTR_INI_LOCATION, phpexeItem.getINILocation() != null ? phpexeItem.getINILocation().toString() : null);
         workingCopy.setAttribute(IPHPDebugConstants.RUN_WITH_DEBUG_INFO, PHPDebugPlugin.getDebugInfoOption());
         workingCopy.setAttribute(IDebugParametersKeys.FIRST_LINE_BREAKPOINT, PHPProjectPreferences.getStopAtFirstLine(project));
+    }
+
+    private void cancelLaunch() {
+        TestLifecycle.destroy();
+    }
+
+    private void cancelLaunch(IProgressMonitor monitor) {
+        monitor.setCanceled(true);
+        cancelLaunch();
     }
 }

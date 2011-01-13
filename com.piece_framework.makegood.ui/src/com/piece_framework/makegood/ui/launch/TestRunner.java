@@ -23,6 +23,7 @@ import org.eclipse.ui.internal.dialogs.PropertyDialog;
 import com.piece_framework.makegood.core.MakeGoodProperty;
 import com.piece_framework.makegood.launch.MakeGoodLaunch;
 import com.piece_framework.makegood.launch.RuntimeConfiguration;
+import com.piece_framework.makegood.launch.TestLifecycle;
 import com.piece_framework.makegood.ui.Messages;
 import com.piece_framework.makegood.ui.views.ActivePart;
 import com.piece_framework.makegood.ui.views.ViewShow;
@@ -84,12 +85,15 @@ public class TestRunner {
             return;
         }
 
-        if (MakeGoodLaunch.hasActiveLaunch()) {
-            if (!isRunWhenFileIsSaved) {
-                raiseTestSessionAlreadyExistsError();
-            }
+        synchronized (TestRunner.class) {
+            if (TestLifecycle.isRunning()) {
+                if (!isRunWhenFileIsSaved) {
+                    raiseTestSessionAlreadyExistsError();
+                }
 
-            return;
+                return;
+            }
+            TestLifecycle.create();
         }
 
         if (!isRunWhenFileIsSaved) {

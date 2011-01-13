@@ -42,8 +42,9 @@ public class TestLifecycle {
     private JUnitXMLReader junitXMLReader;
     private Thread parserThread;
     private TestCaseResult currentTestCase;
+    private static TestLifecycle currentTestLifecycle;
 
-    public TestLifecycle(ILaunch launch, JUnitXMLReaderListener junitXMLReaderListener) throws CoreException {
+    public void initialize(ILaunch launch, JUnitXMLReaderListener junitXMLReaderListener) throws CoreException {
         this.launch = launch;
 
         junitXMLReader = new JUnitXMLReader(new File(MakeGoodLaunchConfigurationDelegate.getJUnitXMLFile(launch)));
@@ -162,5 +163,21 @@ public class TestLifecycle {
 
     public boolean validateLaunchIdentity(MakeGoodLaunch launch) {
         return this.launch.equals(launch);
+    }
+
+    public static void create() {
+        currentTestLifecycle = new TestLifecycle();
+    }
+
+    public static void destroy() {
+        currentTestLifecycle = null;
+    }
+
+    public static boolean isRunning() {
+        return currentTestLifecycle != null;
+    }
+
+    public static TestLifecycle getInstance() {
+        return currentTestLifecycle;
     }
 }
