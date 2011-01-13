@@ -124,7 +124,7 @@ public class SystemIncludePathAspect extends Aspect {
 
     @Override
     protected String[] joinPoints() {
-        return PDTVersion.getInstance().compareTo("2.2.0.v20100826") < 0 ? //$NON-NLS-1$
+        return PDTVersion.getInstance().compareTo("2.2.1.v20101001") < 0 ? //$NON-NLS-1$
             new String[] {
                 JOINPOINT_CAST_ICONTAINER,
                 JOINPOINT_CALL_GETLOCATION,
