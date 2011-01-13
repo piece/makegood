@@ -30,7 +30,6 @@ import com.piece_framework.makegood.ui.views.ViewShow;
 public class TestRunner {
     private static MakeGoodLaunchShortcut lastShortcut;
     private static Object lastTarget;
-    private static boolean isRunWhenFileIsSaved = false;
     private static IWorkbenchPart lastActivePart;
 
     public static void runRelatedTests(IEditorPart editorPart) {
@@ -54,9 +53,7 @@ public class TestRunner {
     }
 
     public static void runAllTests(Object target) {
-        isRunWhenFileIsSaved = true;
-        runTests(target, new AllTestsLaunchShortcut());
-        isRunWhenFileIsSaved = false;
+        runTests(target, new ResourceChangedAllTestsLaunchShortcut());
     }
 
     public static void runAllTests() {
@@ -86,7 +83,7 @@ public class TestRunner {
 
         synchronized (TestRunner.class) {
             if (TestLifecycle.isRunning()) {
-                if (!isRunWhenFileIsSaved) {
+                if (!isTestRunBySavingFiles(shortcut)) {
                     raiseTestSessionAlreadyExistsError();
                 }
 
@@ -95,7 +92,7 @@ public class TestRunner {
             TestLifecycle.create();
         }
 
-        if (!isRunWhenFileIsSaved) {
+        if (!isTestRunBySavingFiles(shortcut)) {
             lastShortcut = shortcut;
             lastTarget = target;
         }
@@ -143,5 +140,9 @@ public class TestRunner {
                 );
             }
         });
+    }
+
+    private static boolean isTestRunBySavingFiles(MakeGoodLaunchShortcut shortcut) {
+        return shortcut instanceof ResourceChangedAllTestsLaunchShortcut;
     }
 }
