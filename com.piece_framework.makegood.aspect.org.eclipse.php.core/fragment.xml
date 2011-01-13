@@ -14,19 +14,6 @@
       </monitorTarget>
    </extension>
    <extension
-         point="org.eclipse.dltk.core.sourceParsers">
-      <parserContribution
-            natureId="org.eclipse.php.core.PHPNature">
-         <parser
-               class="com.piece_framework.makegood.aspect.org.eclipse.php.core.MakeGoodSourceParserFactory"
-               description="Dummy parser factory for weaving"
-               id="com.piece_framework.makegood.aspect.org.eclipse.php.core.makegoodParserFactory"
-               name="Dummy parser factory"
-               priority="0">
-         </parser>
-      </parserContribution>
-   </extension>
-   <extension
          id="com.piece_framework.makegood.aspect.org.eclipse.php.core.MakeGoodDocumentSetupParticipant"
          name="MakeGoodDocumentSetupParticipant"
          point="org.eclipse.core.filebuffers.documentSetup">
