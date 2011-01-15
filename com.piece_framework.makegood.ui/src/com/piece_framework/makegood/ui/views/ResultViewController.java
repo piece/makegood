@@ -42,6 +42,7 @@ import com.piece_framework.makegood.ui.launch.TestRunner;
 public class ResultViewController implements IDebugEventSetListener {
     private static final String MAKEGOOD_RESULTVIEWCONTROLLER_MARKER_CREATE = "MAKEGOOD_RESULTVIEWCONTROLLER_MARKER_CREATE"; //$NON-NLS-1$
     private static final String MAKEGOOD_RESULTVIEWCONTROLLER_MARKER_TERMINATE = "MAKEGOOD_RESULTVIEWCONTROLLER_MARKER_TERMINATE"; //$NON-NLS-1$
+    private TestLifecycle testLifecycle;
 
     @Override
     public void handleDebugEvents(DebugEvent[] events) {
@@ -78,13 +79,15 @@ public class ResultViewController implements IDebugEventSetListener {
             }
         }
 
+        testLifecycle = TestLifecycle.getInstance();
+
         try {
-            TestLifecycle.getInstance().initialize(launch, new ResultJUnitXMLReaderListener());
+            testLifecycle.initialize(launch, new ResultJUnitXMLReaderListener());
         } catch (CoreException e) {
             Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
             return;
         }
-        TestLifecycle.getInstance().start();
+        testLifecycle.start();
 
         preventConsoleViewFocusing();
 
@@ -98,7 +101,7 @@ public class ResultViewController implements IDebugEventSetListener {
                 TestRunner.restoreFocusToLastActivePart();
 
                 resultView.reset();
-                resultView.startTest(TestLifecycle.getInstance().getProgress(), TestLifecycle.getInstance().getFailures());
+                resultView.startTest(testLifecycle.getProgress(), testLifecycle.getFailures());
                 return Status.OK_STATUS;
             }
         };
@@ -116,10 +119,10 @@ public class ResultViewController implements IDebugEventSetListener {
             return;
         }
 
-        if (!TestLifecycle.getInstance().validateLaunchIdentity(launch)) {
+        if (!testLifecycle.validateLaunchIdentity(launch)) {
             return;
         }
-        TestLifecycle.getInstance().end();
+        testLifecycle.end();
 
         Job job = new UIJob("MakeGood Test End") { //$NON-NLS-1$
             @Override
@@ -132,7 +135,7 @@ public class ResultViewController implements IDebugEventSetListener {
 
                 resultView.endTest();
 
-                if (TestLifecycle.getInstance().hasErrors()) {
+                if (testLifecycle.hasErrors()) {
                     resultView.markAsStopped();
                     if (!StopTestAction.isStoppedByAction(launch)) {
                         ViewOpener.show(IConsoleConstants.ID_CONSOLE_VIEW);
@@ -192,17 +195,17 @@ public class ResultViewController implements IDebugEventSetListener {
     public class ResultJUnitXMLReaderListener implements JUnitXMLReaderListener {
         @Override
         public void startTestSuite(TestSuiteResult testSuite) {
-            TestLifecycle.getInstance().startTestSuite(testSuite);
+            testLifecycle.startTestSuite(testSuite);
 
-            if (!TestLifecycle.getInstance().isProgressInitialized()) {
-                TestLifecycle.getInstance().initializeProgress(testSuite);
+            if (!testLifecycle.isProgressInitialized()) {
+                testLifecycle.initializeProgress(testSuite);
 
                 Job job = new UIJob("MakeGood Result Tree Set") { //$NON-NLS-1$
                     @Override
                     public IStatus runInUIThread(IProgressMonitor monitor) {
                         ResultView resultView = (ResultView) ViewOpener.find(ResultView.ID);
                         if (resultView == null) return Status.CANCEL_STATUS;
-                        resultView.setTreeInput(TestLifecycle.getInstance().getResult());
+                        resultView.setTreeInput(testLifecycle.getResult());
                         return Status.OK_STATUS;
                     }
                 };
@@ -217,7 +220,7 @@ public class ResultViewController implements IDebugEventSetListener {
 
         @Override
         public void startTestCase(final TestCaseResult testCase) {
-            TestLifecycle.getInstance().startTestCase(testCase);
+            testLifecycle.startTestCase(testCase);
 
             Job job = new UIJob("MakeGood Test Case Start") { //$NON-NLS-1$
                 @Override
@@ -226,7 +229,7 @@ public class ResultViewController implements IDebugEventSetListener {
                     if (resultView == null) return Status.CANCEL_STATUS;
                     resultView.printCurrentlyRunningTestCase(testCase);
                     resultView.updateOnStartTestCase(testCase);
-                    if (TestLifecycle.getInstance().isFileFirstAccessed(testCase)) {
+                    if (testLifecycle.isFileFirstAccessed(testCase)) {
                         try {
                             TestMarker.clearMarkers(testCase);
                         } catch (CoreException e) {
@@ -246,16 +249,16 @@ public class ResultViewController implements IDebugEventSetListener {
 
         @Override
         public void endTestCase(final TestCaseResult testCase) {
-            if (!TestLifecycle.getInstance().isProgressInitialized()) return;
+            if (!testLifecycle.isProgressInitialized()) return;
 
-            TestLifecycle.getInstance().endTestCase(testCase);
+            testLifecycle.endTestCase(testCase);
 
             Job job = new UIJob("MakeGood Test Case End") { //$NON-NLS-1$
                 @Override
                 public IStatus runInUIThread(IProgressMonitor monitor) {
                     ResultView resultView = (ResultView) ViewOpener.find(ResultView.ID);
                     if (resultView == null) return Status.CANCEL_STATUS;
-                    if (TestLifecycle.getInstance().hasFailures()) {
+                    if (testLifecycle.hasFailures()) {
                         resultView.markAsFailed();
                     }
                     resultView.updateOnEndTestCase(testCase);
@@ -267,7 +270,7 @@ public class ResultViewController implements IDebugEventSetListener {
 
         @Override
         public void startFailure(final TestCaseResult failure) {
-            TestLifecycle.getInstance().startFailure(failure);
+            testLifecycle.startFailure(failure);
             Job job = new UIJob("MakeGood Marker Create") { //$NON-NLS-1$
                 @Override
                 public IStatus runInUIThread(IProgressMonitor monitor) {
@@ -288,7 +291,7 @@ public class ResultViewController implements IDebugEventSetListener {
 
         @Override
         public void endTest() {
-            TestLifecycle.getInstance().endTest();
+            testLifecycle.endTest();
         }
     }
 }
