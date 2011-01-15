@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2010 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
- *               2010 KUBO Atsuhiro <kubo@iteman.jp>,
+ *               2010-2011 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -22,7 +22,7 @@ import com.piece_framework.makegood.launch.LaunchTarget;
 public class ResourceLaunchShortcut extends MakeGoodLaunchShortcut {
     @Override
     public void launch(ISelection selection, String mode) {
-        if (!(selection instanceof IStructuredSelection)) return;
+        if (!(selection instanceof IStructuredSelection)) throw new NotLaunchedException();
 
         Object target = ((IStructuredSelection) selection).getFirstElement();
         LaunchTarget launchTarget = LaunchTarget.getInstance();
@@ -30,7 +30,7 @@ public class ResourceLaunchShortcut extends MakeGoodLaunchShortcut {
         launchTarget.addTarget(target);
 
         IResource mainScriptResource = launchTarget.getMainScriptResource();
-        if (mainScriptResource == null) return;
+        if (mainScriptResource == null) throw new NotLaunchedException();
 
         super.launch(new StructuredSelection(mainScriptResource), mode);
     }

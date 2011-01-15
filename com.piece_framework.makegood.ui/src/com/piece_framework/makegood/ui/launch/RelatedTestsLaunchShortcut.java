@@ -40,6 +40,7 @@ import org.eclipse.ui.texteditor.ITextEditor;
 import com.piece_framework.makegood.core.PHPFlags;
 import com.piece_framework.makegood.core.PHPResource;
 import com.piece_framework.makegood.launch.LaunchTarget;
+import com.piece_framework.makegood.launch.TestLifecycle;
 import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.Messages;
 import com.piece_framework.makegood.ui.views.EditorParser;
@@ -47,7 +48,7 @@ import com.piece_framework.makegood.ui.views.EditorParser;
 public class RelatedTestsLaunchShortcut extends MakeGoodLaunchShortcut {
     @Override
     public void launch(IEditorPart editor, String mode) {
-        if (!(editor instanceof ITextEditor)) return;
+        if (!(editor instanceof ITextEditor)) throw new NotLaunchedException();
         LaunchTarget.getInstance().clearTargets();
         launchTestsRelatedTo(editor, mode);
     }
@@ -82,6 +83,7 @@ public class RelatedTestsLaunchShortcut extends MakeGoodLaunchShortcut {
                         Messages.MakeGoodLaunchShortcut_messageTitle,
                         Messages.MakeGoodLaunchShortcut_notFoundTestsMessage
                     );
+                    TestLifecycle.destroy();
                     return;
                 }
 
@@ -95,10 +97,10 @@ public class RelatedTestsLaunchShortcut extends MakeGoodLaunchShortcut {
         };
 
         List<IType> types = new EditorParser(editor).getTypes();
-        if (types == null || types.size() == 0) return;
+        if (types == null || types.size() == 0) throw new NotLaunchedException();
 
         IDLTKLanguageToolkit toolkit = DLTKLanguageManager.getLanguageToolkit(types.get(0));
-        if (toolkit == null) return;
+        if (toolkit == null) throw new NotLaunchedException();
 
         SearchPattern pattern = null;
         for (IType type: types) {
@@ -137,6 +139,7 @@ public class RelatedTestsLaunchShortcut extends MakeGoodLaunchShortcut {
             );
         } catch (CoreException e) {
             Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
+            throw new NotLaunchedException();
         }
     }
 }

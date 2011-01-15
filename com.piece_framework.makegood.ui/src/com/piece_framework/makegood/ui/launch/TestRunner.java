@@ -101,10 +101,14 @@ public class TestRunner {
 
         String launchMode = RuntimeConfiguration.getInstance().getLaunchMode();
 
-        if (target instanceof ISelection) {
-            shortcut.launch((ISelection) target, launchMode);
-        } else if (target instanceof IEditorPart) {
-            shortcut.launch((IEditorPart) target, launchMode);
+        try {
+            if (target instanceof ISelection) {
+                shortcut.launch((ISelection) target, launchMode);
+            } else if (target instanceof IEditorPart) {
+                shortcut.launch((IEditorPart) target, launchMode);
+            }
+        } catch (NotLaunchedException e) {
+            TestLifecycle.destroy();
         }
     }
 

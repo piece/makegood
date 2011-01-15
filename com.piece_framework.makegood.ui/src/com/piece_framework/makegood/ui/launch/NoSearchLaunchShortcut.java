@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2010 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
- *               2010 KUBO Atsuhiro <kubo@iteman.jp>,
+ *               2010-2011 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -26,8 +26,8 @@ public abstract class NoSearchLaunchShortcut extends MakeGoodLaunchShortcut {
     @Override
     public void launch(IEditorPart editor, String mode) {
         if (lastTarget == null) {
-            if (editor == null) return;
-            if (!(editor instanceof ITextEditor)) return;
+            if (editor == null) throw new NotLaunchedException();
+            if (!(editor instanceof ITextEditor)) throw new NotLaunchedException();
         }
 
         IModelElement target;
@@ -39,7 +39,7 @@ public abstract class NoSearchLaunchShortcut extends MakeGoodLaunchShortcut {
 
         if (!target.exists()) {
             Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.PLUGIN_ID, "The given test target is not found")); //$NON-NLS-1$
-            return;
+            throw new NotLaunchedException();
         }
 
         LaunchTarget parameter = LaunchTarget.getInstance();

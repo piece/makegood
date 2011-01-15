@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2010 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
- *               2010 KUBO Atsuhiro <kubo@iteman.jp>,
+ *               2010-2011 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -29,7 +29,7 @@ import com.piece_framework.makegood.launch.LaunchTarget;
 public class AllTestsLaunchShortcut extends MakeGoodLaunchShortcut {
     @Override
     public void launch(ISelection selection, String mode) {
-        if (!(selection instanceof IStructuredSelection)) return;
+        if (!(selection instanceof IStructuredSelection)) throw new NotLaunchedException();
 
         Object target = ((IStructuredSelection) selection).getFirstElement();
         IResource resource = null;
@@ -38,17 +38,17 @@ public class AllTestsLaunchShortcut extends MakeGoodLaunchShortcut {
         } else if (target instanceof IResource) {
             resource = (IResource) target;
         }
-        if (resource == null) return;
+        if (resource == null) throw new NotLaunchedException();
 
         IResource mainScriptResource = addTestFolders(resource).getMainScriptResource();
-        if (mainScriptResource == null) return;
+        if (mainScriptResource == null) throw new NotLaunchedException();
 
         super.launch(new StructuredSelection(mainScriptResource), mode);
     }
 
     @Override
     public void launch(IEditorPart editor, String mode) {
-        if (!(editor.getEditorInput() instanceof IFileEditorInput)) return;
+        if (!(editor.getEditorInput() instanceof IFileEditorInput)) throw new NotLaunchedException();
 
         IFile target = ((IFileEditorInput) editor.getEditorInput()).getFile();
         if (!PHPResource.isPHPSource(target)) {
