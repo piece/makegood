@@ -18,14 +18,8 @@ import org.eclipse.ui.IEditorPart;
 import com.piece_framework.makegood.ui.views.EditorParser;
 
 public class ContextLaunchShortcut extends NoSearchLaunchShortcut {
-    private IModelElement lastTarget;
-
     @Override
     protected IModelElement getTarget(IEditorPart editor) {
-        if (lastTarget != null) {
-            return lastTarget;
-        }
-
         EditorParser parser = new EditorParser(editor);
         IModelElement target = parser.getModelElementOnSelection();
         if (target == null) {
@@ -36,7 +30,6 @@ public class ContextLaunchShortcut extends NoSearchLaunchShortcut {
             target = target.getParent();
         }
 
-        lastTarget = target;
         return target;
     }
 }
