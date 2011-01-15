@@ -2,12 +2,12 @@
 	<parent>
 		<artifactId>makegood-parent</artifactId>
 		<groupId>com.piece-framework</groupId>
-		<version>1.4.0.qualifier</version>
+		<version>1.5.0.qualifier</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
   <groupId>com.piece-framework</groupId>
   <artifactId>makegood.aspect.org.eclipse.php.core</artifactId>
-  <version>1.4.0.qualifier</version>
+  <version>1.5.0.qualifier</version>
   <packaging>eclipse-plugin</packaging>
   <name>MakeGood Aspect for org.eclipse.php.core</name>
 </project>
