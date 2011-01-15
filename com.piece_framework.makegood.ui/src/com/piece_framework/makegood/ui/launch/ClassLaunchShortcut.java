@@ -24,11 +24,13 @@ public class ClassLaunchShortcut extends NoSearchLaunchShortcut {
         if (element == null) {
             return parser.getSourceModule();
         }
+
         if (element.getElementType() == IModelElement.FIELD
             || element.getElementType() == IModelElement.METHOD
             ) {
-            element = element.getParent();
+            return element.getParent();
         }
+
         return element;
     }
 }

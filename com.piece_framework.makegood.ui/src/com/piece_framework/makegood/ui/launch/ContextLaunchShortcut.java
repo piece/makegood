@@ -27,7 +27,7 @@ public class ContextLaunchShortcut extends NoSearchLaunchShortcut {
         }
 
         if (target.getElementType() == IModelElement.FIELD) {
-            target = target.getParent();
+            return target.getParent();
         }
 
         return target;
