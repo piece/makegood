@@ -44,6 +44,10 @@ public class TestLifecycle {
     private TestCaseResult currentTestCase;
     private static TestLifecycle currentTestLifecycle;
 
+    private TestLifecycle() {
+        super();
+    }
+
     public void initialize(ILaunch launch, JUnitXMLReaderListener junitXMLReaderListener) throws CoreException {
         this.launch = launch;
 

@@ -40,6 +40,9 @@ import com.piece_framework.makegood.ui.actions.StopTestAction;
 import com.piece_framework.makegood.ui.launch.TestRunner;
 
 public class ResultViewController implements IDebugEventSetListener {
+    private static final String MAKEGOOD_RESULTVIEWCONTROLLER_MARKER_CREATE = "MAKEGOOD_RESULTVIEWCONTROLLER_MARKER_CREATE"; //$NON-NLS-1$
+    private static final String MAKEGOOD_RESULTVIEWCONTROLLER_MARKER_TERMINATE = "MAKEGOOD_RESULTVIEWCONTROLLER_MARKER_TERMINATE"; //$NON-NLS-1$
+
     @Override
     public void handleDebugEvents(DebugEvent[] events) {
         if (events == null) return;
@@ -59,6 +62,22 @@ public class ResultViewController implements IDebugEventSetListener {
     }
 
     private void handleCreateEvent(final MakeGoodLaunch launch) {
+        // TODO This marker is to avoid calling create() twice by PDT.
+        if (createEventFired(launch)) {
+            return;
+        }
+        markAsCreateEventFired(launch);
+
+        if (terminateEventFired(launch)) {
+            return;
+        }
+
+        synchronized (TestLifecycle.class) {
+            if (!TestLifecycle.isRunning()) {
+                TestLifecycle.create();
+            }
+        }
+
         try {
             TestLifecycle.getInstance().initialize(launch, new ResultJUnitXMLReaderListener());
         } catch (CoreException e) {
@@ -87,7 +106,19 @@ public class ResultViewController implements IDebugEventSetListener {
     }
 
     private void handleTerminateEvent(final MakeGoodLaunch launch) {
-        if (!TestLifecycle.getInstance().validateLaunchIdentity(launch)) return;
+        // TODO This code is to avoid calling terminate() twice by PDT.
+        if (terminateEventFired(launch)) {
+            return;
+        }
+        markAsTerminateEventFired(launch);
+
+        if (!createEventFired(launch)) {
+            return;
+        }
+
+        if (!TestLifecycle.getInstance().validateLaunchIdentity(launch)) {
+            return;
+        }
         TestLifecycle.getInstance().end();
 
         Job job = new UIJob("MakeGood Test End") { //$NON-NLS-1$
@@ -136,6 +167,26 @@ public class ResultViewController implements IDebugEventSetListener {
         } else {
             return null;
         }
+    }
+
+    private void markAsCreateEventFired(ILaunch launch) {
+        launch.setAttribute(MAKEGOOD_RESULTVIEWCONTROLLER_MARKER_CREATE, Boolean.TRUE.toString());
+    }
+
+    private boolean createEventFired(ILaunch launch) {
+        String isCreated = launch.getAttribute(MAKEGOOD_RESULTVIEWCONTROLLER_MARKER_CREATE);
+        if (isCreated == null) return false;
+        return Boolean.TRUE.toString().equals(isCreated);
+    }
+
+    private void markAsTerminateEventFired(ILaunch launch) {
+        launch.setAttribute(MAKEGOOD_RESULTVIEWCONTROLLER_MARKER_TERMINATE, Boolean.TRUE.toString());
+    }
+
+    private boolean terminateEventFired(ILaunch launch) {
+        String isTerminated = launch.getAttribute(MAKEGOOD_RESULTVIEWCONTROLLER_MARKER_TERMINATE);
+        if (isTerminated == null) return false;
+        return Boolean.TRUE.toString().equals(isTerminated);
     }
 
     public class ResultJUnitXMLReaderListener implements JUnitXMLReaderListener {
