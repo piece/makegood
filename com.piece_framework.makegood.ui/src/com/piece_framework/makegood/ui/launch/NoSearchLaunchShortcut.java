@@ -38,13 +38,7 @@ public abstract class NoSearchLaunchShortcut extends MakeGoodLaunchShortcut {
         }
 
         if (!target.exists()) {
-            Activator.getDefault().getLog().log(
-                new Status(
-                    Status.WARNING,
-                    Activator.PLUGIN_ID,
-                    "The given test target is not found" //$NON-NLS-1$
-                )
-            );
+            Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.PLUGIN_ID, "The given test target is not found")); //$NON-NLS-1$
             return;
         }
 
