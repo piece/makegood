@@ -191,39 +191,10 @@ public class ResultView extends ViewPart {
         resultTreeViewer.addDoubleClickListener(new IDoubleClickListener() {
             @Override
             public void doubleClick(DoubleClickEvent event) {
-                IStructuredSelection selection = (IStructuredSelection) event.getSelection();
-                Object element = selection.getFirstElement();
-                if (element instanceof TestCaseResult) {
-                    TestCaseResult testCase = (TestCaseResult) element;
-                    String fileName = testCase.getFile();
-                    if (fileName == null) return;
-                    IFile file =
-                        ResourcesPlugin.getWorkspace()
-                                       .getRoot()
-                                       .getFileForLocation(new Path(fileName));
-                    if (file != null) {
-                        EditorOpen.open(file, testCase.getLine());
-                    } else {
-                        EditorOpen.open(
-                            EFS.getLocalFileSystem().getStore(new Path(fileName)),
-                            testCase.getLine()
-                        );
-                    }
-                } else if (element instanceof TestSuiteResult) {
-                    TestSuiteResult suite= (TestSuiteResult) element;
-                    String fileName = suite.getFile();
-                    if (fileName == null) return;
-                    IFile file =
-                        ResourcesPlugin.getWorkspace()
-                                       .getRoot()
-                                       .getFileForLocation(new Path(fileName));
-                    if (file != null) {
-                        EditorOpen.open(file);
-                    } else {
-                        EditorOpen.open(
-                            EFS.getLocalFileSystem().getStore(new Path(fileName))
-                        );
-                    }
+                Object element = ((IStructuredSelection) event.getSelection()).getFirstElement();
+                if (element == null) return;
+                if (element instanceof Result) {
+                    EditorOpen.open((Result) element);
                 }
             }
         });

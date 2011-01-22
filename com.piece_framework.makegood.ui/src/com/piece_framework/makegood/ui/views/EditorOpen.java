@@ -11,9 +11,12 @@
 
 package com.piece_framework.makegood.ui.views;
 
+import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IRegion;
@@ -24,6 +27,8 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.texteditor.ITextEditor;
 
+import com.piece_framework.makegood.core.result.Result;
+import com.piece_framework.makegood.core.result.TestCaseResult;
 import com.piece_framework.makegood.ui.Activator;
 
 public class EditorOpen {
@@ -65,6 +70,28 @@ public class EditorOpen {
         if (editorPart == null) return null;
         gotoLine((ITextEditor) editorPart, line);
         return editorPart;
+    }
+
+    /**
+     * @since 1.3.0
+     */
+    public static IEditorPart open(Result result) {
+        String fileName = result.getFile();
+        if (fileName == null) return null;
+        IFile file = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(new Path(fileName));
+        if (file != null) {
+            if (result instanceof TestCaseResult) {
+                return EditorOpen.open(file, ((TestCaseResult) result).getLine());
+            } else {
+                return EditorOpen.open(file);
+            }
+        } else {
+            if (result instanceof TestCaseResult) {
+                return EditorOpen.open(EFS.getLocalFileSystem().getStore(new Path(fileName)), ((TestCaseResult) result).getLine());
+            } else {
+                return EditorOpen.open(EFS.getLocalFileSystem().getStore(new Path(fileName)));
+            }
+        }
     }
 
     private static void gotoLine(ITextEditor editor, Integer line) {
