@@ -219,11 +219,13 @@
       </category>
       <command
             categoryId="com.piece_framework.makegood.ui.commands.resultViewCategory"
+            defaultHandler="com.piece_framework.makegood.ui.handlers.NextFailureHandler"
             id="com.piece_framework.makegood.ui.commands.nextFailedTest"
             name="%commands.nextFailedTest.name">
       </command>
       <command
             categoryId="com.piece_framework.makegood.ui.commands.resultViewCategory"
+            defaultHandler="com.piece_framework.makegood.ui.handlers.PreviousFailureHandler"
             id="com.piece_framework.makegood.ui.commands.previousFailedTest"
             name="%commands.previousFailedTest.name">
       </command>
@@ -293,15 +295,15 @@
          point="org.eclipse.ui.bindings">
       <key
             commandId="com.piece_framework.makegood.ui.commands.nextFailedTest"
-            contextId="com.piece_framework.makegood.ui.contexts.resultView"
+            contextId="org.eclipse.ui.contexts.window"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="J">
+            sequence="M3+M J">
       </key>
       <key
             commandId="com.piece_framework.makegood.ui.commands.previousFailedTest"
-            contextId="com.piece_framework.makegood.ui.contexts.resultView"
+            contextId="org.eclipse.ui.contexts.window"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="K">
+            sequence="M3+M K">
       </key>
       <key
             commandId="com.piece_framework.makegood.ui.commands.showFailuresOnly"
@@ -486,6 +488,64 @@
             id="com.piece_framework.makegood.ui.preferencePages.makeGood"
             name="%preferencePages.makeGood.name">
       </page>
+   </extension>
+   <extension
+         id="com.piece_framework.makegood.ui.markers.testMarker"
+         point="org.eclipse.core.resources.markers">
+      <super
+            type="org.eclipse.core.resources.problemmarker">
+      </super>
+      <super
+            type="org.eclipse.core.resources.textmarker">
+      </super>
+      <persistent
+            value="false">
+      </persistent>
+   </extension>
+   <extension
+         id="com.piece_framework.makegood.ui.markers.testFailureMarker"
+         name="MakeGood Test Failure"
+         point="org.eclipse.core.resources.markers">
+      <super
+            type="com.piece_framework.makegood.ui.markers.testMarker">
+      </super>
+   </extension>
+   <extension
+         id="com.piece_framework.makegood.ui.markers.testErrorMarker"
+         name="MakeGood Test Error"
+         point="org.eclipse.core.resources.markers">
+      <super
+            type="com.piece_framework.makegood.ui.markers.testMarker">
+      </super>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors.annotationTypes">
+      <type
+            markerType="com.piece_framework.makegood.ui.markers.testMarker"
+            name="com.piece_framework.makegood.ui.markers.testMarkerAnnotation"
+            super="org.eclipse.ui.workbench.texteditor.error">
+      </type>
+      <type
+            markerType="com.piece_framework.makegood.ui.markers.testFailureMarker"
+            name="com.piece_framework.makegood.ui.markers.testFailureMarkerAnnotation"
+            super="com.piece_framework.makegood.ui.markers.testMarkerAnnotation">
+      </type>
+      <type
+            markerType="com.piece_framework.makegood.ui.markers.testErrorMarker"
+            name="com.piece_framework.makegood.ui.markers.testErrorMarkerAnnotation"
+            super="com.piece_framework.makegood.ui.markers.testMarkerAnnotation">
+      </type>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors.markerAnnotationSpecification">
+      <specification
+            annotationType="com.piece_framework.makegood.ui.markers.testFailureMarkerAnnotation"
+            icon="icons/failure-gray.gif">
+      </specification>
+      <specification
+            annotationType="com.piece_framework.makegood.ui.markers.testErrorMarkerAnnotation"
+            icon="icons/error-gray.gif">
+      </specification>
    </extension>
 
 </plugin>

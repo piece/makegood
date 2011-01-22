@@ -36,7 +36,6 @@ public class JUnitXMLReader extends DefaultHandler {
     private TestSuiteResult result;
     private TestSuiteResult currentTestSuite;
     private TestCaseResult currentTestCase;
-    private StringBuilder failureTrace;
     private List<JUnitXMLReaderListener> listeners = new ArrayList<JUnitXMLReaderListener>();
     private boolean stopped = false;
     private SynchronizedFileInputStream stream;
@@ -95,9 +94,6 @@ public class JUnitXMLReader extends DefaultHandler {
                            int start,
                            int length
                            ) throws SAXException {
-        if (failureTrace != null) {
-            failureTrace.append(new String(characters, start, length));
-        }
     }
 
     @Override
@@ -180,7 +176,7 @@ public class JUnitXMLReader extends DefaultHandler {
         }
 
         for (JUnitXMLReaderListener listener: listeners) {
-            listener.endTestSuite();
+            listener.endTestSuite(currentTestSuite);
         }
     }
 
@@ -198,26 +194,23 @@ public class JUnitXMLReader extends DefaultHandler {
 
     private void endTestCase() {
         currentTestCase.fix();
-        currentTestCase = null;
 
         for (JUnitXMLReaderListener listener: listeners) {
-            listener.endTestCase();
+            listener.endTestCase(currentTestCase);
         }
+
+        currentTestCase = null;
     }
 
     private void startFailure(TestCaseResult failure) {
-        failureTrace = new StringBuilder();
-
         for (JUnitXMLReaderListener listener: listeners) {
             listener.startFailure(failure);
         }
     }
 
     private void endFailure() {
-        currentTestCase.setFailureTrace(failureTrace.toString());
-
         for (JUnitXMLReaderListener listener: listeners) {
-            listener.endFailure();
+            listener.endFailure(currentTestCase);
         }
 
         if (currentTestCase.isArtificial()) {
@@ -274,6 +267,18 @@ public class JUnitXMLReader extends DefaultHandler {
         if (attributes.getIndex("type") != -1) { //$NON-NLS-1$
             currentTestCase.setFailureType(attributes.getValue("type")); //$NON-NLS-1$
         }
+        if (attributes.getIndex("file") != -1) { //$NON-NLS-1$
+            currentTestCase.setFile(attributes.getValue("file")); //$NON-NLS-1$
+        }
+        if (attributes.getIndex("line") != -1) { //$NON-NLS-1$
+            currentTestCase.setLine(Integer.parseInt(attributes.getValue("line"))); //$NON-NLS-1$
+        }
+        if (attributes.getIndex("message") != -1) { //$NON-NLS-1$
+            currentTestCase.setFailureMessage(attributes.getValue("message")); //$NON-NLS-1$
+        }
+        if (attributes.getIndex("trace") != -1) { //$NON-NLS-1$
+            currentTestCase.setFailureTrace(attributes.getValue("trace")); //$NON-NLS-1$
+        }
 
         return currentTestCase;
     }
@@ -292,6 +297,18 @@ public class JUnitXMLReader extends DefaultHandler {
 
         if (attributes.getIndex("type") != -1) { //$NON-NLS-1$
             currentTestCase.setFailureType(attributes.getValue("type")); //$NON-NLS-1$
+        }
+        if (attributes.getIndex("file") != -1) { //$NON-NLS-1$
+            currentTestCase.setFile(attributes.getValue("file")); //$NON-NLS-1$
+        }
+        if (attributes.getIndex("line") != -1) { //$NON-NLS-1$
+            currentTestCase.setLine(Integer.parseInt(attributes.getValue("line"))); //$NON-NLS-1$
+        }
+        if (attributes.getIndex("message") != -1) { //$NON-NLS-1$
+            currentTestCase.setFailureMessage(attributes.getValue("message")); //$NON-NLS-1$
+        }
+        if (attributes.getIndex("trace") != -1) { //$NON-NLS-1$
+            currentTestCase.setFailureTrace(attributes.getValue("trace")); //$NON-NLS-1$
         }
 
         return currentTestCase;

@@ -23,7 +23,9 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IToolBarManager;
@@ -54,6 +56,7 @@ import org.eclipse.ui.IPartListener2;
 import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchPartReference;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.contexts.IContextService;
 import org.eclipse.ui.part.ViewPart;
 
@@ -99,6 +102,7 @@ public class ResultView extends ViewPart {
     private Failures failures;
     private Progress progress;
     private ResultViewPartListener partListenr = new ResultViewPartListener();
+    private EditorOpener editorOpener = new EditorOpener();
 
     private ViewerFilter failureViewFilter = new ViewerFilter() {
         @Override
@@ -194,7 +198,11 @@ public class ResultView extends ViewPart {
                 Object element = ((IStructuredSelection) event.getSelection()).getFirstElement();
                 if (element == null) return;
                 if (element instanceof Result) {
-                    EditorOpener.open((Result) element);
+                    try {
+                        editorOpener.open((Result) element);
+                    } catch (PartInitException e) {
+                        Activator.getDefault().getLog().log(new Status(IStatus.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
+                    }
                 }
             }
         });
@@ -455,10 +463,10 @@ public class ResultView extends ViewPart {
         resultTreeViewer.setSelection(new StructuredSelection(previousOrNextResult), true);
         resultTreeViewer.expandToLevel(previousOrNextResult, TreeViewer.ALL_LEVELS);
 
-        IWorkbenchPart activePart = ViewOpener.getActivePart();
-        EditorOpener.open(previousOrNextResult);
-        if (activePart != null) {
-            ViewOpener.setFocus(activePart);
+        try {
+            editorOpener.open(previousOrNextResult);
+        } catch (PartInitException e) {
+            Activator.getDefault().getLog().log(new Status(IStatus.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
         }
     }
 
@@ -568,6 +576,14 @@ public class ResultView extends ViewPart {
         public void clearText() {
             setText(""); //$NON-NLS-1$
             hideScrollBar();
+        }
+
+        /**
+         * @since 1.3.0
+         */
+        @Override
+        public void setText(String text) {
+            super.setText(text.trim());
         }
     }
 

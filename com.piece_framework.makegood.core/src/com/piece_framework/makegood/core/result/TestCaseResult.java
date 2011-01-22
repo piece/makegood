@@ -25,6 +25,11 @@ public class TestCaseResult extends Result {
     private boolean isFixed = false;
     private ResultType resultType = ResultType.PASS;
 
+    /**
+     * @since 1.3.0
+     */
+    private String failureMessage;
+
     public TestCaseResult(String name) {
         super(name);
     }
@@ -153,5 +158,19 @@ public class TestCaseResult extends Result {
             return parent.getFile();
         }
         return file;
+    }
+
+    /**
+     * @since 1.3.0
+     */
+    public void setFailureMessage(String failureMessage) {
+        this.failureMessage = failureMessage;
+    }
+
+    /**
+     * @since 1.3.0
+     */
+    public String getFailureMessage() {
+        return failureMessage;
     }
 }

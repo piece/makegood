@@ -20,11 +20,18 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IRegion;
+import org.eclipse.ui.IEditorDescriptor;
+import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IEditorReference;
+import org.eclipse.ui.IEditorRegistry;
+import org.eclipse.ui.IReusableEditor;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.ide.IDE;
+import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.texteditor.ITextEditor;
 
 import com.piece_framework.makegood.core.result.Result;
@@ -32,6 +39,8 @@ import com.piece_framework.makegood.core.result.TestCaseResult;
 import com.piece_framework.makegood.ui.Activator;
 
 public class EditorOpener {
+    private IEditorReference reusedEditor;
+
     public static IEditorPart open(IFile file) {
         IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
         if (window == null) return null;
@@ -61,6 +70,7 @@ public class EditorOpener {
     public static IEditorPart open(IFile file, Integer line) {
         IEditorPart editorPart = open(file);
         if (editorPart == null) return null;
+        if (line == null) return null;
         gotoLine((ITextEditor) editorPart, line);
         return editorPart;
     }
@@ -68,6 +78,7 @@ public class EditorOpener {
     public static IEditorPart open(IFileStore fileStore, Integer line) {
         IEditorPart editorPart = open(fileStore);
         if (editorPart == null) return null;
+        if (line == null) return null;
         gotoLine((ITextEditor) editorPart, line);
         return editorPart;
     }
@@ -75,12 +86,15 @@ public class EditorOpener {
     /**
      * @since 1.3.0
      */
-    public static IEditorPart open(Result result) {
+    public IEditorPart open(Result result) throws PartInitException {
         String fileName = result.getFile();
         if (fileName == null) return null;
         IFile file = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(new Path(fileName));
         if (file != null) {
             if (result instanceof TestCaseResult) {
+                if (result.hasFailures() || result.hasErrors()) {
+                    return showWithReuse(file, ((TestCaseResult) result).getLine());
+                }
                 return EditorOpener.open(file, ((TestCaseResult) result).getLine());
             } else {
                 return EditorOpener.open(file);
@@ -107,5 +121,70 @@ public class EditorOpener {
         }
 
         editor.selectAndReveal(region.getOffset(), region.getLength());
+    }
+
+    /**
+     * @see org.eclipse.search.internal.ui.text.EditorOpener#showWithReuse()
+     * @since 1.3.0
+     */
+    private IEditorPart showWithReuse(IFile file, Integer line) throws PartInitException {
+        IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+        if (window == null) return null;
+        IWorkbenchPage page = window.getActivePage();
+        if (page == null) return null;
+
+        IEditorInput input = new FileEditorInput(file);
+        IEditorPart editor = page.findEditor(input);
+        if (editor != null) {
+            if (line != null) {
+                gotoLine((ITextEditor) editor, line);
+            }
+            page.activate(editor);
+            page.bringToTop(editor);
+            return editor;
+        }
+
+        String editorId = getEditorId(file);
+        if (reusedEditor != null && reusedEditor.getEditor(false) != null && !reusedEditor.isDirty() && !reusedEditor.isPinned()) {
+            if (!reusedEditor.getId().equals(editorId)) {
+                page.closeEditors(new IEditorReference[] { reusedEditor }, false);
+                reusedEditor = null;
+            } else {
+                editor = reusedEditor.getEditor(true);
+                if (editor != null && (editor instanceof IReusableEditor)) {
+                    ((IReusableEditor) editor).setInput(input);
+                    if (line != null) {
+                        gotoLine((ITextEditor) editor, line);
+                    }
+                    page.activate(editor);
+                    page.bringToTop(editor);
+                    return editor;
+                }
+            }
+        }
+
+        editor = page.openEditor(input, editorId, true);
+        if (editor == null) return null;
+        if (line != null) {
+            gotoLine((ITextEditor) editor, line);
+        }
+        if (editor instanceof IReusableEditor) {
+            reusedEditor = (IEditorReference) page.getReference(editor);
+        } else {
+            reusedEditor = null;
+        }
+        return editor;
+    }
+
+    /**
+     * @see org.eclipse.search.internal.ui.text.EditorOpener#getEditorID()
+     * @since 1.3.0
+     */
+    private String getEditorId(IFile file) throws PartInitException {
+        IEditorDescriptor desciptor = IDE.getEditorDescriptor(file);
+        if (desciptor == null) {
+            return PlatformUI.getWorkbench().getEditorRegistry().findEditor(IEditorRegistry.SYSTEM_EXTERNAL_EDITOR_ID).getId();
+        }
+        return desciptor.getId();
     }
 }

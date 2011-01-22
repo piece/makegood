@@ -13,6 +13,8 @@ package com.piece_framework.makegood.launch;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -41,8 +43,8 @@ public class TestLifecycle {
     private ILaunch launch;
     private JUnitXMLReader junitXMLReader;
     private Thread parserThread;
-    private TestCaseResult currentTestCase;
     private TestingTargets testingTargets = new TestingTargets();
+    private List<String> processedFiles = new ArrayList<String>();
     private static TestLifecycle currentTestLifecycle;
 
     private TestLifecycle() {
@@ -122,26 +124,20 @@ public class TestLifecycle {
         return failures;
     }
 
-    public TestCaseResult getCurrentTestCase() {
-        return currentTestCase;
-    }
-
-    public void setCurrentTestCase(TestCaseResult testCase) {
-        currentTestCase = testCase;
-    }
-
     public void endTest() {
         progress.markAsCompleted();
     }
 
     public void startFailure(TestCaseResult failure) {
         failures.markCurrentResultAsFailure();
-        currentTestCase = failure;
     }
 
-    public void endTestCase() {
+    public void endTestCase(TestCaseResult testCase) {
         progress.endTestCase();
-        currentTestCase.setTime(progress.getProcessTimeForTestCase());
+        testCase.setTime(progress.getProcessTimeForTestCase());
+        if (isFileFirstAccessed(testCase)) {
+            markFileAsAccessed(testCase);
+        }
     }
 
     public boolean hasFailures() {
@@ -154,7 +150,6 @@ public class TestLifecycle {
 
     public void startTestCase(TestCaseResult testCase) {
         failures.addResult(testCase);
-        currentTestCase = testCase;
         progress.startTestCase();
     }
 
@@ -191,5 +186,15 @@ public class TestLifecycle {
      */
     public TestingTargets getTestingTargets() {
         return testingTargets;
+    }
+
+    public boolean isFileFirstAccessed(TestCaseResult testCase) {
+        String file = testCase.getFile();
+        if (file == null) return false;
+        return !processedFiles.contains(file);
+    }
+
+    private void markFileAsAccessed(TestCaseResult testCase) {
+        processedFiles.add(testCase.getFile());
     }
 }

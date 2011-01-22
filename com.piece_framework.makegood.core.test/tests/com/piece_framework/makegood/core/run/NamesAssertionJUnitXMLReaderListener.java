@@ -51,15 +51,15 @@ public class NamesAssertionJUnitXMLReaderListener implements JUnitXMLReaderListe
     }
 
     @Override
-    public void endTestSuite() {
+    public void endTestSuite(TestSuiteResult testSuite) {
     }
 
     @Override
-    public void endTestCase() {
+    public void endTestCase(TestCaseResult testCase) {
     }
 
     @Override
-    public void endFailure() {
+    public void endFailure(TestCaseResult failure) {
     }
 
     @Override

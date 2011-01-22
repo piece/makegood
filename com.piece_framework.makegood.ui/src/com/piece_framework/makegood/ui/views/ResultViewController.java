@@ -194,26 +194,26 @@ public class ResultViewController implements IDebugEventSetListener {
         public void startTestSuite(TestSuiteResult testSuite) {
             TestLifecycle.getInstance().startTestSuite(testSuite);
 
-            if (TestLifecycle.getInstance().isProgressInitialized()) {
+            if (!TestLifecycle.getInstance().isProgressInitialized()) {
+                TestLifecycle.getInstance().initializeProgress(testSuite);
+
+                Job job = new UIJob("MakeGood Result Tree Set") { //$NON-NLS-1$
+                    @Override
+                    public IStatus runInUIThread(IProgressMonitor monitor) {
+                        ResultView resultView = (ResultView) ViewOpener.find(ResultView.ID);
+                        if (resultView == null) return Status.CANCEL_STATUS;
+                        resultView.setTreeInput(TestLifecycle.getInstance().getResult());
+                        return Status.OK_STATUS;
+                    }
+                };
+                job.schedule();
                 return;
             }
-
-            TestLifecycle.getInstance().initializeProgress(testSuite);
-
-            Job job = new UIJob("MakeGood Result Tree Set") { //$NON-NLS-1$
-                @Override
-                public IStatus runInUIThread(IProgressMonitor monitor) {
-                    ResultView resultView = (ResultView) ViewOpener.find(ResultView.ID);
-                    if (resultView == null) return Status.CANCEL_STATUS;
-                    resultView.setTreeInput(TestLifecycle.getInstance().getResult());
-                    return Status.OK_STATUS;
-                }
-            };
-            job.schedule();
         }
 
         @Override
-        public void endTestSuite() {}
+        public void endTestSuite(TestSuiteResult testSuite) {
+        }
 
         @Override
         public void startTestCase(final TestCaseResult testCase) {
@@ -224,8 +224,15 @@ public class ResultViewController implements IDebugEventSetListener {
                 public IStatus runInUIThread(IProgressMonitor monitor) {
                     ResultView resultView = (ResultView) ViewOpener.find(ResultView.ID);
                     if (resultView == null) return Status.CANCEL_STATUS;
-                    resultView.printCurrentlyRunningTestCase(TestLifecycle.getInstance().getCurrentTestCase());
-                    resultView.updateOnStartTestCase(TestLifecycle.getInstance().getCurrentTestCase());
+                    resultView.printCurrentlyRunningTestCase(testCase);
+                    resultView.updateOnStartTestCase(testCase);
+                    if (TestLifecycle.getInstance().isFileFirstAccessed(testCase)) {
+                        try {
+                            TestMarker.clearMarkers(testCase);
+                        } catch (CoreException e) {
+                            Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
+                        }
+                    }
                     return Status.OK_STATUS;
                 }
             };
@@ -238,10 +245,10 @@ public class ResultViewController implements IDebugEventSetListener {
         }
 
         @Override
-        public void endTestCase() {
+        public void endTestCase(final TestCaseResult testCase) {
             if (!TestLifecycle.getInstance().isProgressInitialized()) return;
 
-            TestLifecycle.getInstance().endTestCase();
+            TestLifecycle.getInstance().endTestCase(testCase);
 
             Job job = new UIJob("MakeGood Test Case End") { //$NON-NLS-1$
                 @Override
@@ -251,7 +258,7 @@ public class ResultViewController implements IDebugEventSetListener {
                     if (TestLifecycle.getInstance().hasFailures()) {
                         resultView.markAsFailed();
                     }
-                    resultView.updateOnEndTestCase(TestLifecycle.getInstance().getCurrentTestCase());
+                    resultView.updateOnEndTestCase(testCase);
                     return Status.OK_STATUS;
                 }
             };
@@ -259,12 +266,25 @@ public class ResultViewController implements IDebugEventSetListener {
         }
 
         @Override
-        public void startFailure(TestCaseResult failure) {
+        public void startFailure(final TestCaseResult failure) {
             TestLifecycle.getInstance().startFailure(failure);
+            Job job = new UIJob("MakeGood Marker Create") { //$NON-NLS-1$
+                @Override
+                public IStatus runInUIThread(IProgressMonitor monitor) {
+                    try {
+                        TestMarker.createMarker(failure);
+                    } catch (CoreException e) {
+                        Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
+                    }
+                    return Status.OK_STATUS;
+                }
+            };
+            job.schedule();
         }
 
         @Override
-        public void endFailure() {}
+        public void endFailure(TestCaseResult failure) {
+        }
 
         @Override
         public void endTest() {
