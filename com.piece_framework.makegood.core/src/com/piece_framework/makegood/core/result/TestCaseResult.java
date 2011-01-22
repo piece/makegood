@@ -18,7 +18,7 @@ import java.util.List;
 
 public class TestCaseResult extends Result {
     private String className;
-    private int line;
+    private int line = 1;
     private boolean isArtificial = false;
     private String failureType;
     private String failureTrace;
