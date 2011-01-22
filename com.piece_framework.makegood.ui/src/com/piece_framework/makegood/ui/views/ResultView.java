@@ -478,7 +478,7 @@ public class ResultView extends ViewPart {
             selectedResult = (Result) resultTreeViewer.getTree().getTopItem().getData();
         }
 
-        Result previousOrNextResult = failures.find(selectedResult, direction);
+        TestCaseResult previousOrNextResult = failures.find(selectedResult, direction);
         if (previousOrNextResult == null) return;
 
         resultTreeViewer.setSelection(new StructuredSelection(previousOrNextResult), true);
