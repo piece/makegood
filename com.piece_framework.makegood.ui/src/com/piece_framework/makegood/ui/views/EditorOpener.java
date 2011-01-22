@@ -31,7 +31,7 @@ import com.piece_framework.makegood.core.result.Result;
 import com.piece_framework.makegood.core.result.TestCaseResult;
 import com.piece_framework.makegood.ui.Activator;
 
-public class EditorOpen {
+public class EditorOpener {
     public static IEditorPart open(IFile file) {
         IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
         if (window == null) return null;
@@ -81,15 +81,15 @@ public class EditorOpen {
         IFile file = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(new Path(fileName));
         if (file != null) {
             if (result instanceof TestCaseResult) {
-                return EditorOpen.open(file, ((TestCaseResult) result).getLine());
+                return EditorOpener.open(file, ((TestCaseResult) result).getLine());
             } else {
-                return EditorOpen.open(file);
+                return EditorOpener.open(file);
             }
         } else {
             if (result instanceof TestCaseResult) {
-                return EditorOpen.open(EFS.getLocalFileSystem().getStore(new Path(fileName)), ((TestCaseResult) result).getLine());
+                return EditorOpener.open(EFS.getLocalFileSystem().getStore(new Path(fileName)), ((TestCaseResult) result).getLine());
             } else {
-                return EditorOpen.open(EFS.getLocalFileSystem().getStore(new Path(fileName)));
+                return EditorOpener.open(EFS.getLocalFileSystem().getStore(new Path(fileName)));
             }
         }
     }

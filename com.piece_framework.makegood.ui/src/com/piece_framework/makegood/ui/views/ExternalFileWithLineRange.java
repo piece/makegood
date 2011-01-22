@@ -19,6 +19,6 @@ public class ExternalFileWithLineRange extends FileWithLineRange {
 
     @Override
     public void openEditor() {
-        EditorOpen.open(fileStore, line);
+        EditorOpener.open(fileStore, line);
     }
 }

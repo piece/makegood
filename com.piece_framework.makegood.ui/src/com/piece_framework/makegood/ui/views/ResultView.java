@@ -194,7 +194,7 @@ public class ResultView extends ViewPart {
                 Object element = ((IStructuredSelection) event.getSelection()).getFirstElement();
                 if (element == null) return;
                 if (element instanceof Result) {
-                    EditorOpen.open((Result) element);
+                    EditorOpener.open((Result) element);
                 }
             }
         });
@@ -456,7 +456,7 @@ public class ResultView extends ViewPart {
         resultTreeViewer.expandToLevel(previousOrNextResult, TreeViewer.ALL_LEVELS);
 
         IWorkbenchPart activePart = ViewShow.getActivePart();
-        EditorOpen.open(previousOrNextResult);
+        EditorOpener.open(previousOrNextResult);
         if (activePart != null) {
             ViewShow.setFocus(activePart);
         }
