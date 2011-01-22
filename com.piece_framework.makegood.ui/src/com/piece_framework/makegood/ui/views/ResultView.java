@@ -455,7 +455,11 @@ public class ResultView extends ViewPart {
         resultTreeViewer.setSelection(new StructuredSelection(previousOrNextResult), true);
         resultTreeViewer.expandToLevel(previousOrNextResult, TreeViewer.ALL_LEVELS);
 
+        IWorkbenchPart activePart = ViewShow.getActivePart();
         EditorOpen.open(previousOrNextResult);
+        if (activePart != null) {
+            ViewShow.setFocus(activePart);
+        }
     }
 
     private void updateResult() {
