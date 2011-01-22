@@ -19,7 +19,7 @@ import org.eclipse.ui.IViewPart;
 
 import com.piece_framework.makegood.launch.RuntimeConfiguration;
 import com.piece_framework.makegood.ui.views.ResultView;
-import com.piece_framework.makegood.ui.views.ViewShow;
+import com.piece_framework.makegood.ui.views.ViewOpener;
 
 public class ShowFailuresOnlyAction implements IViewActionDelegate {
     public static final String ID = "com.piece_framework.makegood.ui.viewActions.resultView.showFailuresOnly"; //$NON-NLS-1$
@@ -31,7 +31,7 @@ public class ShowFailuresOnlyAction implements IViewActionDelegate {
     @Override
     public void run(IAction action) {
         RuntimeConfiguration.getInstance().showsFailuresOnly = action.isChecked();
-        ResultView view = (ResultView) ViewShow.find(ResultView.ID);
+        ResultView view = (ResultView) ViewOpener.find(ResultView.ID);
         if (view != null) {
             view.filterResults(RuntimeConfiguration.getInstance().showsFailuresOnly);
         }

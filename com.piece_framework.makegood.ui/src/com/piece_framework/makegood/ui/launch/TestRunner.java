@@ -25,7 +25,7 @@ import com.piece_framework.makegood.launch.RuntimeConfiguration;
 import com.piece_framework.makegood.launch.TestLifecycle;
 import com.piece_framework.makegood.ui.Messages;
 import com.piece_framework.makegood.ui.views.ActivePart;
-import com.piece_framework.makegood.ui.views.ViewShow;
+import com.piece_framework.makegood.ui.views.ViewOpener;
 
 public class TestRunner {
     private static MakeGoodLaunchShortcut lastShortcut;
@@ -70,7 +70,7 @@ public class TestRunner {
 
     public static void restoreFocusToLastActivePart() {
         if (lastActivePart != null) {
-            ViewShow.setFocus(lastActivePart);
+            ViewOpener.setFocus(lastActivePart);
         }
     }
 
@@ -97,7 +97,7 @@ public class TestRunner {
             lastTarget = target;
         }
 
-        lastActivePart = ViewShow.getActivePart();
+        lastActivePart = ViewOpener.getActivePart();
 
         String launchMode = RuntimeConfiguration.getInstance().getLaunchMode();
 

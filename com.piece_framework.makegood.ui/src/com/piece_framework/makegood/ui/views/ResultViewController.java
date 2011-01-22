@@ -92,7 +92,7 @@ public class ResultViewController implements IDebugEventSetListener {
             @Override
             public IStatus runInUIThread(IProgressMonitor monitor) {
                 ResultView resultView = null;
-                resultView = (ResultView) ViewShow.show(ResultView.ID);
+                resultView = (ResultView) ViewOpener.show(ResultView.ID);
                 if (resultView == null) return Status.CANCEL_STATUS;
 
                 TestRunner.restoreFocusToLastActivePart();
@@ -124,7 +124,7 @@ public class ResultViewController implements IDebugEventSetListener {
         Job job = new UIJob("MakeGood Test End") { //$NON-NLS-1$
             @Override
             public IStatus runInUIThread(IProgressMonitor monitor) {
-                ResultView resultView = (ResultView) ViewShow.find(ResultView.ID);
+                ResultView resultView = (ResultView) ViewOpener.find(ResultView.ID);
                 if (resultView == null) {
                     TestLifecycle.destroy();
                     return Status.CANCEL_STATUS;
@@ -135,7 +135,7 @@ public class ResultViewController implements IDebugEventSetListener {
                 if (TestLifecycle.getInstance().hasErrors()) {
                     resultView.markAsStopped();
                     if (!StopTestAction.isStoppedByAction(launch)) {
-                        ViewShow.show(IConsoleConstants.ID_CONSOLE_VIEW);
+                        ViewOpener.show(IConsoleConstants.ID_CONSOLE_VIEW);
                     }
                 }
 
@@ -203,7 +203,7 @@ public class ResultViewController implements IDebugEventSetListener {
             Job job = new UIJob("MakeGood Result Tree Set") { //$NON-NLS-1$
                 @Override
                 public IStatus runInUIThread(IProgressMonitor monitor) {
-                    ResultView resultView = (ResultView) ViewShow.find(ResultView.ID);
+                    ResultView resultView = (ResultView) ViewOpener.find(ResultView.ID);
                     if (resultView == null) return Status.CANCEL_STATUS;
                     resultView.setTreeInput(TestLifecycle.getInstance().getResult());
                     return Status.OK_STATUS;
@@ -222,7 +222,7 @@ public class ResultViewController implements IDebugEventSetListener {
             Job job = new UIJob("MakeGood Test Case Start") { //$NON-NLS-1$
                 @Override
                 public IStatus runInUIThread(IProgressMonitor monitor) {
-                    ResultView resultView = (ResultView) ViewShow.find(ResultView.ID);
+                    ResultView resultView = (ResultView) ViewOpener.find(ResultView.ID);
                     if (resultView == null) return Status.CANCEL_STATUS;
                     resultView.printCurrentlyRunningTestCase(TestLifecycle.getInstance().getCurrentTestCase());
                     resultView.updateOnStartTestCase(TestLifecycle.getInstance().getCurrentTestCase());
@@ -246,7 +246,7 @@ public class ResultViewController implements IDebugEventSetListener {
             Job job = new UIJob("MakeGood Test Case End") { //$NON-NLS-1$
                 @Override
                 public IStatus runInUIThread(IProgressMonitor monitor) {
-                    ResultView resultView = (ResultView) ViewShow.find(ResultView.ID);
+                    ResultView resultView = (ResultView) ViewOpener.find(ResultView.ID);
                     if (resultView == null) return Status.CANCEL_STATUS;
                     if (TestLifecycle.getInstance().hasFailures()) {
                         resultView.markAsFailed();

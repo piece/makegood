@@ -22,7 +22,7 @@ import org.eclipse.ui.IViewPart;
 import com.piece_framework.makegood.aspect.monitor.WeavingMonitor;
 import com.piece_framework.makegood.ui.actions.StopTestAction;
 import com.piece_framework.makegood.ui.views.ResultView;
-import com.piece_framework.makegood.ui.views.ViewShow;
+import com.piece_framework.makegood.ui.views.ViewOpener;
 
 public class StopTest extends AbstractHandler {
     @Override
@@ -42,7 +42,7 @@ public class StopTest extends AbstractHandler {
     }
 
     private IAction getStopAction() {
-        IViewPart view = ViewShow.find(ResultView.ID);
+        IViewPart view = ViewOpener.find(ResultView.ID);
         if (view == null) return null;
         IToolBarManager manager = view.getViewSite().getActionBars().getToolBarManager();
         if (manager == null) return null;

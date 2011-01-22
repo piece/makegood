@@ -18,7 +18,7 @@ import org.eclipse.ui.IViewActionDelegate;
 import org.eclipse.ui.IViewPart;
 
 import com.piece_framework.makegood.ui.views.ResultView;
-import com.piece_framework.makegood.ui.views.ViewShow;
+import com.piece_framework.makegood.ui.views.ViewOpener;
 
 public class NextFailedTestAction implements IViewActionDelegate {
     @Override
@@ -27,7 +27,7 @@ public class NextFailedTestAction implements IViewActionDelegate {
 
     @Override
     public void run(IAction action) {
-        ResultView view = (ResultView) ViewShow.find(ResultView.ID);
+        ResultView view = (ResultView) ViewOpener.find(ResultView.ID);
         if (view != null) {
             view.moveToNextFailure();
         }

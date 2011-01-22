@@ -22,7 +22,7 @@ import org.eclipse.ui.PlatformUI;
 
 import com.piece_framework.makegood.ui.Activator;
 
-public class ViewShow {
+public class ViewOpener {
     public static IViewPart show(String viewId) {
         IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
         if (window == null) return null;

@@ -17,12 +17,12 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.ui.IWorkbenchPart;
 
 import com.piece_framework.makegood.ui.views.ResultView;
-import com.piece_framework.makegood.ui.views.ViewShow;
+import com.piece_framework.makegood.ui.views.ViewOpener;
 
 public class RunAllTestsSelectionChangedListener implements ISelectionChangedListener {
     @Override
     public void selectionChanged(SelectionChangedEvent event) {
-        ResultView resultView = (ResultView) ViewShow.find(ResultView.ID);
+        ResultView resultView = (ResultView) ViewOpener.find(ResultView.ID);
         if (resultView != null) {
             resultView.updateStateOfRunAllTestsAction();
         }
