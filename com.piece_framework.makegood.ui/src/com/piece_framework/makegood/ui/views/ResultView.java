@@ -454,6 +454,8 @@ public class ResultView extends ViewPart {
 
         resultTreeViewer.setSelection(new StructuredSelection(previousOrNextResult), true);
         resultTreeViewer.expandToLevel(previousOrNextResult, TreeViewer.ALL_LEVELS);
+
+        EditorOpen.open(previousOrNextResult);
     }
 
     private void updateResult() {
