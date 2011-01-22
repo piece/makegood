@@ -142,7 +142,7 @@ SRC_DIR + "/Stagehand/TestRunner.php:186\n" +
                 expectedTargetClass,
                 expectedFile,
                 new String[] { "pass", "(Error)" },
-                new int[] {83, 0}
+                new int[] { 83, 1 }
             );
 
             String failureContent = "Stagehand_TestRunner_PHPUnitDependsTest::pass\n" +
@@ -343,9 +343,9 @@ SRC_DIR + "/Stagehand/TestRunner.php:186\n" +
             assertTestCases(
                 suite,
                 null,
-                null,
+                expectedFile,
                 new String[] { "Warning" },
-                new int[] { 0 }
+                new int[] { 1 }
             );
 
             String failureContent = "Warning\n" + 
