@@ -49,11 +49,17 @@ public class Failures {
                 if (indexOfFailure >= indexOfCriterion) continue;
                 return (TestCaseResult) orderedResults.get(indexOfFailure);
             }
+            if (failureIndexes.size() > 0) {
+                return (TestCaseResult) orderedResults.get(failureIndexes.get(failureIndexes.size() - 1));
+            }
         } else if (direction == FIND_PREVIOUS) {
             for (int i = 0; i < failureIndexes.size(); ++i) {
                 Integer indexOfFailure = failureIndexes.get(i);
                 if (indexOfFailure <= indexOfCriterion) continue;
                 return (TestCaseResult) orderedResults.get(indexOfFailure);
+            }
+            if (failureIndexes.size() > 0) {
+                return (TestCaseResult) orderedResults.get(failureIndexes.get(0));
             }
         }
 
