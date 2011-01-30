@@ -25,7 +25,6 @@ import org.eclipse.ui.IFileEditorInput;
 import com.piece_framework.makegood.core.MakeGoodProperty;
 import com.piece_framework.makegood.core.PHPResource;
 import com.piece_framework.makegood.launch.TestLifecycle;
-import com.piece_framework.makegood.launch.TestingTargets;
 
 public class AllTestsLaunchShortcut extends MakeGoodLaunchShortcut {
     @Override
@@ -41,7 +40,9 @@ public class AllTestsLaunchShortcut extends MakeGoodLaunchShortcut {
         }
         if (resource == null) throw new NotLaunchedException();
 
-        IResource mainScriptResource = addTestFoldersAsTestingTargets(resource).getMainScriptResource();
+        addTestFoldersAsTestingTargets(resource);
+
+        IResource mainScriptResource = TestLifecycle.getInstance().getTestingTargets().getMainScriptResource();
         if (mainScriptResource == null) throw new NotLaunchedException();
 
         super.launch(new StructuredSelection(mainScriptResource), mode);
@@ -63,11 +64,9 @@ public class AllTestsLaunchShortcut extends MakeGoodLaunchShortcut {
         super.launch(editor, mode);
     }
 
-    private TestingTargets addTestFoldersAsTestingTargets(IResource resource) {
-        MakeGoodProperty property = new MakeGoodProperty(resource);
-        for (IFolder testFolder: property.getTestFolders()) {
+    private void addTestFoldersAsTestingTargets(IResource resource) {
+        for (IFolder testFolder: new MakeGoodProperty(resource).getTestFolders()) {
             TestLifecycle.getInstance().getTestingTargets().add(testFolder);
         }
-        return TestLifecycle.getInstance().getTestingTargets();
     }
 }
