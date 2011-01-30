@@ -31,22 +31,22 @@ public abstract class NoSearchLaunchShortcut extends MakeGoodLaunchShortcut {
             if (!(editor instanceof ITextEditor)) throw new NotLaunchedException();
         }
 
-        IModelElement target;
+        IModelElement testingTarget;
         if (lastTestingTarget == null) {
-            target = getTestingTarget(editor);
+            testingTarget = getTestingTarget(editor);
         } else {
-            target = lastTestingTarget;
+            testingTarget = lastTestingTarget;
         }
 
-        if (!target.exists()) {
+        if (!testingTarget.exists()) {
             Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.PLUGIN_ID, "The given test target is not found")); //$NON-NLS-1$
             throw new NotLaunchedException();
         }
 
-        TestLifecycle.getInstance().getTestingTargets().add(target);
+        TestLifecycle.getInstance().getTestingTargets().add(testingTarget);
 
         super.launch(editor, mode);
-        lastTestingTarget = target;
+        lastTestingTarget = testingTarget;
     }
 
     protected abstract IModelElement getTestingTarget(IEditorPart editor);
