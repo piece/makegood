@@ -41,7 +41,7 @@ public class AllTestsLaunchShortcut extends MakeGoodLaunchShortcut {
         }
         if (resource == null) throw new NotLaunchedException();
 
-        IResource mainScriptResource = addTestFolders(resource).getMainScriptResource();
+        IResource mainScriptResource = addTestFoldersAsTestingTargets(resource).getMainScriptResource();
         if (mainScriptResource == null) throw new NotLaunchedException();
 
         super.launch(new StructuredSelection(mainScriptResource), mode);
@@ -58,12 +58,12 @@ public class AllTestsLaunchShortcut extends MakeGoodLaunchShortcut {
             return;
         }
 
-        addTestFolders(target);
+        addTestFoldersAsTestingTargets(target);
 
         super.launch(editor, mode);
     }
 
-    private TestingTargets addTestFolders(IResource resource) {
+    private TestingTargets addTestFoldersAsTestingTargets(IResource resource) {
         MakeGoodProperty property = new MakeGoodProperty(resource);
         for (IFolder testFolder: property.getTestFolders()) {
             TestLifecycle.getInstance().getTestingTargets().add(testFolder);
