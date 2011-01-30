@@ -15,7 +15,9 @@ package com.piece_framework.makegood.launch;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.core.internal.content.ContentTypeManager;
 import org.eclipse.core.resources.IFile;
@@ -118,11 +120,11 @@ public class TestingTargets {
             }
         }
 
-        StringBuilder classes = new StringBuilder();
-        StringBuilder methods = new StringBuilder();
-        StringBuilder resources = new StringBuilder();
+        Set<String> testingFiles = new HashSet<String>();
+        Set<String> testingClasses = new HashSet<String>();
+        Set<String> testingMethods = new HashSet<String>();
         for (Object target: targets) {
-            resources.append(" \"" + getResource(target).getLocation().toString() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
+            testingFiles.add(getResource(target).getLocation().toString());
             if (target instanceof IType) {
                 int flags;
                 try {
@@ -141,25 +143,13 @@ public class TestingTargets {
                         continue;
                     }
                     for (IType type: types) {
-                        if (classes.length() > 0) {
-                            classes.append(","); //$NON-NLS-1$
-                        }
-
-                        classes.append(urlencode(PHPClassType.fromIType(type).getTypeName()));
+                        testingClasses.add(urlencode(PHPClassType.fromIType(type).getTypeName()));
                     }
                 } else if (PHPFlags.isClass(flags)) {
-                    if (classes.length() > 0) {
-                        classes.append(","); //$NON-NLS-1$
-                    }
-
-                    classes.append(urlencode(PHPClassType.fromIType((IType) target).getTypeName()));
+                    testingClasses.add(urlencode(PHPClassType.fromIType((IType) target).getTypeName()));
                 }
             } else if (target instanceof IMethod) {
-                if (methods.length() > 0) {
-                    methods.append(","); //$NON-NLS-1$
-                }
-
-                methods.append(
+                testingMethods.add(
                     urlencode(
                         PHPClassType.fromIType(((IMethod) target).getDeclaringType()).getTypeName() +
                         "::" + //$NON-NLS-1$
@@ -169,16 +159,39 @@ public class TestingTargets {
             }
         }
 
-        if (classes.length() > 0) {
-            buffer.append(" --classes=\"" + classes.toString() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
+        if (testingClasses.size() > 0) {
+            buffer.append(" --classes=\""); //$NON-NLS-1$
+            boolean isFirstElement = true;
+            for (String testingClass: testingClasses) {
+                if (!isFirstElement) {
+                    buffer.append(","); //$NON-NLS-1$
+                }
+                buffer.append(testingClass.toString());
+                isFirstElement = false;
+            }
+            buffer.append("\""); //$NON-NLS-1$
         }
 
-        if (methods.length() > 0) {
-            buffer.append(" -m \"" + methods.toString() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
+        if (testingMethods.size() > 0) {
+            buffer.append(" -m \""); //$NON-NLS-1$
+            boolean isFirstElement = true;
+            for (String testingMethod: testingMethods) {
+                if (!isFirstElement) {
+                    buffer.append(","); //$NON-NLS-1$
+                }
+                buffer.append(testingMethod.toString());
+                isFirstElement = false;
+            }
+            buffer.append("\""); //$NON-NLS-1$
         }
 
-        buffer.append(" -R " + resources.toString()); //$NON-NLS-1$
+        buffer.append(" -R"); //$NON-NLS-1$
+        for (String file: testingFiles) {
+            buffer.append(" \"" + file + "\""); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
         Debug.println(buffer.toString());
+
         return buffer.toString();
     }
 
