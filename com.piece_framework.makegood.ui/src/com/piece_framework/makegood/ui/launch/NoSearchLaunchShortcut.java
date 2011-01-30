@@ -22,20 +22,20 @@ import com.piece_framework.makegood.launch.TestingTargets;
 import com.piece_framework.makegood.ui.Activator;
 
 public abstract class NoSearchLaunchShortcut extends MakeGoodLaunchShortcut {
-    private IModelElement lastTarget;
+    private IModelElement lastTestingTarget;
 
     @Override
     public void launch(IEditorPart editor, String mode) {
-        if (lastTarget == null) {
+        if (lastTestingTarget == null) {
             if (editor == null) throw new NotLaunchedException();
             if (!(editor instanceof ITextEditor)) throw new NotLaunchedException();
         }
 
         IModelElement target;
-        if (lastTarget == null) {
+        if (lastTestingTarget == null) {
             target = getTarget(editor);
         } else {
-            target = lastTarget;
+            target = lastTestingTarget;
         }
 
         if (!target.exists()) {
@@ -46,7 +46,7 @@ public abstract class NoSearchLaunchShortcut extends MakeGoodLaunchShortcut {
         TestLifecycle.getInstance().getTestingTargets().add(target);
 
         super.launch(editor, mode);
-        lastTarget = target;
+        lastTestingTarget = target;
     }
 
     protected abstract IModelElement getTarget(IEditorPart editor);
