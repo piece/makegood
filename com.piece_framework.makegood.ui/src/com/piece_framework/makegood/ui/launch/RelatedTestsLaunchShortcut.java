@@ -39,7 +39,7 @@ import org.eclipse.ui.texteditor.ITextEditor;
 
 import com.piece_framework.makegood.core.PHPFlags;
 import com.piece_framework.makegood.core.PHPResource;
-import com.piece_framework.makegood.launch.LaunchTarget;
+import com.piece_framework.makegood.launch.TestingTargets;
 import com.piece_framework.makegood.launch.TestLifecycle;
 import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.Messages;
@@ -49,7 +49,7 @@ public class RelatedTestsLaunchShortcut extends MakeGoodLaunchShortcut {
     @Override
     public void launch(IEditorPart editor, String mode) {
         if (!(editor instanceof ITextEditor)) throw new NotLaunchedException();
-        LaunchTarget.getInstance().clearTargets();
+        TestingTargets.getInstance().clearTargets();
         launchTestsRelatedTo(editor, mode);
     }
 
@@ -87,7 +87,7 @@ public class RelatedTestsLaunchShortcut extends MakeGoodLaunchShortcut {
                     return;
                 }
 
-                LaunchTarget launchTarget = LaunchTarget.getInstance();
+                TestingTargets launchTarget = TestingTargets.getInstance();
                 launchTarget.clearTargets();
                 for (IResource test: tests) {
                     launchTarget.addTarget(test);

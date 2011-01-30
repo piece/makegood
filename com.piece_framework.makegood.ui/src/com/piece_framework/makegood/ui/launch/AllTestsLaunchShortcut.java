@@ -24,7 +24,7 @@ import org.eclipse.ui.IFileEditorInput;
 
 import com.piece_framework.makegood.core.MakeGoodProperty;
 import com.piece_framework.makegood.core.PHPResource;
-import com.piece_framework.makegood.launch.LaunchTarget;
+import com.piece_framework.makegood.launch.TestingTargets;
 
 public class AllTestsLaunchShortcut extends MakeGoodLaunchShortcut {
     @Override
@@ -62,9 +62,9 @@ public class AllTestsLaunchShortcut extends MakeGoodLaunchShortcut {
         super.launch(editor, mode);
     }
 
-    private LaunchTarget addTestFolders(IResource resource) {
+    private TestingTargets addTestFolders(IResource resource) {
         MakeGoodProperty property = new MakeGoodProperty(resource);
-        LaunchTarget launchTarget = LaunchTarget.getInstance();
+        TestingTargets launchTarget = TestingTargets.getInstance();
         launchTarget.clearTargets();
         for (IFolder testFolder: property.getTestFolders()) {
             launchTarget.addTarget(testFolder);

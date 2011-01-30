@@ -173,7 +173,7 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
             }
         };
 
-        LaunchTarget launchTarget = LaunchTarget.getInstance();
+        TestingTargets launchTarget = TestingTargets.getInstance();
         String mainScript = launchTarget.getMainScript();
         if (mainScript == null) {
             throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "The main script is not found.")); //$NON-NLS-1$
@@ -206,7 +206,7 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
 
     public static String getCommandPath() throws CoreException {
         return StagehandTestRunner.getCommandPath(
-                   LaunchTarget.getInstance().getTestingFramework().name()
+                   TestingTargets.getInstance().getTestingFramework().name()
                );
     }
 

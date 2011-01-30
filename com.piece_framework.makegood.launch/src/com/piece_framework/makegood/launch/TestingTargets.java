@@ -39,16 +39,16 @@ import com.piece_framework.makegood.core.PHPFlags;
 import com.piece_framework.makegood.core.PHPResource;
 import com.piece_framework.makegood.core.TestingFramework;
 
-public class LaunchTarget {
-    private static LaunchTarget soleInstance;
+public class TestingTargets {
+    private static TestingTargets soleInstance;
     private List<Object> targets;
 
-    private LaunchTarget() {
+    private TestingTargets() {
     }
 
-    public static LaunchTarget getInstance() {
+    public static TestingTargets getInstance() {
         if (soleInstance == null) {
-            soleInstance = new LaunchTarget();
+            soleInstance = new TestingTargets();
         }
         return soleInstance;
     }
