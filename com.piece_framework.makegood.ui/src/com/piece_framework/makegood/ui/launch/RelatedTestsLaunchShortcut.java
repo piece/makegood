@@ -49,7 +49,6 @@ public class RelatedTestsLaunchShortcut extends MakeGoodLaunchShortcut {
     @Override
     public void launch(IEditorPart editor, String mode) {
         if (!(editor instanceof ITextEditor)) throw new NotLaunchedException();
-        TestingTargets.getInstance().clearTargets();
         launchTestsRelatedTo(editor, mode);
     }
 
@@ -87,10 +86,8 @@ public class RelatedTestsLaunchShortcut extends MakeGoodLaunchShortcut {
                     return;
                 }
 
-                TestingTargets launchTarget = TestingTargets.getInstance();
-                launchTarget.clearTargets();
                 for (IResource test: tests) {
-                    launchTarget.addTarget(test);
+                    TestLifecycle.getInstance().getTestingTargets().addTarget(test);
                 }
                 RelatedTestsLaunchShortcut.super.launch(editor, mode);
             }

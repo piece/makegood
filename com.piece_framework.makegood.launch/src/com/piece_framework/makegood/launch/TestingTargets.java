@@ -40,25 +40,10 @@ import com.piece_framework.makegood.core.PHPResource;
 import com.piece_framework.makegood.core.TestingFramework;
 
 public class TestingTargets {
-    private static TestingTargets soleInstance;
-    private List<Object> targets;
-
-    private TestingTargets() {
-    }
-
-    public static TestingTargets getInstance() {
-        if (soleInstance == null) {
-            soleInstance = new TestingTargets();
-        }
-        return soleInstance;
-    }
+    private List<Object> targets = new ArrayList<Object>();
 
     public void addTarget(Object object) {
         targets.add(object);
-    }
-
-    public void clearTargets() {
-        targets = new ArrayList<Object>();
     }
 
     public String getMainScript() {

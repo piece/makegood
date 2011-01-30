@@ -42,6 +42,7 @@ public class TestLifecycle {
     private JUnitXMLReader junitXMLReader;
     private Thread parserThread;
     private TestCaseResult currentTestCase;
+    private TestingTargets testingTargets = new TestingTargets();
     private static TestLifecycle currentTestLifecycle;
 
     private TestLifecycle() {
@@ -183,5 +184,12 @@ public class TestLifecycle {
 
     public static TestLifecycle getInstance() {
         return currentTestLifecycle;
+    }
+
+    /**
+     * @since 1.3.0
+     */
+    public TestingTargets getTestingTargets() {
+        return testingTargets;
     }
 }

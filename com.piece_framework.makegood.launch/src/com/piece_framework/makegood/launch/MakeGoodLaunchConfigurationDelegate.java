@@ -173,8 +173,7 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
             }
         };
 
-        TestingTargets launchTarget = TestingTargets.getInstance();
-        String mainScript = launchTarget.getMainScript();
+        String mainScript = TestLifecycle.getInstance().getTestingTargets().getMainScript();
         if (mainScript == null) {
             throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "The main script is not found.")); //$NON-NLS-1$
         }
@@ -187,10 +186,10 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
         workingCopy.setAttribute(MAKEGOOD_JUNIT_XML_FILE, junitXMLFile);
         workingCopy.setAttribute(
             IDebugParametersKeys.EXE_CONFIG_PROGRAM_ARGUMENTS,
-            launchTarget.getProgramArguments(junitXMLFile)
+            TestLifecycle.getInstance().getTestingTargets().getProgramArguments(junitXMLFile)
         );
 
-        IResource mainScriptResource = launchTarget.getMainScriptResource();
+        IResource mainScriptResource = TestLifecycle.getInstance().getTestingTargets().getMainScriptResource();
         if (mainScriptResource == null) {
             throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "The main script resource is not found.")); //$NON-NLS-1$
         }
@@ -206,7 +205,7 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
 
     public static String getCommandPath() throws CoreException {
         return StagehandTestRunner.getCommandPath(
-                   TestingTargets.getInstance().getTestingFramework().name()
+                   TestLifecycle.getInstance().getTestingTargets().getTestingFramework().name()
                );
     }
 

@@ -17,6 +17,7 @@ import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.texteditor.ITextEditor;
 
+import com.piece_framework.makegood.launch.TestLifecycle;
 import com.piece_framework.makegood.launch.TestingTargets;
 import com.piece_framework.makegood.ui.Activator;
 
@@ -42,9 +43,7 @@ public abstract class NoSearchLaunchShortcut extends MakeGoodLaunchShortcut {
             throw new NotLaunchedException();
         }
 
-        TestingTargets parameter = TestingTargets.getInstance();
-        parameter.clearTargets();
-        parameter.addTarget(target);
+        TestLifecycle.getInstance().getTestingTargets().addTarget(target);
 
         super.launch(editor, mode);
         lastTarget = target;

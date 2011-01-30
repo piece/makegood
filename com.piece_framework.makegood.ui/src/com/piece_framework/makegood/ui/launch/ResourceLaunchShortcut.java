@@ -17,6 +17,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 
+import com.piece_framework.makegood.launch.TestLifecycle;
 import com.piece_framework.makegood.launch.TestingTargets;
 
 public class ResourceLaunchShortcut extends MakeGoodLaunchShortcut {
@@ -25,11 +26,9 @@ public class ResourceLaunchShortcut extends MakeGoodLaunchShortcut {
         if (!(selection instanceof IStructuredSelection)) throw new NotLaunchedException();
 
         Object target = ((IStructuredSelection) selection).getFirstElement();
-        TestingTargets launchTarget = TestingTargets.getInstance();
-        launchTarget.clearTargets();
-        launchTarget.addTarget(target);
+        TestLifecycle.getInstance().getTestingTargets().addTarget(target);
 
-        IResource mainScriptResource = launchTarget.getMainScriptResource();
+        IResource mainScriptResource = TestLifecycle.getInstance().getTestingTargets().getMainScriptResource();
         if (mainScriptResource == null) throw new NotLaunchedException();
 
         super.launch(new StructuredSelection(mainScriptResource), mode);
