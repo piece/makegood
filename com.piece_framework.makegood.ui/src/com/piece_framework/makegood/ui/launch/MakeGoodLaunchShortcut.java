@@ -12,12 +12,17 @@
 
 package com.piece_framework.makegood.ui.launch;
 
+import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfigurationType;
+import org.eclipse.dltk.core.ISourceModule;
+import org.eclipse.dltk.core.IType;
+import org.eclipse.dltk.core.ModelException;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.php.internal.debug.ui.launching.PHPExeLaunchShortcut;
 import org.eclipse.ui.IEditorPart;
 
+import com.piece_framework.makegood.launch.Activator;
 import com.piece_framework.makegood.launch.TestLifecycle;
 
 public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
@@ -43,5 +48,18 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
      */
     protected void addTestingTarget(Object testingTarget) {
         TestLifecycle.getInstance().getTestingTargets().add(testingTarget);
+        if (testingTarget instanceof ISourceModule) {
+            IType[] types = null;
+            try {
+                types = ((ISourceModule) testingTarget).getTypes();
+            } catch (ModelException e) {
+                Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.PLUGIN_ID, e.getMessage(), e)); //$NON-NLS-1$
+                throw new NotLaunchedException();
+            }
+
+            for (IType type: types) {
+                TestLifecycle.getInstance().getTestingTargets().add(type);
+            }
+        }
     }
 }
