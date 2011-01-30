@@ -122,7 +122,7 @@ public class TestingTargets {
         StringBuilder methods = new StringBuilder();
         StringBuilder resources = new StringBuilder();
         for (Object target: targets) {
-            resources.append(" \"" + getTargetResource(target).getLocation().toString() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
+            resources.append(" \"" + getResource(target).getLocation().toString() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
             if (target instanceof IType) {
                 int flags;
                 try {
@@ -218,7 +218,7 @@ public class TestingTargets {
         return createMakeGoodProperty().getPreloadScript();
     }
 
-    private IResource getTargetResource(Object target) {
+    private IResource getResource(Object target) {
         IResource resource = null;
         if (target instanceof IModelElement) {
             resource = ((IModelElement) target).getResource();
