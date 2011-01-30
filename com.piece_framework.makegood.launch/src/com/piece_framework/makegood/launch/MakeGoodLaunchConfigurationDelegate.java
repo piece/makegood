@@ -186,7 +186,7 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
         workingCopy.setAttribute(MAKEGOOD_JUNIT_XML_FILE, junitXMLFile);
         workingCopy.setAttribute(
             IDebugParametersKeys.EXE_CONFIG_PROGRAM_ARGUMENTS,
-            TestLifecycle.getInstance().getTestingTargets().getProgramArguments(junitXMLFile)
+            TestLifecycle.getInstance().getTestingTargets().generateCommandLine(junitXMLFile)
         );
 
         IResource mainScriptResource = TestLifecycle.getInstance().getTestingTargets().getMainScriptResource();

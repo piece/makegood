@@ -67,7 +67,7 @@ public class TestingTargets {
         return ResourcesPlugin.getWorkspace().getRoot().findMember(mainScript);
     }
 
-    public String getProgramArguments(String junitXMLFile) {
+    public String generateCommandLine(String junitXMLFile) {
         StringBuilder buffer = new StringBuilder();
 
         String preloadScript = getPreloadScript();
