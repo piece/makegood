@@ -42,7 +42,7 @@ import com.piece_framework.makegood.core.TestingFramework;
 public class TestingTargets {
     private List<Object> targets = new ArrayList<Object>();
 
-    public void addTarget(Object object) {
+    public void add(Object object) {
         targets.add(object);
     }
 

@@ -66,7 +66,7 @@ public class AllTestsLaunchShortcut extends MakeGoodLaunchShortcut {
     private TestingTargets addTestFolders(IResource resource) {
         MakeGoodProperty property = new MakeGoodProperty(resource);
         for (IFolder testFolder: property.getTestFolders()) {
-            TestLifecycle.getInstance().getTestingTargets().addTarget(testFolder);
+            TestLifecycle.getInstance().getTestingTargets().add(testFolder);
         }
         return TestLifecycle.getInstance().getTestingTargets();
     }

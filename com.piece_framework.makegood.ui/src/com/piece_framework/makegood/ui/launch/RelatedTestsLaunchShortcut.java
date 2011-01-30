@@ -87,7 +87,7 @@ public class RelatedTestsLaunchShortcut extends MakeGoodLaunchShortcut {
                 }
 
                 for (IResource test: tests) {
-                    TestLifecycle.getInstance().getTestingTargets().addTarget(test);
+                    TestLifecycle.getInstance().getTestingTargets().add(test);
                 }
                 RelatedTestsLaunchShortcut.super.launch(editor, mode);
             }

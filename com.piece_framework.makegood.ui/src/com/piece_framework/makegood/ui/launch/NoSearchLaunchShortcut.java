@@ -43,7 +43,7 @@ public abstract class NoSearchLaunchShortcut extends MakeGoodLaunchShortcut {
             throw new NotLaunchedException();
         }
 
-        TestLifecycle.getInstance().getTestingTargets().addTarget(target);
+        TestLifecycle.getInstance().getTestingTargets().add(target);
 
         super.launch(editor, mode);
         lastTarget = target;
