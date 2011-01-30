@@ -29,7 +29,7 @@ import com.piece_framework.makegood.ui.views.ViewOpener;
 
 public class TestRunner {
     private static MakeGoodLaunchShortcut lastShortcut;
-    private static Object lastTarget;
+    private static Object lastTestingTarget;
     private static IWorkbenchPart lastActivePart;
 
     public static void runRelatedTests(IEditorPart editorPart) {
@@ -61,11 +61,11 @@ public class TestRunner {
     }
 
     public static boolean hasLastTest() {
-        return lastTarget != null;
+        return lastTestingTarget != null;
     }
 
     public static void rerunLastTest() {
-        runTests(lastTarget, lastShortcut);
+        runTests(lastTestingTarget, lastShortcut);
     }
 
     public static void restoreFocusToLastActivePart() {
@@ -94,7 +94,7 @@ public class TestRunner {
 
         if (!isTestRunBySavingFiles(shortcut)) {
             lastShortcut = shortcut;
-            lastTarget = target;
+            lastTestingTarget = target;
         }
 
         lastActivePart = ViewOpener.getActivePart();
