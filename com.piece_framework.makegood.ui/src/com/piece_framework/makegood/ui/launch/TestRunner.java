@@ -52,8 +52,8 @@ public class TestRunner {
         runTests(selection, new ResourceLaunchShortcut());
     }
 
-    public static void runAllTests(Object target) {
-        runTests(target, new ResourceChangedAllTestsLaunchShortcut());
+    public static void runAllTests(Object testingTarget) {
+        runTests(testingTarget, new ResourceChangedAllTestsLaunchShortcut());
     }
 
     public static void runAllTests() {
@@ -74,10 +74,10 @@ public class TestRunner {
         }
     }
 
-    private static void runTests(Object target, MakeGoodLaunchShortcut shortcut) {
-        MakeGoodProperty property = new MakeGoodProperty(ActivePart.getResource(target));
+    private static void runTests(Object testingTarget, MakeGoodLaunchShortcut shortcut) {
+        MakeGoodProperty property = new MakeGoodProperty(ActivePart.getResource(testingTarget));
         if (!property.exists()) {
-            showPropertyPage(property, target, shortcut);
+            showPropertyPage(property, testingTarget, shortcut);
             return;
         }
 
@@ -94,7 +94,7 @@ public class TestRunner {
 
         if (!isTestRunBySavingFiles(shortcut)) {
             lastShortcut = shortcut;
-            lastTestingTarget = target;
+            lastTestingTarget = testingTarget;
         }
 
         lastActivePart = ViewOpener.getActivePart();
@@ -102,10 +102,10 @@ public class TestRunner {
         String launchMode = RuntimeConfiguration.getInstance().getLaunchMode();
 
         try {
-            if (target instanceof ISelection) {
-                shortcut.launch((ISelection) target, launchMode);
-            } else if (target instanceof IEditorPart) {
-                shortcut.launch((IEditorPart) target, launchMode);
+            if (testingTarget instanceof ISelection) {
+                shortcut.launch((ISelection) testingTarget, launchMode);
+            } else if (testingTarget instanceof IEditorPart) {
+                shortcut.launch((IEditorPart) testingTarget, launchMode);
             }
         } catch (NotLaunchedException e) {
             TestLifecycle.destroy();
@@ -114,7 +114,7 @@ public class TestRunner {
 
     private static void showPropertyPage(
         final MakeGoodProperty property,
-        final Object target,
+        final Object testingTarget,
         final MakeGoodLaunchShortcut shortcut) {
         Display.getDefault().asyncExec(new Runnable() {
             @Override
@@ -126,7 +126,7 @@ public class TestRunner {
                         property.getProject()
                     );
                 if (dialog.open() == Window.OK) {
-                    runTests(target, shortcut);
+                    runTests(testingTarget, shortcut);
                 }
             }
         });
