@@ -39,7 +39,6 @@ import org.eclipse.ui.texteditor.ITextEditor;
 
 import com.piece_framework.makegood.core.PHPFlags;
 import com.piece_framework.makegood.core.PHPResource;
-import com.piece_framework.makegood.launch.TestingTargets;
 import com.piece_framework.makegood.launch.TestLifecycle;
 import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.Messages;
@@ -87,7 +86,7 @@ public class RelatedTestsLaunchShortcut extends MakeGoodLaunchShortcut {
                 }
 
                 for (IResource test: tests) {
-                    TestLifecycle.getInstance().getTestingTargets().add(test);
+                    addTestingTarget(test);
                 }
                 RelatedTestsLaunchShortcut.super.launch(editor, mode);
             }
