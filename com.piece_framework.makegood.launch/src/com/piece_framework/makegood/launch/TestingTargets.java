@@ -49,7 +49,7 @@ public class TestingTargets {
     public String getMainScript() {
         IFile file = null;
 
-        IResource resource = getTargetResource();
+        IResource resource = getFirstResource();
         if (resource instanceof IFolder) {
             file = findDummyFile((IFolder) resource);
         } else if (resource instanceof IFile) {
@@ -228,8 +228,8 @@ public class TestingTargets {
         return resource;
     }
 
-    private IResource getTargetResource() {
-        return getTargetResource(targets.get(0));
+    private IResource getFirstResource() {
+        return getResource(targets.get(0));
     }
 
     private String getPHPUnitConfigFile() {
@@ -251,7 +251,7 @@ public class TestingTargets {
     }
 
     private MakeGoodProperty createMakeGoodProperty() {
-        return new MakeGoodProperty(getTargetResource());
+        return new MakeGoodProperty(getFirstResource());
     }
 
     private String getEncoding()
