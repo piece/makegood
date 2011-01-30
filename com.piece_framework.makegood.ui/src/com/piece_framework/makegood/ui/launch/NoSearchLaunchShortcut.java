@@ -33,7 +33,7 @@ public abstract class NoSearchLaunchShortcut extends MakeGoodLaunchShortcut {
 
         IModelElement target;
         if (lastTestingTarget == null) {
-            target = getTarget(editor);
+            target = getTestingTarget(editor);
         } else {
             target = lastTestingTarget;
         }
@@ -49,5 +49,5 @@ public abstract class NoSearchLaunchShortcut extends MakeGoodLaunchShortcut {
         lastTestingTarget = target;
     }
 
-    protected abstract IModelElement getTarget(IEditorPart editor);
+    protected abstract IModelElement getTestingTarget(IEditorPart editor);
 }

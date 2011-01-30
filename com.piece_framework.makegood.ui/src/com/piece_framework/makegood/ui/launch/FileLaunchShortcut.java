@@ -19,7 +19,7 @@ import com.piece_framework.makegood.ui.views.EditorParser;
 
 public class FileLaunchShortcut extends NoSearchLaunchShortcut {
     @Override
-    protected IModelElement getTarget(IEditorPart editor) {
+    protected IModelElement getTestingTarget(IEditorPart editor) {
         return new EditorParser(editor).getSourceModule();
     }
 }
