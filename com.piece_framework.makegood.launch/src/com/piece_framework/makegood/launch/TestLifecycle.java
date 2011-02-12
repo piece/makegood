@@ -222,6 +222,9 @@ public class TestLifecycle {
         return testingTargets;
     }
 
+    /**
+     * @since 1.3.0
+     */
     public boolean isFileFirstAccessed(TestCaseResult testCase) {
         String file = testCase.getFile();
         if (file == null) return false;
@@ -253,6 +256,9 @@ public class TestLifecycle {
         return outputStreamListener.getContents();
     }
 
+    /**
+     * @since 1.3.0
+     */
     private void markFileAsAccessed(TestCaseResult testCase) {
         processedFiles.add(testCase.getFile());
     }
