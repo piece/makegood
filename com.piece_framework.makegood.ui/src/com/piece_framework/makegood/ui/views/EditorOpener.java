@@ -48,7 +48,7 @@ public class EditorOpener {
         IWorkbenchPage page = window.getActivePage();
         if (page == null) return null;
         try {
-            return org.eclipse.ui.ide.IDE.openEditor(page, file);
+            return IDE.openEditor(page, file);
         } catch (PartInitException e) {
             Activator.getDefault().getLog().log(new Status(IStatus.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
             return null;
@@ -61,7 +61,7 @@ public class EditorOpener {
         IWorkbenchPage page = window.getActivePage();
         if (page == null) return null;
         try {
-            return org.eclipse.ui.ide.IDE.openEditorOnFileStore(page, fileStore);
+            return IDE.openEditorOnFileStore(page, fileStore);
         } catch (PartInitException e) {
             Activator.getDefault().getLog().log(new Status(IStatus.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
             return null;
