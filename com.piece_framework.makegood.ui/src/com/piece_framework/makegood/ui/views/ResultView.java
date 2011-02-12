@@ -346,8 +346,6 @@ public class ResultView extends ViewPart {
             setContentDescription(Messages.TestResultView_noTestsFound);
         }
 
-        resultTreeViewer.collapseAll();
-
         TreeItem topItem = resultTreeViewer.getTree().getTopItem();
         if (topItem != null) {
             Result topResult = (Result) topItem.getData();
@@ -360,6 +358,13 @@ public class ResultView extends ViewPart {
         rerunTestAction.setEnabled(TestRunner.hasLastTest());
         ActivePart.getInstance().setPart();
         runAllTestsAction.setEnabled(ActivePart.getInstance().isAllTestsRunnable());
+    }
+
+    /**
+     * @since 1.3.0
+     */
+    void collapseResultTree() {
+        resultTreeViewer.collapseAll();
     }
 
     void printCurrentlyRunningTestCase(TestCaseResult currentTestCase) {

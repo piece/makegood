@@ -156,6 +156,8 @@ public class ResultViewController implements IDebugEventSetListener {
                             EditorOpener.open(marker);
                         }
                     }
+                } else {
+                    resultView.collapseResultTree();
                 }
 
                 TestLifecycle.destroy();
