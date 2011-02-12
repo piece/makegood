@@ -21,12 +21,12 @@ import org.eclipse.core.runtime.CoreException;
 /**
  * @since 1.3.0
  */
-public class FatalErrorMarker {
+public class FatalErrorMarker extends Marker {
     private static final String MARKER_ID = "com.piece_framework.makegood.ui.markers.fatalErrorMarker"; //$NON-NLS-1$
     private static final Pattern FATAL_ERROR_MESSAGE_PATTERN =
         Pattern.compile("^((?:Parse|Fatal) error: .+) in (.+?)(?:\\((\\d+)\\) : eval\\(\\)'d code)? on line (\\d+)$", Pattern.MULTILINE); //$NON-NLS-1$
 
-    public static IMarker create(String fatalErrorMessage) throws CoreException {
+    public IMarker create(String fatalErrorMessage) throws CoreException {
         Matcher matcher = FATAL_ERROR_MESSAGE_PATTERN.matcher(fatalErrorMessage);
         while (matcher.find()) {
             String file;
@@ -37,12 +37,12 @@ public class FatalErrorMarker {
             } else {
                 line = Integer.valueOf(matcher.group(3));
             }
-            return Marker.create(MARKER_ID, file, line, matcher.group(1));
+            return create(MARKER_ID, file, line, matcher.group(1));
         }
         return null;
     }
 
-    public static void clear(IProject project) throws CoreException {
-        Marker.clear(MARKER_ID, project);
+    public void clear(IProject project) throws CoreException {
+        clear(MARKER_ID, project);
     }
 }

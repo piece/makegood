@@ -11,52 +11,32 @@
 
 package com.piece_framework.makegood.ui.markers;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.Path;
 
 import com.piece_framework.makegood.core.result.TestCaseResult;
 
 /**
  * @since 1.3.0
  */
-public class TestMarker {
-    private static final String MARKER_TEST = "com.piece_framework.makegood.ui.markers.testMarker"; //$NON-NLS-1$
-    private static final String MARKER_TEST_FAILURE = "com.piece_framework.makegood.ui.markers.testFailureMarker"; //$NON-NLS-1$
-    private static final String MARKER_TEST_ERROR = "com.piece_framework.makegood.ui.markers.testErrorMarker"; //$NON-NLS-1$
+public class TestMarker extends Marker {
+    private static final String MARKER_ID_TEST = "com.piece_framework.makegood.ui.markers.testMarker"; //$NON-NLS-1$
+    private static final String MARKER_ID_TEST_FAILURE = "com.piece_framework.makegood.ui.markers.testFailureMarker"; //$NON-NLS-1$
+    private static final String MARKER_ID_TEST_ERROR = "com.piece_framework.makegood.ui.markers.testErrorMarker"; //$NON-NLS-1$
 
-    public static void createMarker(TestCaseResult testCase) throws CoreException {
-        IFile file = getFile(testCase);
-        if (file == null) return;
-
-        IMarker marker;
+    public IMarker create(TestCaseResult testCase) throws CoreException {
+        String markerId;
         if (testCase.hasFailures()) {
-            marker = file.createMarker(MARKER_TEST_FAILURE);
-        } else if(testCase.hasErrors()) {
-            marker = file.createMarker(MARKER_TEST_ERROR);
+            markerId = MARKER_ID_TEST_FAILURE;
+        } else if (testCase.hasErrors()) {
+            markerId = MARKER_ID_TEST_ERROR;
         } else {
-            return;
+            return null;
         }
-
-        marker.setAttribute(IMarker.PRIORITY, IMarker.PRIORITY_HIGH);
-        marker.setAttribute(IMarker.LINE_NUMBER, testCase.getLine());
-        marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);
-        marker.setAttribute(IMarker.MESSAGE, testCase.getFailureMessage());
+        return create(markerId, testCase.getFile(), testCase.getLine(), testCase.getFailureMessage());
     }
 
-    public static void clearMarkers(TestCaseResult testCase) throws CoreException {
-        IFile file = getFile(testCase);
-        if (file == null) return;
-
-        file.deleteMarkers(MARKER_TEST, true, 1);
-    }
-
-    private static IFile getFile(TestCaseResult testCase) {
-        String fileName = testCase.getFile();
-        if (fileName == null) return null;
-
-        return ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(new Path(fileName));
+    public void clear(TestCaseResult testCase) throws CoreException {
+        clear(MARKER_ID_TEST, testCase.getFile());
     }
 }

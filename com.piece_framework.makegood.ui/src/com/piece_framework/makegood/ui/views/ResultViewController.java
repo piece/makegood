@@ -103,7 +103,7 @@ public class ResultViewController implements IDebugEventSetListener {
                 TestRunner.restoreFocusToLastActivePart();
 
                 try {
-                    FatalErrorMarker.clear(TestLifecycle.getInstance().getProject());
+                    new FatalErrorMarker().clear(TestLifecycle.getInstance().getProject());
                 } catch (CoreException e) {
                     Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
                 }
@@ -148,7 +148,7 @@ public class ResultViewController implements IDebugEventSetListener {
                     if (!StopTestAction.isStoppedByAction(launch)) {
                         IMarker marker = null;
                         try {
-                            marker = FatalErrorMarker.create(testLifecycle.getOutputContents());
+                            marker = new FatalErrorMarker().create(testLifecycle.getOutputContents());
                         } catch (CoreException e) {
                             Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
                         }
@@ -247,7 +247,7 @@ public class ResultViewController implements IDebugEventSetListener {
                     resultView.updateOnStartTestCase(testCase);
                     if (testLifecycle.isFileFirstAccessed(testCase)) {
                         try {
-                            TestMarker.clearMarkers(testCase);
+                            new TestMarker().clear(testCase);
                         } catch (CoreException e) {
                             Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
                         }
@@ -291,7 +291,7 @@ public class ResultViewController implements IDebugEventSetListener {
                 @Override
                 public IStatus runInUIThread(IProgressMonitor monitor) {
                     try {
-                        TestMarker.createMarker(failure);
+                        new TestMarker().create(failure);
                     } catch (CoreException e) {
                         Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
                     }
