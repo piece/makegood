@@ -40,6 +40,7 @@ import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.actions.StopTestAction;
 import com.piece_framework.makegood.ui.launch.TestRunner;
 import com.piece_framework.makegood.ui.markers.FatalErrorMarker;
+import com.piece_framework.makegood.ui.markers.TestMarker;
 
 public class ResultViewController implements IDebugEventSetListener {
     private static final String MAKEGOOD_RESULTVIEWCONTROLLER_MARKER_CREATE = "MAKEGOOD_RESULTVIEWCONTROLLER_MARKER_CREATE"; //$NON-NLS-1$
