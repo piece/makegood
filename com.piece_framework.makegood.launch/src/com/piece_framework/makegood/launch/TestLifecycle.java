@@ -42,7 +42,7 @@ public class TestLifecycle {
     private Failures failures = new Failures();
     private ILaunch launch;
     private JUnitXMLReader junitXMLReader;
-    private Thread parserThread;
+    private Thread junitXMLReaderThread;
     private TestingTargets testingTargets = new TestingTargets();
     private List<String> processedFiles = new ArrayList<String>();
     private static TestLifecycle currentTestLifecycle;
@@ -57,7 +57,7 @@ public class TestLifecycle {
         junitXMLReader = new JUnitXMLReader(new File(MakeGoodLaunchConfigurationDelegate.getJUnitXMLFile(launch)));
         junitXMLReader.addListener(junitXMLReaderListener);
 
-        parserThread = new Thread() {
+        junitXMLReaderThread = new Thread() {
             @Override
             public void run() {
                 try {
@@ -73,7 +73,7 @@ public class TestLifecycle {
         };
 
         progress.start();
-        parserThread.start();
+        junitXMLReaderThread.start();
     }
 
     public void end() {
@@ -97,7 +97,7 @@ public class TestLifecycle {
 
         // TODO Since PDT 2.1 always returns 0 from IProcess.getExitValue(), We decided to use SAXException to check whether or not a PHP process exited with a fatal error.
         try {
-            parserThread.join();
+            junitXMLReaderThread.join();
         } catch (InterruptedException e) {
             Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
         }
