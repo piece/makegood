@@ -41,6 +41,7 @@
       <import plugin="org.eclipse.ui.ide"/>
       <import plugin="org.eclipse.ui.console"/>
       <import plugin="org.eclipse.php.ui" version="2.1.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui.editors"/>
    </requires>
 
    <plugin
