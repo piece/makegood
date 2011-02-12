@@ -51,7 +51,7 @@ public class TestLifecycle {
         super();
     }
 
-    public void initialize(ILaunch launch, JUnitXMLReaderListener junitXMLReaderListener) throws CoreException {
+    public void start(ILaunch launch, JUnitXMLReaderListener junitXMLReaderListener) throws CoreException {
         this.launch = launch;
 
         junitXMLReader = new JUnitXMLReader(new File(MakeGoodLaunchConfigurationDelegate.getJUnitXMLFile(launch)));
@@ -71,9 +71,7 @@ public class TestLifecycle {
                 }
             }
         };
-    }
 
-    public void start() {
         progress.start();
         parserThread.start();
     }
