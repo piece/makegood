@@ -12,6 +12,7 @@
 
 package com.piece_framework.makegood.ui.views;
 
+import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -38,6 +39,7 @@ import com.piece_framework.makegood.launch.TestLifecycle;
 import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.actions.StopTestAction;
 import com.piece_framework.makegood.ui.launch.TestRunner;
+import com.piece_framework.makegood.ui.markers.FatalErrorMarker;
 
 public class ResultViewController implements IDebugEventSetListener {
     private static final String MAKEGOOD_RESULTVIEWCONTROLLER_MARKER_CREATE = "MAKEGOOD_RESULTVIEWCONTROLLER_MARKER_CREATE"; //$NON-NLS-1$
@@ -99,6 +101,12 @@ public class ResultViewController implements IDebugEventSetListener {
 
                 TestRunner.restoreFocusToLastActivePart();
 
+                try {
+                    FatalErrorMarker.clear(TestLifecycle.getInstance().getProject());
+                } catch (CoreException e) {
+                    Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
+                }
+
                 resultView.reset();
                 resultView.startTest(testLifecycle.getProgress(), testLifecycle.getFailures());
                 return Status.OK_STATUS;
@@ -137,7 +145,15 @@ public class ResultViewController implements IDebugEventSetListener {
                 if (testLifecycle.hasErrors()) {
                     resultView.markAsStopped();
                     if (!StopTestAction.isStoppedByAction(launch)) {
-                        ViewOpener.show(IConsoleConstants.ID_CONSOLE_VIEW);
+                        IMarker marker = null;
+                        try {
+                            marker = FatalErrorMarker.create(testLifecycle.getOutputContents());
+                        } catch (CoreException e) {
+                            Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
+                        }
+                        if (marker != null) {
+                            EditorOpener.open(marker);
+                        }
                     }
                 }
 

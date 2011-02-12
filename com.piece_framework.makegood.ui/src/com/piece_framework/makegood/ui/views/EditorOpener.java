@@ -14,6 +14,7 @@ package com.piece_framework.makegood.ui.views;
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
@@ -105,6 +106,22 @@ public class EditorOpener {
             } else {
                 return EditorOpener.open(EFS.getLocalFileSystem().getStore(new Path(fileName)));
             }
+        }
+    }
+
+    /**
+     * @since 1.3.0
+     */
+    public static IEditorPart open(IMarker marker) {
+        IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+        if (window == null) return null;
+        IWorkbenchPage page = window.getActivePage();
+        if (page == null) return null;
+        try {
+            return IDE.openEditor(page, marker);
+        } catch (PartInitException e) {
+            Activator.getDefault().getLog().log(new Status(IStatus.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
+            return null;
         }
     }
 
