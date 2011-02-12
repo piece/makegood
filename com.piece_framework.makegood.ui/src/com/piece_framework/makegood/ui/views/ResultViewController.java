@@ -103,7 +103,7 @@ public class ResultViewController implements IDebugEventSetListener {
                 TestRunner.restoreFocusToLastActivePart();
 
                 try {
-                    new FatalErrorMarker().clear(TestLifecycle.getInstance().getProject());
+                    new FatalErrorMarker().clear(testLifecycle.getProject());
                 } catch (CoreException e) {
                     Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
                 }
