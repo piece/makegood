@@ -28,7 +28,6 @@ public class RerunTest extends AbstractHandler {
     @Override
     public boolean isEnabled() {
         if (!WeavingMonitor.endAll()) return false;
-
         return TestRunner.hasLastTest();
     }
 }
