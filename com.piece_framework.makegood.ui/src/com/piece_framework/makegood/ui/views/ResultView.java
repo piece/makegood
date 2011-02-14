@@ -64,7 +64,6 @@ import com.piece_framework.makegood.core.result.Result;
 import com.piece_framework.makegood.core.result.TestCaseResult;
 import com.piece_framework.makegood.core.result.TestSuiteResult;
 import com.piece_framework.makegood.core.run.Failures;
-import com.piece_framework.makegood.core.run.Progress;
 import com.piece_framework.makegood.launch.MakeGoodLaunch;
 import com.piece_framework.makegood.launch.RuntimeConfiguration;
 import com.piece_framework.makegood.launch.TestLifecycle;
@@ -103,8 +102,6 @@ public class ResultView extends ViewPart {
     private Label elapsedTime;
     private Label processTime;
     private boolean actionsInitialized = false;
-    private Failures failures;
-    private Progress progress;
     private ResultViewPartListener partListenr = new ResultViewPartListener();
     private EditorOpener editorOpener = new EditorOpener();
 
@@ -116,6 +113,11 @@ public class ResultView extends ViewPart {
             return result.hasFailures() || result.hasErrors();
         }
     };
+
+    /**
+     * @sicne 1.3.0
+     */
+    private TestLifecycle testLifecycle;
 
     @Override
     public void createPartControl(final Composite parent) {
@@ -322,8 +324,8 @@ public class ResultView extends ViewPart {
      * @since 1.3.0
      */
     public boolean hasFailures() {
-        if (progress == null) return false;
-        return progress.hasFailures();
+        if (testLifecycle == null) return false;
+        return testLifecycle.getProgress().hasFailures();
     }
 
     void setTreeInput(TestSuiteResult result) {
@@ -341,12 +343,11 @@ public class ResultView extends ViewPart {
         resultTreeViewer.expandAll();
     }
 
-    void startTest(Progress progress, Failures failures) {
+    void startTest(TestLifecycle testLifecycle) {
+        this.testLifecycle = testLifecycle;
+
         elapsedTimer = new ElapsedTimer(200);
         elapsedTimer.schedule();
-
-        this.progress = progress;
-        this.failures = failures;
 
         previousFailureAction.setEnabled(false);
         nextFailureAction.setEnabled(false);
@@ -356,7 +357,7 @@ public class ResultView extends ViewPart {
     }
 
     void endTest() {
-        if (progress.isCompleted() && progress.getAllTestCount() == 0) {
+        if (testLifecycle.getProgress().isCompleted() && testLifecycle.getProgress().getAllTestCount() == 0) {
             setContentDescription(Messages.TestResultView_noTestsFound);
         }
 
@@ -492,7 +493,7 @@ public class ResultView extends ViewPart {
             selectedResult = (Result) resultTreeViewer.getTree().getTopItem().getData();
         }
 
-        TestCaseResult previousOrNextResult = failures.find(selectedResult, direction);
+        TestCaseResult previousOrNextResult = testLifecycle.getFailures().find(selectedResult, direction);
         if (previousOrNextResult == null) return;
 
         resultTreeViewer.setSelection(new StructuredSelection(previousOrNextResult), true);
@@ -506,10 +507,10 @@ public class ResultView extends ViewPart {
     }
 
     private void updateResult() {
-        progressBar.update(progress.calculateRate());
+        progressBar.update(testLifecycle.getProgress().calculateRate());
 
         processTimeAverage.setText(
-            TimeFormatter.format(progress.calculateProcessTimeAverage()) +
+            TimeFormatter.format(testLifecycle.getProgress().calculateProcessTimeAverage()) +
             "/" + //$NON-NLS-1$
             Messages.TestResultView_averageTest
         );
@@ -518,12 +519,12 @@ public class ResultView extends ViewPart {
         processTime.setText(
             Messages.TestResultView_testTime +
             ": " + //$NON-NLS-1$
-            TimeFormatter.format(progress.getProcessTime())
+            TimeFormatter.format(testLifecycle.getProgress().getProcessTime())
         );
 
-        passCount.setCount(progress.getPassCount());
-        failureCount.setCount(progress.getFailureCount());
-        errorCount.setCount(progress.getErrorCount());
+        passCount.setCount(testLifecycle.getProgress().getPassCount());
+        failureCount.setCount(testLifecycle.getProgress().getFailureCount());
+        errorCount.setCount(testLifecycle.getProgress().getErrorCount());
 
         resultTreeViewer.refresh();
     }
@@ -532,7 +533,7 @@ public class ResultView extends ViewPart {
         elapsedTime.setText(
             Messages.TestResultView_realTime +
             ": " + //$NON-NLS-1$
-            TimeFormatter.format(progress.getElapsedTime())
+            TimeFormatter.format(testLifecycle.getProgress().getElapsedTime())
         );
     }
 
@@ -540,9 +541,9 @@ public class ResultView extends ViewPart {
         testCount.setText(
             Messages.TestResultView_testsLabel +
             ": " + //$NON-NLS-1$
-            (progress.isRunning() ? progress.getTestCount() + 1 : progress.getTestCount()) +
+            (testLifecycle.getProgress().isRunning() ? testLifecycle.getProgress().getTestCount() + 1 : testLifecycle.getProgress().getTestCount()) +
             "/" + //$NON-NLS-1$
-            progress.getAllTestCount()
+            testLifecycle.getProgress().getAllTestCount()
         );
     }
 
@@ -552,7 +553,7 @@ public class ResultView extends ViewPart {
 
         initializeActions(site);
 
-        if (progress != null) {
+        if (testLifecycle != null) {
             updateResult();
             updateElapsedTime();
             updateTestCount();
@@ -597,7 +598,7 @@ public class ResultView extends ViewPart {
         @Override
         public void run() {
             update();
-            if (progress.isRunning()) {
+            if (testLifecycle.getProgress().isRunning()) {
                 schedule();
             }
         }

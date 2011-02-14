@@ -109,7 +109,7 @@ public class ResultViewController implements IDebugEventSetListener {
                 }
 
                 resultView.reset();
-                resultView.startTest(testLifecycle.getProgress(), testLifecycle.getFailures());
+                resultView.startTest(testLifecycle);
                 return Status.OK_STATUS;
             }
         };
