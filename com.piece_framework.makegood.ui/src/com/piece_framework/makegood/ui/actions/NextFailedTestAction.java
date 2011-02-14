@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2009 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
- *               2010 KUBO Atsuhiro <kubo@iteman.jp>,
+ *               2010-2011 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -21,6 +21,8 @@ import com.piece_framework.makegood.ui.views.ResultView;
 import com.piece_framework.makegood.ui.views.ViewOpener;
 
 public class NextFailedTestAction implements IViewActionDelegate {
+    public static final String ACTION_ID = "com.piece_framework.makegood.ui.viewActions.resultView.nextFailedTest"; //$NON-NLS-1$
+
     @Override
     public void init(IViewPart view) {
     }

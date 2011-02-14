@@ -71,6 +71,8 @@ import com.piece_framework.makegood.launch.TestLifecycle;
 import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.Messages;
 import com.piece_framework.makegood.ui.actions.DebugTestAction;
+import com.piece_framework.makegood.ui.actions.NextFailedTestAction;
+import com.piece_framework.makegood.ui.actions.PreviousFailedTestAction;
 import com.piece_framework.makegood.ui.actions.RerunTestAction;
 import com.piece_framework.makegood.ui.actions.RunAllTestsAction;
 import com.piece_framework.makegood.ui.actions.RunAllTestsWhenFileIsSavedAction;
@@ -92,6 +94,8 @@ public class ResultView extends ViewPart {
     private TreeViewer resultTreeViewer;
     private Label processTimeAverage;
     private ElapsedTimer elapsedTimer;
+    private IAction previousFailureAction;
+    private IAction nextFailureAction;
     private IAction stopTestAction;
     private IAction rerunTestAction;
     private IAction runAllTestsAction;
@@ -344,6 +348,8 @@ public class ResultView extends ViewPart {
         this.progress = progress;
         this.failures = failures;
 
+        previousFailureAction.setEnabled(false);
+        nextFailureAction.setEnabled(false);
         stopTestAction.setEnabled(true);
         rerunTestAction.setEnabled(false);
         runAllTestsAction.setEnabled(false);
@@ -362,6 +368,8 @@ public class ResultView extends ViewPart {
             }
         }
 
+        previousFailureAction.setEnabled(hasFailures());
+        nextFailureAction.setEnabled(hasFailures());
         stopTestAction.setEnabled(false);
         rerunTestAction.setEnabled(TestRunner.hasLastTest());
         ActivePart.getInstance().setPart();
@@ -408,6 +416,20 @@ public class ResultView extends ViewPart {
                 RuntimeConfiguration.getInstance().showsFailuresOnly
             );
             actionsInitialized = true;
+        }
+
+        ActionContributionItem previousFailureItem =
+            (ActionContributionItem) manager.find(PreviousFailedTestAction.ACTION_ID);
+        if (previousFailureItem != null) {
+            previousFailureAction = previousFailureItem.getAction();
+            previousFailureAction.setEnabled(hasFailures());
+        }
+
+        ActionContributionItem nextFailureItem =
+            (ActionContributionItem) manager.find(NextFailedTestAction.ACTION_ID);
+        if (nextFailureItem != null) {
+            nextFailureAction = nextFailureItem.getAction();
+            nextFailureAction.setEnabled(hasFailures());
         }
 
         ActionContributionItem stopOnFailureItem =
