@@ -86,7 +86,7 @@ public class ResultView extends ViewPart {
     private static final String CONTEXT_ID = "com.piece_framework.makegood.ui.contexts.resultView"; //$NON-NLS-1$
     private static final Pattern STACK_TRACE_LINE_PATTERN = Pattern.compile("^((?:/|[A-Z]:).+):(\\d+)$", Pattern.MULTILINE); //$NON-NLS-1$
 
-    private RunProgressBar progressBar;
+    private ProgressBar progressBar;
     private CLabel testCount;
     private ResultLabel passCount;
     private ResultLabel failureCount;
@@ -139,7 +139,7 @@ public class ResultView extends ViewPart {
         progressBarBorderLayout.horizontalSpacing = 2;
         progressBarBorderLayout.verticalSpacing = 2;
         progressBarBorder.setLayout(progressBarBorderLayout);
-        progressBar = new RunProgressBar(progressBarBorder);
+        progressBar = new ProgressBar(progressBarBorder);
         progressBar.setLayoutData(createHorizontalFillGridData());
         progressBar.setLayout(adjustLayout(new GridLayout()));
         Composite clock = new Composite(row1, SWT.NONE);

@@ -22,7 +22,7 @@ import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 
-public class RunProgressBar extends Composite implements PaintListener, ControlListener {
+public class ProgressBar extends Composite implements PaintListener, ControlListener {
     private Color passColor;
     private Color failureColor;
     private Color stoppedColor;
@@ -30,7 +30,7 @@ public class RunProgressBar extends Composite implements PaintListener, ControlL
     private CLabel progressBar;
     private int progressRate;
 
-    public RunProgressBar(Composite parent) {
+    public ProgressBar(Composite parent) {
         super(parent, SWT.BORDER);
 
         passColor = new Color(getDisplay(), 105, 153, 61);
