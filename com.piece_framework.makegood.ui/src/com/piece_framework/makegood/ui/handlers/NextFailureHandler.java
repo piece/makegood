@@ -33,7 +33,8 @@ public class NextFailureHandler extends AbstractHandler {
     @Override
     public boolean isEnabled() {
         if (!WeavingMonitor.endAll()) return false;
-
-        return TestRunner.hasLastTest();
+        ResultView view = (ResultView) ViewOpener.find(ResultView.ID);
+        if (view == null) return false;
+        return view.hasFailures();
     }
 }

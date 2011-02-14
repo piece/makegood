@@ -314,6 +314,14 @@ public class ResultView extends ViewPart {
         }
     }
 
+    /**
+     * @since 1.3.0
+     */
+    public boolean hasFailures() {
+        if (progress == null) return false;
+        return progress.hasFailures();
+    }
+
     void setTreeInput(TestSuiteResult result) {
         resultTreeViewer.setInput(result);
     }
