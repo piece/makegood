@@ -124,14 +124,10 @@ public class Progress {
         isCompleted = true;
     }
 
-    public boolean isCompleted() {
-        return isCompleted;
-    }
-
     /**
      * @since 1.3.0
      */
     public boolean noTestsFound() {
-        return isCompleted() && getAllTestCount() == 0;
+        return isCompleted && getAllTestCount() == 0;
     }
 }
