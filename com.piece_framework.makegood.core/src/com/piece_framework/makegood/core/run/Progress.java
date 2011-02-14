@@ -127,4 +127,11 @@ public class Progress {
     public boolean isCompleted() {
         return isCompleted;
     }
+
+    /**
+     * @since 1.3.0
+     */
+    public boolean noTestsFound() {
+        return isCompleted() && getAllTestCount() == 0;
+    }
 }
