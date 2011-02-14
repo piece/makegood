@@ -233,7 +233,7 @@ public class ResultView extends ViewPart {
     @Override
     public void setFocus() {}
 
-    public void reset() {
+    private void reset() {
         progressBar.reset();
         processTimeAverage.setText(
             TimeFormatter.format(0)
@@ -344,6 +344,8 @@ public class ResultView extends ViewPart {
     }
 
     void startTest(TestLifecycle testLifecycle) {
+        reset();
+
         this.testLifecycle = testLifecycle;
 
         elapsedTimer = new ElapsedTimer(200);

@@ -108,7 +108,6 @@ public class ResultViewController implements IDebugEventSetListener {
                     Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
                 }
 
-                resultView.reset();
                 resultView.startTest(testLifecycle);
                 return Status.OK_STATUS;
             }
