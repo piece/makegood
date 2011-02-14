@@ -174,21 +174,9 @@ public class TestLifecycle {
         }
     }
 
-    public boolean hasFailures() {
-        return progress.hasFailures();
-    }
-
-    public boolean isProgressInitialized() {
-        return progress.isInitialized();
-    }
-
     public void startTestCase(TestCaseResult testCase) {
         failures.addResult(testCase);
         progress.startTestCase();
-    }
-
-    public void initializeProgress(TestSuiteResult testSuite) {
-        progress.initialize(testSuite);
     }
 
     public void startTestSuite(TestSuiteResult testSuite) {

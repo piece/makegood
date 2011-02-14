@@ -215,8 +215,8 @@ public class ResultViewController implements IDebugEventSetListener {
         public void startTestSuite(TestSuiteResult testSuite) {
             testLifecycle.startTestSuite(testSuite);
 
-            if (!testLifecycle.isProgressInitialized()) {
-                testLifecycle.initializeProgress(testSuite);
+            if (!testLifecycle.getProgress().isInitialized()) {
+                testLifecycle.getProgress().initialize(testSuite);
 
                 Job job = new UIJob("MakeGood Result Tree Set") { //$NON-NLS-1$
                     @Override
@@ -267,7 +267,7 @@ public class ResultViewController implements IDebugEventSetListener {
 
         @Override
         public void endTestCase(final TestCaseResult testCase) {
-            if (!testLifecycle.isProgressInitialized()) return;
+            if (!testLifecycle.getProgress().isInitialized()) return;
 
             testLifecycle.endTestCase(testCase);
 
@@ -276,7 +276,7 @@ public class ResultViewController implements IDebugEventSetListener {
                 public IStatus runInUIThread(IProgressMonitor monitor) {
                     ResultView resultView = (ResultView) ViewOpener.find(ResultView.ID);
                     if (resultView == null) return Status.CANCEL_STATUS;
-                    if (testLifecycle.hasFailures()) {
+                    if (testLifecycle.getProgress().hasFailures()) {
                         resultView.markAsFailed();
                     }
                     resultView.updateOnEndTestCase(testCase);
