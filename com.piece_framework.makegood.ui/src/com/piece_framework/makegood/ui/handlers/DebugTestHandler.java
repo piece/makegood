@@ -13,7 +13,7 @@ package com.piece_framework.makegood.ui.handlers;
 
 import com.piece_framework.makegood.ui.actions.DebugTestAction;
 
-public class DebugTest extends AbstractToggleHandler {
+public class DebugTestHandler extends AbstractToggleHandler {
     @Override
     protected String getActionId() {
         return DebugTestAction.ID;

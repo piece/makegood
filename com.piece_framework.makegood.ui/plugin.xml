@@ -242,7 +242,7 @@
       </command>
       <command
             categoryId="com.piece_framework.makegood.ui.commands.runTestCategory"
-            defaultHandler="com.piece_framework.makegood.ui.handlers.DebugTest"
+            defaultHandler="com.piece_framework.makegood.ui.handlers.DebugTestHandler"
             id="com.piece_framework.makegood.ui.commands.debugTest"
             name="%commands.debugTest.name">
       </command>
