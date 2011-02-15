@@ -16,6 +16,6 @@ import com.piece_framework.makegood.ui.actions.RunAllTestsWhenFileIsSavedAction;
 public class RunAllTestsWhenFileIsSavedHandler extends AbstractToggleHandler {
     @Override
     protected String getActionId() {
-        return RunAllTestsWhenFileIsSavedAction.ID;
+        return RunAllTestsWhenFileIsSavedAction.ACTION_ID;
     }
 }

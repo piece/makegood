@@ -452,7 +452,7 @@ public class ResultView extends ViewPart {
         }
 
         ActionContributionItem runAllTestsWhenFileIsSavedItem =
-            (ActionContributionItem) manager.find(RunAllTestsWhenFileIsSavedAction.ID);
+            (ActionContributionItem) manager.find(RunAllTestsWhenFileIsSavedAction.ACTION_ID);
         if (runAllTestsWhenFileIsSavedItem != null) {
             runAllTestsWhenFileIsSavedItem.getAction().setChecked(
                 RuntimeConfiguration.getInstance().runsAllTestsWhenFileIsSaved
