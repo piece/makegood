@@ -36,6 +36,7 @@ public class JUnitXMLReader extends DefaultHandler {
     private TestSuiteResult result;
     private TestSuiteResult currentTestSuite;
     private TestCaseResult currentTestCase;
+    private StringBuilder failureTrace;
     private List<JUnitXMLReaderListener> listeners = new ArrayList<JUnitXMLReaderListener>();
     private boolean stopped = false;
     private SynchronizedFileInputStream stream;
@@ -94,6 +95,9 @@ public class JUnitXMLReader extends DefaultHandler {
                            int start,
                            int length
                            ) throws SAXException {
+        if (failureTrace != null) {
+            failureTrace.append(new String(characters, start, length));
+        }
     }
 
     @Override
@@ -203,12 +207,16 @@ public class JUnitXMLReader extends DefaultHandler {
     }
 
     private void startFailure(TestCaseResult failure) {
+        failureTrace = new StringBuilder();
         for (JUnitXMLReaderListener listener: listeners) {
             listener.startFailure(failure);
         }
     }
 
     private void endFailure() {
+        currentTestCase.setFailureTrace(failureTrace.toString());
+        failureTrace = null;
+
         for (JUnitXMLReaderListener listener: listeners) {
             listener.endFailure(currentTestCase);
         }
@@ -276,9 +284,6 @@ public class JUnitXMLReader extends DefaultHandler {
         if (attributes.getIndex("message") != -1) { //$NON-NLS-1$
             currentTestCase.setFailureMessage(attributes.getValue("message")); //$NON-NLS-1$
         }
-        if (attributes.getIndex("trace") != -1) { //$NON-NLS-1$
-            currentTestCase.setFailureTrace(attributes.getValue("trace")); //$NON-NLS-1$
-        }
 
         return currentTestCase;
     }
@@ -306,9 +311,6 @@ public class JUnitXMLReader extends DefaultHandler {
         }
         if (attributes.getIndex("message") != -1) { //$NON-NLS-1$
             currentTestCase.setFailureMessage(attributes.getValue("message")); //$NON-NLS-1$
-        }
-        if (attributes.getIndex("trace") != -1) { //$NON-NLS-1$
-            currentTestCase.setFailureTrace(attributes.getValue("trace")); //$NON-NLS-1$
         }
 
         return currentTestCase;

@@ -29,6 +29,8 @@ import com.piece_framework.makegood.launch.TestingTargets;
 public class AllTestsLaunchShortcut extends MakeGoodLaunchShortcut {
     @Override
     public void launch(ISelection selection, String mode) {
+        clearTestingTargets();
+
         if (!(selection instanceof IStructuredSelection)) throw new NotLaunchedException();
 
         Object target = ((IStructuredSelection) selection).getFirstElement();
