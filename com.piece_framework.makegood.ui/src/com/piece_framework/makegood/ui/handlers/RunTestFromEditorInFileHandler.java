@@ -17,7 +17,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 import com.piece_framework.makegood.ui.launch.TestRunner;
 
-public class RunTestFromEditorInFile extends RunTestFromEditorHandler {
+public class RunTestFromEditorInFileHandler extends RunTestFromEditorHandler {
     @Override
     public Object execute(ExecutionEvent event) throws ExecutionException {
         TestRunner.runTestsInFile(HandlerUtil.getActiveEditor(event));
