@@ -26,7 +26,7 @@ import com.piece_framework.makegood.launch.MakeGoodLaunch;
 import com.piece_framework.makegood.ui.Activator;
 
 public class StopTestAction implements IViewActionDelegate {
-    public static final String ID = "com.piece_framework.makegood.ui.viewActions.resultView.stopTest"; //$NON-NLS-1$
+    public static final String ACTION_ID = "com.piece_framework.makegood.ui.viewActions.resultView.stopTest"; //$NON-NLS-1$
     private static final String MAKEGOOD_IS_STOPPED_BY_ACTION_MARKER = "MAKEGOOD_IS_STOPPED_BY_ACTION_MARKER"; //$NON-NLS-1$
 
     @Override

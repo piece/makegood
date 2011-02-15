@@ -46,7 +46,7 @@ public class StopTestHandler extends AbstractHandler {
         if (view == null) return null;
         IToolBarManager manager = view.getViewSite().getActionBars().getToolBarManager();
         if (manager == null) return null;
-        ActionContributionItem item = (ActionContributionItem) manager.find(StopTestAction.ID);
+        ActionContributionItem item = (ActionContributionItem) manager.find(StopTestAction.ACTION_ID);
         if (item == null) return null;
         return item.getAction();
     }

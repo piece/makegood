@@ -460,7 +460,7 @@ public class ResultView extends ViewPart {
         }
 
         ActionContributionItem stopTestItem =
-            (ActionContributionItem) manager.find(StopTestAction.ID);
+            (ActionContributionItem) manager.find(StopTestAction.ACTION_ID);
         if (stopTestItem != null) {
             stopTestAction = stopTestItem.getAction();
             stopTestAction.setEnabled(MakeGoodLaunch.hasActiveLaunch());
