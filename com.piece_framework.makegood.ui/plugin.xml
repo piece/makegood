@@ -188,7 +188,7 @@
       </command>
       <command
             categoryId="com.piece_framework.makegood.ui.commands.runTestCategory"
-            defaultHandler="com.piece_framework.makegood.ui.handlers.RunTestFromEditorInClass"
+            defaultHandler="com.piece_framework.makegood.ui.handlers.RunTestFromEditorInClassHandler"
             id="com.piece_framework.makegood.ui.commands.runTestFromEditorInClass"
             name="%commands.runTestFromEditorInClass.name">
       </command>
