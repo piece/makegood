@@ -22,6 +22,7 @@ import java.util.Set;
 import org.eclipse.core.internal.content.ContentTypeManager;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -43,6 +44,33 @@ import com.piece_framework.makegood.core.TestingFramework;
 
 public class TestingTargets {
     private List<Object> targets = new ArrayList<Object>();
+
+    /**
+     * @since 1.3.0
+     */
+    private IProject project;
+
+    /**
+     * @since 1.3.0
+     */
+    private static TestingTargets soleInstance;
+
+    /**
+     * @since 1.3.0
+     */
+    public static TestingTargets getInstance() {
+        if (soleInstance == null) {
+            soleInstance = new TestingTargets();
+        }
+        return soleInstance;
+    }
+
+    /**
+     * @since 1.3.0
+     */
+    private TestingTargets() {
+        super();
+    }
 
     public void add(Object object) {
         targets.add(object);
@@ -285,5 +313,26 @@ public class TestingTargets {
             Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
             return subject;
         }
+    }
+
+    /**
+     * @since 1.3.0
+     */
+    public void clear() {
+        targets.clear();
+    }
+
+    /**
+     * @since 1.3.0
+     */
+    public void setProject(IProject project) {
+        this.project = project;
+    }
+
+    /**
+     * @since 1.3.0
+     */
+    public IProject getProject() {
+        return project;
     }
 }

@@ -18,7 +18,6 @@ import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -55,13 +54,7 @@ public class TestLifecycle {
 
     private JUnitXMLReader junitXMLReader;
     private Thread junitXMLReaderThread;
-    private TestingTargets testingTargets = new TestingTargets();
     private List<String> processedFiles = new ArrayList<String>();
-
-    /**
-     * @since 1.3.0
-     */
-    private IProject project;
 
     private static TestLifecycle currentTestLifecycle;
 
@@ -206,31 +199,10 @@ public class TestLifecycle {
     /**
      * @since 1.3.0
      */
-    public TestingTargets getTestingTargets() {
-        return testingTargets;
-    }
-
-    /**
-     * @since 1.3.0
-     */
     public boolean isFileFirstAccessed(TestCaseResult testCase) {
         String file = testCase.getFile();
         if (file == null) return false;
         return !processedFiles.contains(file);
-    }
-
-    /**
-     * @since 1.3.0
-     */
-    public void setProject(IProject project) {
-        this.project = project;
-    }
-
-    /**
-     * @since 1.3.0
-     */
-    public IProject getProject() {
-        return project;
     }
 
     /**

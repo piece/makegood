@@ -23,7 +23,7 @@ import org.eclipse.php.internal.debug.ui.launching.PHPExeLaunchShortcut;
 import org.eclipse.ui.IEditorPart;
 
 import com.piece_framework.makegood.launch.Activator;
-import com.piece_framework.makegood.launch.TestLifecycle;
+import com.piece_framework.makegood.launch.TestingTargets;
 
 public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
     @Override
@@ -47,7 +47,7 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
      * @since 1.3.0
      */
     protected void addTestingTarget(Object testingTarget) {
-        TestLifecycle.getInstance().getTestingTargets().add(testingTarget);
+        TestingTargets.getInstance().add(testingTarget);
         if (testingTarget instanceof ISourceModule) {
             IType[] types = null;
             try {
@@ -58,8 +58,15 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
             }
 
             for (IType type: types) {
-                TestLifecycle.getInstance().getTestingTargets().add(type);
+                TestingTargets.getInstance().add(type);
             }
         }
+    }
+
+    /**
+     * @since 1.3.0
+     */
+    protected void clearTestingTargets() {
+        TestingTargets.getInstance().clear();
     }
 }

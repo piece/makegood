@@ -173,7 +173,7 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
             }
         };
 
-        String mainScript = TestLifecycle.getInstance().getTestingTargets().getMainScript();
+        String mainScript = TestingTargets.getInstance().getMainScript();
         if (mainScript == null) {
             throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "The main script is not found.")); //$NON-NLS-1$
         }
@@ -186,10 +186,10 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
         workingCopy.setAttribute(MAKEGOOD_JUNIT_XML_FILE, junitXMLFile);
         workingCopy.setAttribute(
             IDebugParametersKeys.EXE_CONFIG_PROGRAM_ARGUMENTS,
-            TestLifecycle.getInstance().getTestingTargets().generateCommandLine(junitXMLFile)
+            TestingTargets.getInstance().generateCommandLine(junitXMLFile)
         );
 
-        IResource mainScriptResource = TestLifecycle.getInstance().getTestingTargets().getMainScriptResource();
+        IResource mainScriptResource = TestingTargets.getInstance().getMainScriptResource();
         if (mainScriptResource == null) {
             throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "The main script resource is not found.")); //$NON-NLS-1$
         }
@@ -198,7 +198,7 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
         if (project != null && project.exists()) {
             workingCopy.setAttribute(IPHPDebugConstants.PHP_Project, project.getName());
             rewriteBasicConfigurationAttributes(workingCopy, project);
-            TestLifecycle.getInstance().setProject(project);
+            TestingTargets.getInstance().setProject(project);
         }
 
         return workingCopy;
@@ -206,7 +206,7 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
 
     public static String getCommandPath() throws CoreException {
         return StagehandTestRunner.getCommandPath(
-                   TestLifecycle.getInstance().getTestingTargets().getTestingFramework().name()
+                   TestingTargets.getInstance().getTestingFramework().name()
                );
     }
 

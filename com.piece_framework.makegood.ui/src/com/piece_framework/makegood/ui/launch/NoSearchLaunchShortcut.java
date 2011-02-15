@@ -24,6 +24,8 @@ public abstract class NoSearchLaunchShortcut extends MakeGoodLaunchShortcut {
 
     @Override
     public void launch(IEditorPart editor, String mode) {
+        clearTestingTargets();
+
         if (lastTestingTarget == null) {
             if (editor == null) throw new NotLaunchedException();
             if (!(editor instanceof ITextEditor)) throw new NotLaunchedException();

@@ -47,6 +47,7 @@ import com.piece_framework.makegood.ui.views.EditorParser;
 public class RelatedTestsLaunchShortcut extends MakeGoodLaunchShortcut {
     @Override
     public void launch(IEditorPart editor, String mode) {
+        clearTestingTargets();
         if (!(editor instanceof ITextEditor)) throw new NotLaunchedException();
         launchTestsRelatedTo(editor, mode);
     }
