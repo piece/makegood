@@ -444,7 +444,7 @@ public class ResultView extends ViewPart {
         }
 
         ActionContributionItem debugTestItem =
-            (ActionContributionItem) manager.find(DebugTestAction.ID);
+            (ActionContributionItem) manager.find(DebugTestAction.ACTION_ID);
         if (debugTestItem != null) {
             debugTestItem.getAction().setChecked(
                 RuntimeConfiguration.getInstance().debugsTest

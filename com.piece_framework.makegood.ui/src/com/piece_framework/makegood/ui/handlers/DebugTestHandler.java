@@ -16,6 +16,6 @@ import com.piece_framework.makegood.ui.actions.DebugTestAction;
 public class DebugTestHandler extends AbstractToggleHandler {
     @Override
     protected String getActionId() {
-        return DebugTestAction.ID;
+        return DebugTestAction.ACTION_ID;
     }
 }
