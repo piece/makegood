@@ -25,7 +25,7 @@ import com.piece_framework.makegood.aspect.org.eclipse.php.debug.core.aspect.Xde
 public class FragmentWeavingProcess extends WeavingProcess implements IStartup {
     private static final String PLUGIN_ID = "com.piece_framework.makegood.aspect.org.eclipse.php.debug.core"; //$NON-NLS-1$
     private static final String[] DEPENDENCIES = {
-        Fragment.ID,
+        Fragment.PLUGIN_ID,
         "org.eclipse.dltk.core", //$NON-NLS-1$
         "org.eclipse.equinox.common", //$NON-NLS-1$
         "org.eclipse.debug.core" //$NON-NLS-1$
