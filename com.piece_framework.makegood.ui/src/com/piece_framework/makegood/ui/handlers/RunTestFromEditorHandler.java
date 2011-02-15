@@ -27,7 +27,7 @@ import com.piece_framework.makegood.core.PHPResource;
 import com.piece_framework.makegood.ui.launch.TestRunner;
 import com.piece_framework.makegood.ui.views.EditorParser;
 
-public class RunTestFromEditor extends AbstractHandler {
+public class RunTestFromEditorHandler extends AbstractHandler {
     private LastCheckedSource lastCheckedSource;
 
     @Override
