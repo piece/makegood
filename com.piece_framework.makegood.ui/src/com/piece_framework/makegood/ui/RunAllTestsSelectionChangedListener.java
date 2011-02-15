@@ -22,7 +22,7 @@ import com.piece_framework.makegood.ui.views.ViewOpener;
 public class RunAllTestsSelectionChangedListener implements ISelectionChangedListener {
     @Override
     public void selectionChanged(SelectionChangedEvent event) {
-        ResultView resultView = (ResultView) ViewOpener.find(ResultView.ID);
+        ResultView resultView = (ResultView) ViewOpener.find(ResultView.VIEW_ID);
         if (resultView != null) {
             resultView.updateStateOfRunAllTestsAction();
         }

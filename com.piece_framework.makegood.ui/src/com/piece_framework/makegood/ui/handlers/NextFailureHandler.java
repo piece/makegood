@@ -23,7 +23,7 @@ import com.piece_framework.makegood.ui.views.ViewOpener;
 public class NextFailureHandler extends AbstractHandler {
     @Override
     public Object execute(ExecutionEvent event) throws ExecutionException {
-        ResultView view = (ResultView) ViewOpener.find(ResultView.ID);
+        ResultView view = (ResultView) ViewOpener.find(ResultView.VIEW_ID);
         if (view != null) {
             view.moveToNextFailure();
         }
@@ -33,7 +33,7 @@ public class NextFailureHandler extends AbstractHandler {
     @Override
     public boolean isEnabled() {
         if (!WeavingMonitor.endAll()) return false;
-        ResultView view = (ResultView) ViewOpener.find(ResultView.ID);
+        ResultView view = (ResultView) ViewOpener.find(ResultView.VIEW_ID);
         if (view == null) return false;
         return view.hasFailures();
     }

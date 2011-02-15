@@ -29,7 +29,7 @@ public class NextFailureAction implements IViewActionDelegate {
 
     @Override
     public void run(IAction action) {
-        ResultView view = (ResultView) ViewOpener.find(ResultView.ID);
+        ResultView view = (ResultView) ViewOpener.find(ResultView.VIEW_ID);
         if (view != null) {
             view.moveToNextFailure();
         }

@@ -48,7 +48,7 @@ public class ActivePart {
 
     public void setPart(IWorkbenchPart part) {
         String id = part.getSite().getId();
-        if (ResultView.ID.equals(id)) return;
+        if (ResultView.VIEW_ID.equals(id)) return;
         if (PHPDebugPerspectiveFactory.ID_PHPDebugOutput.equals(id)) return;
         if (PHPDebugPerspectiveFactory.ID_PHPBrowserOutput.equals(id)) return;
         if (IConsoleConstants.ID_CONSOLE_VIEW.equals(id)) return;

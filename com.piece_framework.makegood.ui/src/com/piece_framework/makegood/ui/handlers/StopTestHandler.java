@@ -42,7 +42,7 @@ public class StopTestHandler extends AbstractHandler {
     }
 
     private IAction getStopAction() {
-        IViewPart view = ViewOpener.find(ResultView.ID);
+        IViewPart view = ViewOpener.find(ResultView.VIEW_ID);
         if (view == null) return null;
         IToolBarManager manager = view.getViewSite().getActionBars().getToolBarManager();
         if (manager == null) return null;

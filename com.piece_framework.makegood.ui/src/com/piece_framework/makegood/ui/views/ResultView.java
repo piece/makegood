@@ -81,7 +81,7 @@ import com.piece_framework.makegood.ui.actions.StopTestAction;
 import com.piece_framework.makegood.ui.launch.TestRunner;
 
 public class ResultView extends ViewPart {
-    public static final String ID = "com.piece_framework.makegood.ui.views.resultView"; //$NON-NLS-1$
+    public static final String VIEW_ID = "com.piece_framework.makegood.ui.views.resultView"; //$NON-NLS-1$
     private static final String CONTEXT_ID = "com.piece_framework.makegood.ui.contexts.resultView"; //$NON-NLS-1$
     private static final Pattern STACK_TRACE_LINE_PATTERN = Pattern.compile("^((?:/|[A-Z]:).+):(\\d+)$", Pattern.MULTILINE); //$NON-NLS-1$
 
@@ -628,7 +628,7 @@ public class ResultView extends ViewPart {
     private class ResultViewPartListener implements IPartListener2 {
         @Override
         public void partActivated(IWorkbenchPartReference partRef) {
-            if (!ID.equals(partRef.getId())) {
+            if (!VIEW_ID.equals(partRef.getId())) {
                 IWorkbenchPart activePart = partRef.getPage().getActivePart();
                 if (activePart != null) {
                     ActivePart.getInstance().setPart(activePart);
@@ -652,7 +652,7 @@ public class ResultView extends ViewPart {
 
         @Override
         public void partOpened(IWorkbenchPartReference partRef) {
-            if (!ID.equals(partRef.getId())) return;
+            if (!VIEW_ID.equals(partRef.getId())) return;
             update();
         }
 
@@ -661,7 +661,7 @@ public class ResultView extends ViewPart {
 
         @Override
         public void partVisible(IWorkbenchPartReference partRef) {
-            if (!ID.equals(partRef.getId())) return;
+            if (!VIEW_ID.equals(partRef.getId())) return;
             update();
         }
 

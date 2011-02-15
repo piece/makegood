@@ -98,7 +98,7 @@ public class ResultViewController implements IDebugEventSetListener {
             @Override
             public IStatus runInUIThread(IProgressMonitor monitor) {
                 ResultView resultView = null;
-                resultView = (ResultView) ViewOpener.show(ResultView.ID);
+                resultView = (ResultView) ViewOpener.show(ResultView.VIEW_ID);
                 if (resultView == null) return Status.CANCEL_STATUS;
 
                 TestRunner.restoreFocusToLastActivePart();
@@ -136,7 +136,7 @@ public class ResultViewController implements IDebugEventSetListener {
         Job job = new UIJob("MakeGood Test End") { //$NON-NLS-1$
             @Override
             public IStatus runInUIThread(IProgressMonitor monitor) {
-                ResultView resultView = (ResultView) ViewOpener.find(ResultView.ID);
+                ResultView resultView = (ResultView) ViewOpener.find(ResultView.VIEW_ID);
                 if (resultView == null) {
                     TestLifecycle.destroy();
                     return Status.CANCEL_STATUS;
@@ -222,7 +222,7 @@ public class ResultViewController implements IDebugEventSetListener {
                 Job job = new UIJob("MakeGood Result Tree Set") { //$NON-NLS-1$
                     @Override
                     public IStatus runInUIThread(IProgressMonitor monitor) {
-                        ResultView resultView = (ResultView) ViewOpener.find(ResultView.ID);
+                        ResultView resultView = (ResultView) ViewOpener.find(ResultView.VIEW_ID);
                         if (resultView == null) return Status.CANCEL_STATUS;
                         resultView.setTreeInput(testLifecycle.getResult());
                         return Status.OK_STATUS;
@@ -244,7 +244,7 @@ public class ResultViewController implements IDebugEventSetListener {
             Job job = new UIJob("MakeGood Test Case Start") { //$NON-NLS-1$
                 @Override
                 public IStatus runInUIThread(IProgressMonitor monitor) {
-                    ResultView resultView = (ResultView) ViewOpener.find(ResultView.ID);
+                    ResultView resultView = (ResultView) ViewOpener.find(ResultView.VIEW_ID);
                     if (resultView == null) return Status.CANCEL_STATUS;
                     resultView.printCurrentlyRunningTestCase(testCase);
                     resultView.updateOnStartTestCase(testCase);
@@ -268,7 +268,7 @@ public class ResultViewController implements IDebugEventSetListener {
             Job job = new UIJob("MakeGood Test Case End") { //$NON-NLS-1$
                 @Override
                 public IStatus runInUIThread(IProgressMonitor monitor) {
-                    ResultView resultView = (ResultView) ViewOpener.find(ResultView.ID);
+                    ResultView resultView = (ResultView) ViewOpener.find(ResultView.VIEW_ID);
                     if (resultView == null) return Status.CANCEL_STATUS;
                     if (testLifecycle.getProgress().hasFailures()) {
                         resultView.markAsFailed();

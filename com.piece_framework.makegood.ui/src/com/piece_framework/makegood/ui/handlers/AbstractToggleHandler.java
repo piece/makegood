@@ -26,7 +26,7 @@ import com.piece_framework.makegood.ui.views.ViewOpener;
 public abstract class AbstractToggleHandler extends AbstractHandler {
     @Override
     public Object execute(ExecutionEvent event) throws ExecutionException {
-        IViewPart view = ViewOpener.find(ResultView.ID);
+        IViewPart view = ViewOpener.find(ResultView.VIEW_ID);
         if (view == null) return null;
         IToolBarManager manager = view.getViewSite().getActionBars().getToolBarManager();
         if (manager == null) return null;
