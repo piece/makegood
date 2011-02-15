@@ -104,6 +104,7 @@ public class ResultViewController implements IDebugEventSetListener {
                 TestRunner.restoreFocusToLastActivePart();
 
                 try {
+                    new TestMarker().clear(TestingTargets.getInstance().getProject());
                     new FatalErrorMarker().clear(TestingTargets.getInstance().getProject());
                 } catch (CoreException e) {
                     Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
@@ -247,13 +248,6 @@ public class ResultViewController implements IDebugEventSetListener {
                     if (resultView == null) return Status.CANCEL_STATUS;
                     resultView.printCurrentlyRunningTestCase(testCase);
                     resultView.updateOnStartTestCase(testCase);
-                    if (testLifecycle.isFileFirstAccessed(testCase)) {
-                        try {
-                            new TestMarker().clear(testCase);
-                        } catch (CoreException e) {
-                            Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
-                        }
-                    }
                     return Status.OK_STATUS;
                 }
             };

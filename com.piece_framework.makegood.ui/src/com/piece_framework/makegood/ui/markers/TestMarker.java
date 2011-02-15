@@ -12,6 +12,7 @@
 package com.piece_framework.makegood.ui.markers;
 
 import org.eclipse.core.resources.IMarker;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 
 import com.piece_framework.makegood.core.result.TestCaseResult;
@@ -36,7 +37,7 @@ public class TestMarker extends Marker {
         return create(markerId, testCase.getFile(), testCase.getLine(), testCase.getFailureMessage());
     }
 
-    public void clear(TestCaseResult testCase) throws CoreException {
-        clear(MARKER_ID_TEST, testCase.getFile());
+    public void clear(IProject project) throws CoreException {
+        clear(MARKER_ID_TEST, project);
     }
 }

@@ -13,8 +13,6 @@ package com.piece_framework.makegood.launch;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -54,7 +52,6 @@ public class TestLifecycle {
 
     private JUnitXMLReader junitXMLReader;
     private Thread junitXMLReaderThread;
-    private List<String> processedFiles = new ArrayList<String>();
 
     private static TestLifecycle currentTestLifecycle;
 
@@ -162,9 +159,6 @@ public class TestLifecycle {
     public void endTestCase(TestCaseResult testCase) {
         progress.endTestCase();
         testCase.setTime(progress.getProcessTimeForTestCase());
-        if (isFileFirstAccessed(testCase)) {
-            markFileAsAccessed(testCase);
-        }
     }
 
     public void startTestCase(TestCaseResult testCase) {
@@ -199,28 +193,12 @@ public class TestLifecycle {
     /**
      * @since 1.3.0
      */
-    public boolean isFileFirstAccessed(TestCaseResult testCase) {
-        String file = testCase.getFile();
-        if (file == null) return false;
-        return !processedFiles.contains(file);
-    }
-
-    /**
-     * @since 1.3.0
-     */
     public String getOutputContents() {
         IDebugTarget debugTarget = launch.getDebugTarget();
         if (debugTarget != null && debugTarget instanceof IPHPDebugTarget) {
             return ((IPHPDebugTarget) debugTarget).getOutputBuffer().toString();
         }
         return outputStreamListener.getContents();
-    }
-
-    /**
-     * @since 1.3.0
-     */
-    private void markFileAsAccessed(TestCaseResult testCase) {
-        processedFiles.add(testCase.getFile());
     }
 
     /**
