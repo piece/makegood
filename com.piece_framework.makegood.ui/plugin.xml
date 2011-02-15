@@ -394,7 +394,7 @@
                tooltip="%resultView.showFailuresOnly.tooltip">
          </action>
          <action
-               class="com.piece_framework.makegood.ui.actions.PreviousFailedTestAction"
+               class="com.piece_framework.makegood.ui.actions.PreviousFailureAction"
                definitionId="com.piece_framework.makegood.ui.commands.previousFailedTest"
                icon="icons/previousFailedTest.gif"
                id="com.piece_framework.makegood.ui.viewActions.resultView.previousFailedTest"

@@ -71,7 +71,7 @@ import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.Messages;
 import com.piece_framework.makegood.ui.actions.DebugTestAction;
 import com.piece_framework.makegood.ui.actions.NextFailureAction;
-import com.piece_framework.makegood.ui.actions.PreviousFailedTestAction;
+import com.piece_framework.makegood.ui.actions.PreviousFailureAction;
 import com.piece_framework.makegood.ui.actions.RerunTestAction;
 import com.piece_framework.makegood.ui.actions.RunAllTestsAction;
 import com.piece_framework.makegood.ui.actions.RunAllTestsWhenFileIsSavedAction;
@@ -422,7 +422,7 @@ public class ResultView extends ViewPart {
         }
 
         ActionContributionItem previousFailureItem =
-            (ActionContributionItem) manager.find(PreviousFailedTestAction.ACTION_ID);
+            (ActionContributionItem) manager.find(PreviousFailureAction.ACTION_ID);
         if (previousFailureItem != null) {
             previousFailureAction = previousFailureItem.getAction();
             previousFailureAction.setEnabled(hasFailures());
