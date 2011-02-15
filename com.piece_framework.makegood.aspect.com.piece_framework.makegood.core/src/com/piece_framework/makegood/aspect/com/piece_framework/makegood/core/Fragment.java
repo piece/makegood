@@ -15,5 +15,5 @@ package com.piece_framework.makegood.aspect.com.piece_framework.makegood.core;
  * @since 1.2.0
  */
 public class Fragment {
-    public static final String ID = "com.piece_framework.makegood.aspect.com.piece_framework.makegood.core"; //$NON-NLS-1$
+    public static final String PLUGIN_ID = "com.piece_framework.makegood.aspect.com.piece_framework.makegood.core"; //$NON-NLS-1$
 }
