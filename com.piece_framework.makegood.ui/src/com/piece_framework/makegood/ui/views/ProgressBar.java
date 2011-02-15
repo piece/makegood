@@ -43,7 +43,7 @@ public class ProgressBar extends Composite implements PaintListener, ControlList
         progressBar.addControlListener(this);
         progressBar.addPaintListener(this);
 
-        reset();
+        clear();
     }
 
     @Override
@@ -108,7 +108,7 @@ public class ProgressBar extends Composite implements PaintListener, ControlList
         );
     }
 
-    public void reset() {
+    public void clear() {
         progressBar.setBackground(
             new Color[] { gradientColor, passColor },
             new int[] { 100 },

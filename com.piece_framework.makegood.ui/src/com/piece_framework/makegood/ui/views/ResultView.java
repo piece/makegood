@@ -234,7 +234,7 @@ public class ResultView extends ViewPart {
     public void setFocus() {}
 
     private void reset() {
-        progressBar.reset();
+        progressBar.clear();
         processTimeAverage.setText(
             TimeFormatter.format(0)
             + "/" + //$NON-NLS-1$
