@@ -26,7 +26,7 @@ public class FragmentWeavingProcess extends WeavingProcess implements IStartup {
         "org.eclipse.dltk.ui", //$NON-NLS-1$
         "com.piece_framework.makegood.include_path", //$NON-NLS-1$
         "org.eclipse.jface", //$NON-NLS-1$
-        Fragment.ID
+        Fragment.PLUGIN_ID
     };
 
     @Override
@@ -37,7 +37,7 @@ public class FragmentWeavingProcess extends WeavingProcess implements IStartup {
 
     @Override
     protected String pluginId() {
-        return Fragment.ID;
+        return Fragment.PLUGIN_ID;
     }
 
     @Override
