@@ -16,6 +16,6 @@ import com.piece_framework.makegood.ui.actions.StopOnFailureAction;
 public class StopOnFailureHandler extends AbstractToggleHandler {
     @Override
     protected String getActionId() {
-        return StopOnFailureAction.ID;
+        return StopOnFailureAction.ACTION_ID;
     }
 }

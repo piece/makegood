@@ -436,7 +436,7 @@ public class ResultView extends ViewPart {
         }
 
         ActionContributionItem stopOnFailureItem =
-            (ActionContributionItem) manager.find(StopOnFailureAction.ID);
+            (ActionContributionItem) manager.find(StopOnFailureAction.ACTION_ID);
         if (stopOnFailureItem != null) {
             stopOnFailureItem.getAction().setChecked(
                 RuntimeConfiguration.getInstance().stopsOnFailure
