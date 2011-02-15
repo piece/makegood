@@ -404,7 +404,7 @@
                tooltip="%resultView.previousFailedTest.tooltip">
          </action>
          <action
-               class="com.piece_framework.makegood.ui.actions.NextFailedTestAction"
+               class="com.piece_framework.makegood.ui.actions.NextFailureAction"
                definitionId="com.piece_framework.makegood.ui.commands.nextFailedTest"
                icon="icons/nextFailedTest.gif"
                id="com.piece_framework.makegood.ui.viewActions.resultView.nextFailedTest"

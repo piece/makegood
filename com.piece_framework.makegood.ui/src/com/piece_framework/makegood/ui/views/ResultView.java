@@ -70,7 +70,7 @@ import com.piece_framework.makegood.launch.TestLifecycle;
 import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.Messages;
 import com.piece_framework.makegood.ui.actions.DebugTestAction;
-import com.piece_framework.makegood.ui.actions.NextFailedTestAction;
+import com.piece_framework.makegood.ui.actions.NextFailureAction;
 import com.piece_framework.makegood.ui.actions.PreviousFailedTestAction;
 import com.piece_framework.makegood.ui.actions.RerunTestAction;
 import com.piece_framework.makegood.ui.actions.RunAllTestsAction;
@@ -429,7 +429,7 @@ public class ResultView extends ViewPart {
         }
 
         ActionContributionItem nextFailureItem =
-            (ActionContributionItem) manager.find(NextFailedTestAction.ACTION_ID);
+            (ActionContributionItem) manager.find(NextFailureAction.ACTION_ID);
         if (nextFailureItem != null) {
             nextFailureAction = nextFailureItem.getAction();
             nextFailureAction.setEnabled(hasFailures());

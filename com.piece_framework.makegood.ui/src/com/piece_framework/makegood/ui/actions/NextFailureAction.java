@@ -20,7 +20,7 @@ import org.eclipse.ui.IViewPart;
 import com.piece_framework.makegood.ui.views.ResultView;
 import com.piece_framework.makegood.ui.views.ViewOpener;
 
-public class NextFailedTestAction implements IViewActionDelegate {
+public class NextFailureAction implements IViewActionDelegate {
     public static final String ACTION_ID = "com.piece_framework.makegood.ui.viewActions.resultView.nextFailedTest"; //$NON-NLS-1$
 
     @Override
