@@ -251,9 +251,9 @@ public class ResultView extends ViewPart {
             TimeFormatter.format(0)
         );
         testCount.setText(Messages.TestResultView_testsLabel + ": 0/0"); //$NON-NLS-1$
-        passCount.reset();
-        failureCount.reset();
-        errorCount.reset();
+        passCount.clear();
+        failureCount.clear();
+        errorCount.clear();
         resultTreeViewer.setInput(null);
     }
 
@@ -577,7 +577,7 @@ public class ResultView extends ViewPart {
             label.setText(text + ": " + count); //$NON-NLS-1$
         }
 
-        private void reset() {
+        private void clear() {
             setCount(0);
         }
     }
