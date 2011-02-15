@@ -12,5 +12,5 @@
 package com.piece_framework.makegood.aspect.org.eclipse.php.core;
 
 public class Fragment {
-    public static final String ID = "com.piece_framework.makegood.aspect.org.eclipse.php.core"; //$NON-NLS-1$
+    public static final String PLUGIN_ID = "com.piece_framework.makegood.aspect.org.eclipse.php.core"; //$NON-NLS-1$
 }
