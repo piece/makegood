@@ -13,7 +13,7 @@ package com.piece_framework.makegood.ui.handlers;
 
 import com.piece_framework.makegood.ui.actions.RunAllTestsWhenFileIsSavedAction;
 
-public class RunAllTestsWhenFileIsSaved extends AbstractToggleHandler {
+public class RunAllTestsWhenFileIsSavedHandler extends AbstractToggleHandler {
     @Override
     protected String getActionId() {
         return RunAllTestsWhenFileIsSavedAction.ID;

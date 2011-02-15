@@ -248,7 +248,7 @@
       </command>
       <command
             categoryId="com.piece_framework.makegood.ui.commands.runTestCategory"
-            defaultHandler="com.piece_framework.makegood.ui.handlers.RunAllTestsWhenFileIsSaved"
+            defaultHandler="com.piece_framework.makegood.ui.handlers.RunAllTestsWhenFileIsSavedHandler"
             id="com.piece_framework.makegood.ui.commands.runAllTestsWhenFileIsSaved"
             name="%commands.runAllTestsWhenFileIsSaved.name">
       </command>
