@@ -413,7 +413,7 @@ public class ResultView extends ViewPart {
         IToolBarManager manager = site.getActionBars().getToolBarManager();
 
         ActionContributionItem showFailuresOnlyItem =
-            (ActionContributionItem) manager.find(ShowFailuresOnlyAction.ID);
+            (ActionContributionItem) manager.find(ShowFailuresOnlyAction.ACTION_ID);
         if (showFailuresOnlyItem != null) {
             showFailuresOnlyItem.getAction().setChecked(
                 RuntimeConfiguration.getInstance().showsFailuresOnly

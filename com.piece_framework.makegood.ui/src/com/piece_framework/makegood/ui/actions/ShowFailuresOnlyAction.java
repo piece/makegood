@@ -22,7 +22,7 @@ import com.piece_framework.makegood.ui.views.ResultView;
 import com.piece_framework.makegood.ui.views.ViewOpener;
 
 public class ShowFailuresOnlyAction implements IViewActionDelegate {
-    public static final String ID = "com.piece_framework.makegood.ui.viewActions.resultView.showFailuresOnly"; //$NON-NLS-1$
+    public static final String ACTION_ID = "com.piece_framework.makegood.ui.viewActions.resultView.showFailuresOnly"; //$NON-NLS-1$
 
     @Override
     public void init(IViewPart view) {
