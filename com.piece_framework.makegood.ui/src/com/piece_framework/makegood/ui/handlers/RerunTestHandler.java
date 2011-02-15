@@ -18,7 +18,7 @@ import org.eclipse.core.commands.ExecutionException;
 import com.piece_framework.makegood.aspect.monitor.WeavingMonitor;
 import com.piece_framework.makegood.ui.launch.TestRunner;
 
-public class RerunTest extends AbstractHandler {
+public class RerunTestHandler extends AbstractHandler {
     @Override
     public Object execute(ExecutionEvent event) throws ExecutionException {
         TestRunner.rerunLastTest();
