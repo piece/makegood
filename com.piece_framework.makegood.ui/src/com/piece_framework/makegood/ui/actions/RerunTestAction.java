@@ -20,7 +20,7 @@ import org.eclipse.ui.IViewPart;
 import com.piece_framework.makegood.ui.launch.TestRunner;
 
 public class RerunTestAction implements IViewActionDelegate {
-    public static final String ID = "com.piece_framework.makegood.ui.viewActions.resultView.rerunTest"; //$NON-NLS-1$
+    public static final String ACTION_ID = "com.piece_framework.makegood.ui.viewActions.resultView.rerunTest"; //$NON-NLS-1$
 
     @Override
     public void init(IViewPart view) {

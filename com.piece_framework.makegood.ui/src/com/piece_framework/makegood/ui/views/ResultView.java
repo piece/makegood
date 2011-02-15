@@ -467,7 +467,7 @@ public class ResultView extends ViewPart {
         }
 
         ActionContributionItem rerunTestItem =
-            (ActionContributionItem) manager.find(RerunTestAction.ID);
+            (ActionContributionItem) manager.find(RerunTestAction.ACTION_ID);
         if (rerunTestItem != null) {
             rerunTestAction = rerunTestItem.getAction();
             rerunTestAction.setEnabled(TestRunner.hasLastTest());
