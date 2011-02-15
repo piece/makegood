@@ -227,13 +227,13 @@ public class ResultView extends ViewPart {
         site.getPage().addPartListener(partListenr);
         initializeActions(site);
 
-        reset();
+        clear();
     }
 
     @Override
     public void setFocus() {}
 
-    private void reset() {
+    private void clear() {
         progressBar.clear();
         processTimeAverage.setText(
             TimeFormatter.format(0)
@@ -344,7 +344,7 @@ public class ResultView extends ViewPart {
     }
 
     void startTest(TestLifecycle testLifecycle) {
-        reset();
+        clear();
 
         this.testLifecycle = testLifecycle;
 
