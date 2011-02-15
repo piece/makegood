@@ -24,7 +24,7 @@ import com.piece_framework.makegood.ui.actions.StopTestAction;
 import com.piece_framework.makegood.ui.views.ResultView;
 import com.piece_framework.makegood.ui.views.ViewOpener;
 
-public class StopTest extends AbstractHandler {
+public class StopTestHandler extends AbstractHandler {
     @Override
     public Object execute(ExecutionEvent event) throws ExecutionException {
         IAction action = getStopAction();
