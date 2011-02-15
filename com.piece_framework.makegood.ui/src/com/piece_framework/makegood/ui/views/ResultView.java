@@ -474,7 +474,7 @@ public class ResultView extends ViewPart {
         }
 
         ActionContributionItem runAllTestsItem =
-            (ActionContributionItem) manager.find(RunAllTestsAction.ID);
+            (ActionContributionItem) manager.find(RunAllTestsAction.ACTION_ID);
         if (runAllTestsItem != null) {
             runAllTestsAction = runAllTestsItem.getAction();
             runAllTestsAction.setEnabled(ActivePart.getInstance().isAllTestsRunnable());
