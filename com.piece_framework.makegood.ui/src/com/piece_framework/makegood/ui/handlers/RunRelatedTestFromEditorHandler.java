@@ -19,7 +19,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 import com.piece_framework.makegood.ui.launch.TestRunner;
 
-public class RunRelatedTestFromEditor extends AbstractHandler {
+public class RunRelatedTestFromEditorHandler extends AbstractHandler {
     @Override
     public Object execute(ExecutionEvent event) throws ExecutionException {
         TestRunner.runRelatedTests(HandlerUtil.getActiveEditor(event));
