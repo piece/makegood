@@ -176,7 +176,7 @@
       </category>
       <command
             categoryId="com.piece_framework.makegood.ui.commands.runTestCategory"
-            defaultHandler="com.piece_framework.makegood.ui.handlers.RunTestFromExplorer"
+            defaultHandler="com.piece_framework.makegood.ui.handlers.RunTestFromExplorerHandler"
             id="com.piece_framework.makegood.ui.commands.runTestFromExplorer"
             name="%commands.runTestFromExplorer.name">
       </command>

@@ -29,7 +29,7 @@ import com.piece_framework.makegood.aspect.monitor.WeavingMonitor;
 import com.piece_framework.makegood.core.PHPResource;
 import com.piece_framework.makegood.ui.launch.TestRunner;
 
-public class RunTestFromExplorer extends AbstractHandler {
+public class RunTestFromExplorerHandler extends AbstractHandler {
     @Override
     public Object execute(ExecutionEvent event) throws ExecutionException {
         ISelection selection = HandlerUtil.getActiveMenuSelection(event);
