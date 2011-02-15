@@ -34,7 +34,7 @@ public class FragmentWeavingProcess extends WeavingProcess implements IStartup {
 
     @Override
     protected String pluginId() {
-        return Fragment.ID;
+        return Fragment.PLUGIN_ID;
     }
 
     @Override
