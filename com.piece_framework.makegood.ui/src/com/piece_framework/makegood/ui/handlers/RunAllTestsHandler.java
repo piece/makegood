@@ -19,7 +19,7 @@ import com.piece_framework.makegood.aspect.monitor.WeavingMonitor;
 import com.piece_framework.makegood.ui.launch.TestRunner;
 import com.piece_framework.makegood.ui.views.ActivePart;
 
-public class RunAllTests extends AbstractHandler {
+public class RunAllTestsHandler extends AbstractHandler {
     @Override
     public Object execute(ExecutionEvent event) throws ExecutionException {
         TestRunner.runAllTests();

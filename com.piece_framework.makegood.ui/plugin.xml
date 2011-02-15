@@ -206,7 +206,7 @@
       </command>
       <command
             categoryId="com.piece_framework.makegood.ui.commands.runTestCategory"
-            defaultHandler="com.piece_framework.makegood.ui.handlers.RunAllTests"
+            defaultHandler="com.piece_framework.makegood.ui.handlers.RunAllTestsHandler"
             id="com.piece_framework.makegood.ui.commands.runAllTests"
             name="%commands.runAllTests.name">
       </command>
