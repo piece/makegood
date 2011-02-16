@@ -41,12 +41,6 @@ public abstract class Marker {
         project.deleteMarkers(markerId, true, IResource.DEPTH_INFINITE);
     }
 
-    public void clear(String markerId, String fileName) throws CoreException {
-        IFile file = getFile(fileName);
-        if (file == null) return;
-        file.deleteMarkers(markerId, true, IResource.DEPTH_INFINITE);
-    }
-
     IFile getFile(String fileName) {
         return ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(new Path(fileName));
     }
