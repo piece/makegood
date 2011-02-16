@@ -25,12 +25,12 @@ public class FatalErrorMarker extends Marker {
     private static final String MARKER_ID = "com.piece_framework.makegood.ui.markers.fatalErrorMarker"; //$NON-NLS-1$
     private static final Pattern FATAL_ERROR_MESSAGE_PATTERN =
         Pattern.compile("^((?:Parse|Fatal) error: .+) in (.+?)(?:\\((\\d+)\\) : eval\\(\\)'d code)? on line (\\d+)$", Pattern.MULTILINE); //$NON-NLS-1$
+    private String file;
+    private int line;
 
     public IMarker create(String fatalErrorMessage) throws CoreException {
         Matcher matcher = FATAL_ERROR_MESSAGE_PATTERN.matcher(fatalErrorMessage);
         while (matcher.find()) {
-            String file;
-            Integer line;
             file = matcher.group(2);
             if (matcher.group(3) == null) {
                 line = Integer.valueOf(matcher.group(4));
@@ -44,5 +44,13 @@ public class FatalErrorMarker extends Marker {
 
     public void clear(IProject project) throws CoreException {
         clear(MARKER_ID, project);
+    }
+
+    public String getFile() {
+        return file;
+    }
+
+    public int getLine() {
+        return line;
     }
 }

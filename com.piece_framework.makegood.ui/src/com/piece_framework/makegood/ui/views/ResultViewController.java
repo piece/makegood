@@ -147,14 +147,17 @@ public class ResultViewController implements IDebugEventSetListener {
                 if (testLifecycle.hasErrors()) {
                     resultView.markAsStopped();
                     if (!StopTestAction.isStoppedByAction(launch)) {
-                        IMarker marker = null;
+                        FatalErrorMarker markerFactory = new FatalErrorMarker();
                         try {
-                            marker = new FatalErrorMarker().create(testLifecycle.getOutputContents());
+                            IMarker marker = markerFactory.create(testLifecycle.getOutputContents());
+                            if (marker != null) {
+                                EditorOpener.open(marker);
+                            } else {
+                                ViewOpener.show(IConsoleConstants.ID_CONSOLE_VIEW);
+                                EditorOpener.open(markerFactory.getFile(), markerFactory.getLine());
+                            }
                         } catch (CoreException e) {
                             Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
-                        }
-                        if (marker != null) {
-                            EditorOpener.open(marker);
                         }
                     }
                 } else {

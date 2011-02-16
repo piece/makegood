@@ -125,6 +125,18 @@ public class EditorOpener {
         }
     }
 
+    /**
+     * @since 1.3.0
+     */
+    public static IEditorPart open(String fileName, int line) {
+        IFile file = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(new Path(fileName));
+        if (file != null) {
+            return open(file, line);
+        } else {
+            return open(EFS.getLocalFileSystem().getStore(new Path(fileName)), line);
+        }
+    }
+
     private static void gotoLine(ITextEditor editor, Integer line) {
         IRegion region;
 
