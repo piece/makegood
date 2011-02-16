@@ -41,6 +41,7 @@ import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.actions.StopTestAction;
 import com.piece_framework.makegood.ui.launch.TestRunner;
 import com.piece_framework.makegood.ui.markers.FatalErrorMarkerFactory;
+import com.piece_framework.makegood.ui.markers.UnknownFatalErrorMessageException;
 import com.piece_framework.makegood.ui.markers.TestMarkerFactory;
 
 public class ResultViewController implements IDebugEventSetListener {
@@ -158,6 +159,9 @@ public class ResultViewController implements IDebugEventSetListener {
                             }
                         } catch (CoreException e) {
                             Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
+                        } catch (UnknownFatalErrorMessageException e) {
+                            Activator.getDefault().getLog().log(new Status(IStatus.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
+                            ViewOpener.show(IConsoleConstants.ID_CONSOLE_VIEW);
                         }
                     }
                 } else {

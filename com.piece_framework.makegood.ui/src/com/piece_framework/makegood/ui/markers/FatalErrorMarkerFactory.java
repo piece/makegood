@@ -28,7 +28,7 @@ public class FatalErrorMarkerFactory extends MarkerFactory {
     private String file;
     private int line;
 
-    public IMarker create(String fatalErrorMessage) throws CoreException {
+    public IMarker create(String fatalErrorMessage) throws CoreException, UnknownFatalErrorMessageException {
         Matcher matcher = FATAL_ERROR_MESSAGE_PATTERN.matcher(fatalErrorMessage);
         while (matcher.find()) {
             file = matcher.group(2);
@@ -39,7 +39,8 @@ public class FatalErrorMarkerFactory extends MarkerFactory {
             }
             return create(MARKER_ID, file, line, matcher.group(1));
         }
-        return null;
+
+        throw new UnknownFatalErrorMessageException(fatalErrorMessage);
     }
 
     public void clear(IProject project) throws CoreException {
