@@ -22,7 +22,7 @@ import org.eclipse.core.runtime.Path;
 /**
  * @since 1.3.0
  */
-public abstract class Marker {
+public abstract class MarkerFactory {
     public IMarker create(String markerId, String fileName, int line, String message) throws CoreException {
         IFile file = getFile(fileName);
         if (file == null) return null;
