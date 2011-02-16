@@ -28,7 +28,7 @@ public class ProgressBar extends Composite implements PaintListener, ControlList
     private Color stoppedColor;
     private Color gradientColor;
     private CLabel bar;
-    private int progressRate;
+    private int rate;
 
     public ProgressBar(Composite parent) {
         super(parent, SWT.BORDER);
@@ -48,7 +48,7 @@ public class ProgressBar extends Composite implements PaintListener, ControlList
 
     @Override
     public void paintControl(PaintEvent e) {
-        String text = progressRate + "%"; //$NON-NLS-1$
+        String text = rate + "%"; //$NON-NLS-1$
         Point size = getSize();
         FontMetrics fontMetrics = e.gc.getFontMetrics();
         int width = fontMetrics.getAverageCharWidth() * text.length();
@@ -62,16 +62,16 @@ public class ProgressBar extends Composite implements PaintListener, ControlList
 
     @Override
     public void controlResized(ControlEvent e) {
-        update(progressRate);
+        update(rate);
     }
 
-    public void update(int progressRate) {
+    public void update(int rate) {
         int maxWidth = getSize().x;
 
         int width = bar.getSize().x;
-        if (progressRate < 100) {
-            width = (int) (maxWidth * ((double) progressRate / 100d));
-        } else if (progressRate >= 100) {
+        if (rate < 100) {
+            width = (int) (maxWidth * ((double) rate / 100d));
+        } else if (rate >= 100) {
             width = maxWidth;
         }
         final int barWidth = width;
@@ -89,7 +89,7 @@ public class ProgressBar extends Composite implements PaintListener, ControlList
             }
         );
 
-        this.progressRate = progressRate;
+        this.rate = rate;
     }
 
     public void markAsFailed() {
