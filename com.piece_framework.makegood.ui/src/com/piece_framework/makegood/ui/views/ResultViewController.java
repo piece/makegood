@@ -41,7 +41,7 @@ import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.actions.StopTestAction;
 import com.piece_framework.makegood.ui.launch.TestRunner;
 import com.piece_framework.makegood.ui.markers.FatalErrorMarkerFactory;
-import com.piece_framework.makegood.ui.markers.TestMarker;
+import com.piece_framework.makegood.ui.markers.TestMarkerFactory;
 
 public class ResultViewController implements IDebugEventSetListener {
     private static final String MAKEGOOD_RESULTVIEWCONTROLLER_MARKER_CREATE = "MAKEGOOD_RESULTVIEWCONTROLLER_MARKER_CREATE"; //$NON-NLS-1$
@@ -104,7 +104,7 @@ public class ResultViewController implements IDebugEventSetListener {
                 TestRunner.restoreFocusToLastActivePart();
 
                 try {
-                    new TestMarker().clear(TestingTargets.getInstance().getProject());
+                    new TestMarkerFactory().clear(TestingTargets.getInstance().getProject());
                     new FatalErrorMarkerFactory().clear(TestingTargets.getInstance().getProject());
                 } catch (CoreException e) {
                     Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
@@ -290,7 +290,7 @@ public class ResultViewController implements IDebugEventSetListener {
                 @Override
                 public IStatus runInUIThread(IProgressMonitor monitor) {
                     try {
-                        new TestMarker().create(failure);
+                        new TestMarkerFactory().create(failure);
                     } catch (CoreException e) {
                         Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
                     }
