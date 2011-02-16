@@ -40,7 +40,7 @@ import com.piece_framework.makegood.launch.TestingTargets;
 import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.actions.StopTestAction;
 import com.piece_framework.makegood.ui.launch.TestRunner;
-import com.piece_framework.makegood.ui.markers.FatalErrorMarker;
+import com.piece_framework.makegood.ui.markers.FatalErrorMarkerFactory;
 import com.piece_framework.makegood.ui.markers.TestMarker;
 
 public class ResultViewController implements IDebugEventSetListener {
@@ -105,7 +105,7 @@ public class ResultViewController implements IDebugEventSetListener {
 
                 try {
                     new TestMarker().clear(TestingTargets.getInstance().getProject());
-                    new FatalErrorMarker().clear(TestingTargets.getInstance().getProject());
+                    new FatalErrorMarkerFactory().clear(TestingTargets.getInstance().getProject());
                 } catch (CoreException e) {
                     Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
                 }
@@ -147,7 +147,7 @@ public class ResultViewController implements IDebugEventSetListener {
                 if (testLifecycle.hasErrors()) {
                     resultView.markAsStopped();
                     if (!StopTestAction.isStoppedByAction(launch)) {
-                        FatalErrorMarker markerFactory = new FatalErrorMarker();
+                        FatalErrorMarkerFactory markerFactory = new FatalErrorMarkerFactory();
                         try {
                             IMarker marker = markerFactory.create(testLifecycle.getOutputContents());
                             if (marker != null) {
