@@ -43,6 +43,7 @@ import com.piece_framework.makegood.ui.launch.TestRunner;
 import com.piece_framework.makegood.ui.markers.FatalErrorMarkerFactory;
 import com.piece_framework.makegood.ui.markers.UnknownFatalErrorMessageException;
 import com.piece_framework.makegood.ui.markers.TestMarkerFactory;
+import com.piece_framework.makegood.ui.widgets.ResultSquare;
 
 public class ResultViewController implements IDebugEventSetListener {
     private static final String MAKEGOOD_RESULTVIEWCONTROLLER_MARKER_CREATE = "MAKEGOOD_RESULTVIEWCONTROLLER_MARKER_CREATE"; //$NON-NLS-1$
@@ -111,6 +112,7 @@ public class ResultViewController implements IDebugEventSetListener {
                     Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
                 }
 
+                ResultSquare.getInstance().startTest();
                 resultView.startTest(testLifecycle);
                 return Status.OK_STATUS;
             }
@@ -144,9 +146,11 @@ public class ResultViewController implements IDebugEventSetListener {
                 }
 
                 resultView.endTest();
+                ResultSquare.getInstance().endTest();
 
                 if (testLifecycle.hasErrors()) {
                     resultView.markAsStopped();
+                    ResultSquare.getInstance().markAsStopped();
                     if (!StopTestAction.isStoppedByAction(launch)) {
                         FatalErrorMarkerFactory markerFactory = new FatalErrorMarkerFactory();
                         try {
@@ -166,6 +170,11 @@ public class ResultViewController implements IDebugEventSetListener {
                     }
                 } else {
                     resultView.collapseResultTree();
+                    if (testLifecycle.getProgress().hasFailures()) {
+                        ResultSquare.getInstance().markAsFailed();
+                    } else {
+                        ResultSquare.getInstance().markAsPassed();
+                    }
                 }
 
                 TestLifecycle.destroy();
