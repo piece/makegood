@@ -43,7 +43,7 @@ import com.piece_framework.makegood.ui.views.ViewOpener;
 /**
  * @since 1.3.0
   */
-public class ResultSquare extends WorkbenchWindowControlContribution implements VisualResult {
+public class ResultSquare extends WorkbenchWindowControlContribution {
     private static final String IMAGE_PATH_MAKEGOOD = "icons/MakeGood.gif"; //$NON-NLS-1$
     private static final String IMAGE_PATH_PASSED = "icons/square-passed.gif"; //$NON-NLS-1$
     private static final String IMAGE_PATH_FAILED = "icons/square-failed.gif"; //$NON-NLS-1$
@@ -108,7 +108,6 @@ public class ResultSquare extends WorkbenchWindowControlContribution implements 
         return canvas;
     }
 
-    @Override
     public void startTest() {
         square.setVisible(false);
         canvas.addPaintListener(imageAnimator.getPaintListener());
@@ -116,7 +115,6 @@ public class ResultSquare extends WorkbenchWindowControlContribution implements 
         imageAnimatorThread.start();
     }
 
-    @Override
     public void endTest() {
         canvas.removePaintListener(imageAnimator.getPaintListener());
         imageAnimatorThread.interrupt();
@@ -127,17 +125,14 @@ public class ResultSquare extends WorkbenchWindowControlContribution implements 
         square.setVisible(true);
     }
 
-    @Override
     public void markAsPassed() {
         square.setImage(Activator.getImageDescriptor(IMAGE_PATH_PASSED).createImage());
     }
 
-    @Override
     public void markAsFailed() {
         square.setImage(Activator.getImageDescriptor(IMAGE_PATH_FAILED).createImage());
     }
 
-    @Override
     public void markAsStopped() {
         square.setImage(Activator.getImageDescriptor(IMAGE_PATH_STOPPED).createImage());
     }
