@@ -29,6 +29,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.dltk.core.IField;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IType;
@@ -177,11 +178,16 @@ public class TestingTargets {
                     testingClasses.add(urlencode(PHPClassType.fromIType((IType) target).getTypeName()));
                 }
             } else if (target instanceof IMethod) {
+                IMethod method = findMethod((IMethod) target);
+                if (method == null) {
+                    Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.PLUGIN_ID, "An unknown method context has been found.\n\n" + target)); //$NON-NLS-1$
+                    continue;
+                }
                 testingMethods.add(
                     urlencode(
-                        PHPClassType.fromIType(((IMethod) target).getDeclaringType()).getTypeName() +
+                        PHPClassType.fromIType(method.getDeclaringType()).getTypeName() +
                         "::" + //$NON-NLS-1$
-                        ((IMethod) target).getElementName()
+                        method.getElementName()
                     )
                 );
             }
@@ -334,5 +340,18 @@ public class TestingTargets {
      */
     public IProject getProject() {
         return project;
+    }
+
+    /**
+     * @since 1.3.0
+     */
+    private IMethod findMethod(IMethod method) {
+        if (method.getParent() instanceof IType) {
+            return method;
+        }
+        if (method.getParent() instanceof IField && method.getParent().getParent() instanceof IMethod) {
+            return findMethod((IMethod) method.getParent().getParent());
+        }
+        return null;
     }
 }
