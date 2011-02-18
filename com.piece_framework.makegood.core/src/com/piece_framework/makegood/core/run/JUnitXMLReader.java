@@ -316,7 +316,7 @@ public class JUnitXMLReader extends DefaultHandler {
         return currentTestCase;
     }
 
-    private class SynchronizedFileInputStream extends FileInputStream{
+    private class SynchronizedFileInputStream extends FileInputStream {
         private static final int READ_NO_PARAM = 1;
         private static final int READ_ARRAY = 2;
         private static final int READ_OFFSET = 3;
