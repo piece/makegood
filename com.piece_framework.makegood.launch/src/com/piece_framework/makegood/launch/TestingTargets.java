@@ -29,7 +29,6 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.content.IContentType;
-import org.eclipse.dltk.core.IField;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IType;
@@ -388,12 +387,17 @@ public class TestingTargets {
      * @since 1.3.0
      */
     private IMethod findMethod(IMethod method) {
-        if (method.getParent() instanceof IType) {
+        IModelElement parent = method.getParent();
+        if (parent == null) return null;
+        if (parent instanceof IType) {
             return method;
         }
-        if (method.getParent() instanceof IField && method.getParent().getParent() instanceof IMethod) {
-            return findMethod((IMethod) method.getParent().getParent());
+        while (true) {
+            if (parent instanceof IMethod) {
+                return findMethod((IMethod) parent);
+            }
+            parent = parent.getParent();
+            if (parent == null) return null;
         }
-        return null;
     }
 }
