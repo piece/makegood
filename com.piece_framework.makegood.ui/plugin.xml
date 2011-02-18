@@ -168,7 +168,7 @@
          </command>
       </menuContribution>
       <menuContribution
-            locationURI="toolbar:org.eclipse.ui.trim.status?after=org.eclipse.jface.action.StatusLineManager">
+            locationURI="toolbar:org.eclipse.ui.trim.status">
          <toolbar
                id="com.piece_framework.makegood.ui.widgets.statusToolbar">
             <control
