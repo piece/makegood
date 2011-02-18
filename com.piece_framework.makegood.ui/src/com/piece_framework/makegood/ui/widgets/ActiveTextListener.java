@@ -9,9 +9,10 @@
  * distribution, and is available at http://www.eclipse.org/legal/epl-v10.html
  */
 
-package com.piece_framework.makegood.ui.views;
+package com.piece_framework.makegood.ui.widgets;
 
 import java.util.regex.Pattern;
+
 
 public abstract class ActiveTextListener {
     protected Pattern pattern;

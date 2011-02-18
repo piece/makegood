@@ -9,16 +9,18 @@
  * distribution, and is available at http://www.eclipse.org/legal/epl-v10.html
  */
 
-package com.piece_framework.makegood.ui.views;
+package com.piece_framework.makegood.ui.widgets;
 
-import org.eclipse.core.filesystem.IFileStore;
+import org.eclipse.core.resources.IFile;
+
+import com.piece_framework.makegood.ui.views.EditorOpener;
 
 
-public class ExternalFileWithLineRange extends FileWithLineRange {
-    public IFileStore fileStore;
+public class InternalFileWithLineRange extends FileWithLineRange {
+    public IFile file;
 
     @Override
     public void openEditor() {
-        EditorOpener.open(fileStore, line);
+        EditorOpener.open(file, line);
     }
 }

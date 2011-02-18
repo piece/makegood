@@ -79,6 +79,12 @@ import com.piece_framework.makegood.ui.actions.ShowFailuresOnlyAction;
 import com.piece_framework.makegood.ui.actions.StopOnFailureAction;
 import com.piece_framework.makegood.ui.actions.StopTestAction;
 import com.piece_framework.makegood.ui.launch.TestRunner;
+import com.piece_framework.makegood.ui.widgets.ActiveText;
+import com.piece_framework.makegood.ui.widgets.ActiveTextListener;
+import com.piece_framework.makegood.ui.widgets.ExternalFileWithLineRange;
+import com.piece_framework.makegood.ui.widgets.FileWithLineRange;
+import com.piece_framework.makegood.ui.widgets.InternalFileWithLineRange;
+import com.piece_framework.makegood.ui.widgets.ProgressBar;
 
 public class ResultView extends ViewPart {
     public static final String VIEW_ID = "com.piece_framework.makegood.ui.views.resultView"; //$NON-NLS-1$

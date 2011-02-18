@@ -9,7 +9,7 @@
  * distribution, and is available at http://www.eclipse.org/legal/epl-v10.html
  */
 
-package com.piece_framework.makegood.ui.views;
+package com.piece_framework.makegood.ui.widgets;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
