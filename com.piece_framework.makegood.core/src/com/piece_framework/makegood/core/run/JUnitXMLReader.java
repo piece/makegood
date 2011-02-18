@@ -374,7 +374,9 @@ public class JUnitXMLReader extends DefaultHandler {
 
                 try {
                     Thread.sleep(200);
-                } catch (InterruptedException e) {}
+                } catch (InterruptedException e) {
+                    break;
+                }
             } while (true);
             return result;
         }
