@@ -99,13 +99,12 @@ public class ResultViewController implements IDebugEventSetListener {
         Job job = new UIJob("MakeGood Test Start") { //$NON-NLS-1$
             @Override
             public IStatus runInUIThread(IProgressMonitor monitor) {
-                ResultSquare.getInstance().startTest();
-
-                ResultView resultView = null;
-                resultView = (ResultView) ViewOpener.show(ResultView.VIEW_ID);
-                if (resultView == null) return Status.CANCEL_STATUS;
-
+                ResultView resultView = (ResultView) ViewOpener.show(ResultView.VIEW_ID);
                 TestRunner.restoreFocusToLastActivePart();
+                if (resultView != null) {
+                    resultView.startTest(testLifecycle);
+                }
+                ResultSquare.getInstance().startTest();
 
                 try {
                     new TestMarkerFactory().clear(TestingTargets.getInstance().getProject());
@@ -114,7 +113,6 @@ public class ResultViewController implements IDebugEventSetListener {
                     Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
                 }
 
-                resultView.startTest(testLifecycle);
                 return Status.OK_STATUS;
             }
         };
@@ -148,16 +146,15 @@ public class ResultViewController implements IDebugEventSetListener {
                 }
 
                 ResultView resultView = (ResultView) ViewOpener.find(ResultView.VIEW_ID);
-                if (resultView == null) {
-                    TestLifecycle.destroy();
-                    return Status.CANCEL_STATUS;
+                if (resultView != null) {
+                    resultView.endTest();
                 }
 
-                resultView.endTest();
-
                 if (testLifecycle.hasErrors()) {
-                    resultView.markAsStopped();
                     ResultSquare.getInstance().markAsStopped();
+                    if (resultView != null) {
+                        resultView.markAsStopped();
+                    }
                     if (!StopTestAction.isStoppedByAction(launch)) {
                         FatalErrorMarkerFactory markerFactory = new FatalErrorMarkerFactory();
                         try {
@@ -176,7 +173,9 @@ public class ResultViewController implements IDebugEventSetListener {
                         }
                     }
                 } else {
-                    resultView.collapseResultTree();
+                    if (resultView != null) {
+                        resultView.collapseResultTree();
+                    }
                 }
 
                 TestLifecycle.destroy();
@@ -241,8 +240,9 @@ public class ResultViewController implements IDebugEventSetListener {
                     @Override
                     public IStatus runInUIThread(IProgressMonitor monitor) {
                         ResultView resultView = (ResultView) ViewOpener.find(ResultView.VIEW_ID);
-                        if (resultView == null) return Status.CANCEL_STATUS;
-                        resultView.setTreeInput(testLifecycle.getResult());
+                        if (resultView != null) {
+                            resultView.setTreeInput(testLifecycle.getResult());
+                        }
                         return Status.OK_STATUS;
                     }
                 };
@@ -263,9 +263,10 @@ public class ResultViewController implements IDebugEventSetListener {
                 @Override
                 public IStatus runInUIThread(IProgressMonitor monitor) {
                     ResultView resultView = (ResultView) ViewOpener.find(ResultView.VIEW_ID);
-                    if (resultView == null) return Status.CANCEL_STATUS;
-                    resultView.printCurrentlyRunningTestCase(testCase);
-                    resultView.updateOnStartTestCase(testCase);
+                    if (resultView != null) {
+                        resultView.printCurrentlyRunningTestCase(testCase);
+                        resultView.updateOnStartTestCase(testCase);
+                    }
                     return Status.OK_STATUS;
                 }
             };
@@ -287,11 +288,12 @@ public class ResultViewController implements IDebugEventSetListener {
                 @Override
                 public IStatus runInUIThread(IProgressMonitor monitor) {
                     ResultView resultView = (ResultView) ViewOpener.find(ResultView.VIEW_ID);
-                    if (resultView == null) return Status.CANCEL_STATUS;
-                    if (testLifecycle.getProgress().hasFailures()) {
-                        resultView.markAsFailed();
+                    if (resultView != null) {
+                        if (testLifecycle.getProgress().hasFailures()) {
+                            resultView.markAsFailed();
+                        }
+                        resultView.updateOnEndTestCase(testCase);
                     }
-                    resultView.updateOnEndTestCase(testCase);
                     return Status.OK_STATUS;
                 }
             };
