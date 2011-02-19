@@ -99,6 +99,8 @@ public class ResultViewController implements IDebugEventSetListener {
         Job job = new UIJob("MakeGood Test Start") { //$NON-NLS-1$
             @Override
             public IStatus runInUIThread(IProgressMonitor monitor) {
+                ResultSquare.getInstance().startTest();
+
                 ResultView resultView = null;
                 resultView = (ResultView) ViewOpener.show(ResultView.VIEW_ID);
                 if (resultView == null) return Status.CANCEL_STATUS;
@@ -112,7 +114,6 @@ public class ResultViewController implements IDebugEventSetListener {
                     Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
                 }
 
-                ResultSquare.getInstance().startTest();
                 resultView.startTest(testLifecycle);
                 return Status.OK_STATUS;
             }
@@ -139,6 +140,13 @@ public class ResultViewController implements IDebugEventSetListener {
         Job job = new UIJob("MakeGood Test End") { //$NON-NLS-1$
             @Override
             public IStatus runInUIThread(IProgressMonitor monitor) {
+                ResultSquare.getInstance().endTest();
+                if (testLifecycle.getProgress().hasFailures()) {
+                    ResultSquare.getInstance().markAsFailed();
+                } else {
+                    ResultSquare.getInstance().markAsPassed();
+                }
+
                 ResultView resultView = (ResultView) ViewOpener.find(ResultView.VIEW_ID);
                 if (resultView == null) {
                     TestLifecycle.destroy();
@@ -146,7 +154,6 @@ public class ResultViewController implements IDebugEventSetListener {
                 }
 
                 resultView.endTest();
-                ResultSquare.getInstance().endTest();
 
                 if (testLifecycle.hasErrors()) {
                     resultView.markAsStopped();
@@ -170,11 +177,6 @@ public class ResultViewController implements IDebugEventSetListener {
                     }
                 } else {
                     resultView.collapseResultTree();
-                    if (testLifecycle.getProgress().hasFailures()) {
-                        ResultSquare.getInstance().markAsFailed();
-                    } else {
-                        ResultSquare.getInstance().markAsPassed();
-                    }
                 }
 
                 TestLifecycle.destroy();
