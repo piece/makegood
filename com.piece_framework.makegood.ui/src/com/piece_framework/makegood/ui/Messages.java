@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2009-2010 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
- *               2010 KUBO Atsuhiro <kubo@iteman.jp>,
+ *               2010-2011 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -43,6 +43,52 @@ public class Messages extends NLS {
     public static String MakeGoodPropertyPage_cakephpCorePathDialogMessage;
     public static String MakeGoodPropertyPage_cakephpCorePathLabel;
     public static String MakeGoodPropertyPage_cakephpCorePathBrowseLabel;
+
+    /**
+     * @since 1.3.0
+     */
+    public static String MakeGoodPropertyPage_ciunit;
+
+    /**
+     * @since 1.3.0
+     */
+    public static String MakeGoodPropertyPage_ciunitPathDialogTitle;
+
+    /**
+     * @since 1.3.0
+     */
+    public static String MakeGoodPropertyPage_ciunitPathDialogMessage;
+
+    /**
+     * @since 1.3.0
+     */
+    public static String MakeGoodPropertyPage_ciunitPathLabel;
+
+    /**
+     * @since 1.3.0
+     */
+    public static String MakeGoodPropertyPage_ciunitPathBrowseLabel;
+
+    /**
+     * @since 1.3.0
+     */
+    public static String MakeGoodPropertyPage_ciunitConfigFileDialogTitle;
+
+    /**
+     * @since 1.3.0
+     */
+    public static String MakeGoodPropertyPage_ciunitConfigFileDialogMessage;
+
+    /**
+     * @since 1.3.0
+     */
+    public static String MakeGoodPropertyPage_ciunitConfigFileLabel;
+
+    /**
+     * @since 1.3.0
+     */
+    public static String MakeGoodPropertyPage_ciunitConfigFileBrowseLabel;
+
     public static String MakeGoodPreferencePage_runAllTestsWhenFileIsSaved;
     public static String TestResultView_errorsLabel;
     public static String TestResultView_failuresLabel;

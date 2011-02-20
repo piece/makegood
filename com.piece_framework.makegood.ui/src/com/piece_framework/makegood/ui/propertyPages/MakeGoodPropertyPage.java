@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2009-2010 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
- *               2010 KUBO Atsuhiro <kubo@iteman.jp>,
+ *               2010-2011 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -72,6 +72,41 @@ public class MakeGoodPropertyPage extends PropertyPage {
     private Label cakephpCorePathLabel;
     private Text cakephpCorePathText;
     private Button cakephpCorePathBrowseButton;
+
+    /**
+     * @since 1.3.0
+     */
+    private Button ciunitButton;
+
+    /**
+     * @since 1.3.0
+     */
+    private Label ciunitPathLabel;
+
+    /**
+     * @since 1.3.0
+     */
+    private Text ciunitPathText;
+
+    /**
+     * @since 1.3.0
+     */
+    private Button ciunitPathBrowseButton;
+
+    /**
+     * @since 1.3.0
+     */
+    private Label ciunitConfigFileLabel;
+
+    /**
+     * @since 1.3.0
+     */
+    private Text ciunitConfigFileText;
+
+    /**
+     * @since 1.3.0
+     */
+    private Button ciunitConfigFileBrowseButton;
     private TreeViewer testFolderTreeViewer;
     private Button testFolderRemoveButton;
     private Composite contents;
@@ -185,6 +220,53 @@ public class MakeGoodPropertyPage extends PropertyPage {
             )
         );
 
+        ciunitButton = new Button(frameworkGroup, SWT.RADIO);
+        ciunitButton.setText(Messages.MakeGoodPropertyPage_ciunit);
+        ciunitButton.addSelectionListener(
+            new SelectionAdapter() {
+                public void widgetSelected(SelectionEvent e) {
+                    enableCIUnitSettings();
+                }
+            }
+        );
+        Composite ciunitSettings = new Composite(frameworkGroup, SWT.NONE);
+        {
+            GridLayout layout = new GridLayout();
+            layout.numColumns = 3;
+            ciunitSettings.setLayout(layout);
+        }
+        ciunitSettings.setLayoutData(new GridData(GridData.FILL_BOTH));
+        ciunitPathLabel = new Label(ciunitSettings, SWT.NONE);
+        ciunitPathLabel.setText(Messages.MakeGoodPropertyPage_ciunitPathLabel);
+        ciunitPathText = new Text(ciunitSettings, SWT.SINGLE | SWT.BORDER);
+        ciunitPathText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+        ciunitPathBrowseButton = new Button(ciunitSettings, SWT.NONE);
+        ciunitPathBrowseButton.setText(Messages.MakeGoodPropertyPage_ciunitPathBrowseLabel);
+        ciunitPathBrowseButton.addSelectionListener(
+            new FileSelectionListener(
+                ciunitPathText,
+                Messages.MakeGoodPropertyPage_ciunitPathDialogTitle,
+                Messages.MakeGoodPropertyPage_ciunitPathDialogMessage,
+                SELECTION_ALLOW_FOLDER,
+                new FileViewerFilter()
+            )
+        );
+        ciunitConfigFileLabel = new Label(ciunitSettings, SWT.NONE);
+        ciunitConfigFileLabel.setText(Messages.MakeGoodPropertyPage_ciunitConfigFileLabel);
+        ciunitConfigFileText = new Text(ciunitSettings, SWT.SINGLE | SWT.BORDER);
+        ciunitConfigFileText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+        ciunitConfigFileBrowseButton = new Button(ciunitSettings, SWT.NONE);
+        ciunitConfigFileBrowseButton.setText(Messages.MakeGoodPropertyPage_ciunitConfigFileBrowseLabel);
+        ciunitConfigFileBrowseButton.addSelectionListener(
+            new FileSelectionListener(
+                ciunitConfigFileText,
+                Messages.MakeGoodPropertyPage_ciunitConfigFileDialogTitle,
+                Messages.MakeGoodPropertyPage_ciunitConfigFileDialogMessage,
+                SELECTION_ALLOW_FILE,
+                new FileViewerFilter()
+            )
+        );
+
         Label preloadScriptLabel = new Label(contents, SWT.NONE);
         preloadScriptLabel.setText(Messages.MakeGoodPropertyPage_preloadScriptLabel);
         preloadScriptText = new Text(contents, SWT.SINGLE | SWT.BORDER);
@@ -263,10 +345,16 @@ public class MakeGoodPropertyPage extends PropertyPage {
             cakephpButton.setSelection(true);
             enableCakePHPSettings();
             break;
+        case CIUnit:
+            ciunitButton.setSelection(true);
+            enableCIUnitSettings();
+            break;
         }
         phpunitConfigFileText.setText(property.getPHPUnitConfigFile());
         cakephpAppPathText.setText(property.getCakePHPAppPath());
         cakephpCorePathText.setText(property.getCakePHPCorePath());
+        ciunitPathText.setText(property.getCIUnitPath());
+        ciunitConfigFileText.setText(property.getCIUnitConfigFile());
         preloadScriptText.setText(property.getPreloadScript());
         testFolderTreeViewer.setInput(property.getTestFolders());
 
@@ -283,11 +371,15 @@ public class MakeGoodPropertyPage extends PropertyPage {
             testingFramework = TestingFramework.SimpleTest;
         } else if (cakephpButton.getSelection()) {
             testingFramework = TestingFramework.CakePHP;
+        } else if (ciunitButton.getSelection()) {
+            testingFramework = TestingFramework.CIUnit;
         }
         property.setTestingFramework(testingFramework);
         property.setPHPUnitConfigFile(phpunitConfigFileText.getText());
         property.setCakePHPAppPath(cakephpAppPathText.getText());
         property.setCakePHPCorePath(cakephpCorePathText.getText());
+        property.setCIUnitPath(ciunitPathText.getText());
+        property.setCIUnitConfigFile(ciunitConfigFileText.getText());
         property.setPreloadScript(preloadScriptText.getText());
         property.setTestFolders((List<IFolder>) testFolderTreeViewer.getInput());
         property.flush();
@@ -308,6 +400,7 @@ public class MakeGoodPropertyPage extends PropertyPage {
     private void enablePHPUnitSettings() {
         disableSimpleTestSettings();
         disableCakePHPSettings();
+        disableCIUnitSettings();
         setPHPUnitSettingsEnabled(true);
     }
 
@@ -324,6 +417,7 @@ public class MakeGoodPropertyPage extends PropertyPage {
     private void enableSimpleTestSettings() {
         disablePHPUnitSettings();
         disableCakePHPSettings();
+        disableCIUnitSettings();
         setSimpleTestSettingsEnabled(true);
     }
 
@@ -337,6 +431,7 @@ public class MakeGoodPropertyPage extends PropertyPage {
     private void enableCakePHPSettings() {
         disablePHPUnitSettings();
         disableSimpleTestSettings();
+        disableCIUnitSettings();
         setCakePHPSettingsEnabled(true);
     }
 
@@ -351,6 +446,35 @@ public class MakeGoodPropertyPage extends PropertyPage {
         cakephpCorePathLabel.setEnabled(enabled);
         cakephpCorePathText.setEnabled(enabled);
         cakephpCorePathBrowseButton.setEnabled(enabled);
+    }
+
+    /**
+     * @since 1.3.0
+     */
+    private void enableCIUnitSettings() {
+        disablePHPUnitSettings();
+        disableSimpleTestSettings();
+        disableCakePHPSettings();
+        setCIUnitSettingsEnabled(true);
+    }
+
+    /**
+     * @since 1.3.0
+     */
+    private void disableCIUnitSettings() {
+        setCIUnitSettingsEnabled(false);
+    }
+
+    /**
+     * @since 1.3.0
+     */
+    private void setCIUnitSettingsEnabled(boolean enabled) {
+        ciunitPathLabel.setEnabled(enabled);
+        ciunitPathText.setEnabled(enabled);
+        ciunitPathBrowseButton.setEnabled(enabled);
+        ciunitConfigFileLabel.setEnabled(enabled);
+        ciunitConfigFileText.setEnabled(enabled);
+        ciunitConfigFileBrowseButton.setEnabled(enabled);
     }
 
     private class FileSelectionListener implements SelectionListener {

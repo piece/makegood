@@ -1,5 +1,6 @@
 /**
  * Copyright (c) 2009 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
+ *               2011 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -14,5 +15,6 @@ package com.piece_framework.makegood.core;
 public enum TestingFramework {
     PHPUnit,
     SimpleTest,
-    CakePHP
+    CakePHP,
+    CIUnit
 }

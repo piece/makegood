@@ -147,6 +147,25 @@ public class TestingTargets {
                     buffer.append(" --cakephp-core-path=\"" + resource.getLocation().toString() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
                 }
             }
+        } else if (getTestingFramework() == TestingFramework.CIUnit) {
+            String ciunitPath = getCIUnitPath();
+            if ("".equals(ciunitPath)) { //$NON-NLS-1$
+                ciunitPath = getDefaultCIUnitPath();
+            }
+            if (!"".equals(ciunitPath)) { //$NON-NLS-1$
+                IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(ciunitPath);
+                if (resource != null) {
+                    buffer.append(" --ciunit-path=\"" + resource.getLocation().toString() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
+                }
+            }
+
+            String ciunitConfigFile = getCIUnitConfigFile();
+            if (!"".equals(ciunitConfigFile)) { //$NON-NLS-1$
+                IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(ciunitConfigFile);
+                if (resource != null) {
+                    buffer.append(" --phpunit-config=\"" + resource.getLocation().toString() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
+                }
+            }
         }
 
         Set<String> testingFiles = new HashSet<String>();
@@ -295,6 +314,29 @@ public class TestingTargets {
 
     private String getCakePHPCorePath() {
         return createMakeGoodProperty().getCakePHPCorePath();
+    }
+
+    /**
+     * @since 1.3.0
+     */
+    private String getCIUnitPath() {
+        return createMakeGoodProperty().getCIUnitPath();
+    }
+
+    /**
+     * @since 1.3.0
+     */
+    private String getDefaultCIUnitPath() {
+        IResource resource = createMakeGoodProperty().getProject().findMember("/system/application/tests"); //$NON-NLS-1$
+        if (resource == null) return ""; //$NON-NLS-1$
+        return resource.getFullPath().toString();
+    }
+
+    /**
+     * @since 1.3.0
+     */
+    private String getCIUnitConfigFile() {
+        return createMakeGoodProperty().getCIUnitConfigFile();
     }
 
     private MakeGoodProperty createMakeGoodProperty() {

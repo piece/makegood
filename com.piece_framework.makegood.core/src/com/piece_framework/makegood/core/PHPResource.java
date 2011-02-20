@@ -90,6 +90,10 @@ public class PHPResource {
             testClassSuperTypes.add("CakeTestCase"); //$NON-NLS-1$
             testClassSuperTypes.add("CakeWebTestCase"); //$NON-NLS-1$
             break;
+        case CIUnit:
+            testClassSuperTypes.add("CIUnit_TestCase"); //$NON-NLS-1$
+            testClassSuperTypes.add("CIUnit_TestCase_Selenium"); //$NON-NLS-1$
+            break;
         default:
             break;
         }

@@ -1,5 +1,6 @@
 /**
  * Copyright (c) 2009-2010 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
+ *               2011 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -34,6 +35,8 @@ public class MakeGoodProperty {
     private static String PHPUNIT_CONFIG_FILE = "phpunit_config_file"; //$NON-NLS-1$
     private static String CAKEPHP_APP_PATH = "cakephp_app_path"; //$NON-NLS-1$
     private static String CAKEPHP_CORE_PATH = "cakephp_core_path"; //$NON-NLS-1$
+    private static String CIUNIT_PATH = "ciunit_path"; //$NON-NLS-1$
+    private static String CIUNIT_CONFIG_FILE = "ciunit_config_file"; //$NON-NLS-1$
     private IEclipsePreferences preferences;
     private IProject project;
 
@@ -76,6 +79,8 @@ public class MakeGoodProperty {
             return TestingFramework.SimpleTest;
         } else if (testingFramework.equals(TestingFramework.CakePHP.name())) {
             return TestingFramework.CakePHP;
+        } else if (testingFramework.equals(TestingFramework.CIUnit.name())) {
+            return TestingFramework.CIUnit;
         } else {
             return TestingFramework.PHPUnit;
         }
@@ -137,5 +142,33 @@ public class MakeGoodProperty {
 
     public void setCakePHPCorePath(String cakephpCorePath) {
         preferences.put(CAKEPHP_CORE_PATH, cakephpCorePath);
+    }
+
+    /**
+     * @since 1.3.0
+     */
+    public String getCIUnitPath() {
+        return preferences.get(CIUNIT_PATH, ""); //$NON-NLS-1$
+    }
+
+    /**
+     * @since 1.3.0
+     */
+    public void setCIUnitPath(String ciunitPath) {
+        preferences.put(CIUNIT_PATH, ciunitPath);
+    }
+
+    /**
+     * @since 1.3.0
+     */
+    public String getCIUnitConfigFile() {
+        return preferences.get(CIUNIT_CONFIG_FILE, ""); //$NON-NLS-1$
+    }
+
+    /**
+     * @since 1.3.0
+     */
+    public void setCIUnitConfigFile(String ciunitConfigFile) {
+        preferences.put(CIUNIT_CONFIG_FILE, ciunitConfigFile);
     }
 }
