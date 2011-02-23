@@ -63,9 +63,6 @@ public class ResultSquare extends WorkbenchWindowControlContribution {
     protected Control createControl(Composite parent) {
         currentResultSquare = this;
 
-        if (canvas != null && !canvas.isDisposed()) {
-            canvas.dispose();
-        }
         canvas = new Canvas(parent, SWT.NONE);
         canvas.setLayout(new GridLayout(1, false));
         square = new Label(canvas, SWT.NONE);
@@ -116,12 +113,14 @@ public class ResultSquare extends WorkbenchWindowControlContribution {
     }
 
     public void endTest() {
-        canvas.removePaintListener(imageAnimator.getPaintListener());
-        imageAnimatorThread.interrupt();
-        try {
-            imageAnimatorThread.join();
-        } catch (InterruptedException e) {
+        if (imageAnimatorThread != null) {
+            imageAnimatorThread.interrupt();
+            try {
+                imageAnimatorThread.join();
+            } catch (InterruptedException e) {
+            }
         }
+        canvas.removePaintListener(imageAnimator.getPaintListener());
         square.setVisible(true);
     }
 
@@ -166,13 +165,16 @@ public class ResultSquare extends WorkbenchWindowControlContribution {
                     return;
                 }
 
+                if (canvas.isDisposed()) return;
                 canvas.getDisplay().asyncExec(new Runnable() {
                     @Override
                     public void run(){
                         ImageData nextFrameData = imageLoader.data[currentFrameIndex];
+                        if (canvas.isDisposed()) return;
                         Image frameImage = new Image(canvas.getDisplay(), nextFrameData);
                         gc.drawImage(frameImage, nextFrameData.x, nextFrameData.y);
                         frameImage.dispose();
+                        if (canvas.isDisposed()) return;
                         canvas.redraw();
 
                         if (currentFrameIndex == imageLoader.data.length - 1) {
