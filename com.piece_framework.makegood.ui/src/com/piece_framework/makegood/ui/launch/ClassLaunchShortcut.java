@@ -14,7 +14,7 @@ package com.piece_framework.makegood.ui.launch;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.ui.IEditorPart;
 
-import com.piece_framework.makegood.ui.views.EditorParser;
+import com.piece_framework.makegood.ui.EditorParser;
 
 public class ClassLaunchShortcut extends NoSearchLaunchShortcut {
     @Override

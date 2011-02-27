@@ -20,8 +20,8 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 
+import com.piece_framework.makegood.ui.EditorParser;
 import com.piece_framework.makegood.ui.launch.TestRunner;
-import com.piece_framework.makegood.ui.views.EditorParser;
 
 public class RunTestFromEditorInClassHandler extends RunTestFromEditorHandler {
     @Override
