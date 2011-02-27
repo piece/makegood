@@ -20,8 +20,6 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.DLTKLanguageManager;
-import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.IType;
@@ -33,13 +31,14 @@ import org.eclipse.dltk.core.search.SearchParticipant;
 import org.eclipse.dltk.core.search.SearchPattern;
 import org.eclipse.dltk.core.search.SearchRequestor;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.php.internal.core.PHPLanguageToolkit;
 import org.eclipse.php.internal.core.typeinference.PHPClassType;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.texteditor.ITextEditor;
 
 import com.piece_framework.makegood.core.PHPFlags;
 import com.piece_framework.makegood.core.PHPResource;
-import com.piece_framework.makegood.launch.TestLifecycle;
+import com.piece_framework.makegood.launch.TestingTargets;
 import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.Messages;
 import com.piece_framework.makegood.ui.views.EditorParser;
@@ -49,56 +48,31 @@ public class RelatedTestsLaunchShortcut extends MakeGoodLaunchShortcut {
     public void launch(IEditorPart editor, String mode) {
         clearTestingTargets();
         if (!(editor instanceof ITextEditor)) throw new NotLaunchedException();
-        launchTestsRelatedTo(editor, mode);
-    }
 
-    private void launchTestsRelatedTo(final IEditorPart editor, final String mode) {
-        SearchRequestor requestor = new SearchRequestor() {
-            Set<IResource> tests = new HashSet<IResource>();
-            Set<IResource> searchMatches = new HashSet<IResource>();
-
-            @Override
-            public void acceptSearchMatch(SearchMatch match) throws CoreException {
-                IResource resource = match.getResource();
-                if (searchMatches.contains(resource)) return;
-                searchMatches.add(resource);
-
-                IModelElement element = DLTKCore.create(resource);
-                if (!(element instanceof ISourceModule)) return;
-                if (!PHPResource.hasTests((ISourceModule) element)) return;
-                tests.add(resource);
-            }
-
-            @Override
-            public void endReporting() {
-                ISourceModule source = new EditorParser(editor).getSourceModule();
-                if (source != null && PHPResource.hasTests(source)) {
-                    tests.add(source.getResource());
-                }
-
-                if (tests.size() == 0) {
-                    MessageDialog.openInformation(
-                        editor.getEditorSite().getShell(),
-                        Messages.MakeGoodLaunchShortcut_messageTitle,
-                        Messages.MakeGoodLaunchShortcut_notFoundTestsMessage
-                    );
-                    TestLifecycle.destroy();
-                    return;
-                }
-
-                for (IResource test: tests) {
-                    addTestingTarget(test);
-                }
-                RelatedTestsLaunchShortcut.super.launch(editor, mode);
-            }
-        };
-
-        List<IType> types = new EditorParser(editor).getTypes();
+        EditorParser editorParser = new EditorParser(editor);
+        List<IType> types = editorParser.getTypes();
         if (types == null || types.size() == 0) throw new NotLaunchedException();
 
-        IDLTKLanguageToolkit toolkit = DLTKLanguageManager.getLanguageToolkit(types.get(0));
-        if (toolkit == null) throw new NotLaunchedException();
+        ISourceModule source = editorParser.getSourceModule();
+        if (source != null && PHPResource.hasTests(source)) {
+            addTestingTarget(source.getResource());
+        }
 
+        collectRelatedTests(types);
+
+        if (TestingTargets.getInstance().getCount() == 0) {
+            MessageDialog.openInformation(
+                editor.getEditorSite().getShell(),
+                Messages.MakeGoodLaunchShortcut_messageTitle,
+                Messages.MakeGoodLaunchShortcut_notFoundTestsMessage
+            );
+            throw new NotLaunchedException();
+        }
+
+        super.launch(editor, mode);
+    }
+
+    private void collectRelatedTests(List<IType> types) {
         SearchPattern pattern = null;
         for (IType type: types) {
             int flags;
@@ -117,7 +91,7 @@ public class RelatedTestsLaunchShortcut extends MakeGoodLaunchShortcut {
                     IDLTKSearchConstants.TYPE,
                     IDLTKSearchConstants.REFERENCES,
                     SearchPattern.R_FULL_MATCH,
-                    toolkit
+                    PHPLanguageToolkit.getDefault()
                 );
             if (pattern == null) {
                 pattern = patternForType;
@@ -131,12 +105,35 @@ public class RelatedTestsLaunchShortcut extends MakeGoodLaunchShortcut {
                 pattern,
                 new SearchParticipant[] { SearchEngine.getDefaultSearchParticipant() },
                 SearchEngine.createSearchScope(types.get(0).getScriptProject()),
-                requestor,
+                new TestSearchRequestor(),
                 null
             );
         } catch (CoreException e) {
             Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
             throw new NotLaunchedException();
+        }
+    }
+
+    /**
+     * @since 1.3.0
+     */
+    private class TestSearchRequestor extends SearchRequestor {
+        private Set<IResource> searchMatches = new HashSet<IResource>();
+
+        @Override
+        public void acceptSearchMatch(SearchMatch match) throws CoreException {
+            IResource resource = match.getResource();
+            if (searchMatches.contains(resource)) return;
+            searchMatches.add(resource);
+
+            IModelElement element = DLTKCore.create(resource);
+            if (!(element instanceof ISourceModule)) return;
+            if (!PHPResource.hasTests((ISourceModule) element)) return;
+            addTestingTarget(resource);
+        }
+
+        @Override
+        public void endReporting() {
         }
     }
 }

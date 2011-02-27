@@ -400,4 +400,11 @@ public class TestingTargets {
             if (parent == null) return null;
         }
     }
+
+    /**
+     * @since 1.3.0
+     */
+    public int getCount() {
+        return targets.size();
+    }
 }
