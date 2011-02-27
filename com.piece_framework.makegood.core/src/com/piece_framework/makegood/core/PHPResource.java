@@ -41,7 +41,7 @@ public class PHPResource {
         if (source == null) return false;
         IResource resource = source.getResource();
         if (resource == null) return false;
-        List<String> testClassSuperTypes = getTestClassSuperType(resource);
+        List<String> testClassSuperTypes = getTestClassSuperTypes(resource);
 
         try {
             for (IType type: source.getAllTypes()) {
@@ -77,7 +77,7 @@ public class PHPResource {
         return false;
     }
 
-    private static List<String> getTestClassSuperType(IResource resource) {
+    private static List<String> getTestClassSuperTypes(IResource resource) {
         List<String> testClassSuperTypes = new ArrayList<String>();
         MakeGoodProperty property = new MakeGoodProperty(resource);
         switch (property.getTestingFramework()) {
