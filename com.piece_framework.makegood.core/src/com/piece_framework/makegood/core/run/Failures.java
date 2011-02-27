@@ -31,7 +31,7 @@ public class Failures implements ResultReaderListener {
         resultIndexes.put(result, orderedResults.size() - 1);
     }
 
-    public void markCurrentResultAsFailure() {
+    private void markCurrentResultAsFailure() {
         failureIndexes.add(orderedResults.size() - 1);
     }
 
