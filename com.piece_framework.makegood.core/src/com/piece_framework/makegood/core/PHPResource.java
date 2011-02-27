@@ -46,6 +46,7 @@ public class PHPResource {
         try {
             for (IType type: source.getAllTypes()) {
                 if (!PHPFlags.isClass(type.getFlags())) continue;
+                if (PHPFlags.isAbstract(type.getFlags())) continue;
                 for (String testClassSuperType: testClassSuperTypes) {
                     if (hasTests(type, testClassSuperType)) {
                         return true;

@@ -11,6 +11,8 @@
 
 package com.piece_framework.makegood.core;
 
+import org.eclipse.dltk.core.Flags;
+
 /**
  * @since 1.2.0
  */
@@ -21,5 +23,12 @@ public class PHPFlags {
 
     public static boolean isNamespace(int flags) {
         return true;
+    }
+
+    /**
+     * @since 1.3.0
+     */
+    public static boolean isAbstract(int flags) {
+        return Flags.isAbstract(flags);
     }
 }
