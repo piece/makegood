@@ -63,7 +63,7 @@ public class PHPResource {
     /**
      * @since 1.2.0
      */
-    public static boolean hasTests(IType type, String testClassSuperType) throws ModelException {
+    private static boolean hasTests(IType type, String testClassSuperType) throws ModelException {
         // TODO Type Hierarchy by PDT 2.1 does not work with namespaces.
         ITypeHierarchy hierarchy = type.newSupertypeHierarchy(new NullProgressMonitor());
         if (hierarchy == null) return false;
