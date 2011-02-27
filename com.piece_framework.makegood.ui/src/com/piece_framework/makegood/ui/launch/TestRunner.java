@@ -52,8 +52,8 @@ public class TestRunner {
         runTests(selection, new ResourceLaunchShortcut());
     }
 
-    public static void runAllTests(Object testingTarget) {
-        runTests(testingTarget, new ResourceChangedAllTestsLaunchShortcut());
+    public static void runAllTests(ISelection selection) {
+        runTests(selection, new ResourceChangedAllTestsLaunchShortcut());
     }
 
     public static void runAllTests() {
