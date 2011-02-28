@@ -66,7 +66,7 @@ public class ResultSquare extends WorkbenchWindowControlContribution {
         canvas = new Canvas(parent, SWT.NONE);
         canvas.setLayout(new GridLayout(1, false));
         square = new Label(canvas, SWT.NONE);
-        square.setToolTipText("Wating for a Test Run"); //$NON-NLS-1$
+        square.setToolTipText("Waiting for a Test Run"); //$NON-NLS-1$
         square.setImage(Activator.getImageDescriptor(IMAGE_PATH_MAKEGOOD).createImage());
         square.addMouseListener(new MouseListener() {
             @Override
