@@ -41,6 +41,6 @@ public class Startup implements IStartup {
         };
 
         DebugPlugin.getDefault().addDebugEventListener(new ResultViewController());
-        ResourcesPlugin.getWorkspace().addResourceChangeListener(new RunAllTestsResourceChangeListener());
+        ResourcesPlugin.getWorkspace().addResourceChangeListener(new AutotestResourceChangeListener());
     }
 }

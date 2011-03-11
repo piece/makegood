@@ -83,7 +83,7 @@ public class TestRunner {
 
         synchronized (TestRunner.class) {
             if (TestLifecycle.isRunning()) {
-                if (!isTestRunBySavingFiles(shortcut)) {
+                if (!isTestRunByAutotest(shortcut)) {
                     raiseTestSessionAlreadyExistsError();
                 }
 
@@ -92,7 +92,7 @@ public class TestRunner {
             TestLifecycle.create();
         }
 
-        if (!isTestRunBySavingFiles(shortcut)) {
+        if (!isTestRunByAutotest(shortcut)) {
             lastShortcut = shortcut;
             lastTestingTarget = testingTarget;
         }
@@ -146,7 +146,7 @@ public class TestRunner {
         });
     }
 
-    private static boolean isTestRunBySavingFiles(MakeGoodLaunchShortcut shortcut) {
+    private static boolean isTestRunByAutotest(MakeGoodLaunchShortcut shortcut) {
         return shortcut instanceof ResourceChangedAllTestsLaunchShortcut;
     }
 }

@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2010 MATSUFUJI Hideharu <matsufuji2008@gmail.com>
- *               2010 KUBO Atsuhiro <kubo@iteman.jp>,
+ *               2010-2011 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -23,34 +23,49 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.progress.UIJob;
 
+import com.piece_framework.makegood.core.AutotestScope;
 import com.piece_framework.makegood.launch.RuntimeConfiguration;
 import com.piece_framework.makegood.ui.launch.TestRunner;
 import com.piece_framework.makegood.ui.views.ActivePart;
 
-public class RunAllTestsResourceChangeListener implements IResourceChangeListener {
+public class AutotestResourceChangeListener implements IResourceChangeListener {
     @Override
     public void resourceChanged(IResourceChangeEvent event) {
-        if (!RuntimeConfiguration.getInstance().runsAllTestsWhenFileIsSaved) return;
+        if (!RuntimeConfiguration.getInstance().enablesAutotest()) return;
         IResourceDelta delta = event.getDelta();
         if (delta == null) return;
         IResourceDelta[] deltas = delta.getAffectedChildren();
         if (deltas.length == 0) return;
-        if (!shouldRunAllTests(deltas)) return;
+        if (!shouldRunTests(deltas)) return;
 
-        final ISelection selection = new StructuredSelection(deltas[0].getResource());
-        if (!ActivePart.isAllTestsRunnable(selection)) return;
-
-        Job job = new UIJob("MakeGood Run All Tests For Resources") { //$NON-NLS-1$
-            @Override
-            public IStatus runInUIThread(IProgressMonitor monitor) {
-                TestRunner.runAllTests(selection);
-                return Status.OK_STATUS;
+        AutotestScope autotestScope = RuntimeConfiguration.getInstance().getAutotestScope();
+        if (autotestScope == AutotestScope.ALL_TESTS) {
+            final ISelection selection = new StructuredSelection(deltas[0].getResource());
+            if (ActivePart.isAllTestsRunnable(selection)) {
+                Job job = new UIJob("MakeGood Run All Tests By Autotest") { //$NON-NLS-1$
+                    @Override
+                    public IStatus runInUIThread(IProgressMonitor monitor) {
+                        TestRunner.runAllTests(selection);
+                        return Status.OK_STATUS;
+                    }
+                };
+                job.schedule();
             }
-        };
-        job.schedule();
+        } else if (autotestScope == AutotestScope.LAST_TEST) {
+            if (TestRunner.hasLastTest()) {
+                Job job = new UIJob("MakeGood Run Last Test By Autotest") { //$NON-NLS-1$
+                    @Override
+                    public IStatus runInUIThread(IProgressMonitor monitor) {
+                        TestRunner.rerunLastTest();
+                        return Status.OK_STATUS;
+                    }
+                };
+                job.schedule();
+            }
+        }
     }
 
-    private boolean shouldRunAllTests(IResourceDelta[] deltas) {
+    private boolean shouldRunTests(IResourceDelta[] deltas) {
         for (IResourceDelta delta: deltas) {
             if (delta.getKind() != IResourceDelta.CHANGED) return true;
 
@@ -60,7 +75,7 @@ public class RunAllTestsResourceChangeListener implements IResourceChangeListene
             if ((flags & IResourceDelta.TYPE) != 0) return true;
             if ((flags & IResourceDelta.LOCAL_CHANGED) != 0) return true;
 
-            return shouldRunAllTests(delta.getAffectedChildren());
+            return shouldRunTests(delta.getAffectedChildren());
         }
 
         return false;

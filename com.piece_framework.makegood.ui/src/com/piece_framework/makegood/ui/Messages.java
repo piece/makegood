@@ -89,7 +89,26 @@ public class Messages extends NLS {
      */
     public static String MakeGoodPropertyPage_ciunitConfigFileBrowseLabel;
 
-    public static String MakeGoodPreferencePage_runAllTestsWhenFileIsSaved;
+    /**
+     * @since 1.4.0
+     */
+    public static String MakeGoodPreferencePage_autotestLabel;
+
+    /**
+     * @since 1.4.0
+     */
+    public static String MakeGoodPreferencePage_autotestScopeAllTestsLabel;
+
+    /**
+     * @since 1.4.0
+     */
+    public static String MakeGoodPreferencePage_autotestScopeLastTestLabel;
+
+    /**
+     * @since 1.4.0
+     */
+    public static String MakeGoodPreferencePage_autotestScopeNoneLabel;
+
     public static String TestResultView_errorsLabel;
     public static String TestResultView_failuresLabel;
     public static String TestResultView_failureTraceLabel;

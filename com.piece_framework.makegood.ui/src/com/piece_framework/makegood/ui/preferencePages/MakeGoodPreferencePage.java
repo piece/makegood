@@ -1,5 +1,6 @@
 /**
- * Copyright (c) 2010 MATSUFUJI Hideharu <matsufuji2008@gmail.com>
+ * Copyright (c) 2010 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
+ *               2011 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -11,75 +12,59 @@
 
 package com.piece_framework.makegood.ui.preferencePages;
 
-import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.jface.preference.PreferencePage;
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
+import org.eclipse.jface.preference.FieldEditor;
+import org.eclipse.jface.preference.FieldEditorPreferencePage;
+import org.eclipse.jface.preference.RadioGroupFieldEditor;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
+import com.piece_framework.makegood.core.AutotestScope;
 import com.piece_framework.makegood.core.MakeGoodCorePlugin;
-import com.piece_framework.makegood.core.preference.MakeGoodPreferenceInitializer;
+import com.piece_framework.makegood.core.preference.MakeGoodPreference;
 import com.piece_framework.makegood.ui.Messages;
 
-public class MakeGoodPreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
-    private Button runAllTestsWhenFileIsSaved;
-
-    public MakeGoodPreferencePage() {}
-
-    public MakeGoodPreferencePage(String title) {
-        super(title);
-    }
-
-    public MakeGoodPreferencePage(String title, ImageDescriptor image) {
-        super(title, image);
+public class MakeGoodPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
+    public MakeGoodPreferencePage() {
+        setPreferenceStore(MakeGoodCorePlugin.getDefault().getPreferenceStore());
     }
 
     @Override
-    public void init(IWorkbench workbench) {}
-
-    @Override
-    protected Control createContents(Composite parent) {
-        Composite composite = new Composite(parent, SWT.NONE);
-        composite.setLayout(new GridLayout());
-        composite.setLayoutData(new GridData(GridData.FILL_BOTH));
-
-        runAllTestsWhenFileIsSaved = new Button(composite, SWT.CHECK);
-        runAllTestsWhenFileIsSaved.setLayoutData(
-            new GridData(GridData.VERTICAL_ALIGN_BEGINNING)
+    protected void createFieldEditors() {
+        FieldEditor fieldEditor = new AutotestRadioGroupFieldEditor(
+            MakeGoodPreference.AUTOTEST_SCOPE,
+            Messages.MakeGoodPreferencePage_autotestLabel,
+            3,
+            new String[][] {
+                { Messages.MakeGoodPreferencePage_autotestScopeAllTestsLabel, AutotestScope.ALL_TESTS.name() },
+                { Messages.MakeGoodPreferencePage_autotestScopeLastTestLabel, AutotestScope.LAST_TEST.name() },
+                { Messages.MakeGoodPreferencePage_autotestScopeNoneLabel, AutotestScope.NONE.name() },
+            },
+            getFieldEditorParent(),
+            true
         );
-        runAllTestsWhenFileIsSaved.setText(
-            Messages.MakeGoodPreferencePage_runAllTestsWhenFileIsSaved
-        );
-
-        IPreferenceStore store = MakeGoodCorePlugin.getDefault().getPreferenceStore();
-        runAllTestsWhenFileIsSaved.setSelection(
-            store.getBoolean(MakeGoodPreferenceInitializer.RUN_ALL_TESTS_WHEN_FILE_IS_SAVED)
-        );
-
-        return composite;
+        addField(fieldEditor);
     }
 
     @Override
-    public boolean performOk() {
-        IPreferenceStore store = MakeGoodCorePlugin.getDefault().getPreferenceStore();
-        store.setValue(
-            MakeGoodPreferenceInitializer.RUN_ALL_TESTS_WHEN_FILE_IS_SAVED,
-            runAllTestsWhenFileIsSaved.getSelection()
-        );
-        return true;
+    public void init(IWorkbench workbench) {
     }
 
-    @Override
-    protected void performDefaults() {
-        IPreferenceStore store = MakeGoodCorePlugin.getDefault().getPreferenceStore();
-        runAllTestsWhenFileIsSaved.setSelection(
-            store.getDefaultBoolean(MakeGoodPreferenceInitializer.RUN_ALL_TESTS_WHEN_FILE_IS_SAVED)
-        );
+    private class AutotestRadioGroupFieldEditor extends RadioGroupFieldEditor {
+        public AutotestRadioGroupFieldEditor(
+            String name,
+            String labelText,
+            int numColumns,
+            String[][] labelAndValues,
+            Composite parent,
+            boolean useGroup) {
+            super(name, labelText, numColumns, labelAndValues, parent, useGroup);
+        }
+
+        @Override
+        protected void doLoad() {
+            MakeGoodPreference.migrate();
+            super.doLoad();
+        }
     }
 }

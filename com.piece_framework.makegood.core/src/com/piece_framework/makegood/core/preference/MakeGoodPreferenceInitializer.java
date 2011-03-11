@@ -1,5 +1,6 @@
 /**
- * Copyright (c) 2010 MATSUFUJI Hideharu <matsufuji2008@gmail.com>
+ * Copyright (c) 2010 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
+ *               2011 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -13,15 +14,14 @@ package com.piece_framework.makegood.core.preference;
 
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 
+import com.piece_framework.makegood.core.AutotestScope;
 import com.piece_framework.makegood.core.MakeGoodCorePlugin;
 
 public class MakeGoodPreferenceInitializer extends AbstractPreferenceInitializer {
-    public static final String RUN_ALL_TESTS_WHEN_FILE_IS_SAVED = "RUN_ALL_TESTS_WHEN_FILE_IS_SAVED"; //$NON-NLS-1$
-
     @Override
     public void initializeDefaultPreferences() {
         MakeGoodCorePlugin.getDefault()
                           .getPreferenceStore()
-                          .setDefault(RUN_ALL_TESTS_WHEN_FILE_IS_SAVED, true);
+                          .setDefault(MakeGoodPreference.AUTOTEST_SCOPE, AutotestScope.ALL_TESTS.name());
     }
 }

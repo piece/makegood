@@ -60,6 +60,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.contexts.IContextService;
 import org.eclipse.ui.part.ViewPart;
 
+import com.piece_framework.makegood.core.AutotestScope;
 import com.piece_framework.makegood.core.result.Result;
 import com.piece_framework.makegood.core.result.TestCaseResult;
 import com.piece_framework.makegood.core.result.TestSuiteResult;
@@ -75,6 +76,7 @@ import com.piece_framework.makegood.ui.actions.PreviousFailureAction;
 import com.piece_framework.makegood.ui.actions.RerunTestAction;
 import com.piece_framework.makegood.ui.actions.RunAllTestsAction;
 import com.piece_framework.makegood.ui.actions.RunAllTestsWhenFileIsSavedAction;
+import com.piece_framework.makegood.ui.actions.RunLastTestWhenFileIsSavedAction;
 import com.piece_framework.makegood.ui.actions.ShowFailuresOnlyAction;
 import com.piece_framework.makegood.ui.actions.StopOnFailureAction;
 import com.piece_framework.makegood.ui.actions.StopTestAction;
@@ -457,11 +459,19 @@ public class ResultView extends ViewPart {
             );
         }
 
+        ActionContributionItem runLastTestWhenFileIsSavedItem =
+            (ActionContributionItem) manager.find(RunLastTestWhenFileIsSavedAction.ACTION_ID);
+        if (runLastTestWhenFileIsSavedItem != null) {
+            runLastTestWhenFileIsSavedItem.getAction().setChecked(
+                RuntimeConfiguration.getInstance().getAutotestScope() == AutotestScope.LAST_TEST
+            );
+        }
+
         ActionContributionItem runAllTestsWhenFileIsSavedItem =
             (ActionContributionItem) manager.find(RunAllTestsWhenFileIsSavedAction.ACTION_ID);
         if (runAllTestsWhenFileIsSavedItem != null) {
             runAllTestsWhenFileIsSavedItem.getAction().setChecked(
-                RuntimeConfiguration.getInstance().runsAllTestsWhenFileIsSaved
+                RuntimeConfiguration.getInstance().getAutotestScope() == AutotestScope.ALL_TESTS
             );
         }
 
