@@ -438,12 +438,12 @@
          <action
                class="com.piece_framework.makegood.ui.actions.StopOnFailureAction"
                definitionId="com.piece_framework.makegood.ui.commands.stopOnFailure"
-               icon="icons/stopOnFailure.gif"
-               id="com.piece_framework.makegood.ui.viewActions.resultView.stopOnFailure"
-               label="%resultView.stopOnFailure.label"
+               icon="icons/stopOnFailureAction.gif"
+               id="com.piece_framework.makegood.ui.viewActions.stopOnFailureAction"
+               label="%viewActions.stopOnFailureAction.label"
                style="toggle"
                toolbarPath="additions"
-               tooltip="%resultView.stopOnFailure.tooltip">
+               tooltip="%viewActions.stopOnFailureAction.tooltip">
          </action>
          <action
                class="com.piece_framework.makegood.ui.actions.DebugTestAction"
