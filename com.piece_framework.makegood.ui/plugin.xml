@@ -418,12 +418,12 @@
          <action
                class="com.piece_framework.makegood.ui.actions.PreviousFailureAction"
                definitionId="com.piece_framework.makegood.ui.commands.previousFailedTest"
-               icon="icons/previousFailedTest.gif"
-               id="com.piece_framework.makegood.ui.viewActions.resultView.previousFailedTest"
-               label="%resultView.previousFailedTest.label"
+               icon="icons/previousFailureAction.gif"
+               id="com.piece_framework.makegood.ui.viewActions.previousFailureAction"
+               label="%viewActions.previousFailureAction.label"
                style="push"
                toolbarPath="additions"
-               tooltip="%resultView.previousFailedTest.tooltip">
+               tooltip="%viewActions.previousFailureAction.tooltip">
          </action>
          <action
                class="com.piece_framework.makegood.ui.actions.NextFailureAction"

@@ -21,7 +21,7 @@ import com.piece_framework.makegood.ui.views.ResultView;
 import com.piece_framework.makegood.ui.views.ViewOpener;
 
 public class PreviousFailureAction implements IViewActionDelegate {
-    public static final String ACTION_ID = "com.piece_framework.makegood.ui.viewActions.resultView.previousFailedTest"; //$NON-NLS-1$
+    public static final String ACTION_ID = "com.piece_framework.makegood.ui.viewActions.previousFailureAction"; //$NON-NLS-1$
 
     @Override
     public void init(IViewPart view) {
