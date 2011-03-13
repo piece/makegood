@@ -428,12 +428,12 @@
          <action
                class="com.piece_framework.makegood.ui.actions.NextFailureAction"
                definitionId="com.piece_framework.makegood.ui.commands.nextFailedTest"
-               icon="icons/nextFailedTest.gif"
-               id="com.piece_framework.makegood.ui.viewActions.resultView.nextFailedTest"
-               label="%resultView.nextFailedTest.label"
+               icon="icons/nextFailureAction.gif"
+               id="com.piece_framework.makegood.ui.viewActions.nextFailureAction"
+               label="%viewActions.nextFailureAction.label"
                style="push"
                toolbarPath="additions"
-               tooltip="%resultView.nextFailedTest.tooltip">
+               tooltip="%viewActions.nextFailureAction.tooltip">
          </action>
          <action
                class="com.piece_framework.makegood.ui.actions.StopOnFailureAction"
