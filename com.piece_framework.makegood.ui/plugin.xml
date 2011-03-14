@@ -247,8 +247,8 @@
       <command
             categoryId="com.piece_framework.makegood.ui.commands.runTestCategory"
             defaultHandler="com.piece_framework.makegood.ui.handlers.StopOnFailureHandler"
-            id="com.piece_framework.makegood.ui.commands.stopOnFailure"
-            name="%commands.stopOnFailure.name">
+            id="com.piece_framework.makegood.ui.commands.stopOnFailureCommand"
+            name="%commands.stopOnFailureCommand.name">
       </command>
       <command
             categoryId="com.piece_framework.makegood.ui.commands.runTestCategory"
@@ -382,7 +382,7 @@
             sequence="M3+M D">
       </key>
       <key
-            commandId="com.piece_framework.makegood.ui.commands.stopOnFailure"
+            commandId="com.piece_framework.makegood.ui.commands.stopOnFailureCommand"
             contextId="org.eclipse.ui.contexts.window"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="M3+M E">
@@ -437,7 +437,7 @@
          </action>
          <action
                class="com.piece_framework.makegood.ui.actions.StopOnFailureAction"
-               definitionId="com.piece_framework.makegood.ui.commands.stopOnFailure"
+               definitionId="com.piece_framework.makegood.ui.commands.stopOnFailureCommand"
                icon="icons/stopOnFailureAction.gif"
                id="com.piece_framework.makegood.ui.viewActions.stopOnFailureAction"
                label="%viewActions.stopOnFailureAction.label"
