@@ -23,7 +23,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 import com.piece_framework.makegood.ui.EditorParser;
 import com.piece_framework.makegood.ui.launch.TestRunner;
 
-public class RunTestFromEditorInClassHandler extends RunTestFromEditorHandler {
+public class RunTestFromEditorInClassHandler extends RunTestFromEditorHandlerInContext {
     @Override
     public Object execute(ExecutionEvent event) throws ExecutionException {
         TestRunner.runTestsInClass(HandlerUtil.getActiveEditor(event));
