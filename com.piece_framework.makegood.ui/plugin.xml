@@ -478,12 +478,12 @@
          <action
                class="com.piece_framework.makegood.ui.actions.StopTestAction"
                definitionId="com.piece_framework.makegood.ui.commands.stopTest"
-               icon="icons/stopTest.gif"
-               id="com.piece_framework.makegood.ui.viewActions.resultView.stopTest"
-               label="%resultView.stopTest.label"
+               icon="icons/stopTestAction.gif"
+               id="com.piece_framework.makegood.ui.viewActions.stopTestAction"
+               label="%viewActions.stopTestAction.label"
                style="push"
                toolbarPath="additions"
-               tooltip="%resultView.stopTest.tooltip">
+               tooltip="%viewActions.stopTestAction.tooltip">
          </action>
          <action
                class="com.piece_framework.makegood.ui.actions.RerunTestAction"
