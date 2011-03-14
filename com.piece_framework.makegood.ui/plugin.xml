@@ -277,8 +277,8 @@
       <command
             categoryId="com.piece_framework.makegood.ui.commands.runTestCategory"
             defaultHandler="com.piece_framework.makegood.ui.handlers.RerunTestHandler"
-            id="com.piece_framework.makegood.ui.commands.rerunTest"
-            name="%commands.rerunTest.name">
+            id="com.piece_framework.makegood.ui.commands.rerunTestCommand"
+            name="%commands.rerunTestCommand.name">
       </command>
    </extension>
    <extension
@@ -328,7 +328,7 @@
             sequence="F">
       </key>
       <key
-            commandId="com.piece_framework.makegood.ui.commands.rerunTest"
+            commandId="com.piece_framework.makegood.ui.commands.rerunTestCommand"
             contextId="org.eclipse.ui.contexts.window"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="M3+M R">
@@ -487,7 +487,7 @@
          </action>
          <action
                class="com.piece_framework.makegood.ui.actions.RerunTestAction"
-               definitionId="com.piece_framework.makegood.ui.commands.rerunTest"
+               definitionId="com.piece_framework.makegood.ui.commands.rerunTestCommand"
                icon="icons/rerunTestAction.gif"
                id="com.piece_framework.makegood.ui.viewActions.rerunTestAction"
                label="%viewActions.rerunTestAction.label"
