@@ -458,12 +458,12 @@
          <action
                class="com.piece_framework.makegood.ui.actions.RunLastTestWhenFileIsSavedAction"
                definitionId="com.piece_framework.makegood.ui.commands.runLastTestWhenFileIsSaved"
-               icon="icons/runLastTestWhenFileIsSaved.gif"
-               id="com.piece_framework.makegood.ui.viewActions.resultView.runLastTestWhenFileIsSaved"
-               label="%resultView.runLastTestWhenFileIsSaved.label"
+               icon="icons/runLastTestWhenFileIsSavedAction.gif"
+               id="com.piece_framework.makegood.ui.viewActions.runLastTestWhenFileIsSavedAction"
+               label="%viewActions.runLastTestWhenFileIsSavedAction.label"
                style="toggle"
                toolbarPath="additions"
-               tooltip="%resultView.runLastTestWhenFileIsSaved.tooltip">
+               tooltip="%viewActions.runLastTestWhenFileIsSavedAction.tooltip">
          </action>
          <action
                class="com.piece_framework.makegood.ui.actions.RunAllTestsWhenFileIsSavedAction"

@@ -23,7 +23,7 @@ import com.piece_framework.makegood.ui.views.ResultView;
 import com.piece_framework.makegood.ui.views.ViewOpener;
 
 public class RunLastTestWhenFileIsSavedAction implements IViewActionDelegate {
-    public static final String ACTION_ID = "com.piece_framework.makegood.ui.viewActions.resultView.runLastTestWhenFileIsSaved"; //$NON-NLS-1$
+    public static final String ACTION_ID = "com.piece_framework.makegood.ui.viewActions.runLastTestWhenFileIsSavedAction"; //$NON-NLS-1$
 
     @Override
     public void init(IViewPart view) {}
