@@ -143,8 +143,8 @@
                   style="push">
             </command>
             <command
-                  commandId="com.piece_framework.makegood.ui.commands.runTestFromEditorInFile"
-                  label="%commands.runTestFromEditorInFile.label"
+                  commandId="com.piece_framework.makegood.ui.commands.runTestFromEditorInFileCommand"
+                  label="%commands.runTestFromEditorInFileCommand.label"
                   style="push">
             </command>
          </menu>
@@ -205,8 +205,8 @@
       <command
             categoryId="com.piece_framework.makegood.ui.commands.runTestCategory"
             defaultHandler="com.piece_framework.makegood.ui.handlers.RunTestFromEditorInFileHandler"
-            id="com.piece_framework.makegood.ui.commands.runTestFromEditorInFile"
-            name="%commands.runTestFromEditorInFile.name">
+            id="com.piece_framework.makegood.ui.commands.runTestFromEditorInFileCommand"
+            name="%commands.runTestFromEditorInFileCommand.name">
       </command>
       <command
             categoryId="com.piece_framework.makegood.ui.commands.runTestCategory"
@@ -370,7 +370,7 @@
             sequence="M3+M L">
       </key>
       <key
-            commandId="com.piece_framework.makegood.ui.commands.runTestFromEditorInFile"
+            commandId="com.piece_framework.makegood.ui.commands.runTestFromEditorInFileCommand"
             contextId="org.eclipse.php.core.phpsource"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="M3+M F">
