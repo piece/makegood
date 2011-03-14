@@ -40,9 +40,9 @@
                visible="true">
          </separator>
          <command
-               commandId="com.piece_framework.makegood.ui.commands.runTestFromExplorer"
+               commandId="com.piece_framework.makegood.ui.commands.runTestFromExplorerCommand"
                icon="icons/MakeGood.gif"
-               label="%commands.runTestFromExplorer.label"
+               label="%commands.runTestFromExplorerCommand.label"
                style="push">
             <visibleWhen
                   checkEnabled="true">
@@ -187,8 +187,8 @@
       <command
             categoryId="com.piece_framework.makegood.ui.commands.runTestCategory"
             defaultHandler="com.piece_framework.makegood.ui.handlers.RunTestFromExplorerHandler"
-            id="com.piece_framework.makegood.ui.commands.runTestFromExplorer"
-            name="%commands.runTestFromExplorer.name">
+            id="com.piece_framework.makegood.ui.commands.runTestFromExplorerCommand"
+            name="%commands.runTestFromExplorerCommand.name">
       </command>
       <command
             categoryId="com.piece_framework.makegood.ui.commands.runTestCategory"
@@ -358,7 +358,7 @@
             sequence="M3+M U">
       </key>
       <key
-            commandId="com.piece_framework.makegood.ui.commands.runTestFromExplorer"
+            commandId="com.piece_framework.makegood.ui.commands.runTestFromExplorerCommand"
             contextId="org.eclipse.ui.contexts.window"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="M3+M X">
