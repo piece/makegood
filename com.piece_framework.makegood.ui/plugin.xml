@@ -236,8 +236,8 @@
       <command
             categoryId="com.piece_framework.makegood.ui.commands.resultViewCategory"
             defaultHandler="com.piece_framework.makegood.ui.handlers.PreviousFailureHandler"
-            id="com.piece_framework.makegood.ui.commands.previousFailedTest"
-            name="%commands.previousFailedTest.name">
+            id="com.piece_framework.makegood.ui.commands.previousFailureCommand"
+            name="%commands.previousFailureCommand.name">
       </command>
       <command
             categoryId="com.piece_framework.makegood.ui.commands.resultViewCategory"
@@ -316,7 +316,7 @@
             sequence="M3+M J">
       </key>
       <key
-            commandId="com.piece_framework.makegood.ui.commands.previousFailedTest"
+            commandId="com.piece_framework.makegood.ui.commands.previousFailureCommand"
             contextId="org.eclipse.ui.contexts.window"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="M3+M K">
@@ -417,7 +417,7 @@
          </action>
          <action
                class="com.piece_framework.makegood.ui.actions.PreviousFailureAction"
-               definitionId="com.piece_framework.makegood.ui.commands.previousFailedTest"
+               definitionId="com.piece_framework.makegood.ui.commands.previousFailureCommand"
                icon="icons/previousFailureAction.gif"
                id="com.piece_framework.makegood.ui.viewActions.previousFailureAction"
                label="%viewActions.previousFailureAction.label"
