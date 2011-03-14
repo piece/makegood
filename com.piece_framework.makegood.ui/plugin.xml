@@ -498,12 +498,12 @@
          <action
                class="com.piece_framework.makegood.ui.actions.RunAllTestsAction"
                definitionId="com.piece_framework.makegood.ui.commands.runAllTests"
-               icon="icons/runAllTests.gif"
-               id="com.piece_framework.makegood.ui.viewActions.resultView.runAllTests"
-               label="%resultView.runAllTests.label"
+               icon="icons/runAllTestsAction.gif"
+               id="com.piece_framework.makegood.ui.viewActions.runAllTestsAction"
+               label="%viewActions.runAllTestsAction.label"
                style="push"
                toolbarPath="additions"
-               tooltip="%resultView.runAllTests.tooltip">
+               tooltip="%viewActions.runAllTestsAction.tooltip">
          </action>
       </viewContribution>
    </extension>
