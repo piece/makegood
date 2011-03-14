@@ -161,9 +161,9 @@
             </visibleWhen>
          </command>
          <command
-               commandId="com.piece_framework.makegood.ui.commands.runAllTests"
+               commandId="com.piece_framework.makegood.ui.commands.runAllTestsCommand"
                icon="icons/MakeGood.gif"
-               label="%commands.runAllTests.label"
+               label="%commands.runAllTestsCommand.label"
                style="push">
          </command>
       </menuContribution>
@@ -217,8 +217,8 @@
       <command
             categoryId="com.piece_framework.makegood.ui.commands.runTestCategory"
             defaultHandler="com.piece_framework.makegood.ui.handlers.RunAllTestsHandler"
-            id="com.piece_framework.makegood.ui.commands.runAllTests"
-            name="%commands.runAllTests.name">
+            id="com.piece_framework.makegood.ui.commands.runAllTestsCommand"
+            name="%commands.runAllTestsCommand.name">
       </command>
    </extension>
    <extension
@@ -340,7 +340,7 @@
             sequence="M3+M C">
       </key>
       <key
-            commandId="com.piece_framework.makegood.ui.commands.runAllTests"
+            commandId="com.piece_framework.makegood.ui.commands.runAllTestsCommand"
             contextId="org.eclipse.ui.contexts.window"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="M3+M A">
@@ -497,7 +497,7 @@
          </action>
          <action
                class="com.piece_framework.makegood.ui.actions.RunAllTestsAction"
-               definitionId="com.piece_framework.makegood.ui.commands.runAllTests"
+               definitionId="com.piece_framework.makegood.ui.commands.runAllTestsCommand"
                icon="icons/runAllTestsAction.gif"
                id="com.piece_framework.makegood.ui.viewActions.runAllTestsAction"
                label="%viewActions.runAllTestsAction.label"
