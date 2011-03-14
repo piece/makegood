@@ -241,8 +241,8 @@
       </command>
       <command
             categoryId="com.piece_framework.makegood.ui.commands.resultViewCategory"
-            id="com.piece_framework.makegood.ui.commands.showFailuresOnly"
-            name="%commands.showFailuresOnly.name">
+            id="com.piece_framework.makegood.ui.commands.showFailuresOnlyCommand"
+            name="%commands.showFailuresOnlyCommand.name">
       </command>
       <command
             categoryId="com.piece_framework.makegood.ui.commands.runTestCategory"
@@ -322,7 +322,7 @@
             sequence="M3+M K">
       </key>
       <key
-            commandId="com.piece_framework.makegood.ui.commands.showFailuresOnly"
+            commandId="com.piece_framework.makegood.ui.commands.showFailuresOnlyCommand"
             contextId="com.piece_framework.makegood.ui.contexts.resultView"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="F">
@@ -407,7 +407,7 @@
             targetID="com.piece_framework.makegood.ui.views.resultView">
          <action
                class="com.piece_framework.makegood.ui.actions.ShowFailuresOnlyAction"
-               definitionId="com.piece_framework.makegood.ui.commands.showFailuresOnly"
+               definitionId="com.piece_framework.makegood.ui.commands.showFailuresOnlyCommand"
                icon="icons/showFailuresOnlyAction.gif"
                id="com.piece_framework.makegood.ui.viewActions.showFailuresOnlyAction"
                label="%viewActions.showFailuresOnlyAction.label"
