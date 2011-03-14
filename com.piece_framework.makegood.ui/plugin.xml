@@ -468,12 +468,12 @@
          <action
                class="com.piece_framework.makegood.ui.actions.RunAllTestsWhenFileIsSavedAction"
                definitionId="com.piece_framework.makegood.ui.commands.runAllTestsWhenFileIsSaved"
-               icon="icons/runAllTestsWhenFileIsSaved.gif"
-               id="com.piece_framework.makegood.ui.viewActions.resultView.runAllTestsWhenFileIsSaved"
-               label="%resultView.runAllTestsWhenFileIsSaved.label"
+               icon="icons/runAllTestsWhenFileIsSavedAction.gif"
+               id="com.piece_framework.makegood.ui.viewActions.runAllTestsWhenFileIsSavedAction"
+               label="%viewActions.runAllTestsWhenFileIsSavedAction.label"
                style="toggle"
                toolbarPath="additions"
-               tooltip="%resultView.runAllTestsWhenFileIsSaved.tooltip">
+               tooltip="%viewActions.runAllTestsWhenFileIsSavedAction.tooltip">
          </action>
          <action
                class="com.piece_framework.makegood.ui.actions.StopTestAction"

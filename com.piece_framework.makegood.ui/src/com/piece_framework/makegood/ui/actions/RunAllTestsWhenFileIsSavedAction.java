@@ -24,7 +24,7 @@ import com.piece_framework.makegood.ui.views.ResultView;
 import com.piece_framework.makegood.ui.views.ViewOpener;
 
 public class RunAllTestsWhenFileIsSavedAction implements IViewActionDelegate {
-    public static final String ACTION_ID = "com.piece_framework.makegood.ui.viewActions.resultView.runAllTestsWhenFileIsSaved"; //$NON-NLS-1$
+    public static final String ACTION_ID = "com.piece_framework.makegood.ui.viewActions.runAllTestsWhenFileIsSavedAction"; //$NON-NLS-1$
 
     @Override
     public void init(IViewPart view) {}
