@@ -230,8 +230,8 @@
       <command
             categoryId="com.piece_framework.makegood.ui.commands.resultViewCategory"
             defaultHandler="com.piece_framework.makegood.ui.handlers.NextFailureHandler"
-            id="com.piece_framework.makegood.ui.commands.nextFailedTest"
-            name="%commands.nextFailedTest.name">
+            id="com.piece_framework.makegood.ui.commands.nextFailureCommand"
+            name="%commands.nextFailureCommand.name">
       </command>
       <command
             categoryId="com.piece_framework.makegood.ui.commands.resultViewCategory"
@@ -310,7 +310,7 @@
    <extension
          point="org.eclipse.ui.bindings">
       <key
-            commandId="com.piece_framework.makegood.ui.commands.nextFailedTest"
+            commandId="com.piece_framework.makegood.ui.commands.nextFailureCommand"
             contextId="org.eclipse.ui.contexts.window"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="M3+M J">
@@ -427,7 +427,7 @@
          </action>
          <action
                class="com.piece_framework.makegood.ui.actions.NextFailureAction"
-               definitionId="com.piece_framework.makegood.ui.commands.nextFailedTest"
+               definitionId="com.piece_framework.makegood.ui.commands.nextFailureCommand"
                icon="icons/nextFailureAction.gif"
                id="com.piece_framework.makegood.ui.viewActions.nextFailureAction"
                label="%viewActions.nextFailureAction.label"
