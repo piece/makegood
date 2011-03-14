@@ -149,9 +149,9 @@
             </command>
          </menu>
          <command
-               commandId="com.piece_framework.makegood.ui.commands.runRelatedTestFromEditor"
+               commandId="com.piece_framework.makegood.ui.commands.runRelatedTestFromEditorCommand"
                icon="icons/MakeGood.gif"
-               label="%commands.runRelatedTestFromEditor.label"
+               label="%commands.runRelatedTestFromEditorCommand.label"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -211,8 +211,8 @@
       <command
             categoryId="com.piece_framework.makegood.ui.commands.runTestCategory"
             defaultHandler="com.piece_framework.makegood.ui.handlers.RunRelatedTestFromEditorHandler"
-            id="com.piece_framework.makegood.ui.commands.runRelatedTestFromEditor"
-            name="%commands.runRelatedTestFromEditor.name">
+            id="com.piece_framework.makegood.ui.commands.runRelatedTestFromEditorCommand"
+            name="%commands.runRelatedTestFromEditorCommand.name">
       </command>
       <command
             categoryId="com.piece_framework.makegood.ui.commands.runTestCategory"
@@ -376,7 +376,7 @@
             sequence="M3+M F">
       </key>
       <key
-            commandId="com.piece_framework.makegood.ui.commands.runRelatedTestFromEditor"
+            commandId="com.piece_framework.makegood.ui.commands.runRelatedTestFromEditorCommand"
             contextId="org.eclipse.php.core.phpsource"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="M3+M D">
