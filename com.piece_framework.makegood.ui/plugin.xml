@@ -253,8 +253,8 @@
       <command
             categoryId="com.piece_framework.makegood.ui.commands.runTestCategory"
             defaultHandler="com.piece_framework.makegood.ui.handlers.DebugTestHandler"
-            id="com.piece_framework.makegood.ui.commands.debugTest"
-            name="%commands.debugTest.name">
+            id="com.piece_framework.makegood.ui.commands.debugTestCommand"
+            name="%commands.debugTestCommand.name">
       </command>
       <command
             categoryId="com.piece_framework.makegood.ui.commands.runTestCategory"
@@ -394,7 +394,7 @@
             sequence="M3+M S">
       </key>
       <key
-            commandId="com.piece_framework.makegood.ui.commands.debugTest"
+            commandId="com.piece_framework.makegood.ui.commands.debugTestCommand"
             contextId="org.eclipse.ui.contexts.window"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="M3+M B">
@@ -447,7 +447,7 @@
          </action>
          <action
                class="com.piece_framework.makegood.ui.actions.DebugTestAction"
-               definitionId="com.piece_framework.makegood.ui.commands.debugTest"
+               definitionId="com.piece_framework.makegood.ui.commands.debugTestCommand"
                icon="icons/debugTestAction.gif"
                id="com.piece_framework.makegood.ui.viewActions.debugTestAction"
                label="%viewActions.debugTestAction.label"
