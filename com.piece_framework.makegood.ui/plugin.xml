@@ -448,12 +448,12 @@
          <action
                class="com.piece_framework.makegood.ui.actions.DebugTestAction"
                definitionId="com.piece_framework.makegood.ui.commands.debugTest"
-               icon="icons/debugTest.gif"
-               id="com.piece_framework.makegood.ui.viewActions.resultView.debugTest"
-               label="%resultView.debugTest.label"
+               icon="icons/debugTestAction.gif"
+               id="com.piece_framework.makegood.ui.viewActions.debugTestAction"
+               label="%viewActions.debugTestAction.label"
                style="toggle"
                toolbarPath="additions"
-               tooltip="%resultView.debugTest.tooltip">
+               tooltip="%viewActions.debugTestAction.tooltip">
          </action>
          <action
                class="com.piece_framework.makegood.ui.actions.RunLastTestWhenFileIsSavedAction"
