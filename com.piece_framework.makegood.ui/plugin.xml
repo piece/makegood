@@ -488,12 +488,12 @@
          <action
                class="com.piece_framework.makegood.ui.actions.RerunTestAction"
                definitionId="com.piece_framework.makegood.ui.commands.rerunTest"
-               icon="icons/rerunTest.gif"
-               id="com.piece_framework.makegood.ui.viewActions.resultView.rerunTest"
-               label="%resultView.rerunTest.label"
+               icon="icons/rerunTestAction.gif"
+               id="com.piece_framework.makegood.ui.viewActions.rerunTestAction"
+               label="%viewActions.rerunTestAction.label"
                style="push"
                toolbarPath="additions"
-               tooltip="%resultView.rerunTest.tooltip">
+               tooltip="%viewActions.rerunTestAction.tooltip">
          </action>
          <action
                class="com.piece_framework.makegood.ui.actions.RunAllTestsAction"
