@@ -17,18 +17,18 @@ import org.osgi.framework.BundleContext;
 /**
  * The activator class controls the plug-in life cycle
  */
-public class MakeGoodCorePlugin extends AbstractUIPlugin {
+public class Activator extends AbstractUIPlugin {
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "com.piece_framework.makegood.core"; //$NON-NLS-1$
 
 	// The shared instance
-	private static MakeGoodCorePlugin plugin;
+	private static Activator plugin;
 	
 	/**
 	 * The constructor
 	 */
-	public MakeGoodCorePlugin() {
+	public Activator() {
 	}
 
 	/*
@@ -54,7 +54,7 @@ public class MakeGoodCorePlugin extends AbstractUIPlugin {
 	 *
 	 * @return the shared instance
 	 */
-	public static MakeGoodCorePlugin getDefault() {
+	public static Activator getDefault() {
 		return plugin;
 	}
 

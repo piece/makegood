@@ -15,12 +15,12 @@ package com.piece_framework.makegood.core.preference;
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 
 import com.piece_framework.makegood.core.AutotestScope;
-import com.piece_framework.makegood.core.MakeGoodCorePlugin;
+import com.piece_framework.makegood.core.Activator;
 
 public class MakeGoodPreferenceInitializer extends AbstractPreferenceInitializer {
     @Override
     public void initializeDefaultPreferences() {
-        MakeGoodCorePlugin.getDefault()
+        Activator.getDefault()
                           .getPreferenceStore()
                           .setDefault(MakeGoodPreference.AUTOTEST_SCOPE, AutotestScope.ALL_TESTS.name());
     }

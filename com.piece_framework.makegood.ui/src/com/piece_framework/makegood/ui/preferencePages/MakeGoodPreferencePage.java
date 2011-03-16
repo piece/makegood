@@ -20,13 +20,13 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
 import com.piece_framework.makegood.core.AutotestScope;
-import com.piece_framework.makegood.core.MakeGoodCorePlugin;
+import com.piece_framework.makegood.core.Activator;
 import com.piece_framework.makegood.core.preference.MakeGoodPreference;
 import com.piece_framework.makegood.ui.Messages;
 
 public class MakeGoodPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
     public MakeGoodPreferencePage() {
-        setPreferenceStore(MakeGoodCorePlugin.getDefault().getPreferenceStore());
+        setPreferenceStore(Activator.getDefault().getPreferenceStore());
     }
 
     @Override

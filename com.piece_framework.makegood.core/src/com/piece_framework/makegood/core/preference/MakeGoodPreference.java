@@ -14,7 +14,7 @@ package com.piece_framework.makegood.core.preference;
 import org.eclipse.jface.preference.IPreferenceStore;
 
 import com.piece_framework.makegood.core.AutotestScope;
-import com.piece_framework.makegood.core.MakeGoodCorePlugin;
+import com.piece_framework.makegood.core.Activator;
 
 /**
  * @since 1.4.0
@@ -28,7 +28,7 @@ public class MakeGoodPreference {
     public static final String AUTOTEST_SCOPE = "autotestScope"; //$NON-NLS-1$
 
     public static void migrate() {
-        IPreferenceStore preferenceStore = MakeGoodCorePlugin.getDefault().getPreferenceStore();
+        IPreferenceStore preferenceStore = Activator.getDefault().getPreferenceStore();
         if (!preferenceStore.contains(RUN_ALL_TESTS_WHEN_FILE_IS_SAVED)) return;
 
         if (preferenceStore.getBoolean(RUN_ALL_TESTS_WHEN_FILE_IS_SAVED)) {
@@ -41,7 +41,7 @@ public class MakeGoodPreference {
     }
 
     public static AutotestScope getAutotestScope() {
-        IPreferenceStore preferenceStore = MakeGoodCorePlugin.getDefault().getPreferenceStore();
+        IPreferenceStore preferenceStore = Activator.getDefault().getPreferenceStore();
         String autotestScope = preferenceStore.getString(AUTOTEST_SCOPE);
         if (autotestScope.equals(AutotestScope.ALL_TESTS.name())) {
             return AutotestScope.ALL_TESTS;
@@ -55,7 +55,7 @@ public class MakeGoodPreference {
     }
 
     private static void removePreference(String name) {
-        IPreferenceStore preferenceStore = MakeGoodCorePlugin.getDefault().getPreferenceStore();
+        IPreferenceStore preferenceStore = Activator.getDefault().getPreferenceStore();
         preferenceStore.setDefault(name, true);
         preferenceStore.setToDefault(name);
     }

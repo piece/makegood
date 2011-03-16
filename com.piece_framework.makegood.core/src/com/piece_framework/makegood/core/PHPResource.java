@@ -54,7 +54,7 @@ public class PHPResource {
                 }
             }
         } catch (ModelException e) {
-            MakeGoodCorePlugin.getDefault().getLog().log(new Status(Status.WARNING, MakeGoodCorePlugin.PLUGIN_ID, e.getMessage(), e));
+            Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
         }
 
         return false;

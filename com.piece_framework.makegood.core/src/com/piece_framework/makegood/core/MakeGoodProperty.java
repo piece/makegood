@@ -44,7 +44,7 @@ public class MakeGoodProperty {
         Assert.isNotNull(resource, "The given resource should not be null."); //$NON-NLS-1$
 
         project = resource.getProject();
-        preferences = new ProjectScope(project).getNode(MakeGoodCorePlugin.PLUGIN_ID);
+        preferences = new ProjectScope(project).getNode(Activator.PLUGIN_ID);
     }
 
     public MakeGoodProperty(String path) {
@@ -109,10 +109,10 @@ public class MakeGoodProperty {
         try {
             preferences.flush();
         } catch (BackingStoreException e) {
-            MakeGoodCorePlugin.getDefault().getLog().log(
+            Activator.getDefault().getLog().log(
                 new Status(
                     Status.ERROR,
-                    MakeGoodCorePlugin.PLUGIN_ID,
+                    Activator.PLUGIN_ID,
                     e.getMessage(),
                     e
                 )
