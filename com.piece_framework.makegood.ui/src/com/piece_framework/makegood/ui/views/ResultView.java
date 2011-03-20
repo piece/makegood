@@ -424,7 +424,7 @@ public class ResultView extends ViewPart {
             (ActionContributionItem) manager.find(ShowOnlyFailuresAction.ACTION_ID);
         if (showFailuresOnlyItem != null) {
             showFailuresOnlyItem.getAction().setChecked(
-                RuntimeConfiguration.getInstance().showsFailuresOnly
+                RuntimeConfiguration.getInstance().showsOnlyFailures
             );
             actionsInitialized = true;
         }

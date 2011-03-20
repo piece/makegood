@@ -19,7 +19,7 @@ import com.piece_framework.makegood.core.preference.MakeGoodPreference;
 public class RuntimeConfiguration {
     public boolean debugsTest = false;
     public boolean stopsOnFailure = false;
-    public boolean showsFailuresOnly = false;
+    public boolean showsOnlyFailures = false;
 
     /**
      * @since 1.4.0

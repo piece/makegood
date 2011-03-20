@@ -241,6 +241,7 @@
       </command>
       <command
             categoryId="com.piece_framework.makegood.ui.commands.resultViewCategory"
+            defaultHandler="com.piece_framework.makegood.ui.handlers.ShowOnlyFailuresHandler"
             id="com.piece_framework.makegood.ui.commands.showOnlyFailuresCommand"
             name="%commands.showOnlyFailuresCommand.name">
       </command>
@@ -323,9 +324,9 @@
       </key>
       <key
             commandId="com.piece_framework.makegood.ui.commands.showOnlyFailuresCommand"
-            contextId="com.piece_framework.makegood.ui.contexts.resultView"
+            contextId="org.eclipse.ui.contexts.window"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="F">
+            sequence="M3+M O">
       </key>
       <key
             commandId="com.piece_framework.makegood.ui.commands.rerunTestCommand"

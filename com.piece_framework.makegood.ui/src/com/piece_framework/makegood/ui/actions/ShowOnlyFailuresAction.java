@@ -30,10 +30,10 @@ public class ShowOnlyFailuresAction implements IViewActionDelegate {
 
     @Override
     public void run(IAction action) {
-        RuntimeConfiguration.getInstance().showsFailuresOnly = action.isChecked();
+        RuntimeConfiguration.getInstance().showsOnlyFailures = action.isChecked();
         ResultView view = (ResultView) ViewOpener.find(ResultView.VIEW_ID);
         if (view != null) {
-            view.filterResults(RuntimeConfiguration.getInstance().showsFailuresOnly);
+            view.filterResults(RuntimeConfiguration.getInstance().showsOnlyFailures);
         }
     }
 
