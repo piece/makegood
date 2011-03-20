@@ -77,7 +77,7 @@ import com.piece_framework.makegood.ui.actions.RerunTestAction;
 import com.piece_framework.makegood.ui.actions.RunAllTestsAction;
 import com.piece_framework.makegood.ui.actions.RunAllTestsWhenFileIsSavedAction;
 import com.piece_framework.makegood.ui.actions.RunLastTestWhenFileIsSavedAction;
-import com.piece_framework.makegood.ui.actions.ShowFailuresOnlyAction;
+import com.piece_framework.makegood.ui.actions.ShowOnlyFailuresAction;
 import com.piece_framework.makegood.ui.actions.StopOnFailureAction;
 import com.piece_framework.makegood.ui.actions.StopTestAction;
 import com.piece_framework.makegood.ui.launch.TestRunner;
@@ -421,7 +421,7 @@ public class ResultView extends ViewPart {
         IToolBarManager manager = site.getActionBars().getToolBarManager();
 
         ActionContributionItem showFailuresOnlyItem =
-            (ActionContributionItem) manager.find(ShowFailuresOnlyAction.ACTION_ID);
+            (ActionContributionItem) manager.find(ShowOnlyFailuresAction.ACTION_ID);
         if (showFailuresOnlyItem != null) {
             showFailuresOnlyItem.getAction().setChecked(
                 RuntimeConfiguration.getInstance().showsFailuresOnly

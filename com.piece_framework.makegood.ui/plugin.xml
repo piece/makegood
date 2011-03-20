@@ -406,7 +406,7 @@
             id="com.piece_framework.makegood.ui.viewActions.resultView"
             targetID="com.piece_framework.makegood.ui.views.resultView">
          <action
-               class="com.piece_framework.makegood.ui.actions.ShowFailuresOnlyAction"
+               class="com.piece_framework.makegood.ui.actions.ShowOnlyFailuresAction"
                definitionId="com.piece_framework.makegood.ui.commands.showFailuresOnlyCommand"
                icon="icons/showFailuresOnlyAction.gif"
                id="com.piece_framework.makegood.ui.viewActions.showFailuresOnlyAction"
