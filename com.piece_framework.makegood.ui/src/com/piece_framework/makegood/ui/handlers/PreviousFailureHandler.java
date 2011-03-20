@@ -16,7 +16,6 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 
 import com.piece_framework.makegood.aspect.monitor.WeavingMonitor;
-import com.piece_framework.makegood.ui.launch.TestRunner;
 import com.piece_framework.makegood.ui.views.ResultView;
 import com.piece_framework.makegood.ui.views.ViewOpener;
 
