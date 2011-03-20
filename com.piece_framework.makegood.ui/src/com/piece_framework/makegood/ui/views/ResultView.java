@@ -379,8 +379,6 @@ public class ResultView extends ViewPart {
             }
         }
 
-        previousFailureAction.setEnabled(hasFailures());
-        nextFailureAction.setEnabled(hasFailures());
         stopTestAction.setEnabled(false);
         rerunTestAction.setEnabled(TestRunner.hasLastTest());
         ActivePart.getInstance().setPart();
@@ -415,6 +413,8 @@ public class ResultView extends ViewPart {
 
     void markAsFailed() {
         progressBar.markAsFailed();
+        previousFailureAction.setEnabled(true);
+        nextFailureAction.setEnabled(true);
     }
 
     private void initializeActions(IViewSite site) {
