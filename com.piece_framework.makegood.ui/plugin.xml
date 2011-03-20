@@ -407,83 +407,13 @@
             id="com.piece_framework.makegood.ui.viewActions.resultView"
             targetID="com.piece_framework.makegood.ui.views.resultView">
          <action
-               class="com.piece_framework.makegood.ui.actions.ShowOnlyFailuresAction"
-               definitionId="com.piece_framework.makegood.ui.commands.showOnlyFailuresCommand"
-               icon="icons/showOnlyFailuresAction.gif"
-               id="com.piece_framework.makegood.ui.viewActions.showOnlyFailuresAction"
-               label="%viewActions.showOnlyFailuresAction.label"
-               style="toggle"
-               toolbarPath="additions"
-               tooltip="%viewActions.showOnlyFailuresAction.tooltip">
-         </action>
-         <action
-               class="com.piece_framework.makegood.ui.actions.PreviousFailureAction"
-               definitionId="com.piece_framework.makegood.ui.commands.previousFailureCommand"
-               icon="icons/previousFailureAction.gif"
-               id="com.piece_framework.makegood.ui.viewActions.previousFailureAction"
-               label="%viewActions.previousFailureAction.label"
-               style="push"
-               toolbarPath="additions"
-               tooltip="%viewActions.previousFailureAction.tooltip">
-         </action>
-         <action
-               class="com.piece_framework.makegood.ui.actions.NextFailureAction"
-               definitionId="com.piece_framework.makegood.ui.commands.nextFailureCommand"
-               icon="icons/nextFailureAction.gif"
-               id="com.piece_framework.makegood.ui.viewActions.nextFailureAction"
-               label="%viewActions.nextFailureAction.label"
-               style="push"
-               toolbarPath="additions"
-               tooltip="%viewActions.nextFailureAction.tooltip">
-         </action>
-         <action
-               class="com.piece_framework.makegood.ui.actions.StopOnFailureAction"
-               definitionId="com.piece_framework.makegood.ui.commands.stopOnFailureCommand"
-               icon="icons/stopOnFailureAction.gif"
-               id="com.piece_framework.makegood.ui.viewActions.stopOnFailureAction"
-               label="%viewActions.stopOnFailureAction.label"
-               style="toggle"
-               toolbarPath="additions"
-               tooltip="%viewActions.stopOnFailureAction.tooltip">
-         </action>
-         <action
-               class="com.piece_framework.makegood.ui.actions.DebugTestAction"
-               definitionId="com.piece_framework.makegood.ui.commands.debugTestCommand"
-               icon="icons/debugTestAction.gif"
-               id="com.piece_framework.makegood.ui.viewActions.debugTestAction"
-               label="%viewActions.debugTestAction.label"
-               style="toggle"
-               toolbarPath="additions"
-               tooltip="%viewActions.debugTestAction.tooltip">
-         </action>
-         <action
-               class="com.piece_framework.makegood.ui.actions.RunLastTestWhenFileIsSavedAction"
-               definitionId="com.piece_framework.makegood.ui.commands.runLastTestWhenFileIsSavedCommand"
-               icon="icons/runLastTestWhenFileIsSavedAction.gif"
-               id="com.piece_framework.makegood.ui.viewActions.runLastTestWhenFileIsSavedAction"
-               label="%viewActions.runLastTestWhenFileIsSavedAction.label"
-               style="toggle"
-               toolbarPath="additions"
-               tooltip="%viewActions.runLastTestWhenFileIsSavedAction.tooltip">
-         </action>
-         <action
-               class="com.piece_framework.makegood.ui.actions.RunAllTestsWhenFileIsSavedAction"
-               definitionId="com.piece_framework.makegood.ui.commands.runAllTestsWhenFileIsSavedCommand"
-               icon="icons/runAllTestsWhenFileIsSavedAction.gif"
-               id="com.piece_framework.makegood.ui.viewActions.runAllTestsWhenFileIsSavedAction"
-               label="%viewActions.runAllTestsWhenFileIsSavedAction.label"
-               style="toggle"
-               toolbarPath="additions"
-               tooltip="%viewActions.runAllTestsWhenFileIsSavedAction.tooltip">
-         </action>
-         <action
                class="com.piece_framework.makegood.ui.actions.StopTestAction"
                definitionId="com.piece_framework.makegood.ui.commands.stopTestCommand"
                icon="icons/stopTestAction.gif"
                id="com.piece_framework.makegood.ui.viewActions.stopTestAction"
                label="%viewActions.stopTestAction.label"
                style="push"
-               toolbarPath="additions"
+               toolbarPath="runs"
                tooltip="%viewActions.stopTestAction.tooltip">
          </action>
          <action
@@ -493,7 +423,7 @@
                id="com.piece_framework.makegood.ui.viewActions.rerunTestAction"
                label="%viewActions.rerunTestAction.label"
                style="push"
-               toolbarPath="additions"
+               toolbarPath="runs"
                tooltip="%viewActions.rerunTestAction.tooltip">
          </action>
          <action
@@ -503,8 +433,78 @@
                id="com.piece_framework.makegood.ui.viewActions.runAllTestsAction"
                label="%viewActions.runAllTestsAction.label"
                style="push"
-               toolbarPath="additions"
+               toolbarPath="runs"
                tooltip="%viewActions.runAllTestsAction.tooltip">
+         </action>
+         <action
+               class="com.piece_framework.makegood.ui.actions.StopOnFailureAction"
+               definitionId="com.piece_framework.makegood.ui.commands.stopOnFailureCommand"
+               icon="icons/stopOnFailureAction.gif"
+               id="com.piece_framework.makegood.ui.viewActions.stopOnFailureAction"
+               label="%viewActions.stopOnFailureAction.label"
+               style="toggle"
+               toolbarPath="properties"
+               tooltip="%viewActions.stopOnFailureAction.tooltip">
+         </action>
+         <action
+               class="com.piece_framework.makegood.ui.actions.DebugTestAction"
+               definitionId="com.piece_framework.makegood.ui.commands.debugTestCommand"
+               icon="icons/debugTestAction.gif"
+               id="com.piece_framework.makegood.ui.viewActions.debugTestAction"
+               label="%viewActions.debugTestAction.label"
+               style="toggle"
+               toolbarPath="properties"
+               tooltip="%viewActions.debugTestAction.tooltip">
+         </action>
+         <action
+               class="com.piece_framework.makegood.ui.actions.RunLastTestWhenFileIsSavedAction"
+               definitionId="com.piece_framework.makegood.ui.commands.runLastTestWhenFileIsSavedCommand"
+               icon="icons/runLastTestWhenFileIsSavedAction.gif"
+               id="com.piece_framework.makegood.ui.viewActions.runLastTestWhenFileIsSavedAction"
+               label="%viewActions.runLastTestWhenFileIsSavedAction.label"
+               style="toggle"
+               toolbarPath="properties"
+               tooltip="%viewActions.runLastTestWhenFileIsSavedAction.tooltip">
+         </action>
+         <action
+               class="com.piece_framework.makegood.ui.actions.RunAllTestsWhenFileIsSavedAction"
+               definitionId="com.piece_framework.makegood.ui.commands.runAllTestsWhenFileIsSavedCommand"
+               icon="icons/runAllTestsWhenFileIsSavedAction.gif"
+               id="com.piece_framework.makegood.ui.viewActions.runAllTestsWhenFileIsSavedAction"
+               label="%viewActions.runAllTestsWhenFileIsSavedAction.label"
+               style="toggle"
+               toolbarPath="properties"
+               tooltip="%viewActions.runAllTestsWhenFileIsSavedAction.tooltip">
+         </action>
+         <action
+               class="com.piece_framework.makegood.ui.actions.ShowOnlyFailuresAction"
+               definitionId="com.piece_framework.makegood.ui.commands.showOnlyFailuresCommand"
+               icon="icons/showOnlyFailuresAction.gif"
+               id="com.piece_framework.makegood.ui.viewActions.showOnlyFailuresAction"
+               label="%viewActions.showOnlyFailuresAction.label"
+               style="toggle"
+               toolbarPath="results"
+               tooltip="%viewActions.showOnlyFailuresAction.tooltip">
+         </action>
+         <action
+               class="com.piece_framework.makegood.ui.actions.PreviousFailureAction"
+               definitionId="com.piece_framework.makegood.ui.commands.previousFailureCommand"
+               icon="icons/previousFailureAction.gif"
+               id="com.piece_framework.makegood.ui.viewActions.previousFailureAction"
+               label="%viewActions.previousFailureAction.label"
+               style="push"
+               toolbarPath="results"
+               tooltip="%viewActions.previousFailureAction.tooltip">
+         </action>
+         <action
+               class="com.piece_framework.makegood.ui.actions.NextFailureAction"
+               definitionId="com.piece_framework.makegood.ui.commands.nextFailureCommand"
+               icon="icons/nextFailureAction.gif"
+               id="com.piece_framework.makegood.ui.viewActions.nextFailureAction"
+               label="%viewActions.nextFailureAction.label"
+               style="push"
+               toolbarPath="results"
+               tooltip="%viewActions.nextFailureAction.tooltip">
          </action>
       </viewContribution>
    </extension>
