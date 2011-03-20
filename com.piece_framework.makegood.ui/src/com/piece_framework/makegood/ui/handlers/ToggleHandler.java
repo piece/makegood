@@ -23,7 +23,7 @@ import com.piece_framework.makegood.aspect.monitor.WeavingMonitor;
 import com.piece_framework.makegood.ui.views.ResultView;
 import com.piece_framework.makegood.ui.views.ViewOpener;
 
-public abstract class AbstractToggleHandler extends AbstractHandler {
+public abstract class ToggleHandler extends AbstractHandler {
     @Override
     public Object execute(ExecutionEvent event) throws ExecutionException {
         IViewPart view = ViewOpener.find(ResultView.VIEW_ID);

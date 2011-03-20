@@ -13,7 +13,7 @@ package com.piece_framework.makegood.ui.handlers;
 
 import com.piece_framework.makegood.ui.actions.RunLastTestWhenFileIsSavedAction;
 
-public class RunLastTestWhenFileIsSavedHandler extends AbstractToggleHandler {
+public class RunLastTestWhenFileIsSavedHandler extends ToggleHandler {
     @Override
     protected String getActionId() {
         return RunLastTestWhenFileIsSavedAction.ACTION_ID;

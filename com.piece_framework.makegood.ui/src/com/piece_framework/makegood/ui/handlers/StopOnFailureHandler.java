@@ -13,7 +13,7 @@ package com.piece_framework.makegood.ui.handlers;
 
 import com.piece_framework.makegood.ui.actions.StopOnFailureAction;
 
-public class StopOnFailureHandler extends AbstractToggleHandler {
+public class StopOnFailureHandler extends ToggleHandler {
     @Override
     protected String getActionId() {
         return StopOnFailureAction.ACTION_ID;

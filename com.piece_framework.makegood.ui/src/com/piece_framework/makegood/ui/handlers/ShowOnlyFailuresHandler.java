@@ -13,7 +13,7 @@ package com.piece_framework.makegood.ui.handlers;
 
 import com.piece_framework.makegood.ui.actions.ShowOnlyFailuresAction;
 
-public class ShowOnlyFailuresHandler extends AbstractToggleHandler {
+public class ShowOnlyFailuresHandler extends ToggleHandler {
     @Override
     protected String getActionId() {
         return ShowOnlyFailuresAction.ACTION_ID;
