@@ -242,7 +242,7 @@
       <command
             categoryId="com.piece_framework.makegood.ui.commands.resultViewCategory"
             id="com.piece_framework.makegood.ui.commands.showOnlyFailuresCommand"
-            name="%commands.showFailuresOnlyCommand.name">
+            name="%commands.showOnlyFailuresCommand.name">
       </command>
       <command
             categoryId="com.piece_framework.makegood.ui.commands.runTestCategory"
