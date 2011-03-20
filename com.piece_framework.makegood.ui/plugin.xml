@@ -411,7 +411,7 @@
                definitionId="com.piece_framework.makegood.ui.commands.showOnlyFailuresCommand"
                icon="icons/showFailuresOnlyAction.gif"
                id="com.piece_framework.makegood.ui.viewActions.showOnlyFailuresAction"
-               label="%viewActions.showFailuresOnlyAction.label"
+               label="%viewActions.showOnlyFailuresAction.label"
                style="toggle"
                toolbarPath="additions"
                tooltip="%viewActions.showFailuresOnlyAction.tooltip">
