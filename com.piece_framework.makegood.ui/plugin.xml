@@ -409,7 +409,7 @@
                class="com.piece_framework.makegood.ui.actions.ShowOnlyFailuresAction"
                definitionId="com.piece_framework.makegood.ui.commands.showFailuresOnlyCommand"
                icon="icons/showFailuresOnlyAction.gif"
-               id="com.piece_framework.makegood.ui.viewActions.showFailuresOnlyAction"
+               id="com.piece_framework.makegood.ui.viewActions.showOnlyFailuresAction"
                label="%viewActions.showFailuresOnlyAction.label"
                style="toggle"
                toolbarPath="additions"
