@@ -414,7 +414,7 @@
                label="%viewActions.showOnlyFailuresAction.label"
                style="toggle"
                toolbarPath="additions"
-               tooltip="%viewActions.showFailuresOnlyAction.tooltip">
+               tooltip="%viewActions.showOnlyFailuresAction.tooltip">
          </action>
          <action
                class="com.piece_framework.makegood.ui.actions.PreviousFailureAction"
