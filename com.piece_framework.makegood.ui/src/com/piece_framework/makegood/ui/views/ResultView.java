@@ -420,10 +420,10 @@ public class ResultView extends ViewPart {
     private void initializeActions(IViewSite site) {
         IToolBarManager manager = site.getActionBars().getToolBarManager();
 
-        ActionContributionItem showFailuresOnlyItem =
+        ActionContributionItem showOnlyFailuresItem =
             (ActionContributionItem) manager.find(ShowOnlyFailuresAction.ACTION_ID);
-        if (showFailuresOnlyItem != null) {
-            showFailuresOnlyItem.getAction().setChecked(
+        if (showOnlyFailuresItem != null) {
+            showOnlyFailuresItem.getAction().setChecked(
                 RuntimeConfiguration.getInstance().showsOnlyFailures
             );
             actionsInitialized = true;
