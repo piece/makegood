@@ -26,7 +26,9 @@ import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.IStreamMonitor;
 import org.eclipse.debug.core.model.IStreamsProxy;
+import org.eclipse.php.internal.debug.core.IPHPDebugConstants;
 import org.eclipse.php.internal.debug.core.model.IPHPDebugTarget;
+import org.eclipse.php.internal.debug.core.zend.communication.DebuggerCommunicationDaemon;
 import org.xml.sax.SAXException;
 
 import com.piece_framework.makegood.core.result.TestCaseResult;
@@ -52,6 +54,11 @@ public class TestLifecycle {
 
     private JUnitXMLReader junitXMLReader;
     private Thread junitXMLReaderThread;
+
+    /**
+     * @since 1.4.0
+     */
+    private boolean isDestroyed = false;
 
     private static TestLifecycle currentTestLifecycle;
 
@@ -179,11 +186,11 @@ public class TestLifecycle {
     }
 
     public static void destroy() {
-        currentTestLifecycle = null;
+        currentTestLifecycle.isDestroyed = true;
     }
 
     public static boolean isRunning() {
-        return currentTestLifecycle != null;
+        return currentTestLifecycle != null && (!currentTestLifecycle.isDestroyed && !currentTestLifecycle.isAborted());
     }
 
     public static TestLifecycle getInstance() {
@@ -202,6 +209,13 @@ public class TestLifecycle {
     }
 
     /**
+     * @since 1.4.0
+     */
+    public void setLaunch(ILaunch launch) {
+        this.launch = launch;
+    }
+
+    /**
      * @since 1.3.0
      */
     private class StreamListener implements IStreamListener {
@@ -214,6 +228,20 @@ public class TestLifecycle {
 
         public String getContents() {
             return contents.toString();
+        }
+    }
+
+    /**
+     * @since 1.4.0
+     */
+    private boolean isAborted() {
+        try {
+            return launch != null
+                && launch.getDebugTarget() == null
+                && (launch.getLaunchConfiguration() != null && launch.getLaunchConfiguration().getAttribute(IPHPDebugConstants.RUN_WITH_DEBUG_INFO, true))
+                && DebuggerCommunicationDaemon.ZEND_DEBUGGER_ID.equals(PHPexeItemFactory.create(TestingTargets.getInstance().getProject()).getDebuggerID());
+        } catch (CoreException e) {
+            return true;
         }
     }
 }

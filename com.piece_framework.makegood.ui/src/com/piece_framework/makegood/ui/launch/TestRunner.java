@@ -21,8 +21,10 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.internal.dialogs.PropertyDialog;
 
 import com.piece_framework.makegood.core.MakeGoodProperty;
+import com.piece_framework.makegood.launch.PHPexeItemFactory;
 import com.piece_framework.makegood.launch.RuntimeConfiguration;
 import com.piece_framework.makegood.launch.TestLifecycle;
+import com.piece_framework.makegood.launch.TestingTargets;
 import com.piece_framework.makegood.ui.Messages;
 import com.piece_framework.makegood.ui.views.ActivePart;
 import com.piece_framework.makegood.ui.views.ViewOpener;
@@ -92,12 +94,14 @@ public class TestRunner {
             TestLifecycle.create();
         }
 
-        if (!isTestRunByAutotest(shortcut)) {
-            lastShortcut = shortcut;
-            lastTestingTarget = testingTarget;
-        }
+        if (hasPHPexeItem()) {
+            if (!isTestRunByAutotest(shortcut)) {
+                lastShortcut = shortcut;
+                lastTestingTarget = testingTarget;
+            }
 
-        lastActivePart = ViewOpener.getActivePart();
+            lastActivePart = ViewOpener.getActivePart();
+        }
 
         String launchMode = RuntimeConfiguration.getInstance().getLaunchMode();
 
@@ -108,6 +112,10 @@ public class TestRunner {
                 shortcut.launch((IEditorPart) testingTarget, launchMode);
             }
         } catch (NotLaunchedException e) {
+            TestLifecycle.destroy();
+        }
+
+        if (!hasPHPexeItem()) {
             TestLifecycle.destroy();
         }
     }
@@ -148,5 +156,12 @@ public class TestRunner {
 
     private static boolean isTestRunByAutotest(MakeGoodLaunchShortcut shortcut) {
         return shortcut instanceof ResourceChangedAllTestsLaunchShortcut;
+    }
+
+    /**
+     * @since 1.4.0
+     */
+    private static boolean hasPHPexeItem() {
+        return PHPexeItemFactory.create(TestingTargets.getInstance().getProject()) != null;
     }
 }

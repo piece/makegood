@@ -73,7 +73,9 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
         try {
             ILaunchConfiguration configuration = createConfiguration(originalConfiguration);
             delegateClass = configuration.getAttribute(PHPDebugCorePreferenceNames.CONFIGURATION_DELEGATE_CLASS, ""); //$NON-NLS-1$
-            return new MakeGoodLaunch(configuration, mode, null);
+            ILaunch launch = new MakeGoodLaunch(configuration, mode, null);
+            TestLifecycle.getInstance().setLaunch(launch);
+            return launch;
         } catch (CoreException e) {
             cancelLaunch();
             throw e;

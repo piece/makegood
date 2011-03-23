@@ -23,7 +23,9 @@ import org.eclipse.php.internal.debug.ui.launching.PHPExeLaunchShortcut;
 import org.eclipse.ui.IEditorPart;
 
 import com.piece_framework.makegood.launch.Activator;
+import com.piece_framework.makegood.launch.ProjectNotFoundException;
 import com.piece_framework.makegood.launch.TestingTargets;
+import com.piece_framework.makegood.launch.ResourceNotFoundException;
 
 public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
     @Override
@@ -47,18 +49,35 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
      * @since 1.3.0
      */
     protected void addTestingTarget(Object testingTarget) {
-        TestingTargets.getInstance().add(testingTarget);
+        try {
+            TestingTargets.getInstance().add(testingTarget);
+        } catch (ResourceNotFoundException e) {
+            Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
+            throw new NotLaunchedException();
+        } catch (ProjectNotFoundException e) {
+            Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
+            throw new NotLaunchedException();
+        }
+
         if (testingTarget instanceof ISourceModule) {
             IType[] types = null;
             try {
                 types = ((ISourceModule) testingTarget).getTypes();
             } catch (ModelException e) {
-                Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.PLUGIN_ID, e.getMessage(), e)); //$NON-NLS-1$
+                Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
                 throw new NotLaunchedException();
             }
 
             for (IType type: types) {
-                TestingTargets.getInstance().add(type);
+                try {
+                    TestingTargets.getInstance().add(type);
+                } catch (ResourceNotFoundException e) {
+                    Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
+                    throw new NotLaunchedException();
+                } catch (ProjectNotFoundException e) {
+                    Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
+                    throw new NotLaunchedException();
+                }
             }
         }
     }

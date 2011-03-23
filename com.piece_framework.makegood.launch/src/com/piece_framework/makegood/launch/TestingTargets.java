@@ -72,8 +72,19 @@ public class TestingTargets {
         super();
     }
 
-    public void add(Object object) {
-        targets.add(object);
+    public void add(Object target) throws ResourceNotFoundException, ProjectNotFoundException {
+        targets.add(target);
+        if (getCount() == 1) {
+            IResource resource = getFirstResource();
+            if (resource == null) {
+                throw new ResourceNotFoundException("The resource is not found. The given target may be invalid."); //$NON-NLS-1$
+            }
+            IProject project = resource.getProject();
+            if (project == null) {
+                throw new ProjectNotFoundException("The project is not found. The given resource may be the workspace root."); //$NON-NLS-1$
+            }
+            this.project = project;
+        }
     }
 
     public String getMainScript() {
