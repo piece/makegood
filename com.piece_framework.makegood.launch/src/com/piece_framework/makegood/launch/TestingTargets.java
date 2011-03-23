@@ -383,13 +383,6 @@ public class TestingTargets {
     /**
      * @since 1.3.0
      */
-    public void setProject(IProject project) {
-        this.project = project;
-    }
-
-    /**
-     * @since 1.3.0
-     */
     public IProject getProject() {
         return project;
     }

@@ -15,7 +15,6 @@ package com.piece_framework.makegood.launch;
 import java.io.File;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -204,16 +203,10 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
             TestingTargets.getInstance().generateCommandLine(junitXMLFile)
         );
 
-        IResource mainScriptResource = TestingTargets.getInstance().getMainScriptResource();
-        if (mainScriptResource == null) {
-            throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "The main script resource is not found.")); //$NON-NLS-1$
-        }
-
-        IProject project = mainScriptResource.getProject();
+        IProject project = TestingTargets.getInstance().getProject();
         if (project != null && project.exists()) {
             workingCopy.setAttribute(IPHPDebugConstants.PHP_Project, project.getName());
             rewriteBasicConfigurationAttributes(workingCopy, project);
-            TestingTargets.getInstance().setProject(project);
         }
 
         return workingCopy;
