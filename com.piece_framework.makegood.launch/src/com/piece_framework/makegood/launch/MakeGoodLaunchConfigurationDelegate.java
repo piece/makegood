@@ -44,6 +44,7 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
     @Override
     public boolean finalLaunchCheck(ILaunchConfiguration configuration, String mode, IProgressMonitor monitor) throws CoreException {
         if (!configuration.exists()) {
+            Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.PLUGIN_ID, "The configuration for the launch is not found.")); //$NON-NLS-1$
             cancelLaunch(monitor);
             return false;
         }
@@ -52,14 +53,19 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
         try {
             result = super.finalLaunchCheck(configuration, mode, monitor);
         } catch (DebugException e) {
+            IStatus status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e);
+            Activator.getDefault().getLog().log(status);
             cancelLaunch(monitor);
-            return false;
+            throw new CoreException(status);
         } catch (CoreException e) {
+            Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
             cancelLaunch(monitor);
             throw e;
         } catch (Exception e) {
+            IStatus status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e);
+            Activator.getDefault().getLog().log(status);
             cancelLaunch(monitor);
-            throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
+            throw new CoreException(status);
         }
         if (!result) {
             cancelLaunch(monitor);
@@ -76,17 +82,21 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
             TestLifecycle.getInstance().setLaunch(launch);
             return launch;
         } catch (CoreException e) {
+            Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
             cancelLaunch();
             throw e;
         } catch (Exception e) {
+            IStatus status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e);
+            Activator.getDefault().getLog().log(status);
             cancelLaunch();
-            throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
+            throw new CoreException(status);
         }
     }
 
     @Override
     public boolean preLaunchCheck(ILaunchConfiguration configuration, String mode, IProgressMonitor monitor) throws CoreException {
         if (!configuration.exists()) {
+            Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.PLUGIN_ID, "The configuration for the launch is not found.")); //$NON-NLS-1$
             cancelLaunch(monitor);
             return false;
         }
@@ -95,14 +105,19 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
         try {
             result = super.preLaunchCheck(configuration, mode, monitor);
         } catch (DebugException e) {
+            IStatus status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e);
+            Activator.getDefault().getLog().log(status);
             cancelLaunch(monitor);
-            return false;
+            throw new CoreException(status);
         } catch (CoreException e) {
+            Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
             cancelLaunch(monitor);
             throw e;
         } catch (Exception e) {
+            IStatus status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e);
+            Activator.getDefault().getLog().log(status);
             cancelLaunch(monitor);
-            throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
+            throw new CoreException(status);
         }
         if (!result) {
             cancelLaunch(monitor);
@@ -118,11 +133,13 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
         IProgressMonitor monitor) throws CoreException {
         ILaunchConfiguration configuration = launch.getLaunchConfiguration();
         if (configuration == null) {
+            Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.PLUGIN_ID, "No configuration was launched.")); //$NON-NLS-1$
             cancelLaunch(monitor);
             return;
         }
 
         if (!configuration.exists()) {
+            Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.PLUGIN_ID, "The configuration for the launch is not found.")); //$NON-NLS-1$
             cancelLaunch(monitor);
             return;
         }
@@ -130,21 +147,28 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
         try {
             JUnitXMLRegistry.create();
         } catch (SecurityException e) {
+            IStatus status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e);
+            Activator.getDefault().getLog().log(status);
             cancelLaunch(monitor);
-            throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
+            throw new CoreException(status);
         } catch (Exception e) {
+            IStatus status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e);
+            Activator.getDefault().getLog().log(status);
             cancelLaunch(monitor);
-            throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
+            throw new CoreException(status);
         }
 
         try {
             super.launch(configuration, mode, launch, monitor);
         } catch (CoreException e) {
+            Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
             cancelLaunch(monitor);
             throw e;
         } catch (Exception e) {
+            IStatus status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e);
+            Activator.getDefault().getLog().log(status);
             cancelLaunch(monitor);
-            throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
+            throw new CoreException(status);
         }
     }
 
