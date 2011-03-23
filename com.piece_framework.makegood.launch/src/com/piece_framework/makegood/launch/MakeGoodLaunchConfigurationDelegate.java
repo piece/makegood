@@ -58,6 +58,9 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
         } catch (CoreException e) {
             cancelLaunch(monitor);
             throw e;
+        } catch (Exception e) {
+            cancelLaunch(monitor);
+            throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
         }
         if (!result) {
             cancelLaunch(monitor);
@@ -67,16 +70,17 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
 
     @Override
     public ILaunch getLaunch(ILaunchConfiguration originalConfiguration, String mode) throws CoreException {
-        ILaunchConfiguration configuration = null;
         try {
-            configuration = createConfiguration(originalConfiguration);
+            ILaunchConfiguration configuration = createConfiguration(originalConfiguration);
+            delegateClass = configuration.getAttribute(PHPDebugCorePreferenceNames.CONFIGURATION_DELEGATE_CLASS, ""); //$NON-NLS-1$
+            return new MakeGoodLaunch(configuration, mode, null);
         } catch (CoreException e) {
             cancelLaunch();
             throw e;
+        } catch (Exception e) {
+            cancelLaunch();
+            throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
         }
-
-        delegateClass = configuration.getAttribute(PHPDebugCorePreferenceNames.CONFIGURATION_DELEGATE_CLASS, ""); //$NON-NLS-1$
-        return new MakeGoodLaunch(configuration, mode, null);
     }
 
     @Override
@@ -95,6 +99,9 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
         } catch (CoreException e) {
             cancelLaunch(monitor);
             throw e;
+        } catch (Exception e) {
+            cancelLaunch(monitor);
+            throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
         }
         if (!result) {
             cancelLaunch(monitor);
@@ -124,6 +131,9 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
         } catch (SecurityException e) {
             cancelLaunch(monitor);
             throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
+        } catch (Exception e) {
+            cancelLaunch(monitor);
+            throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
         }
 
         try {
@@ -131,6 +141,9 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
         } catch (CoreException e) {
             cancelLaunch(monitor);
             throw e;
+        } catch (Exception e) {
+            cancelLaunch(monitor);
+            throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
         }
     }
 
