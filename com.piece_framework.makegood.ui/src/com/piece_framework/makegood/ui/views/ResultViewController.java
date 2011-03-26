@@ -88,7 +88,7 @@ public class ResultViewController implements IDebugEventSetListener {
         testLifecycle = TestLifecycle.getInstance();
 
         try {
-            testLifecycle.start(launch, new ResultJUnitXMLReaderListener());
+            testLifecycle.start(new ResultJUnitXMLReaderListener());
         } catch (CoreException e) {
             Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
             return;

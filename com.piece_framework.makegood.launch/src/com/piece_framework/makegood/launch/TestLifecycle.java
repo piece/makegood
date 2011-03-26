@@ -66,9 +66,7 @@ public class TestLifecycle {
         super();
     }
 
-    public void start(ILaunch launch, JUnitXMLReaderListener junitXMLReaderListener) throws CoreException {
-        this.launch = launch;
-
+    public void start(JUnitXMLReaderListener junitXMLReaderListener) throws CoreException {
         junitXMLReader = new JUnitXMLReader(new File(MakeGoodLaunchConfigurationDelegate.getJUnitXMLFile(launch)));
         junitXMLReader.addListener(junitXMLReaderListener);
 
