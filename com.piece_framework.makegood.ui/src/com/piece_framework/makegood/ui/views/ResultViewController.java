@@ -79,12 +79,6 @@ public class ResultViewController implements IDebugEventSetListener {
             return;
         }
 
-        synchronized (TestLifecycle.class) {
-            if (!TestLifecycle.isRunning()) {
-                TestLifecycle.create();
-            }
-        }
-
         testLifecycle = TestLifecycle.getInstance();
 
         try {
