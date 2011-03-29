@@ -70,7 +70,8 @@ public class TestRunner {
     }
 
     public static boolean hasLastTest() {
-        return lastTestingTarget != null;
+        return lastTestingTarget != null
+            && TestingTargets.getInstance().getProject().equals(ActivePart.getInstance().getProject());
     }
 
     public static void rerunLastTest() {

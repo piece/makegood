@@ -270,6 +270,7 @@ public class ResultView extends ViewPart {
         if (TestLifecycle.isRunning()) return;
 
         runAllTestsAction.setEnabled(ActivePart.getInstance().isAllTestsRunnable());
+        rerunTestAction.setEnabled(TestRunner.hasLastTest());
 
         IProject activeProject = ActivePart.getInstance().getProject();
         if (activeProject != null) {

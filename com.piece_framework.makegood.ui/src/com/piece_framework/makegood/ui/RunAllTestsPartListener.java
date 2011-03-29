@@ -19,6 +19,8 @@ import org.eclipse.ui.IWorkbenchPartReference;
 import org.eclipse.ui.texteditor.AbstractTextEditor;
 
 import com.piece_framework.makegood.ui.views.ActivePart;
+import com.piece_framework.makegood.ui.views.ResultView;
+import com.piece_framework.makegood.ui.views.ViewOpener;
 
 public class RunAllTestsPartListener implements IPartListener2 {
     private ISelectionChangedListener selectionChangedListener;
@@ -32,7 +34,12 @@ public class RunAllTestsPartListener implements IPartListener2 {
         IWorkbenchPart activePart = partRef.getPage().getActivePart();
         if (activePart == null) return;
         ActivePart.getInstance().setPart(activePart);
-        if (!(activePart instanceof AbstractTextEditor)) {
+        if (activePart instanceof AbstractTextEditor) {
+            ResultView resultView = (ResultView) ViewOpener.find(ResultView.VIEW_ID);
+            if (resultView != null) {
+                resultView.updateStateOfRunAllTestsAction();
+            }
+        } else {
             ((RunAllTestsSelectionChangedListener) selectionChangedListener).addListener(activePart);
         }
     }
