@@ -45,7 +45,7 @@ public class AutotestResourceChangeListener implements IResourceChangeListener {
                 Job job = new UIJob("MakeGood Run All Tests By Autotest") { //$NON-NLS-1$
                     @Override
                     public IStatus runInUIThread(IProgressMonitor monitor) {
-                        TestRunner.runAllTests(selection);
+                        TestRunner.runAllTestsByAutotest(selection);
                         return Status.OK_STATUS;
                     }
                 };
@@ -56,7 +56,7 @@ public class AutotestResourceChangeListener implements IResourceChangeListener {
                 Job job = new UIJob("MakeGood Run Last Test By Autotest") { //$NON-NLS-1$
                     @Override
                     public IStatus runInUIThread(IProgressMonitor monitor) {
-                        TestRunner.rerunLastTest();
+                        TestRunner.rerunLastTestByAutotest();
                         return Status.OK_STATUS;
                     }
                 };

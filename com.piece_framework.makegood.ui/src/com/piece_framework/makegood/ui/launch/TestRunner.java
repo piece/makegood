@@ -34,6 +34,11 @@ public class TestRunner {
     private static Object lastTestingTarget;
     private static IWorkbenchPart lastActivePart;
 
+    /**
+     * @since 1.4.0
+     */
+    private static boolean isTestRunByAutotest = false;
+
     public static void runRelatedTests(IEditorPart editorPart) {
         runTests(editorPart, new RelatedTestsLaunchShortcut());
     }
@@ -54,8 +59,10 @@ public class TestRunner {
         runTests(selection, new ResourceLaunchShortcut());
     }
 
-    public static void runAllTests(ISelection selection) {
-        runTests(selection, new ResourceChangedAllTestsLaunchShortcut());
+    public static void runAllTestsByAutotest(ISelection selection) {
+        isTestRunByAutotest = true;
+        runTests(selection, new AllTestsLaunchShortcut());
+        isTestRunByAutotest = false;
     }
 
     public static void runAllTests() {
@@ -68,6 +75,15 @@ public class TestRunner {
 
     public static void rerunLastTest() {
         runTests(lastTestingTarget, lastShortcut);
+    }
+
+    /**
+     * @since 1.4.0
+     */
+    public static void rerunLastTestByAutotest() {
+        isTestRunByAutotest = true;
+        rerunLastTest();
+        isTestRunByAutotest = false;
     }
 
     public static void restoreFocusToLastActivePart() {
@@ -85,7 +101,7 @@ public class TestRunner {
 
         synchronized (TestRunner.class) {
             if (TestLifecycle.isRunning()) {
-                if (!isTestRunByAutotest(shortcut)) {
+                if (!isTestRunByAutotest) {
                     raiseTestSessionAlreadyExistsError();
                 }
 
@@ -95,7 +111,7 @@ public class TestRunner {
         }
 
         if (hasPHPexeItem()) {
-            if (!isTestRunByAutotest(shortcut)) {
+            if (!isTestRunByAutotest) {
                 lastShortcut = shortcut;
                 lastTestingTarget = testingTarget;
             }
@@ -152,10 +168,6 @@ public class TestRunner {
                 );
             }
         });
-    }
-
-    private static boolean isTestRunByAutotest(MakeGoodLaunchShortcut shortcut) {
-        return shortcut instanceof ResourceChangedAllTestsLaunchShortcut;
     }
 
     /**
