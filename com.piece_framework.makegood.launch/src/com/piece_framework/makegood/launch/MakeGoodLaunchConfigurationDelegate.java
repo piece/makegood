@@ -195,7 +195,7 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
     }
 
     private ILaunchConfiguration createConfiguration(
-        ILaunchConfiguration configuration) throws CoreException {
+        ILaunchConfiguration configuration) throws CoreException, MethodNotFoundException {
         String configurationName =
             "MakeGood" + Long.toString(System.currentTimeMillis()); //$NON-NLS-1$
         String junitXMLFile =

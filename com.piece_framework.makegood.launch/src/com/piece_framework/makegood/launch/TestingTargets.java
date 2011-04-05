@@ -32,7 +32,6 @@ import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IType;
-import org.eclipse.dltk.core.ModelException;
 import org.eclipse.osgi.framework.debug.Debug;
 import org.eclipse.php.internal.core.documentModel.provisional.contenttype.ContentTypeIdForPHP;
 import org.eclipse.php.internal.core.typeinference.PHPClassType;
@@ -108,7 +107,7 @@ public class TestingTargets {
         return ResourcesPlugin.getWorkspace().getRoot().findMember(mainScript);
     }
 
-    public String generateCommandLine(String junitXMLFile) {
+    public String generateCommandLine(String junitXMLFile) throws CoreException, MethodNotFoundException {
         StringBuilder buffer = new StringBuilder();
 
         String preloadScript = getPreloadScript();
@@ -184,23 +183,9 @@ public class TestingTargets {
         for (Object target: targets) {
             testingFiles.add(getResource(target).getLocation().toString());
             if (target instanceof IType) {
-                int flags;
-                try {
-                    flags = ((IType) target).getFlags();
-                } catch (ModelException e) {
-                    Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
-                    continue;
-                }
-
+                int flags = ((IType) target).getFlags();
                 if (PHPFlags.isNamespace(flags)) {
-                    IType[] types;
-                    try {
-                        types = ((IType) target).getTypes();
-                    } catch (ModelException e) {
-                        Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
-                        continue;
-                    }
-                    for (IType type: types) {
+                    for (IType type: ((IType) target).getTypes()) {
                         testingClasses.add(urlencode(PHPClassType.fromIType(type).getTypeName()));
                     }
                 } else if (PHPFlags.isClass(flags)) {
@@ -209,8 +194,7 @@ public class TestingTargets {
             } else if (target instanceof IMethod) {
                 IMethod method = findMethod((IMethod) target);
                 if (method == null) {
-                    Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.PLUGIN_ID, "An unknown method context has been found.\n\n" + target)); //$NON-NLS-1$
-                    continue;
+                    throw new MethodNotFoundException("An unknown method context [ " + target + " ] has been found."); //$NON-NLS-1$ //$NON-NLS-2$
                 }
                 testingMethods.add(
                     urlencode(
