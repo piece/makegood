@@ -21,6 +21,8 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchListener;
 import org.eclipse.ui.progress.UIJob;
 
 import com.piece_framework.makegood.core.AutotestScope;
@@ -28,9 +30,12 @@ import com.piece_framework.makegood.launch.RuntimeConfiguration;
 import com.piece_framework.makegood.ui.launch.TestRunner;
 import com.piece_framework.makegood.ui.views.ActivePart;
 
-public class AutotestResourceChangeListener implements IResourceChangeListener {
+public class AutotestResourceChangeListener implements IResourceChangeListener, IWorkbenchListener {
+    private boolean isShuttingDown = false;
+
     @Override
     public void resourceChanged(IResourceChangeEvent event) {
+        if (isShuttingDown) return;
         if (!RuntimeConfiguration.getInstance().enablesAutotest()) return;
         IResourceDelta delta = event.getDelta();
         if (delta == null) return;
@@ -79,5 +84,21 @@ public class AutotestResourceChangeListener implements IResourceChangeListener {
         }
 
         return false;
+    }
+
+    /**
+     * @since 1.5.0
+     */
+    @Override
+    public boolean preShutdown(IWorkbench workbench, boolean forced) {
+        isShuttingDown = true;
+        return true;
+    }
+
+    /**
+     * @since 1.5.0
+     */
+    @Override
+    public void postShutdown(IWorkbench workbench) {
     }
 }
