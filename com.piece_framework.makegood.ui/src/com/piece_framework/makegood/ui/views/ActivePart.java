@@ -14,6 +14,9 @@ package com.piece_framework.makegood.ui.views;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.internal.ui.editor.EditorUtility;
@@ -21,6 +24,7 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.php.internal.core.project.PHPNature;
 import org.eclipse.php.internal.debug.ui.PHPDebugPerspectiveFactory;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
@@ -31,6 +35,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.console.IConsoleConstants;
 
 import com.piece_framework.makegood.core.MakeGoodProperty;
+import com.piece_framework.makegood.ui.Activator;
 
 public class ActivePart {
     private static ActivePart soleInstance;
@@ -54,14 +59,18 @@ public class ActivePart {
         if (IConsoleConstants.ID_CONSOLE_VIEW.equals(id)) return;
 
         if (part instanceof IEditorPart) {
-            lastTarget = part;
+            if (shouldUpdate(part)) {
+                lastTarget = part;
+            }
         } else {
             ISelectionProvider provider = part.getSite().getSelectionProvider();
             if (provider != null) {
                 provider.addSelectionChangedListener(new ISelectionChangedListener() {
                     @Override
                     public void selectionChanged(SelectionChangedEvent event) {
-                        lastTarget = event.getSelection();
+                        if (shouldUpdate(event.getSelection())) {
+                            lastTarget = event.getSelection();
+                        }
                     }
                 });
             }
@@ -120,11 +129,30 @@ public class ActivePart {
     }
 
     public IProject getProject() {
-        if (lastTarget == null) return null;
+        return getProject(lastTarget);
+    }
 
-        IResource resource = getResource(lastTarget);
+    /**
+     * @since 1.5.0
+     */
+    private IProject getProject(Object target) {
+        if (target == null) return null;
+        IResource resource = getResource(target);
         if (resource == null) return null;
-
         return resource.getProject();
+    }
+
+    /**
+     * @since 1.5.0
+     */
+    private boolean shouldUpdate(Object target) {
+        IProject project = getProject(target);
+        if (project == null) return false;
+        try {
+            return project.hasNature(PHPNature.ID);
+        } catch (CoreException e) {
+            Activator.getDefault().getLog().log(new Status(IStatus.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
+            return false;
+        }
     }
 }
