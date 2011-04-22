@@ -24,7 +24,7 @@ public class RunAllTestsSelectionChangedListener implements ISelectionChangedLis
     public void selectionChanged(SelectionChangedEvent event) {
         ResultView resultView = (ResultView) ViewOpener.find(ResultView.VIEW_ID);
         if (resultView != null) {
-            resultView.updateStateOfRunAllTestsAction();
+            resultView.updateCommandAvailabilityWithCurrentContext();
         }
     }
 

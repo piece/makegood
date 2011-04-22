@@ -37,7 +37,7 @@ public class RunAllTestsPartListener implements IPartListener2 {
         if (activePart instanceof AbstractTextEditor) {
             ResultView resultView = (ResultView) ViewOpener.find(ResultView.VIEW_ID);
             if (resultView != null) {
-                resultView.updateStateOfRunAllTestsAction();
+                resultView.updateCommandAvailabilityWithCurrentContext();
             }
         } else {
             ((RunAllTestsSelectionChangedListener) selectionChangedListener).addListener(activePart);

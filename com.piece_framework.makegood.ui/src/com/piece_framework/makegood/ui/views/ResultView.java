@@ -265,7 +265,7 @@ public class ResultView extends ViewPart {
         resultTreeViewer.setInput(null);
     }
 
-    public void updateStateOfRunAllTestsAction() {
+    public void updateCommandAvailabilityWithCurrentContext() {
         if (!actionsInitialized) return;
         if (TestLifecycle.isRunning()) return;
 
@@ -649,7 +649,7 @@ public class ResultView extends ViewPart {
                 IWorkbenchPart activePart = partRef.getPage().getActivePart();
                 if (activePart != null) {
                     ActivePart.getInstance().update(activePart);
-                    updateStateOfRunAllTestsAction();
+                    updateCommandAvailabilityWithCurrentContext();
                 }
 
                 return;
