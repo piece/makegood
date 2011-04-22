@@ -33,7 +33,7 @@ public class RunAllTestsPartListener implements IPartListener2 {
     public void partActivated(IWorkbenchPartReference partRef) {
         IWorkbenchPart activePart = partRef.getPage().getActivePart();
         if (activePart == null) return;
-        ActivePart.getInstance().setPart(activePart);
+        ActivePart.getInstance().update(activePart);
         if (activePart instanceof AbstractTextEditor) {
             ResultView resultView = (ResultView) ViewOpener.find(ResultView.VIEW_ID);
             if (resultView != null) {

@@ -382,7 +382,7 @@ public class ResultView extends ViewPart {
 
         stopTestAction.setEnabled(false);
         rerunTestAction.setEnabled(TestRunner.hasLastTest());
-        ActivePart.getInstance().setPart();
+        ActivePart.getInstance().update();
         runAllTestsAction.setEnabled(ActivePart.getInstance().isAllTestsRunnable());
     }
 
@@ -648,7 +648,7 @@ public class ResultView extends ViewPart {
             if (!VIEW_ID.equals(partRef.getId())) {
                 IWorkbenchPart activePart = partRef.getPage().getActivePart();
                 if (activePart != null) {
-                    ActivePart.getInstance().setPart(activePart);
+                    ActivePart.getInstance().update(activePart);
                     updateStateOfRunAllTestsAction();
                 }
 

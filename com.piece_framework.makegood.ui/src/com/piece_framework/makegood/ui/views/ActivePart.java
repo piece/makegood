@@ -51,7 +51,7 @@ public class ActivePart {
         return soleInstance;
     }
 
-    public void setPart(IWorkbenchPart part) {
+    public void update(IWorkbenchPart part) {
         String id = part.getSite().getId();
         if (ResultView.VIEW_ID.equals(id)) return;
         if (PHPDebugPerspectiveFactory.ID_PHPDebugOutput.equals(id)) return;
@@ -77,12 +77,12 @@ public class ActivePart {
         }
     }
 
-    public void setPart() {
+    public void update() {
         IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
         if (window == null) return;
         IWorkbenchPage page = window.getActivePage();
         if (page == null) return;
-        setPart(page.getActivePart());
+        update(page.getActivePart());
     }
 
     public static boolean isAllTestsRunnable(Object target) {
