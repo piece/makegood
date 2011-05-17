@@ -148,6 +148,7 @@ public class ActivePart {
     private boolean shouldUpdate(Object target) {
         IProject project = getProject(target);
         if (project == null) return false;
+        if (!project.exists()) return false;
         try {
             return project.hasNature(PHPNature.ID);
         } catch (CoreException e) {
