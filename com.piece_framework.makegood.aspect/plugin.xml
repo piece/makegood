@@ -1,6 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
-   <extension-point id="com.piece_framework.makegood.aspect.monitorTargets" name="%monitorTargets.name" schema="schema/com.piece_framework.makegood.aspect.monitorTargets.exsd"/>
-
+   <extension-point id="com.piece_framework.makegood.aspect.manifests" name="%manifest.name" schema="schema/com.piece_framework.makegood.aspect.manifests.exsd"/>
+   <extension
+         point="org.eclipse.ui.startup">
+      <startup
+            class="com.piece_framework.makegood.aspect.AspectWeaver"></startup>
+   </extension>
+   <extension
+         point="org.eclipse.dltk.core.sourceParsers">
+      <parserContribution
+            natureId="org.eclipse.php.core.PHPNature">
+         <parser
+               class="com.piece_framework.makegood.aspect.MakeGoodSourceParserFactory"
+               description="Dummy parser factory for weaving"
+               id="com.piece_framework.makegood.aspect.makegoodParserFactory"
+               name="Dummy parser factory"
+               priority="0">
+         </parser>
+      </parserContribution>
+   </extension>
+   <extension
+         id="com.piece_framework.makegood.aspect.MakeGoodDocumentSetupParticipant"
+         name="MakeGoodDocumentSetupParticipant"
+         point="org.eclipse.core.filebuffers.documentSetup">
+      <participant
+            class="com.piece_framework.makegood.aspect.MakeGoodDocumentSetupParticipant"
+            contentTypeId="org.eclipse.php.core.phpsource">
+      </participant>
+   </extension>
 </plugin>

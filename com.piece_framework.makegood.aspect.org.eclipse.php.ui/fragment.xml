@@ -2,16 +2,9 @@
 <?eclipse version="3.4"?>
 <fragment>
    <extension
-         point="org.eclipse.ui.startup">
-      <startup
-            class="com.piece_framework.makegood.aspect.org.eclipse.php.ui.FragmentWeavingProcess">
-      </startup>
+         point="com.piece_framework.makegood.aspect.manifests">
+      <manifest
+            class="com.piece_framework.makegood.aspect.org.eclipse.php.ui.AspectManifest">
+      </manifest>
    </extension>
-   <extension
-         point="com.piece_framework.makegood.aspect.monitorTargets">
-      <monitorTarget
-            target="com.piece_framework.makegood.aspect.org.eclipse.php.ui.MonitorTarget">
-      </monitorTarget>
-   </extension>
-
 </fragment>

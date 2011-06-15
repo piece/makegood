@@ -2,37 +2,9 @@
 <?eclipse version="3.4"?>
 <fragment>
    <extension
-         point="org.eclipse.ui.startup">
-      <startup
-            class="com.piece_framework.makegood.aspect.org.eclipse.php.core.FragmentWeavingProcess">
-      </startup>
-   </extension>
-   <extension
-         point="com.piece_framework.makegood.aspect.monitorTargets">
-      <monitorTarget
-            target="com.piece_framework.makegood.aspect.org.eclipse.php.core.MonitorTarget">
-      </monitorTarget>
-   </extension>
-   <extension
-         point="org.eclipse.dltk.core.sourceParsers">
-      <parserContribution
-            natureId="org.eclipse.php.core.PHPNature">
-         <parser
-               class="com.piece_framework.makegood.aspect.org.eclipse.php.core.MakeGoodSourceParserFactory"
-               description="Dummy parser factory for weaving"
-               id="com.piece_framework.makegood.aspect.org.eclipse.php.core.makegoodParserFactory"
-               name="Dummy parser factory"
-               priority="0">
-         </parser>
-      </parserContribution>
-   </extension>
-   <extension
-         id="com.piece_framework.makegood.aspect.org.eclipse.php.core.MakeGoodDocumentSetupParticipant"
-         name="MakeGoodDocumentSetupParticipant"
-         point="org.eclipse.core.filebuffers.documentSetup">
-      <participant
-            class="com.piece_framework.makegood.aspect.org.eclipse.php.core.MakeGoodDocumentSetupParticipant"
-            contentTypeId="org.eclipse.php.core.phpsource">
-      </participant>
+         point="com.piece_framework.makegood.aspect.manifests">
+      <manifest
+            class="com.piece_framework.makegood.aspect.org.eclipse.php.core.AspectManifest">
+      </manifest>
    </extension>
 </fragment>

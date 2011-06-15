@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2009-2010 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
- *               2010 KUBO Atsuhiro <kubo@iteman.jp>,
+ *               2010-2011 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -25,7 +25,7 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-import com.piece_framework.makegood.aspect.monitor.WeavingMonitor;
+import com.piece_framework.makegood.aspect.AspectWeaver;
 import com.piece_framework.makegood.core.PHPResource;
 import com.piece_framework.makegood.ui.launch.TestRunner;
 
@@ -48,7 +48,7 @@ public class RunTestFromExplorerHandler extends AbstractHandler {
 
     @Override
     public boolean isEnabled() {
-        if (!WeavingMonitor.endAll()) return false;
+        if (!AspectWeaver.isFinished()) return false;
         IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
         if (window == null) return false;
         IWorkbenchPage page = window.getActivePage();

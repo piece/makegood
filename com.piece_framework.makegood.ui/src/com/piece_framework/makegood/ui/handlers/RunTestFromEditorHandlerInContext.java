@@ -22,7 +22,7 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-import com.piece_framework.makegood.aspect.monitor.WeavingMonitor;
+import com.piece_framework.makegood.aspect.AspectWeaver;
 import com.piece_framework.makegood.core.PHPResource;
 import com.piece_framework.makegood.ui.EditorParser;
 import com.piece_framework.makegood.ui.launch.TestRunner;
@@ -38,7 +38,7 @@ public class RunTestFromEditorHandlerInContext extends AbstractHandler {
 
     @Override
     public boolean isEnabled() {
-        if (!WeavingMonitor.endAll()) return false;
+        if (!AspectWeaver.isFinished()) return false;
 
         IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
         if (window == null) return false;

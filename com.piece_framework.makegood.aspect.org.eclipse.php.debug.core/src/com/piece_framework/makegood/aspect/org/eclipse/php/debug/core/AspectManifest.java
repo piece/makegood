@@ -11,18 +11,15 @@
 
 package com.piece_framework.makegood.aspect.org.eclipse.php.debug.core;
 
-import org.eclipse.ui.IStartup;
-
 import com.piece_framework.makegood.aspect.Aspect;
 import com.piece_framework.makegood.aspect.PDTVersion;
-import com.piece_framework.makegood.aspect.WeavingProcess;
 import com.piece_framework.makegood.aspect.org.eclipse.php.debug.core.aspect.CommandLineArgumentsFixAspect;
 import com.piece_framework.makegood.aspect.org.eclipse.php.debug.core.aspect.LaunchWithMissingUserLibrariesFixAspect;
 import com.piece_framework.makegood.aspect.org.eclipse.php.debug.core.aspect.SystemIncludePathAspect;
 import com.piece_framework.makegood.aspect.org.eclipse.php.debug.core.aspect.XdebugConsoleFixAspect;
 import com.piece_framework.makegood.aspect.org.eclipse.php.debug.core.aspect.XdebugLaunchAspect;
 
-public class FragmentWeavingProcess extends WeavingProcess implements IStartup {
+public class AspectManifest implements com.piece_framework.makegood.aspect.AspectManifest {
     private static final String PLUGIN_ID = "com.piece_framework.makegood.aspect.org.eclipse.php.debug.core"; //$NON-NLS-1$
     private static final String[] DEPENDENCIES = {
         Fragment.PLUGIN_ID,
@@ -32,18 +29,12 @@ public class FragmentWeavingProcess extends WeavingProcess implements IStartup {
     };
 
     @Override
-    public void earlyStartup() {
-        process();
-        MonitorTarget.endWeaving = true;
-    }
-
-    @Override
-    protected String pluginId() {
+    public String pluginId() {
         return PLUGIN_ID;
     }
 
     @Override
-    protected Aspect[] aspects() {
+    public Aspect[] aspects() {
         return PDTVersion.getInstance().compareTo("2.2.0") >= 0 ? //$NON-NLS-1$
                     new Aspect[] {
                         new XdebugLaunchAspect(),
@@ -61,7 +52,7 @@ public class FragmentWeavingProcess extends WeavingProcess implements IStartup {
     }
 
     @Override
-    protected String[] dependencies() {
+    public String[] dependencies() {
         return DEPENDENCIES;
     }
 }

@@ -1,5 +1,6 @@
 /**
  * Copyright (c) 2010 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
+ *               2011 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -19,7 +20,7 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.ui.IViewPart;
 
-import com.piece_framework.makegood.aspect.monitor.WeavingMonitor;
+import com.piece_framework.makegood.aspect.AspectWeaver;
 import com.piece_framework.makegood.ui.views.ResultView;
 import com.piece_framework.makegood.ui.views.ViewOpener;
 
@@ -41,9 +42,7 @@ public abstract class ToggleHandler extends AbstractHandler {
 
     @Override
     public boolean isEnabled() {
-        if (!WeavingMonitor.endAll()) return false;
-
-        return true;
+        return AspectWeaver.isFinished();
     }
 
     protected abstract String getActionId();

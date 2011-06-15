@@ -15,7 +15,7 @@ import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 
-import com.piece_framework.makegood.aspect.monitor.WeavingMonitor;
+import com.piece_framework.makegood.aspect.AspectWeaver;
 import com.piece_framework.makegood.ui.views.ResultView;
 import com.piece_framework.makegood.ui.views.ViewOpener;
 
@@ -31,7 +31,7 @@ public class NextFailureHandler extends AbstractHandler {
 
     @Override
     public boolean isEnabled() {
-        if (!WeavingMonitor.endAll()) return false;
+        if (!AspectWeaver.isFinished()) return false;
         ResultView view = (ResultView) ViewOpener.find(ResultView.VIEW_ID);
         if (view == null) return false;
         return view.hasFailures();

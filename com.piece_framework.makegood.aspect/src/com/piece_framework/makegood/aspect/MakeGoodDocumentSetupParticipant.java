@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2010-2011 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -9,7 +9,7 @@
  * distribution, and is available at http://www.eclipse.org/legal/epl-v10.html
  */
 
-package com.piece_framework.makegood.aspect.org.eclipse.php.core;
+package com.piece_framework.makegood.aspect;
 
 import org.eclipse.core.filebuffers.IDocumentSetupParticipant;
 import org.eclipse.jface.text.IDocument;
@@ -24,7 +24,7 @@ import org.eclipse.jface.text.IDocument;
 public class MakeGoodDocumentSetupParticipant implements IDocumentSetupParticipant {
     @Override
     public void setup(IDocument document) {
-        if (MonitorTarget.endWeaving) return;
-        new FragmentWeavingProcess().process();
+        if (AspectWeaver.isFinished()) return;
+        new AspectWeaver().weave();
     }
 }

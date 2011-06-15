@@ -11,39 +11,30 @@
 
 package com.piece_framework.makegood.aspect.com.piece_framework.makegood.launch;
 
-import org.eclipse.ui.IStartup;
-
 import com.piece_framework.makegood.aspect.Aspect;
 import com.piece_framework.makegood.aspect.PDTVersion;
-import com.piece_framework.makegood.aspect.WeavingProcess;
 import com.piece_framework.makegood.aspect.com.piece_framework.makegood.launch.aspect.PHPexeItemRepositoryAspect;
 
 /**
  * @since 1.2.0
  */
-public class FragmentWeavingProcess extends WeavingProcess implements IStartup {
+public class AspectManifest implements com.piece_framework.makegood.aspect.AspectManifest {
     private static final Aspect[] ASPECTS = {
         new PHPexeItemRepositoryAspect()
     };
 
     @Override
-    public void earlyStartup() {
-        process();
-        MonitorTarget.endWeaving = true;
-    }
-
-    @Override
-    protected String pluginId() {
+    public String pluginId() {
         return Fragment.PLUGIN_ID;
     }
 
     @Override
-    protected Aspect[] aspects() {
+    public Aspect[] aspects() {
         return ASPECTS;
     }
 
     @Override
-    protected String[] dependencies() {
+    public String[] dependencies() {
         return PDTVersion.getInstance().compareTo("2.2.0") >= 0 ? //$NON-NLS-1$
                    new String[] {
                        "com.piece_framework.makegood.launch", //$NON-NLS-1$

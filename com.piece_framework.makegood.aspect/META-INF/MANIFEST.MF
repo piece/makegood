@@ -8,7 +8,6 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ClassPath: lib/javassist-3.11.0/javassist.jar,
  .
 Export-Package: com.piece_framework.makegood.aspect,
- com.piece_framework.makegood.aspect.monitor,
  javassist,
  javassist.bytecode,
  javassist.bytecode.analysis,
@@ -26,4 +25,10 @@ Export-Package: com.piece_framework.makegood.aspect,
  javassist.tools.web,
  javassist.util,
  javassist.util.proxy
-Require-Bundle: org.eclipse.core.runtime
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.core.filebuffers,
+ org.eclipse.jface.text,
+ org.eclipse.ui,
+ org.eclipse.dltk.core,
+ org.eclipse.php.core
+Bundle-ActivationPolicy: lazy

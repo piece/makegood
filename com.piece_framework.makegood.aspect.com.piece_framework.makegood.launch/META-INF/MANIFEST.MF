@@ -6,5 +6,4 @@ Bundle-Version: 1.6.0.qualifier
 Bundle-Vendor: %Bundle-Vendor
 Fragment-Host: com.piece_framework.makegood.launch
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Require-Bundle: org.eclipse.ui,
- com.piece_framework.makegood.aspect
+Require-Bundle: com.piece_framework.makegood.aspect
