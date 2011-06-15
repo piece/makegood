@@ -26,9 +26,9 @@ import com.piece_framework.makegood.aspect.PDTVersion;
  * @since 1.2.0
  */
 public class PHPexeItemRepositoryAspect extends Aspect {
-    private static final String JOINPOINT_CREATE_SETBODY = "PHPexeItemRepository#create [set body]"; //$NON-NLS-1$
+    private static final String JOINPOINT_FINDBYPROJECT_SETBODY = "PHPexeItemRepository#findByProject [set body]"; //$NON-NLS-1$
     private static final String[] JOINPOINTS = {
-        JOINPOINT_CREATE_SETBODY
+        JOINPOINT_FINDBYPROJECT_SETBODY
     };
     private static final String WEAVINGCLASS_PHPEXEITEMREPOSITORY =
         "com.piece_framework.makegood.launch.PHPexeItemRepository"; //$NON-NLS-1$
@@ -39,7 +39,7 @@ public class PHPexeItemRepositoryAspect extends Aspect {
     /**
      * @see org.eclipse.php.internal.debug.ui.launching.PHPExeLaunchShortcut#getDefaultPHPExe(IProject project)
      */
-    private static final String PHPEXEITEMREPOSITORY_METHOD_CREATE_HELIOS =
+    private static final String PHPEXEITEMREPOSITORY_METHOD_FINDBYPROJECT_HELIOS =
 "{" + //$NON-NLS-1$
 "    org.eclipse.core.resources.IProject project = $1;" + //$NON-NLS-1$
 "    org.eclipse.php.internal.debug.core.preferences.PHPexeItem phpexeItem = org.eclipse.php.internal.debug.core.PHPDebugPlugin.getPHPexeItem(project);" + //$NON-NLS-1$
@@ -53,7 +53,7 @@ public class PHPexeItemRepositoryAspect extends Aspect {
      * @see org.eclipse.php.internal.debug.ui.launching.PHPExeLaunchShortcut#getDefaultPHPExe(IProject project)
      * @see org.eclipse.php.internal.debug.ui.launching.PHPExeLaunchShortcut#createPreferenceScopes(IProject project)
      */
-    private static final String PHPEXEITEMREPOSITORY_METHOD_CREATE_GALILEO =
+    private static final String PHPEXEITEMREPOSITORY_METHOD_FINDBYPROJECT_GALILEO =
 "{" + //$NON-NLS-1$
 "    org.eclipse.core.resources.IProject project = $1;" + //$NON-NLS-1$
 "    String phpDebuggerId = org.eclipse.php.internal.debug.core.PHPDebugPlugin.getCurrentDebuggerId();" + //$NON-NLS-1$
@@ -73,13 +73,13 @@ public class PHPexeItemRepositoryAspect extends Aspect {
     @Override
     protected void doWeave() throws NotFoundException, CannotCompileException {
         CtClass weavingClass = ClassPool.getDefault().get(WEAVINGCLASS_PHPEXEITEMREPOSITORY);
-        CtMethod weavingMethod = weavingClass.getDeclaredMethod("create"); //$NON-NLS-1$
+        CtMethod weavingMethod = weavingClass.getDeclaredMethod("findByProject"); //$NON-NLS-1$
         weavingMethod.setBody(
             PDTVersion.getInstance().compareTo("2.2.0") >= 0 ? //$NON-NLS-1$
-                PHPEXEITEMREPOSITORY_METHOD_CREATE_HELIOS :
-                PHPEXEITEMREPOSITORY_METHOD_CREATE_GALILEO
+                PHPEXEITEMREPOSITORY_METHOD_FINDBYPROJECT_HELIOS :
+                PHPEXEITEMREPOSITORY_METHOD_FINDBYPROJECT_GALILEO
         );
-        markJoinPointAsPassed(JOINPOINT_CREATE_SETBODY);
+        markJoinPointAsPassed(JOINPOINT_FINDBYPROJECT_SETBODY);
         markClassAsWoven(weavingClass);
     }
 
