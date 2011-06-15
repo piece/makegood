@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2010-2011 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -17,7 +17,7 @@ import org.eclipse.php.internal.debug.core.preferences.PHPexeItem;
 /**
  * @since 1.2.0
  */
-public class PHPexeItemFactory {
+public class PHPexeItemRepository {
     public static PHPexeItem create(IProject project) {
         return null;
     }

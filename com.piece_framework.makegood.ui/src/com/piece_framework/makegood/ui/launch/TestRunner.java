@@ -21,7 +21,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.internal.dialogs.PropertyDialog;
 
 import com.piece_framework.makegood.core.MakeGoodProperty;
-import com.piece_framework.makegood.launch.PHPexeItemFactory;
+import com.piece_framework.makegood.launch.PHPexeItemRepository;
 import com.piece_framework.makegood.launch.RuntimeConfiguration;
 import com.piece_framework.makegood.launch.TestLifecycle;
 import com.piece_framework.makegood.launch.TestingTargets;
@@ -175,6 +175,6 @@ public class TestRunner {
      * @since 1.4.0
      */
     private static boolean hasPHPexeItem() {
-        return PHPexeItemFactory.create(TestingTargets.getInstance().getProject()) != null;
+        return PHPexeItemRepository.create(TestingTargets.getInstance().getProject()) != null;
     }
 }
