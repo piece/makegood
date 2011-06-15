@@ -175,6 +175,6 @@ public class TestRunner {
      * @since 1.4.0
      */
     private static boolean hasPHPexeItem() {
-        return PHPexeItemRepository.findByProject(TestingTargets.getInstance().getProject()) != null;
+        return new PHPexeItemRepository().findByProject(TestingTargets.getInstance().getProject()) != null;
     }
 }

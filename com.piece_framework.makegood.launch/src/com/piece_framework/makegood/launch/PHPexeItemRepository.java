@@ -18,7 +18,7 @@ import org.eclipse.php.internal.debug.core.preferences.PHPexeItem;
  * @since 1.2.0
  */
 public class PHPexeItemRepository {
-    public static PHPexeItem findByProject(IProject project) {
+    public PHPexeItem findByProject(IProject project) {
         return null;
     }
 }
