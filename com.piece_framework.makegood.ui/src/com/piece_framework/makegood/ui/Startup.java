@@ -29,7 +29,7 @@ public class Startup implements IStartup {
     @Override
     public void earlyStartup() {
         ISelectionChangedListener selectionChangedListener = new RunAllTestsSelectionChangedListener();
-        IPartListener2 partListener = new RunAllTestsPartListener(selectionChangedListener);
+        IPartListener2 partListener = new ContextStatusUpdaterPartListener(selectionChangedListener);
         for (IWorkbenchWindow window: PlatformUI.getWorkbench().getWorkbenchWindows()) {
             for (IWorkbenchPage page: window.getPages()) {
                 page.addPartListener(partListener);
