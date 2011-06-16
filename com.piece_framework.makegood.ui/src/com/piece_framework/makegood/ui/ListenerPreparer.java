@@ -25,7 +25,7 @@ import org.eclipse.ui.texteditor.AbstractTextEditor;
 
 import com.piece_framework.makegood.ui.views.ResultViewController;
 
-public class Startup implements IStartup {
+public class ListenerPreparer implements IStartup {
     @Override
     public void earlyStartup() {
         ISelectionChangedListener selectionChangedListener = new ContextStatusUpdaterSelectionChangedListener();

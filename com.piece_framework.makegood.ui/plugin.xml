@@ -511,7 +511,7 @@
    <extension
          point="org.eclipse.ui.startup">
       <startup
-            class="com.piece_framework.makegood.ui.Startup">
+            class="com.piece_framework.makegood.ui.ListenerPreparer">
       </startup>
    </extension>
    <extension
