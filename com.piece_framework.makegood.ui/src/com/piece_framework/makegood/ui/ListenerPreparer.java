@@ -28,6 +28,13 @@ import com.piece_framework.makegood.ui.views.ResultViewController;
 public class ListenerPreparer implements IStartup {
     @Override
     public void earlyStartup() {
+        prepare();
+    }
+
+    /**
+     * @since 1.6.0
+     */
+    private void prepare() {
         ISelectionChangedListener selectionChangedListener = new ContextStatusUpdaterSelectionChangedListener();
         IPartListener2 partListener = new ContextStatusUpdaterPartListener(selectionChangedListener);
         for (IWorkbenchWindow window: PlatformUI.getWorkbench().getWorkbenchWindows()) {
