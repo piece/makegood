@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2010-2011 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -19,7 +19,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import com.piece_framework.makegood.ui.views.ResultView;
 import com.piece_framework.makegood.ui.views.ViewOpener;
 
-public class RunAllTestsSelectionChangedListener implements ISelectionChangedListener {
+public class ContextStatusUpdaterSelectionChangedListener implements ISelectionChangedListener {
     @Override
     public void selectionChanged(SelectionChangedEvent event) {
         ResultView resultView = (ResultView) ViewOpener.find(ResultView.VIEW_ID);

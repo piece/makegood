@@ -28,14 +28,14 @@ import com.piece_framework.makegood.ui.views.ResultViewController;
 public class Startup implements IStartup {
     @Override
     public void earlyStartup() {
-        ISelectionChangedListener selectionChangedListener = new RunAllTestsSelectionChangedListener();
+        ISelectionChangedListener selectionChangedListener = new ContextStatusUpdaterSelectionChangedListener();
         IPartListener2 partListener = new ContextStatusUpdaterPartListener(selectionChangedListener);
         for (IWorkbenchWindow window: PlatformUI.getWorkbench().getWorkbenchWindows()) {
             for (IWorkbenchPage page: window.getPages()) {
                 page.addPartListener(partListener);
                 IWorkbenchPart activePart = page.getActivePart();
                 if (activePart != null && !(activePart instanceof AbstractTextEditor)) {
-                    ((RunAllTestsSelectionChangedListener) selectionChangedListener).addListener(activePart);
+                    ((ContextStatusUpdaterSelectionChangedListener) selectionChangedListener).addListener(activePart);
                 }
             }
         };

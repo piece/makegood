@@ -40,7 +40,7 @@ public class ContextStatusUpdaterPartListener implements IPartListener2 {
                 resultView.updateCommandAvailabilityWithCurrentContext();
             }
         } else {
-            ((RunAllTestsSelectionChangedListener) selectionChangedListener).addListener(activePart);
+            ((ContextStatusUpdaterSelectionChangedListener) selectionChangedListener).addListener(activePart);
         }
     }
 
