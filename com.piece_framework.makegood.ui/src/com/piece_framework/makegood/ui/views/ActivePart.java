@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2009-2010 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
- *               2010 KUBO Atsuhiro <kubo@iteman.jp>,
+ *               2010-2011 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -39,9 +39,10 @@ import com.piece_framework.makegood.ui.Activator;
 
 public class ActivePart {
     private static ActivePart soleInstance;
-    private Object lastTarget;
+    private Object entity;
 
-    private ActivePart() {}
+    private ActivePart() {
+    }
 
     public static ActivePart getInstance() {
         if (soleInstance == null) {
@@ -59,8 +60,8 @@ public class ActivePart {
         if (IConsoleConstants.ID_CONSOLE_VIEW.equals(id)) return;
 
         if (part instanceof IEditorPart) {
-            if (shouldUpdate(part)) {
-                lastTarget = part;
+            if (shouldUpdateLink(part)) {
+                updateLink(part);
             }
         } else {
             ISelectionProvider provider = part.getSite().getSelectionProvider();
@@ -68,8 +69,8 @@ public class ActivePart {
                 provider.addSelectionChangedListener(new ISelectionChangedListener() {
                     @Override
                     public void selectionChanged(SelectionChangedEvent event) {
-                        if (shouldUpdate(event.getSelection())) {
-                            lastTarget = event.getSelection();
+                        if (shouldUpdateLink(event.getSelection())) {
+                            updateLink(event.getSelection());
                         }
                     }
                 });
@@ -97,11 +98,11 @@ public class ActivePart {
     }
 
     public boolean isAllTestsRunnable() {
-        return isAllTestsRunnable(lastTarget);
+        return isAllTestsRunnable(entity);
     }
 
-    public Object getLastTarget() {
-        return lastTarget;
+    public Object getEntity() {
+        return entity;
     }
 
     public static IResource getResource(Object target) {
@@ -129,7 +130,7 @@ public class ActivePart {
     }
 
     public IProject getProject() {
-        return getProject(lastTarget);
+        return getProject(entity);
     }
 
     /**
@@ -145,7 +146,7 @@ public class ActivePart {
     /**
      * @since 1.5.0
      */
-    private boolean shouldUpdate(Object target) {
+    private boolean shouldUpdateLink(Object target) {
         IProject project = getProject(target);
         if (project == null) return false;
         if (!project.exists()) return false;
@@ -155,5 +156,12 @@ public class ActivePart {
             Activator.getDefault().getLog().log(new Status(IStatus.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
             return false;
         }
+    }
+
+    /**
+     * @since 1.6.0
+     */
+    private void updateLink(Object entity) {
+        this.entity = entity;
     }
 }

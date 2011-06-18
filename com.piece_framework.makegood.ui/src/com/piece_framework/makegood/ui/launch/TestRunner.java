@@ -66,7 +66,7 @@ public class TestRunner {
     }
 
     public static void runAllTests() {
-        runTests(ActivePart.getInstance().getLastTarget(), new AllTestsLaunchShortcut());
+        runTests(ActivePart.getInstance().getEntity(), new AllTestsLaunchShortcut());
     }
 
     public static boolean hasLastTest() {
