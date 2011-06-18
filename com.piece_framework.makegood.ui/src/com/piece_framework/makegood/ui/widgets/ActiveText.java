@@ -51,6 +51,13 @@ public abstract class ActiveText extends StyledText implements MouseListener, Mo
         }
     }
 
+    /**
+     * @since 1.6.0
+     */
+    public void replaceText(String text) {
+        super.setText(text);
+    }
+
     public void addListener(ActiveTextListener listener) {
         listener.setActiveText(this);
         listeners.add(listener);

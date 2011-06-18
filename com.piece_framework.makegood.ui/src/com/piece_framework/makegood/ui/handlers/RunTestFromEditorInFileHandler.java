@@ -16,12 +16,10 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-import com.piece_framework.makegood.ui.launch.TestRunner;
-
 public class RunTestFromEditorInFileHandler extends RunTestFromEditorHandlerInContext {
     @Override
     public Object execute(ExecutionEvent event) throws ExecutionException {
-        TestRunner.getInstance().runTestsInFile(HandlerUtil.getActiveEditor(event));
+        getTestRunner().runTestsInFile(HandlerUtil.getActiveEditor(event));
         return null;
     }
 }

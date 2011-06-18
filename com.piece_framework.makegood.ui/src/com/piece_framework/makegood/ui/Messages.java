@@ -118,6 +118,42 @@ public class Messages extends NLS {
     public static String TestResultView_realTime;
     public static String TestResultView_testTime;
     public static String TestResultView_noTestsFound;
+
+    /**
+     * @since 1.6.0
+     */
+    public static String TestResultView_Status_NoTestableProjectSelected;
+
+    /**
+     * @since 1.6.0
+     */
+    public static String TestResultView_Status_NoPHPExecutablesDefined;
+
+    /**
+     * @since 1.6.0
+     */
+    public static String TestResultView_Status_MakeGoodNotConfigured;
+
+    /**
+     * @since 1.6.0
+     */
+    public static String TestResultView_Status_SAPINotCLI;
+
+    /**
+     * @since 1.6.0
+     */
+    public static String TestResultView_Status_RunningTest;
+
+    /**
+     * @since 1.6.0
+     */
+    public static String TestResultView_Status_WaitingForTestRun;
+
+    /**
+     * @since 1.6.0
+     */
+    public static String TestResultView_Status_TestingFrameworkNotAvailable;
+
     public static String TestRunner_TestSessionAlreadyExists_Title;
     public static String TestRunner_TestSessionAlreadyExists_Message;
 

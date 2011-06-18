@@ -15,27 +15,19 @@ package com.piece_framework.makegood.ui.launch;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPart;
-import org.eclipse.ui.internal.dialogs.PropertyDialog;
-
-import com.piece_framework.makegood.core.MakeGoodProperty;
 import com.piece_framework.makegood.launch.PHPexeItemRepository;
 import com.piece_framework.makegood.launch.RuntimeConfiguration;
 import com.piece_framework.makegood.launch.TestLifecycle;
 import com.piece_framework.makegood.launch.TestingTargets;
+import com.piece_framework.makegood.ui.ActivePart;
 import com.piece_framework.makegood.ui.Messages;
-import com.piece_framework.makegood.ui.views.ActivePart;
+import com.piece_framework.makegood.ui.MakeGoodContext;
 import com.piece_framework.makegood.ui.views.ViewOpener;
 
 public class TestRunner {
-    /**
-     * @since 1.6.0
-     */
-    private static TestRunner soleInstance;
-
     private MakeGoodLaunchShortcut lastShortcut;
     private Object lastTestingTarget;
     private IWorkbenchPart lastActivePart;
@@ -49,23 +41,6 @@ public class TestRunner {
      * @since 1.6.0
      */
     private PHPexeItemRepository phpexeItemRepository = new PHPexeItemRepository();
-
-    /**
-     * @since 1.6.0
-     */
-    private TestRunner() {
-    }
-
-    /**
-     * @since 1.6.0
-     */
-    public static TestRunner getInstance() {
-        if (soleInstance == null) {
-            soleInstance = new TestRunner();
-        }
-
-        return soleInstance;
-    }
 
     public void runRelatedTests(IEditorPart editorPart) {
         runTests(editorPart, new RelatedTestsLaunchShortcut());
@@ -94,14 +69,14 @@ public class TestRunner {
     }
 
     public void runAllTests() {
-        runTests(ActivePart.getInstance().getEntity(), new AllTestsLaunchShortcut());
+        runTests(MakeGoodContext.getInstance().getActivePart().getEntity(), new AllTestsLaunchShortcut());
     }
 
     public boolean hasLastTest() {
         if (lastTestingTarget == null) return false;
         IProject lastTestingProject = TestingTargets.getInstance().getProject();
         if (lastTestingProject == null) return false;
-        if (!lastTestingProject.equals(ActivePart.getInstance().getProject())) return false;
+        if (!lastTestingProject.equals(MakeGoodContext.getInstance().getActivePart().getProject())) return false;
         return true;
     }
 
@@ -125,12 +100,6 @@ public class TestRunner {
     }
 
     private void runTests(Object testingTarget, MakeGoodLaunchShortcut shortcut) {
-        MakeGoodProperty property = new MakeGoodProperty(ActivePart.getResource(testingTarget));
-        if (!property.exists()) {
-            showPropertyPage(property, testingTarget, shortcut);
-            return;
-        }
-
         synchronized (TestRunner.class) {
             if (TestLifecycle.isRunning()) {
                 if (!isTestRunByAutotest) {
@@ -166,26 +135,6 @@ public class TestRunner {
         if (!hasPHPexeItem()) {
             TestLifecycle.destroy();
         }
-    }
-
-    private void showPropertyPage(
-        final MakeGoodProperty property,
-        final Object testingTarget,
-        final MakeGoodLaunchShortcut shortcut) {
-        Display.getDefault().asyncExec(new Runnable() {
-            @Override
-            public void run() {
-                PropertyDialog dialog =
-                    PropertyDialog.createDialogOn(
-                        null,
-                        "com.piece_framework.makegood.ui.propertyPages.makeGood", //$NON-NLS-1$
-                        property.getProject()
-                    );
-                if (dialog.open() == Window.OK) {
-                    runTests(testingTarget, shortcut);
-                }
-            }
-        });
     }
 
     private void raiseTestSessionAlreadyExistsError() {

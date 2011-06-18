@@ -22,12 +22,11 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import com.piece_framework.makegood.ui.EditorParser;
-import com.piece_framework.makegood.ui.launch.TestRunner;
 
 public class RunTestFromEditorInClassHandler extends RunTestFromEditorHandlerInContext {
     @Override
     public Object execute(ExecutionEvent event) throws ExecutionException {
-        TestRunner.getInstance().runTestsInClass(HandlerUtil.getActiveEditor(event));
+        getTestRunner().runTestsInClass(HandlerUtil.getActiveEditor(event));
         return null;
     }
 
@@ -42,13 +41,8 @@ public class RunTestFromEditorInClassHandler extends RunTestFromEditorHandlerInC
         IEditorPart editor = page.getActiveEditor();
         if (editor == null) return false;
         IModelElement element = new EditorParser(editor).getModelElementOnSelection();
-        if (element.getElementType() == IModelElement.TYPE
+        return element.getElementType() == IModelElement.TYPE
             || element.getElementType() == IModelElement.METHOD
-            || element.getElementType() == IModelElement.FIELD
-            ) {
-            return true;
-        }
-
-        return false;
+            || element.getElementType() == IModelElement.FIELD;
     }
 }

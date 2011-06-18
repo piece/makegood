@@ -12,24 +12,21 @@
 
 package com.piece_framework.makegood.ui.handlers;
 
-import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 
-import com.piece_framework.makegood.aspect.AspectWeaver;
-import com.piece_framework.makegood.ui.launch.TestRunner;
-import com.piece_framework.makegood.ui.views.ActivePart;
+import com.piece_framework.makegood.ui.MakeGoodContext;
 
-public class RunAllTestsHandler extends AbstractHandler {
+public class RunAllTestsHandler extends RunHandler {
     @Override
     public Object execute(ExecutionEvent event) throws ExecutionException {
-        TestRunner.getInstance().runAllTests();
+        getTestRunner().runAllTests();
         return null;
     }
 
     @Override
     public boolean isEnabled() {
-        if (!AspectWeaver.isFinished()) return false;
-        return ActivePart.getInstance().isAllTestsRunnable();
+        if (!super.isEnabled()) return false;
+        return MakeGoodContext.getInstance().getActivePart().isAllTestsRunnable();
     }
 }

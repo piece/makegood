@@ -12,7 +12,6 @@
 
 package com.piece_framework.makegood.ui.handlers;
 
-import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.action.ActionContributionItem;
@@ -20,7 +19,6 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.ui.IViewPart;
 
-import com.piece_framework.makegood.aspect.AspectWeaver;
 import com.piece_framework.makegood.ui.views.ResultView;
 import com.piece_framework.makegood.ui.views.ViewOpener;
 
@@ -38,11 +36,6 @@ public abstract class ToggleHandler extends AbstractHandler {
         action.run();
 
         return null;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return AspectWeaver.isFinished();
     }
 
     protected abstract String getActionId();

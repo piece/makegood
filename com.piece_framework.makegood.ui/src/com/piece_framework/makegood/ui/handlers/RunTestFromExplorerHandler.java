@@ -12,7 +12,6 @@
 
 package com.piece_framework.makegood.ui.handlers;
 
-import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IFolder;
@@ -25,11 +24,9 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-import com.piece_framework.makegood.aspect.AspectWeaver;
 import com.piece_framework.makegood.core.PHPResource;
-import com.piece_framework.makegood.ui.launch.TestRunner;
 
-public class RunTestFromExplorerHandler extends AbstractHandler {
+public class RunTestFromExplorerHandler extends RunHandler {
     @Override
     public Object execute(ExecutionEvent event) throws ExecutionException {
         ISelection selection = HandlerUtil.getActiveMenuSelection(event);
@@ -42,22 +39,22 @@ public class RunTestFromExplorerHandler extends AbstractHandler {
             if (selection == null) return null;
         }
 
-        TestRunner.getInstance().runTestsFromExplorer(selection);
+        getTestRunner().runTestsFromExplorer(selection);
         return null;
     }
 
     @Override
     public boolean isEnabled() {
-        if (!AspectWeaver.isFinished()) return false;
+        if (!super.isEnabled()) return false;
+
         IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
         if (window == null) return false;
         IWorkbenchPage page = window.getActivePage();
         if (page == null) return false;
         ISelection selection = page.getSelection();
         if (selection == null) return false;
-
         if (!(selection instanceof IStructuredSelection)) {
-            return super.isEnabled();
+            return true;
         }
 
         Object element = ((IStructuredSelection) selection).getFirstElement();

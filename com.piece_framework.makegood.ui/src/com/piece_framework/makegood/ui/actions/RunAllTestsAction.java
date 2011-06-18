@@ -17,7 +17,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IViewActionDelegate;
 import org.eclipse.ui.IViewPart;
 
-import com.piece_framework.makegood.ui.launch.TestRunner;
+import com.piece_framework.makegood.ui.MakeGoodContext;
 
 public class RunAllTestsAction implements IViewActionDelegate {
     public static final String ACTION_ID = "com.piece_framework.makegood.ui.viewActions.runAllTestsAction"; //$NON-NLS-1$
@@ -28,7 +28,7 @@ public class RunAllTestsAction implements IViewActionDelegate {
 
     @Override
     public void run(IAction action) {
-        TestRunner.getInstance().runAllTests();
+        MakeGoodContext.getInstance().getTestRunner().runAllTests();
     }
 
     @Override

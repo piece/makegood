@@ -12,6 +12,7 @@
 
 package com.piece_framework.makegood.ui;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.IResourceDelta;
@@ -21,26 +22,23 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.IWorkbenchListener;
 import org.eclipse.ui.progress.UIJob;
 
 import com.piece_framework.makegood.core.AutotestScope;
 import com.piece_framework.makegood.launch.RuntimeConfiguration;
-import com.piece_framework.makegood.ui.launch.TestRunner;
-import com.piece_framework.makegood.ui.views.ActivePart;
 
-public class AutotestResourceChangeListener implements IResourceChangeListener, IWorkbenchListener {
-    private boolean isShuttingDown = false;
-
+public class Autotest implements IResourceChangeListener {
     @Override
     public void resourceChanged(IResourceChangeEvent event) {
-        if (isShuttingDown) return;
+        if (MakeGoodContext.getInstance().isShuttingDown()) return;
         if (!RuntimeConfiguration.getInstance().enablesAutotest()) return;
         IResourceDelta delta = event.getDelta();
         if (delta == null) return;
         IResourceDelta[] deltas = delta.getAffectedChildren();
         if (deltas.length == 0) return;
+        IProject project = deltas[0].getResource().getProject();
+        if (project == null) return;
+        if (!MakeGoodContext.getInstance().getProjectValidation().validate(project)) return;
         if (!shouldRunTests(deltas)) return;
 
         AutotestScope autotestScope = RuntimeConfiguration.getInstance().getAutotestScope();
@@ -50,18 +48,18 @@ public class AutotestResourceChangeListener implements IResourceChangeListener, 
                 Job job = new UIJob("MakeGood Run All Tests By Autotest") { //$NON-NLS-1$
                     @Override
                     public IStatus runInUIThread(IProgressMonitor monitor) {
-                        TestRunner.getInstance().runAllTestsByAutotest(selection);
+                        MakeGoodContext.getInstance().getTestRunner().runAllTestsByAutotest(selection);
                         return Status.OK_STATUS;
                     }
                 };
                 job.schedule();
             }
         } else if (autotestScope == AutotestScope.LAST_TEST) {
-            if (TestRunner.getInstance().hasLastTest()) {
+            if (MakeGoodContext.getInstance().getTestRunner().hasLastTest()) {
                 Job job = new UIJob("MakeGood Run Last Test By Autotest") { //$NON-NLS-1$
                     @Override
                     public IStatus runInUIThread(IProgressMonitor monitor) {
-                        TestRunner.getInstance().rerunLastTestByAutotest();
+                        MakeGoodContext.getInstance().getTestRunner().rerunLastTestByAutotest();
                         return Status.OK_STATUS;
                     }
                 };
@@ -84,21 +82,5 @@ public class AutotestResourceChangeListener implements IResourceChangeListener, 
         }
 
         return false;
-    }
-
-    /**
-     * @since 1.5.0
-     */
-    @Override
-    public boolean preShutdown(IWorkbench workbench, boolean forced) {
-        isShuttingDown = true;
-        return true;
-    }
-
-    /**
-     * @since 1.5.0
-     */
-    @Override
-    public void postShutdown(IWorkbench workbench) {
     }
 }

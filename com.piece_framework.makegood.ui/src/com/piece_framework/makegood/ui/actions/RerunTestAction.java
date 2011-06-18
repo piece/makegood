@@ -17,7 +17,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IViewActionDelegate;
 import org.eclipse.ui.IViewPart;
 
-import com.piece_framework.makegood.ui.launch.TestRunner;
+import com.piece_framework.makegood.ui.MakeGoodContext;
 
 public class RerunTestAction implements IViewActionDelegate {
     public static final String ACTION_ID = "com.piece_framework.makegood.ui.viewActions.rerunTestAction"; //$NON-NLS-1$
@@ -28,8 +28,8 @@ public class RerunTestAction implements IViewActionDelegate {
 
     @Override
     public void run(IAction action) {
-        if (TestRunner.getInstance().hasLastTest()) {
-            TestRunner.getInstance().rerunLastTest();
+        if (MakeGoodContext.getInstance().getTestRunner().hasLastTest()) {
+            MakeGoodContext.getInstance().getTestRunner().rerunLastTest();
         }
     }
 

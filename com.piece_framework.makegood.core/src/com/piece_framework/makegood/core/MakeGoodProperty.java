@@ -42,13 +42,20 @@ public class MakeGoodProperty {
 
     public MakeGoodProperty(IResource resource) {
         Assert.isNotNull(resource, "The given resource should not be null."); //$NON-NLS-1$
-
         project = resource.getProject();
-        preferences = new ProjectScope(project).getNode(Activator.PLUGIN_ID);
+        preferences = createPreferences(project);
     }
 
     public MakeGoodProperty(String path) {
         this(ResourcesPlugin.getWorkspace().getRoot());
+    }
+
+    /**
+     * @since 1.6.0
+     */
+    public MakeGoodProperty(IProject project) {
+        this.project = project;
+        preferences = createPreferences(project);
     }
 
     public String getPreloadScript() {
@@ -61,10 +68,6 @@ public class MakeGoodProperty {
 
     public boolean exists() {
         return preferences.get(PRELOAD_SCRIPT_KEY, null) != null;
-    }
-
-    public IProject getProject() {
-        return project;
     }
 
     public void setTestingFramework(TestingFramework testingFramework) {
@@ -170,5 +173,12 @@ public class MakeGoodProperty {
      */
     public void setCIUnitConfigFile(String ciunitConfigFile) {
         preferences.put(CIUNIT_CONFIG_FILE, ciunitConfigFile);
+    }
+
+    /**
+     * @since 1.6.0
+     */
+    private IEclipsePreferences createPreferences(IProject project) {
+        return new ProjectScope(project).getNode(Activator.PLUGIN_ID);
     }
 }

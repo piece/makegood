@@ -44,7 +44,7 @@ public class AspectWeaver implements IStartup {
         weave();
     }
 
-    void weave() {
+    public void weave() {
         synchronized (processLock) {
             if (isFinished) return;
             for (AspectManifest manifest: getManifests()) {

@@ -21,11 +21,14 @@ import java.util.regex.Pattern;
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ProjectScope;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IToolBarManager;
@@ -59,9 +62,13 @@ import org.eclipse.ui.IPartListener2;
 import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchPartReference;
+import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.contexts.IContextService;
+import org.eclipse.ui.dialogs.PreferencesUtil;
 import org.eclipse.ui.part.ViewPart;
+import org.eclipse.ui.progress.UIJob;
 
 import com.piece_framework.makegood.core.AutotestScope;
 import com.piece_framework.makegood.core.result.Result;
@@ -72,6 +79,9 @@ import com.piece_framework.makegood.launch.MakeGoodLaunch;
 import com.piece_framework.makegood.launch.RuntimeConfiguration;
 import com.piece_framework.makegood.launch.TestLifecycle;
 import com.piece_framework.makegood.ui.Activator;
+import com.piece_framework.makegood.ui.MakeGoodContext;
+import com.piece_framework.makegood.ui.MakeGoodStatus;
+import com.piece_framework.makegood.ui.MakeGoodStatusChangeListener;
 import com.piece_framework.makegood.ui.Messages;
 import com.piece_framework.makegood.ui.actions.DebugTestAction;
 import com.piece_framework.makegood.ui.actions.NextFailureAction;
@@ -83,7 +93,6 @@ import com.piece_framework.makegood.ui.actions.RunLastTestWhenFileIsSavedAction;
 import com.piece_framework.makegood.ui.actions.ShowOnlyFailuresAction;
 import com.piece_framework.makegood.ui.actions.StopOnFailureAction;
 import com.piece_framework.makegood.ui.actions.StopTestAction;
-import com.piece_framework.makegood.ui.launch.TestRunner;
 import com.piece_framework.makegood.ui.widgets.ActiveText;
 import com.piece_framework.makegood.ui.widgets.ActiveTextListener;
 import com.piece_framework.makegood.ui.widgets.ExternalFileWithLineRange;
@@ -128,6 +137,11 @@ public class ResultView extends ViewPart {
      * @since 1.3.0
      */
     private TestLifecycle testLifecycle;
+
+    /**
+     * @since 1.6.0
+     */
+    private StatusArea statusArea;
 
     @Override
     public void createPartControl(final Composite parent) {
@@ -185,6 +199,8 @@ public class ResultView extends ViewPart {
                      Activator.getImageDescriptor("icons/error-gray.gif").createImage() //$NON-NLS-1$
                  );
 
+        statusArea = createStatusArea(row2);
+
         SashForm row3 = new SashForm(parent, SWT.NONE);
         row3.setLayoutData(createBothFillGridData());
         row3.setLayout(adjustLayout(new GridLayout(2, true)));
@@ -237,11 +253,14 @@ public class ResultView extends ViewPart {
         site.getPage().addPartListener(partListener);
         initializeActions(site);
 
+        MakeGoodContext.getInstance().addStatusChangeListener(statusArea);
+
         clear();
     }
 
     @Override
-    public void setFocus() {}
+    public void setFocus() {
+    }
 
     private void clear() {
         progressBar.clear();
@@ -265,19 +284,6 @@ public class ResultView extends ViewPart {
         failureCount.clear();
         errorCount.clear();
         resultTreeViewer.setInput(null);
-    }
-
-    public void updateCommandAvailabilityWithCurrentContext() {
-        if (!actionsInitialized) return;
-        if (TestLifecycle.isRunning()) return;
-
-        runAllTestsAction.setEnabled(ActivePart.getInstance().isAllTestsRunnable());
-        rerunTestAction.setEnabled(TestRunner.hasLastTest());
-
-        IProject activeProject = ActivePart.getInstance().getProject();
-        if (activeProject != null) {
-            setContentDescription(activeProject.getName());
-        }
     }
 
     private GridData createHorizontalFillGridData() {
@@ -305,6 +311,18 @@ public class ResultView extends ViewPart {
         return failureTrace;
     }
 
+    /**
+     * @since 1.6.0
+     */
+    private StatusArea createStatusArea(Composite parent) {
+        StatusArea statusArea = new StatusArea(parent, SWT.NONE);
+        statusArea.setLayoutData(createHorizontalFillGridData());
+        statusArea.setLayout(new FillLayout(SWT.HORIZONTAL));
+        statusArea.setBackground(parent.getBackground());
+        statusArea.addListener(new PreferencesOpenActiveTextListener());
+        return statusArea;
+    }
+
     public void moveToNextFailure() {
         moveToPreviousOrNextFailure(Failures.FIND_NEXT);
     }
@@ -315,6 +333,8 @@ public class ResultView extends ViewPart {
 
     @Override
     public void dispose() {
+        MakeGoodContext.getInstance().removeStatusChangeListener(statusArea);
+
         IViewSite site = getViewSite();
         if (site != null) {
             site.getPage().removePartListener(partListener);
@@ -362,11 +382,7 @@ public class ResultView extends ViewPart {
         elapsedTimer = new ElapsedTimer(200);
         elapsedTimer.schedule();
 
-        previousFailureAction.setEnabled(false);
-        nextFailureAction.setEnabled(false);
-        stopTestAction.setEnabled(true);
-        rerunTestAction.setEnabled(false);
-        runAllTestsAction.setEnabled(false);
+        MakeGoodContext.getInstance().updateStatus(MakeGoodStatus.RunningTest);
     }
 
     void endTest() {
@@ -382,10 +398,7 @@ public class ResultView extends ViewPart {
             }
         }
 
-        stopTestAction.setEnabled(false);
-        rerunTestAction.setEnabled(TestRunner.getInstance().hasLastTest());
-        ActivePart.getInstance().update();
-        runAllTestsAction.setEnabled(ActivePart.getInstance().isAllTestsRunnable());
+        MakeGoodContext.getInstance().updateStatus(MakeGoodStatus.WaitingForTestRun);
     }
 
     /**
@@ -489,14 +502,14 @@ public class ResultView extends ViewPart {
             (ActionContributionItem) manager.find(RerunTestAction.ACTION_ID);
         if (rerunTestItem != null) {
             rerunTestAction = rerunTestItem.getAction();
-            rerunTestAction.setEnabled(TestRunner.getInstance().hasLastTest());
+            rerunTestAction.setEnabled(MakeGoodContext.getInstance().getTestRunner().hasLastTest());
         }
 
         ActionContributionItem runAllTestsItem =
             (ActionContributionItem) manager.find(RunAllTestsAction.ACTION_ID);
         if (runAllTestsItem != null) {
             runAllTestsAction = runAllTestsItem.getAction();
-            runAllTestsAction.setEnabled(ActivePart.getInstance().isAllTestsRunnable());
+            runAllTestsAction.setEnabled(MakeGoodContext.getInstance().getActivePart().isAllTestsRunnable());
         }
     }
 
@@ -707,14 +720,217 @@ public class ResultView extends ViewPart {
         }
     }
 
+    /**
+     * @since 1.6.0
+     */
+    private class StatusArea extends ActiveText implements MakeGoodStatusChangeListener {
+        private MakeGoodStatus status;
+
+        public StatusArea(Composite parent, int style) {
+            super(parent, style);
+        }
+
+        @Override
+        public void statusChanged(MakeGoodStatus status) {
+            this.status = status;
+            final IProject project = this.status.getProject();
+            if (project != null) {
+                new UIJob("MakeGood Status Update") { //$NON-NLS-1$
+                    @Override
+                    public IStatus runInUIThread(IProgressMonitor monitor) {
+                        if (isDisposed()) return Status.OK_STATUS;;
+                        setContentDescription(project.getName());
+                        return Status.OK_STATUS;
+                    }
+                }.schedule();
+            }
+
+            switch (status) {
+            case NoTestableProjectSelected:
+                new UIJob("MakeGood Status Update") { //$NON-NLS-1$
+                    @Override
+                    public IStatus runInUIThread(IProgressMonitor monitor) {
+                        if (isDisposed()) return Status.OK_STATUS;;
+                        if (actionsInitialized) {
+                            runAllTestsAction.setEnabled(false);
+                            rerunTestAction.setEnabled(false);
+                        }
+                        setForeground(new Color(statusArea.getDisplay(), 209, 19, 24));
+                        setText(Messages.TestResultView_Status_NoTestableProjectSelected);
+                        return Status.OK_STATUS;
+                    }
+                }.schedule();
+                break;
+            case NoPHPExecutablesDefined:
+                new UIJob("MakeGood Status Update") { //$NON-NLS-1$
+                    @Override
+                    public IStatus runInUIThread(IProgressMonitor monitor) {
+                        if (isDisposed()) return Status.OK_STATUS;;
+                        if (actionsInitialized) {
+                            runAllTestsAction.setEnabled(false);
+                            rerunTestAction.setEnabled(false);
+                        }
+                        setForeground(new Color(getDisplay(), 209, 19, 24));
+                        setText(Messages.TestResultView_Status_NoPHPExecutablesDefined);
+                        return Status.OK_STATUS;
+                    }
+                }.schedule();
+                break;
+            case SAPINotCLI:
+                new UIJob("MakeGood Status Update") { //$NON-NLS-1$
+                    @Override
+                    public IStatus runInUIThread(IProgressMonitor monitor) {
+                        if (isDisposed()) return Status.OK_STATUS;;
+                        if (actionsInitialized) {
+                            runAllTestsAction.setEnabled(false);
+                            rerunTestAction.setEnabled(false);
+                        }
+                        setForeground(new Color(getDisplay(), 209, 19, 24));
+                        setText(Messages.TestResultView_Status_SAPINotCLI);
+                        return Status.OK_STATUS;
+                    }
+                }.schedule();
+                break;
+            case MakeGoodNotConfigured:
+                new UIJob("MakeGood Status Update") { //$NON-NLS-1$
+                    @Override
+                    public IStatus runInUIThread(IProgressMonitor monitor) {
+                        if (isDisposed()) return Status.OK_STATUS;;
+                        if (actionsInitialized) {
+                            runAllTestsAction.setEnabled(false);
+                            rerunTestAction.setEnabled(false);
+                        }
+                        setForeground(new Color(getDisplay(), 209, 19, 24));
+                        setText(Messages.TestResultView_Status_MakeGoodNotConfigured);
+                        return Status.OK_STATUS;
+                    }
+                }.schedule();
+                break;
+            case TestingFrameworkNotAvailable:
+                new UIJob("MakeGood Status Update") { //$NON-NLS-1$
+                    @Override
+                    public IStatus runInUIThread(IProgressMonitor monitor) {
+                        if (isDisposed()) return Status.OK_STATUS;;
+                        if (actionsInitialized) {
+                            runAllTestsAction.setEnabled(false);
+                            rerunTestAction.setEnabled(false);
+                        }
+                        setForeground(new Color(getDisplay(), 209, 19, 24));
+                        setText(Messages.TestResultView_Status_TestingFrameworkNotAvailable);
+                        return Status.OK_STATUS;
+                    }
+                }.schedule();
+                break;
+            case RunningTest:
+                new UIJob("MakeGood Status Update") { //$NON-NLS-1$
+                    @Override
+                    public IStatus runInUIThread(IProgressMonitor monitor) {
+                        if (isDisposed()) return Status.OK_STATUS;;
+                        if (actionsInitialized) {
+                            runAllTestsAction.setEnabled(false);
+                            rerunTestAction.setEnabled(false);
+                            stopTestAction.setEnabled(true);
+                            previousFailureAction.setEnabled(false);
+                            nextFailureAction.setEnabled(false);
+                        }
+                        setForeground(statusArea.getParent().getForeground());
+                        setText(Messages.TestResultView_Status_RunningTest);
+                        return Status.OK_STATUS;
+                    }
+                }.schedule();
+                break;
+            case WaitingForTestRun:
+                new UIJob("MakeGood Status Update") { //$NON-NLS-1$
+                    @Override
+                    public IStatus runInUIThread(IProgressMonitor monitor) {
+                        if (isDisposed()) return Status.OK_STATUS;;
+                        if (actionsInitialized) {
+                            runAllTestsAction.setEnabled(MakeGoodContext.getInstance().getActivePart().isAllTestsRunnable());
+                            rerunTestAction.setEnabled(MakeGoodContext.getInstance().getTestRunner().hasLastTest());
+                            stopTestAction.setEnabled(false);
+                        }
+                        setForeground(statusArea.getParent().getForeground());
+                        setText(Messages.TestResultView_Status_WaitingForTestRun);
+                        return Status.OK_STATUS;
+                    }
+                }.schedule();
+                break;
+            }
+        }
+
+        @Override
+        public void mouseDoubleClick(MouseEvent e) {
+        }
+
+        @Override
+        public void mouseDown(MouseEvent e) {
+            if (status == null) return;
+            IProject project = status.getProject();
+            if (project == null) return;
+            if (!project.exists()) return;
+            StyleRange style = findStyle(new Point(e.x, e.y));
+            if (style == null) return;
+            IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+            if (window == null) return;
+            IEclipsePreferences node = new ProjectScope(project).getNode("org.eclipse.php.debug.core.Debug_Process_Preferences"); //$NON-NLS-1$
+            if (node == null) return;
+
+            switch (status) {
+            case NoPHPExecutablesDefined:
+            case SAPINotCLI:
+                if (!node.getBoolean("org.eclipse.php.debug.core.use-project-settings", false)) { //$NON-NLS-1$
+                    PreferencesUtil.createPreferenceDialogOn(
+                        window.getShell(),
+                        "org.eclipse.php.debug.ui.preferences.PhpDebugPreferencePage", //$NON-NLS-1$
+                        null,
+                        null
+                    ).open();
+                } else {
+                    PreferencesUtil.createPropertyDialogOn(
+                        window.getShell(),
+                        project,
+                        "org.eclipse.php.debug.ui.property.PhpDebugPreferencePage", //$NON-NLS-1$
+                        null,
+                        null
+                    ).open();
+                }
+                break;
+            case MakeGoodNotConfigured:
+            case TestingFrameworkNotAvailable:
+                PreferencesUtil.createPropertyDialogOn(
+                    window.getShell(),
+                    project,
+                    "com.piece_framework.makegood.ui.propertyPages.makeGood", //$NON-NLS-1$
+                    null,
+                    null
+                ).open();
+                break;
+            }
+        }
+
+        @Override
+        public void mouseUp(MouseEvent e) {
+        }
+
+        @Override
+        public void mouseMove(MouseEvent e) {
+            StyleRange style = findStyle(new Point(e.x, e.y));
+            if (style == null) {
+                setCursor(arrowCursor);
+            } else {
+                setCursor(handCursor);
+            }
+        }
+    }
+
     private class ResultViewPartListener implements IPartListener2 {
         @Override
         public void partActivated(IWorkbenchPartReference partRef) {
             if (!VIEW_ID.equals(partRef.getId())) {
                 IWorkbenchPart activePart = partRef.getPage().getActivePart();
                 if (activePart != null) {
-                    ActivePart.getInstance().update(activePart);
-                    updateCommandAvailabilityWithCurrentContext();
+                    MakeGoodContext.getInstance().getActivePart().update(activePart);
+                    MakeGoodContext.getInstance().updateStatus();
                 }
 
                 return;
@@ -880,6 +1096,29 @@ public class ResultView extends ViewPart {
                 style.line = Integer.valueOf(matcher.group(2));
 
                 this.text.addStyle(style);
+            }
+        }
+    }
+
+    /**
+     * @since 1.6.0
+     */
+    private class PreferencesOpenActiveTextListener extends ActiveTextListener {
+        public PreferencesOpenActiveTextListener() {
+            super(Pattern.compile("(?:<a>)(.+?)(?:</a>)")); //$NON-NLS-1$
+        }
+
+        @Override
+        public void generateActiveText() {
+            Matcher matcher = pattern.matcher(text.getText());
+
+            while (matcher.find()) {
+                StyleRange style = new StyleRange();
+                style.underline = true;
+                style.start = matcher.start();
+                style.length = matcher.group(1).length();
+                text.replaceText(matcher.replaceFirst(matcher.group(1)));
+                text.addStyle(style);
             }
         }
     }

@@ -38,11 +38,11 @@ import com.piece_framework.makegood.launch.MakeGoodLaunch;
 import com.piece_framework.makegood.launch.TestLifecycle;
 import com.piece_framework.makegood.launch.TestingTargets;
 import com.piece_framework.makegood.ui.Activator;
+import com.piece_framework.makegood.ui.MakeGoodContext;
 import com.piece_framework.makegood.ui.actions.StopTestAction;
-import com.piece_framework.makegood.ui.launch.TestRunner;
 import com.piece_framework.makegood.ui.markers.FatalErrorMarkerFactory;
-import com.piece_framework.makegood.ui.markers.UnknownFatalErrorMessageException;
 import com.piece_framework.makegood.ui.markers.TestMarkerFactory;
+import com.piece_framework.makegood.ui.markers.UnknownFatalErrorMessageException;
 import com.piece_framework.makegood.ui.widgets.ResultSquare;
 
 public class ResultViewController implements IDebugEventSetListener {
@@ -94,7 +94,7 @@ public class ResultViewController implements IDebugEventSetListener {
             @Override
             public IStatus runInUIThread(IProgressMonitor monitor) {
                 ResultView resultView = (ResultView) ViewOpener.show(ResultView.VIEW_ID);
-                TestRunner.getInstance().restoreFocusToLastActivePart();
+                MakeGoodContext.getInstance().getTestRunner().restoreFocusToLastActivePart();
                 if (resultView != null) {
                     resultView.startTest(testLifecycle);
                 }

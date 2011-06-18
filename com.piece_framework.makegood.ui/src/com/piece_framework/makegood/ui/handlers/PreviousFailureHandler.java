@@ -11,11 +11,9 @@
 
 package com.piece_framework.makegood.ui.handlers;
 
-import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 
-import com.piece_framework.makegood.aspect.AspectWeaver;
 import com.piece_framework.makegood.ui.views.ResultView;
 import com.piece_framework.makegood.ui.views.ViewOpener;
 
@@ -31,7 +29,7 @@ public class PreviousFailureHandler extends AbstractHandler {
 
     @Override
     public boolean isEnabled() {
-        if (!AspectWeaver.isFinished()) return false;
+        if (!super.isEnabled()) return false;
         ResultView view = (ResultView) ViewOpener.find(ResultView.VIEW_ID);
         if (view == null) return false;
         return view.hasFailures();

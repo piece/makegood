@@ -10,10 +10,11 @@
  * distribution, and is available at http://www.eclipse.org/legal/epl-v10.html
  */
 
-package com.piece_framework.makegood.ui.views;
+package com.piece_framework.makegood.ui;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ProjectScope;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -35,22 +36,10 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.console.IConsoleConstants;
 
 import com.piece_framework.makegood.core.MakeGoodProperty;
-import com.piece_framework.makegood.ui.Activator;
+import com.piece_framework.makegood.ui.views.ResultView;
 
 public class ActivePart {
-    private static ActivePart soleInstance;
     private Object entity;
-
-    private ActivePart() {
-    }
-
-    public static ActivePart getInstance() {
-        if (soleInstance == null) {
-            soleInstance = new ActivePart();
-        }
-
-        return soleInstance;
-    }
 
     public void update(IWorkbenchPart part) {
         String id = part.getSite().getId();
@@ -173,5 +162,9 @@ public class ActivePart {
      */
     private void updateLink(Object entity) {
         this.entity = entity;
+        IProject project = getProject(this.entity);
+        if (project != null) {
+            MakeGoodContext.getInstance().getStatusMonitor().addPreferenceChangeListener(new ProjectScope(project));
+        }
     }
 }

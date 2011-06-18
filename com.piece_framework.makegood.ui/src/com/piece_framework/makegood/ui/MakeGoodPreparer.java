@@ -13,9 +13,8 @@
 package com.piece_framework.makegood.ui;
 
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.debug.core.DebugPlugin;
-import org.eclipse.jface.viewers.ISelectionChangedListener;
-import org.eclipse.ui.IPartListener2;
 import org.eclipse.ui.IStartup;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
@@ -25,7 +24,7 @@ import org.eclipse.ui.texteditor.AbstractTextEditor;
 
 import com.piece_framework.makegood.ui.views.ResultViewController;
 
-public class ListenerPreparer implements IStartup {
+public class MakeGoodPreparer implements IStartup {
     @Override
     public void earlyStartup() {
         prepare();
@@ -35,21 +34,19 @@ public class ListenerPreparer implements IStartup {
      * @since 1.6.0
      */
     private void prepare() {
-        ISelectionChangedListener selectionChangedListener = new ContextStatusUpdaterSelectionChangedListener();
-        IPartListener2 partListener = new ContextStatusUpdaterPartListener(selectionChangedListener);
+        MakeGoodContext.getInstance().getStatusMonitor().addPreferenceChangeListener(new InstanceScope());
         for (IWorkbenchWindow window: PlatformUI.getWorkbench().getWorkbenchWindows()) {
             for (IWorkbenchPage page: window.getPages()) {
-                page.addPartListener(partListener);
+                page.addPartListener(MakeGoodContext.getInstance().getStatusMonitor());
                 IWorkbenchPart activePart = page.getActivePart();
                 if (activePart != null && !(activePart instanceof AbstractTextEditor)) {
-                    ((ContextStatusUpdaterSelectionChangedListener) selectionChangedListener).addListener(activePart);
+                    MakeGoodContext.getInstance().getStatusMonitor().addSelectionChangedListener(activePart);
                 }
             }
         };
 
         DebugPlugin.getDefault().addDebugEventListener(new ResultViewController());
-        AutotestResourceChangeListener autotestResourceChangeListener = new AutotestResourceChangeListener();
-        PlatformUI.getWorkbench().addWorkbenchListener(autotestResourceChangeListener);
-        ResourcesPlugin.getWorkspace().addResourceChangeListener(autotestResourceChangeListener);
+        PlatformUI.getWorkbench().addWorkbenchListener(MakeGoodContext.getInstance());
+        ResourcesPlugin.getWorkspace().addResourceChangeListener(new Autotest());
     }
 }

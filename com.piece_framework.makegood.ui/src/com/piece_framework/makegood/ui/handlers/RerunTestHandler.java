@@ -12,23 +12,22 @@
 
 package com.piece_framework.makegood.ui.handlers;
 
-import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.resources.IProject;
 
-import com.piece_framework.makegood.aspect.AspectWeaver;
-import com.piece_framework.makegood.ui.launch.TestRunner;
+import com.piece_framework.makegood.launch.TestingTargets;
 
-public class RerunTestHandler extends AbstractHandler {
+public class RerunTestHandler extends RunHandler {
     @Override
     public Object execute(ExecutionEvent event) throws ExecutionException {
-        TestRunner.getInstance().rerunLastTest();
+        getTestRunner().rerunLastTest();
         return null;
     }
 
     @Override
-    public boolean isEnabled() {
-        if (!AspectWeaver.isFinished()) return false;
-        return TestRunner.getInstance().hasLastTest();
+    protected IProject getProject() {
+        if (!getTestRunner().hasLastTest()) return null;
+        return TestingTargets.getInstance().getProject();
     }
 }
