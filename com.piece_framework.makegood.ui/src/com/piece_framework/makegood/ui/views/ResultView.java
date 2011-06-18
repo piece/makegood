@@ -43,8 +43,11 @@ import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.custom.StyleRange;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -91,7 +94,6 @@ import com.piece_framework.makegood.ui.widgets.ProgressBar;
 public class ResultView extends ViewPart {
     public static final String VIEW_ID = "com.piece_framework.makegood.ui.views.resultView"; //$NON-NLS-1$
     private static final String CONTEXT_ID = "com.piece_framework.makegood.ui.contexts.resultView"; //$NON-NLS-1$
-    private static final Pattern STACK_TRACE_LINE_PATTERN = Pattern.compile("^((?:/|[A-Z]:).+):(\\d+)$", Pattern.MULTILINE); //$NON-NLS-1$
 
     private ProgressBar progressBar;
     private CLabel testCount;
@@ -299,7 +301,7 @@ public class ResultView extends ViewPart {
             new FailureTrace(parent, SWT.MULTI | SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
         failureTrace.setLayoutData(new GridData(GridData.FILL_BOTH));
         failureTrace.setEditable(false);
-        failureTrace.addListener(new EditorOpenActiveTextListener(STACK_TRACE_LINE_PATTERN));
+        failureTrace.addListener(new EditorOpenActiveTextListener());
         return failureTrace;
     }
 
@@ -628,8 +630,9 @@ public class ResultView extends ViewPart {
             super(parent, style);
         }
 
+        @Override
         public void clearText() {
-            setText(""); //$NON-NLS-1$
+            super.clearText();
             hideScrollBar();
         }
 
@@ -638,7 +641,68 @@ public class ResultView extends ViewPart {
          */
         @Override
         public void setText(String text) {
-            super.setText(text.trim());
+            super.setText(text);
+            showScrollBar();
+        }
+
+        /**
+         * @since 1.6.0
+         */
+        private void showScrollBar() {
+            getVerticalBar().setVisible(true);
+            getHorizontalBar().setVisible(true);
+        }
+
+        /**
+         * @since 1.6.0
+         */
+        private void hideScrollBar() {
+            getVerticalBar().setVisible(false);
+            getHorizontalBar().setVisible(false);
+        }
+
+        /**
+         * @since 1.6.0
+         */
+        @Override
+        public void mouseDoubleClick(MouseEvent e) {
+        }
+
+        /**
+         * @since 1.6.0
+         */
+        @Override
+        public void mouseDown(MouseEvent e) {
+            StyleRange style = findStyle(new Point(e.x, e.y));
+            if (style == null) return;
+            if (!(style instanceof FileWithLineRange)) return;
+            ((FileWithLineRange) style).openEditor();
+        }
+
+        /**
+         * @since 1.6.0
+         */
+        @Override
+        public void mouseUp(MouseEvent e) {
+        }
+
+        /**
+         * @since 1.6.0
+         */
+        @Override
+        public void mouseMove(MouseEvent e) {
+            StyleRange style = findStyle(new Point(e.x, e.y));
+            if (style == null) {
+                setCursor(arrowCursor);
+                return;
+            }
+
+            if (style instanceof FileWithLineRange) {
+                setCursor(handCursor);
+                return;
+            }
+
+            setCursor(arrowCursor);
         }
     }
 
@@ -783,8 +847,8 @@ public class ResultView extends ViewPart {
     }
 
     private class EditorOpenActiveTextListener extends ActiveTextListener {
-        public EditorOpenActiveTextListener(Pattern pattern) {
-            super(pattern);
+        public EditorOpenActiveTextListener() {
+            super(Pattern.compile("^((?:/|[A-Z]:).+):(\\d+)$", Pattern.MULTILINE));
         }
 
         @Override

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2010-2011 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -17,7 +17,6 @@ import java.util.List;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.custom.StyledText;
-import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.graphics.Cursor;
@@ -25,9 +24,9 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 
 
-public class ActiveText extends StyledText implements MouseListener, MouseMoveListener {
-    private Cursor handCursor;
-    private Cursor arrowCursor;
+public abstract class ActiveText extends StyledText implements MouseListener, MouseMoveListener {
+    protected Cursor handCursor;
+    protected Cursor arrowCursor;
     private List<StyleRange> styles;
     private List<ActiveTextListener> listeners = new ArrayList<ActiveTextListener>();
 
@@ -40,49 +39,16 @@ public class ActiveText extends StyledText implements MouseListener, MouseMoveLi
         arrowCursor = new Cursor(parent.getDisplay(), SWT.CURSOR_ARROW);
 
         initializeStyles();
-        hideScrollBar();
-    }
-
-    @Override
-    public void mouseDoubleClick(MouseEvent e) {}
-
-    @Override
-    public void mouseDown(MouseEvent e) {
-        StyleRange style = findStyle(new Point(e.x, e.y));
-        if (style == null) return;
-        if (!(style instanceof FileWithLineRange)) return;
-        ((FileWithLineRange) style).openEditor();
-    }
-
-    @Override
-    public void mouseUp(MouseEvent e) {}
-
-    @Override
-    public void mouseMove(MouseEvent e) {
-        StyleRange style = findStyle(new Point(e.x, e.y));
-        if (style == null) {
-            setCursor(arrowCursor);
-            return;
-        }
-
-        if (style instanceof FileWithLineRange) {
-            setCursor(handCursor);
-            return;
-        }
-
-        setCursor(arrowCursor);
     }
 
     @Override
     public void setText(String text) {
         initializeStyles();
-        super.setText(text);
+        super.setText(text.trim());
 
         for (ActiveTextListener listener: listeners) {
             listener.generateActiveText();
         }
-
-        showScrollBar();
     }
 
     public void addListener(ActiveTextListener listener) {
@@ -95,17 +61,14 @@ public class ActiveText extends StyledText implements MouseListener, MouseMoveLi
         setStyleRange(style);
     }
 
-    void showScrollBar() {
-        getVerticalBar().setVisible(true);
-        getHorizontalBar().setVisible(true);
+    /**
+     * @since 1.6.0
+     */
+    public void clearText() {
+        setText(""); //$NON-NLS-1$
     }
 
-    protected void hideScrollBar() {
-        getVerticalBar().setVisible(false);
-        getHorizontalBar().setVisible(false);
-    }
-
-    private StyleRange findStyle(Point point) {
+    protected StyleRange findStyle(Point point) {
         int offset;
 
         try {
