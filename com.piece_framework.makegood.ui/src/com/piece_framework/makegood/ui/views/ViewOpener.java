@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2010-2011 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -42,14 +42,6 @@ public class ViewOpener {
         IWorkbenchPage page = window.getActivePage();
         if (page == null) return;
         page.activate(part);
-    }
-
-    public static IWorkbenchPart getActivePart() {
-        IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-        if (window == null) return null;
-        IWorkbenchPage page = window.getActivePage();
-        if (page == null) return null;
-        return page.getActivePart();
     }
 
     public static IViewPart find(String viewId) {

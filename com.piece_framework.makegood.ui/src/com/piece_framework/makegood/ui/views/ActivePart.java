@@ -79,11 +79,10 @@ public class ActivePart {
     }
 
     public void update() {
-        IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-        if (window == null) return;
-        IWorkbenchPage page = window.getActivePage();
-        if (page == null) return;
-        update(page.getActivePart());
+        IWorkbenchPart activePart = getActivePart();
+        if (activePart != null) {
+            update(activePart);
+        }
     }
 
     public static boolean isAllTestsRunnable(Object target) {
@@ -131,6 +130,17 @@ public class ActivePart {
 
     public IProject getProject() {
         return getProject(entity);
+    }
+
+    /**
+     * @since 1.6.0
+     */
+    public static IWorkbenchPart getActivePart() {
+        IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+        if (window == null) return null;
+        IWorkbenchPage page = window.getActivePage();
+        if (page == null) return null;
+        return page.getActivePart();
     }
 
     /**

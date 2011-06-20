@@ -148,7 +148,7 @@ public class TestRunner {
                 lastTestingTarget = testingTarget;
             }
 
-            lastActivePart = ViewOpener.getActivePart();
+            lastActivePart = ActivePart.getActivePart();
         }
 
         String launchMode = RuntimeConfiguration.getInstance().getLaunchMode();
