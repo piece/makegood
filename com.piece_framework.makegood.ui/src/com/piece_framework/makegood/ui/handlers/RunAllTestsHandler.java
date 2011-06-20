@@ -23,7 +23,7 @@ import com.piece_framework.makegood.ui.views.ActivePart;
 public class RunAllTestsHandler extends AbstractHandler {
     @Override
     public Object execute(ExecutionEvent event) throws ExecutionException {
-        TestRunner.runAllTests();
+        TestRunner.getInstance().runAllTests();
         return null;
     }
 

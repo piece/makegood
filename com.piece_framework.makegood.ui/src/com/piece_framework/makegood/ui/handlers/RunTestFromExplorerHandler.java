@@ -42,7 +42,7 @@ public class RunTestFromExplorerHandler extends AbstractHandler {
             if (selection == null) return null;
         }
 
-        TestRunner.runTests(selection);
+        TestRunner.getInstance().runTestsFromExplorer(selection);
         return null;
     }
 

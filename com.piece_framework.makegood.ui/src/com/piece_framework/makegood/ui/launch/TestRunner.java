@@ -12,6 +12,7 @@
 
 package com.piece_framework.makegood.ui.launch;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.window.Window;
@@ -30,70 +31,100 @@ import com.piece_framework.makegood.ui.views.ActivePart;
 import com.piece_framework.makegood.ui.views.ViewOpener;
 
 public class TestRunner {
-    private static MakeGoodLaunchShortcut lastShortcut;
-    private static Object lastTestingTarget;
-    private static IWorkbenchPart lastActivePart;
+    /**
+     * @since 1.6.0
+     */
+    private static TestRunner soleInstance;
+
+    private MakeGoodLaunchShortcut lastShortcut;
+    private Object lastTestingTarget;
+    private IWorkbenchPart lastActivePart;
 
     /**
      * @since 1.4.0
      */
-    private static boolean isTestRunByAutotest = false;
+    private boolean isTestRunByAutotest = false;
 
-    public static void runRelatedTests(IEditorPart editorPart) {
+    /**
+     * @since 1.6.0
+     */
+    private PHPexeItemRepository phpexeItemRepository = new PHPexeItemRepository();
+
+    /**
+     * @since 1.6.0
+     */
+    private TestRunner() {
+    }
+
+    /**
+     * @since 1.6.0
+     */
+    public static TestRunner getInstance() {
+        if (soleInstance == null) {
+            soleInstance = new TestRunner();
+        }
+
+        return soleInstance;
+    }
+
+    public void runRelatedTests(IEditorPart editorPart) {
         runTests(editorPart, new RelatedTestsLaunchShortcut());
     }
 
-    public static void runTestsInContext(IEditorPart editorPart) {
+    public void runTestsInContext(IEditorPart editorPart) {
         runTests(editorPart, new ContextLaunchShortcut());
     }
 
-    public static void runTestsInClass(IEditorPart editorPart) {
+    public void runTestsInClass(IEditorPart editorPart) {
         runTests(editorPart, new ClassLaunchShortcut());
     }
 
-    public static void runTestsInFile(IEditorPart editorPart) {
+    public void runTestsInFile(IEditorPart editorPart) {
         runTests(editorPart, new FileLaunchShortcut());
     }
 
-    public static void runTests(ISelection selection) {
+    public void runTestsFromExplorer(ISelection selection) {
         runTests(selection, new ResourceLaunchShortcut());
     }
 
-    public static void runAllTestsByAutotest(ISelection selection) {
+    public void runAllTestsByAutotest(ISelection selection) {
         isTestRunByAutotest = true;
         runTests(selection, new AllTestsLaunchShortcut());
         isTestRunByAutotest = false;
     }
 
-    public static void runAllTests() {
+    public void runAllTests() {
         runTests(ActivePart.getInstance().getEntity(), new AllTestsLaunchShortcut());
     }
 
-    public static boolean hasLastTest() {
-        return lastTestingTarget != null
-            && TestingTargets.getInstance().getProject().equals(ActivePart.getInstance().getProject());
+    public boolean hasLastTest() {
+        if (lastTestingTarget == null) return false;
+        IProject lastTestingProject = TestingTargets.getInstance().getProject();
+        if (lastTestingProject == null) return false;
+        if (!lastTestingProject.equals(ActivePart.getInstance().getProject())) return false;
+        return true;
     }
 
-    public static void rerunLastTest() {
+    public void rerunLastTest() {
         runTests(lastTestingTarget, lastShortcut);
     }
 
     /**
      * @since 1.4.0
      */
-    public static void rerunLastTestByAutotest() {
+    public void rerunLastTestByAutotest() {
         isTestRunByAutotest = true;
         rerunLastTest();
         isTestRunByAutotest = false;
     }
 
-    public static void restoreFocusToLastActivePart() {
+    public void restoreFocusToLastActivePart() {
         if (lastActivePart != null) {
             ViewOpener.setFocus(lastActivePart);
         }
     }
 
-    private static void runTests(Object testingTarget, MakeGoodLaunchShortcut shortcut) {
+    private void runTests(Object testingTarget, MakeGoodLaunchShortcut shortcut) {
         MakeGoodProperty property = new MakeGoodProperty(ActivePart.getResource(testingTarget));
         if (!property.exists()) {
             showPropertyPage(property, testingTarget, shortcut);
@@ -137,7 +168,7 @@ public class TestRunner {
         }
     }
 
-    private static void showPropertyPage(
+    private void showPropertyPage(
         final MakeGoodProperty property,
         final Object testingTarget,
         final MakeGoodLaunchShortcut shortcut) {
@@ -157,7 +188,7 @@ public class TestRunner {
         });
     }
 
-    private static void raiseTestSessionAlreadyExistsError() {
+    private void raiseTestSessionAlreadyExistsError() {
         final Display display = Display.getDefault();
         display.syncExec(new Runnable() {
             @Override
@@ -174,7 +205,7 @@ public class TestRunner {
     /**
      * @since 1.4.0
      */
-    private static boolean hasPHPexeItem() {
-        return new PHPexeItemRepository().findByProject(TestingTargets.getInstance().getProject()) != null;
+    private boolean hasPHPexeItem() {
+        return phpexeItemRepository.findByProject(TestingTargets.getInstance().getProject()) != null;
     }
 }

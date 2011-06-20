@@ -32,7 +32,7 @@ public class RunTestFromEditorHandlerInContext extends AbstractHandler {
 
     @Override
     public Object execute(ExecutionEvent event) throws ExecutionException {
-        TestRunner.runTestsInContext(HandlerUtil.getActiveEditor(event));
+        TestRunner.getInstance().runTestsInContext(HandlerUtil.getActiveEditor(event));
         return null;
     }
 

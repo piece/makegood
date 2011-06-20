@@ -383,7 +383,7 @@ public class ResultView extends ViewPart {
         }
 
         stopTestAction.setEnabled(false);
-        rerunTestAction.setEnabled(TestRunner.hasLastTest());
+        rerunTestAction.setEnabled(TestRunner.getInstance().hasLastTest());
         ActivePart.getInstance().update();
         runAllTestsAction.setEnabled(ActivePart.getInstance().isAllTestsRunnable());
     }
@@ -489,7 +489,7 @@ public class ResultView extends ViewPart {
             (ActionContributionItem) manager.find(RerunTestAction.ACTION_ID);
         if (rerunTestItem != null) {
             rerunTestAction = rerunTestItem.getAction();
-            rerunTestAction.setEnabled(TestRunner.hasLastTest());
+            rerunTestAction.setEnabled(TestRunner.getInstance().hasLastTest());
         }
 
         ActionContributionItem runAllTestsItem =

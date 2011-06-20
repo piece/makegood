@@ -50,18 +50,18 @@ public class AutotestResourceChangeListener implements IResourceChangeListener, 
                 Job job = new UIJob("MakeGood Run All Tests By Autotest") { //$NON-NLS-1$
                     @Override
                     public IStatus runInUIThread(IProgressMonitor monitor) {
-                        TestRunner.runAllTestsByAutotest(selection);
+                        TestRunner.getInstance().runAllTestsByAutotest(selection);
                         return Status.OK_STATUS;
                     }
                 };
                 job.schedule();
             }
         } else if (autotestScope == AutotestScope.LAST_TEST) {
-            if (TestRunner.hasLastTest()) {
+            if (TestRunner.getInstance().hasLastTest()) {
                 Job job = new UIJob("MakeGood Run Last Test By Autotest") { //$NON-NLS-1$
                     @Override
                     public IStatus runInUIThread(IProgressMonitor monitor) {
-                        TestRunner.rerunLastTestByAutotest();
+                        TestRunner.getInstance().rerunLastTestByAutotest();
                         return Status.OK_STATUS;
                     }
                 };

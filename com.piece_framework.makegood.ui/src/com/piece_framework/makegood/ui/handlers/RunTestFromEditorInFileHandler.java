@@ -1,5 +1,6 @@
 /**
  * Copyright (c) 2009-2010 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
+ *               2011 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -20,7 +21,7 @@ import com.piece_framework.makegood.ui.launch.TestRunner;
 public class RunTestFromEditorInFileHandler extends RunTestFromEditorHandlerInContext {
     @Override
     public Object execute(ExecutionEvent event) throws ExecutionException {
-        TestRunner.runTestsInFile(HandlerUtil.getActiveEditor(event));
+        TestRunner.getInstance().runTestsInFile(HandlerUtil.getActiveEditor(event));
         return null;
     }
 }

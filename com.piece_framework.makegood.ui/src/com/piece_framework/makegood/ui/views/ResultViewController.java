@@ -94,7 +94,7 @@ public class ResultViewController implements IDebugEventSetListener {
             @Override
             public IStatus runInUIThread(IProgressMonitor monitor) {
                 ResultView resultView = (ResultView) ViewOpener.show(ResultView.VIEW_ID);
-                TestRunner.restoreFocusToLastActivePart();
+                TestRunner.getInstance().restoreFocusToLastActivePart();
                 if (resultView != null) {
                     resultView.startTest(testLifecycle);
                 }

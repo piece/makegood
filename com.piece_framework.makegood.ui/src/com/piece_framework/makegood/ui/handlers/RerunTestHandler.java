@@ -22,13 +22,13 @@ import com.piece_framework.makegood.ui.launch.TestRunner;
 public class RerunTestHandler extends AbstractHandler {
     @Override
     public Object execute(ExecutionEvent event) throws ExecutionException {
-        TestRunner.rerunLastTest();
+        TestRunner.getInstance().rerunLastTest();
         return null;
     }
 
     @Override
     public boolean isEnabled() {
         if (!AspectWeaver.isFinished()) return false;
-        return TestRunner.hasLastTest();
+        return TestRunner.getInstance().hasLastTest();
     }
 }
