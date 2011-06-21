@@ -112,7 +112,7 @@ public class ResultView extends ViewPart {
     private Label elapsedTime;
     private Label processTime;
     private boolean actionsInitialized = false;
-    private ResultViewPartListener partListenr = new ResultViewPartListener();
+    private ResultViewPartListener partListener = new ResultViewPartListener();
     private EditorOpener editorOpener = new EditorOpener();
 
     private ViewerFilter failureViewFilter = new ViewerFilter() {
@@ -125,7 +125,7 @@ public class ResultView extends ViewPart {
     };
 
     /**
-     * @sicne 1.3.0
+     * @since 1.3.0
      */
     private TestLifecycle testLifecycle;
 
@@ -234,7 +234,7 @@ public class ResultView extends ViewPart {
         failureTrace = createFailureTrace(row3Right);
 
         IViewSite site = getViewSite();
-        site.getPage().addPartListener(partListenr);
+        site.getPage().addPartListener(partListener);
         initializeActions(site);
 
         clear();
@@ -317,7 +317,7 @@ public class ResultView extends ViewPart {
     public void dispose() {
         IViewSite site = getViewSite();
         if (site != null) {
-            site.getPage().removePartListener(partListenr);
+            site.getPage().removePartListener(partListener);
         }
 
         super.dispose();
