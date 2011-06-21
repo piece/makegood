@@ -26,6 +26,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.content.IContentType;
@@ -301,7 +302,9 @@ public class TestingTargets {
     }
 
     private String getDefaultCakePHPAppPath() {
-        IResource resource = createMakeGoodProperty().getProject().findMember("/app"); //$NON-NLS-1$
+        Assert.isNotNull(project, "One or more testing targets should be added."); //$NON-NLS-1$
+
+        IResource resource = project.findMember("/app"); //$NON-NLS-1$
         if (resource == null) return ""; //$NON-NLS-1$
         return resource.getFullPath().toString();
     }
@@ -321,7 +324,9 @@ public class TestingTargets {
      * @since 1.3.0
      */
     private String getDefaultCIUnitPath() {
-        IResource resource = createMakeGoodProperty().getProject().findMember("/system/application/tests"); //$NON-NLS-1$
+        Assert.isNotNull(project, "One or more testing targets should be added."); //$NON-NLS-1$
+
+        IResource resource = project.findMember("/system/application/tests"); //$NON-NLS-1$
         if (resource == null) return ""; //$NON-NLS-1$
         return resource.getFullPath().toString();
     }
@@ -361,6 +366,7 @@ public class TestingTargets {
      * @since 1.3.0
      */
     public void clear() {
+        project = null;
         targets.clear();
     }
 
