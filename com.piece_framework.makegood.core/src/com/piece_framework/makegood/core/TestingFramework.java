@@ -13,8 +13,55 @@
 package com.piece_framework.makegood.core;
 
 public enum TestingFramework {
-    PHPUnit,
-    SimpleTest,
-    CakePHP,
-    CIUnit
+    PHPUnit {
+        /**
+         * @since 1.6.0
+         */
+        @Override
+        public String[] getTestClassSuperTypes() {
+            return new String[] {
+                "PHPUnit_Framework_TestCase", //$NON-NLS-1$
+            };
+        }
+    },
+    SimpleTest {
+        /**
+         * @since 1.6.0
+         */
+        @Override
+        public String[] getTestClassSuperTypes() {
+            return new String[] {
+                "SimpleTestCase", //$NON-NLS-1$
+            };
+        }
+    },
+    CakePHP {
+        /**
+         * @since 1.6.0
+         */
+        @Override
+        public String[] getTestClassSuperTypes() {
+            return new String[] {
+                "CakeTestCase", //$NON-NLS-1$
+                "CakeWebTestCase", //$NON-NLS-1$
+            };
+        }
+    },
+    CIUnit {
+        /**
+         * @since 1.6.0
+         */
+        @Override
+        public String[] getTestClassSuperTypes() {
+            return new String[] {
+                "CIUnit_TestCase", //$NON-NLS-1$
+                "CIUnit_TestCase_Selenium", //$NON-NLS-1$
+            };
+        }
+    };
+
+    /**
+     * @since 1.6.0
+     */
+    public abstract String[] getTestClassSuperTypes();
 }

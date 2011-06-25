@@ -12,9 +12,6 @@
 
 package com.piece_framework.makegood.core;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -41,7 +38,8 @@ public class PHPResource {
         if (source == null) return false;
         IResource resource = source.getResource();
         if (resource == null) return false;
-        List<String> testClassSuperTypes = getTestClassSuperTypes(resource);
+        String[] testClassSuperTypes =
+            new MakeGoodProperty(resource).getTestingFramework().getTestClassSuperTypes();
 
         try {
             for (IType type: source.getAllTypes()) {
@@ -75,30 +73,5 @@ public class PHPResource {
             }
         }
         return false;
-    }
-
-    private static List<String> getTestClassSuperTypes(IResource resource) {
-        List<String> testClassSuperTypes = new ArrayList<String>();
-        MakeGoodProperty property = new MakeGoodProperty(resource);
-        switch (property.getTestingFramework()) {
-        case PHPUnit:
-            testClassSuperTypes.add("PHPUnit_Framework_TestCase"); //$NON-NLS-1$
-            break;
-        case SimpleTest:
-            testClassSuperTypes.add("SimpleTestCase"); //$NON-NLS-1$
-            break;
-        case CakePHP:
-            testClassSuperTypes.add("CakeTestCase"); //$NON-NLS-1$
-            testClassSuperTypes.add("CakeWebTestCase"); //$NON-NLS-1$
-            break;
-        case CIUnit:
-            testClassSuperTypes.add("CIUnit_TestCase"); //$NON-NLS-1$
-            testClassSuperTypes.add("CIUnit_TestCase_Selenium"); //$NON-NLS-1$
-            break;
-        default:
-            break;
-        }
-
-        return testClassSuperTypes;
     }
 }
