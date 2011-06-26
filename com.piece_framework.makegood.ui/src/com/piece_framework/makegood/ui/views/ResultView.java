@@ -559,6 +559,7 @@ public class ResultView extends ViewPart {
     }
 
     private void updateTestCount() {
+        if (testLifecycle == null) return;
         testCount.setText(
             Messages.TestResultView_testsLabel +
             ": " + //$NON-NLS-1$
