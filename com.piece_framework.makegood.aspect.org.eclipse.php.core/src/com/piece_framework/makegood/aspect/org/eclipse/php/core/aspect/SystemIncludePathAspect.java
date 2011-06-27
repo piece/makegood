@@ -21,7 +21,6 @@ import javassist.expr.ExprEditor;
 import javassist.expr.MethodCall;
 
 import com.piece_framework.makegood.aspect.Aspect;
-import com.piece_framework.makegood.aspect.PDTVersion;
 
 public class SystemIncludePathAspect extends Aspect {
     private static final String JOINPOINT_CAST_ICONTAINER = "PHPSearchEngine#find [cast IContainer]"; //$NON-NLS-1$
@@ -39,9 +38,7 @@ public class SystemIncludePathAspect extends Aspect {
     @Override
     protected void doWeave() throws NotFoundException, CannotCompileException {
         CtClass weavingClass = ClassPool.getDefault().get(WEAVINGCLASS_PHPSEARCHENGINE);
-        weavingClass.getDeclaredMethod(
-            PDTVersion.getInstance().compareTo("2.2.0") >= 0 ? "internalFind" : "find" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        ).instrument(
+        weavingClass.getDeclaredMethod("internalFind").instrument( //$NON-NLS-1$
             new ExprEditor() {
                 @Override
                 public void edit(Cast cast) throws CannotCompileException {

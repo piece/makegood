@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2010-2011 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -18,11 +18,11 @@ import org.eclipse.dltk.core.Flags;
  */
 public class PHPFlags {
     public static boolean isClass(int flags) {
-        return true;
+        return org.eclipse.php.core.compiler.PHPFlags.isClass(flags);
     }
 
     public static boolean isNamespace(int flags) {
-        return true;
+        return org.eclipse.php.core.compiler.PHPFlags.isNamespace(flags);
     }
 
     /**

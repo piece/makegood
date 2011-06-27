@@ -12,6 +12,7 @@
 package com.piece_framework.makegood.launch;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.php.internal.debug.core.PHPDebugPlugin;
 import org.eclipse.php.internal.debug.core.preferences.PHPexeItem;
 
 /**
@@ -19,6 +20,10 @@ import org.eclipse.php.internal.debug.core.preferences.PHPexeItem;
  */
 public class PHPexeItemRepository {
     public PHPexeItem findByProject(IProject project) {
-        return null;
+        PHPexeItem phpexeItem = PHPDebugPlugin.getPHPexeItem(project);
+        if (phpexeItem == null) {
+            return PHPDebugPlugin.getWorkspaceDefaultExe();
+        }
+        return phpexeItem;
     }
 }

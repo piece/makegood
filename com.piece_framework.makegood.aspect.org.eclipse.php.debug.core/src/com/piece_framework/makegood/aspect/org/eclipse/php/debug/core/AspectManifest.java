@@ -12,43 +12,35 @@
 package com.piece_framework.makegood.aspect.org.eclipse.php.debug.core;
 
 import com.piece_framework.makegood.aspect.Aspect;
-import com.piece_framework.makegood.aspect.PDTVersion;
-import com.piece_framework.makegood.aspect.org.eclipse.php.debug.core.aspect.CommandLineArgumentsFixAspect;
 import com.piece_framework.makegood.aspect.org.eclipse.php.debug.core.aspect.LaunchWithMissingUserLibrariesFixAspect;
 import com.piece_framework.makegood.aspect.org.eclipse.php.debug.core.aspect.SystemIncludePathAspect;
 import com.piece_framework.makegood.aspect.org.eclipse.php.debug.core.aspect.XdebugConsoleFixAspect;
 import com.piece_framework.makegood.aspect.org.eclipse.php.debug.core.aspect.XdebugLaunchAspect;
 
 public class AspectManifest implements com.piece_framework.makegood.aspect.AspectManifest {
-    private static final String PLUGIN_ID = "com.piece_framework.makegood.aspect.org.eclipse.php.debug.core"; //$NON-NLS-1$
+    private static final Aspect[] ASPECTS = {
+        new XdebugLaunchAspect(),
+        new XdebugConsoleFixAspect(),
+        new SystemIncludePathAspect(),
+        new LaunchWithMissingUserLibrariesFixAspect(),
+    };
     private static final String[] DEPENDENCIES = {
         Fragment.PLUGIN_ID,
         "org.eclipse.dltk.core", //$NON-NLS-1$
         "org.eclipse.equinox.common", //$NON-NLS-1$
-        "org.eclipse.debug.core" //$NON-NLS-1$
+        "org.eclipse.debug.core", //$NON-NLS-1$
+        "org.eclipse.php.debug.core", //$NON-NLS-1$
+        "com.piece_framework.makegood.launch", //$NON-NLS-1$
     };
 
     @Override
     public String pluginId() {
-        return PLUGIN_ID;
+        return Fragment.PLUGIN_ID;
     }
 
     @Override
     public Aspect[] aspects() {
-        return PDTVersion.getInstance().compareTo("2.2.0") >= 0 ? //$NON-NLS-1$
-                    new Aspect[] {
-                        new XdebugLaunchAspect(),
-                        new XdebugConsoleFixAspect(),
-                        new SystemIncludePathAspect(),
-                        new LaunchWithMissingUserLibrariesFixAspect()
-                    } :
-                    new Aspect[] {
-                        new XdebugLaunchAspect(),
-                        new XdebugConsoleFixAspect(),
-                        new SystemIncludePathAspect(),
-                        new CommandLineArgumentsFixAspect(),
-                        new LaunchWithMissingUserLibrariesFixAspect()
-                    };
+        return ASPECTS;
     }
 
     @Override

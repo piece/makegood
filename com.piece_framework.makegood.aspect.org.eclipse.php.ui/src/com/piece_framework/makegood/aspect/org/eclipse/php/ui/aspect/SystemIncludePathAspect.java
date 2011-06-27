@@ -15,13 +15,11 @@ package com.piece_framework.makegood.aspect.org.eclipse.php.ui.aspect;
 import javassist.CannotCompileException;
 import javassist.ClassPool;
 import javassist.CtClass;
-import javassist.CtNewMethod;
 import javassist.NotFoundException;
 import javassist.expr.ExprEditor;
 import javassist.expr.NewExpr;
 
 import com.piece_framework.makegood.aspect.Aspect;
-import com.piece_framework.makegood.aspect.PDTVersion;
 
 public class SystemIncludePathAspect extends Aspect {
     private static final String JOINPOINT_GETCPLISTELEMENTTEXT_INSERTBEFORE =
@@ -50,11 +48,7 @@ public class SystemIncludePathAspect extends Aspect {
     @Override
     protected void doWeave() throws NotFoundException, CannotCompileException {
         CtClass weavingClass1 = ClassPool.getDefault().get(WEAVINGCLASS_PHPIPLISTLABELPROVIDER);
-        if (PDTVersion.getInstance().compareTo("2.2.0") >= 0) { //$NON-NLS-1$
-            editGetCPListElementTextMethod(weavingClass1);
-        } else {
-            addGetCPListElementTextMethod(weavingClass1);
-        }
+        editGetCPListElementTextMethod(weavingClass1);
         editGetCPListElementBaseImageMethod(weavingClass1);
         markClassAsWoven(weavingClass1);
 
@@ -76,29 +70,6 @@ public class SystemIncludePathAspect extends Aspect {
 
         markJoinPointAsPassed(JOINPOINT_GETCPLISTELEMENTTEXT_INSERTBEFORE);
         markJoinPointAsPassed(JOINPOINT_GETCPLISTELEMENTTEXT_ADDMETHOD);
-    }
-
-    private void addGetCPListElementTextMethod(CtClass weavingClass) throws CannotCompileException {
-        weavingClass.addMethod(
-            CtNewMethod.make(
-"public String getCPListElementText(org.eclipse.dltk.internal.ui.wizards.buildpath.BPListElement cpentry) {" + //$NON-NLS-1$
-"    org.eclipse.core.resources.IResource target = cpentry.getResource();" + //$NON-NLS-1$
-"    if (target == null) {" + //$NON-NLS-1$
-"        return super.getCPListElementText(cpentry);" + //$NON-NLS-1$
-"    }" + //$NON-NLS-1$
-"    com.piece_framework.makegood.include_path.ConfigurationIncludePath configuration = new com.piece_framework.makegood.include_path.ConfigurationIncludePath(target.getProject());" + //$NON-NLS-1$
-"    if (configuration.equalsDummyResource(target)) {" + //$NON-NLS-1$
-"        return com.piece_framework.makegood.include_path.ConfigurationIncludePath.text;" + //$NON-NLS-1$
-"    }" + //$NON-NLS-1$
-"" + //$NON-NLS-1$
-"    return super.getCPListElementText(cpentry);" + //$NON-NLS-1$
-"}", //$NON-NLS-1$
-                weavingClass
-            )
-        );
-
-        markJoinPointAsPassed(JOINPOINT_GETCPLISTELEMENTTEXT_ADDMETHOD);
-        markJoinPointAsPassed(JOINPOINT_GETCPLISTELEMENTTEXT_INSERTBEFORE);
     }
 
     private void editGetCPListElementBaseImageMethod(CtClass weavingClass) throws CannotCompileException, NotFoundException {

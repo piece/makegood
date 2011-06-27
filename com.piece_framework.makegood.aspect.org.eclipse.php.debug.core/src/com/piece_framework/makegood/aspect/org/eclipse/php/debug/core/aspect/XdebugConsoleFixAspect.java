@@ -20,7 +20,6 @@ import javassist.expr.ExprEditor;
 import javassist.expr.NewExpr;
 
 import com.piece_framework.makegood.aspect.Aspect;
-import com.piece_framework.makegood.aspect.PDTVersion;
 
 public class XdebugConsoleFixAspect extends Aspect {
     private static final String JOINPOINT_NEW_PROCESSCRASHDETECTOR =
@@ -57,26 +56,11 @@ public class XdebugConsoleFixAspect extends Aspect {
 "    }" + //$NON-NLS-1$
 "}"; //$NON-NLS-1$
 
-    /**
-     * @see org.eclipse.php.internal.debug.core.zend.debugger.ProcessCrashDetector#run()
-     */
-    private static final String PROCESSCRASHDETECTOR_METHOD_RUN_GALILEO =
-"{" + //$NON-NLS-1$
-"    try {" + //$NON-NLS-1$
-"        process.waitFor();" + //$NON-NLS-1$
-"    } catch (Throwable t) {" + //$NON-NLS-1$
-"    }" + //$NON-NLS-1$
-"}"; //$NON-NLS-1$
-
     @Override
     protected void doWeave() throws NotFoundException, CannotCompileException {
         CtClass weavingClass1 = ClassPool.getDefault().get(WEAVINGCLASS_PROCESSCRASHDETECTOR);
         CtMethod weavingMethod1 = weavingClass1.getDeclaredMethod("run"); //$NON-NLS-1$
-        weavingMethod1.setBody(
-            PDTVersion.getInstance().compareTo("2.2.0") >= 0 ? //$NON-NLS-1$
-                PROCESSCRASHDETECTOR_METHOD_RUN_HELIOS :
-                PROCESSCRASHDETECTOR_METHOD_RUN_GALILEO
-        );
+        weavingMethod1.setBody(PROCESSCRASHDETECTOR_METHOD_RUN_HELIOS);
         markJoinPointAsPassed(JOINPOINT_RUN_SETBODY);
         markClassAsWoven(weavingClass1);
 

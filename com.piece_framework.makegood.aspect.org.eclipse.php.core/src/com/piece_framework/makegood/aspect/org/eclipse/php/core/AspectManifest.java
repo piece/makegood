@@ -12,14 +12,17 @@
 package com.piece_framework.makegood.aspect.org.eclipse.php.core;
 
 import com.piece_framework.makegood.aspect.Aspect;
-import com.piece_framework.makegood.aspect.PDTVersion;
 import com.piece_framework.makegood.aspect.org.eclipse.php.core.aspect.MultibyteCharactersAspect;
 import com.piece_framework.makegood.aspect.org.eclipse.php.core.aspect.SystemIncludePathAspect;
 
 public class AspectManifest implements com.piece_framework.makegood.aspect.AspectManifest {
+    private static final Aspect[] ASPECTS = {
+        new SystemIncludePathAspect(),
+        new MultibyteCharactersAspect(),
+    };
     private static final String[] DEPENDENCIES = {
         "org.eclipse.php.core", //$NON-NLS-1$
-        "org.eclipse.core.resources" //$NON-NLS-1$
+        "org.eclipse.core.resources", //$NON-NLS-1$
     };
 
     @Override
@@ -29,14 +32,7 @@ public class AspectManifest implements com.piece_framework.makegood.aspect.Aspec
 
     @Override
     public Aspect[] aspects() {
-        return PDTVersion.getInstance().compareTo("2.2.0") >= 0 ? //$NON-NLS-1$
-                    new Aspect[] {
-                        new SystemIncludePathAspect(),
-                        new MultibyteCharactersAspect()
-                    } :
-                    new Aspect[] {
-                        new SystemIncludePathAspect()
-                    };
+        return ASPECTS;
     }
 
     @Override

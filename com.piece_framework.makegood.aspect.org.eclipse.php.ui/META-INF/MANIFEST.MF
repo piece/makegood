@@ -4,7 +4,7 @@ Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: com.piece_framework.makegood.aspect.org.eclipse.php.ui;singleton:=true
 Bundle-Version: 1.6.0.qualifier
 Bundle-Vendor: %Bundle-Vendor
-Fragment-Host: org.eclipse.php.ui;bundle-version="2.1.0"
+Fragment-Host: org.eclipse.php.ui;bundle-version="2.2.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ClassPath: .
 Require-Bundle: com.piece_framework.makegood.aspect,
