@@ -37,6 +37,23 @@ public class SystemIncludePathAspect extends Aspect {
 
     @Override
     protected void doWeave() throws NotFoundException, CannotCompileException {
+        weaveIntoPHPSearchEngine();
+    }
+
+    @Override
+    protected String[] joinPoints() {
+        return JOINPOINTS;
+    }
+
+    @Override
+    protected String[] weavingClasses() {
+        return WEAVINGCLASSES;
+    }
+
+    /**
+     * @since 1.6.0
+     */
+    private void weaveIntoPHPSearchEngine() throws NotFoundException, CannotCompileException {
         CtClass weavingClass = ClassPool.getDefault().get(WEAVINGCLASS_PHPSEARCHENGINE);
         weavingClass.getDeclaredMethod("internalFind").instrument( //$NON-NLS-1$
             new ExprEditor() {
@@ -81,15 +98,5 @@ public class SystemIncludePathAspect extends Aspect {
             }
         );
         markClassAsWoven(weavingClass);
-    }
-
-    @Override
-    protected String[] joinPoints() {
-        return JOINPOINTS;
-    }
-
-    @Override
-    protected String[] weavingClasses() {
-        return WEAVINGCLASSES;
     }
 }
