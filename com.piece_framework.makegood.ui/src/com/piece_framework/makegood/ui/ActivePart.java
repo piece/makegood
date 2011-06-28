@@ -25,7 +25,6 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.php.internal.core.project.PHPNature;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.IWorkbenchPage;
@@ -47,6 +46,11 @@ public class ActivePart {
      * @since 1.6.0
      */
     private static final String VIEW_ID_PHPBROWSEROUTPUT = "org.eclipse.debug.ui.PHPBrowserOutput"; //$NON-NLS-1$
+
+    /**
+     * @since 1.6.0
+     */
+    private static final String NATURE_ID_PHPNATURE = "org.eclipse.php.core.PHPNature"; //$NON-NLS-1$
 
     private Object entity;
 
@@ -159,7 +163,7 @@ public class ActivePart {
         if (project == null) return false;
         if (!project.exists()) return false;
         try {
-            return project.hasNature(PHPNature.ID);
+            return project.hasNature(NATURE_ID_PHPNATURE);
         } catch (CoreException e) {
             Activator.getDefault().getLog().log(new Status(IStatus.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
             return false;
