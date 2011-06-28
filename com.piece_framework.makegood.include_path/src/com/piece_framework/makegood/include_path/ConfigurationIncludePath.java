@@ -1,5 +1,6 @@
 /**
  * Copyright (c) 2009 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
+ *               2011 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -40,5 +41,13 @@ public class ConfigurationIncludePath {
 
     public boolean equalsDummyResource(IResource target) {
         return dummy.equals(target);
+    }
+
+    /**
+     * @since 1.6.0
+     */
+    public static boolean equalsDummyResource(IProject project, Object target) {
+        if (!(target instanceof IResource)) return false;
+        return new ConfigurationIncludePath(project).equalsDummyResource((IResource) target);
     }
 }

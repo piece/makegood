@@ -15,6 +15,7 @@ package com.piece_framework.makegood.aspect.org.eclipse.php.core.aspect;
 import javassist.CannotCompileException;
 import javassist.ClassPool;
 import javassist.CtClass;
+import javassist.CtMethod;
 import javassist.NotFoundException;
 import javassist.expr.Cast;
 import javassist.expr.ExprEditor;
@@ -25,19 +26,30 @@ import com.piece_framework.makegood.aspect.Aspect;
 public class SystemIncludePathAspect extends Aspect {
     private static final String JOINPOINT_CAST_ICONTAINER = "PHPSearchEngine#find [cast IContainer]"; //$NON-NLS-1$
     private static final String JOINPOINT_CALL_FINDMEMBER = "PHPSearchEngine#find [call findMember()]"; //$NON-NLS-1$
+    private static final String JOINPOINT_VISITENTRY_INSERTBEFORE = "IncludeStatementStrategy#visitEntry [insert before]"; //$NON-NLS-1$
     private static final String[] JOINPOINTS = {
         JOINPOINT_CAST_ICONTAINER,
-        JOINPOINT_CALL_FINDMEMBER
+        JOINPOINT_CALL_FINDMEMBER,
+        JOINPOINT_VISITENTRY_INSERTBEFORE,
     };
     private static final String WEAVINGCLASS_PHPSEARCHENGINE =
         "org.eclipse.php.internal.core.util.PHPSearchEngine"; //$NON-NLS-1$
+
+    /**
+     * @since 1.6.0
+     */
+    private static final String WEAVINGCLASS_INCLUDESTATEMENTSTRATEGY =
+        "org.eclipse.php.internal.core.codeassist.strategies.IncludeStatementStrategy"; //$NON-NLS-1$
+
     private static final String[] WEAVINGCLASSES = {
-        WEAVINGCLASS_PHPSEARCHENGINE
+        WEAVINGCLASS_PHPSEARCHENGINE,
+        WEAVINGCLASS_INCLUDESTATEMENTSTRATEGY,
     };
 
     @Override
     protected void doWeave() throws NotFoundException, CannotCompileException {
         weaveIntoPHPSearchEngine();
+        weaveIntoIncludeStatementStrategy();
     }
 
     @Override
@@ -97,6 +109,20 @@ public class SystemIncludePathAspect extends Aspect {
                 }
             }
         );
+        markClassAsWoven(weavingClass);
+    }
+
+    /**
+     * @since 1.6.0
+     */
+    private void weaveIntoIncludeStatementStrategy() throws NotFoundException, CannotCompileException {
+        CtClass weavingClass = ClassPool.getDefault().get(WEAVINGCLASS_INCLUDESTATEMENTSTRATEGY);
+        weavingClass.getDeclaredMethod("visitEntry").insertBefore( //$NON-NLS-1$
+"if (com.piece_framework.makegood.include_path.ConfigurationIncludePath.equalsDummyResource(includePath.getProject(), includePath.getEntry())) {" + //$NON-NLS-1$
+"    return;" + //$NON-NLS-1$
+"}" //$NON-NLS-1$
+        );
+        markJoinPointAsPassed(JOINPOINT_VISITENTRY_INSERTBEFORE);
         markClassAsWoven(weavingClass);
     }
 }
