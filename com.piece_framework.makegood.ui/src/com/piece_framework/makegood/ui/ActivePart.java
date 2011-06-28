@@ -26,7 +26,6 @@ import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.php.internal.core.project.PHPNature;
-import org.eclipse.php.internal.debug.ui.PHPDebugPerspectiveFactory;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.IWorkbenchPage;
@@ -39,13 +38,23 @@ import com.piece_framework.makegood.core.MakeGoodProperty;
 import com.piece_framework.makegood.ui.views.ResultView;
 
 public class ActivePart {
+    /**
+     * @since 1.6.0
+     */
+    private static final String VIEW_ID_PHPDEBUGOUTPUT = "org.eclipse.debug.ui.PHPDebugOutput"; //$NON-NLS-1$
+
+    /**
+     * @since 1.6.0
+     */
+    private static final String VIEW_ID_PHPBROWSEROUTPUT = "org.eclipse.debug.ui.PHPBrowserOutput"; //$NON-NLS-1$
+
     private Object entity;
 
     public void update(IWorkbenchPart part) {
         String id = part.getSite().getId();
         if (ResultView.VIEW_ID.equals(id)) return;
-        if (PHPDebugPerspectiveFactory.ID_PHPDebugOutput.equals(id)) return;
-        if (PHPDebugPerspectiveFactory.ID_PHPBrowserOutput.equals(id)) return;
+        if (VIEW_ID_PHPDEBUGOUTPUT.equals(id)) return;
+        if (VIEW_ID_PHPBROWSEROUTPUT.equals(id)) return;
         if (IConsoleConstants.ID_CONSOLE_VIEW.equals(id)) return;
 
         if (part instanceof IEditorPart) {
