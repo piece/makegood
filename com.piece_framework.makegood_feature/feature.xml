@@ -40,7 +40,6 @@
       <import plugin="org.eclipse.jface.text"/>
       <import plugin="org.eclipse.ui.ide"/>
       <import plugin="org.eclipse.ui.console"/>
-      <import plugin="org.eclipse.ui.editors"/>
       <import plugin="org.eclipse.php.ui" version="2.2.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.filebuffers"/>
    </requires>
