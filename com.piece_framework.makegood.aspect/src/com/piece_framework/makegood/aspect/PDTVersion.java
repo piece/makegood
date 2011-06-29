@@ -20,7 +20,7 @@ import org.osgi.framework.Version;
  * @since 1.2.0
  */
 public class PDTVersion {
-    private static final String REQUIRED_VERSION = "2.1.0"; //$NON-NLS-1$
+    private static final String REQUIRED_VERSION = "2.2.0"; //$NON-NLS-1$
     private static PDTVersion soleInstance;
     private Version version;
 
