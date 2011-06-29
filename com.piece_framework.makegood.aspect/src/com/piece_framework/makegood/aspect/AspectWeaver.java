@@ -28,6 +28,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.IStartup;
 
+
 /**
  * @since 1.6.0
  */
@@ -46,6 +47,7 @@ public class AspectWeaver implements IStartup {
 
     public void weave() {
         synchronized (processLock) {
+            if (PDTVersion.getInstance().hasError()) return;
             if (isFinished) return;
             for (AspectManifest manifest: getManifests()) {
                 boolean result = loadDependencies(manifest);
