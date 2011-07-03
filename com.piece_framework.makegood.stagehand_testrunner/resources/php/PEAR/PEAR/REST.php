@@ -9,7 +9,7 @@
  * @author     Greg Beaver <cellog@php.net>
  * @copyright  1997-2009 The Authors
  * @license    http://opensource.org/licenses/bsd-license.php New BSD License
- * @version    CVS: $Id: REST.php 286489 2009-07-29 05:59:08Z dufuz $
+ * @version    CVS: $Id: REST.php 309592 2011-03-23 12:34:19Z dufuz $
  * @link       http://pear.php.net/package/PEAR
  * @since      File available since Release 1.4.0a1
  */
@@ -28,7 +28,7 @@ require_once 'PEAR/XMLParser.php';
  * @author     Greg Beaver <cellog@php.net>
  * @copyright  1997-2009 The Authors
  * @license    http://opensource.org/licenses/bsd-license.php New BSD License
- * @version    Release: 1.9.0
+ * @version    Release: 1.9.3
  * @link       http://pear.php.net/package/PEAR
  * @since      Class available since Release 1.4.0a1
  */
@@ -100,7 +100,10 @@ class PEAR_REST
             $ret = $this->getCache($url);
             if (!PEAR::isError($ret) && $trieddownload) {
                 // reset the age of the cache if the server says it was unmodified
-                $this->saveCache($url, $ret, null, true, $cacheId);
+                $result = $this->saveCache($url, $ret, null, true, $cacheId);
+                if (PEAR::isError($result)) {
+                    return PEAR::raiseError($result->getMessage());
+                }
             }
 
             return $ret;
@@ -117,7 +120,11 @@ class PEAR_REST
         }
 
         if ($forcestring) {
-            $this->saveCache($url, $content, $lastmodified, false, $cacheId);
+            $result = $this->saveCache($url, $content, $lastmodified, false, $cacheId);
+            if (PEAR::isError($result)) {
+                return PEAR::raiseError($result->getMessage());
+            }
+
             return $content;
         }
 
@@ -153,7 +160,11 @@ class PEAR_REST
             $content = $parser->getData();
         }
 
-        $this->saveCache($url, $content, $lastmodified, false, $cacheId);
+        $result = $this->saveCache($url, $content, $lastmodified, false, $cacheId);
+        if (PEAR::isError($result)) {
+            return PEAR::raiseError($result->getMessage());
+        }
+
         return $content;
     }
 
@@ -212,57 +223,81 @@ class PEAR_REST
      */
     function saveCache($url, $contents, $lastmodified, $nochange = false, $cacheid = null)
     {
-        $cachedir    = $this->config->get('cache_dir') . DIRECTORY_SEPARATOR . md5($url);
-        $cacheidfile = $cachedir . 'rest.cacheid';
-        $cachefile   = $cachedir . 'rest.cachefile';
+        $cache_dir   = $this->config->get('cache_dir');
+        $d           = $cache_dir . DIRECTORY_SEPARATOR . md5($url);
+        $cacheidfile = $d . 'rest.cacheid';
+        $cachefile   = $d . 'rest.cachefile';
+
+        if (!is_dir($cache_dir)) {
+            if (System::mkdir(array('-p', $cache_dir)) === false) {
+              return PEAR::raiseError("The value of config option cache_dir ($cache_dir) is not a directory and attempts to create the directory failed.");
+            }
+        }
 
         if ($cacheid === null && $nochange) {
             $cacheid = unserialize(implode('', file($cacheidfile)));
         }
 
-        $fp = @fopen($cacheidfile, 'wb');
-        if (!$fp) {
-            $cache_dir = $this->config->get('cache_dir');
-            if (is_dir($cache_dir)) {
-                return false;
-            }
+        $idData = serialize(array(
+            'age'        => time(),
+            'lastChange' => ($nochange ? $cacheid['lastChange'] : $lastmodified),
+        ));
 
-            System::mkdir(array('-p', $cache_dir));
-            $fp = @fopen($cacheidfile, 'wb');
-            if (!$fp) {
-                return false;
-            }
-        }
-
-        if ($nochange) {
-            fwrite($fp, serialize(array(
-                'age'        => time(),
-                'lastChange' => $cacheid['lastChange'],
-                ))
-            );
-
-            fclose($fp);
+        $result = $this->saveCacheFile($cacheidfile, $idData);
+        if (PEAR::isError($result)) {
+            return $result;
+        } elseif ($nochange) {
             return true;
         }
 
-        fwrite($fp, serialize(array(
-            'age'        => time(),
-            'lastChange' => $lastmodified,
-            ))
-        );
-
-        fclose($fp);
-        $fp = @fopen($cachefile, 'wb');
-        if (!$fp) {
+        $result = $this->saveCacheFile($cachefile, serialize($contents));
+        if (PEAR::isError($result)) {
             if (file_exists($cacheidfile)) {
-                @unlink($cacheidfile);
+              @unlink($cacheidfile);
             }
 
-            return false;
+            return $result;
         }
 
-        fwrite($fp, serialize($contents));
-        fclose($fp);
+        return true;
+    }
+
+    function saveCacheFile($file, $contents)
+    {
+        $len = strlen($contents);
+
+        $cachefile_fp = @fopen($file, 'xb'); // x is the O_CREAT|O_EXCL mode
+        if ($cachefile_fp !== false) { // create file
+            if (fwrite($cachefile_fp, $contents, $len) < $len) {
+                fclose($cachefile_fp);
+                return PEAR::raiseError("Could not write $file.");
+            }
+        } else { // update file
+            $cachefile_lstat = lstat($file);
+            $cachefile_fp = @fopen($file, 'wb');
+            if (!$cachefile_fp) {
+                return PEAR::raiseError("Could not open $file for writing.");
+            }
+
+            $cachefile_fstat = fstat($cachefile_fp);
+            if (
+              $cachefile_lstat['mode'] == $cachefile_fstat['mode'] &&
+              $cachefile_lstat['ino']  == $cachefile_fstat['ino'] &&
+              $cachefile_lstat['dev']  == $cachefile_fstat['dev'] &&
+              $cachefile_fstat['nlink'] === 1
+            ) {
+                if (fwrite($cachefile_fp, $contents, $len) < $len) {
+                    fclose($cachefile_fp);
+                    return PEAR::raiseError("Could not write $file.");
+                }
+            } else {
+                fclose($cachefile_fp);
+                $link = function_exists('readlink') ? readlink($file) : $file;
+                return PEAR::raiseError('SECURITY ERROR: Will not write to ' . $file . ' as it is symlinked to ' . $link . ' - Possible symlink attack');
+            }
+        }
+
+        fclose($cachefile_fp);
         return true;
     }
 
@@ -333,7 +368,7 @@ class PEAR_REST
             $request = "GET $path HTTP/1.1\r\n";
         }
 
-        $request .= "Host: $host:$port\r\n";
+        $request .= "Host: $host\r\n";
         $ifmodifiedsince = '';
         if (is_array($lastmodified)) {
             if (isset($lastmodified['Last-Modified'])) {
@@ -348,7 +383,7 @@ class PEAR_REST
         }
 
         $request .= $ifmodifiedsince .
-            "User-Agent: PEAR/1.9.0/PHP/" . PHP_VERSION . "\r\n";
+            "User-Agent: PEAR/1.9.3/PHP/" . PHP_VERSION . "\r\n";
 
         $username = $this->config->get('username', null, $channel);
         $password = $this->config->get('password', null, $channel);

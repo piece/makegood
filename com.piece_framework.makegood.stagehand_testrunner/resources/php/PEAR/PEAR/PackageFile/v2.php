@@ -9,7 +9,7 @@
  * @author     Greg Beaver <cellog@php.net>
  * @copyright  1997-2009 The Authors
  * @license    http://opensource.org/licenses/bsd-license.php New BSD License
- * @version    CVS: $Id: v2.php 276383 2009-02-24 23:39:37Z dufuz $
+ * @version    CVS: $Id: v2.php 309460 2011-03-20 03:57:02Z dufuz $
  * @link       http://pear.php.net/package/PEAR
  * @since      File available since Release 1.4.0a1
  */
@@ -23,7 +23,7 @@ require_once 'PEAR/ErrorStack.php';
  * @author     Greg Beaver <cellog@php.net>
  * @copyright  1997-2009 The Authors
  * @license    http://opensource.org/licenses/bsd-license.php New BSD License
- * @version    Release: 1.9.0
+ * @version    Release: 1.9.3
  * @link       http://pear.php.net/package/PEAR
  * @since      Class available since Release 1.4.0a1
  */
@@ -799,6 +799,10 @@ class PEAR_PackageFile_v2
     {
         unset($pinfo['old']);
         unset($pinfo['xsdversion']);
+        // If the changelog isn't an array then it was passed in as an empty tag
+        if (isset($pinfo['changelog']) && !is_array($pinfo['changelog'])) {
+          unset($pinfo['changelog']);
+        }
         $this->_incomplete = false;
         $this->_packageInfo = $pinfo;
     }

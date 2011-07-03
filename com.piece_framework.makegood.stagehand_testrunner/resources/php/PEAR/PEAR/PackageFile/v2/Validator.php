@@ -9,7 +9,7 @@
  * @author     Greg Beaver <cellog@php.net>
  * @copyright  1997-2009 The Authors
  * @license    http://opensource.org/licenses/bsd-license.php New BSD License
- * @version    CVS: $Id: Validator.php 277885 2009-03-27 19:29:31Z dufuz $
+ * @version    CVS: $Id: Validator.php 308729 2011-02-27 18:58:21Z dufuz $
  * @link       http://pear.php.net/package/PEAR
  * @since      File available since Release 1.4.0a8
  */
@@ -21,7 +21,7 @@
  * @author     Greg Beaver <cellog@php.net>
  * @copyright  1997-2009 The Authors
  * @license    http://opensource.org/licenses/bsd-license.php New BSD License
- * @version    Release: 1.9.0
+ * @version    Release: 1.9.3
  * @link       http://pear.php.net/package/PEAR
  * @since      Class available since Release 1.4.0a8
  * @access private
@@ -112,7 +112,7 @@ class PEAR_PackageFile_v2_Validator
               isset($test['dependencies']['required']) &&
               isset($test['dependencies']['required']['pearinstaller']) &&
               isset($test['dependencies']['required']['pearinstaller']['min']) &&
-              version_compare('1.9.0',
+              version_compare('1.9.3',
                 $test['dependencies']['required']['pearinstaller']['min'], '<')
         ) {
             $this->_pearVersionTooLow($test['dependencies']['required']['pearinstaller']['min']);
@@ -256,11 +256,10 @@ class PEAR_PackageFile_v2_Validator
                 $validator = $chan->getValidationObject($this->_pf->getPackage());
                 if (!$validator) {
                     $this->_stack->push(__FUNCTION__, 'error',
-                        array_merge(
-                            array('channel' => $chan->getName(),
-                                  'package' => $this->_pf->getPackage()),
-                              $valpack
-                            ),
+                        array('channel' => $chan->getName(),
+                              'package' => $this->_pf->getPackage(),
+                              'name'    => $valpack['_content'],
+                              'version' => $valpack['attribs']['version']),
                         'package "%channel%/%package%" cannot be properly validated without ' .
                         'validation package "%channel%/%name%-%version%"');
                     return $this->_isValid = 0;
@@ -1351,7 +1350,7 @@ class PEAR_PackageFile_v2_Validator
         $this->_stack->push(__FUNCTION__, 'error',
             array('version' => $version),
             'This package.xml requires PEAR version %version% to parse properly, we are ' .
-            'version 1.9.0');
+            'version 1.9.3');
     }
 
     function _invalidTagOrder($oktags, $actual, $root)
@@ -2045,7 +2044,8 @@ class PEAR_PackageFile_v2_Validator
                     }
                     continue 2;
                 case T_DOUBLE_COLON:
-                    if (!($tokens[$i - 1][0] == T_WHITESPACE || $tokens[$i - 1][0] == T_STRING)) {
+                    $token = $tokens[$i - 1][0];
+                    if (!($token == T_WHITESPACE || $token == T_STRING || $token == T_STATIC)) {
                         if (isset($this->_stack)) {
                             $this->_stack->push(__FUNCTION__, 'warning', array('file' => $file),
                                 'Parser error: invalid PHP found in file "%file%"');

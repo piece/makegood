@@ -9,7 +9,7 @@
  * @author     Greg Beaver <cellog@php.net>
  * @copyright  1997-2009 The Authors
  * @license    http://opensource.org/licenses/bsd-license.php New BSD License
- * @version    CVS: $Id: v1.php 286494 2009-07-29 06:57:11Z dufuz $
+ * @version    CVS: $Id: v1.php 299813 2010-05-26 19:50:00Z dufuz $
  * @link       http://pear.php.net/package/PEAR
  * @since      File available since Release 1.4.0a1
  */
@@ -29,7 +29,7 @@ require_once 'PEAR/PackageFile/v2.php';
  * @author     Greg Beaver <cellog@php.net>
  * @copyright  1997-2009 The Authors
  * @license    http://opensource.org/licenses/bsd-license.php New BSD License
- * @version    Release: 1.9.0
+ * @version    Release: 1.9.3
  * @link       http://pear.php.net/package/PEAR
  * @since      Class available since Release 1.4.0a1
  */
@@ -46,7 +46,7 @@ class PEAR_PackageFile_Generator_v1
 
     function getPackagerVersion()
     {
-        return '1.9.0';
+        return '1.9.3';
     }
 
     /**
@@ -200,7 +200,7 @@ class PEAR_PackageFile_Generator_v1
             );
         $ret = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n";
         $ret .= "<!DOCTYPE package SYSTEM \"http://pear.php.net/dtd/package-1.0\">\n";
-        $ret .= "<package version=\"1.0\" packagerversion=\"1.9.0\">\n" .
+        $ret .= "<package version=\"1.0\" packagerversion=\"1.9.3\">\n" .
 " <name>$pkginfo[package]</name>";
         if (isset($pkginfo['extends'])) {
             $ret .= "\n<extends>$pkginfo[extends]</extends>";

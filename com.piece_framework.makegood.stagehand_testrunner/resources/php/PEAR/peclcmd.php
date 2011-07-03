@@ -12,15 +12,15 @@
  * @author     Tomas V.V.Cox <cox@idecnet.com>
  * @copyright  1997-2009 The Authors
  * @license    http://opensource.org/licenses/bsd-license.php New BSD License
- * @version    CVS: $Id: peclcmd.php 276392 2009-02-25 00:06:23Z dufuz $
+ * @version    CVS: $Id: peclcmd.php 299813 2010-05-26 19:50:00Z dufuz $
  * @link       http://pear.php.net/package/PEAR
  */
 
 /**
  * @nodep Gtk
  */
-if ('/home/iteman/GITREPOS/makegood/com.piece_framework.makegood.launch/resources/php/PEAR' != '@'.'include_path'.'@') {
-    ini_set('include_path', '/home/iteman/GITREPOS/makegood/com.piece_framework.makegood.launch/resources/php/PEAR');
+if ('/home/iteman/GITREPOS/makegood/com.piece_framework.makegood.stagehand_testrunner/resources/php/PEAR' != '@'.'include_path'.'@') {
+    ini_set('include_path', '/home/iteman/GITREPOS/makegood/com.piece_framework.makegood.stagehand_testrunner/resources/php/PEAR');
     $raw = false;
 } else {
     // this is a raw, uninstalled pear, either a cvs checkout, or php distro

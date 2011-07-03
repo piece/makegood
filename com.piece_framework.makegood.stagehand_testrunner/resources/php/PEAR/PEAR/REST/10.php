@@ -9,7 +9,7 @@
  * @author     Greg Beaver <cellog@php.net>
  * @copyright  1997-2009 The Authors
  * @license    http://opensource.org/licenses/bsd-license.php New BSD License
- * @version    CVS: $Id: 10.php 287558 2009-08-21 22:21:28Z dufuz $
+ * @version    CVS: $Id: 10.php 311689 2011-06-01 04:57:34Z dufuz $
  * @link       http://pear.php.net/package/PEAR
  * @since      File available since Release 1.4.0a12
  */
@@ -27,7 +27,7 @@ require_once 'PEAR/REST.php';
  * @author     Greg Beaver <cellog@php.net>
  * @copyright  1997-2009 The Authors
  * @license    http://opensource.org/licenses/bsd-license.php New BSD License
- * @version    Release: 1.9.0
+ * @version    Release: 1.9.3
  * @link       http://pear.php.net/package/PEAR
  * @since      Class available since Release 1.4.0a12
  */
@@ -292,6 +292,10 @@ class PEAR_REST_10
 
         $allinfo = $this->_rest->retrieveData($base . 'r/' . $packageLower .
             '/allreleases.xml', false, false, $channel);
+        if (PEAR::isError($allinfo)) {
+            return $allinfo;
+        }
+
         if (!is_array($allinfo['r']) || !isset($allinfo['r'][0])) {
             $allinfo['r'] = array($allinfo['r']);
         }
