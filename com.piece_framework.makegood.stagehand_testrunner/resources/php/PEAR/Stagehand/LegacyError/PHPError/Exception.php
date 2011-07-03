@@ -31,7 +31,7 @@
  * @package    Stagehand_LegacyError
  * @copyright  2009 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 1.0.0
+ * @version    Release: 1.0.1
  * @since      File available since Release 0.1.0
  */
 
@@ -41,7 +41,7 @@
  * @package    Stagehand_LegacyError
  * @copyright  2009 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 1.0.0
+ * @version    Release: 1.0.1
  * @since      Class available since Release 0.1.0
  */
 class Stagehand_LegacyError_PHPError_Exception extends ErrorException implements Stagehand_LegacyError_Exception {}

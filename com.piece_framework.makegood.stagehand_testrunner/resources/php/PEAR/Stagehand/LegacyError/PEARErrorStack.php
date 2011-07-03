@@ -4,7 +4,7 @@
 /**
  * PHP version 5
  *
- * Copyright (c) 2009 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2009, 2011 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,9 +29,9 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_LegacyError
- * @copyright  2009 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2009, 2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 1.0.0
+ * @version    Release: 1.0.1
  * @since      File available since Release 0.1.0
  */
 
@@ -44,9 +44,9 @@ unset($Stagehand_LegacyError_PEARErrorStack_oldErrorReportingLevel);
 
 /**
  * @package    Stagehand_LegacyError
- * @copyright  2009 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2009, 2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 1.0.0
+ * @version    Release: 1.0.1
  * @since      Class available since Release 0.1.0
  */
 class Stagehand_LegacyError_PEARErrorStack
@@ -100,6 +100,7 @@ class Stagehand_LegacyError_PEARErrorStack
         self::$oldCallback = $GLOBALS['_PEAR_ERRORSTACK_DEFAULT_CALLBACK']['*'];
         $GLOBALS['_PEAR_ERRORSTACK_DEFAULT_CALLBACK']['*'] =
             array(__CLASS__, 'toException');
+        class_exists('Stagehand_LegacyError_PEARErrorStack_Exception');
     }
 
     // }}}
