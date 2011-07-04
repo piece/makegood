@@ -11,9 +11,12 @@
 
 package com.piece_framework.makegood.ui.handlers;
 
-import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 
 import com.piece_framework.makegood.launch.TestLifecycle;
+import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.MakeGoodContext;
 import com.piece_framework.makegood.ui.launch.TestRunner;
 
@@ -24,18 +27,22 @@ public abstract class RunHandler extends AbstractHandler {
     @Override
     public boolean isEnabled() {
         if (!super.isEnabled()) return false;
-        IProject project = getProject();
-        if (project == null) return false;
-        if (!MakeGoodContext.getInstance().getProjectValidation().validate(project)) return false;
+        if (!doIsEnabled()) return false;
+        try {
+            if (!MakeGoodContext.getInstance().getProjectValidation().validate(MakeGoodContext.getInstance().getActivePart().getProject())) return false;
+        } catch (CoreException e) {
+            Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
+            return false;
+        }
         if (TestLifecycle.isRunning()) return false;
         return true;
     }
 
-    protected IProject getProject() {
-        return MakeGoodContext.getInstance().getActivePart().getProject();
-    }
-
     protected TestRunner getTestRunner() {
         return MakeGoodContext.getInstance().getTestRunner();
+    }
+
+    protected boolean doIsEnabled() {
+        return true;
     }
 }

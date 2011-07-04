@@ -746,6 +746,36 @@ public class ResultView extends ViewPart {
             }
 
             switch (status) {
+            case NoProjectSelected:
+                new UIJob("MakeGood Status Update") { //$NON-NLS-1$
+                    @Override
+                    public IStatus runInUIThread(IProgressMonitor monitor) {
+                        if (isDisposed()) return Status.OK_STATUS;;
+                        if (actionsInitialized) {
+                            runAllTestsAction.setEnabled(false);
+                            rerunTestAction.setEnabled(false);
+                        }
+                        setForeground(new Color(statusArea.getDisplay(), 209, 19, 24));
+                        setText(Messages.TestResultView_Status_NoProjectSelected);
+                        return Status.OK_STATUS;
+                    }
+                }.schedule();
+                break;
+            case ProjectNotFound:
+                new UIJob("MakeGood Status Update") { //$NON-NLS-1$
+                    @Override
+                    public IStatus runInUIThread(IProgressMonitor monitor) {
+                        if (isDisposed()) return Status.OK_STATUS;;
+                        if (actionsInitialized) {
+                            runAllTestsAction.setEnabled(false);
+                            rerunTestAction.setEnabled(false);
+                        }
+                        setForeground(new Color(statusArea.getDisplay(), 209, 19, 24));
+                        setText(Messages.TestResultView_Status_ProjectNotFound);
+                        return Status.OK_STATUS;
+                    }
+                }.schedule();
+                break;
             case NoTestableProjectSelected:
                 new UIJob("MakeGood Status Update") { //$NON-NLS-1$
                     @Override

@@ -122,6 +122,16 @@ public class Messages extends NLS {
     /**
      * @since 1.6.0
      */
+    public static String TestResultView_Status_NoProjectSelected;
+
+    /**
+     * @since 1.6.0
+     */
+    public static String TestResultView_Status_ProjectNotFound;
+
+    /**
+     * @since 1.6.0
+     */
     public static String TestResultView_Status_NoTestableProjectSelected;
 
     /**

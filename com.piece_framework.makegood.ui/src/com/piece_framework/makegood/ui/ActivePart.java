@@ -15,9 +15,6 @@ package com.piece_framework.makegood.ui;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ProjectScope;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.internal.ui.editor.EditorUtility;
@@ -46,11 +43,6 @@ public class ActivePart {
      * @since 1.6.0
      */
     private static final String VIEW_ID_PHPBROWSEROUTPUT = "org.eclipse.debug.ui.PHPBrowserOutput"; //$NON-NLS-1$
-
-    /**
-     * @since 1.6.0
-     */
-    private static final String NATURE_ID_PHPNATURE = "org.eclipse.php.core.PHPNature"; //$NON-NLS-1$
 
     private Object entity;
 
@@ -162,12 +154,7 @@ public class ActivePart {
         IProject project = getProject(target);
         if (project == null) return false;
         if (!project.exists()) return false;
-        try {
-            return project.hasNature(NATURE_ID_PHPNATURE);
-        } catch (CoreException e) {
-            Activator.getDefault().getLog().log(new Status(IStatus.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
-            return false;
-        }
+        return true;
     }
 
     /**

@@ -12,10 +12,10 @@
 
 package com.piece_framework.makegood.ui;
 
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.IResourceDelta;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -36,9 +36,12 @@ public class Autotest implements IResourceChangeListener {
         if (delta == null) return;
         IResourceDelta[] deltas = delta.getAffectedChildren();
         if (deltas.length == 0) return;
-        IProject project = deltas[0].getResource().getProject();
-        if (project == null) return;
-        if (!MakeGoodContext.getInstance().getProjectValidation().validate(project)) return;
+        try {
+            if (!MakeGoodContext.getInstance().getProjectValidation().validate(deltas[0].getResource().getProject())) return;
+        } catch (CoreException e) {
+            Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
+            return;
+        }
         if (!shouldRunTests(deltas)) return;
 
         AutotestScope autotestScope = RuntimeConfiguration.getInstance().getAutotestScope();

@@ -14,9 +14,6 @@ package com.piece_framework.makegood.ui.handlers;
 
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.resources.IProject;
-
-import com.piece_framework.makegood.launch.TestingTargets;
 
 public class RerunTestHandler extends RunHandler {
     @Override
@@ -26,8 +23,7 @@ public class RerunTestHandler extends RunHandler {
     }
 
     @Override
-    protected IProject getProject() {
-        if (!getTestRunner().hasLastTest()) return null;
-        return TestingTargets.getInstance().getProject();
+    protected boolean doIsEnabled() {
+        return getTestRunner().hasLastTest();
     }
 }

@@ -12,6 +12,7 @@
 package com.piece_framework.makegood.ui;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.index2.search.ISearchEngine.MatchRule;
@@ -26,10 +27,27 @@ import com.piece_framework.makegood.launch.PHPexeItemRepository;
  * @since 1.6.0
  */
 public class ProjectValidation {
+    private static final String NATURE_ID_PHPNATURE = "org.eclipse.php.core.PHPNature"; //$NON-NLS-1$
+
     private int validationCount = 0;
 
-    synchronized public boolean validate(IProject project) {
+    public boolean validate(IProject project) throws CoreException {
         ++validationCount;
+
+        if (project == null) {
+            MakeGoodContext.getInstance().updateStatus(MakeGoodStatus.NoProjectSelected);
+            return false;
+        }
+
+        if (!project.exists()) {
+            MakeGoodContext.getInstance().updateStatus(MakeGoodStatus.ProjectNotFound, project);
+            return false;
+        }
+
+        if (!project.hasNature(NATURE_ID_PHPNATURE)) {
+            MakeGoodContext.getInstance().updateStatus(MakeGoodStatus.NoTestableProjectSelected, project);
+            return false;
+        }
 
         PHPexeItem phpexeItem = new PHPexeItemRepository().findByProject(project);
         if (phpexeItem == null) {

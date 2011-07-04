@@ -15,6 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchListener;
 
@@ -76,13 +79,13 @@ public class MakeGoodContext implements IWorkbenchListener {
 
     public void updateStatus() {
         if (TestLifecycle.isRunning()) return;
-        IProject activeProject = activePart.getProject();
-        if (activeProject == null) {
-            updateStatus(MakeGoodStatus.NoTestableProjectSelected);
-        } else {
-            if (projectValidation.validate(activeProject)) {
-                updateStatus(MakeGoodStatus.WaitingForTestRun, activeProject);
+        try {
+            if (projectValidation.validate(activePart.getProject())) {
+                updateStatus(MakeGoodStatus.WaitingForTestRun, activePart.getProject());
             }
+        } catch (CoreException e) {
+            Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
+            return;
         }
     }
 
