@@ -398,7 +398,7 @@ public class ResultView extends ViewPart {
             }
         }
 
-        MakeGoodContext.getInstance().updateStatus(MakeGoodStatus.WaitingForTestRun);
+        MakeGoodContext.getInstance().updateStatus(MakeGoodStatus.WaitingForTestRun, MakeGoodContext.getInstance().getActivePart().getProject());
     }
 
     /**
