@@ -724,166 +724,111 @@ public class ResultView extends ViewPart {
      * @since 1.6.0
      */
     private class StatusArea extends ActiveText implements MakeGoodStatusChangeListener {
+        private static final String UIJOB_NAME = "MakeGood Status Update"; //$NON-NLS-1$
         private MakeGoodStatus status;
 
         public StatusArea(Composite parent, int style) {
             super(parent, style);
         }
 
+        public void updateProject(final IProject project) {
+            new UIJob(UIJOB_NAME) {
+                @Override
+                public IStatus runInUIThread(IProgressMonitor monitor) {
+                    if (isDisposed()) return Status.OK_STATUS;;
+                    setContentDescription(project.getName());
+                    return Status.OK_STATUS;
+                }
+            }.schedule();
+        }
+
+        public void isFailure(final String message) {
+            new UIJob(UIJOB_NAME) {
+                @Override
+                public IStatus runInUIThread(IProgressMonitor monitor) {
+                    if (isDisposed()) return Status.OK_STATUS;;
+                    if (actionsInitialized) {
+                        runAllTestsAction.setEnabled(false);
+                        rerunTestAction.setEnabled(false);
+                    }
+                    setForeground(new Color(statusArea.getDisplay(), 209, 19, 24));
+                    setText(message);
+                    return Status.OK_STATUS;
+                }
+            }.schedule();
+        }
+
+        public void runningTest() {
+            new UIJob(UIJOB_NAME) {
+                @Override
+                public IStatus runInUIThread(IProgressMonitor monitor) {
+                    if (isDisposed()) return Status.OK_STATUS;;
+                    if (actionsInitialized) {
+                        runAllTestsAction.setEnabled(false);
+                        rerunTestAction.setEnabled(false);
+                        stopTestAction.setEnabled(true);
+                        previousFailureAction.setEnabled(false);
+                        nextFailureAction.setEnabled(false);
+                    }
+                    setForeground(statusArea.getParent().getForeground());
+                    setText(Messages.TestResultView_Status_RunningTest);
+                    return Status.OK_STATUS;
+                }
+            }.schedule();
+        }
+
+        public void waitingForTestRun() {
+            new UIJob(UIJOB_NAME) {
+                @Override
+                public IStatus runInUIThread(IProgressMonitor monitor) {
+                    if (isDisposed()) return Status.OK_STATUS;;
+                    if (actionsInitialized) {
+                        runAllTestsAction.setEnabled(MakeGoodContext.getInstance().getActivePart().isAllTestsRunnable());
+                        rerunTestAction.setEnabled(MakeGoodContext.getInstance().getTestRunner().hasLastTest());
+                        stopTestAction.setEnabled(false);
+                    }
+                    setForeground(statusArea.getParent().getForeground());
+                    setText(Messages.TestResultView_Status_WaitingForTestRun);
+                    return Status.OK_STATUS;
+                }
+            }.schedule();
+        }
+
         @Override
         public void statusChanged(MakeGoodStatus status) {
             this.status = status;
-            final IProject project = this.status.getProject();
+            IProject project = this.status.getProject();
             if (project != null) {
-                new UIJob("MakeGood Status Update") { //$NON-NLS-1$
-                    @Override
-                    public IStatus runInUIThread(IProgressMonitor monitor) {
-                        if (isDisposed()) return Status.OK_STATUS;;
-                        setContentDescription(project.getName());
-                        return Status.OK_STATUS;
-                    }
-                }.schedule();
+                updateProject(project);
             }
 
             switch (status) {
             case NoProjectSelected:
-                new UIJob("MakeGood Status Update") { //$NON-NLS-1$
-                    @Override
-                    public IStatus runInUIThread(IProgressMonitor monitor) {
-                        if (isDisposed()) return Status.OK_STATUS;;
-                        if (actionsInitialized) {
-                            runAllTestsAction.setEnabled(false);
-                            rerunTestAction.setEnabled(false);
-                        }
-                        setForeground(new Color(statusArea.getDisplay(), 209, 19, 24));
-                        setText(Messages.TestResultView_Status_NoProjectSelected);
-                        return Status.OK_STATUS;
-                    }
-                }.schedule();
+                isFailure(Messages.TestResultView_Status_NoProjectSelected);
                 break;
             case ProjectNotFound:
-                new UIJob("MakeGood Status Update") { //$NON-NLS-1$
-                    @Override
-                    public IStatus runInUIThread(IProgressMonitor monitor) {
-                        if (isDisposed()) return Status.OK_STATUS;;
-                        if (actionsInitialized) {
-                            runAllTestsAction.setEnabled(false);
-                            rerunTestAction.setEnabled(false);
-                        }
-                        setForeground(new Color(statusArea.getDisplay(), 209, 19, 24));
-                        setText(Messages.TestResultView_Status_ProjectNotFound);
-                        return Status.OK_STATUS;
-                    }
-                }.schedule();
+                isFailure(Messages.TestResultView_Status_ProjectNotFound);
                 break;
             case NoTestableProjectSelected:
-                new UIJob("MakeGood Status Update") { //$NON-NLS-1$
-                    @Override
-                    public IStatus runInUIThread(IProgressMonitor monitor) {
-                        if (isDisposed()) return Status.OK_STATUS;;
-                        if (actionsInitialized) {
-                            runAllTestsAction.setEnabled(false);
-                            rerunTestAction.setEnabled(false);
-                        }
-                        setForeground(new Color(statusArea.getDisplay(), 209, 19, 24));
-                        setText(Messages.TestResultView_Status_NoTestableProjectSelected);
-                        return Status.OK_STATUS;
-                    }
-                }.schedule();
+                isFailure(Messages.TestResultView_Status_NoTestableProjectSelected);
                 break;
             case NoPHPExecutablesDefined:
-                new UIJob("MakeGood Status Update") { //$NON-NLS-1$
-                    @Override
-                    public IStatus runInUIThread(IProgressMonitor monitor) {
-                        if (isDisposed()) return Status.OK_STATUS;;
-                        if (actionsInitialized) {
-                            runAllTestsAction.setEnabled(false);
-                            rerunTestAction.setEnabled(false);
-                        }
-                        setForeground(new Color(getDisplay(), 209, 19, 24));
-                        setText(Messages.TestResultView_Status_NoPHPExecutablesDefined);
-                        return Status.OK_STATUS;
-                    }
-                }.schedule();
+                isFailure(Messages.TestResultView_Status_NoPHPExecutablesDefined);
                 break;
             case SAPINotCLI:
-                new UIJob("MakeGood Status Update") { //$NON-NLS-1$
-                    @Override
-                    public IStatus runInUIThread(IProgressMonitor monitor) {
-                        if (isDisposed()) return Status.OK_STATUS;;
-                        if (actionsInitialized) {
-                            runAllTestsAction.setEnabled(false);
-                            rerunTestAction.setEnabled(false);
-                        }
-                        setForeground(new Color(getDisplay(), 209, 19, 24));
-                        setText(Messages.TestResultView_Status_SAPINotCLI);
-                        return Status.OK_STATUS;
-                    }
-                }.schedule();
+                isFailure(Messages.TestResultView_Status_SAPINotCLI);
                 break;
             case MakeGoodNotConfigured:
-                new UIJob("MakeGood Status Update") { //$NON-NLS-1$
-                    @Override
-                    public IStatus runInUIThread(IProgressMonitor monitor) {
-                        if (isDisposed()) return Status.OK_STATUS;;
-                        if (actionsInitialized) {
-                            runAllTestsAction.setEnabled(false);
-                            rerunTestAction.setEnabled(false);
-                        }
-                        setForeground(new Color(getDisplay(), 209, 19, 24));
-                        setText(Messages.TestResultView_Status_MakeGoodNotConfigured);
-                        return Status.OK_STATUS;
-                    }
-                }.schedule();
+                isFailure(Messages.TestResultView_Status_MakeGoodNotConfigured);
                 break;
             case TestingFrameworkNotAvailable:
-                new UIJob("MakeGood Status Update") { //$NON-NLS-1$
-                    @Override
-                    public IStatus runInUIThread(IProgressMonitor monitor) {
-                        if (isDisposed()) return Status.OK_STATUS;;
-                        if (actionsInitialized) {
-                            runAllTestsAction.setEnabled(false);
-                            rerunTestAction.setEnabled(false);
-                        }
-                        setForeground(new Color(getDisplay(), 209, 19, 24));
-                        setText(Messages.TestResultView_Status_TestingFrameworkNotAvailable);
-                        return Status.OK_STATUS;
-                    }
-                }.schedule();
+                isFailure(Messages.TestResultView_Status_TestingFrameworkNotAvailable);
                 break;
             case RunningTest:
-                new UIJob("MakeGood Status Update") { //$NON-NLS-1$
-                    @Override
-                    public IStatus runInUIThread(IProgressMonitor monitor) {
-                        if (isDisposed()) return Status.OK_STATUS;;
-                        if (actionsInitialized) {
-                            runAllTestsAction.setEnabled(false);
-                            rerunTestAction.setEnabled(false);
-                            stopTestAction.setEnabled(true);
-                            previousFailureAction.setEnabled(false);
-                            nextFailureAction.setEnabled(false);
-                        }
-                        setForeground(statusArea.getParent().getForeground());
-                        setText(Messages.TestResultView_Status_RunningTest);
-                        return Status.OK_STATUS;
-                    }
-                }.schedule();
+                runningTest();
                 break;
             case WaitingForTestRun:
-                new UIJob("MakeGood Status Update") { //$NON-NLS-1$
-                    @Override
-                    public IStatus runInUIThread(IProgressMonitor monitor) {
-                        if (isDisposed()) return Status.OK_STATUS;;
-                        if (actionsInitialized) {
-                            runAllTestsAction.setEnabled(MakeGoodContext.getInstance().getActivePart().isAllTestsRunnable());
-                            rerunTestAction.setEnabled(MakeGoodContext.getInstance().getTestRunner().hasLastTest());
-                            stopTestAction.setEnabled(false);
-                        }
-                        setForeground(statusArea.getParent().getForeground());
-                        setText(Messages.TestResultView_Status_WaitingForTestRun);
-                        return Status.OK_STATUS;
-                    }
-                }.schedule();
+                waitingForTestRun();
                 break;
             }
         }
