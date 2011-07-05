@@ -98,6 +98,7 @@ import com.piece_framework.makegood.ui.widgets.ActiveTextListener;
 import com.piece_framework.makegood.ui.widgets.ExternalFileWithLineRange;
 import com.piece_framework.makegood.ui.widgets.FileWithLineRange;
 import com.piece_framework.makegood.ui.widgets.InternalFileWithLineRange;
+import com.piece_framework.makegood.ui.widgets.MakeGoodColor;
 import com.piece_framework.makegood.ui.widgets.ProgressBar;
 
 public class ResultView extends ViewPart {
@@ -751,7 +752,7 @@ public class ResultView extends ViewPart {
                         runAllTestsAction.setEnabled(false);
                         rerunTestAction.setEnabled(false);
                     }
-                    setForeground(new Color(statusArea.getDisplay(), 209, 19, 24));
+                    setForeground(new Color(statusArea.getDisplay(), MakeGoodColor.RED));
                     setText(message);
                     return Status.OK_STATUS;
                 }
@@ -1056,13 +1057,13 @@ public class ResultView extends ViewPart {
                 if (file != null) {
                     InternalFileWithLineRange iStyle = new InternalFileWithLineRange();
                     iStyle.file = file;
-                    iStyle.foreground = new Color(text.getDisplay(), 0, 51, 153);
+                    iStyle.foreground = new Color(text.getDisplay(), MakeGoodColor.LINK_INTERNAL);
                     style = (FileWithLineRange) iStyle;
                 } else {
                     ExternalFileWithLineRange eStyle = new ExternalFileWithLineRange();
                     eStyle.fileStore =
                         EFS.getLocalFileSystem().getStore(new Path(matcher.group(1)));
-                    eStyle.foreground = new Color(text.getDisplay(), 114, 159, 207);
+                    eStyle.foreground = new Color(text.getDisplay(), MakeGoodColor.LINK_EXTERNAL);
                     style = (FileWithLineRange) eStyle;
                 }
 
