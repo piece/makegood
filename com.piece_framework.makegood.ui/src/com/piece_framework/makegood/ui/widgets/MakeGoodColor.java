@@ -17,8 +17,8 @@ import org.eclipse.swt.graphics.RGB;
  * @since 1.6.0
  */
 public class MakeGoodColor {
-    public static final RGB RED = new RGB(209, 19, 24);
-    public static final RGB GREEN = new RGB(105, 153, 61);
+    public static final RGB FAILED = new RGB(209, 19, 24);
+    public static final RGB PASSED = new RGB(105, 153, 61);
     public static final RGB STOPPED = new RGB(120, 120, 120);
     public static final RGB GRADIENT = new RGB(255, 255, 255);
     public static final RGB LINK_INTERNAL = new RGB(0, 51, 153);

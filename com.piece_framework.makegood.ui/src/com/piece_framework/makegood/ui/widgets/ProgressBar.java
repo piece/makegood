@@ -33,8 +33,8 @@ public class ProgressBar extends Composite implements PaintListener, ControlList
     public ProgressBar(Composite parent) {
         super(parent, SWT.BORDER);
 
-        passColor = new Color(getDisplay(), MakeGoodColor.GREEN);
-        failureColor = new Color(getDisplay(), MakeGoodColor.RED);
+        passColor = new Color(getDisplay(), MakeGoodColor.PASSED);
+        failureColor = new Color(getDisplay(), MakeGoodColor.FAILED);
         stoppedColor = new Color(getDisplay(), MakeGoodColor.STOPPED);
         gradientColor = new Color(getDisplay(), MakeGoodColor.GRADIENT);
         addPaintListener(this);

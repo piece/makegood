@@ -752,7 +752,7 @@ public class ResultView extends ViewPart {
                         runAllTestsAction.setEnabled(false);
                         rerunTestAction.setEnabled(false);
                     }
-                    setForeground(new Color(statusArea.getDisplay(), MakeGoodColor.RED));
+                    setForeground(new Color(statusArea.getDisplay(), MakeGoodColor.FAILED));
                     setText(message);
                     return Status.OK_STATUS;
                 }
