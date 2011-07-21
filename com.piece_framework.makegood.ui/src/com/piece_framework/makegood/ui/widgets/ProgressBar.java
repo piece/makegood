@@ -23,8 +23,8 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 
 public class ProgressBar extends Composite implements PaintListener, ControlListener {
-    private Color passColor;
-    private Color failureColor;
+    private Color passedColor;
+    private Color failedColor;
     private Color stoppedColor;
     private Color gradientColor;
     private CLabel bar;
@@ -33,8 +33,8 @@ public class ProgressBar extends Composite implements PaintListener, ControlList
     public ProgressBar(Composite parent) {
         super(parent, SWT.BORDER);
 
-        passColor = new Color(getDisplay(), MakeGoodColor.PASSED);
-        failureColor = new Color(getDisplay(), MakeGoodColor.FAILED);
+        passedColor = new Color(getDisplay(), MakeGoodColor.PASSED);
+        failedColor = new Color(getDisplay(), MakeGoodColor.FAILED);
         stoppedColor = new Color(getDisplay(), MakeGoodColor.STOPPED);
         gradientColor = new Color(getDisplay(), MakeGoodColor.GRADIENT);
         addPaintListener(this);
@@ -94,7 +94,7 @@ public class ProgressBar extends Composite implements PaintListener, ControlList
 
     public void markAsFailed() {
         bar.setBackground(
-            new Color[] { gradientColor, failureColor },
+            new Color[] { gradientColor, failedColor },
             new int[] { 100 },
             true
         );
@@ -110,7 +110,7 @@ public class ProgressBar extends Composite implements PaintListener, ControlList
 
     public void clear() {
         bar.setBackground(
-            new Color[] { gradientColor, passColor },
+            new Color[] { gradientColor, passedColor },
             new int[] { 100 },
             true
         );
