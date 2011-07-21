@@ -24,9 +24,26 @@ import org.eclipse.swt.widgets.Composite;
 
 public class ProgressBar extends Composite implements PaintListener, ControlListener {
     private Color passedColor;
+
+    /**
+     * @since 1.7.0
+     */
+    private Color gradientPassedColor;
+
     private Color failedColor;
+
+    /**
+     * @since 1.7.0
+     */
+    private Color gradientFailedColor;
+
     private Color stoppedColor;
-    private Color gradientColor;
+
+    /**
+     * @since 1.7.0
+     */
+    private Color gradientStoppedColor;
+
     private CLabel bar;
     private int rate;
 
@@ -34,9 +51,11 @@ public class ProgressBar extends Composite implements PaintListener, ControlList
         super(parent, SWT.BORDER);
 
         passedColor = new Color(getDisplay(), MakeGoodColor.PASSED);
+        gradientPassedColor = new Color(getDisplay(), MakeGoodColor.GRADIENT_PASSED);
         failedColor = new Color(getDisplay(), MakeGoodColor.FAILED);
+        gradientFailedColor = new Color(getDisplay(), MakeGoodColor.GRADIENT_FAILED);
         stoppedColor = new Color(getDisplay(), MakeGoodColor.STOPPED);
-        gradientColor = new Color(getDisplay(), MakeGoodColor.GRADIENT);
+        gradientStoppedColor = new Color(getDisplay(), MakeGoodColor.GRADIENT_STOPPED);
         addPaintListener(this);
 
         bar = new CLabel(this, SWT.NONE);
@@ -94,7 +113,7 @@ public class ProgressBar extends Composite implements PaintListener, ControlList
 
     public void markAsFailed() {
         bar.setBackground(
-            new Color[] { gradientColor, failedColor },
+            new Color[] { gradientFailedColor, failedColor },
             new int[] { 100 },
             true
         );
@@ -102,7 +121,7 @@ public class ProgressBar extends Composite implements PaintListener, ControlList
 
     public void markAsStopped() {
         bar.setBackground(
-            new Color[] { gradientColor, stoppedColor },
+            new Color[] { gradientStoppedColor, stoppedColor },
             new int[] { 100 },
             true
         );
@@ -110,7 +129,7 @@ public class ProgressBar extends Composite implements PaintListener, ControlList
 
     public void clear() {
         bar.setBackground(
-            new Color[] { gradientColor, passedColor },
+            new Color[] { gradientPassedColor, passedColor },
             new int[] { 100 },
             true
         );
