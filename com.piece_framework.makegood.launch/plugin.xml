@@ -24,7 +24,7 @@
             type="com.piece_framework.makegood.launch.makegoodLaunchConfigurationType">
          <modeCombination
                modes="debug"
-               perspective="org.eclipse.php.debug.ui.PHPDebugPerspective">
+               perspective="org.eclipse.debug.ui.DebugPerspective">
          </modeCombination>
       </launchDelegate>
    </extension>
