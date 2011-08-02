@@ -38,7 +38,7 @@ public class ResultReader extends DefaultHandler {
     private TestSuiteResult currentTestSuite;
     private TestCaseResult currentTestCase;
     private StringBuilder failureTrace;
-    private List<JUnitXMLReaderListener> listeners = new ArrayList<JUnitXMLReaderListener>();
+    private List<ResultReaderListener> listeners = new ArrayList<ResultReaderListener>();
     private boolean stopped = false;
     private SynchronizedFileInputStream stream;
 
@@ -62,11 +62,11 @@ public class ResultReader extends DefaultHandler {
         stopped = true;
     }
 
-    public void addListener(JUnitXMLReaderListener listener) {
+    public void addListener(ResultReaderListener listener) {
         listeners.add(listener);
     }
 
-    public void removeParserListener(JUnitXMLReaderListener listener) {
+    public void removeParserListener(ResultReaderListener listener) {
         listeners.remove(listener);
     }
 
@@ -121,7 +121,7 @@ public class ResultReader extends DefaultHandler {
     public void endDocument() throws SAXException {
         stop();
 
-        for (JUnitXMLReaderListener listener: listeners) {
+        for (ResultReaderListener listener: listeners) {
             listener.endTest();
         }
     }
@@ -170,7 +170,7 @@ public class ResultReader extends DefaultHandler {
 
         currentTestSuite = suite;
 
-        for (JUnitXMLReaderListener listener: listeners) {
+        for (ResultReaderListener listener: listeners) {
             listener.startTestSuite(suite);
         }
     }
@@ -180,7 +180,7 @@ public class ResultReader extends DefaultHandler {
             currentTestSuite = (TestSuiteResult) currentTestSuite.getParent();
         }
 
-        for (JUnitXMLReaderListener listener: listeners) {
+        for (ResultReaderListener listener: listeners) {
             listener.endTestSuite(currentTestSuite);
         }
     }
@@ -192,7 +192,7 @@ public class ResultReader extends DefaultHandler {
 
         currentTestCase = testCase;
 
-        for (JUnitXMLReaderListener listener: listeners) {
+        for (ResultReaderListener listener: listeners) {
             listener.startTestCase(testCase);
         }
     }
@@ -200,7 +200,7 @@ public class ResultReader extends DefaultHandler {
     private void endTestCase() {
         currentTestCase.fix();
 
-        for (JUnitXMLReaderListener listener: listeners) {
+        for (ResultReaderListener listener: listeners) {
             listener.endTestCase(currentTestCase);
         }
 
@@ -209,7 +209,7 @@ public class ResultReader extends DefaultHandler {
 
     private void startFailure(TestCaseResult failure) {
         failureTrace = new StringBuilder();
-        for (JUnitXMLReaderListener listener: listeners) {
+        for (ResultReaderListener listener: listeners) {
             listener.startFailure(failure);
         }
     }
@@ -218,7 +218,7 @@ public class ResultReader extends DefaultHandler {
         currentTestCase.setFailureTrace(failureTrace.toString());
         failureTrace = null;
 
-        for (JUnitXMLReaderListener listener: listeners) {
+        for (ResultReaderListener listener: listeners) {
             listener.endFailure(currentTestCase);
         }
 

@@ -33,7 +33,7 @@ import org.eclipse.ui.progress.UIJob;
 
 import com.piece_framework.makegood.core.result.TestCaseResult;
 import com.piece_framework.makegood.core.result.TestSuiteResult;
-import com.piece_framework.makegood.core.run.JUnitXMLReaderListener;
+import com.piece_framework.makegood.core.run.ResultReaderListener;
 import com.piece_framework.makegood.launch.MakeGoodLaunch;
 import com.piece_framework.makegood.launch.TestLifecycle;
 import com.piece_framework.makegood.launch.TestingTargets;

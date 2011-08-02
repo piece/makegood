@@ -35,7 +35,7 @@ import com.piece_framework.makegood.core.result.TestCaseResult;
 import com.piece_framework.makegood.core.result.TestSuiteResult;
 import com.piece_framework.makegood.core.run.Failures;
 import com.piece_framework.makegood.core.run.ResultReader;
-import com.piece_framework.makegood.core.run.JUnitXMLReaderListener;
+import com.piece_framework.makegood.core.run.ResultReaderListener;
 import com.piece_framework.makegood.core.run.Progress;
 
 /**
@@ -52,8 +52,8 @@ public class TestLifecycle {
      */
     private StreamListener outputStreamListener = new StreamListener();
 
-    private ResultReader junitXMLReader;
-    private Thread junitXMLReaderThread;
+    private ResultReader resultReader;
+    private Thread resultReaderThread;
 
     /**
      * @since 1.4.0
@@ -66,15 +66,15 @@ public class TestLifecycle {
         super();
     }
 
-    public void start(JUnitXMLReaderListener junitXMLReaderListener) throws CoreException {
-        junitXMLReader = new ResultReader(new File(MakeGoodLaunchConfigurationDelegate.getJUnitXMLFile(launch)));
-        junitXMLReader.addListener(junitXMLReaderListener);
+    public void start(ResultReaderListener resultReaderListener) throws CoreException {
+        resultReader = new ResultReader(new File(MakeGoodLaunchConfigurationDelegate.getJUnitXMLFile(launch)));
+        resultReader.addListener(resultReaderListener);
 
-        junitXMLReaderThread = new Thread() {
+        resultReaderThread = new Thread() {
             @Override
             public void run() {
                 try {
-                    junitXMLReader.read();
+                    resultReader.read();
                 } catch (ParserConfigurationException e) {
                     Activator.getDefault().getLog().log(new Status(IStatus.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
                 } catch (SAXException e) {
@@ -86,7 +86,7 @@ public class TestLifecycle {
         };
 
         progress.start();
-        junitXMLReaderThread.start();
+        resultReaderThread.start();
 
         for (IProcess process: launch.getProcesses()) {
             if (process.isTerminated()) continue;
@@ -124,11 +124,11 @@ public class TestLifecycle {
             break;
         }
 
-        junitXMLReader.stop();
+        resultReader.stop();
 
         // TODO Since PDT 2.1 always returns 0 from IProcess.getExitValue(), We decided to use SAXException to check whether or not a PHP process exited with a fatal error.
         try {
-            junitXMLReaderThread.join();
+            resultReaderThread.join();
         } catch (InterruptedException e) {
             Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
         }
@@ -145,8 +145,8 @@ public class TestLifecycle {
     }
 
     public TestSuiteResult getResult() {
-        if (junitXMLReader == null) return null;
-        return junitXMLReader.getResult();
+        if (resultReader == null) return null;
+        return resultReader.getResult();
     }
 
     public Failures getFailures() {
