@@ -15,7 +15,6 @@ package com.piece_framework.makegood.core.run;
 import com.piece_framework.makegood.core.result.TestCaseResult;
 import com.piece_framework.makegood.core.result.TestSuiteResult;
 
-
 public interface JUnitXMLReaderListener {
     public void startTestSuite(TestSuiteResult testSuite);
 
