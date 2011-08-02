@@ -173,4 +173,8 @@ public class TestCaseResult extends Result {
     public String getFailureMessage() {
         return failureMessage;
     }
+
+    @Override
+    public void addChild(Result result) {
+    }
 }

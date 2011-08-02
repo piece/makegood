@@ -48,7 +48,7 @@ public abstract class Result {
         return getFailureCount() > 0;
     }
 
-    void addChild(Result result) {}
+    public abstract void addChild(Result result);
 
     public void setFile(String file) {
         this.file = file;
