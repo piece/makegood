@@ -171,7 +171,7 @@ public class ResultReader extends DefaultHandler {
         currentTestSuite = testSuite;
 
         for (ResultReaderListener listener: listeners) {
-            listener.startTestSuite(suite);
+            listener.startTestSuite(currentTestSuite);
         }
     }
 
@@ -193,7 +193,7 @@ public class ResultReader extends DefaultHandler {
         currentTestCase = testCase;
 
         for (ResultReaderListener listener: listeners) {
-            listener.startTestCase(testCase);
+            listener.startTestCase(currentTestCase);
         }
     }
 
