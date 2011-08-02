@@ -31,7 +31,7 @@ import com.piece_framework.makegood.core.result.ResultType;
 import com.piece_framework.makegood.core.result.TestCaseResult;
 import com.piece_framework.makegood.core.result.TestSuiteResult;
 
-public class JUnitXMLReader extends DefaultHandler {
+public class ResultReader extends DefaultHandler {
     private File log;
     private TestSuiteResult result;
     private TestSuiteResult currentTestSuite;
@@ -41,7 +41,7 @@ public class JUnitXMLReader extends DefaultHandler {
     private boolean stopped = false;
     private SynchronizedFileInputStream stream;
 
-    public JUnitXMLReader(File log) {
+    public ResultReader(File log) {
         this.log = log;
     }
 

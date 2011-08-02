@@ -34,7 +34,7 @@ import org.xml.sax.SAXException;
 import com.piece_framework.makegood.core.result.TestCaseResult;
 import com.piece_framework.makegood.core.result.TestSuiteResult;
 import com.piece_framework.makegood.core.run.Failures;
-import com.piece_framework.makegood.core.run.JUnitXMLReader;
+import com.piece_framework.makegood.core.run.ResultReader;
 import com.piece_framework.makegood.core.run.JUnitXMLReaderListener;
 import com.piece_framework.makegood.core.run.Progress;
 
@@ -52,7 +52,7 @@ public class TestLifecycle {
      */
     private StreamListener outputStreamListener = new StreamListener();
 
-    private JUnitXMLReader junitXMLReader;
+    private ResultReader junitXMLReader;
     private Thread junitXMLReaderThread;
 
     /**
@@ -67,7 +67,7 @@ public class TestLifecycle {
     }
 
     public void start(JUnitXMLReaderListener junitXMLReaderListener) throws CoreException {
-        junitXMLReader = new JUnitXMLReader(new File(MakeGoodLaunchConfigurationDelegate.getJUnitXMLFile(launch)));
+        junitXMLReader = new ResultReader(new File(MakeGoodLaunchConfigurationDelegate.getJUnitXMLFile(launch)));
         junitXMLReader.addListener(junitXMLReaderListener);
 
         junitXMLReaderThread = new Thread() {
