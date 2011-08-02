@@ -59,7 +59,7 @@ public class TestCaseResult extends Result {
 
     @Override
     public void setTime(long time) {
-        this.time = time;
+        super.setTime(time);
         parent.setTime(time);
     }
 

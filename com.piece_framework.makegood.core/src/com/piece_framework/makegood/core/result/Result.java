@@ -36,7 +36,9 @@ public abstract class Result {
         return file;
     }
 
-    public abstract void setTime(long time);
+    public void setTime(long time) {
+        this.time = time;
+    }
 
     public abstract List<Result> getChildren();
 

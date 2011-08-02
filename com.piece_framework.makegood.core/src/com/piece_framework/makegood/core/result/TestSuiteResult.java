@@ -81,7 +81,7 @@ public class TestSuiteResult extends Result {
 
     @Override
     public void setTime(long time) {
-        this.time += time;
+        super.setTime(getTime() + time);
         if (parent != null) {
             parent.setTime(time);
         }
