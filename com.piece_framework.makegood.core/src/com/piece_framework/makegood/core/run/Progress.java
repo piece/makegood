@@ -19,18 +19,18 @@ public class Progress {
     private long processTime;
     private long startTimeForTestCase;
     private long processTimeForTestCase;
-    private TestSuiteResult suite;
+    private TestSuiteResult testSuite;
     private long startTime;
     private long endTime;
     private boolean isRunning = false;
     private boolean isCompleted = false;
 
     public Progress() {
-        suite = new TestSuiteResult(null);
+        testSuite = new TestSuiteResult(null);
     }
 
-    public void initialize(TestSuiteResult suite) {
-        this.suite = suite;
+    public void initialize(TestSuiteResult testSuite) {
+        this.testSuite = testSuite;
         startTimeForTestCase = System.nanoTime();
         processTime = 0;
         isInitialized = true;
@@ -41,23 +41,23 @@ public class Progress {
     }
 
     public int getAllTestCount() {
-        return suite.getAllTestCount();
+        return testSuite.getAllTestCount();
     }
 
     public int getTestCount() {
-        return suite.getTestCount();
+        return testSuite.getTestCount();
     }
 
     public int getPassCount() {
-        return suite.getPassCount();
+        return testSuite.getPassCount();
     }
 
     public int getFailureCount() {
-        return suite.getFailureCount();
+        return testSuite.getFailureCount();
     }
 
     public int getErrorCount() {
-        return suite.getErrorCount();
+        return testSuite.getErrorCount();
     }
 
     public long getProcessTime() {
@@ -65,20 +65,20 @@ public class Progress {
     }
 
     public int calculateRate() {
-        if (suite.getAllTestCount() == 0) {
+        if (testSuite.getAllTestCount() == 0) {
             return 0;
         }
 
-        int rate = (int) (((double) suite.getTestCount() / (double) suite.getAllTestCount()) * 100d);
+        int rate = (int) (((double) testSuite.getTestCount() / (double) testSuite.getAllTestCount()) * 100d);
         return rate <= 100 ? rate : 100;
     }
 
     public long calculateProcessTimeAverage() {
-        if (suite.getTestCount() == 0) {
+        if (testSuite.getTestCount() == 0) {
             return 0;
         }
 
-        return getProcessTime() / suite.getTestCount();
+        return getProcessTime() / testSuite.getTestCount();
     }
 
     public void startTestCase() {
@@ -95,7 +95,7 @@ public class Progress {
     }
 
     public boolean hasFailures() {
-        return suite.hasFailures() || suite.hasErrors();
+        return testSuite.hasFailures() || testSuite.hasErrors();
     }
 
     public void start() {

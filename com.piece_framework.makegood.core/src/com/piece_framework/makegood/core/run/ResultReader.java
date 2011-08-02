@@ -161,14 +161,14 @@ public class ResultReader extends DefaultHandler {
         return true;
     }
 
-    private void startTestSuite(TestSuiteResult suite) {
+    private void startTestSuite(TestSuiteResult testSuite) {
         if (result != null) {
-            currentTestSuite.addChild(suite);
+            currentTestSuite.addChild(testSuite);
         } else {
-            result = suite;
+            result = testSuite;
         }
 
-        currentTestSuite = suite;
+        currentTestSuite = testSuite;
 
         for (ResultReaderListener listener: listeners) {
             listener.startTestSuite(suite);
@@ -228,22 +228,22 @@ public class ResultReader extends DefaultHandler {
     }
 
     private TestSuiteResult createTestSuite(Attributes attributes) {
-        TestSuiteResult suite = new TestSuiteResult(attributes.getValue("name")); //$NON-NLS-1$
+        TestSuiteResult testSuite = new TestSuiteResult(attributes.getValue("name")); //$NON-NLS-1$
         if (attributes.getIndex("file") != -1) { //$NON-NLS-1$
-            suite.setFile(attributes.getValue("file")); //$NON-NLS-1$
+            testSuite.setFile(attributes.getValue("file")); //$NON-NLS-1$
         }
         if (attributes.getIndex("fullPackage") != -1) { //$NON-NLS-1$
-            suite.setFullPackageName(attributes.getValue("fullPackage")); //$NON-NLS-1$
+            testSuite.setFullPackageName(attributes.getValue("fullPackage")); //$NON-NLS-1$
         }
         if (attributes.getIndex("package") != -1) { //$NON-NLS-1$
-            suite.setPackageName(attributes.getValue("package")); //$NON-NLS-1$
+            testSuite.setPackageName(attributes.getValue("package")); //$NON-NLS-1$
         }
 
         if (result == null) {
-            suite.setAllTestCount(Integer.parseInt(attributes.getValue("tests"))); //$NON-NLS-1$
+            testSuite.setAllTestCount(Integer.parseInt(attributes.getValue("tests"))); //$NON-NLS-1$
         }
 
-        return suite;
+        return testSuite;
     }
 
     private TestCaseResult createTestCase(Attributes attributes) {
