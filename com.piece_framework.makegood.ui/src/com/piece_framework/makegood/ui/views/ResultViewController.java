@@ -82,7 +82,7 @@ public class ResultViewController implements IDebugEventSetListener {
         testLifecycle = TestLifecycle.getInstance();
 
         try {
-            testLifecycle.start(new ResultJUnitXMLReaderListener());
+            testLifecycle.start(new ResultProjector());
         } catch (CoreException e) {
             Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
             return;
@@ -222,7 +222,7 @@ public class ResultViewController implements IDebugEventSetListener {
         return Boolean.TRUE.toString().equals(isTerminated);
     }
 
-    public class ResultJUnitXMLReaderListener implements JUnitXMLReaderListener {
+    public class ResultProjector implements ResultReaderListener {
         @Override
         public void startTestSuite(TestSuiteResult testSuite) {
             testLifecycle.startTestSuite(testSuite);
