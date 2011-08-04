@@ -70,7 +70,7 @@ public class TestSuiteResult extends Result {
             return;
         }
 
-        result.parent = this;
+        result.setParent(this);
         children.add(result);
     }
 
@@ -82,8 +82,8 @@ public class TestSuiteResult extends Result {
     @Override
     public void setTime(long time) {
         super.setTime(getTime() + time);
-        if (parent != null) {
-            parent.setTime(time);
+        if (getParent() != null) {
+            getParent().setTime(time);
         }
     }
 

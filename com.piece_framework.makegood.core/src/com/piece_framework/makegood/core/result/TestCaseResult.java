@@ -60,7 +60,7 @@ public class TestCaseResult extends Result {
     @Override
     public void setTime(long time) {
         super.setTime(time);
-        parent.setTime(time);
+        getParent().setTime(time);
     }
 
     public void setClassName(String cassName) {
@@ -154,10 +154,10 @@ public class TestCaseResult extends Result {
      */
     @Override
     public String getFile() {
-        if (file == null) {
-            return parent.getFile();
+        if (super.getFile() == null) {
+            return getParent().getFile();
         }
-        return file;
+        return super.getFile();
     }
 
     /**

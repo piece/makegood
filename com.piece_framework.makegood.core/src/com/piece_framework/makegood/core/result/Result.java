@@ -15,10 +15,10 @@ package com.piece_framework.makegood.core.result;
 import java.util.List;
 
 public abstract class Result {
-    protected String name;
-    protected long time;
-    protected String file;
-    protected Result parent;
+    private String name;
+    private long time;
+    private String file;
+    private Result parent;
 
     public Result(String name) {
         this.name = name;
@@ -71,4 +71,11 @@ public abstract class Result {
     }
 
     public abstract int getSize();
+
+    /**
+     * @since 1.7.0
+     */
+    public void setParent(Result parent) {
+        this.parent = parent;
+    }
 }
