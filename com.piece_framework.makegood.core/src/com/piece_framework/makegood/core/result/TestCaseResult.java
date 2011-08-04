@@ -174,6 +174,9 @@ public class TestCaseResult extends Result {
         return failureMessage;
     }
 
+    /**
+     * @since 1.7.0
+     */
     @Override
     public void addChild(Result result) {
     }
