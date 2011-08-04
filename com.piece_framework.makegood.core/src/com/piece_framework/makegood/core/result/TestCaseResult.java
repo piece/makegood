@@ -75,8 +75,8 @@ public class TestCaseResult extends Result {
         return isArtificial;
     }
 
-    public void setIsArtificial(boolean isArtificial) {
-        this.isArtificial = isArtificial;
+    public void markAsArtificial() {
+        this.isArtificial = true;
     }
 
     public void setFailureType(String failureType) {

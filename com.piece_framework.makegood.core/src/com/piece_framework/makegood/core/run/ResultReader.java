@@ -268,7 +268,7 @@ public class ResultReader extends DefaultHandler {
             currentTestCase = new TestCaseResult("(Failure)"); //$NON-NLS-1$
             currentTestCase.setClassName(currentTestSuite.getName());
             currentTestCase.setFile(currentTestSuite.getFile());
-            currentTestCase.setIsArtificial(true);
+            currentTestCase.markAsArtificial();
             currentTestCase.setResultType(ResultType.FAILURE);
             startTestCase(currentTestCase);
         }
@@ -296,7 +296,7 @@ public class ResultReader extends DefaultHandler {
             currentTestCase = new TestCaseResult("(Error)"); //$NON-NLS-1$
             currentTestCase.setClassName(currentTestSuite.getName());
             currentTestCase.setFile(currentTestSuite.getFile());
-            currentTestCase.setIsArtificial(true);
+            currentTestCase.markAsArtificial();
             currentTestCase.setResultType(ResultType.ERROR);
             startTestCase(currentTestCase);
         }
