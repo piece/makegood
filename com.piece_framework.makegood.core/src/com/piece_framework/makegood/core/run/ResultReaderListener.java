@@ -16,6 +16,11 @@ import com.piece_framework.makegood.core.result.TestCaseResult;
 import com.piece_framework.makegood.core.result.TestSuiteResult;
 
 public interface ResultReaderListener {
+    /**
+     * @since 1.7.0
+     */
+    public void onFirstTestSuite(TestSuiteResult testSuite);
+
     public void startTestSuite(TestSuiteResult testSuite);
 
     public void endTestSuite(TestSuiteResult testSuite);

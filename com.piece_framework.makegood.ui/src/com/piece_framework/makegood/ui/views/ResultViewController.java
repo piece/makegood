@@ -226,23 +226,6 @@ public class ResultViewController implements IDebugEventSetListener {
         @Override
         public void startTestSuite(TestSuiteResult testSuite) {
             testLifecycle.startTestSuite(testSuite);
-
-            if (!testLifecycle.getProgress().isInitialized()) {
-                testLifecycle.getProgress().initialize(testSuite);
-
-                Job job = new UIJob("MakeGood Result Tree Set") { //$NON-NLS-1$
-                    @Override
-                    public IStatus runInUIThread(IProgressMonitor monitor) {
-                        ResultView resultView = (ResultView) ViewOpener.find(ResultView.VIEW_ID);
-                        if (resultView != null) {
-                            resultView.setTreeInput(testLifecycle.getResult());
-                        }
-                        return Status.OK_STATUS;
-                    }
-                };
-                job.schedule();
-                return;
-            }
         }
 
         @Override
@@ -340,6 +323,26 @@ public class ResultViewController implements IDebugEventSetListener {
         @Override
         public void endTest() {
             testLifecycle.endTest();
+        }
+
+        /**
+         * @since 1.7.0
+         */
+        @Override
+        public void onFirstTestSuite(final TestSuiteResult testSuite) {
+            testLifecycle.getProgress().initialize(testSuite);
+
+            Job job = new UIJob("MakeGood Result Tree Set") { //$NON-NLS-1$
+                @Override
+                public IStatus runInUIThread(IProgressMonitor monitor) {
+                    ResultView resultView = (ResultView) ViewOpener.find(ResultView.VIEW_ID);
+                    if (resultView != null) {
+                        resultView.setTreeInput(testSuite);
+                    }
+                    return Status.OK_STATUS;
+                }
+            };
+            job.schedule();
         }
     }
 }

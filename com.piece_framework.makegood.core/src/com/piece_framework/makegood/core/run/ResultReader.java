@@ -163,6 +163,9 @@ public class ResultReader extends DefaultHandler {
     private void startTestSuite(TestSuiteResult testSuite) {
         if (result == null) {
             result = testSuite;
+            for (ResultReaderListener listener: listeners) {
+                listener.onFirstTestSuite(testSuite);
+            }
         } else {
             currentTestSuite.addChild(testSuite);
         }
