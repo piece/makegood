@@ -143,11 +143,6 @@ public class TestLifecycle {
         return hasErrors;
     }
 
-    public TestSuiteResult getResult() {
-        if (resultReader == null) return null;
-        return resultReader.getResult();
-    }
-
     public Failures getFailures() {
         return failures;
     }
