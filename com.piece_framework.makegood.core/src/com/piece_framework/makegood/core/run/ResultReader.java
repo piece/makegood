@@ -172,13 +172,11 @@ public class ResultReader extends DefaultHandler {
     }
 
     private void endTestSuite() {
-        if (currentTestSuite != null) {
-            currentTestSuite = (TestSuiteResult) currentTestSuite.getParent();
-        }
-
         for (ResultReaderListener listener: listeners) {
             listener.endTestSuite(currentTestSuite);
         }
+
+        currentTestSuite = (TestSuiteResult) currentTestSuite.getParent();
     }
 
     private void startTestCase(TestCaseResult testCase) {
