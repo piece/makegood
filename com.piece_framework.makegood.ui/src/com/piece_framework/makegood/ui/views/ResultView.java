@@ -365,6 +365,9 @@ public class ResultView extends ViewPart {
     }
 
     void updateOnEndTestCase(TestCaseResult currentTestCase) {
+        if (testLifecycle.getProgress().hasFailures()) {
+            markAsFailed();
+        }
         updateResult();
     }
 
@@ -428,7 +431,7 @@ public class ResultView extends ViewPart {
         progressBar.markAsStopped();
     }
 
-    void markAsFailed() {
+    private void markAsFailed() {
         progressBar.markAsFailed();
         previousFailureAction.setEnabled(true);
         nextFailureAction.setEnabled(true);

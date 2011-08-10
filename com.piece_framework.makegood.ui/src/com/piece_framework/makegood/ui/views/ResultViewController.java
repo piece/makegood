@@ -259,9 +259,6 @@ public class ResultViewController implements IDebugEventSetListener {
                 public IStatus runInUIThread(IProgressMonitor monitor) {
                     ResultView resultView = (ResultView) ViewOpener.find(ResultView.VIEW_ID);
                     if (resultView != null) {
-                        if (testLifecycle.getProgress().hasFailures()) {
-                            resultView.markAsFailed();
-                        }
                         resultView.updateOnEndTestCase(testCase);
                     }
                     return Status.OK_STATUS;
