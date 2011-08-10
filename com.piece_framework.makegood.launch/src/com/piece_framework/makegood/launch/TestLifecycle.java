@@ -126,7 +126,6 @@ public class TestLifecycle {
 
         resultReader.stop();
 
-        // TODO Since PDT 2.1 always returns 0 from IProcess.getExitValue(), We decided to use SAXException to check whether or not a PHP process exited with a fatal error.
         try {
             resultReaderThread.join();
         } catch (InterruptedException e) {
