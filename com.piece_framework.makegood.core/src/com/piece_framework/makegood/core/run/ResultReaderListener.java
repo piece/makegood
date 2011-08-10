@@ -28,6 +28,11 @@ public interface ResultReaderListener {
 
     public void endFailure(TestCaseResult failure);
 
+    /**
+     * @since 1.7.0
+     */
+    public void startTest();
+
     public void endTest();
 
     /**

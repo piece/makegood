@@ -68,6 +68,9 @@ public class ResultReader extends DefaultHandler {
 
     @Override
     public void startDocument() throws SAXException {
+        for (ResultReaderListener listener: listeners) {
+            listener.startTest();
+        }
     }
 
     @Override

@@ -330,6 +330,13 @@ public class ResultViewController implements IDebugEventSetListener {
         public void endError(TestCaseResult error) {
         }
 
+        /**
+         * @since 1.7.0
+         */
+        @Override
+        public void startTest() {
+        }
+
         @Override
         public void endTest() {
             testLifecycle.endTest();
