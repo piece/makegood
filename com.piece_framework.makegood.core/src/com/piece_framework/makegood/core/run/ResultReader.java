@@ -66,10 +66,6 @@ public class ResultReader extends DefaultHandler {
         listeners.add(listener);
     }
 
-    public void removeParserListener(ResultReaderListener listener) {
-        listeners.remove(listener);
-    }
-
     @Override
     public void startDocument() throws SAXException {
     }
