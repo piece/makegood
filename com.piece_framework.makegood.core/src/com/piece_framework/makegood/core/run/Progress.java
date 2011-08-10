@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2010 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
- *               2010 KUBO Atsuhiro <kubo@iteman.jp>,
+ *               2010-2011 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -12,9 +12,10 @@
 
 package com.piece_framework.makegood.core.run;
 
+import com.piece_framework.makegood.core.result.TestCaseResult;
 import com.piece_framework.makegood.core.result.TestSuiteResult;
 
-public class Progress {
+public class Progress implements ResultReaderListener {
     private boolean isInitialized;
     private long processTime;
     private long startTimeForTestCase;
@@ -29,9 +30,9 @@ public class Progress {
         testSuite = new TestSuiteResult(null);
     }
 
-    public void initialize(TestSuiteResult testSuite) {
+    private void initialize(TestSuiteResult testSuite) {
         this.testSuite = testSuite;
-        startTimeForTestCase = System.nanoTime();
+        startTimeForTestCase = System.nanoTime(); // TODO XXX
         processTime = 0;
         isInitialized = true;
     }
@@ -81,17 +82,16 @@ public class Progress {
         return getProcessTime() / testSuite.getTestCount();
     }
 
-    public void startTestCase() {
+    @Override
+    public void startTestCase(TestCaseResult testCase) {
         startTimeForTestCase = System.nanoTime();
     }
 
-    public void endTestCase() {
+    @Override
+    public void endTestCase(TestCaseResult testCase) {
         processTimeForTestCase = System.nanoTime() - startTimeForTestCase;
         processTime += processTimeForTestCase;
-    }
-
-    public long getProcessTimeForTestCase() {
-        return processTimeForTestCase;
+        testCase.setTime(processTimeForTestCase);
     }
 
     public boolean hasFailures() {
@@ -129,5 +129,70 @@ public class Progress {
      */
     public boolean noTestsFound() {
         return isCompleted && getAllTestCount() == 0;
+    }
+
+    /**
+     * @since 1.7.0
+     */
+    @Override
+    public void onFirstTestSuite(TestSuiteResult testSuite) {
+        initialize(testSuite);
+    }
+
+    /**
+     * @since 1.7.0
+     */
+    @Override
+    public void startTestSuite(TestSuiteResult testSuite) {
+    }
+
+    /**
+     * @since 1.7.0
+     */
+    @Override
+    public void endTestSuite(TestSuiteResult testSuite) {
+    }
+
+    /**
+     * @since 1.7.0
+     */
+    @Override
+    public void startFailure(TestCaseResult failure) {
+    }
+
+    /**
+     * @since 1.7.0
+     */
+    @Override
+    public void endFailure(TestCaseResult failure) {
+    }
+
+    /**
+     * @since 1.7.0
+     */
+    @Override
+    public void startTest() {
+    }
+
+    /**
+     * @since 1.7.0
+     */
+    @Override
+    public void endTest() {
+        markAsCompleted();
+    }
+
+    /**
+     * @since 1.7.0
+     */
+    @Override
+    public void startError(TestCaseResult error) {
+    }
+
+    /**
+     * @since 1.7.0
+     */
+    @Override
+    public void endError(TestCaseResult error) {
     }
 }

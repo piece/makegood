@@ -225,7 +225,6 @@ public class ResultViewController implements IDebugEventSetListener {
     public class ResultProjector implements ResultReaderListener {
         @Override
         public void startTestSuite(TestSuiteResult testSuite) {
-            testLifecycle.startTestSuite(testSuite);
         }
 
         @Override
@@ -234,8 +233,6 @@ public class ResultViewController implements IDebugEventSetListener {
 
         @Override
         public void startTestCase(final TestCaseResult testCase) {
-            testLifecycle.startTestCase(testCase);
-
             Job job = new UIJob("MakeGood Test Case Start") { //$NON-NLS-1$
                 @Override
                 public IStatus runInUIThread(IProgressMonitor monitor) {
@@ -257,10 +254,6 @@ public class ResultViewController implements IDebugEventSetListener {
 
         @Override
         public void endTestCase(final TestCaseResult testCase) {
-            if (!testLifecycle.getProgress().isInitialized()) return;
-
-            testLifecycle.endTestCase(testCase);
-
             Job job = new UIJob("MakeGood Test Case End") { //$NON-NLS-1$
                 @Override
                 public IStatus runInUIThread(IProgressMonitor monitor) {
@@ -279,7 +272,6 @@ public class ResultViewController implements IDebugEventSetListener {
 
         @Override
         public void startFailure(final TestCaseResult failure) {
-            testLifecycle.startFailure(failure);
             Job job = new UIJob("MakeGood Marker Create") { //$NON-NLS-1$
                 @Override
                 public IStatus runInUIThread(IProgressMonitor monitor) {
@@ -322,7 +314,6 @@ public class ResultViewController implements IDebugEventSetListener {
 
         @Override
         public void endTest() {
-            testLifecycle.endTest();
         }
 
         /**
@@ -330,8 +321,6 @@ public class ResultViewController implements IDebugEventSetListener {
          */
         @Override
         public void onFirstTestSuite(final TestSuiteResult testSuite) {
-            testLifecycle.getProgress().initialize(testSuite);
-
             Job job = new UIJob("MakeGood Result Tree Set") { //$NON-NLS-1$
                 @Override
                 public IStatus runInUIThread(IProgressMonitor monitor) {

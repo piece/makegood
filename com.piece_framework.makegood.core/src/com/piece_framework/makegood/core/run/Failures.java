@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2010-2011 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -19,14 +19,14 @@ import com.piece_framework.makegood.core.result.Result;
 import com.piece_framework.makegood.core.result.TestCaseResult;
 import com.piece_framework.makegood.core.result.TestSuiteResult;
 
-public class Failures {
+public class Failures implements ResultReaderListener {
     public static final int FIND_PREVIOUS = 1;
     public static final int FIND_NEXT = 2;
     private List<Result> orderedResults = new ArrayList<Result>();
     private IdentityHashMap<Result, Integer> resultIndexes = new IdentityHashMap<Result, Integer>();
     private List<Integer> failureIndexes = new ArrayList<Integer>();
 
-    public void addResult(Result result) {
+    private void addResult(Result result) {
         orderedResults.add(result);
         resultIndexes.put(result, orderedResults.size() - 1);
     }
@@ -64,5 +64,86 @@ public class Failures {
         }
 
         return null;
+    }
+
+    /**
+     * @since 1.7.0
+     */
+    @Override
+    public void onFirstTestSuite(TestSuiteResult testSuite) {
+    }
+
+    /**
+     * @since 1.7.0
+     */
+    @Override
+    public void startTestSuite(TestSuiteResult testSuite) {
+        addResult(testSuite);
+    }
+
+    /**
+     * @since 1.7.0
+     */
+    @Override
+    public void endTestSuite(TestSuiteResult testSuite) {
+    }
+
+    /**
+     * @since 1.7.0
+     */
+    @Override
+    public void startTestCase(TestCaseResult testCase) {
+        addResult(testCase);
+    }
+
+    /**
+     * @since 1.7.0
+     */
+    @Override
+    public void endTestCase(TestCaseResult testCase) {
+    }
+
+    /**
+     * @since 1.7.0
+     */
+    @Override
+    public void startFailure(TestCaseResult failure) {
+        markCurrentResultAsFailure();
+    }
+
+    /**
+     * @since 1.7.0
+     */
+    @Override
+    public void endFailure(TestCaseResult failure) {
+    }
+
+    /**
+     * @since 1.7.0
+     */
+    @Override
+    public void startTest() {
+    }
+
+    /**
+     * @since 1.7.0
+     */
+    @Override
+    public void endTest() {
+    }
+
+    /**
+     * @since 1.7.0
+     */
+    @Override
+    public void startError(TestCaseResult error) {
+        markCurrentResultAsFailure();
+    }
+
+    /**
+     * @since 1.7.0
+     */
+    @Override
+    public void endError(TestCaseResult error) {
     }
 }

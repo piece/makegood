@@ -31,12 +31,10 @@ import org.eclipse.php.internal.debug.core.model.IPHPDebugTarget;
 import org.eclipse.php.internal.debug.core.zend.communication.DebuggerCommunicationDaemon;
 import org.xml.sax.SAXException;
 
-import com.piece_framework.makegood.core.result.TestCaseResult;
-import com.piece_framework.makegood.core.result.TestSuiteResult;
 import com.piece_framework.makegood.core.run.Failures;
+import com.piece_framework.makegood.core.run.Progress;
 import com.piece_framework.makegood.core.run.ResultReader;
 import com.piece_framework.makegood.core.run.ResultReaderListener;
-import com.piece_framework.makegood.core.run.Progress;
 
 /**
  * @since 1.2.0
@@ -68,6 +66,8 @@ public class TestLifecycle {
 
     public void start(ResultReaderListener resultReaderListener) throws CoreException {
         resultReader = new ResultReader(new File(MakeGoodLaunchConfigurationDelegate.getJUnitXMLFile(launch)));
+        resultReader.addListener(progress);
+        resultReader.addListener(failures);
         resultReader.addListener(resultReaderListener);
 
         resultReaderThread = new Thread() {
@@ -145,28 +145,6 @@ public class TestLifecycle {
 
     public Failures getFailures() {
         return failures;
-    }
-
-    public void endTest() {
-        progress.markAsCompleted();
-    }
-
-    public void startFailure(TestCaseResult failure) {
-        failures.markCurrentResultAsFailure();
-    }
-
-    public void endTestCase(TestCaseResult testCase) {
-        progress.endTestCase();
-        testCase.setTime(progress.getProcessTimeForTestCase());
-    }
-
-    public void startTestCase(TestCaseResult testCase) {
-        failures.addResult(testCase);
-        progress.startTestCase();
-    }
-
-    public void startTestSuite(TestSuiteResult testSuite) {
-        failures.addResult(testSuite);
     }
 
     public boolean validateLaunchIdentity(MakeGoodLaunch launch) {
