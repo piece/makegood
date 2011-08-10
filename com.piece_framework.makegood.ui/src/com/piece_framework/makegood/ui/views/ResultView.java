@@ -959,7 +959,7 @@ public class ResultView extends ViewPart {
         @Override
         public boolean hasChildren(Object element) {
             if (!(element instanceof TestSuiteResult)) return false;
-            return !((TestSuiteResult) element).getChildren().isEmpty();
+            return ((TestSuiteResult) element).hasChildren();
         }
 
         @Override

@@ -156,8 +156,9 @@ public class TestCaseResult extends Result {
     public String getFile() {
         if (super.getFile() == null) {
             return getParent().getFile();
+        } else {
+            return super.getFile();
         }
-        return super.getFile();
     }
 
     /**
