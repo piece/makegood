@@ -83,7 +83,7 @@ public class ResultReader extends DefaultHandler {
         } else if (qualifiedName.equalsIgnoreCase("failure")) { //$NON-NLS-1$
             startFailure(createFailureTestCase(attributes));
         } else if (qualifiedName.equalsIgnoreCase("error")) { //$NON-NLS-1$
-            startFailure(createErrorTestCase(attributes));
+            startError(createErrorTestCase(attributes));
         }
     }
 
@@ -109,7 +109,7 @@ public class ResultReader extends DefaultHandler {
         } else if (qualifiedName.equalsIgnoreCase("failure")) { //$NON-NLS-1$
             endFailure();
         } else if (qualifiedName.equalsIgnoreCase("error")) { //$NON-NLS-1$
-            endFailure();
+            endError();
         }
     }
 
@@ -216,6 +216,32 @@ public class ResultReader extends DefaultHandler {
 
         for (ResultReaderListener listener: listeners) {
             listener.endFailure(currentTestCase);
+        }
+
+        if (currentTestCase.isArtificial()) {
+            endTestCase();
+        }
+    }
+
+    /**
+     * @since 1.7.0
+     */
+    private void startError(TestCaseResult error) {
+        failureTrace = new StringBuilder();
+        for (ResultReaderListener listener: listeners) {
+            listener.startError(error);
+        }
+    }
+
+    /**
+     * @since 1.7.0
+     */
+    private void endError() {
+        currentTestCase.setFailureTrace(failureTrace.toString());
+        failureTrace = null;
+
+        for (ResultReaderListener listener: listeners) {
+            listener.endError(currentTestCase);
         }
 
         if (currentTestCase.isArtificial()) {
