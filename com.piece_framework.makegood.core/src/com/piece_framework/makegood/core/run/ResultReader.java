@@ -68,6 +68,13 @@ public class ResultReader extends DefaultHandler {
 
     @Override
     public void startDocument() throws SAXException {
+        startTest();
+    }
+
+    /**
+     * @since 1.7.0
+     */
+    private void startTest() {
         for (ResultReaderListener listener: listeners) {
             listener.startTest();
         }
@@ -119,7 +126,13 @@ public class ResultReader extends DefaultHandler {
     @Override
     public void endDocument() throws SAXException {
         stop();
+        endTest();
+    }
 
+    /**
+     * @since 1.7.0
+     */
+    private void endTest() {
         for (ResultReaderListener listener: listeners) {
             listener.endTest();
         }
