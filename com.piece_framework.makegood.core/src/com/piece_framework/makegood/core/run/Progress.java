@@ -16,7 +16,6 @@ import com.piece_framework.makegood.core.result.TestCaseResult;
 import com.piece_framework.makegood.core.result.TestSuiteResult;
 
 public class Progress implements ResultReaderListener {
-    private boolean isInitialized;
     private long processTime;
     private long startTimeForTestCase;
     private long processTimeForTestCase;
@@ -28,17 +27,6 @@ public class Progress implements ResultReaderListener {
 
     public Progress() {
         testSuite = new TestSuiteResult(null);
-    }
-
-    private void initialize(TestSuiteResult testSuite) {
-        this.testSuite = testSuite;
-        startTimeForTestCase = System.nanoTime(); // TODO XXX
-        processTime = 0;
-        isInitialized = true;
-    }
-
-    public boolean isInitialized() {
-        return isInitialized;
     }
 
     public int getAllTestCount() {
@@ -136,7 +124,8 @@ public class Progress implements ResultReaderListener {
      */
     @Override
     public void onFirstTestSuite(TestSuiteResult testSuite) {
-        initialize(testSuite);
+        this.testSuite = testSuite;
+        processTime = 0;
     }
 
     /**
