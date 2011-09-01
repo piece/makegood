@@ -18,16 +18,11 @@ import com.piece_framework.makegood.core.result.TestSuiteResult;
 public class Progress implements ResultReaderListener {
     private long processTime;
     private long startTimeForTestCase;
-    private long processTimeForTestCase;
-    private TestSuiteResult testSuite;
+    private TestSuiteResult testSuite = new TestSuiteResult(null);
     private long startTime;
     private long endTime;
     private boolean isRunning = false;
     private boolean isCompleted = false;
-
-    public Progress() {
-        testSuite = new TestSuiteResult(null);
-    }
 
     public int getAllTestCount() {
         return testSuite.getAllTestCount();
@@ -54,20 +49,20 @@ public class Progress implements ResultReaderListener {
     }
 
     public int calculateRate() {
-        if (testSuite.getAllTestCount() == 0) {
+        if (getAllTestCount() == 0) {
             return 0;
         }
 
-        int rate = (int) (((double) testSuite.getTestCount() / (double) testSuite.getAllTestCount()) * 100d);
+        int rate = (int) (((double) getTestCount() / (double) getAllTestCount()) * 100d);
         return rate <= 100 ? rate : 100;
     }
 
     public long calculateProcessTimeAverage() {
-        if (testSuite.getTestCount() == 0) {
+        if (getTestCount() == 0) {
             return 0;
         }
 
-        return getProcessTime() / testSuite.getTestCount();
+        return getProcessTime() / getTestCount();
     }
 
     @Override
@@ -77,7 +72,7 @@ public class Progress implements ResultReaderListener {
 
     @Override
     public void endTestCase(TestCaseResult testCase) {
-        processTimeForTestCase = System.nanoTime() - startTimeForTestCase;
+        long processTimeForTestCase = System.nanoTime() - startTimeForTestCase;
         processTime += processTimeForTestCase;
         testCase.setTime(processTimeForTestCase);
     }
@@ -108,7 +103,7 @@ public class Progress implements ResultReaderListener {
         }
     }
 
-    public void markAsCompleted() {
+    private void markAsCompleted() {
         isCompleted = true;
     }
 
