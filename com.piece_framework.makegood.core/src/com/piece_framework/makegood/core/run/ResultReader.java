@@ -160,19 +160,6 @@ public class ResultReader extends DefaultHandler {
         return result;
     }
 
-    public boolean isActive() {
-        if (stream == null) {
-            return false;
-        }
-        if (stream.closed) {
-            return false;
-        }
-        if (stopped) {
-            return false;
-        }
-        return true;
-    }
-
     private void startTestSuite(TestSuiteResult testSuite) {
         if (result == null) {
             result = testSuite;

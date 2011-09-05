@@ -41,7 +41,6 @@ import com.piece_framework.makegood.core.run.ResultReaderListener;
  */
 public class TestLifecycle {
     private Progress progress = new Progress();
-    private boolean hasErrors = false;
     private Failures failures = new Failures();
     private ILaunch launch;
 
@@ -65,65 +64,17 @@ public class TestLifecycle {
     }
 
     public void start(ResultReaderListener resultReaderListener) throws CoreException {
-        resultReader = new ResultReader(new File(MakeGoodLaunchConfigurationDelegate.getJUnitXMLFile(launch)));
-        resultReader.addListener(progress);
-        resultReader.addListener(failures);
-        resultReader.addListener(resultReaderListener);
-
-        resultReaderThread = new Thread() {
-            @Override
-            public void run() {
-                try {
-                    resultReader.read();
-                } catch (ParserConfigurationException e) {
-                    Activator.getDefault().getLog().log(new Status(IStatus.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
-                } catch (SAXException e) {
-                    hasErrors = true;
-                } catch (IOException e) {
-                    Activator.getDefault().getLog().log(new Status(IStatus.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
-                }
-            }
-        };
+        resultReader = createResultReader(resultReaderListener);
+        resultReaderThread = createResultReaderThread();
 
         progress.start();
         resultReaderThread.start();
 
-        for (IProcess process: launch.getProcesses()) {
-            if (process.isTerminated()) continue;
-            IStreamsProxy streamsProxy = process.getStreamsProxy();
-            if (streamsProxy == null) continue;
-            IStreamMonitor outputStreamMonitor = streamsProxy.getOutputStreamMonitor();
-            if (outputStreamMonitor == null) continue;
-            outputStreamMonitor.addListener(outputStreamListener);
-        }
+        startOutputStreamMonitoring();
     }
 
     public void end() {
-        for (IProcess process: launch.getProcesses()) {
-            if (process.isTerminated()) continue;
-            IStreamsProxy streamsProxy = process.getStreamsProxy();
-            if (streamsProxy == null) continue;
-            IStreamMonitor outputStreamMonitor = streamsProxy.getOutputStreamMonitor();
-            if (outputStreamMonitor == null) continue;
-            outputStreamMonitor.removeListener(outputStreamListener);
-        }
-
-        for (IProcess process: launch.getProcesses()) {
-            int exitValue = 0;
-            try {
-                if (!process.isTerminated()) continue;
-                exitValue = process.getExitValue();
-            } catch (DebugException e) {
-                Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
-            }
-
-            if (exitValue != 0) {
-                hasErrors = true;
-            }
-
-            break;
-        }
-
+        endOutputStreamMonitoring();
         resultReader.stop();
 
         try {
@@ -140,7 +91,23 @@ public class TestLifecycle {
     }
 
     public boolean hasErrors() {
-        return hasErrors;
+        for (IProcess process: launch.getProcesses()) {
+            int exitValue = 0;
+            try {
+                if (!process.isTerminated()) continue;
+                exitValue = process.getExitValue();
+            } catch (DebugException e) {
+                Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
+            }
+
+            if (exitValue != 0) {
+                return true;
+            }
+
+            break;
+        }
+
+        return false;
     }
 
     public Failures getFailures() {
@@ -212,6 +179,65 @@ public class TestLifecycle {
                 && DebuggerCommunicationDaemon.ZEND_DEBUGGER_ID.equals(new PHPexeItemRepository().findByProject(TestingTargets.getInstance().getProject()).getDebuggerID());
         } catch (CoreException e) {
             return true;
+        }
+    }
+
+    /**
+     * @since 1.7.0
+     */
+    private ResultReader createResultReader(ResultReaderListener resultReaderListener) throws CoreException {
+        ResultReader resultReader = new ResultReader(new File(MakeGoodLaunchConfigurationDelegate.getJUnitXMLFile(launch)));
+        resultReader.addListener(progress);
+        resultReader.addListener(failures);
+        resultReader.addListener(resultReaderListener);
+        return resultReader;
+    }
+
+    /**
+     * @since 1.7.0
+     */
+    private Thread createResultReaderThread() {
+        Thread thread = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    resultReader.read();
+                } catch (ParserConfigurationException e) {
+                    Activator.getDefault().getLog().log(new Status(IStatus.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
+                } catch (SAXException e) {
+                } catch (IOException e) {
+                    Activator.getDefault().getLog().log(new Status(IStatus.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
+                }
+            }
+        };
+        return thread;
+    }
+
+    /**
+     * @since 1.7.0
+     */
+    private void startOutputStreamMonitoring() {
+        for (IProcess process: launch.getProcesses()) {
+            if (process.isTerminated()) continue;
+            IStreamsProxy streamsProxy = process.getStreamsProxy();
+            if (streamsProxy == null) continue;
+            IStreamMonitor outputStreamMonitor = streamsProxy.getOutputStreamMonitor();
+            if (outputStreamMonitor == null) continue;
+            outputStreamMonitor.addListener(outputStreamListener);
+        }
+    }
+
+    /**
+     * @since 1.7.0
+     */
+    private void endOutputStreamMonitoring() {
+        for (IProcess process: launch.getProcesses()) {
+            if (process.isTerminated()) continue;
+            IStreamsProxy streamsProxy = process.getStreamsProxy();
+            if (streamsProxy == null) continue;
+            IStreamMonitor outputStreamMonitor = streamsProxy.getOutputStreamMonitor();
+            if (outputStreamMonitor == null) continue;
+            outputStreamMonitor.removeListener(outputStreamListener);
         }
     }
 }
