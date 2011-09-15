@@ -288,59 +288,43 @@ public class ResultReader extends DefaultHandler {
     }
 
     private TestCaseResult createFailureTestCase(Attributes attributes) {
-        if (currentTestCase != null) {
-            currentTestCase.setResultType(ResultType.FAILURE);
-        } else {
-            currentTestCase = new TestCaseResult("(Failure)"); //$NON-NLS-1$
-            currentTestCase.setClassName(currentTestSuite.getName());
-            currentTestCase.setFile(currentTestSuite.getFile());
-            currentTestCase.markAsArtificial();
-            currentTestCase.setResultType(ResultType.FAILURE);
-            startTestCase(currentTestCase);
-        }
-
-        if (attributes.getIndex("type") != -1) { //$NON-NLS-1$
-            currentTestCase.setFailureType(attributes.getValue("type")); //$NON-NLS-1$
-        }
-        if (attributes.getIndex("file") != -1) { //$NON-NLS-1$
-            currentTestCase.setFile(attributes.getValue("file")); //$NON-NLS-1$
-        }
-        if (attributes.getIndex("line") != -1) { //$NON-NLS-1$
-            currentTestCase.setLine(Integer.parseInt(attributes.getValue("line"))); //$NON-NLS-1$
-        }
-        if (attributes.getIndex("message") != -1) { //$NON-NLS-1$
-            currentTestCase.setFailureMessage(attributes.getValue("message")); //$NON-NLS-1$
-        }
-
-        return currentTestCase;
+        return createFailureOrErrorTestCase(attributes, ResultType.FAILURE);
     }
 
     private TestCaseResult createErrorTestCase(Attributes attributes) {
-        if (currentTestCase != null) {
-            currentTestCase.setResultType(ResultType.ERROR);
+        return createFailureOrErrorTestCase(attributes, ResultType.ERROR);
+    }
+
+    /**
+     * @since 1.7.0
+     */
+    private TestCaseResult createFailureOrErrorTestCase(Attributes attributes, ResultType resultType) {
+        TestCaseResult testCase;
+        if (currentTestCase == null) {
+            testCase = new TestCaseResult("(" + resultType.toString() + ")"); //$NON-NLS-1$ //$NON-NLS-2$
+            testCase.setClassName(currentTestSuite.getName());
+            testCase.setFile(currentTestSuite.getFile());
+            testCase.markAsArtificial();
+            startTestCase(testCase);
         } else {
-            currentTestCase = new TestCaseResult("(Error)"); //$NON-NLS-1$
-            currentTestCase.setClassName(currentTestSuite.getName());
-            currentTestCase.setFile(currentTestSuite.getFile());
-            currentTestCase.markAsArtificial();
-            currentTestCase.setResultType(ResultType.ERROR);
-            startTestCase(currentTestCase);
+            testCase = currentTestCase;
         }
+        testCase.setResultType(resultType);
 
         if (attributes.getIndex("type") != -1) { //$NON-NLS-1$
-            currentTestCase.setFailureType(attributes.getValue("type")); //$NON-NLS-1$
+            testCase.setFailureType(attributes.getValue("type")); //$NON-NLS-1$
         }
         if (attributes.getIndex("file") != -1) { //$NON-NLS-1$
-            currentTestCase.setFile(attributes.getValue("file")); //$NON-NLS-1$
+            testCase.setFile(attributes.getValue("file")); //$NON-NLS-1$
         }
         if (attributes.getIndex("line") != -1) { //$NON-NLS-1$
-            currentTestCase.setLine(Integer.parseInt(attributes.getValue("line"))); //$NON-NLS-1$
+            testCase.setLine(Integer.parseInt(attributes.getValue("line"))); //$NON-NLS-1$
         }
         if (attributes.getIndex("message") != -1) { //$NON-NLS-1$
-            currentTestCase.setFailureMessage(attributes.getValue("message")); //$NON-NLS-1$
+            testCase.setFailureMessage(attributes.getValue("message")); //$NON-NLS-1$
         }
 
-        return currentTestCase;
+        return testCase;
     }
 
     private class SynchronizedFileInputStream extends FileInputStream {
