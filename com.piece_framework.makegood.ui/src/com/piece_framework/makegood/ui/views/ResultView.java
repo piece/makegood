@@ -364,14 +364,14 @@ public class ResultView extends ViewPart {
         resultTreeViewer.setInput(result);
     }
 
-    void updateOnEndTestCase(TestCaseResult currentTestCase) {
+    void updateOnEndTestCase() {
         if (testLifecycle.getProgress().hasFailures()) {
             markAsFailed();
         }
         updateResult();
     }
 
-    void updateOnStartTestCase(TestCaseResult currentTestCase) {
+    void updateOnStartTestCase() {
         updateTestCount();
 
         resultTreeViewer.refresh();

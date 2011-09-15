@@ -239,7 +239,7 @@ public class ResultViewController implements IDebugEventSetListener {
                     ResultView resultView = (ResultView) ViewOpener.find(ResultView.VIEW_ID);
                     if (resultView != null) {
                         resultView.printCurrentlyRunningTestCase(testCase);
-                        resultView.updateOnStartTestCase(testCase);
+                        resultView.updateOnStartTestCase();
                     }
                     return Status.OK_STATUS;
                 }
@@ -259,7 +259,7 @@ public class ResultViewController implements IDebugEventSetListener {
                 public IStatus runInUIThread(IProgressMonitor monitor) {
                     ResultView resultView = (ResultView) ViewOpener.find(ResultView.VIEW_ID);
                     if (resultView != null) {
-                        resultView.updateOnEndTestCase(testCase);
+                        resultView.updateOnEndTestCase();
                     }
                     return Status.OK_STATUS;
                 }
