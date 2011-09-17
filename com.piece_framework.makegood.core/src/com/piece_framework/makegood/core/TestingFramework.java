@@ -23,6 +23,14 @@ public enum TestingFramework {
                 "PHPUnit_Framework_TestCase", //$NON-NLS-1$
             };
         }
+
+        /**
+         * @since 1.7.0
+         */
+        @Override
+        public String[] getRequiredTypes() {
+            return getTestClassSuperTypes();
+        }
     },
     SimpleTest {
         /**
@@ -34,6 +42,14 @@ public enum TestingFramework {
                 "SimpleTestCase", //$NON-NLS-1$
             };
         }
+
+        /**
+         * @since 1.7.0
+         */
+        @Override
+        public String[] getRequiredTypes() {
+            return getTestClassSuperTypes();
+        }
     },
     CakePHP {
         /**
@@ -42,6 +58,18 @@ public enum TestingFramework {
         @Override
         public String[] getTestClassSuperTypes() {
             return new String[] {
+                "CakeTestCase", //$NON-NLS-1$
+                "CakeWebTestCase", //$NON-NLS-1$
+            };
+        }
+
+        /**
+         * @since 1.7.0
+         */
+        @Override
+        public String[] getRequiredTypes() {
+            return new String[] {
+                "SimpleTestCase", //$NON-NLS-1$
                 "CakeTestCase", //$NON-NLS-1$
                 "CakeWebTestCase", //$NON-NLS-1$
             };
@@ -58,10 +86,27 @@ public enum TestingFramework {
                 "CIUnit_TestCase_Selenium", //$NON-NLS-1$
             };
         }
+
+        /**
+         * @since 1.7.0
+         */
+        @Override
+        public String[] getRequiredTypes() {
+            return new String[] {
+                "PHPUnit_Framework_TestCase", //$NON-NLS-1$
+                "CIUnit_TestCase", //$NON-NLS-1$
+                "CIUnit_TestCase_Selenium", //$NON-NLS-1$
+            };
+        }
     };
 
     /**
      * @since 1.6.0
      */
     public abstract String[] getTestClassSuperTypes();
+
+    /**
+     * @since 1.7.0
+     */
+    public abstract String[] getRequiredTypes();
 }
