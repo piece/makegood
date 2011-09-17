@@ -826,7 +826,7 @@ public class ResultView extends ViewPart {
                 isFailure(Messages.TestResultView_Status_MakeGoodNotConfigured);
                 break;
             case TestingFrameworkNotAvailable:
-                isFailure(Messages.TestResultView_Status_TestingFrameworkNotAvailable);
+                isFailure(status.getReason() + " " + Messages.TestResultView_Status_TestingFrameworkNotAvailable); //$NON-NLS-1$
                 break;
             case RunningTest:
                 runningTest();

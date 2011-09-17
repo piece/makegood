@@ -30,11 +30,30 @@ public enum MakeGoodStatus {
 
     private IProject project;
 
+    /**
+     * @since 1.7.0
+     */
+    private String reason;
+
     public void setProject(IProject project) {
         this.project = project;
     }
 
     public IProject getProject() {
         return project;
+    }
+
+    /**
+     * @since 1.7.0
+     */
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
+    /**
+     * @since 1.7.0
+     */
+    public String getReason() {
+        return this.reason;
     }
 }

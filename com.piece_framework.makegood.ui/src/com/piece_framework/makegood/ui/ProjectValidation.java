@@ -79,6 +79,7 @@ public class ProjectValidation {
                 );
 
                 if (types == null || types.length == 0) {
+                    MakeGoodStatus.TestingFrameworkNotAvailable.setReason(testClassSuperType);
                     MakeGoodContext.getInstance().updateStatus(MakeGoodStatus.TestingFrameworkNotAvailable, project);
                     return false;
                 }
