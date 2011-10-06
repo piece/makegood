@@ -48,78 +48,43 @@
                   checkEnabled="true">
                <with
                      variable="activeMenuSelection">
-                  <or>
-                     <and>
-                        <count
-                              value="1">
-                        </count>
-                        <iterate>
-                           <adapt
-                                 type="org.eclipse.core.resources.IFolder">
-                           </adapt>
+                  <and>
+                     <or>
+                        <iterate
+                              ifEmpty="false"
+                              operator="and">
+                           <or>
+                              <adapt
+                                    type="org.eclipse.core.resources.IFolder">
+                              </adapt>
+                              <adapt
+                                    type="org.eclipse.core.resources.IFile">
+                              </adapt>
+                              <adapt
+                                    type="org.eclipse.dltk.core.IProjectFragment">
+                              </adapt>
+                              <adapt
+                                    type="org.eclipse.dltk.core.IScriptFolder">
+                              </adapt>
+                              <adapt
+                                    type="org.eclipse.dltk.core.IModule">
+                              </adapt>
+                              <adapt
+                                    type="org.eclipse.dltk.core.IType">
+                              </adapt>
+                           </or>
                         </iterate>
-                     </and>
-                     <and>
-                        <count
-                              value="1">
-                        </count>
-                        <iterate>
-                           <adapt
-                                 type="org.eclipse.core.resources.IFile">
-                           </adapt>
-                        </iterate>
-                     </and>
-                     <and>
-                        <count
-                              value="1">
-                        </count>
-                        <iterate>
-                           <adapt
-                                 type="org.eclipse.dltk.core.IProjectFragment">
-                           </adapt>
-                        </iterate>
-                     </and>
-                     <and>
-                        <count
-                              value="1">
-                        </count>
-                        <iterate>
-                           <adapt
-                                 type="org.eclipse.dltk.core.IScriptFolder">
-                           </adapt>
-                        </iterate>
-                     </and>
-                     <and>
-                        <count
-                              value="1">
-                        </count>
-                        <iterate>
-                           <adapt
-                                 type="org.eclipse.dltk.core.IModule">
-                           </adapt>
-                        </iterate>
-                     </and>
-                     <and>
-                        <count
-                              value="1">
-                        </count>
-                        <iterate>
-                           <adapt
-                                 type="org.eclipse.dltk.core.IType">
-                           </adapt>
-                        </iterate>
-                     </and>
-                     <and>
-                        <count
-                              value="1">
-                        </count>
-                        <iterate>
+                        <iterate
+                              ifEmpty="false"
+                              operator="and">
                            <adapt
                                  type="org.eclipse.dltk.core.IMethod">
                            </adapt>
-                        </iterate>
-                     </and>
-                  </or>
+                        </iterate></or>
+                     <count
+                           value="+">
+                     </count>
+                  </and>
                </with>
             </visibleWhen>
          </command>

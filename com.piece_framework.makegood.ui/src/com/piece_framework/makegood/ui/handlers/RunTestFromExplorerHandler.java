@@ -57,15 +57,18 @@ public class RunTestFromExplorerHandler extends RunHandler {
             return true;
         }
 
-        Object element = ((IStructuredSelection) selection).getFirstElement();
-        IResource resource = null;
-        if (element instanceof IResource) {
-            resource = (IResource) element;
-        } else if (element instanceof IModelElement) {
-            resource = ((IModelElement) element).getResource();
+        for (Object element: ((IStructuredSelection) selection).toArray()) {
+            IResource resource = null;
+            if (element instanceof IResource) {
+                resource = (IResource) element;
+            } else if (element instanceof IModelElement) {
+                resource = ((IModelElement) element).getResource();
+            }
+            if (resource == null) return false;
+            if (resource instanceof IFolder) continue;
+            if (!PHPResource.isPHPSource(resource)) return false;
         }
-        if (resource == null) return false;
-        if (resource instanceof IFolder) return true;
-        return PHPResource.isPHPSource(resource);
+
+        return true;
     }
 }

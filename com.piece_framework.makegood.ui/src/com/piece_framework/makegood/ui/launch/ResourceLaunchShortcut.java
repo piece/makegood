@@ -26,7 +26,9 @@ public class ResourceLaunchShortcut extends MakeGoodLaunchShortcut {
 
         if (!(selection instanceof IStructuredSelection)) throw new NotLaunchedException();
 
-        addTestingTarget(((IStructuredSelection) selection).getFirstElement());
+        for (Object element: ((IStructuredSelection) selection).toArray()) {
+            addTestingTarget(element);
+        }
 
         IResource mainScriptResource = TestingTargets.getInstance().getMainScriptResource();
         if (mainScriptResource == null) throw new NotLaunchedException();
