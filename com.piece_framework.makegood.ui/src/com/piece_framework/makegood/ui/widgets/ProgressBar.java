@@ -139,7 +139,7 @@ public class ProgressBar extends Composite implements PaintListener, ControlList
     }
 
     public void clear() {
-        markAsPassed();
         update(0);
+        markAsPassed();
     }
 }
