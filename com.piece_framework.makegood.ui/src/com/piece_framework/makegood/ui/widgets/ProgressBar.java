@@ -115,27 +115,22 @@ public class ProgressBar extends Composite implements PaintListener, ControlList
      * @since 1.7.0
      */
     private void markAsPassed() {
-        bar.setBackground(
-            new Color[] { gradientPassedColor, passedColor },
-            new int[] { 100 },
-            true
-        );
+        setColor(new Color[] { gradientPassedColor, passedColor });
     }
 
     public void markAsFailed() {
-        bar.setBackground(
-            new Color[] { gradientFailedColor, failedColor },
-            new int[] { 100 },
-            true
-        );
+        setColor(new Color[] { gradientFailedColor, failedColor });
     }
 
     public void markAsStopped() {
-        bar.setBackground(
-            new Color[] { gradientStoppedColor, stoppedColor },
-            new int[] { 100 },
-            true
-        );
+        setColor(new Color[] { gradientStoppedColor, stoppedColor });
+    }
+
+    /**
+     * @since 1.7.0
+     */
+    private void setColor(Color[] color) {
+        bar.setBackground(color, new int[] { 100 }, true);
     }
 
     public void clear() {
