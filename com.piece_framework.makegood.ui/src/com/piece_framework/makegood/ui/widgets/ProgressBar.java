@@ -23,39 +23,28 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 
 public class ProgressBar extends Composite implements PaintListener, ControlListener {
-    private Color passedColor;
-
-    /**
-     * @since 1.7.0
-     */
-    private Color gradientPassedColor;
-
-    private Color failedColor;
-
-    /**
-     * @since 1.7.0
-     */
-    private Color gradientFailedColor;
-
-    private Color stoppedColor;
-
-    /**
-     * @since 1.7.0
-     */
-    private Color gradientStoppedColor;
-
+    private Color[] passedColor;
+    private Color[] failedColor;
+    private Color[] stoppedColor;
     private CLabel bar;
     private int rate;
 
     public ProgressBar(Composite parent) {
         super(parent, SWT.BORDER);
 
-        passedColor = new Color(getDisplay(), MakeGoodColor.PASSED);
-        gradientPassedColor = new Color(getDisplay(), MakeGoodColor.GRADIENT_PASSED);
-        failedColor = new Color(getDisplay(), MakeGoodColor.FAILED);
-        gradientFailedColor = new Color(getDisplay(), MakeGoodColor.GRADIENT_FAILED);
-        stoppedColor = new Color(getDisplay(), MakeGoodColor.STOPPED);
-        gradientStoppedColor = new Color(getDisplay(), MakeGoodColor.GRADIENT_STOPPED);
+        passedColor = new Color[] {
+            new Color(getDisplay(), MakeGoodColor.GRADIENT_PASSED),
+            new Color(getDisplay(), MakeGoodColor.PASSED)
+        };
+        failedColor = new Color[] {
+            new Color(getDisplay(), MakeGoodColor.GRADIENT_FAILED),
+            new Color(getDisplay(), MakeGoodColor.FAILED)
+        };
+        stoppedColor = new Color[] {
+            new Color(getDisplay(), MakeGoodColor.GRADIENT_STOPPED),
+            new Color(getDisplay(), MakeGoodColor.STOPPED)
+        };
+
         addPaintListener(this);
 
         bar = new CLabel(this, SWT.NONE);
@@ -115,15 +104,15 @@ public class ProgressBar extends Composite implements PaintListener, ControlList
      * @since 1.7.0
      */
     private void markAsPassed() {
-        setColor(new Color[] { gradientPassedColor, passedColor });
+        setColor(passedColor);
     }
 
     public void markAsFailed() {
-        setColor(new Color[] { gradientFailedColor, failedColor });
+        setColor(failedColor);
     }
 
     public void markAsStopped() {
-        setColor(new Color[] { gradientStoppedColor, stoppedColor });
+        setColor(stoppedColor);
     }
 
     /**
