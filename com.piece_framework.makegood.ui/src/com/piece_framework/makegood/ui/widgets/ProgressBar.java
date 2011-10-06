@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2010-2011 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -111,6 +111,17 @@ public class ProgressBar extends Composite implements PaintListener, ControlList
         this.rate = rate;
     }
 
+    /**
+     * @since 1.7.0
+     */
+    private void markAsPassed() {
+        bar.setBackground(
+            new Color[] { gradientPassedColor, passedColor },
+            new int[] { 100 },
+            true
+        );
+    }
+
     public void markAsFailed() {
         bar.setBackground(
             new Color[] { gradientFailedColor, failedColor },
@@ -128,11 +139,7 @@ public class ProgressBar extends Composite implements PaintListener, ControlList
     }
 
     public void clear() {
-        bar.setBackground(
-            new Color[] { gradientPassedColor, passedColor },
-            new int[] { 100 },
-            true
-        );
+        markAsPassed();
         update(0);
     }
 }
