@@ -13,6 +13,7 @@
 package com.piece_framework.makegood.launch;
 
 import java.io.File;
+import java.util.HashSet;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
@@ -20,12 +21,16 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.DebugException;
+import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.debug.core.ILaunchDelegate;
 import org.eclipse.debug.core.model.ILaunchConfigurationDelegate2;
 import org.eclipse.debug.internal.core.LaunchConfiguration;
 import org.eclipse.debug.internal.core.LaunchConfigurationWorkingCopy;
+import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.php.debug.core.debugger.parameters.IDebugParametersKeys;
 import org.eclipse.php.internal.debug.core.IPHPDebugConstants;
 import org.eclipse.php.internal.debug.core.PHPDebugPlugin;
@@ -80,6 +85,7 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
             delegateClass = configuration.getAttribute(PHPDebugCorePreferenceNames.CONFIGURATION_DELEGATE_CLASS, ""); //$NON-NLS-1$
             ILaunch launch = new MakeGoodLaunch(configuration, mode, null);
             TestLifecycle.getInstance().setLaunch(launch);
+            setLaunchPerspective(configuration, mode);
             return launch;
         } catch (CoreException e) {
             Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
@@ -91,6 +97,33 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
             cancelLaunch();
             throw new CoreException(status);
         }
+    }
+
+    /**
+     * @since 1.7.0
+     */
+    private void setLaunchPerspective(ILaunchConfiguration configuration, String mode) throws CoreException {
+        HashSet<String> modes = new HashSet<String>();
+        modes.add(mode);
+
+        ILaunchConfigurationType launchConfigurationType =
+            DebugPlugin.getDefault()
+                .getLaunchManager()
+                .getLaunchConfigurationType(IPHPDebugConstants.PHPEXELaunchType);
+        if (launchConfigurationType == null) {
+            throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "The launch configuration type for the ID [ " + IPHPDebugConstants.PHPEXELaunchType + " ] is not found.")); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        ILaunchDelegate[] launchDelegates = launchConfigurationType.getDelegates(modes);
+        if (launchDelegates.length == 0) {
+            throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "The delegates capable of launching in the specified modes for the launch configuration type ID [ " + IPHPDebugConstants.PHPEXELaunchType + " ] are not found.")); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        DebugUITools.setLaunchPerspective(
+            configuration.getType(),
+            mode,
+            DebugUITools.getLaunchPerspective(launchConfigurationType, launchDelegates[0], modes)
+        );
     }
 
     @Override
