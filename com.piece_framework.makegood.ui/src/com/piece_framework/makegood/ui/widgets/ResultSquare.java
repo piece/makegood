@@ -42,7 +42,7 @@ import com.piece_framework.makegood.ui.views.ViewOpener;
 
 /**
  * @since 1.3.0
-  */
+ */
 public class ResultSquare extends WorkbenchWindowControlContribution {
     private static final String IMAGE_PATH_MAKEGOOD = "icons/MakeGood.gif"; //$NON-NLS-1$
     private static final String IMAGE_PATH_PASSED = "icons/square-passed.gif"; //$NON-NLS-1$
