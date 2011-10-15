@@ -186,6 +186,9 @@ public class ResultSquare extends WorkbenchWindowControlContribution {
             return paintListener;
         }
 
+        /**
+         * @since 1.7.0
+         */
         private void drawCurrentFrame(GC gc) {
             ImageData currentFrameData = imageLoader.data[currentFrameIndex];
             Image frameImage = new Image(canvas.getDisplay(), currentFrameData);
