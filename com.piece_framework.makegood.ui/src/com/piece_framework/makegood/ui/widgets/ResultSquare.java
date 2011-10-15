@@ -138,7 +138,6 @@ public class ResultSquare extends WorkbenchWindowControlContribution {
 
     private class ImageAnimator implements Runnable {
         private ImageLoader imageLoader = new ImageLoader();
-        private Image image;
         private GC gc;
         private PaintListener paintListener;
         private int currentFrameIndex = 1;
@@ -146,12 +145,11 @@ public class ResultSquare extends WorkbenchWindowControlContribution {
         public ImageAnimator(InputStream imageInputStream) {
             super();
             imageLoader.load(imageInputStream);
-            image = new Image(square.getDisplay(), imageLoader.data[0]);
-            gc = new GC(image);
+            gc = new GC(canvas);
             paintListener = new PaintListener() {
                 @Override
                 public void paintControl(PaintEvent event) {
-                    event.gc.drawImage(image, square.getBounds().x, square.getBounds().y);
+                    drawCurrentFrame(event.gc);
                 }
             };
         }
@@ -169,11 +167,8 @@ public class ResultSquare extends WorkbenchWindowControlContribution {
                 canvas.getDisplay().asyncExec(new Runnable() {
                     @Override
                     public void run(){
-                        ImageData nextFrameData = imageLoader.data[currentFrameIndex];
                         if (canvas.isDisposed()) return;
-                        Image frameImage = new Image(canvas.getDisplay(), nextFrameData);
-                        gc.drawImage(frameImage, nextFrameData.x, nextFrameData.y);
-                        frameImage.dispose();
+                        drawCurrentFrame(gc);
                         if (canvas.isDisposed()) return;
                         canvas.redraw();
 
@@ -189,6 +184,13 @@ public class ResultSquare extends WorkbenchWindowControlContribution {
 
         public PaintListener getPaintListener() {
             return paintListener;
+        }
+
+        private void drawCurrentFrame(GC gc) {
+            ImageData currentFrameData = imageLoader.data[currentFrameIndex];
+            Image frameImage = new Image(canvas.getDisplay(), currentFrameData);
+            gc.drawImage(frameImage, square.getBounds().x, square.getBounds().y);
+            frameImage.dispose();
         }
     }
 }
