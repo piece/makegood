@@ -31,7 +31,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.17.0
+ * @version    Release: 2.20.0
  * @since      File available since Release 2.12.0
  */
 
@@ -39,7 +39,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.17.0
+ * @version    Release: 2.20.0
  * @since      Class available since Release 2.12.0
  */
 abstract class Stagehand_TestRunner_Preparer

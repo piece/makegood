@@ -31,7 +31,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2010-2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.17.0
+ * @version    Release: 2.20.0
  * @since      File available since Release 2.12.0
  */
 
@@ -41,7 +41,7 @@ require_once 'PHPUnit/Runner/Version.php';
  * @package    Stagehand_TestRunner
  * @copyright  2010-2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.17.0
+ * @version    Release: 2.20.0
  * @since      Class available since Release 2.12.0
  */
 class Stagehand_TestRunner_Preparer_PHPUnitPreparer extends Stagehand_TestRunner_Preparer
@@ -90,12 +90,17 @@ class Stagehand_TestRunner_Preparer_PHPUnitPreparer extends Stagehand_TestRunner
     {
         require_once 'PHPUnit/Util/Configuration.php';
         $phpunitConfiguration = PHPUnit_Util_Configuration::getInstance($this->config->phpunitConfigFile)->getPHPUnitConfiguration();
+
         if (array_key_exists('bootstrap', $phpunitConfiguration)) {
             if (array_key_exists('syntaxCheck', $phpunitConfiguration)) {
                 $this->handleBootstrap($phpunitConfiguration['bootstrap'], $phpunitConfiguration['syntaxCheck']);
             } else {
                 $this->handleBootstrap($phpunitConfiguration['bootstrap']);
             }
+        }
+
+        if (array_key_exists('colors', $phpunitConfiguration)) {
+            $this->config->setColors($phpunitConfiguration['colors']);
         }
 
         $browsers = PHPUnit_Util_Configuration::getInstance($this->config->phpunitConfigFile)->getSeleniumBrowserConfiguration();

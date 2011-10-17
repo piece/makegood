@@ -4,7 +4,7 @@
 /**
  * PHP version 5
  *
- * Copyright (c) 2008-2009 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2008-2009, 2011 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,9 +29,9 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_CLIController
- * @copyright  2008-2009 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2008-2009, 2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 1.0.0
+ * @version    Release: 1.0.1
  * @since      File available since Release 0.1.0
  */
 
@@ -41,9 +41,9 @@ require_once 'Console/Getopt.php';
 
 /**
  * @package    Stagehand_CLIController
- * @copyright  2008-2009 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2008-2009, 2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 1.0.0
+ * @version    Release: 1.0.1
  * @since      Class available since Release 0.1.0
  */
 abstract class Stagehand_CLIController
@@ -155,19 +155,23 @@ abstract class Stagehand_CLIController
     {
         Stagehand_LegacyError_PEARError::enableConversion();
         $oldErrorReportingLevel = error_reporting(error_reporting() & ~E_STRICT & ~E_NOTICE);
+        Stagehand_LegacyError_PHPError::enableConversion(error_reporting());
         try {
             $argv = Console_Getopt::readPHPArgv();
             array_shift($argv);
             $parsedOptions = Console_Getopt::getopt2($argv, $this->shortOptions, $this->longOptions);
         } catch (Stagehand_LegacyError_PEARError_Exception $e) {
+            Stagehand_LegacyError_PHPError::disableConversion();
             error_reporting($oldErrorReportingLevel);
             Stagehand_LegacyError_PEARError::disableConversion();
             throw new $this->exceptionClass(preg_replace('/^Console_Getopt: /', '', $e->getMessage()));
         } catch (Exception $e) {
+            Stagehand_LegacyError_PHPError::disableConversion();
             error_reporting($oldErrorReportingLevel);
             Stagehand_LegacyError_PEARError::disableConversion();
             throw $e;
         }
+        Stagehand_LegacyError_PHPError::disableConversion();
         error_reporting($oldErrorReportingLevel);
         Stagehand_LegacyError_PEARError::disableConversion();
 

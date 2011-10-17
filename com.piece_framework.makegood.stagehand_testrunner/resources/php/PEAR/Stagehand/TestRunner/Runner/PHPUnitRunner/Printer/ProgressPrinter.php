@@ -31,7 +31,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2008-2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.17.0
+ * @version    Release: 2.20.0
  * @link       http://www.phpunit.de/
  * @since      File available since Release 1.2.0
  */
@@ -44,7 +44,7 @@ require_once 'PHPUnit/TextUI/ResultPrinter.php';
  * @package    Stagehand_TestRunner
  * @copyright  2008-2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.17.0
+ * @version    Release: 2.20.0
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 1.2.0
  */
@@ -64,7 +64,7 @@ class Stagehand_TestRunner_Runner_PHPUnitRunner_Printer_ProgressPrinter extends 
             return;
         }
 
-        $this->writeProgress(Stagehand_TestRunner_Coloring::magenta('E'));
+        $this->writeProgress(Stagehand_TestRunner_Util_Coloring::magenta('E'));
         $this->lastTestFailed = TRUE;
     }
 
@@ -82,7 +82,7 @@ class Stagehand_TestRunner_Runner_PHPUnitRunner_Printer_ProgressPrinter extends 
             return;
         }
 
-        $this->writeProgress(Stagehand_TestRunner_Coloring::red('F'));
+        $this->writeProgress(Stagehand_TestRunner_Util_Coloring::red('F'));
         $this->lastTestFailed = TRUE;
     }
 
@@ -100,7 +100,7 @@ class Stagehand_TestRunner_Runner_PHPUnitRunner_Printer_ProgressPrinter extends 
             return;
         }
 
-        $this->writeProgress(Stagehand_TestRunner_Coloring::yellow('I'));
+        $this->writeProgress(Stagehand_TestRunner_Util_Coloring::yellow('I'));
         $this->lastTestFailed = TRUE;
     }
 
@@ -118,7 +118,7 @@ class Stagehand_TestRunner_Runner_PHPUnitRunner_Printer_ProgressPrinter extends 
             return;
         }
 
-        $this->writeProgress(Stagehand_TestRunner_Coloring::yellow('S'));
+        $this->writeProgress(Stagehand_TestRunner_Util_Coloring::yellow('S'));
         $this->lastTestFailed = TRUE;
     }
 
@@ -136,7 +136,7 @@ class Stagehand_TestRunner_Runner_PHPUnitRunner_Printer_ProgressPrinter extends 
         }
 
         if (!$this->lastTestFailed) {
-            $this->writeProgress(Stagehand_TestRunner_Coloring::green('.'));
+            $this->writeProgress(Stagehand_TestRunner_Util_Coloring::green('.'));
         }
 
         if ($test instanceof PHPUnit_Framework_TestCase) {

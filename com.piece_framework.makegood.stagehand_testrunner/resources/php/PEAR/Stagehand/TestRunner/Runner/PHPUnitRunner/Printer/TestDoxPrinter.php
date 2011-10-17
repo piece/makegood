@@ -4,7 +4,7 @@
 /**
  * PHP version 5
  *
- * Copyright (c) 2008-2010 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2008-2011 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,9 +29,9 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_TestRunner
- * @copyright  2008-2010 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2008-2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.17.0
+ * @version    Release: 2.20.0
  * @link       http://www.phpunit.de/
  * @since      File available since Release 2.4.0
  */
@@ -43,9 +43,9 @@ require_once 'PHPUnit/Runner/BaseTestRunner.php';
  * A result printer for TestDox documentation.
  *
  * @package    Stagehand_TestRunner
- * @copyright  2008-2010 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2008-2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.17.0
+ * @version    Release: 2.20.0
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.4.0
  */
@@ -148,17 +148,17 @@ class Stagehand_TestRunner_Runner_PHPUnitRunner_Printer_TestDoxPrinter extends P
         if ($this->colors) {
             switch ($testStatus) {
             case PHPUnit_Runner_BaseTestRunner::STATUS_PASSED:
-                $name = Stagehand_TestRunner_Coloring::green($name);
+                $name = Stagehand_TestRunner_Util_Coloring::green($name);
                 break;
             case PHPUnit_Runner_BaseTestRunner::STATUS_ERROR:
-                $name = Stagehand_TestRunner_Coloring::magenta($name);
+                $name = Stagehand_TestRunner_Util_Coloring::magenta($name);
                 break;
             case PHPUnit_Runner_BaseTestRunner::STATUS_FAILURE:
-                $name = Stagehand_TestRunner_Coloring::red($name);
+                $name = Stagehand_TestRunner_Util_Coloring::red($name);
                 break;
             case PHPUnit_Runner_BaseTestRunner::STATUS_INCOMPLETE:
             case PHPUnit_Runner_BaseTestRunner::STATUS_SKIPPED:
-                $name = Stagehand_TestRunner_Coloring::yellow($name);
+                $name = Stagehand_TestRunner_Util_Coloring::yellow($name);
                 break;
             }
         }

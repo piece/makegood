@@ -31,7 +31,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2007-2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.17.0
+ * @version    Release: 2.20.0
  * @since      File available since Release 2.1.0
  */
 
@@ -41,7 +41,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2007-2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.17.0
+ * @version    Release: 2.20.0
  * @since      Class available since Release 2.1.0
  */
 abstract class Stagehand_TestRunner_Collector
@@ -70,7 +70,7 @@ abstract class Stagehand_TestRunner_Collector
      */
     public function collect()
     {
-        foreach ($this->config->testingResources as $testingResource) {
+        foreach ($this->config->getTestingResources() as $testingResource) {
             $absoluteTargetPath = realpath($testingResource);
             if ($absoluteTargetPath === false) {
                 throw new Stagehand_TestRunner_Exception(
@@ -136,7 +136,8 @@ abstract class Stagehand_TestRunner_Collector
         if (!$this->shouldTreatFileAsTest(basename($file))) return;
 
         foreach ($this->findNewClasses($file) as $newClass) {
-            if ($this->shouldTreatClassAsTest($newClass)) {
+            $collectingType = new Stagehand_TestRunner_Collector_CollectingType($newClass, $this->superTypes);
+            if ($collectingType->isTest()) {
                 $this->collectTestCase($newClass);
             }
         }
@@ -158,36 +159,6 @@ abstract class Stagehand_TestRunner_Collector
         }
 
         return (boolean)preg_match('/' . str_replace('/', '\/', $filePattern) . '/', $file);
-    }
-
-    /**
-     * @param string $class
-     * @return boolean
-     * @since Method available since Release 2.14.0
-     */
-    protected function shouldTreatClassAsTest($class)
-    {
-        return $this->validateSuperType($class);
-    }
-
-    /**
-     * @param string $class
-     * @return boolean
-     * @since Method available since Release 2.14.0
-     */
-    protected function validateSuperType($class)
-    {
-        foreach ($this->superTypes as $superType) {
-            if ($class == $superType) {
-                return false;
-            }
-
-            if (is_subclass_of($class, $superType)) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     /**

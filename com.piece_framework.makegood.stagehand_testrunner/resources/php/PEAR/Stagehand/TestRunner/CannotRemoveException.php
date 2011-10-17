@@ -4,7 +4,7 @@
 /**
  * PHP version 5
  *
- * Copyright (c) 2008-2010 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2011 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,70 +29,21 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_TestRunner
- * @copyright  2008-2010 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.17.0
- * @since      File available since Release 2.4.0
+ * @version    Release: 2.20.0
+ * @since      File available since Release 2.19.0
  */
 
 /**
- * A utility for coloring.
- *
  * @package    Stagehand_TestRunner
- * @copyright  2008-2010 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.17.0
- * @since      Class available since Release 2.4.0
+ * @version    Release: 2.20.0
+ * @since      Class available since Release 2.19.0
  */
-class Stagehand_TestRunner_Coloring
+class Stagehand_TestRunner_CannotRemoveException extends Stagehand_TestRunner_Exception
 {
-    /**
-     * @param string $text
-     * @return text
-     */
-    public static function green($text)
-    {
-        $oldErrorReportingLevel = error_reporting(error_reporting() & ~E_STRICT);
-        $green = Console_Color::convert("%g$text%n");
-        error_reporting($oldErrorReportingLevel);
-        return $green;
-    }
-
-    /**
-     * @param string $text
-     * @return text
-     */
-    public static function red($text)
-    {
-        $oldErrorReportingLevel = error_reporting(error_reporting() & ~E_STRICT);
-        $red = Console_Color::convert("%r$text%n");
-        error_reporting($oldErrorReportingLevel);
-        return $red;
-    }
-
-    /**
-     * @param string $text
-     * @return text
-     */
-    public static function magenta($text)
-    {
-        $oldErrorReportingLevel = error_reporting(error_reporting() & ~E_STRICT);
-        $magenta = Console_Color::convert("%m$text%n");
-        error_reporting($oldErrorReportingLevel);
-        return $magenta;
-    }
-
-    /**
-     * @param string $text
-     * @return text
-     */
-    public static function yellow($text)
-    {
-        $oldErrorReportingLevel = error_reporting(error_reporting() & ~E_STRICT);
-        $yellow = Console_Color::convert("%y$text%n");
-        error_reporting($oldErrorReportingLevel);
-        return $yellow;
-    }
 }
 
 /*

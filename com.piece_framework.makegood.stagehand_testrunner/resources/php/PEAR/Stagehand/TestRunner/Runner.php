@@ -4,7 +4,7 @@
 /**
  * PHP version 5
  *
- * Copyright (c) 2008-2010 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2008-2011 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,9 +29,9 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_TestRunner
- * @copyright  2008-2010 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2008-2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.17.0
+ * @version    Release: 2.20.0
  * @since      File available since Release 2.3.0
  */
 
@@ -39,13 +39,16 @@
  * The base class for test runners.
  *
  * @package    Stagehand_TestRunner
- * @copyright  2008-2010 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2008-2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.17.0
+ * @version    Release: 2.20.0
  * @since      Class available since Release 2.3.0
  */
 abstract class Stagehand_TestRunner_Runner
 {
+    /**
+     * @var Stagehand_TestRunner_Notification_Notification
+     */
     protected $notification;
 
     /**
@@ -60,7 +63,6 @@ abstract class Stagehand_TestRunner_Runner
     public function __construct(Stagehand_TestRunner_Config $config)
     {
         $this->config = $config;
-        $this->notification = new stdClass();
     }
 
     /**
@@ -73,7 +75,7 @@ abstract class Stagehand_TestRunner_Runner
     /**
      * Gets a notification object for Growl.
      *
-     * @return stdClass
+     * @return Stagehand_TestRunner_Notification_Notification
      */
     public function getNotification()
     {

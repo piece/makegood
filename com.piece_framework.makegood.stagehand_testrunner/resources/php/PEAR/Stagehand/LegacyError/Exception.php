@@ -31,7 +31,7 @@
  * @package    Stagehand_LegacyError
  * @copyright  2009 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 1.0.1
+ * @version    Release: 1.0.2
  * @since      File available since Release 0.1.0
  */
 
@@ -41,7 +41,7 @@
  * @package    Stagehand_LegacyError
  * @copyright  2009 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 1.0.1
+ * @version    Release: 1.0.2
  * @since      Class available since Release 0.1.0
  */
 interface Stagehand_LegacyError_Exception {}

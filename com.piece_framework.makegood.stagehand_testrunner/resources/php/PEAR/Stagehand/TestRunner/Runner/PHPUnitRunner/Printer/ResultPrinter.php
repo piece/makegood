@@ -31,7 +31,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2007-2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.17.0
+ * @version    Release: 2.20.0
  * @link       http://www.phpunit.de/
  * @since      File available since Release 1.2.0
  */
@@ -44,7 +44,7 @@ require_once 'PHPUnit/TextUI/ResultPrinter.php';
  * @package    Stagehand_TestRunner
  * @copyright  2007-2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.17.0
+ * @version    Release: 2.20.0
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 1.2.0
  */
@@ -62,7 +62,7 @@ class Stagehand_TestRunner_Runner_PHPUnitRunner_Printer_ResultPrinter extends PH
                 )
             );
         if (strlen($testDox)) {
-            $this->write("\n\n" . $testDox);
+            $this->write(PHP_EOL . PHP_EOL . $testDox);
         }
 
         parent::printResult($result);

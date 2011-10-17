@@ -4,7 +4,7 @@
 /**
  * PHP version 5
  *
- * Copyright (c) 2007-2010 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2007-2011 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,9 +29,9 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_TestRunner
- * @copyright  2007-2010 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2007-2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.17.0
+ * @version    Release: 2.20.0
  * @link       http://www.phpspec.org/
  * @since      File available since Release 2.1.0
  */
@@ -40,9 +40,9 @@
  * A test runner for PHPSpec.
  *
  * @package    Stagehand_TestRunner
- * @copyright  2007-2010 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2007-2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.17.0
+ * @version    Release: 2.20.0
  * @link       http://www.phpspec.org/
  * @since      Class available since Release 2.1.0
  */
@@ -58,8 +58,8 @@ class Stagehand_TestRunner_Runner_PHPSpecRunner extends Stagehand_TestRunner_Run
         $result = new PHPSpec_Runner_Result();
         $reporter = new Stagehand_TestRunner_Runner_PHPSpecRunner_TextReporter(
                         $result,
-                        $this->config->colors
-                                                                           );
+                        $this->config->colors()
+                    );
         $result->setReporter($reporter);
 
         $result->setRuntimeStart(microtime(true));
@@ -71,7 +71,7 @@ class Stagehand_TestRunner_Runner_PHPSpecRunner extends Stagehand_TestRunner_Run
 
         $reporter->output(true);
 
-        if ($this->config->usesGrowl) {
+        if ($this->config->usesNotification) {
             $output = $reporter->toString(true);
 
             $failuresCount = $result->countFailures();
@@ -81,15 +81,13 @@ class Stagehand_TestRunner_Runner_PHPSpecRunner extends Stagehand_TestRunner_Run
             $pendingsCount = $result->countPending();
 
             if ($failuresCount + $deliberateFailuresCount + $errorsCount + $exceptionsCount + $pendingsCount == 0) {
-                $this->notification->name = 'Green';
-            } elseif ($pendingsCount && $failuresCount + $deliberateFailuresCount + $errorsCount + $exceptionsCount == 0) {
-                $this->notification->name = 'Green';
+                $notificationResult = Stagehand_TestRunner_Notification_Notification::RESULT_PASSED;
             } else {
-                $this->notification->name = 'Red';
+                $notificationResult = Stagehand_TestRunner_Notification_Notification::RESULT_FAILED;
             }
 
             preg_match('/^(\d+ examples?, \d+ failures?.*)/m', $output, $matches);
-            $this->notification->description = $matches[1];
+            $this->notification = new Stagehand_TestRunner_Notification_Notification($notificationResult, $matches[1]);
         }
     }
 }

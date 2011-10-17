@@ -5,7 +5,7 @@
  * PHP version 5
  *
  * Copyright (c) 2007 Masahiko Sakamoto <msakamoto-sf@users.sourceforge.net>,
- *               2007-2010 KUBO Atsuhiro <kubo@iteman.jp>,
+ *               2007-2011 KUBO Atsuhiro <kubo@iteman.jp>,
  *               2010 KUMAKURA Yousuke <kumatch@gmail.com>,
  * All rights reserved.
  *
@@ -32,10 +32,10 @@
  *
  * @package    Stagehand_TestRunner
  * @copyright  2007 Masahiko Sakamoto <msakamoto-sf@users.sourceforge.net>
- * @copyright  2007-2010 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2007-2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @copyright  2010 KUMAKURA Yousuke <kumatch@gmail.com>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.17.0
+ * @version    Release: 2.20.0
  * @link       http://simpletest.org/
  * @since      File available since Release 2.1.0
  */
@@ -45,10 +45,10 @@
  *
  * @package    Stagehand_TestRunner
  * @copyright  2007 Masahiko Sakamoto <msakamoto-sf@users.sourceforge.net>
- * @copyright  2007-2010 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2007-2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @copyright  2010 KUMAKURA Yousuke <kumatch@gmail.com>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.17.0
+ * @version    Release: 2.20.0
  * @link       http://simpletest.org/
  * @since      Class available since Release 2.1.0
  */
@@ -64,11 +64,12 @@ class Stagehand_TestRunner_Runner_SimpleTestRunner extends Stagehand_TestRunner_
      */
     public function run($suite)
     {
+        $textReporter = new TextReporter();
         $reporter = new MultipleReporter();
-        $reporter->attachReporter($this->decorateReporter(new TextReporter()));
+        $reporter->attachReporter($this->decorateReporter($textReporter));
 
-        if ($this->config->logsResultsInJUnitXML) {
-            if (!$this->config->logsResultsInJUnitXMLInRealtime) {
+        if ($this->config->logsResultsInJUnitXML()) {
+            if (!$this->config->logsResultsInJUnitXMLInRealtime()) {
                 $xmlWriter =
                     new Stagehand_TestRunner_JUnitXMLWriter_JUnitXMLDOMWriter(
                         array($this, 'writeJUnitXMLToFile')
@@ -91,23 +92,24 @@ class Stagehand_TestRunner_Runner_SimpleTestRunner extends Stagehand_TestRunner_
         $output = ob_get_contents();
         ob_end_clean();
 
-        if ($this->config->logsResultsInJUnitXML) {
+        if ($this->config->logsResultsInJUnitXML()) {
             if (is_resource($this->junitXMLFileHandle)) {
                 fclose($this->junitXMLFileHandle);
             }
         }
 
-        if ($this->config->usesGrowl) {
-            if (preg_match('/^(OK.+)/ms', $output, $matches)) {
-                $this->notification->name = 'Green';
-                $this->notification->description = $matches[1];
-            } elseif (preg_match('/^(FAILURES.+)/ms', $output, $matches)) {
-                $this->notification->name = 'Red';
-                $this->notification->description = $matches[1];
+        if ($this->config->usesNotification) {
+            if ($textReporter->getFailCount() + $textReporter->getExceptionCount() == 0) {
+                $notificationResult = Stagehand_TestRunner_Notification_Notification::RESULT_PASSED;
+            } else {
+                $notificationResult = Stagehand_TestRunner_Notification_Notification::RESULT_FAILED;
             }
+
+            preg_match('/^((?:OK|FAILURES).+)/ms', $output, $matches);
+            $this->notification = new Stagehand_TestRunner_Notification_Notification($notificationResult, $matches[1]);
         }
 
-        if ($this->config->colors) {
+        if ($this->config->colors()) {
             print Console_Color::convert(preg_replace(array('/^(OK.+)/ms',
                                                             '/^(FAILURES!!!.+)/ms',
                                                             '/^(\d+\)\s)(.+at \[.+\]$\s+in .+)$/m',
@@ -133,11 +135,11 @@ class Stagehand_TestRunner_Runner_SimpleTestRunner extends Stagehand_TestRunner_
     public function writeJUnitXMLToFile($buffer)
     {
         if (!is_resource($this->junitXMLFileHandle)) {
-            $result = fopen($this->config->junitXMLFile, 'w');
+            $result = fopen($this->config->getJUnitXMLFile(), 'w');
             if (!$result) {
                 throw new Stagehand_TestRunner_Exception(
                    'Failed to open the specified file [ ' .
-                   $this->config->junitXMLFile .
+                   $this->config->getJUnitXMLFile() .
                    ' ].'
                 );
             }
@@ -149,7 +151,7 @@ class Stagehand_TestRunner_Runner_SimpleTestRunner extends Stagehand_TestRunner_
         if ($result === false) {
             throw new Stagehand_TestRunner_Exception(
                'Failed to write the test results into the specified file [ ' .
-               $this->config->junitXMLFile .
+               $this->config->getJUnitXMLFile() .
                ' ].'
             );
         }

@@ -31,7 +31,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2009-2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.17.0
+ * @version    Release: 2.20.0
  * @link       http://www.phpunit.de/
  * @since      File available since Release 2.10.0
  */
@@ -47,7 +47,7 @@ require_once 'PHPUnit/Util/XML.php';
  * @package    Stagehand_TestRunner
  * @copyright  2009-2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.17.0
+ * @version    Release: 2.20.0
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.10.0
  */
@@ -216,7 +216,11 @@ class Stagehand_TestRunner_Runner_PHPUnitRunner_Printer_JUnitXMLPrinter extends 
         } else {
             list($file, $line) = $this->findFileAndLineOfFailureOrError($e, new ReflectionClass($test));
         }
-        $trace = PHPUnit_Util_Filter::getFilteredStacktrace($e, false);
+        if (version_compare(PHPUnit_Runner_Version::id(), '3.6.0RC1', '>=')) {
+            $trace = PHPUnit_Util_Filter::getFilteredStacktrace($e, true);
+        } else {
+            $trace = PHPUnit_Util_Filter::getFilteredStacktrace($e, false, true);
+        }
         $this->xmlWriter->{ 'write' . $failureOrError }(
             $message .
             $trace,

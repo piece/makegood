@@ -31,12 +31,14 @@
  * @package    Stagehand_LegacyError
  * @copyright  2009, 2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 1.0.1
+ * @version    Release: 1.0.2
  * @since      File available since Release 0.1.0
  */
 
 $Stagehand_LegacyError_PEARErrorStack_oldErrorReportingLevel = error_reporting(error_reporting() & ~E_STRICT);
+Stagehand_LegacyError_PHPError::enableConversion(error_reporting());
 require_once 'PEAR/ErrorStack.php';
+Stagehand_LegacyError_PHPError::disableConversion();
 error_reporting($Stagehand_LegacyError_PEARErrorStack_oldErrorReportingLevel);
 unset($Stagehand_LegacyError_PEARErrorStack_oldErrorReportingLevel);
 
@@ -46,7 +48,7 @@ unset($Stagehand_LegacyError_PEARErrorStack_oldErrorReportingLevel);
  * @package    Stagehand_LegacyError
  * @copyright  2009, 2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 1.0.1
+ * @version    Release: 1.0.2
  * @since      Class available since Release 0.1.0
  */
 class Stagehand_LegacyError_PEARErrorStack

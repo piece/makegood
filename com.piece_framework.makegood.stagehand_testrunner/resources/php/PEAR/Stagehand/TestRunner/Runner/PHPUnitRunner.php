@@ -31,13 +31,10 @@
  * @package    Stagehand_TestRunner
  * @copyright  2007-2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.17.0
+ * @version    Release: 2.20.0
  * @link       http://www.phpunit.de/
  * @since      File available since Release 2.1.0
  */
-
-require_once 'PHPUnit/TextUI/TestRunner.php';
-require_once 'PHPUnit/Util/TestDox/NamePrettifier.php';
 
 /**
  * A test runner for PHPUnit.
@@ -45,7 +42,7 @@ require_once 'PHPUnit/Util/TestDox/NamePrettifier.php';
  * @package    Stagehand_TestRunner
  * @copyright  2007-2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.17.0
+ * @version    Release: 2.20.0
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.1.0
  */
@@ -60,7 +57,7 @@ class Stagehand_TestRunner_Runner_PHPUnitRunner extends Stagehand_TestRunner_Run
     {
         $testResult = new PHPUnit_Framework_TestResult();
         $printer = new Stagehand_TestRunner_Runner_PHPUnitRunner_Printer_ResultPrinter(
-                       null, true, $this->config->colors
+                       null, true, $this->config->colors()
                    );
 
         $arguments = array();
@@ -71,25 +68,25 @@ class Stagehand_TestRunner_Runner_PHPUnitRunner extends Stagehand_TestRunner_Run
             array(
                 new Stagehand_TestRunner_Runner_PHPUnitRunner_Printer_TestDoxPrinter(
                     fopen('testdox://' . spl_object_hash($testResult), 'w'),
-                    $this->config->colors,
+                    $this->config->colors(),
                     $this->prettifier()
                 )
             );
         if (!$this->config->printsDetailedProgressReport) {
             $arguments['listeners'][] =
                 new Stagehand_TestRunner_Runner_PHPUnitRunner_Printer_ProgressPrinter(
-                    null, false, $this->config->colors
+                    null, false, $this->config->colors()
                 );
         } else {
             $arguments['listeners'][] =
                 new Stagehand_TestRunner_Runner_PHPUnitRunner_Printer_DetailedProgressPrinter(
-                    null, false, $this->config->colors
+                    null, false, $this->config->colors()
                 );
         }
 
-        if ($this->config->logsResultsInJUnitXML) {
-            $junitXMLListener = new Stagehand_TestRunner_Runner_PHPUnitRunner_Printer_JUnitXMLPrinter($this->config->junitXMLFile);
-            if (!$this->config->logsResultsInJUnitXMLInRealtime) {
+        if ($this->config->logsResultsInJUnitXML()) {
+            $junitXMLListener = new Stagehand_TestRunner_Runner_PHPUnitRunner_Printer_JUnitXMLPrinter($this->config->getJUnitXMLFile());
+            if (!$this->config->logsResultsInJUnitXMLInRealtime()) {
                 $xmlWriter =
                     new Stagehand_TestRunner_JUnitXMLWriter_JUnitXMLDOMWriter(
                         array($junitXMLListener, 'write')
@@ -114,22 +111,27 @@ class Stagehand_TestRunner_Runner_PHPUnitRunner extends Stagehand_TestRunner_Run
         $testRunner->setTestResult($testResult);
         $testRunner->doRun($suite, $arguments);
 
-        if ($this->config->usesGrowl) {
+        if ($this->config->usesNotification) {
+            if ($testResult->failureCount() + $testResult->errorCount() + $testResult->skippedCount() + $testResult->notImplementedCount() == 0) {
+                $notificationResult = Stagehand_TestRunner_Notification_Notification::RESULT_PASSED;
+            } else {
+                $notificationResult = Stagehand_TestRunner_Notification_Notification::RESULT_FAILED;
+            }
+
             ob_start();
             $printer->printResult($testResult);
             $output = ob_get_contents();
             ob_end_clean();
 
             if (preg_match('/^(?:\x1b\[30;42m\x1b\[2K)?(OK .+)/m', $output, $matches)) {
-                $this->notification->name = 'Green';
-                $this->notification->description = $matches[1];
+                $notificationMessage = $matches[1];
             } elseif (preg_match('/^(?:\x1b\[37;41m\x1b\[2K)?(FAILURES!)\s^(?:\x1b\[0m\x1b\[37;41m\x1b\[2K)?(.+)/m', $output, $matches)) {
-                $this->notification->name = 'Red';
-                $this->notification->description = $matches[1] . "\n" . $matches[2];
+                $notificationMessage = $matches[1] . "\n" . $matches[2];
             } elseif (preg_match('/^(?:\x1b\[30;43m\x1b\[2K)?(OK, but incomplete or skipped tests!)\s^(?:\x1b\[0m\x1b\[30;43m\x1b\[2K)?(.+)/m', $output, $matches)) {
-                $this->notification->name = 'Red';
-                $this->notification->description = $matches[1] . "\n" . $matches[2];
+                $notificationMessage = $matches[1] . "\n" . $matches[2];
             }
+
+            $this->notification = new Stagehand_TestRunner_Notification_Notification($notificationResult, $notificationMessage);
         }
     }
 
@@ -139,7 +141,12 @@ class Stagehand_TestRunner_Runner_PHPUnitRunner extends Stagehand_TestRunner_Run
      */
     protected function prettifier()
     {
-        return new Stagehand_TestRunner_Runner_PHPUnitRunner_TestDox_NamePrettifier();
+        if (version_compare(PHPUnit_Runner_Version::id(), '3.5.14', '>=')) {
+            require_once 'PHPUnit/Util/TestDox/NamePrettifier.php';
+            return new PHPUnit_Util_TestDox_NamePrettifier();
+        } else {
+            return new Stagehand_TestRunner_Runner_PHPUnitRunner_TestDox_NamePrettifier();
+        }
     }
 
     /**

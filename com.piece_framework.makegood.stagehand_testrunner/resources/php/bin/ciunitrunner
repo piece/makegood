@@ -32,25 +32,36 @@
  * @package    Stagehand_TestRunner
  * @copyright  2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.17.0
+ * @version    Release: 2.20.0
  * @since      File available since Release 2.16.0
  */
 
+// Gets the current directory at startup.
+$GLOBALS['STAGEHAND_TESTRUNNER_CONFIG_workingDirectoryAtStartup'] = getcwd();
+
 // Finds the preload option and preloads a file as a PHP script if it is specified.
 $preload = create_function('', '
+$preloadFile = null;
 do {
     for ($i = 1, $count = count($_SERVER[\'argv\']); $i < $count; ++$i) {
-        if ($_SERVER[\'argv\'][$i] == \'-p\') {
-            $preloadFileIndex = $i + 1;
+        $arg = $_SERVER[\'argv\'][$i];
+        if (strlen($arg) <= 1) continue;
+        if (substr($arg, 0, 1) != \'-\') continue;
+        if (substr($arg, 1, 1) == \'-\') continue;
+        if (!preg_match(\'/^-[^p]*?p(.*)$/\', $arg, $matches)) continue;
+        if (strlen($matches[1]) == 0) {
+            if (array_key_exists($i + 1, $_SERVER[\'argv\'])) {
+                $preloadFile = $_SERVER[\'argv\'][ $i + 1 ];
+                break 2;
+            }
+        } else {
+            $preloadFile = $matches[1];
             break 2;
         }
     }
     return;
 } while (false);
-if (!array_key_exists($preloadFileIndex, $_SERVER[\'argv\'])) {
-    return;
-}
-$preloadFile = $_SERVER[\'argv\'][$preloadFileIndex];
+if (is_null($preloadFile)) return;
 $result = include_once $preloadFile;
 if (!$result) {
     echo "ERROR: Cannot load [ $preloadFile ]. Make sure the file path and permission are correct.\n";

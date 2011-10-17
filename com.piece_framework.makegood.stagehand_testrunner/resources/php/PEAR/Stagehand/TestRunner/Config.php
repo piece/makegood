@@ -31,7 +31,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2009-2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.17.0
+ * @version    Release: 2.20.0
  * @since      File available since Release 2.7.0
  */
 
@@ -39,29 +39,28 @@
  * @package    Stagehand_TestRunner
  * @copyright  2009-2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.17.0
+ * @version    Release: 2.20.0
  * @since      Class available since Release 2.7.0
  */
 class Stagehand_TestRunner_Config
 {
-    public $testingResources = array();
+    protected $testingResources = array();
     public $recursivelyScans = false;
-    public $colors = false;
+    protected $colors = false;
     public $preloadFile;
     public $enablesAutotest = false;
     public $monitoringDirectories = array();
-    public $usesGrowl = false;
+    public $usesNotification = false;
     public $growlPassword;
     public $testsOnlySpecifiedMethods = false;
     public $testsOnlySpecifiedClasses = false;
     public $printsDetailedProgressReport = false;
-    public $junitXMLFile;
-    public $logsResultsInJUnitXML = false;
-    public $logsResultsInJUnitXMLInRealtime = false;
+    protected $junitXMLFile;
+    protected $logsResultsInJUnitXML = false;
+    protected $logsResultsInJUnitXMLInRealtime = false;
     public $framework;
     public $runnerClass;
     public $stopsOnFailure = false;
-    public $workingDirectoryAtStartup;
     public $phpunitConfigFile;
     public $cakephpAppPath;
     public $cakephpCorePath;
@@ -91,13 +90,6 @@ class Stagehand_TestRunner_Config
 
     protected $testingMethods = array();
     protected $testingClasses = array();
-
-    /**
-     */
-    public function __construct()
-    {
-        $this->workingDirectoryAtStartup = getcwd();
-    }
 
     /**
      * @param string $testingMethod
@@ -153,6 +145,113 @@ class Stagehand_TestRunner_Config
     public function isTestingClass($class)
     {
         return in_array(strtolower($class), $this->testingClasses);
+    }
+
+    /**
+     * @param boolean $colors
+     * @since Method available since Release 2.19.0
+     */
+    public function setColors($colors)
+    {
+        if ($colors) {
+            if ($this->canColor()) {
+                $this->colors = true;
+            }
+        } else {
+            $this->colors = false;
+        }
+    }
+
+    /**
+     * @return boolean
+     * @since Method available since Release 2.19.0
+     */
+    public function colors()
+    {
+        return $this->colors;
+    }
+
+    /**
+     * @return array
+     * @since Method available since Release 2.20.0
+     */
+    public function getTestingResources()
+    {
+        if (count($this->testingResources) == 0) return array($this->getWorkingDirectoryAtStartup());
+        return $this->testingResources;
+    }
+
+    /**
+     * @param string $testingResource
+     * @since Method available since Release 2.20.0
+     */
+    public function addTestingResource($testingResource)
+    {
+        $this->testingResources[] = $testingResource;
+    }
+
+    /**
+     * @return string
+     * @since Method available since Release 2.20.0
+     */
+    public function getWorkingDirectoryAtStartup()
+    {
+        return @$GLOBALS['STAGEHAND_TESTRUNNER_CONFIG_workingDirectoryAtStartup'];
+    }
+
+    /**
+     * @param string $junitXMLFile
+     * @since Method available since Release 2.20.0
+     */
+    public function setJUnitXMLFile($junitXMLFile)
+    {
+        $this->logsResultsInJUnitXML = true;
+        $this->junitXMLFile = $junitXMLFile;
+    }
+
+    /**
+     * @return string
+     * @since Method available since Release 2.20.0
+     */
+    public function getJUnitXMLFile()
+    {
+        return $this->junitXMLFile;
+    }
+
+    /**
+     * @return boolean
+     * @since Method available since Release 2.20.0
+     */
+    public function logsResultsInJUnitXML()
+    {
+        return $this->logsResultsInJUnitXML;
+    }
+
+    /**
+     * @param boolean $logsResultsInJUnitXMLInRealtime
+     * @since Method available since Release 2.20.0
+     */
+    public function setLogsResultsInJUnitXMLInRealtime($logsResultsInJUnitXMLInRealtime)
+    {
+        $this->logsResultsInJUnitXMLInRealtime = $logsResultsInJUnitXMLInRealtime;
+    }
+
+    /**
+     * @return boolean
+     * @since Method available since Release 2.20.0
+     */
+    public function logsResultsInJUnitXMLInRealtime()
+    {
+        return $this->logsResultsInJUnitXMLInRealtime;
+    }
+
+    /**
+     * @return boolean
+     * @since Method available since Release 2.19.0
+     */
+    protected function canColor()
+    {
+        return @include_once 'Console/Color.php';
     }
 }
 

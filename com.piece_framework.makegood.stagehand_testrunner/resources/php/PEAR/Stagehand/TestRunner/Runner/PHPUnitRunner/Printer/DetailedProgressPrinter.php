@@ -31,7 +31,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2008-2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.17.0
+ * @version    Release: 2.20.0
  * @link       http://www.phpunit.de/
  * @since      File available since Release 1.2.0
  */
@@ -44,7 +44,7 @@ require_once 'PHPUnit/TextUI/ResultPrinter.php';
  * @package    Stagehand_TestRunner
  * @copyright  2008-2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 2.17.0
+ * @version    Release: 2.20.0
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 1.2.0
  */
@@ -67,7 +67,7 @@ class Stagehand_TestRunner_Runner_PHPUnitRunner_Printer_DetailedProgressPrinter 
     {
         $message = 'raised an error';
         $this->write(
-            $this->colors ? Stagehand_TestRunner_Coloring::magenta($message)
+            $this->colors ? Stagehand_TestRunner_Util_Coloring::magenta($message)
                           : $message
         );
 
@@ -85,7 +85,7 @@ class Stagehand_TestRunner_Runner_PHPUnitRunner_Printer_DetailedProgressPrinter 
     {
         $message = 'failed';
         $this->write(
-            $this->colors ? Stagehand_TestRunner_Coloring::red($message)
+            $this->colors ? Stagehand_TestRunner_Util_Coloring::red($message)
                           : $message
         );
 
@@ -109,7 +109,7 @@ class Stagehand_TestRunner_Runner_PHPUnitRunner_Printer_DetailedProgressPrinter 
         }
 
         $this->write(
-            $this->colors ? Stagehand_TestRunner_Coloring::yellow($message)
+            $this->colors ? Stagehand_TestRunner_Util_Coloring::yellow($message)
                           : $message
         );
 
@@ -132,7 +132,7 @@ class Stagehand_TestRunner_Runner_PHPUnitRunner_Printer_DetailedProgressPrinter 
         }
 
         $this->write(
-            $this->colors ? Stagehand_TestRunner_Coloring::yellow($message)
+            $this->colors ? Stagehand_TestRunner_Util_Coloring::yellow($message)
                           : $message
         );
 
@@ -149,10 +149,10 @@ class Stagehand_TestRunner_Runner_PHPUnitRunner_Printer_DetailedProgressPrinter 
         if (strlen($suite->getName())) {
             if ($this->lastEvent == PHPUnit_TextUI_ResultPrinter::EVENT_TESTSUITE_END
                 || $this->lastEvent == PHPUnit_TextUI_ResultPrinter::EVENT_TEST_END) {
-                $this->write("\n\n");
+                $this->write(PHP_EOL . PHP_EOL);
             }
 
-            $this->write($suite->getName() . "\n");
+            $this->write($suite->getName() . PHP_EOL);
         }
 
         parent::startTestSuite($suite);
@@ -180,7 +180,7 @@ class Stagehand_TestRunner_Runner_PHPUnitRunner_Printer_DetailedProgressPrinter 
     {
         if ($this->lastEvent == PHPUnit_TextUI_ResultPrinter::EVENT_TEST_END
             || $this->lastEvent == PHPUnit_TextUI_ResultPrinter::EVENT_TESTSUITE_END) {
-            $this->write("\n");
+            $this->write(PHP_EOL);
         }
 
         $this->write('  ' . $test->getName() . ' ... ');
@@ -200,7 +200,7 @@ class Stagehand_TestRunner_Runner_PHPUnitRunner_Printer_DetailedProgressPrinter 
         if (!$this->lastTestFailed) {
             $message = 'passed';
             $this->write(
-                $this->colors ? Stagehand_TestRunner_Coloring::green($message)
+                $this->colors ? Stagehand_TestRunner_Util_Coloring::green($message)
                               : $message
             );
         }
