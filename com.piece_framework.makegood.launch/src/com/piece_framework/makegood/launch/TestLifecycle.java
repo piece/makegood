@@ -137,12 +137,12 @@ public class TestLifecycle {
     /**
      * @since 1.3.0
      */
-    public String getOutputContents() {
+    public String getStreamOutput() {
         IDebugTarget debugTarget = launch.getDebugTarget();
         if (debugTarget != null && debugTarget instanceof IPHPDebugTarget) {
             return ((IPHPDebugTarget) debugTarget).getOutputBuffer().toString();
         }
-        return outputStreamListener.getContents();
+        return outputStreamListener.getOutput();
     }
 
     /**
@@ -156,15 +156,15 @@ public class TestLifecycle {
      * @since 1.3.0
      */
     private class StreamListener implements IStreamListener {
-        private StringBuilder contents = new StringBuilder();
+        private StringBuilder output = new StringBuilder();
 
         @Override
         public void streamAppended(String text, IStreamMonitor monitor) {
-            contents.append(text);
+            output.append(text);
         }
 
-        public String getContents() {
-            return contents.toString();
+        public String getOutput() {
+            return output.toString();
         }
     }
 

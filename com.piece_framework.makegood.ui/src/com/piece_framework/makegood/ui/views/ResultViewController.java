@@ -152,7 +152,7 @@ public class ResultViewController implements IDebugEventSetListener {
                     if (!StopTestAction.isStoppedByAction(launch)) {
                         FatalErrorMarkerFactory markerFactory = new FatalErrorMarkerFactory();
                         try {
-                            IMarker marker = markerFactory.create(testLifecycle.getOutputContents());
+                            IMarker marker = markerFactory.create(testLifecycle.getStreamOutput());
                             if (marker != null) {
                                 EditorOpener.open(marker);
                             } else {
