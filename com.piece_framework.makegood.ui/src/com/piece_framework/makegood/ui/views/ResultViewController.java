@@ -121,6 +121,7 @@ public class ResultViewController implements IDebugEventSetListener {
         markAsTerminateEventFired(launch);
 
         if (!createEventFired(launch)) {
+            TestLifecycle.destroy();
             return;
         }
 
