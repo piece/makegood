@@ -802,6 +802,8 @@ public class ResultView extends ViewPart {
                 additionalInformation.setMessage(Messages.TestResultView_Status_TestsNotFound);
             } else if (status == MakeGoodStatus.RelatedTestsNotFound) {
                 additionalInformation.setMessage(Messages.TestResultView_Status_RelatedTestsNotFound);
+            } else if (status == MakeGoodStatus.TypesNotFound) {
+                additionalInformation.setMessage(Messages.TestResultView_Status_TypesNotFound);
             }
             updateAdditionalInformation();
 

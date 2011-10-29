@@ -51,7 +51,10 @@ public class RelatedTestsLaunchShortcut extends MakeGoodLaunchShortcut {
 
         EditorParser editorParser = new EditorParser(editor);
         List<IType> types = editorParser.getTypes();
-        if (types == null || types.size() == 0) throw new NotLaunchedException();
+        if (types == null || types.size() == 0) {
+            MakeGoodContext.getInstance().updateStatus(MakeGoodStatus.TypesNotFound);
+            throw new NotLaunchedException();
+        }
 
         ISourceModule source = editorParser.getSourceModule();
         if (source != null && PHPResource.hasTests(source)) {

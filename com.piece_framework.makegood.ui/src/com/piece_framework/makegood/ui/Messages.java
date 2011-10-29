@@ -165,6 +165,11 @@ public class Messages extends NLS {
 
     public static String TestResultView_Status_RelatedTestsNotFound;
 
+    /**
+     * @since 1.8.0
+     */
+    public static String TestResultView_Status_TypesNotFound;
+
     public static String TestRunner_TestSessionAlreadyExists_Title;
     public static String TestRunner_TestSessionAlreadyExists_Message;
 
