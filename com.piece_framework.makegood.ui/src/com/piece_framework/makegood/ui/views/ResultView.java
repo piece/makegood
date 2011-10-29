@@ -397,8 +397,7 @@ public class ResultView extends ViewPart {
 
     void endTest() {
         if (testLifecycle.getProgress().noTestsFound()) {
-            additionalInformation.setMessage(Messages.TestResultView_noTestsFound);
-            setContentDescription(additionalInformation.toString());
+            MakeGoodContext.getInstance().updateStatus(MakeGoodStatus.TestsNotFound);
         }
 
         TreeItem topItem = resultTreeViewer.getTree().getTopItem();
@@ -799,7 +798,9 @@ public class ResultView extends ViewPart {
             if (this.status.getProject() != null) {
                 additionalInformation.setProject(this.status.getProject());
             }
-            if (status == MakeGoodStatus.RelatedTestsNotFound) {
+            if (status == MakeGoodStatus.TestsNotFound) {
+                additionalInformation.setMessage(Messages.TestResultView_Status_TestsNotFound);
+            } else if (status == MakeGoodStatus.RelatedTestsNotFound) {
                 additionalInformation.setMessage(Messages.TestResultView_Status_RelatedTestsNotFound);
             }
             updateAdditionalInformation();

@@ -27,6 +27,7 @@ public enum MakeGoodStatus {
     RunningTest,
     WaitingForTestRun,
     RelatedTestsNotFound,
+    TestsNotFound,
     ;
 
     private IProject project;
