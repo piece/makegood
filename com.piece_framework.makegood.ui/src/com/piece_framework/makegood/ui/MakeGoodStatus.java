@@ -26,6 +26,7 @@ public enum MakeGoodStatus {
     TestingFrameworkNotAvailable,
     RunningTest,
     WaitingForTestRun,
+    RelatedTestsNotFound,
     ;
 
     private IProject project;

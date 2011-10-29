@@ -239,7 +239,6 @@ public class ResultViewController implements IDebugEventSetListener {
                 public IStatus runInUIThread(IProgressMonitor monitor) {
                     ResultView resultView = (ResultView) ViewOpener.find(ResultView.VIEW_ID);
                     if (resultView != null) {
-                        resultView.printCurrentlyRunningTestCase(testCase);
                         resultView.updateOnStartTestCase();
                     }
                     return Status.OK_STATUS;

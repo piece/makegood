@@ -17,7 +17,6 @@ import org.eclipse.osgi.util.NLS;
 public class Messages extends NLS {
     private static final String BUNDLE_NAME = "messages"; //$NON-NLS-1$
     public static String MakeGoodLaunchShortcut_messageTitle;
-    public static String MakeGoodLaunchShortcut_notFoundTestsMessage;
     public static String MakeGoodPropertyPage_testFolderAddLabel;
     public static String MakeGoodPropertyPage_testFolderDialogMessage;
     public static String MakeGoodPropertyPage_testFolderDialogTitle;
@@ -163,6 +162,8 @@ public class Messages extends NLS {
      * @since 1.6.0
      */
     public static String TestResultView_Status_TestingFrameworkNotAvailable;
+
+    public static String TestResultView_Status_RelatedTestsNotFound;
 
     public static String TestRunner_TestSessionAlreadyExists_Title;
     public static String TestRunner_TestSessionAlreadyExists_Message;

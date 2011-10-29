@@ -30,7 +30,6 @@ import org.eclipse.dltk.core.search.SearchMatch;
 import org.eclipse.dltk.core.search.SearchParticipant;
 import org.eclipse.dltk.core.search.SearchPattern;
 import org.eclipse.dltk.core.search.SearchRequestor;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.php.internal.core.PHPLanguageToolkit;
 import org.eclipse.php.internal.core.typeinference.PHPClassType;
 import org.eclipse.ui.IEditorPart;
@@ -41,7 +40,8 @@ import com.piece_framework.makegood.core.PHPResource;
 import com.piece_framework.makegood.launch.TestingTargets;
 import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.EditorParser;
-import com.piece_framework.makegood.ui.Messages;
+import com.piece_framework.makegood.ui.MakeGoodContext;
+import com.piece_framework.makegood.ui.MakeGoodStatus;
 
 public class RelatedTestsLaunchShortcut extends MakeGoodLaunchShortcut {
     @Override
@@ -61,11 +61,7 @@ public class RelatedTestsLaunchShortcut extends MakeGoodLaunchShortcut {
         collectRelatedTests(types);
 
         if (TestingTargets.getInstance().getCount() == 0) {
-            MessageDialog.openInformation(
-                editor.getEditorSite().getShell(),
-                Messages.MakeGoodLaunchShortcut_messageTitle,
-                Messages.MakeGoodLaunchShortcut_notFoundTestsMessage
-            );
+            MakeGoodContext.getInstance().updateStatus(MakeGoodStatus.RelatedTestsNotFound);
             throw new NotLaunchedException();
         }
 

@@ -23,7 +23,6 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ProjectScope;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
@@ -143,6 +142,11 @@ public class ResultView extends ViewPart {
      * @since 1.6.0
      */
     private StatusArea statusArea;
+
+    /**
+     * @since 1.8.0
+     */
+    private AdditionalInformation additionalInformation = new AdditionalInformation();
 
     @Override
     public void createPartControl(final Composite parent) {
@@ -285,6 +289,8 @@ public class ResultView extends ViewPart {
         failureCount.clear();
         errorCount.clear();
         resultTreeViewer.setInput(null);
+        additionalInformation.clearMessage();
+        setContentDescription(additionalInformation.toString());
     }
 
     private GridData createHorizontalFillGridData() {
@@ -391,7 +397,8 @@ public class ResultView extends ViewPart {
 
     void endTest() {
         if (testLifecycle.getProgress().noTestsFound()) {
-            setContentDescription(Messages.TestResultView_noTestsFound);
+            additionalInformation.setMessage(Messages.TestResultView_noTestsFound);
+            setContentDescription(additionalInformation.toString());
         }
 
         TreeItem topItem = resultTreeViewer.getTree().getTopItem();
@@ -410,21 +417,6 @@ public class ResultView extends ViewPart {
      */
     void collapseResultTree() {
         resultTreeViewer.collapseAll();
-    }
-
-    void printCurrentlyRunningTestCase(TestCaseResult currentTestCase) {
-        Assert.isNotNull(currentTestCase, "The given test case should not be null."); //$NON-NLS-1$
-
-        String className = currentTestCase.getClassName();
-        if (className != null) {
-            setContentDescription(
-                currentTestCase.getClassName() +
-                " - " + //$NON-NLS-1$
-                currentTestCase.getName()
-            );
-        } else {
-            setContentDescription(currentTestCase.getName());
-        }
     }
 
     void markAsStopped() {
@@ -735,12 +727,15 @@ public class ResultView extends ViewPart {
             super(parent, style);
         }
 
-        public void updateProject(final IProject project) {
+        /**
+         * @since 1.8.0
+         */
+        public void updateAdditionalInformation() {
             new UIJob(UIJOB_NAME) {
                 @Override
                 public IStatus runInUIThread(IProgressMonitor monitor) {
                     if (isDisposed()) return Status.OK_STATUS;;
-                    setContentDescription(project.getName());
+                    setContentDescription(additionalInformation.toString());
                     return Status.OK_STATUS;
                 }
             }.schedule();
@@ -801,10 +796,13 @@ public class ResultView extends ViewPart {
         @Override
         public void statusChanged(MakeGoodStatus status) {
             this.status = status;
-            IProject project = this.status.getProject();
-            if (project != null) {
-                updateProject(project);
+            if (this.status.getProject() != null) {
+                additionalInformation.setProject(this.status.getProject());
             }
+            if (status == MakeGoodStatus.RelatedTestsNotFound) {
+                additionalInformation.setMessage(Messages.TestResultView_Status_RelatedTestsNotFound);
+            }
+            updateAdditionalInformation();
 
             switch (status) {
             case NoProjectSelected:
@@ -1099,6 +1097,45 @@ public class ResultView extends ViewPart {
                 text.replaceText(matcher.replaceFirst(matcher.group(1)));
                 text.addStyle(style);
             }
+        }
+    }
+
+    /**
+     * @since 1.8.0
+     */
+    private class AdditionalInformation {
+        private IProject project;
+        private String message;
+
+        public void setProject(IProject project) {
+            if (this.project != null && this.project != project) {
+                clearMessage();
+            }
+            this.project = project;
+        }
+
+        public void setMessage(String message) {
+            this.message = message;
+        }
+
+        public void clearMessage() {
+            setMessage(null);
+        }
+
+        @Override
+        public String toString() {
+            StringBuilder information = new StringBuilder();
+
+            if (project != null) {
+                information.append("[" + project.getName() + "]"); //$NON-NLS-1$ //$NON-NLS-2$
+            }
+
+            if (message != null && message.length() > 0) {
+                information.append(" "); //$NON-NLS-1$
+                information.append(message);
+            }
+
+            return information.toString();
         }
     }
 }
