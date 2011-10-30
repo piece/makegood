@@ -93,11 +93,16 @@ public class ResultViewController implements IDebugEventSetListener {
         Job job = new UIJob("MakeGood Test Start") { //$NON-NLS-1$
             @Override
             public IStatus runInUIThread(IProgressMonitor monitor) {
-                ResultView resultView = (ResultView) ViewOpener.show(ResultView.VIEW_ID);
+                ResultView resultView = (ResultView) ViewOpener.find(ResultView.VIEW_ID);
+                if (resultView == null) {
+                    resultView = (ResultView) ViewOpener.show(ResultView.VIEW_ID);
+                }
                 MakeGoodContext.getInstance().getTestRunner().restoreFocusToLastActivePart();
+
                 if (resultView != null) {
                     resultView.startTest(testLifecycle);
                 }
+
                 ResultSquare.getInstance().startTest();
 
                 try {
