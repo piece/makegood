@@ -910,7 +910,6 @@ public class ResultView extends ViewPart {
                 IWorkbenchPart activePart = partRef.getPage().getActivePart();
                 if (activePart != null) {
                     MakeGoodContext.getInstance().getActivePart().update(activePart);
-                    MakeGoodContext.getInstance().updateStatus();
                 }
 
                 return;

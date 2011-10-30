@@ -53,11 +53,11 @@ public class ActivePart {
         if (VIEW_ID_PHPBROWSEROUTPUT.equals(id)) return;
         if (IConsoleConstants.ID_CONSOLE_VIEW.equals(id)) return;
 
-        if (part instanceof IEditorPart) {
-            if (shouldUpdateLink(part)) {
-                updateLink(part);
-            }
-        } else {
+        if (shouldUpdateLink(part)) {
+            updateLink(part);
+        }
+
+        if (!(part instanceof IEditorPart)) {
             ISelectionProvider provider = part.getSite().getSelectionProvider();
             if (provider != null) {
                 provider.addSelectionChangedListener(new ISelectionChangedListener() {
@@ -162,9 +162,12 @@ public class ActivePart {
      */
     private void updateLink(Object entity) {
         this.entity = entity;
+
         IProject project = getProject(this.entity);
         if (project != null) {
             MakeGoodContext.getInstance().getStatusMonitor().addPreferenceChangeListener(new ProjectScope(project));
         }
+
+        MakeGoodContext.getInstance().updateStatus();
     }
 }

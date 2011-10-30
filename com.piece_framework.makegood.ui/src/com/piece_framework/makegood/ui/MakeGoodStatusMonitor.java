@@ -37,9 +37,7 @@ public class MakeGoodStatusMonitor implements IPartListener2, ISelectionChangedL
         IWorkbenchPart activePart = partRef.getPage().getActivePart();
         if (activePart == null) return;
         MakeGoodContext.getInstance().getActivePart().update(activePart);
-        if (activePart instanceof AbstractTextEditor) {
-            MakeGoodContext.getInstance().updateStatus();
-        } else {
+        if (!(activePart instanceof AbstractTextEditor)) {
             addSelectionChangedListener(activePart);
         }
     }

@@ -39,6 +39,9 @@ public class MakeGoodPreparer implements IStartup {
             for (IWorkbenchPage page: window.getPages()) {
                 page.addPartListener(MakeGoodContext.getInstance().getStatusMonitor());
                 IWorkbenchPart activePart = page.getActivePart();
+                if (activePart != null) {
+                    MakeGoodContext.getInstance().getActivePart().update(activePart);
+                }
                 if (activePart != null && !(activePart instanceof AbstractTextEditor)) {
                     MakeGoodContext.getInstance().getStatusMonitor().addSelectionChangedListener(activePart);
                 }
