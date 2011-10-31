@@ -24,6 +24,11 @@ public class Progress implements ResultReaderListener {
     private boolean isRunning = false;
     private boolean isCompleted = false;
 
+    /**
+     * @since 1.8.0
+     */
+    private boolean isStopped = false;
+
     public int getAllTestCount() {
         return testSuite.getAllTestCount();
     }
@@ -108,6 +113,20 @@ public class Progress implements ResultReaderListener {
     }
 
     /**
+     * @since 1.8.0
+     */
+    public void markAsStopped() {
+        isStopped  = true;
+    }
+
+    /**
+     * @since 1.8.0
+     */
+    public boolean isStopped() {
+        return isStopped;
+    }
+
+    /**
      * @since 1.3.0
      */
     public boolean noTestsFound() {
@@ -178,5 +197,12 @@ public class Progress implements ResultReaderListener {
      */
     @Override
     public void endError(TestCaseResult error) {
+    }
+
+    /**
+     * @since 1.8.0
+     */
+    public TestSuiteResult getResult() {
+        return testSuite;
     }
 }

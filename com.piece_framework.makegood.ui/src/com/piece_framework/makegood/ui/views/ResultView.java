@@ -261,6 +261,17 @@ public class ResultView extends ViewPart {
         MakeGoodContext.getInstance().addStatusChangeListener(statusArea);
 
         clear();
+
+        testLifecycle = TestLifecycle.getInstance();
+        if (testLifecycle != null) {
+            if (testLifecycle.getProgress().isStopped()) {
+                markAsStopped();
+            } else if (testLifecycle.getProgress().hasFailures()) {
+                markAsFailed();
+            }
+
+            setTreeInput(testLifecycle.getProgress().getResult());
+        }
     }
 
     @Override
@@ -424,8 +435,13 @@ public class ResultView extends ViewPart {
 
     private void markAsFailed() {
         progressBar.markAsFailed();
-        previousFailureAction.setEnabled(true);
-        nextFailureAction.setEnabled(true);
+
+        if (previousFailureAction != null) {
+            previousFailureAction.setEnabled(true);
+        }
+        if (nextFailureAction != null) {
+            nextFailureAction.setEnabled(true);
+        }
     }
 
     private void initializeActions(IViewSite site) {

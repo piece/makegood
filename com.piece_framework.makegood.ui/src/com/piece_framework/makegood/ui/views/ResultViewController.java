@@ -153,6 +153,7 @@ public class ResultViewController implements IDebugEventSetListener {
                 if (testLifecycle.hasErrors()) {
                     ResultSquare.getInstance().markAsStopped();
                     if (resultView != null) {
+                        testLifecycle.getProgress().markAsStopped();
                         resultView.markAsStopped();
                     }
                     if (!StopTestAction.isStoppedByAction(launch)) {
