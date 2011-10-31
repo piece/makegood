@@ -17,6 +17,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IViewActionDelegate;
 import org.eclipse.ui.IViewPart;
 
+import com.piece_framework.makegood.launch.TestLifecycle;
 import com.piece_framework.makegood.ui.views.ResultView;
 import com.piece_framework.makegood.ui.views.ViewOpener;
 
@@ -29,9 +30,13 @@ public class NextFailureAction implements IViewActionDelegate {
 
     @Override
     public void run(IAction action) {
-        ResultView view = (ResultView) ViewOpener.find(ResultView.VIEW_ID);
-        if (view != null) {
-            view.moveToNextFailure();
+        TestLifecycle testLifecycle = TestLifecycle.getInstance();
+        if (testLifecycle == null) return;
+        if (testLifecycle.getProgress().hasFailures()) {
+            ResultView view = (ResultView) ViewOpener.show(ResultView.VIEW_ID);
+            if (view != null) {
+                view.moveToNextFailure();
+            }
         }
     }
 
