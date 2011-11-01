@@ -11,30 +11,14 @@
 
 package com.piece_framework.makegood.ui.handlers;
 
-import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.ExecutionException;
-
-import com.piece_framework.makegood.launch.TestLifecycle;
 import com.piece_framework.makegood.ui.views.ResultView;
-import com.piece_framework.makegood.ui.views.ViewOpener;
 
-public class NextFailureHandler extends AbstractHandler {
+public class NextFailureHandler extends FailureHandler {
+    /**
+     * @since 1.8.0
+     */
     @Override
-    public Object execute(ExecutionEvent event) throws ExecutionException {
-        TestLifecycle testLifecycle = TestLifecycle.getInstance();
-        if (testLifecycle != null && testLifecycle.getProgress().hasFailures()) {
-            ResultView view = (ResultView) ViewOpener.open(ResultView.VIEW_ID);
-            if (view != null) {
-                view.moveToNextFailure();
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        if (!super.isEnabled()) return false;
-        TestLifecycle testLifecycle = TestLifecycle.getInstance();
-        return testLifecycle != null && testLifecycle.getProgress().hasFailures();
+    protected void moveToFailure(ResultView resultView) {
+        resultView.moveToNextFailure();
     }
 }
