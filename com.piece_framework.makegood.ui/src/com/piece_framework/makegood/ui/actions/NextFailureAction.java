@@ -12,35 +12,16 @@
 
 package com.piece_framework.makegood.ui.actions;
 
-import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.ui.IViewActionDelegate;
-import org.eclipse.ui.IViewPart;
-
-import com.piece_framework.makegood.launch.TestLifecycle;
 import com.piece_framework.makegood.ui.views.ResultView;
-import com.piece_framework.makegood.ui.views.ViewOpener;
 
-public class NextFailureAction implements IViewActionDelegate {
+public class NextFailureAction extends FailureAction {
     public static final String ACTION_ID = "com.piece_framework.makegood.ui.viewActions.nextFailureAction"; //$NON-NLS-1$
 
+    /**
+     * @since 1.8.0
+     */
     @Override
-    public void init(IViewPart view) {
-    }
-
-    @Override
-    public void run(IAction action) {
-        TestLifecycle testLifecycle = TestLifecycle.getInstance();
-        if (testLifecycle == null) return;
-        if (testLifecycle.getProgress().hasFailures()) {
-            ResultView view = (ResultView) ViewOpener.open(ResultView.VIEW_ID);
-            if (view != null) {
-                view.moveToNextFailure();
-            }
-        }
-    }
-
-    @Override
-    public void selectionChanged(IAction action, ISelection selection) {
+    protected void moveToFailure(ResultView resultView) {
+        resultView.moveToNextFailure();
     }
 }
