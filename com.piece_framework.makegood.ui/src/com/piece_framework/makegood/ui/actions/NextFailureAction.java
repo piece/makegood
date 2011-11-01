@@ -33,7 +33,7 @@ public class NextFailureAction implements IViewActionDelegate {
         TestLifecycle testLifecycle = TestLifecycle.getInstance();
         if (testLifecycle == null) return;
         if (testLifecycle.getProgress().hasFailures()) {
-            ResultView view = (ResultView) ViewOpener.show(ResultView.VIEW_ID);
+            ResultView view = (ResultView) ViewOpener.open(ResultView.VIEW_ID);
             if (view != null) {
                 view.moveToNextFailure();
             }

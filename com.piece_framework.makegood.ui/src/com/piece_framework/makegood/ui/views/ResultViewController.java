@@ -95,7 +95,7 @@ public class ResultViewController implements IDebugEventSetListener {
             public IStatus runInUIThread(IProgressMonitor monitor) {
                 ResultView resultView = (ResultView) ViewOpener.find(ResultView.VIEW_ID);
                 if (resultView == null) {
-                    resultView = (ResultView) ViewOpener.show(ResultView.VIEW_ID);
+                    resultView = (ResultView) ViewOpener.open(ResultView.VIEW_ID);
                 }
                 MakeGoodContext.getInstance().getTestRunner().restoreFocusToLastActivePart();
 
@@ -163,14 +163,14 @@ public class ResultViewController implements IDebugEventSetListener {
                             if (marker != null) {
                                 EditorOpener.open(marker);
                             } else {
-                                ViewOpener.show(IConsoleConstants.ID_CONSOLE_VIEW);
+                                ViewOpener.open(IConsoleConstants.ID_CONSOLE_VIEW);
                                 EditorOpener.open(markerFactory.getFile(), markerFactory.getLine());
                             }
                         } catch (CoreException e) {
                             Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
                         } catch (UnknownFatalErrorMessageException e) {
                             Activator.getDefault().getLog().log(new Status(IStatus.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
-                            ViewOpener.show(IConsoleConstants.ID_CONSOLE_VIEW);
+                            ViewOpener.open(IConsoleConstants.ID_CONSOLE_VIEW);
                         }
                     }
                 } else {

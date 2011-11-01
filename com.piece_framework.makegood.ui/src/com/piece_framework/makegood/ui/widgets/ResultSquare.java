@@ -74,7 +74,7 @@ public class ResultSquare extends WorkbenchWindowControlContribution {
                 Job job = new UIJob("MakeGood View Open") { //$NON-NLS-1$
                     @Override
                     public IStatus runInUIThread(IProgressMonitor monitor) {
-                        ViewOpener.show(ResultView.VIEW_ID);
+                        ViewOpener.open(ResultView.VIEW_ID);
                         return Status.OK_STATUS;
                     }
                 };

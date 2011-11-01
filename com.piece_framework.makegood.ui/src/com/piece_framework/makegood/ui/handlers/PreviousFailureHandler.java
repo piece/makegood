@@ -23,7 +23,7 @@ public class PreviousFailureHandler extends AbstractHandler {
     public Object execute(ExecutionEvent event) throws ExecutionException {
         TestLifecycle testLifecycle = TestLifecycle.getInstance();
         if (testLifecycle != null && testLifecycle.getProgress().hasFailures()) {
-            ResultView view = (ResultView) ViewOpener.show(ResultView.VIEW_ID);
+            ResultView view = (ResultView) ViewOpener.open(ResultView.VIEW_ID);
             if (view != null) {
                 view.moveToPreviousFailure();
             }
