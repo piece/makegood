@@ -34,7 +34,7 @@ public class MakeGoodPreparer implements IStartup {
      * @since 1.6.0
      */
     private void prepare() {
-        MakeGoodContext.getInstance().getStatusMonitor().addPreferenceChangeListener(InstanceScope.INSTANCE);
+        MakeGoodContext.getInstance().getStatusMonitor().addPreferenceChangeListener(new InstanceScope());
         for (IWorkbenchWindow window: PlatformUI.getWorkbench().getWorkbenchWindows()) {
             for (IWorkbenchPage page: window.getPages()) {
                 page.addPartListener(MakeGoodContext.getInstance().getStatusMonitor());
