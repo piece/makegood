@@ -36,7 +36,7 @@ import com.piece_framework.makegood.core.result.TestSuiteResult;
 import com.piece_framework.makegood.core.run.ResultReaderListener;
 import com.piece_framework.makegood.launch.MakeGoodLaunch;
 import com.piece_framework.makegood.launch.TestLifecycle;
-import com.piece_framework.makegood.launch.TestingTargets;
+import com.piece_framework.makegood.launch.TestTargets;
 import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.MakeGoodContext;
 import com.piece_framework.makegood.ui.actions.StopTestAction;
@@ -106,8 +106,8 @@ public class ResultViewController implements IDebugEventSetListener {
                 ResultSquare.getInstance().startTest();
 
                 try {
-                    new TestMarkerFactory().clear(TestingTargets.getInstance().getProject());
-                    new FatalErrorMarkerFactory().clear(TestingTargets.getInstance().getProject());
+                    new TestMarkerFactory().clear(TestTargets.getInstance().getProject());
+                    new FatalErrorMarkerFactory().clear(TestTargets.getInstance().getProject());
                 } catch (CoreException e) {
                     Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
                 }

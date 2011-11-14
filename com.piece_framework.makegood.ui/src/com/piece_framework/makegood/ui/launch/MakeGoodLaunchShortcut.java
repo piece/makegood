@@ -24,7 +24,7 @@ import org.eclipse.ui.IEditorPart;
 
 import com.piece_framework.makegood.launch.Activator;
 import com.piece_framework.makegood.launch.ProjectNotFoundException;
-import com.piece_framework.makegood.launch.TestingTargets;
+import com.piece_framework.makegood.launch.TestTargets;
 import com.piece_framework.makegood.launch.ResourceNotFoundException;
 
 public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
@@ -50,7 +50,7 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
      */
     protected void addTestingTarget(Object testingTarget) {
         try {
-            TestingTargets.getInstance().add(testingTarget);
+            TestTargets.getInstance().add(testingTarget);
         } catch (ResourceNotFoundException e) {
             Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
             throw new NotLaunchedException();
@@ -70,7 +70,7 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
 
             for (IType type: types) {
                 try {
-                    TestingTargets.getInstance().add(type);
+                    TestTargets.getInstance().add(type);
                 } catch (ResourceNotFoundException e) {
                     Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
                     throw new NotLaunchedException();
@@ -86,6 +86,6 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
      * @since 1.3.0
      */
     protected void clearTestingTargets() {
-        TestingTargets.getInstance().clear();
+        TestTargets.getInstance().clear();
     }
 }

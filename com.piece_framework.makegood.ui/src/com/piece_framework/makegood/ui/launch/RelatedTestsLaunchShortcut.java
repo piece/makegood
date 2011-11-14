@@ -37,7 +37,7 @@ import org.eclipse.ui.texteditor.ITextEditor;
 
 import com.piece_framework.makegood.core.PHPFlags;
 import com.piece_framework.makegood.core.PHPResource;
-import com.piece_framework.makegood.launch.TestingTargets;
+import com.piece_framework.makegood.launch.TestTargets;
 import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.EditorParser;
 import com.piece_framework.makegood.ui.MakeGoodContext;
@@ -63,7 +63,7 @@ public class RelatedTestsLaunchShortcut extends MakeGoodLaunchShortcut {
 
         collectRelatedTests(types);
 
-        if (TestingTargets.getInstance().getCount() == 0) {
+        if (TestTargets.getInstance().getCount() == 0) {
             MakeGoodContext.getInstance().updateStatus(MakeGoodStatus.RelatedTestsNotFound);
             throw new NotLaunchedException();
         }

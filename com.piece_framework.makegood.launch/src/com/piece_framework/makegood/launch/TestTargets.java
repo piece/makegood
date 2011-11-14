@@ -42,7 +42,7 @@ import com.piece_framework.makegood.core.PHPFlags;
 import com.piece_framework.makegood.core.PHPResource;
 import com.piece_framework.makegood.core.TestingFramework;
 
-public class TestingTargets {
+public class TestTargets {
     private List<Object> targets = new ArrayList<Object>();
 
     /**
@@ -53,14 +53,14 @@ public class TestingTargets {
     /**
      * @since 1.3.0
      */
-    private static TestingTargets soleInstance;
+    private static TestTargets soleInstance;
 
     /**
      * @since 1.3.0
      */
-    public static TestingTargets getInstance() {
+    public static TestTargets getInstance() {
         if (soleInstance == null) {
-            soleInstance = new TestingTargets();
+            soleInstance = new TestTargets();
         }
         return soleInstance;
     }
@@ -68,7 +68,7 @@ public class TestingTargets {
     /**
      * @since 1.3.0
      */
-    private TestingTargets() {
+    private TestTargets() {
         super();
     }
 
