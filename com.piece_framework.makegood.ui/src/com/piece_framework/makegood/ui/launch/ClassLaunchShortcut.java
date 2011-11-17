@@ -1,5 +1,6 @@
 /**
  * Copyright (c) 2010 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
+ *               2011 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -12,25 +13,12 @@
 package com.piece_framework.makegood.ui.launch;
 
 import org.eclipse.dltk.core.IModelElement;
-import org.eclipse.ui.IEditorPart;
 
-import com.piece_framework.makegood.ui.EditorParser;
-
-public class ClassLaunchShortcut extends NoSearchLaunchShortcut {
-    @Override
-    protected IModelElement getTestingTarget(IEditorPart editor) {
-        EditorParser parser = new EditorParser(editor);
-        IModelElement element = parser.getModelElementOnSelection();
-        if (element == null) {
-            return parser.getSourceModule();
-        }
-
-        if (element.getElementType() == IModelElement.FIELD
-            || element.getElementType() == IModelElement.METHOD
-            ) {
-            return element.getParent();
-        }
-
-        return element;
+public class ClassLaunchShortcut extends ContextLaunchShortcut {
+    /**
+     * @since 1.9.0
+     */
+    protected boolean isContextDesired(IModelElement modelElement) {
+        return modelElement.getElementType() == IModelElement.TYPE;
     }
 }

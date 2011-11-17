@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2010 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
- *               2010 KUBO Atsuhiro <kubo@iteman.jp>,
+ *               2010-2011 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -24,12 +24,26 @@ public class ContextLaunchShortcut extends NoSearchLaunchShortcut {
         IModelElement target = parser.getModelElementOnSelection();
         if (target == null) {
             return parser.getSourceModule();
+        } else {
+            return findTargetContext(target);
         }
+    }
 
-        if (target.getElementType() == IModelElement.FIELD) {
-            return target.getParent();
+    /**
+     * @since 1.9.0
+     */
+    protected IModelElement findTargetContext(IModelElement modelElement) {
+        if (isContextDesired(modelElement)) {
+            return modelElement;
+        } else {
+            return findTargetContext(modelElement.getParent());
         }
+    }
 
-        return target;
+    /**
+     * @since 1.9.0
+     */
+    protected boolean isContextDesired(IModelElement modelElement) {
+        return modelElement.getElementType() != IModelElement.FIELD;
     }
 }
