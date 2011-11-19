@@ -178,26 +178,26 @@ public class TestTargets {
             }
         }
 
-        Set<String> testingFiles = new HashSet<String>();
-        Set<String> testingClasses = new HashSet<String>();
-        Set<String> testingMethods = new HashSet<String>();
+        Set<String> testFiles = new HashSet<String>();
+        Set<String> testClasses = new HashSet<String>();
+        Set<String> testMethods = new HashSet<String>();
         for (Object target: targets) {
-            testingFiles.add(getResource(target).getLocation().toString());
+            testFiles.add(getResource(target).getLocation().toString());
             if (target instanceof IType) {
                 int flags = ((IType) target).getFlags();
                 if (PHPFlags.isNamespace(flags)) {
                     for (IType type: ((IType) target).getTypes()) {
-                        testingClasses.add(urlencode(PHPClassType.fromIType(type).getTypeName()));
+                        testClasses.add(urlencode(PHPClassType.fromIType(type).getTypeName()));
                     }
                 } else if (PHPFlags.isClass(flags)) {
-                    testingClasses.add(urlencode(PHPClassType.fromIType((IType) target).getTypeName()));
+                    testClasses.add(urlencode(PHPClassType.fromIType((IType) target).getTypeName()));
                 }
             } else if (target instanceof IMethod) {
                 IMethod method = findMethod((IMethod) target);
                 if (method == null) {
                     throw new MethodNotFoundException("An unknown method context [ " + target + " ] has been found."); //$NON-NLS-1$ //$NON-NLS-2$
                 }
-                testingMethods.add(
+                testMethods.add(
                     urlencode(
                         PHPClassType.fromIType(method.getDeclaringType()).getTypeName() +
                         "::" + //$NON-NLS-1$
@@ -207,35 +207,35 @@ public class TestTargets {
             }
         }
 
-        if (testingClasses.size() > 0) {
+        if (testClasses.size() > 0) {
             buffer.append(" --classes=\""); //$NON-NLS-1$
             boolean isFirstElement = true;
-            for (String testingClass: testingClasses) {
+            for (String testClass: testClasses) {
                 if (!isFirstElement) {
                     buffer.append(","); //$NON-NLS-1$
                 }
-                buffer.append(testingClass.toString());
+                buffer.append(testClass.toString());
                 isFirstElement = false;
             }
             buffer.append("\""); //$NON-NLS-1$
         }
 
-        if (testingMethods.size() > 0) {
+        if (testMethods.size() > 0) {
             buffer.append(" -m \""); //$NON-NLS-1$
             boolean isFirstElement = true;
-            for (String testingMethod: testingMethods) {
+            for (String testMethod: testMethods) {
                 if (!isFirstElement) {
                     buffer.append(","); //$NON-NLS-1$
                 }
-                buffer.append(testingMethod.toString());
+                buffer.append(testMethod.toString());
                 isFirstElement = false;
             }
             buffer.append("\""); //$NON-NLS-1$
         }
 
         buffer.append(" -R"); //$NON-NLS-1$
-        for (String file: testingFiles) {
-            buffer.append(" \"" + file + "\""); //$NON-NLS-1$ //$NON-NLS-2$
+        for (String testFile: testFiles) {
+            buffer.append(" \"" + testFile + "\""); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         Debug.println(buffer.toString());
@@ -302,7 +302,7 @@ public class TestTargets {
     }
 
     private String getDefaultCakePHPAppPath() {
-        Assert.isNotNull(project, "One or more testing targets should be added."); //$NON-NLS-1$
+        Assert.isNotNull(project, "One or more test targets should be added."); //$NON-NLS-1$
 
         IResource resource = project.findMember("/app"); //$NON-NLS-1$
         if (resource == null) return ""; //$NON-NLS-1$

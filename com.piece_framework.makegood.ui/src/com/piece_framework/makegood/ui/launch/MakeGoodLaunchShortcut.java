@@ -48,9 +48,9 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
     /**
      * @since 1.3.0
      */
-    protected void addTestingTarget(Object testingTarget) {
+    protected void addTestTarget(Object testTarget) {
         try {
-            TestTargets.getInstance().add(testingTarget);
+            TestTargets.getInstance().add(testTarget);
         } catch (ResourceNotFoundException e) {
             Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
             throw new NotLaunchedException();
@@ -59,10 +59,10 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
             throw new NotLaunchedException();
         }
 
-        if (testingTarget instanceof ISourceModule) {
+        if (testTarget instanceof ISourceModule) {
             IType[] types = null;
             try {
-                types = ((ISourceModule) testingTarget).getTypes();
+                types = ((ISourceModule) testTarget).getTypes();
             } catch (ModelException e) {
                 Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
                 throw new NotLaunchedException();
@@ -85,7 +85,7 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
     /**
      * @since 1.3.0
      */
-    protected void clearTestingTargets() {
+    protected void clearTestTargets() {
         TestTargets.getInstance().clear();
     }
 }

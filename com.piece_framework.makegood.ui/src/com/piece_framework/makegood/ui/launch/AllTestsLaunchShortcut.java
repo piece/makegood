@@ -29,7 +29,7 @@ import com.piece_framework.makegood.launch.TestTargets;
 public class AllTestsLaunchShortcut extends MakeGoodLaunchShortcut {
     @Override
     public void launch(ISelection selection, String mode) {
-        clearTestingTargets();
+        clearTestTargets();
 
         if (!(selection instanceof IStructuredSelection)) throw new NotLaunchedException();
 
@@ -42,7 +42,7 @@ public class AllTestsLaunchShortcut extends MakeGoodLaunchShortcut {
         }
         if (resource == null) throw new NotLaunchedException();
 
-        addTestFoldersAsTestingTargets(resource);
+        addTestFoldersAsTestTargets(resource);
 
         IResource mainScriptResource = TestTargets.getInstance().getMainScriptResource();
         if (mainScriptResource == null) throw new NotLaunchedException();
@@ -52,7 +52,7 @@ public class AllTestsLaunchShortcut extends MakeGoodLaunchShortcut {
 
     @Override
     public void launch(IEditorPart editor, String mode) {
-        clearTestingTargets();
+        clearTestTargets();
 
         if (!(editor.getEditorInput() instanceof IFileEditorInput)) throw new NotLaunchedException();
 
@@ -63,14 +63,14 @@ public class AllTestsLaunchShortcut extends MakeGoodLaunchShortcut {
             return;
         }
 
-        addTestFoldersAsTestingTargets(target);
+        addTestFoldersAsTestTargets(target);
 
         super.launch(editor, mode);
     }
 
-    private void addTestFoldersAsTestingTargets(IResource resource) {
+    private void addTestFoldersAsTestTargets(IResource resource) {
         for (IFolder testFolder: new MakeGoodProperty(resource).getTestFolders()) {
-            addTestingTarget(testFolder);
+            addTestTarget(testFolder);
         }
     }
 }

@@ -22,12 +22,12 @@ import com.piece_framework.makegood.launch.TestTargets;
 public class ResourceLaunchShortcut extends MakeGoodLaunchShortcut {
     @Override
     public void launch(ISelection selection, String mode) {
-        clearTestingTargets();
+        clearTestTargets();
 
         if (!(selection instanceof IStructuredSelection)) throw new NotLaunchedException();
 
         for (Object element: ((IStructuredSelection) selection).toArray()) {
-            addTestingTarget(element);
+            addTestTarget(element);
         }
 
         IResource mainScriptResource = TestTargets.getInstance().getMainScriptResource();

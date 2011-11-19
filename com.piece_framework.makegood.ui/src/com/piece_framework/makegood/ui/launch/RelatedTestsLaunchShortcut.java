@@ -46,7 +46,7 @@ import com.piece_framework.makegood.ui.MakeGoodStatus;
 public class RelatedTestsLaunchShortcut extends MakeGoodLaunchShortcut {
     @Override
     public void launch(IEditorPart editor, String mode) {
-        clearTestingTargets();
+        clearTestTargets();
         if (!(editor instanceof ITextEditor)) throw new NotLaunchedException();
 
         EditorParser editorParser = new EditorParser(editor);
@@ -58,7 +58,7 @@ public class RelatedTestsLaunchShortcut extends MakeGoodLaunchShortcut {
 
         ISourceModule source = editorParser.getSourceModule();
         if (source != null && PHPResource.hasTests(source)) {
-            addTestingTarget(source.getResource());
+            addTestTarget(source.getResource());
         }
 
         collectRelatedTests(types);
@@ -128,7 +128,7 @@ public class RelatedTestsLaunchShortcut extends MakeGoodLaunchShortcut {
             IModelElement element = DLTKCore.create(resource);
             if (!(element instanceof ISourceModule)) return;
             if (!PHPResource.hasTests((ISourceModule) element)) return;
-            addTestingTarget(resource);
+            addTestTarget(resource);
         }
 
         @Override

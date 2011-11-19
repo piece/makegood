@@ -20,34 +20,34 @@ import org.eclipse.ui.texteditor.ITextEditor;
 import com.piece_framework.makegood.ui.Activator;
 
 public abstract class NoSearchLaunchShortcut extends MakeGoodLaunchShortcut {
-    private IModelElement lastTestingTarget;
+    private IModelElement lastTestTarget;
 
     @Override
     public void launch(IEditorPart editor, String mode) {
-        clearTestingTargets();
+        clearTestTargets();
 
-        if (lastTestingTarget == null) {
+        if (lastTestTarget == null) {
             if (editor == null) throw new NotLaunchedException();
             if (!(editor instanceof ITextEditor)) throw new NotLaunchedException();
         }
 
-        IModelElement testingTarget;
-        if (lastTestingTarget == null) {
-            testingTarget = getTestingTarget(editor);
+        IModelElement testTarget;
+        if (lastTestTarget == null) {
+            testTarget = getTestTarget(editor);
         } else {
-            testingTarget = lastTestingTarget;
+            testTarget = lastTestTarget;
         }
 
-        if (!testingTarget.exists()) {
+        if (!testTarget.exists()) {
             Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.PLUGIN_ID, "The given test target is not found")); //$NON-NLS-1$
             throw new NotLaunchedException();
         }
 
-        addTestingTarget(testingTarget);
+        addTestTarget(testTarget);
 
         super.launch(editor, mode);
-        lastTestingTarget = testingTarget;
+        lastTestTarget = testTarget;
     }
 
-    protected abstract IModelElement getTestingTarget(IEditorPart editor);
+    protected abstract IModelElement getTestTarget(IEditorPart editor);
 }

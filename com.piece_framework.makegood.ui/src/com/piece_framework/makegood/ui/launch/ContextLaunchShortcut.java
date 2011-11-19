@@ -19,7 +19,7 @@ import com.piece_framework.makegood.ui.EditorParser;
 
 public class ContextLaunchShortcut extends NoSearchLaunchShortcut {
     @Override
-    protected IModelElement getTestingTarget(IEditorPart editor) {
+    protected IModelElement getTestTarget(IEditorPart editor) {
         EditorParser parser = new EditorParser(editor);
         IModelElement target = parser.getModelElementOnSelection();
         if (target == null) {

@@ -29,7 +29,7 @@ import com.piece_framework.makegood.ui.views.ViewOpener;
 
 public class TestRunner {
     private MakeGoodLaunchShortcut lastShortcut;
-    private Object lastTestingTarget;
+    private Object lastTestTarget;
     private IWorkbenchPart lastActivePart;
 
     /**
@@ -73,15 +73,15 @@ public class TestRunner {
     }
 
     public boolean hasLastTest() {
-        if (lastTestingTarget == null) return false;
-        IProject lastTestingProject = TestTargets.getInstance().getProject();
-        if (lastTestingProject == null) return false;
-        if (!lastTestingProject.equals(MakeGoodContext.getInstance().getActivePart().getProject())) return false;
+        if (lastTestTarget == null) return false;
+        IProject lastTestProject = TestTargets.getInstance().getProject();
+        if (lastTestProject == null) return false;
+        if (!lastTestProject.equals(MakeGoodContext.getInstance().getActivePart().getProject())) return false;
         return true;
     }
 
     public void rerunLastTest() {
-        runTests(lastTestingTarget, lastShortcut);
+        runTests(lastTestTarget, lastShortcut);
     }
 
     /**
@@ -99,7 +99,7 @@ public class TestRunner {
         }
     }
 
-    private void runTests(Object testingTarget, MakeGoodLaunchShortcut shortcut) {
+    private void runTests(Object testTarget, MakeGoodLaunchShortcut shortcut) {
         synchronized (TestRunner.class) {
             if (TestLifecycle.isRunning()) {
                 if (!isTestRunByAutotest) {
@@ -114,7 +114,7 @@ public class TestRunner {
         if (hasPHPexeItem()) {
             if (!isTestRunByAutotest) {
                 lastShortcut = shortcut;
-                lastTestingTarget = testingTarget;
+                lastTestTarget = testTarget;
             }
 
             lastActivePart = ActivePart.getActivePart();
@@ -123,10 +123,10 @@ public class TestRunner {
         String launchMode = RuntimeConfiguration.getInstance().getLaunchMode();
 
         try {
-            if (testingTarget instanceof ISelection) {
-                shortcut.launch((ISelection) testingTarget, launchMode);
-            } else if (testingTarget instanceof IEditorPart) {
-                shortcut.launch((IEditorPart) testingTarget, launchMode);
+            if (testTarget instanceof ISelection) {
+                shortcut.launch((ISelection) testTarget, launchMode);
+            } else if (testTarget instanceof IEditorPart) {
+                shortcut.launch((IEditorPart) testTarget, launchMode);
             }
         } catch (NotLaunchedException e) {
             TestLifecycle.destroy();
