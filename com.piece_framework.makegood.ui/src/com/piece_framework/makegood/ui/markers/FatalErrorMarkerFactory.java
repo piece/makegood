@@ -24,7 +24,7 @@ import org.eclipse.core.runtime.CoreException;
 public class FatalErrorMarkerFactory extends MarkerFactory {
     private static final String MARKER_ID = "com.piece_framework.makegood.ui.markers.fatalErrorMarker"; //$NON-NLS-1$
     private static final Pattern FATAL_ERROR_MESSAGE_PATTERN =
-        Pattern.compile("^((?:Parse|Fatal) error: .+) in (.+?)(?:\\((\\d+)\\) : eval\\(\\)'d code)? on line (\\d+)$", Pattern.MULTILINE); //$NON-NLS-1$
+        Pattern.compile("^((?:Parse|Fatal) error: .+) in (.+?)(?:\\((\\d+)\\) : eval\\(\\)'d code(?:\\(\\d+\\) : eval\\(\\)'d code)*)? on line (\\d+)$", Pattern.MULTILINE); //$NON-NLS-1$
     private String file;
     private int line;
 
