@@ -587,7 +587,7 @@ public class ResultView extends ViewPart {
         testCount.setText(
             Messages.TestResultView_testsLabel +
             ": " + //$NON-NLS-1$
-            (testLifecycle.getProgress().isRunning() ? testLifecycle.getProgress().getTestCount() + 1 : testLifecycle.getProgress().getTestCount()) +
+            testLifecycle.getProgress().getCurrentTestCount() +
             "/" + //$NON-NLS-1$
             testLifecycle.getProgress().getAllTestCount()
         );

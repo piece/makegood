@@ -382,12 +382,6 @@ public class ResultReader extends DefaultHandler {
                 if (stopped) {
                     break;
                 }
-
-                try {
-                    Thread.sleep(200);
-                } catch (InterruptedException e) {
-                    break;
-                }
             } while (true);
             return result;
         }

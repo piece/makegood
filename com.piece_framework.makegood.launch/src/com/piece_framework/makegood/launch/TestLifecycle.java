@@ -63,13 +63,21 @@ public class TestLifecycle {
         super();
     }
 
-    public void start(ResultReaderListener resultReaderListener) throws CoreException {
+    /**
+     * Creates a ResultReader object and a thread for reading the result.
+     *
+     * @param resultReaderListener
+     * @throws CoreException
+     * @since 1.9.0
+     */
+    public void initialize(ResultReaderListener resultReaderListener) throws CoreException {
         resultReader = createResultReader(resultReaderListener);
         resultReaderThread = createResultReaderThread();
+    }
 
+    public void start() {
         progress.start();
         resultReaderThread.start();
-
         startOutputStreamMonitoring();
     }
 

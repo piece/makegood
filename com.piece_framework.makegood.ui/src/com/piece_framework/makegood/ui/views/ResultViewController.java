@@ -68,21 +68,30 @@ public class ResultViewController implements IDebugEventSetListener {
         }
     }
 
+    /**
+     * Starts a test lifecycle for the given launch.
+     *
+     * The TestLifecycle.start() method should be called in the UI thread
+     * since sometimes the ResultProjector.startTestCase() method is called
+     * earlier than the UIJob object that is created in this method.
+     *
+     * @param launch
+     */
     private void handleCreateEvent(final MakeGoodLaunch launch) {
         // TODO This marker is to avoid calling create() twice by PDT.
         if (createEventFired(launch)) {
             return;
         }
-        markAsCreateEventFired(launch);
 
-        if (terminateEventFired(launch)) {
+        if (!TestLifecycle.getInstance().validateLaunchIdentity(launch)) {
             return;
         }
 
-        testLifecycle = TestLifecycle.getInstance();
+        markAsCreateEventFired(launch);
 
+        testLifecycle = TestLifecycle.getInstance();
         try {
-            testLifecycle.start(new ResultProjector());
+            testLifecycle.initialize(new ResultProjector());
         } catch (CoreException e) {
             Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
             return;
@@ -93,6 +102,8 @@ public class ResultViewController implements IDebugEventSetListener {
         Job job = new UIJob("MakeGood Test Start") { //$NON-NLS-1$
             @Override
             public IStatus runInUIThread(IProgressMonitor monitor) {
+                testLifecycle.start();
+
                 ResultView resultView = (ResultView) ViewOpener.find(ResultView.VIEW_ID);
                 if (resultView == null) {
                     resultView = (ResultView) ViewOpener.open(ResultView.VIEW_ID);
@@ -123,21 +134,30 @@ public class ResultViewController implements IDebugEventSetListener {
         if (terminateEventFired(launch)) {
             return;
         }
-        markAsTerminateEventFired(launch);
 
         if (!createEventFired(launch)) {
-            TestLifecycle.destroy();
+            handleCreateEvent(launch);
+        }
+
+        if (!createEventFired(launch)) {
             return;
         }
 
-        if (!testLifecycle.validateLaunchIdentity(launch)) {
-            return;
-        }
-        testLifecycle.end();
+        markAsTerminateEventFired(launch);
 
         Job job = new UIJob("MakeGood Test End") { //$NON-NLS-1$
             @Override
             public IStatus runInUIThread(IProgressMonitor monitor) {
+                testLifecycle.end();
+                if (testLifecycle.getProgress().noTestsFound()) {
+                    MakeGoodContext.getInstance().updateStatus(MakeGoodStatus.TestsNotFound);
+                } else {
+                    MakeGoodContext.getInstance().updateStatus(
+                        MakeGoodStatus.WaitingForTestRun,
+                        MakeGoodContext.getInstance().getActivePart().getProject()
+                    );
+                }
+
                 ResultSquare.getInstance().endTest();
                 if (testLifecycle.getProgress().hasFailures()) {
                     ResultSquare.getInstance().markAsFailed();
@@ -251,11 +271,6 @@ public class ResultViewController implements IDebugEventSetListener {
                 }
             };
             job.schedule();
-            try {
-                job.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
         }
 
         @Override

@@ -205,4 +205,21 @@ public class Progress implements ResultReaderListener {
     public TestSuiteResult getResult() {
         return testSuite;
     }
+
+    /**
+     * @since 1.9.0
+     */
+    public int getCurrentTestCount()
+    {
+        int testCount = getTestCount();
+        if (isRunning()) {
+            if (testCount < getAllTestCount()) {
+                return testCount + 1;
+            } else {
+                return testCount;
+            }
+        } else {
+            return testCount;
+        }
+    }
 }
