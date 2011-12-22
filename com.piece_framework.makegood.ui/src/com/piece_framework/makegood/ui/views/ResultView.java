@@ -272,6 +272,8 @@ public class ResultView extends ViewPart {
 
             setTreeInput(testLifecycle.getProgress().getResult());
         }
+
+        elapsedTimer = new ElapsedTimer(200);
     }
 
     @Override
@@ -400,7 +402,6 @@ public class ResultView extends ViewPart {
 
         this.testLifecycle = testLifecycle;
 
-        elapsedTimer = new ElapsedTimer(200);
         elapsedTimer.schedule();
     }
 
@@ -567,6 +568,7 @@ public class ResultView extends ViewPart {
     }
 
     private void updateElapsedTime() {
+        if (testLifecycle == null) return;
         elapsedTime.setText(
             Messages.TestResultView_realTime +
             ": " + //$NON-NLS-1$
@@ -625,20 +627,16 @@ public class ResultView extends ViewPart {
             this.delay = delay;
         }
 
-        private void schedule() {
-            elapsedTime.getDisplay().timerExec(delay, this);
-        }
-
-        private void update() {
-            updateElapsedTime();
+        public void schedule() {
+            if (!elapsedTime.isDisposed()) {
+                elapsedTime.getDisplay().timerExec(delay, this);
+            }
         }
 
         @Override
         public void run() {
-            update();
-            if (testLifecycle.getProgress().isRunning()) {
-                schedule();
-            }
+            updateElapsedTime();
+            schedule();
         }
     }
 
