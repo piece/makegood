@@ -402,15 +402,9 @@ public class ResultView extends ViewPart {
 
         elapsedTimer = new ElapsedTimer(200);
         elapsedTimer.schedule();
-
-        MakeGoodContext.getInstance().updateStatus(MakeGoodStatus.RunningTest);
     }
 
     void endTest() {
-        if (testLifecycle.getProgress().noTestsFound()) {
-            MakeGoodContext.getInstance().updateStatus(MakeGoodStatus.TestsNotFound);
-        }
-
         TreeItem topItem = resultTreeViewer.getTree().getTopItem();
         if (topItem != null) {
             Result topResult = (Result) topItem.getData();
@@ -418,8 +412,6 @@ public class ResultView extends ViewPart {
                 resultTreeViewer.setSelection(new StructuredSelection(topResult));
             }
         }
-
-        MakeGoodContext.getInstance().updateStatus(MakeGoodStatus.WaitingForTestRun, MakeGoodContext.getInstance().getActivePart().getProject());
     }
 
     /**

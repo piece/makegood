@@ -39,6 +39,7 @@ import com.piece_framework.makegood.launch.TestLifecycle;
 import com.piece_framework.makegood.launch.TestTargets;
 import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.MakeGoodContext;
+import com.piece_framework.makegood.ui.MakeGoodStatus;
 import com.piece_framework.makegood.ui.actions.StopTestAction;
 import com.piece_framework.makegood.ui.markers.FatalErrorMarkerFactory;
 import com.piece_framework.makegood.ui.markers.TestMarkerFactory;
@@ -103,6 +104,7 @@ public class ResultViewController implements IDebugEventSetListener {
             @Override
             public IStatus runInUIThread(IProgressMonitor monitor) {
                 testLifecycle.start();
+                MakeGoodContext.getInstance().updateStatus(MakeGoodStatus.RunningTest);
 
                 ResultView resultView = (ResultView) ViewOpener.find(ResultView.VIEW_ID);
                 if (resultView == null) {
