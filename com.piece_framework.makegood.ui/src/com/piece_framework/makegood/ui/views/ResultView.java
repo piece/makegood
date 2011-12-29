@@ -105,10 +105,10 @@ public class ResultView extends ViewPart {
     private static final String CONTEXT_ID = "com.piece_framework.makegood.ui.contexts.resultView"; //$NON-NLS-1$
 
     private ProgressBar progressBar;
-    private CLabel testCount;
-    private ResultLabel passCount;
-    private ResultLabel failureCount;
-    private ResultLabel errorCount;
+    private CLabel testCountLabel;
+    private ResultLabel passCountLabel;
+    private ResultLabel failureCountLabel;
+    private ResultLabel errorCountLabel;
 
     /**
      * @since 1.9.0
@@ -116,7 +116,7 @@ public class ResultView extends ViewPart {
     private CLabel lastTestCaseLabel;
 
     private TreeViewer resultTreeViewer;
-    private Label processTimeAverage;
+    private Label processTimeAverageLabel;
     private ElapsedTimer elapsedTimer;
     private IAction previousFailureAction;
     private IAction nextFailureAction;
@@ -124,8 +124,8 @@ public class ResultView extends ViewPart {
     private IAction rerunTestAction;
     private IAction runAllTestsAction;
     private FailureTrace failureTrace;
-    private Label elapsedTime;
-    private Label processTime;
+    private Label elapsedTimeLabel;
+    private Label processTimeLabel;
     private boolean actionsInitialized = false;
     private ResultViewPartListener partListener = new ResultViewPartListener();
     private EditorOpener editorOpener = new EditorOpener();
@@ -182,9 +182,9 @@ public class ResultView extends ViewPart {
         Composite clock = new Composite(row1, SWT.NONE);
         clock.setLayoutData(createHorizontalFillGridData());
         clock.setLayout(new FillLayout(SWT.HORIZONTAL));
-        processTimeAverage = new Label(clock, SWT.LEFT);
-        processTime = new Label(clock, SWT.LEFT);
-        elapsedTime = new Label(clock, SWT.LEFT);
+        processTimeAverageLabel = new Label(clock, SWT.LEFT);
+        processTimeLabel = new Label(clock, SWT.LEFT);
+        elapsedTimeLabel = new Label(clock, SWT.LEFT);
 
         Composite row2 = new Composite(parent, SWT.NONE);
         row2.setLayoutData(createHorizontalFillGridData());
@@ -193,18 +193,18 @@ public class ResultView extends ViewPart {
         Composite counter = new Composite(row2, SWT.NONE);
         counter.setLayoutData(createHorizontalFillGridData());
         counter.setLayout(new FillLayout(SWT.HORIZONTAL));
-        testCount = new CLabel(counter, SWT.LEFT);
-        passCount = new ResultLabel(
+        testCountLabel = new CLabel(counter, SWT.LEFT);
+        passCountLabel = new ResultLabel(
                      counter,
                      Messages.TestResultView_passesLabel,
                      Activator.getImageDescriptor("icons/pass-gray.gif").createImage() //$NON-NLS-1$
                  );
-        failureCount = new ResultLabel(
+        failureCountLabel = new ResultLabel(
                        counter,
                        Messages.TestResultView_failuresLabel,
                        Activator.getImageDescriptor("icons/failure-gray.gif").createImage() //$NON-NLS-1$
                    );
-        errorCount = new ResultLabel(
+        errorCountLabel = new ResultLabel(
                      counter,
                      Messages.TestResultView_errorsLabel,
                      Activator.getImageDescriptor("icons/error-gray.gif").createImage() //$NON-NLS-1$
@@ -297,25 +297,25 @@ public class ResultView extends ViewPart {
 
     private void clear() {
         progressBar.clear();
-        processTimeAverage.setText(
+        processTimeAverageLabel.setText(
             TimeFormatter.format(0)
             + "/" + //$NON-NLS-1$
             Messages.TestResultView_averageTest
         );
-        elapsedTime.setText(
+        elapsedTimeLabel.setText(
             Messages.TestResultView_realTime +
             ": " +  //$NON-NLS-1$
             TimeFormatter.format(0)
         );
-        processTime.setText(
+        processTimeLabel.setText(
             Messages.TestResultView_testTime +
             ": " +  //$NON-NLS-1$
             TimeFormatter.format(0)
         );
-        testCount.setText(Messages.TestResultView_testsLabel + ": 0/0"); //$NON-NLS-1$
-        passCount.clear();
-        failureCount.clear();
-        errorCount.clear();
+        testCountLabel.setText(Messages.TestResultView_testsLabel + ": 0/0"); //$NON-NLS-1$
+        passCountLabel.clear();
+        failureCountLabel.clear();
+        errorCountLabel.clear();
         lastTestCaseLabel.setText(""); //$NON-NLS-1$
         resultTreeViewer.setInput(null);
         additionalInformation.clearMessage();
@@ -561,22 +561,22 @@ public class ResultView extends ViewPart {
     private void updateResult() {
         progressBar.update(testLifecycle.getProgress().calculateRate());
 
-        processTimeAverage.setText(
+        processTimeAverageLabel.setText(
             TimeFormatter.format(testLifecycle.getProgress().calculateProcessTimeAverage()) +
             "/" + //$NON-NLS-1$
             Messages.TestResultView_averageTest
         );
-        processTimeAverage.getParent().layout();
+        processTimeAverageLabel.getParent().layout();
 
-        processTime.setText(
+        processTimeLabel.setText(
             Messages.TestResultView_testTime +
             ": " + //$NON-NLS-1$
             TimeFormatter.format(testLifecycle.getProgress().getProcessTime())
         );
 
-        passCount.setCount(testLifecycle.getProgress().getPassCount());
-        failureCount.setCount(testLifecycle.getProgress().getFailureCount());
-        errorCount.setCount(testLifecycle.getProgress().getErrorCount());
+        passCountLabel.setCount(testLifecycle.getProgress().getPassCount());
+        failureCountLabel.setCount(testLifecycle.getProgress().getFailureCount());
+        errorCountLabel.setCount(testLifecycle.getProgress().getErrorCount());
 
         if (testLifecycle.getProgress().getResult().getLast() instanceof TestCaseResult) {
             lastTestCaseLabel.setText(
@@ -589,7 +589,7 @@ public class ResultView extends ViewPart {
 
     private void updateElapsedTime() {
         if (testLifecycle == null) return;
-        elapsedTime.setText(
+        elapsedTimeLabel.setText(
             Messages.TestResultView_realTime +
             ": " + //$NON-NLS-1$
             TimeFormatter.format(testLifecycle.getProgress().getElapsedTime())
@@ -598,7 +598,7 @@ public class ResultView extends ViewPart {
 
     private void updateTestCount() {
         if (testLifecycle == null) return;
-        testCount.setText(
+        testCountLabel.setText(
             Messages.TestResultView_testsLabel +
             ": " + //$NON-NLS-1$
             testLifecycle.getProgress().getCurrentTestCount() +
@@ -648,8 +648,8 @@ public class ResultView extends ViewPart {
         }
 
         public void schedule() {
-            if (!elapsedTime.isDisposed()) {
-                elapsedTime.getDisplay().timerExec(delay, this);
+            if (!elapsedTimeLabel.isDisposed()) {
+                elapsedTimeLabel.getDisplay().timerExec(delay, this);
             }
         }
 
