@@ -1012,20 +1012,16 @@ public class ResultView extends ViewPart {
         @Override
         public Image getImage(Object element) {
             Result result = (Result) element;
-            if (!result.isFixed()) {
-                if (result instanceof TestCaseResult) {
-                    return inProgressIcon;
+            if (result.isFixed()) {
+                if (result.hasFailures()) {
+                    return failureIcon;
+                } else if (result.hasErrors()) {
+                    return errorIcon;
                 } else {
-                    return null;
+                    return passIcon;
                 }
-            }
-
-            if (result.hasFailures()) {
-                return failureIcon;
-            } else if (result.hasErrors()) {
-                return errorIcon;
             } else {
-                return passIcon;
+                return inProgressIcon;
             }
         }
     }
