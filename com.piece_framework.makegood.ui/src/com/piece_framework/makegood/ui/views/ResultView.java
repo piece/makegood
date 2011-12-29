@@ -109,6 +109,12 @@ public class ResultView extends ViewPart {
     private ResultLabel passCount;
     private ResultLabel failureCount;
     private ResultLabel errorCount;
+
+    /**
+     * @since 1.9.0
+     */
+    private CLabel lastTestCaseLabel;
+
     private TreeViewer resultTreeViewer;
     private Label processTimeAverage;
     private ElapsedTimer elapsedTimer;
@@ -210,7 +216,16 @@ public class ResultView extends ViewPart {
         row3.setLayoutData(createBothFillGridData());
         row3.setLayout(adjustLayout(new GridLayout(2, true)));
 
-        Tree resultTree = new Tree(row3, SWT.BORDER);
+        Composite row3Left= new Composite(row3, SWT.NONE);
+        row3Left.setLayoutData(createHorizontalFillGridData());
+        row3Left.setLayout(adjustLayout(new GridLayout(1, true)));
+        lastTestCaseLabel = new CLabel(row3Left, SWT.LEFT);
+        lastTestCaseLabel.setLayoutData(createHorizontalFillGridData());
+        lastTestCaseLabel.setLayout(new FillLayout(SWT.HORIZONTAL));
+        lastTestCaseLabel.setImage(
+            Activator.getImageDescriptor("icons/inProgress.gif").createImage() //$NON-NLS-1$
+        );
+        Tree resultTree = new Tree(row3Left, SWT.BORDER);
         resultTree.setLayoutData(createBothFillGridData());
         resultTreeViewer = new TreeViewer(resultTree);
         resultTreeViewer.setContentProvider(new ResultTreeContentProvider());
@@ -301,6 +316,7 @@ public class ResultView extends ViewPart {
         passCount.clear();
         failureCount.clear();
         errorCount.clear();
+        lastTestCaseLabel.setText(""); //$NON-NLS-1$
         resultTreeViewer.setInput(null);
         additionalInformation.clearMessage();
         setContentDescription(additionalInformation.toString());
@@ -561,6 +577,12 @@ public class ResultView extends ViewPart {
         passCount.setCount(testLifecycle.getProgress().getPassCount());
         failureCount.setCount(testLifecycle.getProgress().getFailureCount());
         errorCount.setCount(testLifecycle.getProgress().getErrorCount());
+
+        if (testLifecycle.getProgress().getResult().getLast() instanceof TestCaseResult) {
+            lastTestCaseLabel.setText(
+                ((TestCaseResult) testLifecycle.getProgress().getResult().getLast()).getName()
+            );
+        }
 
         resultTreeViewer.refresh();
     }
