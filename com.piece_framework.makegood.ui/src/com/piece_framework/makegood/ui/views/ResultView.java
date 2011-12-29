@@ -394,7 +394,6 @@ public class ResultView extends ViewPart {
         updateTestCount();
 
         resultTreeViewer.refresh();
-        resultTreeViewer.expandAll();
     }
 
     void startTest(TestLifecycle testLifecycle) {
