@@ -277,17 +277,10 @@ public class ResultViewController implements IDebugEventSetListener {
 
         @Override
         public void endTestCase(final TestCaseResult testCase) {
-            Job job = new UIJob("MakeGood Test Case End") { //$NON-NLS-1$
-                @Override
-                public IStatus runInUIThread(IProgressMonitor monitor) {
-                    ResultView resultView = (ResultView) ViewOpener.find(ResultView.VIEW_ID);
-                    if (resultView != null) {
-                        resultView.updateOnEndTestCase();
-                    }
-                    return Status.OK_STATUS;
-                }
-            };
-            job.schedule();
+            if (Job.getJobManager().find(testLifecycle).length == 0) {
+                EndTestCaseUIJob job = new EndTestCaseUIJob("MakeGood Test Case End", testLifecycle); //$NON-NLS-1$
+                job.schedule();
+            }
         }
 
         @Override
@@ -352,6 +345,32 @@ public class ResultViewController implements IDebugEventSetListener {
                 }
             };
             job.schedule();
+        }
+    }
+
+    /**
+     * @since 1.9.0
+     */
+    private class EndTestCaseUIJob extends UIJob {
+        private TestLifecycle testLifecycle;
+
+        public EndTestCaseUIJob(String name, TestLifecycle testLifecycle) {
+            super(name);
+            this.testLifecycle = testLifecycle;
+        }
+
+        @Override
+        public IStatus runInUIThread(IProgressMonitor monitor) {
+            ResultView resultView = (ResultView) ViewOpener.find(ResultView.VIEW_ID);
+            if (resultView != null) {
+                resultView.updateOnEndTestCase();
+            }
+            return Status.OK_STATUS;
+        }
+
+        @Override
+        public boolean belongsTo(Object family) {
+            return testLifecycle.equals(family);
         }
     }
 }

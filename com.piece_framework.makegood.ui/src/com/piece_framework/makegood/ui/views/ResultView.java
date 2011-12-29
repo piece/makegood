@@ -406,6 +406,8 @@ public class ResultView extends ViewPart {
     }
 
     void endTest() {
+        updateResult();
+
         TreeItem topItem = resultTreeViewer.getTree().getTopItem();
         if (topItem != null) {
             Result topResult = (Result) topItem.getData();
