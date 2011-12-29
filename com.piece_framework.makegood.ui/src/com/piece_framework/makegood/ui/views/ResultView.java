@@ -416,13 +416,6 @@ public class ResultView extends ViewPart {
         }
     }
 
-    /**
-     * @since 1.3.0
-     */
-    void collapseResultTree() {
-        resultTreeViewer.collapseAll();
-    }
-
     void markAsStopped() {
         progressBar.markAsStopped();
     }

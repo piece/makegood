@@ -195,10 +195,6 @@ public class ResultViewController implements IDebugEventSetListener {
                             ViewOpener.open(IConsoleConstants.ID_CONSOLE_VIEW);
                         }
                     }
-                } else {
-                    if (resultView != null) {
-                        resultView.collapseResultTree();
-                    }
                 }
 
                 TestLifecycle.destroy();
