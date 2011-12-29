@@ -106,9 +106,9 @@ public class ResultView extends ViewPart {
 
     private ProgressBar progressBar;
     private CLabel testCountLabel;
-    private ResultLabel passCountLabel;
-    private ResultLabel failureCountLabel;
-    private ResultLabel errorCountLabel;
+    private CountLabel passCountLabel;
+    private CountLabel failureCountLabel;
+    private CountLabel errorCountLabel;
 
     /**
      * @since 1.9.0
@@ -194,21 +194,21 @@ public class ResultView extends ViewPart {
         counter.setLayoutData(createHorizontalFillGridData());
         counter.setLayout(new FillLayout(SWT.HORIZONTAL));
         testCountLabel = new CLabel(counter, SWT.LEFT);
-        passCountLabel = new ResultLabel(
-                     counter,
-                     Messages.TestResultView_passesLabel,
-                     Activator.getImageDescriptor("icons/pass-gray.gif").createImage() //$NON-NLS-1$
-                 );
-        failureCountLabel = new ResultLabel(
-                       counter,
-                       Messages.TestResultView_failuresLabel,
-                       Activator.getImageDescriptor("icons/failure-gray.gif").createImage() //$NON-NLS-1$
-                   );
-        errorCountLabel = new ResultLabel(
-                     counter,
-                     Messages.TestResultView_errorsLabel,
-                     Activator.getImageDescriptor("icons/error-gray.gif").createImage() //$NON-NLS-1$
-                 );
+        passCountLabel = new CountLabel(
+            counter,
+            Messages.TestResultView_passesLabel,
+            Activator.getImageDescriptor("icons/pass-gray.gif").createImage() //$NON-NLS-1$
+        );
+        failureCountLabel = new CountLabel(
+            counter,
+            Messages.TestResultView_failuresLabel,
+            Activator.getImageDescriptor("icons/failure-gray.gif").createImage() //$NON-NLS-1$
+        );
+        errorCountLabel = new CountLabel(
+            counter,
+            Messages.TestResultView_errorsLabel,
+            Activator.getImageDescriptor("icons/error-gray.gif").createImage() //$NON-NLS-1$
+        );
 
         statusArea = createStatusArea(row2);
 
@@ -262,9 +262,9 @@ public class ResultView extends ViewPart {
         Composite row3Right = new Composite(row3, SWT.NONE);
         row3Right.setLayoutData(createHorizontalFillGridData());
         row3Right.setLayout(adjustLayout(new GridLayout(1, true)));
-        new ResultLabel(
-            row3Right,
-            Messages.TestResultView_failureTraceLabel,
+        CLabel failureTraceLabel = new CLabel(row3Right, SWT.LEFT);
+        failureTraceLabel.setText(Messages.TestResultView_failureTraceLabel);
+        failureTraceLabel.setImage(
             Activator.getImageDescriptor("icons/failure-trace.gif").createImage() //$NON-NLS-1$
         );
         failureTrace = createFailureTrace(row3Right);
@@ -620,22 +620,22 @@ public class ResultView extends ViewPart {
         }
     }
 
-    private class ResultLabel {
+    private class CountLabel {
         private CLabel label;
         private String text;
 
-        public ResultLabel(Composite parent, String text, Image icon) {
+        public CountLabel(Composite parent, String text, Image icon) {
             label = new CLabel(parent, SWT.LEFT);
             label.setText(text);
-            if (icon != null) label.setImage(icon);
+            label.setImage(icon);
             this.text = text;
         }
 
-        private void setCount(int count) {
+        public void setCount(int count) {
             label.setText(text + ": " + count); //$NON-NLS-1$
         }
 
-        private void clear() {
+        public void clear() {
             setCount(0);
         }
     }
