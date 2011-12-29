@@ -78,4 +78,16 @@ public abstract class Result {
     public void setParent(Result parent) {
         this.parent = parent;
     }
+
+    /**
+     * @since 1.9.0
+     */
+    public Result getLast() {
+        if (hasChildren()) {
+            List<Result> children = getChildren();
+            return children.get(children.size() - 1).getLast();
+        } else {
+            return this;
+        }
+    }
 }

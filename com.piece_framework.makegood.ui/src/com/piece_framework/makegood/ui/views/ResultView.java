@@ -420,6 +420,10 @@ public class ResultView extends ViewPart {
         progressBar.markAsStopped();
     }
 
+    void expandResultTreeToResult(Result result) {
+        resultTreeViewer.expandToLevel(result, TreeViewer.ALL_LEVELS);
+    }
+
     private void markAsFailed() {
         progressBar.markAsFailed();
 

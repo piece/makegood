@@ -177,6 +177,7 @@ public class ResultViewController implements IDebugEventSetListener {
                     if (resultView != null) {
                         testLifecycle.getProgress().markAsStopped();
                         resultView.markAsStopped();
+                        resultView.expandResultTreeToResult(testLifecycle.getProgress().getResult().getLast());
                     }
                     if (!StopTestAction.isStoppedByAction(launch)) {
                         FatalErrorMarkerFactory markerFactory = new FatalErrorMarkerFactory();
