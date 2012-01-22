@@ -113,7 +113,7 @@ public class ResultView extends ViewPart {
     /**
      * @since 1.9.0
      */
-    private CLabel lastTestCaseLabel;
+    private Label lastTestCaseLabel;
 
     private TreeViewer resultTreeViewer;
     private Label processTimeAverageLabel;
@@ -216,15 +216,18 @@ public class ResultView extends ViewPart {
         row3.setLayoutData(createBothFillGridData());
         row3.setLayout(adjustLayout(new GridLayout(2, true)));
 
-        Composite row3Left= new Composite(row3, SWT.NONE);
+        Composite row3Left = new Composite(row3, SWT.NONE);
         row3Left.setLayoutData(createHorizontalFillGridData());
         row3Left.setLayout(adjustLayout(new GridLayout(1, true)));
-        lastTestCaseLabel = new CLabel(row3Left, SWT.LEFT);
-        lastTestCaseLabel.setLayoutData(createHorizontalFillGridData());
-        lastTestCaseLabel.setLayout(new FillLayout(SWT.HORIZONTAL));
-        lastTestCaseLabel.setImage(
+        Composite lastTestCase = new Composite(row3Left, SWT.NONE);
+        lastTestCase.setLayoutData(createHorizontalFillGridData());
+        lastTestCase.setLayout(adjustLayout(new GridLayout(2, false)));
+        Label lastTestCaseIconLabel = new Label(lastTestCase, SWT.LEFT);
+        lastTestCaseIconLabel.setImage(
             Activator.getImageDescriptor("icons/inProgress.gif").createImage() //$NON-NLS-1$
         );
+        lastTestCaseLabel = new Label(lastTestCase, SWT.LEFT);
+        lastTestCaseLabel.setLayoutData(createHorizontalFillGridData());
         Tree resultTree = new Tree(row3Left, SWT.BORDER);
         resultTree.setLayoutData(createBothFillGridData());
         resultTreeViewer = new TreeViewer(resultTree);
