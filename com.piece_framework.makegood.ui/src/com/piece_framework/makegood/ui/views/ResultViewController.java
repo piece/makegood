@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2009-2010 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
- *               2010-2011 KUBO Atsuhiro <kubo@iteman.jp>,
+ *               2010-2012 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -264,7 +264,7 @@ public class ResultViewController implements IDebugEventSetListener {
                 public IStatus runInUIThread(IProgressMonitor monitor) {
                     ResultView resultView = (ResultView) ViewOpener.find(ResultView.VIEW_ID);
                     if (resultView != null) {
-                        resultView.updateOnStartTestCase();
+                        resultView.updateOnStartTestCase(testCase);
                     }
                     return Status.OK_STATUS;
                 }

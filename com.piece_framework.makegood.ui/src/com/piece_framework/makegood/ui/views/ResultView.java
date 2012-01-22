@@ -406,7 +406,8 @@ public class ResultView extends ViewPart {
         updateResult();
     }
 
-    void updateOnStartTestCase() {
+    void updateOnStartTestCase(TestCaseResult testCase) {
+        lastTestCaseLabel.setText(testCase.getName());
         updateTestCount();
 
         resultTreeViewer.refresh();
