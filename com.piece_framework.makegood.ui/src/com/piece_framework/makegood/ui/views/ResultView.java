@@ -12,6 +12,7 @@
 
 package com.piece_framework.makegood.ui.views;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -154,6 +155,11 @@ public class ResultView extends ViewPart {
      */
     private AdditionalInformation additionalInformation = new AdditionalInformation();
 
+    /**
+     * @since 1.9.0
+     */
+    private Label endTimeLabel;
+
     @Override
     public void createPartControl(final Composite parent) {
         IContextService service = (IContextService) getSite().getService(IContextService.class);
@@ -167,9 +173,11 @@ public class ResultView extends ViewPart {
 
         Composite progress = new Composite(row1, SWT.NONE);
         progress.setLayoutData(createHorizontalFillGridData());
-        progress.setLayout(adjustLayout(new GridLayout(2, false)));
+        progress.setLayout(adjustLayout(new GridLayout(4, true)));
         Composite progressBarBorder = new Composite(progress, SWT.NONE);
-        progressBarBorder.setLayoutData(createHorizontalFillGridData());
+        GridData progressBarBorderGridData = createHorizontalFillGridData();
+        progressBarBorderGridData.horizontalSpan = 3;
+        progressBarBorder.setLayoutData(progressBarBorderGridData);
         GridLayout progressBarBorderLayout = new GridLayout();
         progressBarBorderLayout.marginWidth = 2;
         progressBarBorderLayout.marginHeight = 2;
@@ -179,12 +187,14 @@ public class ResultView extends ViewPart {
         progressBar = new ProgressBar(progressBarBorder);
         progressBar.setLayoutData(createHorizontalFillGridData());
         progressBar.setLayout(adjustLayout(new GridLayout()));
+        processTimeAverageLabel = new Label(progress, SWT.LEFT);
+
         Composite clock = new Composite(row1, SWT.NONE);
         clock.setLayoutData(createHorizontalFillGridData());
         clock.setLayout(new FillLayout(SWT.HORIZONTAL));
-        processTimeAverageLabel = new Label(clock, SWT.LEFT);
         processTimeLabel = new Label(clock, SWT.LEFT);
         elapsedTimeLabel = new Label(clock, SWT.LEFT);
+        endTimeLabel = new Label(clock, SWT.LEFT);
 
         Composite row2 = new Composite(parent, SWT.NONE);
         row2.setLayoutData(createHorizontalFillGridData());
@@ -315,6 +325,7 @@ public class ResultView extends ViewPart {
             ": " +  //$NON-NLS-1$
             TimeFormatter.format(0)
         );
+        endTimeLabel.setText(Messages.TestResultView_endTime + ":");  //$NON-NLS-1$
         testCountLabel.setText(Messages.TestResultView_testsLabel + ": 0/0"); //$NON-NLS-1$
         passCountLabel.clear();
         failureCountLabel.clear();
@@ -426,6 +437,7 @@ public class ResultView extends ViewPart {
 
     void endTest() {
         updateResult();
+        updateEndTime();
 
         TreeItem topItem = resultTreeViewer.getTree().getTopItem();
         if (topItem != null) {
@@ -619,7 +631,21 @@ public class ResultView extends ViewPart {
         if (testLifecycle != null) {
             updateResult();
             updateElapsedTime();
+            updateEndTime();
             updateTestCount();
+        }
+    }
+
+    /**
+     * @since 1.9.0
+     */
+    private void updateEndTime() {
+        if (testLifecycle != null && testLifecycle.getProgress().isRunning() == false) {
+            endTimeLabel.setText(
+                Messages.TestResultView_endTime +
+                ": " + //$NON-NLS-1$
+                new SimpleDateFormat("HH:mm:ss z").format(testLifecycle.getEndTime()) //$NON-NLS-1$
+            );
         }
     }
 

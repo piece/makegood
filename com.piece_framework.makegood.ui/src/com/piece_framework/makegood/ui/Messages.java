@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2009-2010 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
- *               2010-2011 KUBO Atsuhiro <kubo@iteman.jp>,
+ *               2010-2012 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -169,6 +169,11 @@ public class Messages extends NLS {
      * @since 1.8.0
      */
     public static String TestResultView_Status_TypesNotFound;
+
+    /**
+     * @since 1.9.0
+     */
+    public static String TestResultView_endTime;
 
     public static String TestRunner_TestSessionAlreadyExists_Title;
     public static String TestRunner_TestSessionAlreadyExists_Message;

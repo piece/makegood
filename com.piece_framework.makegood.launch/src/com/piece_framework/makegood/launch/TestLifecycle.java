@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2011-2012 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -13,6 +13,7 @@ package com.piece_framework.makegood.launch;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -57,6 +58,11 @@ public class TestLifecycle {
      */
     private boolean isDestroyed = false;
 
+    /**
+     * @since 1.9.0
+     */
+    private Date endTime;
+
     private static TestLifecycle currentTestLifecycle;
 
     private TestLifecycle() {
@@ -92,6 +98,7 @@ public class TestLifecycle {
         }
 
         progress.end();
+        endTime = new Date();
     }
 
     public Progress getProgress() {
@@ -158,6 +165,13 @@ public class TestLifecycle {
      */
     public void setLaunch(ILaunch launch) {
         this.launch = launch;
+    }
+
+    /**
+     * @since 1.9.0
+     */
+    public Date getEndTime() {
+        return endTime;
     }
 
     /**
