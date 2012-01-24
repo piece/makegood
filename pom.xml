@@ -10,7 +10,7 @@
 
   <groupId>com.piece-framework</groupId>
   <artifactId>makegood-parent</artifactId>
-  <version>1.9.0.qualifier</version>
+  <version>1.10.0.qualifier</version>
   <packaging>pom</packaging>
 
   <name>MakeGood Parent</name>

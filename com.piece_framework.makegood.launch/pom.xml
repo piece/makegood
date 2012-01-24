@@ -2,12 +2,12 @@
 	<parent>
 		<artifactId>makegood-parent</artifactId>
 		<groupId>com.piece-framework</groupId>
-		<version>1.9.0.qualifier</version>
+		<version>1.10.0.qualifier</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
   <groupId>com.piece-framework</groupId>
   <artifactId>makegood.launch</artifactId>
-  <version>1.9.0.qualifier</version>
+  <version>1.10.0.qualifier</version>
   <packaging>eclipse-plugin</packaging>
   <name>MakeGood Launch</name>
 </project>
