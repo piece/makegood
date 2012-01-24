@@ -672,17 +672,4 @@ public class MakeGoodPropertyPage extends PropertyPage {
             }
         }
     }
-
-    private class PHPResourceViewerFilter extends ViewerFilter {
-        @Override
-        public boolean select(Viewer viewer, Object parentElement, Object element) {
-            if (element instanceof IFile) {
-                return PHPResource.isPHPSource((IFile) element);
-            } else if (element instanceof IFolder) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-    }
 }
