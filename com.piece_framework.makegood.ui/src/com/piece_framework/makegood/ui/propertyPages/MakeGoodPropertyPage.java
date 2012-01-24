@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2009-2010 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
- *               2010-2011 KUBO Atsuhiro <kubo@iteman.jp>,
+ *               2010-2012 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -279,7 +279,7 @@ public class MakeGoodPropertyPage extends PropertyPage {
                 Messages.MakeGoodPropertyPage_preloadScriptDialogTitle,
                 Messages.MakeGoodPropertyPage_preloadScriptDialogMessage,
                 SELECTION_ALLOW_FILE,
-                new PHPResourceViewerFilter()
+                new FileViewerFilter()
             )
         );
 
