@@ -68,9 +68,9 @@ public class ProjectValidation {
 
         // TODO The ModelAccess().findTypes() method sometimes returns an empty array when starting up Eclipse.
         if (validationCount > 1) {
-            for (String testClassSuperType: property.getTestingFramework().getRequiredSuperTypes()) {
+            for (String requiredSuperType: property.getTestingFramework().getRequiredSuperTypes()) {
                 IType[] types = new ModelAccess().findTypes(
-                    testClassSuperType,
+                    requiredSuperType,
                     MatchRule.EXACT,
                     0,
                     0,
@@ -79,7 +79,7 @@ public class ProjectValidation {
                 );
 
                 if (types == null || types.length == 0) {
-                    MakeGoodStatus.TestingFrameworkNotAvailable.setReason(testClassSuperType);
+                    MakeGoodStatus.TestingFrameworkNotAvailable.setReason(requiredSuperType);
                     MakeGoodContext.getInstance().updateStatus(MakeGoodStatus.TestingFrameworkNotAvailable, project);
                     return false;
                 }
