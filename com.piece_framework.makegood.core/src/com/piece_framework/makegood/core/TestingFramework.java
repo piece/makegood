@@ -28,7 +28,7 @@ public enum TestingFramework {
          * @since 1.7.0
          */
         @Override
-        public String[] getRequiredTypes() {
+        public String[] getRequiredSuperTypes() {
             return getTestClassSuperTypes();
         }
     },
@@ -47,7 +47,7 @@ public enum TestingFramework {
          * @since 1.7.0
          */
         @Override
-        public String[] getRequiredTypes() {
+        public String[] getRequiredSuperTypes() {
             return getTestClassSuperTypes();
         }
     },
@@ -67,7 +67,7 @@ public enum TestingFramework {
          * @since 1.7.0
          */
         @Override
-        public String[] getRequiredTypes() {
+        public String[] getRequiredSuperTypes() {
             return new String[] {
                 "SimpleTestCase", //$NON-NLS-1$
                 "CakeTestCase", //$NON-NLS-1$
@@ -91,7 +91,7 @@ public enum TestingFramework {
          * @since 1.7.0
          */
         @Override
-        public String[] getRequiredTypes() {
+        public String[] getRequiredSuperTypes() {
             return new String[] {
                 "PHPUnit_Framework_TestCase", //$NON-NLS-1$
                 "CIUnit_TestCase", //$NON-NLS-1$
@@ -108,5 +108,5 @@ public enum TestingFramework {
     /**
      * @since 1.7.0
      */
-    public abstract String[] getRequiredTypes();
+    public abstract String[] getRequiredSuperTypes();
 }
