@@ -21,14 +21,8 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.DebugException;
-import org.eclipse.debug.core.ILaunch;
-import org.eclipse.debug.core.IStreamListener;
-import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.debug.core.model.IProcess;
-import org.eclipse.debug.core.model.IStreamMonitor;
-import org.eclipse.debug.core.model.IStreamsProxy;
 import org.eclipse.php.internal.debug.core.IPHPDebugConstants;
-import org.eclipse.php.internal.debug.core.model.IPHPDebugTarget;
 import org.eclipse.php.internal.debug.core.zend.communication.DebuggerCommunicationDaemon;
 import org.xml.sax.SAXException;
 
@@ -43,12 +37,7 @@ import com.piece_framework.makegood.core.run.ResultReaderListener;
 public class TestLifecycle {
     private Progress progress = new Progress();
     private Failures failures = new Failures();
-    private ILaunch launch;
-
-    /**
-     * @since 1.3.0
-     */
-    private StreamListener outputStreamListener = new StreamListener();
+    private MakeGoodLaunch launch;
 
     private ResultReader resultReader;
     private Thread resultReaderThread;
@@ -84,11 +73,9 @@ public class TestLifecycle {
     public void start() {
         progress.start();
         resultReaderThread.start();
-        startOutputStreamMonitoring();
     }
 
     public void end() {
-        endOutputStreamMonitoring();
         resultReader.stop();
 
         try {
@@ -138,6 +125,9 @@ public class TestLifecycle {
     }
 
     public static void destroy() {
+        if (currentTestLifecycle.launch != null) {
+            currentTestLifecycle.launch.removeStreamListener();
+        }
         currentTestLifecycle.isDestroyed = true;
     }
 
@@ -150,20 +140,9 @@ public class TestLifecycle {
     }
 
     /**
-     * @since 1.3.0
-     */
-    public String getStreamOutput() {
-        IDebugTarget debugTarget = launch.getDebugTarget();
-        if (debugTarget != null && debugTarget instanceof IPHPDebugTarget) {
-            return ((IPHPDebugTarget) debugTarget).getOutputBuffer().toString();
-        }
-        return outputStreamListener.getOutput();
-    }
-
-    /**
      * @since 1.4.0
      */
-    public void setLaunch(ILaunch launch) {
+    public void setLaunch(MakeGoodLaunch launch) {
         this.launch = launch;
     }
 
@@ -172,22 +151,6 @@ public class TestLifecycle {
      */
     public Date getEndTime() {
         return endTime;
-    }
-
-    /**
-     * @since 1.3.0
-     */
-    private class StreamListener implements IStreamListener {
-        private StringBuilder output = new StringBuilder();
-
-        @Override
-        public void streamAppended(String text, IStreamMonitor monitor) {
-            output.append(text);
-        }
-
-        public String getOutput() {
-            return output.toString();
-        }
     }
 
     /**
@@ -233,33 +196,5 @@ public class TestLifecycle {
             }
         };
         return thread;
-    }
-
-    /**
-     * @since 1.7.0
-     */
-    private void startOutputStreamMonitoring() {
-        for (IProcess process: launch.getProcesses()) {
-            if (process.isTerminated()) continue;
-            IStreamsProxy streamsProxy = process.getStreamsProxy();
-            if (streamsProxy == null) continue;
-            IStreamMonitor outputStreamMonitor = streamsProxy.getOutputStreamMonitor();
-            if (outputStreamMonitor == null) continue;
-            outputStreamMonitor.addListener(outputStreamListener);
-        }
-    }
-
-    /**
-     * @since 1.7.0
-     */
-    private void endOutputStreamMonitoring() {
-        for (IProcess process: launch.getProcesses()) {
-            if (process.isTerminated()) continue;
-            IStreamsProxy streamsProxy = process.getStreamsProxy();
-            if (streamsProxy == null) continue;
-            IStreamMonitor outputStreamMonitor = streamsProxy.getOutputStreamMonitor();
-            if (outputStreamMonitor == null) continue;
-            outputStreamMonitor.removeListener(outputStreamListener);
-        }
     }
 }

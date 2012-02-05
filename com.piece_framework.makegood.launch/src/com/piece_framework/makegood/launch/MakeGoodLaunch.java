@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010-2011 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2010-2012 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -18,14 +18,34 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.core.IStreamListener;
+import org.eclipse.debug.core.model.IDebugTarget;
+import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.ISourceLocator;
+import org.eclipse.debug.core.model.IStreamMonitor;
+import org.eclipse.debug.core.model.IStreamsProxy;
 import org.eclipse.php.internal.debug.core.launching.PHPLaunch;
+import org.eclipse.php.internal.debug.core.model.IPHPDebugTarget;
 
 public class MakeGoodLaunch extends PHPLaunch {
     private static List<ILaunchConfiguration> launchConfigurations = new ArrayList<ILaunchConfiguration>();
 
+    /**
+     * @since 1.10.0
+     */
+    private OutputStreamListener outputStreamListener = new OutputStreamListener();
+
     public MakeGoodLaunch(ILaunchConfiguration launchConfiguration, String mode, ISourceLocator locator) {
         super(launchConfiguration, mode, locator);
+    }
+
+    /**
+     * @since 1.10.0
+     */
+    @Override
+    public void addProcess(IProcess process) {
+        outputStreamListener.addStreamListener(process);
+        super.addProcess(process);
     }
 
     @Override
@@ -38,6 +58,26 @@ public class MakeGoodLaunch extends PHPLaunch {
         }
 
         super.launchAdded(launch);
+    }
+
+    /**
+     * @since 1.10.0
+     */
+    public String getStreamOutput() {
+        IDebugTarget debugTarget = getDebugTarget();
+        if (debugTarget != null && debugTarget instanceof IPHPDebugTarget) {
+            return ((IPHPDebugTarget) debugTarget).getOutputBuffer().toString();
+        } else {
+            return outputStreamListener.getOutput();
+        }
+    }
+
+    /**
+     * @since 1.10.0
+     */
+    public void removeStreamListener()
+    {
+        outputStreamListener.removeStreamListener();
     }
 
     static void clearLaunchConfigurations() throws CoreException {
@@ -54,5 +94,43 @@ public class MakeGoodLaunch extends PHPLaunch {
         }
 
         return false;
+    }
+
+    /**
+     * @since 1.10.0
+     */
+    private class OutputStreamListener implements IStreamListener {
+        private StringBuilder output = new StringBuilder();
+        private IStreamMonitor outputStreamMonitor;
+
+        @Override
+        public void streamAppended(String text, IStreamMonitor monitor) {
+            output.append(text);
+        }
+
+        public void addStreamListener(IProcess process) {
+            if (process != null) {
+                if (!process.isTerminated()) {
+                    IStreamsProxy streamsProxy = process.getStreamsProxy();
+                    if (streamsProxy != null) {
+                        outputStreamMonitor = streamsProxy.getOutputStreamMonitor();
+                        if (outputStreamMonitor != null) {
+                            outputStreamMonitor.addListener(this);
+                        }
+                    }
+                }
+            }
+        }
+
+        public void removeStreamListener()
+        {
+            if (outputStreamMonitor != null) {
+                outputStreamMonitor.removeListener(outputStreamListener);
+            }
+        }
+
+        public String getOutput() {
+            return output.toString();
+        }
     }
 }
