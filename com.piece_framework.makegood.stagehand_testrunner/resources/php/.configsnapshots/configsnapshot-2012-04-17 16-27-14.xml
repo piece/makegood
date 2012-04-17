@@ -1,0 +1,2 @@
+<?xml version="1.0"?>
+<pearconfig version="1.0"><php_dir>resources/php/php</php_dir><ext_dir>/usr/lib/php5/20090626</ext_dir><cfg_dir>resources/php/cfg</cfg_dir><doc_dir>resources/php/docs</doc_dir><bin_dir>resources/php/bin</bin_dir><data_dir>resources/php/data</data_dir><www_dir>resources/php/www</www_dir><test_dir>resources/php/tests</test_dir><src_dir>resources/php/src</src_dir><php_bin>/usr/bin/php</php_bin><php_ini>/home/iteman/site-php/config/xdebug/php-cli.ini</php_ini><php_prefix></php_prefix><php_suffix></php_suffix></pearconfig>

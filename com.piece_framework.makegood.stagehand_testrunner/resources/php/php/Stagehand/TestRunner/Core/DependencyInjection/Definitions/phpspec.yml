@@ -1,0 +1,134 @@
+# Copyright (c) 2011-2012 KUBO Atsuhiro <kubo@iteman.jp>,
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+#
+#     * Redistributions of source code must retain the above copyright notice,
+#       this list of conditions and the following disclaimer.
+#     * Redistributions in binary form must reproduce the above copyright
+#       notice, this list of conditions and the following disclaimer in the
+#       documentation and/or other materials provided with the distribution.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+# ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+# LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+# CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+# SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+# INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+# CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+# ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+# POSSIBILITY OF SUCH DAMAGE.
+
+parameters:
+  # Domain Components
+  phpspec.autotest.class: "Stagehand\\TestRunner\\Process\\Autotest\\PHPSpecAutotest"
+  phpspec.cli_runner.class: "PHPSpec\\Runner\\Cli\\Runner"
+  phpspec.collector.class: "Stagehand\\TestRunner\\Collector\\PHPSpecCollector"
+  phpspec.documentation_formatter.class: "Stagehand\\TestRunner\\Runner\\PHPSpecRunner\\Formatter\\DocumentationFormatter"
+  phpspec.documentation_formatter_factory.class: "Stagehand\\TestRunner\\Runner\\PHPSpecRunner\\Formatter\\DocumentationFormatterFactory"
+  phpspec.example_factory.class: "Stagehand\\TestRunner\\Runner\\PHPSpecRunner\\ExampleFactory"
+  phpspec.example_runner.class: "Stagehand\\TestRunner\\Runner\\PHPSpecRunner\\ExampleRunner"
+  phpspec.junit_xml_formatter.class: "Stagehand\\TestRunner\\Runner\\PHPSpecRunner\\Formatter\\JUnitXMLFormatter"
+  phpspec.junit_xml_formatter_factory.class: "Stagehand\\TestRunner\\Runner\\PHPSpecRunner\\Formatter\\JUnitXMLFormatterFactory"
+  phpspec.notification_formatter.class: "Stagehand\\TestRunner\\Runner\\PHPSpecRunner\\Formatter\\NotificationFormatter"
+  phpspec.notification_formatter_factory.class: "Stagehand\\TestRunner\\Runner\\PHPSpecRunner\\Formatter\\NotificationFormatterFactory"
+  phpspec.preparer.class: "Stagehand\\TestRunner\\Preparer\\PHPSpecPreparer"
+  phpspec.progress_formatter.class: "Stagehand\\TestRunner\\Runner\\PHPSpecRunner\\Formatter\\ProgressFormatter"
+  phpspec.progress_formatter_factory.class: "Stagehand\\TestRunner\\Runner\\PHPSpecRunner\\Formatter\\ProgressFormatterFactory"
+  phpspec.reporter.class: "Stagehand\\TestRunner\\Runner\\PHPSpecRunner\\Reporter"
+  phpspec.runner.class: "Stagehand\\TestRunner\\Runner\\PHPSpecRunner"
+  phpspec.spec_loader_factory.class: "Stagehand\\TestRunner\\Runner\\PHPSpecRunner\\SpecLoaderFactory"
+
+services:
+  # Collector
+  phpspec.collector:
+    parent: collector
+    class: "%phpspec.collector.class%"
+
+  # Preparer
+  phpspec.preparer:
+    parent: preparer
+    class: "%phpspec.preparer.class%"
+
+  # Process
+  phpspec.autotest:
+    parent: autotest
+    class: "%phpspec.autotest.class%"
+
+  # Runner
+  phpspec.cli_runner:
+    class: "%phpspec.cli_runner.class%"
+    calls:
+      - [ setLoader, [ "@phpspec.spec_loader_factory" ] ]
+      - [ setExampleRunner, [ "@phpspec.example_runner" ] ]
+  phpspec.documentation_formatter:
+    class: "%phpspec.documentation_formatter.class%"
+    arguments: [ "@phpspec.reporter" ]
+  phpspec.documentation_formatter_factory:
+    class: "%phpspec.documentation_formatter_factory.class%"
+    factory_service: component_aware_factory_factory
+    factory_method: create
+    arguments: [ "documentation_formatter", "%plugin_aware_factory.class%" ]
+  phpspec.example_factory:
+    class: "%phpspec.example_factory.class%"
+    calls:
+      - [ setTestTargets, [ "@test_targets" ] ]
+  phpspec.example_runner:
+    class: "%phpspec.example_runner.class%"
+    calls:
+      - [ setExampleFactory, [ "@phpspec.example_factory" ] ]
+  phpspec.junit_xml_formatter:
+    scope: prototype
+    class: "%phpspec.junit_xml_formatter.class%"
+    arguments: [ "@phpspec.reporter" ]
+    calls:
+      - [ setTestTargets, [ "@test_targets" ] ]
+  phpspec.junit_xml_formatter_factory:
+    class: "%phpspec.junit_xml_formatter_factory.class%"
+    factory_service: component_aware_factory_factory
+    factory_method: create
+    arguments: [ "junit_xml_formatter", "%phpspec.junit_xml_formatter_factory.class%" ]
+    calls:
+      - [ setJUnitXMLWriterFactory, [ "@junit_xml_writer_factory" ] ]
+  phpspec.notification_formatter:
+    class: "%phpspec.notification_formatter.class%"
+    arguments: [ "@phpspec.reporter" ]
+  phpspec.notification_formatter_factory:
+    class: "%phpspec.notification_formatter_factory.class%"
+    factory_service: component_aware_factory_factory
+    factory_method: create
+    arguments: [ "notification_formatter", "%plugin_aware_factory.class%" ]
+  phpspec.progress_formatter:
+    class: "%phpspec.progress_formatter.class%"
+    arguments: [ "@phpspec.reporter" ]
+  phpspec.progress_formatter_factory:
+    class: "%phpspec.progress_formatter_factory.class%"
+    factory_service: component_aware_factory_factory
+    factory_method: create
+    arguments: [ "progress_formatter", "%plugin_aware_factory.class%" ]
+  phpspec.reporter:
+    class: "%phpspec.reporter.class%"
+  phpspec.runner:
+    parent: runner
+    class: "%phpspec.runner.class%"
+    calls:
+      - [ setCliRunner, [ "@phpspec.cli_runner" ] ]
+      - [ setDocumentationFormatterFactory, [ "@phpspec.documentation_formatter_factory" ] ]
+      - [ setJUnitXMLFormatterFactory, [ "@phpspec.junit_xml_formatter_factory" ] ]
+      - [ setNotificationFormatterFactory, [ "@phpspec.notification_formatter_factory" ] ]
+      - [ setProgressFormatterFactory, [ "@phpspec.progress_formatter_factory" ] ]
+      - [ setReporter, [ "@phpspec.reporter" ] ]
+  phpspec.spec_loader_factory:
+    class: "%phpspec.spec_loader_factory.class%"
+
+# Local Variables:
+# mode: conf
+# coding: iso-8859-1
+# tab-width: 2
+# c-basic-offset: 2
+# c-hanging-comment-ender-p: nil
+# indent-tabs-mode: nil
+# End:
