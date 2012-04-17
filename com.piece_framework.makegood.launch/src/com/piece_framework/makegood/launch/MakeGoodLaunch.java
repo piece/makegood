@@ -31,7 +31,7 @@ public class MakeGoodLaunch extends PHPLaunch {
     private static List<ILaunchConfiguration> launchConfigurations = new ArrayList<ILaunchConfiguration>();
 
     /**
-     * @since 1.10.0
+     * @since 2.0.0
      */
     private OutputStreamListener outputStreamListener = new OutputStreamListener();
 
@@ -40,7 +40,7 @@ public class MakeGoodLaunch extends PHPLaunch {
     }
 
     /**
-     * @since 1.10.0
+     * @since 2.0.0
      */
     @Override
     public void addProcess(IProcess process) {
@@ -61,7 +61,7 @@ public class MakeGoodLaunch extends PHPLaunch {
     }
 
     /**
-     * @since 1.10.0
+     * @since 2.0.0
      */
     public String getStreamOutput() {
         IDebugTarget debugTarget = getDebugTarget();
@@ -73,7 +73,7 @@ public class MakeGoodLaunch extends PHPLaunch {
     }
 
     /**
-     * @since 1.10.0
+     * @since 2.0.0
      */
     public void removeStreamListener()
     {
@@ -97,7 +97,7 @@ public class MakeGoodLaunch extends PHPLaunch {
     }
 
     /**
-     * @since 1.10.0
+     * @since 2.0.0
      */
     private class OutputStreamListener implements IStreamListener {
         private StringBuilder output = new StringBuilder();
