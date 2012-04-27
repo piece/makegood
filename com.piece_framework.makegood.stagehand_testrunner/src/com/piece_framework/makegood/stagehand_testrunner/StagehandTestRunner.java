@@ -25,7 +25,7 @@ import org.osgi.framework.Bundle;
 public class StagehandTestRunner {
     private static final String BUNDLE_BASE_DIR = "/resources/php"; //$NON-NLS-1$
     private static final String BUNDLE_INCLUDE_PATH = BUNDLE_BASE_DIR + "/php"; //$NON-NLS-1$
-    private static final String BUNDLE_BIN_DIR = BUNDLE_BASE_DIR + "/bin/testrunner.php"; //$NON-NLS-1$
+    private static final String LAUNCHER_SCRIPT = BUNDLE_BASE_DIR + "/bin/testrunner.php"; //$NON-NLS-1$
 
     public static String getBundleIncludePath() {
         URL url;
@@ -45,9 +45,9 @@ public class StagehandTestRunner {
             throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Bundle [ " +  Activator.PLUGIN_ID + " ] is not found")); //$NON-NLS-1$
         }
 
-        URL commandURL = bundle.getEntry(BUNDLE_BIN_DIR);
+        URL commandURL = bundle.getEntry(LAUNCHER_SCRIPT);
         if (commandURL == null) {
-            throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Command [ " +  BUNDLE_BIN_DIR + " ] is not found")); //$NON-NLS-1$
+            throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Command [ " +  LAUNCHER_SCRIPT + " ] is not found")); //$NON-NLS-1$
         }
 
         URL absoluteCommandURL;
