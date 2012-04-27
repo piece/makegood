@@ -252,7 +252,7 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
         workingCopy.setAttribute(IPHPDebugConstants.ATTR_FILE, mainScript);
 
         workingCopy.setAttribute(
-            IPHPDebugConstants.ATTR_FILE_FULL_PATH, getCommandPath()
+            IPHPDebugConstants.ATTR_FILE_FULL_PATH, StagehandTestRunner.getCommandPath()
         );
         workingCopy.setAttribute(MAKEGOOD_JUNIT_XML_FILE, junitXMLFile);
         workingCopy.setAttribute(
@@ -267,10 +267,6 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
         }
 
         return workingCopy;
-    }
-
-    public static String getCommandPath() throws CoreException {
-        return StagehandTestRunner.getCommandPath();
     }
 
     public static String getJUnitXMLFile(ILaunch launch) throws CoreException {
