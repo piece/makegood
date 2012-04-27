@@ -24,13 +24,13 @@ import org.osgi.framework.Bundle;
 
 public class StagehandTestRunner {
     private static final String PEAR_PATH = "/resources/php"; //$NON-NLS-1$
-    private static final String BUNDLE_INCLUDE_PATH = PEAR_PATH + "/php"; //$NON-NLS-1$
+    private static final String PHP_DIR = PEAR_PATH + "/php"; //$NON-NLS-1$
     private static final String LAUNCHER_SCRIPT = PEAR_PATH + "/bin/testrunner.php"; //$NON-NLS-1$
 
     public static String getBundleIncludePath() {
         URL url;
         try {
-            url = FileLocator.resolve(Platform.getBundle(Activator.PLUGIN_ID).getEntry(BUNDLE_INCLUDE_PATH));
+            url = FileLocator.resolve(Platform.getBundle(Activator.PLUGIN_ID).getEntry(PHP_DIR));
         } catch (IOException e) {
             Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
             return null;
