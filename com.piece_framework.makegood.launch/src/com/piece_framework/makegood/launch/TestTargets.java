@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2009-2010 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
- *               2010-2011 KUBO Atsuhiro <kubo@iteman.jp>,
+ *               2010-2012 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -111,12 +111,15 @@ public class TestTargets {
     public String generateCommandLine(String junitXMLFile) throws CoreException, MethodNotFoundException {
         StringBuilder buffer = new StringBuilder();
 
+        buffer.append(" --no-ansi"); //$NON-NLS-1$
+        buffer.append(" " + getTestingFramework().name().toLowerCase()); //$NON-NLS-1$
+
         String preloadScript = getPreloadScript();
         if (!preloadScript.equals("")) { //$NON-NLS-1$
             IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
             IResource preloadResource = root.findMember(preloadScript);
             if (preloadResource != null) {
-                buffer.append("-p \"" + preloadResource.getLocation().toString() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
+                buffer.append(" -p \"" + preloadResource.getLocation().toString() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
             }
         }
 
@@ -127,7 +130,7 @@ public class TestTargets {
         buffer.append(" --log-junit-realtime"); //$NON-NLS-1$
 
         if (RuntimeConfiguration.getInstance().stopsOnFailure) {
-            buffer.append(" --stop-on-failure"); //$NON-NLS-1$
+            buffer.append(" -s"); //$NON-NLS-1$
         }
 
         if (getTestingFramework() == TestingFramework.PHPUnit) {
@@ -208,29 +211,15 @@ public class TestTargets {
         }
 
         if (testClasses.size() > 0) {
-            buffer.append(" --classes=\""); //$NON-NLS-1$
-            boolean isFirstElement = true;
             for (String testClass: testClasses) {
-                if (!isFirstElement) {
-                    buffer.append(","); //$NON-NLS-1$
-                }
-                buffer.append(testClass.toString());
-                isFirstElement = false;
+                buffer.append(" --test-class=\"" + testClass.toString() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
             }
-            buffer.append("\""); //$NON-NLS-1$
         }
 
         if (testMethods.size() > 0) {
-            buffer.append(" -m \""); //$NON-NLS-1$
-            boolean isFirstElement = true;
             for (String testMethod: testMethods) {
-                if (!isFirstElement) {
-                    buffer.append(","); //$NON-NLS-1$
-                }
-                buffer.append(testMethod.toString());
-                isFirstElement = false;
+                buffer.append(" --test-method=\"" + testMethod.toString() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
             }
-            buffer.append("\""); //$NON-NLS-1$
         }
 
         buffer.append(" -R"); //$NON-NLS-1$

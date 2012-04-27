@@ -270,9 +270,7 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
     }
 
     public static String getCommandPath() throws CoreException {
-        return StagehandTestRunner.getCommandPath(
-                   TestTargets.getInstance().getTestingFramework().name()
-               );
+        return StagehandTestRunner.getCommandPath();
     }
 
     public static String getJUnitXMLFile(ILaunch launch) throws CoreException {

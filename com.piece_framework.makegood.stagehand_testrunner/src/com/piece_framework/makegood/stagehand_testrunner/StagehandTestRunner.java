@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010-2011 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2010-2012 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -14,7 +14,6 @@ package com.piece_framework.makegood.stagehand_testrunner;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.HashMap;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
@@ -25,17 +24,8 @@ import org.osgi.framework.Bundle;
 
 public class StagehandTestRunner {
     private static final String BUNDLE_BASE_DIR = "/resources/php"; //$NON-NLS-1$
-    private static final String BUNDLE_INCLUDE_PATH = BUNDLE_BASE_DIR + "/PEAR"; //$NON-NLS-1$
-    private static final String BUNDLE_BIN_DIR = BUNDLE_BASE_DIR + "/bin"; //$NON-NLS-1$
-    private static final HashMap<String, String> RUNNER_SCRIPTS =
-        new HashMap<String, String>();
-
-    static {
-        RUNNER_SCRIPTS.put("phpunit", BUNDLE_BIN_DIR + "/phpunitrunner.php"); //$NON-NLS-1$ //$NON-NLS-2$
-        RUNNER_SCRIPTS.put("simpletest", BUNDLE_BIN_DIR + "/simpletestrunner.php"); //$NON-NLS-1$ //$NON-NLS-2$
-        RUNNER_SCRIPTS.put("cakephp", BUNDLE_BIN_DIR + "/cakerunner.php"); //$NON-NLS-1$ //$NON-NLS-2$
-        RUNNER_SCRIPTS.put("ciunit", BUNDLE_BIN_DIR + "/ciunitrunner.php"); //$NON-NLS-1$ //$NON-NLS-2$
-    }
+    private static final String BUNDLE_INCLUDE_PATH = BUNDLE_BASE_DIR + "/php"; //$NON-NLS-1$
+    private static final String BUNDLE_BIN_DIR = BUNDLE_BASE_DIR + "/bin/testrunner.php"; //$NON-NLS-1$
 
     public static String getBundleIncludePath() {
         URL url;
@@ -49,20 +39,15 @@ public class StagehandTestRunner {
         return new File(url.getPath()).getAbsolutePath();
     }
 
-    public static String getCommandPath(String framework) throws CoreException {
+    public static String getCommandPath() throws CoreException {
         Bundle bundle = Platform.getBundle(Activator.PLUGIN_ID);
         if (bundle == null) {
             throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Bundle [ " +  Activator.PLUGIN_ID + " ] is not found")); //$NON-NLS-1$
         }
 
-        String commandPath = RUNNER_SCRIPTS.get(framework.toLowerCase());
-        if (commandPath == null) {
-            throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Testing Framework [ " +  framework + " ] is not supported")); //$NON-NLS-1$
-        }
-
-        URL commandURL = bundle.getEntry(commandPath);
+        URL commandURL = bundle.getEntry(BUNDLE_BIN_DIR);
         if (commandURL == null) {
-            throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Command [ " +  commandPath + " ] is not found")); //$NON-NLS-1$
+            throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Command [ " +  BUNDLE_BIN_DIR + " ] is not found")); //$NON-NLS-1$
         }
 
         URL absoluteCommandURL;
