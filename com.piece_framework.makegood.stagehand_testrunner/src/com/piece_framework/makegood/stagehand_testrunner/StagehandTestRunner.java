@@ -23,9 +23,9 @@ import org.eclipse.core.runtime.Status;
 import org.osgi.framework.Bundle;
 
 public class StagehandTestRunner {
-    private static final String BUNDLE_BASE_DIR = "/resources/php"; //$NON-NLS-1$
-    private static final String BUNDLE_INCLUDE_PATH = BUNDLE_BASE_DIR + "/php"; //$NON-NLS-1$
-    private static final String LAUNCHER_SCRIPT = BUNDLE_BASE_DIR + "/bin/testrunner.php"; //$NON-NLS-1$
+    private static final String PEAR_PATH = "/resources/php"; //$NON-NLS-1$
+    private static final String BUNDLE_INCLUDE_PATH = PEAR_PATH + "/php"; //$NON-NLS-1$
+    private static final String LAUNCHER_SCRIPT = PEAR_PATH + "/bin/testrunner.php"; //$NON-NLS-1$
 
     public static String getBundleIncludePath() {
         URL url;
