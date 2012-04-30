@@ -175,6 +175,11 @@ public class Messages extends NLS {
      */
     public static String TestResultView_endTime;
 
+    /**
+     * @since 2.0.0
+     */
+    public static String TestResultView_testResultsLabel;
+
     public static String TestRunner_TestSessionAlreadyExists_Title;
     public static String TestRunner_TestSessionAlreadyExists_Message;
 

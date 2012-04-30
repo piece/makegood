@@ -45,7 +45,8 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
-import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.custom.CTabFolder;
+import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Color;
@@ -155,6 +156,21 @@ public class ResultView extends ViewPart {
      */
     private Label endTimeLabel;
 
+    /**
+     * @since 2.0.0
+     */
+    private CTabFolder testResultsTabFolder;
+
+    /**
+     * @since 2.0.0
+     */
+    private CTabItem resultTreeTabItem;
+
+    /**
+     * @since 2.0.0
+     */
+    private CTabItem failureTraceTabItem;
+
     @Override
     public void createPartControl(final Composite parent) {
         IContextService service = (IContextService) getSite().getService(IContextService.class);
@@ -217,14 +233,15 @@ public class ResultView extends ViewPart {
 
         statusArea = createStatusArea(row2);
 
-        SashForm row3 = new SashForm(parent, SWT.NONE);
-        row3.setLayoutData(createBothFillGridData());
-        row3.setLayout(adjustLayout(new GridLayout(2, true)));
+        testResultsTabFolder = new CTabFolder(parent, SWT.NONE);
+        testResultsTabFolder.setSimple(false);
+        testResultsTabFolder.setLayoutData(createBothFillGridData());
+        testResultsTabFolder.setLayout(adjustLayout(new GridLayout(1, true)));
 
-        Composite row3Left = new Composite(row3, SWT.NONE);
-        row3Left.setLayoutData(createHorizontalFillGridData());
-        row3Left.setLayout(adjustLayout(new GridLayout(1, true)));
-        Tree resultTree = new Tree(row3Left, SWT.BORDER);
+        resultTreeTabItem = new CTabItem(testResultsTabFolder, SWT.NONE);
+        resultTreeTabItem.setText(Messages.TestResultView_testResultsLabel);
+
+        Tree resultTree = new Tree(testResultsTabFolder, SWT.BORDER);
         resultTree.setLayoutData(createBothFillGridData());
         resultTreeViewer = new TreeViewer(resultTree);
         resultTreeViewer.setContentProvider(new ResultTreeContentProvider());
@@ -257,20 +274,18 @@ public class ResultView extends ViewPart {
                 }
             }
         });
+        resultTreeTabItem.setControl(resultTree);
 
-        Composite row3Right = new Composite(row3, SWT.NONE);
-        row3Right.setLayoutData(createHorizontalFillGridData());
-        row3Right.setLayout(adjustLayout(new GridLayout(1, true)));
-        CLabel failureTraceLabel = new CLabel(row3Right, SWT.LEFT);
-        failureTraceLabel.setText(Messages.TestResultView_failureTraceLabel);
-        failureTraceLabel.setImage(
-            Activator.getImageDescriptor("icons/failure-trace.gif").createImage() //$NON-NLS-1$
-        );
-        failureTrace = createFailureTrace(row3Right);
+        failureTraceTabItem = new CTabItem(testResultsTabFolder, SWT.NONE);
+        failureTraceTabItem.setText(Messages.TestResultView_failureTraceLabel);
+        failureTraceTabItem.setImage(Activator.getImageDescriptor("icons/failure-trace.gif").createImage()); //$NON-NLS-1$
+        failureTrace = createFailureTrace(testResultsTabFolder);
+        failureTraceTabItem.setControl(failureTrace);
+
+        testResultsTabFolder.setSelection(resultTreeTabItem);
 
         IViewSite site = getViewSite();
         site.getPage().addPartListener(partListener);
-        initializeActions(site);
 
         MakeGoodContext.getInstance().addStatusChangeListener(statusArea);
 
@@ -392,6 +407,17 @@ public class ResultView extends ViewPart {
     public boolean hasFailures() {
         if (testLifecycle == null) return false;
         return testLifecycle.getProgress().hasFailures();
+    }
+
+    /**
+     * @since 2.0.0
+     */
+    public void switchToUnselectedTestResultsTab() {
+        if (testResultsTabFolder.getSelection() == resultTreeTabItem) {
+            testResultsTabFolder.setSelection(failureTraceTabItem);
+        } else if (testResultsTabFolder.getSelection() == failureTraceTabItem) {
+            testResultsTabFolder.setSelection(resultTreeTabItem);
+        }
     }
 
     void setTreeInput(TestSuiteResult result) {

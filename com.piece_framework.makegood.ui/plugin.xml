@@ -211,6 +211,12 @@
             name="%commands.showOnlyFailuresCommand.name">
       </command>
       <command
+            categoryId="com.piece_framework.makegood.ui.commands.resultViewCategory"
+            defaultHandler="com.piece_framework.makegood.ui.handlers.SwitchToUnselectedTestResultsTabHandler"
+            id="com.piece_framework.makegood.ui.commands.switchToUnselectedTestResultsTabCommand"
+            name="%commands.switchToUnselectedTestResultsTabCommand.name">
+      </command>
+      <command
             categoryId="com.piece_framework.makegood.ui.commands.runTestCategory"
             defaultHandler="com.piece_framework.makegood.ui.handlers.StopOnFailureHandler"
             id="com.piece_framework.makegood.ui.commands.stopOnFailureCommand"
@@ -364,6 +370,12 @@
             contextId="org.eclipse.ui.contexts.window"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="M3+M B">
+      </key>
+      <key
+            commandId="com.piece_framework.makegood.ui.commands.switchToUnselectedTestResultsTabCommand"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M3+M T">
       </key>
    </extension>
    <extension
