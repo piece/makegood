@@ -61,7 +61,7 @@ public class ProgressBar extends Composite implements PaintListener, ControlList
         FontMetrics fontMetrics = e.gc.getFontMetrics();
         int width = fontMetrics.getAverageCharWidth() * text.length();
         int height = fontMetrics.getHeight();
-        e.gc.drawText(text, (size.x - width) / 2 , (size.y - height) / 2, true);
+        e.gc.drawText(text, (size.x - width) / 2, (size.y - height) / 2, true);
     }
 
     @Override
