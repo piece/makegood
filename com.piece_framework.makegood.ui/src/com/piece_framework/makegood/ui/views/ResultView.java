@@ -52,11 +52,9 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.IPartListener2;
@@ -113,7 +111,7 @@ public class ResultView extends ViewPart {
     private CountLabel errorCountLabel;
 
     private TreeViewer resultTreeViewer;
-    private Label processTimeAverageLabel;
+    private CLabel processTimeAverageLabel;
     private ElapsedTimer elapsedTimer;
     private IAction previousFailureAction;
     private IAction nextFailureAction;
@@ -121,8 +119,8 @@ public class ResultView extends ViewPart {
     private IAction rerunTestAction;
     private IAction runAllTestsAction;
     private FailureTrace failureTrace;
-    private Label elapsedTimeLabel;
-    private Label processTimeLabel;
+    private CLabel elapsedTimeLabel;
+    private CLabel processTimeLabel;
     private boolean actionsInitialized = false;
     private ResultViewPartListener partListener = new ResultViewPartListener();
     private EditorOpener editorOpener = new EditorOpener();
@@ -154,7 +152,7 @@ public class ResultView extends ViewPart {
     /**
      * @since 1.9.0
      */
-    private Label endTimeLabel;
+    private CLabel endTimeLabel;
 
     /**
      * @since 2.0.0
@@ -178,17 +176,23 @@ public class ResultView extends ViewPart {
 
         parent.setLayout(adjustLayout(new GridLayout(1, false)));
 
-        Composite row1 = new Composite(parent, SWT.NONE);
-        row1.setLayoutData(createHorizontalFillGridData());
-        row1.setLayout(adjustLayout(new GridLayout(2, true)));
+        // Row1: The Status Area
+        statusArea = createStatusArea(parent, SWT.NONE);
+        statusArea.setLayoutData(createHorizontalFillGridData());
+        statusArea.setLayout(adjustLayout(new GridLayout()));
 
-        Composite progress = new Composite(row1, SWT.NONE);
-        progress.setLayoutData(createHorizontalFillGridData());
-        progress.setLayout(adjustLayout(new GridLayout(4, true)));
+        // Row2: The Progress Bar and Watches
+        Composite progressBarAndWatches = new Composite(parent, SWT.NONE);
+        progressBarAndWatches.setLayoutData(createHorizontalFillGridData());
+        progressBarAndWatches.setLayout(adjustLayout(new GridLayout(5, true)));
+
+        Composite progress = new Composite(progressBarAndWatches, SWT.NONE);
+        GridData progressGridData = createHorizontalFillGridData();
+        progressGridData.horizontalSpan = 2;
+        progress.setLayoutData(progressGridData);
+        progress.setLayout(adjustLayout(new GridLayout()));
         Composite progressBarBorder = new Composite(progress, SWT.NONE);
-        GridData progressBarBorderGridData = createHorizontalFillGridData();
-        progressBarBorderGridData.horizontalSpan = 3;
-        progressBarBorder.setLayoutData(progressBarBorderGridData);
+        progressBarBorder.setLayoutData(createHorizontalFillGridData());
         GridLayout progressBarBorderLayout = new GridLayout();
         progressBarBorderLayout.marginWidth = 2;
         progressBarBorderLayout.marginHeight = 2;
@@ -198,40 +202,40 @@ public class ResultView extends ViewPart {
         progressBar = new ProgressBar(progressBarBorder);
         progressBar.setLayoutData(createHorizontalFillGridData());
         progressBar.setLayout(adjustLayout(new GridLayout()));
-        processTimeAverageLabel = new Label(progress, SWT.LEFT);
 
-        Composite clock = new Composite(row1, SWT.NONE);
-        clock.setLayoutData(createHorizontalFillGridData());
-        clock.setLayout(new FillLayout(SWT.HORIZONTAL));
-        processTimeLabel = new Label(clock, SWT.LEFT);
-        elapsedTimeLabel = new Label(clock, SWT.LEFT);
-        endTimeLabel = new Label(clock, SWT.LEFT);
+        processTimeAverageLabel = new CLabel(progressBarAndWatches, SWT.LEFT);
+        processTimeAverageLabel.setLayoutData(createHorizontalFillGridData());
+        processTimeLabel = new CLabel(progressBarAndWatches, SWT.LEFT);
+        processTimeLabel.setLayoutData(createHorizontalFillGridData());
+        elapsedTimeLabel = new CLabel(progressBarAndWatches, SWT.LEFT);
+        elapsedTimeLabel.setLayoutData(createHorizontalFillGridData());
 
-        Composite row2 = new Composite(parent, SWT.NONE);
-        row2.setLayoutData(createHorizontalFillGridData());
-        row2.setLayout(adjustLayout(new GridLayout(2, true)));
-
-        Composite counter = new Composite(row2, SWT.NONE);
+        // Row3: The Counters
+        Composite counter = new Composite(parent, SWT.NONE);
         counter.setLayoutData(createHorizontalFillGridData());
-        counter.setLayout(new FillLayout(SWT.HORIZONTAL));
+        counter.setLayout(adjustLayout(new GridLayout(5, true)));
         testCountLabel = new CLabel(counter, SWT.LEFT);
+        testCountLabel.setLayoutData(createHorizontalFillGridData());
         passCountLabel = new CountLabel(
             counter,
+            SWT.LEFT,
             Messages.TestResultView_passesLabel,
             Activator.getImageDescriptor("icons/pass-gray.gif").createImage() //$NON-NLS-1$
         );
         failureCountLabel = new CountLabel(
             counter,
+            SWT.LEFT,
             Messages.TestResultView_failuresLabel,
             Activator.getImageDescriptor("icons/failure-gray.gif").createImage() //$NON-NLS-1$
         );
         errorCountLabel = new CountLabel(
             counter,
+            SWT.LEFT,
             Messages.TestResultView_errorsLabel,
             Activator.getImageDescriptor("icons/error-gray.gif").createImage() //$NON-NLS-1$
         );
-
-        statusArea = createStatusArea(row2);
+        endTimeLabel = new CLabel(counter, SWT.LEFT);
+        endTimeLabel.setLayoutData(createHorizontalFillGridData());
 
         testResultsTabFolder = new CTabFolder(parent, SWT.NONE);
         testResultsTabFolder.setSimple(false);
@@ -279,7 +283,10 @@ public class ResultView extends ViewPart {
         failureTraceTabItem = new CTabItem(testResultsTabFolder, SWT.NONE);
         failureTraceTabItem.setText(Messages.TestResultView_failureTraceLabel);
         failureTraceTabItem.setImage(Activator.getImageDescriptor("icons/failure-trace.gif").createImage()); //$NON-NLS-1$
-        failureTrace = createFailureTrace(testResultsTabFolder);
+        failureTrace = createFailureTrace(
+            testResultsTabFolder,
+            SWT.MULTI | SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL
+        );
         failureTraceTabItem.setControl(failureTrace);
 
         testResultsTabFolder.setSelection(resultTreeTabItem);
@@ -352,9 +359,8 @@ public class ResultView extends ViewPart {
         return bothFillGrid;
     }
 
-    private FailureTrace createFailureTrace(Composite parent) {
-        FailureTrace failureTrace =
-            new FailureTrace(parent, SWT.MULTI | SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
+    private FailureTrace createFailureTrace(Composite parent, int style) {
+        FailureTrace failureTrace = new FailureTrace(parent, style);
         failureTrace.setLayoutData(new GridData(GridData.FILL_BOTH));
         failureTrace.setEditable(false);
         failureTrace.addListener(new EditorOpenActiveTextListener());
@@ -364,10 +370,8 @@ public class ResultView extends ViewPart {
     /**
      * @since 1.6.0
      */
-    private StatusArea createStatusArea(Composite parent) {
-        StatusArea statusArea = new StatusArea(parent, SWT.NONE);
-        statusArea.setLayoutData(createHorizontalFillGridData());
-        statusArea.setLayout(new FillLayout(SWT.HORIZONTAL));
+    private StatusArea createStatusArea(Composite parent, int style) {
+        StatusArea statusArea = new StatusArea(parent, style);
         statusArea.setBackground(parent.getBackground());
         statusArea.addListener(new PreferencesOpenActiveTextListener());
         return statusArea;
@@ -658,8 +662,9 @@ public class ResultView extends ViewPart {
         private CLabel label;
         private String text;
 
-        public CountLabel(Composite parent, String text, Image icon) {
-            label = new CLabel(parent, SWT.LEFT);
+        public CountLabel(Composite parent, int style, String text, Image icon) {
+            label = new CLabel(parent, style);
+            label.setLayoutData(createHorizontalFillGridData());
             label.setText(text);
             label.setImage(icon);
             this.text = text;
