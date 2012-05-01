@@ -95,17 +95,15 @@ public class MakeGoodPropertyPage extends PropertyPage {
     @Override
     protected Control createContents(Composite parent) {
         contents = new TabFolder(parent, SWT.NONE);
-        contents.setLayoutData(new GridData(GridData.FILL_BOTH));
         contents.setLayout(new GridLayout());
 
         TabItem generalTabItem = new TabItem(contents, SWT.NONE);
         generalTabItem.setText(Messages.MakeGoodPropertyPage_generalLabel);
         Composite generalTab = new Composite(contents, SWT.NONE);
-        generalTab.setLayoutData(new GridData(GridData.FILL_BOTH));
         generalTab.setLayout(new GridLayout());
         generalTabItem.setControl(generalTab);
 
-        Group frameworkGroup = new Group(generalTab, SWT.LEFT | SWT.TOP);
+        Group frameworkGroup = new Group(generalTab, SWT.LEFT);
         frameworkGroup.setText(Messages.MakeGoodPropertyPage_testingFrameworkLabel);
         frameworkGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
         frameworkGroup.setLayout(new GridLayout());
@@ -123,11 +121,10 @@ public class MakeGoodPropertyPage extends PropertyPage {
         simpletestButton.setText(TestingFramework.SimpleTest.name());
         simpletestButton.addSelectionListener(new FrameworkSelectionAdapter());
 
-        Group testFolderGroup = new Group(generalTab, SWT.LEFT | SWT.TOP);
+        Group testFolderGroup = new Group(generalTab, SWT.LEFT);
         testFolderGroup.setText(Messages.MakeGoodPropertyPage_testFolderLabel);
         testFolderGroup.setLayoutData(new GridData(GridData.FILL_BOTH));
         testFolderGroup.setLayout(new GridLayout(2, false));
-
         testFolderTreeViewer = new TreeViewer(testFolderGroup, SWT.BORDER + SWT.SINGLE);
         testFolderTreeViewer.getTree().setLayoutData(new GridData(GridData.FILL_BOTH));
         testFolderTreeViewer.setContentProvider(new TestFolderTreeContentProvider());
@@ -138,19 +135,12 @@ public class MakeGoodPropertyPage extends PropertyPage {
                 testFolderRemoveButton.setEnabled(event.getSelection() != null);
             }
         });
-
         Composite testFolderButtons = new Composite(testFolderGroup, SWT.NONE);
         testFolderButtons.setLayout(new FillLayout(SWT.VERTICAL));
-        {
-            GridData gridData = new GridData();
-            gridData.verticalAlignment = SWT.TOP;
-            testFolderButtons.setLayoutData(gridData);
-        }
-
+        testFolderButtons.setLayoutData(new GridData(SWT.NONE, SWT.BEGINNING, false, false));
         Button testFolderAddButton = new Button(testFolderButtons, SWT.NONE);
         testFolderAddButton.setText(Messages.MakeGoodPropertyPage_testFolderAddLabel);
         testFolderAddButton.addSelectionListener(new AddTestFolderSelectionListener());
-
         testFolderRemoveButton = new Button(testFolderButtons, SWT.NONE);
         testFolderRemoveButton.setText(Messages.MakeGoodPropertyPage_testFolderRemoveLabel);
         testFolderRemoveButton.setEnabled(false);
@@ -159,7 +149,6 @@ public class MakeGoodPropertyPage extends PropertyPage {
         Composite preloadScript = new Composite(generalTab, SWT.NONE);
         preloadScript.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
         preloadScript.setLayout(new GridLayout(3, false));
-
         Label preloadScriptLabel = new Label(preloadScript, SWT.NONE);
         preloadScriptLabel.setText(Messages.MakeGoodPropertyPage_preloadScriptLabel);
         preloadScriptText = new Text(preloadScript, SWT.SINGLE | SWT.BORDER);
@@ -180,7 +169,6 @@ public class MakeGoodPropertyPage extends PropertyPage {
         TabItem cakephpTabItem = new TabItem(contents, SWT.NONE);
         cakephpTabItem.setText(TestingFramework.CakePHP.name());
         Composite cakephpTab = new Composite(contents, SWT.NONE);
-        cakephpTab.setLayoutData(new GridData(GridData.FILL_BOTH));
         cakephpTab.setLayout(new GridLayout());
         cakephpTabItem.setControl(cakephpTab);
         Composite cakephpAppPath = new Composite(cakephpTab, SWT.NONE);
@@ -225,7 +213,6 @@ public class MakeGoodPropertyPage extends PropertyPage {
         TabItem ciunitTabItem = new TabItem(contents, SWT.NONE);
         ciunitTabItem.setText(TestingFramework.CIUnit.name());
         Composite ciunitTab = new Composite(contents, SWT.NONE);
-        ciunitTab.setLayoutData(new GridData(GridData.FILL_BOTH));
         ciunitTab.setLayout(new GridLayout());
         ciunitTabItem.setControl(ciunitTab);
         Composite ciunitPath = new Composite(ciunitTab, SWT.NONE);
@@ -270,7 +257,6 @@ public class MakeGoodPropertyPage extends PropertyPage {
         TabItem phpunitTabItem = new TabItem(contents, SWT.NONE);
         phpunitTabItem.setText(TestingFramework.PHPUnit.name());
         Composite phpunitTab = new Composite(contents, SWT.NONE);
-        phpunitTab.setLayoutData(new GridData(GridData.FILL_BOTH));
         phpunitTab.setLayout(new GridLayout());
         phpunitTabItem.setControl(phpunitTab);
         Composite phpunitConfigFile = new Composite(phpunitTab, SWT.NONE);
