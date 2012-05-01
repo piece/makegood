@@ -42,6 +42,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.TabFolder;
+import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
@@ -52,7 +54,6 @@ import org.eclipse.ui.model.WorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 
 import com.piece_framework.makegood.core.MakeGoodProperty;
-import com.piece_framework.makegood.core.PHPResource;
 import com.piece_framework.makegood.core.TestingFramework;
 import com.piece_framework.makegood.ui.Messages;
 
@@ -109,202 +110,51 @@ public class MakeGoodPropertyPage extends PropertyPage {
     private Button ciunitConfigFileBrowseButton;
     private TreeViewer testFolderTreeViewer;
     private Button testFolderRemoveButton;
-    private Composite contents;
+    private TabFolder contents;
+
+    /**
+     * @since 2.0.0
+     */
+    private ArrayList<TabItem> frameworkTabItems = new ArrayList<TabItem>();
 
     @Override
     protected Control createContents(Composite parent) {
-        contents = new Composite(parent, SWT.NONE);
-        {
-            GridLayout layout = new GridLayout();
-            layout.numColumns = 3;
-            contents.setLayout(layout);
-        }
+        contents = new TabFolder(parent, SWT.NONE);
         contents.setLayoutData(new GridData(GridData.FILL_BOTH));
+        contents.setLayout(new GridLayout());
 
-        Group frameworkGroup = new Group(contents, SWT.LEFT | SWT.TOP);
+        TabItem generalTabItem = new TabItem(contents, SWT.NONE);
+        generalTabItem.setText(Messages.MakeGoodPropertyPage_generalLabel);
+        Composite generalTab = new Composite(contents, SWT.NONE);
+        generalTab.setLayoutData(new GridData(GridData.FILL_BOTH));
+        generalTab.setLayout(new GridLayout());
+        generalTabItem.setControl(generalTab);
+
+        Group frameworkGroup = new Group(generalTab, SWT.LEFT | SWT.TOP);
         frameworkGroup.setText(Messages.MakeGoodPropertyPage_testingFrameworkLabel);
-        frameworkGroup.setLayout(new GridLayout(1, false));
-        {
-            GridData gridData = new GridData();
-            gridData.horizontalSpan = 3;
-            gridData.horizontalAlignment = SWT.FILL;
-            frameworkGroup.setLayoutData(gridData);
-        }
-
-        phpunitButton = new Button(frameworkGroup, SWT.RADIO);
-        phpunitButton.setText(Messages.MakeGoodPropertyPage_phpunit);
-        phpunitButton.addSelectionListener(
-            new SelectionAdapter() {
-                public void widgetSelected(SelectionEvent e) {
-                    enablePHPUnitSettings();
-                }
-            }
-        );
-        Composite phpunitSettings = new Composite(frameworkGroup, SWT.NONE);
-        {
-            GridLayout layout = new GridLayout();
-            layout.numColumns = 3;
-            phpunitSettings.setLayout(layout);
-        }
-        phpunitSettings.setLayoutData(new GridData(GridData.FILL_BOTH));
-        phpunitConfigFileLabel = new Label(phpunitSettings, SWT.NONE);
-        phpunitConfigFileLabel.setText(Messages.MakeGoodPropertyPage_phpunitConfigFileLabel);
-        phpunitConfigFileText = new Text(phpunitSettings, SWT.SINGLE | SWT.BORDER);
-        phpunitConfigFileText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-        phpunitConfigFileBrowseButton = new Button(phpunitSettings, SWT.NONE);
-        phpunitConfigFileBrowseButton.setText(Messages.MakeGoodPropertyPage_phpunitConfigFileBrowseLabel);
-        phpunitConfigFileBrowseButton.addSelectionListener(
-            new FileSelectionListener(
-                phpunitConfigFileText,
-                Messages.MakeGoodPropertyPage_phpunitConfigFileDialogTitle,
-                Messages.MakeGoodPropertyPage_phpunitConfigFileDialogMessage,
-                SELECTION_ALLOW_FILE,
-                new FileViewerFilter()
-            )
-        );
-
-        simpletestButton = new Button(frameworkGroup, SWT.RADIO);
-        simpletestButton.setText(Messages.MakeGoodPropertyPage_simpletest);
-        simpletestButton.addSelectionListener(
-            new SelectionAdapter() {
-                public void widgetSelected(SelectionEvent e) {
-                    enableSimpleTestSettings();
-                }
-            }
-        );
+        frameworkGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+        frameworkGroup.setLayout(new GridLayout());
 
         cakephpButton = new Button(frameworkGroup, SWT.RADIO);
-        cakephpButton.setText(Messages.MakeGoodPropertyPage_cakephp);
-        cakephpButton.addSelectionListener(
-            new SelectionAdapter() {
-                public void widgetSelected(SelectionEvent e) {
-                    enableCakePHPSettings();
-                }
-            }
-        );
-        Composite cakephpSettings = new Composite(frameworkGroup, SWT.NONE);
-        {
-            GridLayout layout = new GridLayout();
-            layout.numColumns = 3;
-            cakephpSettings.setLayout(layout);
-        }
-        cakephpSettings.setLayoutData(new GridData(GridData.FILL_BOTH));
-        cakephpAppPathLabel = new Label(cakephpSettings, SWT.NONE);
-        cakephpAppPathLabel.setText(Messages.MakeGoodPropertyPage_cakephpAppPathLabel);
-        cakephpAppPathText = new Text(cakephpSettings, SWT.SINGLE | SWT.BORDER);
-        cakephpAppPathText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-        cakephpAppPathBrowseButton = new Button(cakephpSettings, SWT.NONE);
-        cakephpAppPathBrowseButton.setText(Messages.MakeGoodPropertyPage_cakephpAppPathBrowseLabel);
-        cakephpAppPathBrowseButton.addSelectionListener(
-            new FileSelectionListener(
-                cakephpAppPathText,
-                Messages.MakeGoodPropertyPage_cakephpAppPathDialogTitle,
-                Messages.MakeGoodPropertyPage_cakephpAppPathDialogMessage,
-                SELECTION_ALLOW_FOLDER,
-                new FileViewerFilter()
-            )
-        );
-        cakephpCorePathLabel = new Label(cakephpSettings, SWT.NONE);
-        cakephpCorePathLabel.setText(Messages.MakeGoodPropertyPage_cakephpCorePathLabel);
-        cakephpCorePathText = new Text(cakephpSettings, SWT.SINGLE | SWT.BORDER);
-        cakephpCorePathText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-        cakephpCorePathBrowseButton = new Button(cakephpSettings, SWT.NONE);
-        cakephpCorePathBrowseButton.setText(Messages.MakeGoodPropertyPage_cakephpCorePathBrowseLabel);
-        cakephpCorePathBrowseButton.addSelectionListener(
-            new FileSelectionListener(
-                cakephpCorePathText,
-                Messages.MakeGoodPropertyPage_cakephpCorePathDialogTitle,
-                Messages.MakeGoodPropertyPage_cakephpCorePathDialogMessage,
-                SELECTION_ALLOW_FOLDER,
-                new FileViewerFilter()
-            )
-        );
-
+        cakephpButton.setText(TestingFramework.CakePHP.name());
+        cakephpButton.addSelectionListener(new FrameworkSelectionAdapter());
         ciunitButton = new Button(frameworkGroup, SWT.RADIO);
-        ciunitButton.setText(Messages.MakeGoodPropertyPage_ciunit);
-        ciunitButton.addSelectionListener(
-            new SelectionAdapter() {
-                public void widgetSelected(SelectionEvent e) {
-                    enableCIUnitSettings();
-                }
-            }
-        );
-        Composite ciunitSettings = new Composite(frameworkGroup, SWT.NONE);
-        {
-            GridLayout layout = new GridLayout();
-            layout.numColumns = 3;
-            ciunitSettings.setLayout(layout);
-        }
-        ciunitSettings.setLayoutData(new GridData(GridData.FILL_BOTH));
-        ciunitPathLabel = new Label(ciunitSettings, SWT.NONE);
-        ciunitPathLabel.setText(Messages.MakeGoodPropertyPage_ciunitPathLabel);
-        ciunitPathText = new Text(ciunitSettings, SWT.SINGLE | SWT.BORDER);
-        ciunitPathText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-        ciunitPathBrowseButton = new Button(ciunitSettings, SWT.NONE);
-        ciunitPathBrowseButton.setText(Messages.MakeGoodPropertyPage_ciunitPathBrowseLabel);
-        ciunitPathBrowseButton.addSelectionListener(
-            new FileSelectionListener(
-                ciunitPathText,
-                Messages.MakeGoodPropertyPage_ciunitPathDialogTitle,
-                Messages.MakeGoodPropertyPage_ciunitPathDialogMessage,
-                SELECTION_ALLOW_FOLDER,
-                new FileViewerFilter()
-            )
-        );
-        ciunitConfigFileLabel = new Label(ciunitSettings, SWT.NONE);
-        ciunitConfigFileLabel.setText(Messages.MakeGoodPropertyPage_ciunitConfigFileLabel);
-        ciunitConfigFileText = new Text(ciunitSettings, SWT.SINGLE | SWT.BORDER);
-        ciunitConfigFileText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-        ciunitConfigFileBrowseButton = new Button(ciunitSettings, SWT.NONE);
-        ciunitConfigFileBrowseButton.setText(Messages.MakeGoodPropertyPage_ciunitConfigFileBrowseLabel);
-        ciunitConfigFileBrowseButton.addSelectionListener(
-            new FileSelectionListener(
-                ciunitConfigFileText,
-                Messages.MakeGoodPropertyPage_ciunitConfigFileDialogTitle,
-                Messages.MakeGoodPropertyPage_ciunitConfigFileDialogMessage,
-                SELECTION_ALLOW_FILE,
-                new FileViewerFilter()
-            )
-        );
+        ciunitButton.setText(TestingFramework.CIUnit.name());
+        ciunitButton.addSelectionListener(new FrameworkSelectionAdapter());
+        phpunitButton = new Button(frameworkGroup, SWT.RADIO);
+        phpunitButton.setText(TestingFramework.PHPUnit.name());
+        phpunitButton.addSelectionListener(new FrameworkSelectionAdapter());
+        simpletestButton = new Button(frameworkGroup, SWT.RADIO);
+        simpletestButton.setText(TestingFramework.SimpleTest.name());
+        simpletestButton.addSelectionListener(new FrameworkSelectionAdapter());
 
-        Label preloadScriptLabel = new Label(contents, SWT.NONE);
-        preloadScriptLabel.setText(Messages.MakeGoodPropertyPage_preloadScriptLabel);
-        preloadScriptText = new Text(contents, SWT.SINGLE | SWT.BORDER);
-        preloadScriptText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-        Button preloadScriptBrowseButton = new Button(contents, SWT.NONE);
-        preloadScriptBrowseButton.setText(Messages.MakeGoodPropertyPage_preloadScriptBrowseLabel);
-        preloadScriptBrowseButton.addSelectionListener(
-            new FileSelectionListener(
-                preloadScriptText,
-                Messages.MakeGoodPropertyPage_preloadScriptDialogTitle,
-                Messages.MakeGoodPropertyPage_preloadScriptDialogMessage,
-                SELECTION_ALLOW_FILE,
-                new FileViewerFilter()
-            )
-        );
-
-        Group testFolderGroup = new Group(contents, SWT.LEFT | SWT.TOP);
+        Group testFolderGroup = new Group(generalTab, SWT.LEFT | SWT.TOP);
         testFolderGroup.setText(Messages.MakeGoodPropertyPage_testFolderLabel);
+        testFolderGroup.setLayoutData(new GridData(GridData.FILL_BOTH));
         testFolderGroup.setLayout(new GridLayout(2, false));
-        {
-            GridData gridData = new GridData();
-            gridData.horizontalSpan = 3;
-            gridData.horizontalAlignment = SWT.FILL;
-            gridData.verticalAlignment = SWT.FILL;
-            gridData.grabExcessHorizontalSpace = true;
-            gridData.grabExcessVerticalSpace = true;
-            testFolderGroup.setLayoutData(gridData);
-        }
 
         testFolderTreeViewer = new TreeViewer(testFolderGroup, SWT.BORDER + SWT.SINGLE);
-        {
-            GridData gridData = new GridData();
-            gridData.horizontalAlignment = SWT.FILL;
-            gridData.verticalAlignment = SWT.FILL;
-            gridData.grabExcessHorizontalSpace = true;
-            gridData.grabExcessVerticalSpace = true;
-            testFolderTreeViewer.getTree().setLayoutData(gridData);
-        }
+        testFolderTreeViewer.getTree().setLayoutData(new GridData(GridData.FILL_BOTH));
         testFolderTreeViewer.setContentProvider(new TestFolderTreeContentProvider());
         testFolderTreeViewer.setLabelProvider(new TestFolderTreeLabelProvider());
         testFolderTreeViewer.addSelectionChangedListener(new ISelectionChangedListener() {
@@ -331,32 +181,168 @@ public class MakeGoodPropertyPage extends PropertyPage {
         testFolderRemoveButton.setEnabled(false);
         testFolderRemoveButton.addSelectionListener(new RemoveTestFolderSelectionListener());
 
+        Composite preloadScript = new Composite(generalTab, SWT.NONE);
+        preloadScript.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+        preloadScript.setLayout(new GridLayout(3, false));
+
+        Label preloadScriptLabel = new Label(preloadScript, SWT.NONE);
+        preloadScriptLabel.setText(Messages.MakeGoodPropertyPage_preloadScriptLabel);
+        preloadScriptText = new Text(preloadScript, SWT.SINGLE | SWT.BORDER);
+        preloadScriptText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+        Button preloadScriptBrowseButton = new Button(preloadScript, SWT.NONE);
+        preloadScriptBrowseButton.setText(Messages.MakeGoodPropertyPage_preloadScriptBrowseLabel);
+        preloadScriptBrowseButton.addSelectionListener(
+            new FileSelectionListener(
+                preloadScriptText,
+                Messages.MakeGoodPropertyPage_preloadScriptDialogTitle,
+                Messages.MakeGoodPropertyPage_preloadScriptDialogMessage,
+                SELECTION_ALLOW_FILE,
+                new FileViewerFilter()
+            )
+        );
+
+        // CakePHP
+        TabItem cakephpTabItem = new TabItem(contents, SWT.NONE);
+        cakephpTabItem.setText(TestingFramework.CakePHP.name());
+        Composite cakephpTab = new Composite(contents, SWT.NONE);
+        cakephpTab.setLayoutData(new GridData(GridData.FILL_BOTH));
+        cakephpTab.setLayout(new GridLayout());
+        cakephpTabItem.setControl(cakephpTab);
+        Composite cakephpAppPath = new Composite(cakephpTab, SWT.NONE);
+        cakephpAppPath.setLayout(new GridLayout(3, false));
+        cakephpAppPath.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+        cakephpAppPathLabel = new Label(cakephpAppPath, SWT.NONE);
+        cakephpAppPathLabel.setText(Messages.MakeGoodPropertyPage_cakephpAppPathLabel);
+        cakephpAppPathText = new Text(cakephpAppPath, SWT.SINGLE | SWT.BORDER);
+        cakephpAppPathText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+        cakephpAppPathBrowseButton = new Button(cakephpAppPath, SWT.NONE);
+        cakephpAppPathBrowseButton.setText(Messages.MakeGoodPropertyPage_cakephpAppPathBrowseLabel);
+        cakephpAppPathBrowseButton.addSelectionListener(
+            new FileSelectionListener(
+                cakephpAppPathText,
+                Messages.MakeGoodPropertyPage_cakephpAppPathDialogTitle,
+                Messages.MakeGoodPropertyPage_cakephpAppPathDialogMessage,
+                SELECTION_ALLOW_FOLDER,
+                new FileViewerFilter()
+            )
+        );
+        Composite cakephpCorePath = new Composite(cakephpTab, SWT.NONE);
+        cakephpCorePath.setLayout(new GridLayout(3, false));
+        cakephpCorePath.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+        cakephpCorePathLabel = new Label(cakephpCorePath, SWT.NONE);
+        cakephpCorePathLabel.setText(Messages.MakeGoodPropertyPage_cakephpCorePathLabel);
+        cakephpCorePathText = new Text(cakephpCorePath, SWT.SINGLE | SWT.BORDER);
+        cakephpCorePathText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+        cakephpCorePathBrowseButton = new Button(cakephpCorePath, SWT.NONE);
+        cakephpCorePathBrowseButton.setText(Messages.MakeGoodPropertyPage_cakephpCorePathBrowseLabel);
+        cakephpCorePathBrowseButton.addSelectionListener(
+            new FileSelectionListener(
+                cakephpCorePathText,
+                Messages.MakeGoodPropertyPage_cakephpCorePathDialogTitle,
+                Messages.MakeGoodPropertyPage_cakephpCorePathDialogMessage,
+                SELECTION_ALLOW_FOLDER,
+                new FileViewerFilter()
+            )
+        );
+        frameworkTabItems.add(cakephpTabItem);
+
+        // CIUnit
+        TabItem ciunitTabItem = new TabItem(contents, SWT.NONE);
+        ciunitTabItem.setText(TestingFramework.CIUnit.name());
+        Composite ciunitTab = new Composite(contents, SWT.NONE);
+        ciunitTab.setLayoutData(new GridData(GridData.FILL_BOTH));
+        ciunitTab.setLayout(new GridLayout());
+        ciunitTabItem.setControl(ciunitTab);
+        Composite ciunitPath = new Composite(ciunitTab, SWT.NONE);
+        ciunitPath.setLayout(new GridLayout(3, false));
+        ciunitPath.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+        ciunitPathLabel = new Label(ciunitPath, SWT.NONE);
+        ciunitPathLabel.setText(Messages.MakeGoodPropertyPage_ciunitPathLabel);
+        ciunitPathText = new Text(ciunitPath, SWT.SINGLE | SWT.BORDER);
+        ciunitPathText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+        ciunitPathBrowseButton = new Button(ciunitPath, SWT.NONE);
+        ciunitPathBrowseButton.setText(Messages.MakeGoodPropertyPage_ciunitPathBrowseLabel);
+        ciunitPathBrowseButton.addSelectionListener(
+            new FileSelectionListener(
+                ciunitPathText,
+                Messages.MakeGoodPropertyPage_ciunitPathDialogTitle,
+                Messages.MakeGoodPropertyPage_ciunitPathDialogMessage,
+                SELECTION_ALLOW_FOLDER,
+                new FileViewerFilter()
+            )
+        );
+        Composite ciunitConfigFile = new Composite(ciunitTab, SWT.NONE);
+        ciunitConfigFile.setLayout(new GridLayout(3, false));
+        ciunitConfigFile.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+        ciunitConfigFileLabel = new Label(ciunitConfigFile, SWT.NONE);
+        ciunitConfigFileLabel.setText(Messages.MakeGoodPropertyPage_ciunitConfigFileLabel);
+        ciunitConfigFileText = new Text(ciunitConfigFile, SWT.SINGLE | SWT.BORDER);
+        ciunitConfigFileText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+        ciunitConfigFileBrowseButton = new Button(ciunitConfigFile, SWT.NONE);
+        ciunitConfigFileBrowseButton.setText(Messages.MakeGoodPropertyPage_ciunitConfigFileBrowseLabel);
+        ciunitConfigFileBrowseButton.addSelectionListener(
+            new FileSelectionListener(
+                ciunitConfigFileText,
+                Messages.MakeGoodPropertyPage_ciunitConfigFileDialogTitle,
+                Messages.MakeGoodPropertyPage_ciunitConfigFileDialogMessage,
+                SELECTION_ALLOW_FILE,
+                new FileViewerFilter()
+            )
+        );
+        frameworkTabItems.add(ciunitTabItem);
+
+        // PHPUnit
+        TabItem phpunitTabItem = new TabItem(contents, SWT.NONE);
+        phpunitTabItem.setText(TestingFramework.PHPUnit.name());
+        Composite phpunitTab = new Composite(contents, SWT.NONE);
+        phpunitTab.setLayoutData(new GridData(GridData.FILL_BOTH));
+        phpunitTab.setLayout(new GridLayout());
+        phpunitTabItem.setControl(phpunitTab);
+        Composite phpunitConfigFile = new Composite(phpunitTab, SWT.NONE);
+        phpunitConfigFile.setLayout(new GridLayout(3, false));
+        phpunitConfigFile.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+        phpunitConfigFileLabel = new Label(phpunitConfigFile, SWT.NONE);
+        phpunitConfigFileLabel.setText(Messages.MakeGoodPropertyPage_phpunitConfigFileLabel);
+        phpunitConfigFileText = new Text(phpunitConfigFile, SWT.SINGLE | SWT.BORDER);
+        phpunitConfigFileText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+        phpunitConfigFileBrowseButton = new Button(phpunitConfigFile, SWT.NONE);
+        phpunitConfigFileBrowseButton.setText(Messages.MakeGoodPropertyPage_phpunitConfigFileBrowseLabel);
+        phpunitConfigFileBrowseButton.addSelectionListener(
+            new FileSelectionListener(
+                phpunitConfigFileText,
+                Messages.MakeGoodPropertyPage_phpunitConfigFileDialogTitle,
+                Messages.MakeGoodPropertyPage_phpunitConfigFileDialogMessage,
+                SELECTION_ALLOW_FILE,
+                new FileViewerFilter()
+            )
+        );
+        frameworkTabItems.add(phpunitTabItem);
+
         MakeGoodProperty property = new MakeGoodProperty(getProject());
         switch (property.getTestingFramework()) {
-        case PHPUnit:
-            phpunitButton.setSelection(true);
-            enablePHPUnitSettings();
-            break;
-        case SimpleTest:
-            simpletestButton.setSelection(true);
-            enableSimpleTestSettings();
-            break;
         case CakePHP:
             cakephpButton.setSelection(true);
-            enableCakePHPSettings();
             break;
         case CIUnit:
             ciunitButton.setSelection(true);
-            enableCIUnitSettings();
+            break;
+        case PHPUnit:
+            phpunitButton.setSelection(true);
+            break;
+        case SimpleTest:
+            simpletestButton.setSelection(true);
             break;
         }
-        phpunitConfigFileText.setText(property.getPHPUnitConfigFile());
+        updateFrameworkSettings(property.getTestingFramework());
+        testFolderTreeViewer.setInput(property.getTestFolders());
+        preloadScriptText.setText(property.getPreloadScript());
         cakephpAppPathText.setText(property.getCakePHPAppPath());
         cakephpCorePathText.setText(property.getCakePHPCorePath());
         ciunitPathText.setText(property.getCIUnitPath());
         ciunitConfigFileText.setText(property.getCIUnitConfigFile());
-        preloadScriptText.setText(property.getPreloadScript());
-        testFolderTreeViewer.setInput(property.getTestFolders());
+        phpunitConfigFileText.setText(property.getPHPUnitConfigFile());
+
+        contents.setSelection(generalTabItem);
 
         return contents;
     }
@@ -365,14 +351,14 @@ public class MakeGoodPropertyPage extends PropertyPage {
     public boolean performOk() {
         MakeGoodProperty property = new MakeGoodProperty(getProject());
         TestingFramework testingFramework = null;
-        if (phpunitButton.getSelection()) {
-            testingFramework = TestingFramework.PHPUnit;
-        } else if (simpletestButton.getSelection()) {
-            testingFramework = TestingFramework.SimpleTest;
-        } else if (cakephpButton.getSelection()) {
+        if (cakephpButton.getSelection()) {
             testingFramework = TestingFramework.CakePHP;
         } else if (ciunitButton.getSelection()) {
             testingFramework = TestingFramework.CIUnit;
+        } else if (phpunitButton.getSelection()) {
+            testingFramework = TestingFramework.PHPUnit;
+        } else if (simpletestButton.getSelection()) {
+            testingFramework = TestingFramework.SimpleTest;
         }
         property.setTestingFramework(testingFramework);
         property.setPHPUnitConfigFile(phpunitConfigFileText.getText());
@@ -397,84 +383,30 @@ public class MakeGoodPropertyPage extends PropertyPage {
         return project;
     }
 
-    private void enablePHPUnitSettings() {
-        disableSimpleTestSettings();
-        disableCakePHPSettings();
-        disableCIUnitSettings();
-        setPHPUnitSettingsEnabled(true);
-    }
-
-    private void disablePHPUnitSettings() {
-        setPHPUnitSettingsEnabled(false);
-    }
-
-    private void setPHPUnitSettingsEnabled(boolean enabled) {
-        phpunitConfigFileLabel.setEnabled(enabled);
-        phpunitConfigFileText.setEnabled(enabled);
-        phpunitConfigFileBrowseButton.setEnabled(enabled);
-    }
-
-    private void enableSimpleTestSettings() {
-        disablePHPUnitSettings();
-        disableCakePHPSettings();
-        disableCIUnitSettings();
-        setSimpleTestSettingsEnabled(true);
-    }
-
-    private void disableSimpleTestSettings() {
-        setSimpleTestSettingsEnabled(false);
-    }
-
-    private void setSimpleTestSettingsEnabled(boolean enabled) {
-    }
-
-    private void enableCakePHPSettings() {
-        disablePHPUnitSettings();
-        disableSimpleTestSettings();
-        disableCIUnitSettings();
-        setCakePHPSettingsEnabled(true);
-    }
-
-    private void disableCakePHPSettings() {
-        setCakePHPSettingsEnabled(false);
-    }
-
-    private void setCakePHPSettingsEnabled(boolean enabled) {
-        cakephpAppPathLabel.setEnabled(enabled);
-        cakephpAppPathText.setEnabled(enabled);
-        cakephpAppPathBrowseButton.setEnabled(enabled);
-        cakephpCorePathLabel.setEnabled(enabled);
-        cakephpCorePathText.setEnabled(enabled);
-        cakephpCorePathBrowseButton.setEnabled(enabled);
+    /**
+     * @since 2.0.0
+     */
+    private void updateFrameworkSettings(TestingFramework testingFramework)
+    {
+        for (TabItem frameworkTabItem: frameworkTabItems) {
+            Composite frameworkTab = (Composite) frameworkTabItem.getControl();
+            for (Control frameworkControl: frameworkTab.getChildren()) {
+                changeControlState(frameworkControl, testingFramework.name().equals(frameworkTabItem.getText()));
+            }
+        }
     }
 
     /**
-     * @since 1.3.0
+     * @since 2.0.0
      */
-    private void enableCIUnitSettings() {
-        disablePHPUnitSettings();
-        disableSimpleTestSettings();
-        disableCakePHPSettings();
-        setCIUnitSettingsEnabled(true);
-    }
-
-    /**
-     * @since 1.3.0
-     */
-    private void disableCIUnitSettings() {
-        setCIUnitSettingsEnabled(false);
-    }
-
-    /**
-     * @since 1.3.0
-     */
-    private void setCIUnitSettingsEnabled(boolean enabled) {
-        ciunitPathLabel.setEnabled(enabled);
-        ciunitPathText.setEnabled(enabled);
-        ciunitPathBrowseButton.setEnabled(enabled);
-        ciunitConfigFileLabel.setEnabled(enabled);
-        ciunitConfigFileText.setEnabled(enabled);
-        ciunitConfigFileBrowseButton.setEnabled(enabled);
+    private void changeControlState(Control control, boolean enabled) {
+        if (control instanceof Composite) {
+            for (Control child: ((Composite) control).getChildren()) {
+                changeControlState(child, enabled);
+            }
+        } else {
+            control.setEnabled(enabled);
+        }
     }
 
     private class FileSelectionListener implements SelectionListener {
@@ -669,6 +601,17 @@ public class MakeGoodPropertyPage extends PropertyPage {
                 return true;
             } else {
                 return false;
+            }
+        }
+    }
+
+    /**
+     * @since 2.0.0
+     */
+    private class FrameworkSelectionAdapter extends SelectionAdapter {
+        public void widgetSelected(SelectionEvent e) {
+            if (e.getSource() instanceof Button) {
+                updateFrameworkSettings(TestingFramework.valueOf(((Button) e.getSource()).getText()));
             }
         }
     }

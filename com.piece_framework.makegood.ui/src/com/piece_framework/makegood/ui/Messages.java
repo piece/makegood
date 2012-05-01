@@ -26,14 +26,11 @@ public class Messages extends NLS {
     public static String MakeGoodPropertyPage_preloadScriptDialogMessage;
     public static String MakeGoodPropertyPage_preloadScriptDialogTitle;
     public static String MakeGoodPropertyPage_preloadScriptLabel;
-    public static String MakeGoodPropertyPage_phpunit;
     public static String MakeGoodPropertyPage_phpunitConfigFileDialogTitle;
     public static String MakeGoodPropertyPage_phpunitConfigFileDialogMessage;
     public static String MakeGoodPropertyPage_phpunitConfigFileLabel;
     public static String MakeGoodPropertyPage_phpunitConfigFileBrowseLabel;
     public static String MakeGoodPropertyPage_testFolderRemoveLabel;
-    public static String MakeGoodPropertyPage_simpletest;
-    public static String MakeGoodPropertyPage_cakephp;
     public static String MakeGoodPropertyPage_cakephpAppPathDialogTitle;
     public static String MakeGoodPropertyPage_cakephpAppPathDialogMessage;
     public static String MakeGoodPropertyPage_cakephpAppPathLabel;
@@ -42,11 +39,6 @@ public class Messages extends NLS {
     public static String MakeGoodPropertyPage_cakephpCorePathDialogMessage;
     public static String MakeGoodPropertyPage_cakephpCorePathLabel;
     public static String MakeGoodPropertyPage_cakephpCorePathBrowseLabel;
-
-    /**
-     * @since 1.3.0
-     */
-    public static String MakeGoodPropertyPage_ciunit;
 
     /**
      * @since 1.3.0
@@ -87,6 +79,11 @@ public class Messages extends NLS {
      * @since 1.3.0
      */
     public static String MakeGoodPropertyPage_ciunitConfigFileBrowseLabel;
+
+    /**
+     * @since 2.0.0
+     */
+    public static String MakeGoodPropertyPage_generalLabel;
 
     /**
      * @since 1.4.0
