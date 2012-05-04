@@ -108,77 +108,77 @@ public class Messages extends NLS {
      */
     public static String MakeGoodPreferencePage_autotestScopeNoneLabel;
 
-    public static String TestResultView_errorsLabel;
-    public static String TestResultView_failuresLabel;
-    public static String TestResultView_failureTraceLabel;
-    public static String TestResultView_passesLabel;
-    public static String TestResultView_testsLabel;
-    public static String TestResultView_averageTest;
-    public static String TestResultView_realTime;
-    public static String TestResultView_testTime;
-    public static String TestResultView_Status_TestsNotFound;
+    public static String MakeGoodView_errorsLabel;
+    public static String MakeGoodView_failuresLabel;
+    public static String MakeGoodView_failureTraceLabel;
+    public static String MakeGoodView_passesLabel;
+    public static String MakeGoodView_testsLabel;
+    public static String MakeGoodView_averageTest;
+    public static String MakeGoodView_realTime;
+    public static String MakeGoodView_testTime;
+    public static String MakeGoodView_Status_TestsNotFound;
 
     /**
      * @since 1.6.0
      */
-    public static String TestResultView_Status_NoProjectSelected;
+    public static String MakeGoodView_Status_NoProjectSelected;
 
     /**
      * @since 1.6.0
      */
-    public static String TestResultView_Status_ProjectNotFound;
+    public static String MakeGoodView_Status_ProjectNotFound;
 
     /**
      * @since 1.6.0
      */
-    public static String TestResultView_Status_NoTestableProjectSelected;
+    public static String MakeGoodView_Status_NoTestableProjectSelected;
 
     /**
      * @since 1.6.0
      */
-    public static String TestResultView_Status_NoPHPExecutablesDefined;
+    public static String MakeGoodView_Status_NoPHPExecutablesDefined;
 
     /**
      * @since 1.6.0
      */
-    public static String TestResultView_Status_MakeGoodNotConfigured;
+    public static String MakeGoodView_Status_MakeGoodNotConfigured;
 
     /**
      * @since 1.6.0
      */
-    public static String TestResultView_Status_SAPINotCLI;
+    public static String MakeGoodView_Status_SAPINotCLI;
 
     /**
      * @since 1.6.0
      */
-    public static String TestResultView_Status_RunningTest;
+    public static String MakeGoodView_Status_RunningTest;
 
     /**
      * @since 1.6.0
      */
-    public static String TestResultView_Status_WaitingForTestRun;
+    public static String MakeGoodView_Status_WaitingForTestRun;
 
     /**
      * @since 1.6.0
      */
-    public static String TestResultView_Status_TestingFrameworkNotAvailable;
+    public static String MakeGoodView_Status_TestingFrameworkNotAvailable;
 
-    public static String TestResultView_Status_RelatedTestsNotFound;
+    public static String MakeGoodView_Status_RelatedTestsNotFound;
 
     /**
      * @since 1.8.0
      */
-    public static String TestResultView_Status_TypesNotFound;
+    public static String MakeGoodView_Status_TypesNotFound;
 
     /**
      * @since 1.9.0
      */
-    public static String TestResultView_endTime;
+    public static String MakeGoodView_endTime;
 
     /**
      * @since 2.0.0
      */
-    public static String TestResultView_testResultsLabel;
+    public static String MakeGoodView_testResultsLabel;
 
     public static String TestRunner_TestSessionAlreadyExists_Title;
     public static String TestRunner_TestSessionAlreadyExists_Message;

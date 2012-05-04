@@ -219,19 +219,19 @@ public class ResultView extends ViewPart {
         passCountLabel = new CountLabel(
             counter,
             SWT.LEFT,
-            Messages.TestResultView_passesLabel,
+            Messages.MakeGoodView_passesLabel,
             Activator.getImageDescriptor("icons/pass-gray.gif").createImage() //$NON-NLS-1$
         );
         failureCountLabel = new CountLabel(
             counter,
             SWT.LEFT,
-            Messages.TestResultView_failuresLabel,
+            Messages.MakeGoodView_failuresLabel,
             Activator.getImageDescriptor("icons/failure-gray.gif").createImage() //$NON-NLS-1$
         );
         errorCountLabel = new CountLabel(
             counter,
             SWT.LEFT,
-            Messages.TestResultView_errorsLabel,
+            Messages.MakeGoodView_errorsLabel,
             Activator.getImageDescriptor("icons/error-gray.gif").createImage() //$NON-NLS-1$
         );
         endTimeLabel = new CLabel(counter, SWT.LEFT);
@@ -244,7 +244,7 @@ public class ResultView extends ViewPart {
         testResultsTabFolder.setLayout(adjustLayout(new GridLayout()));
 
         resultTreeTabItem = new CTabItem(testResultsTabFolder, SWT.NONE);
-        resultTreeTabItem.setText(Messages.TestResultView_testResultsLabel);
+        resultTreeTabItem.setText(Messages.MakeGoodView_testResultsLabel);
 
         Tree resultTree = new Tree(testResultsTabFolder, SWT.BORDER);
         resultTree.setLayoutData(createBothFillGridData());
@@ -282,7 +282,7 @@ public class ResultView extends ViewPart {
         resultTreeTabItem.setControl(resultTree);
 
         failureTraceTabItem = new CTabItem(testResultsTabFolder, SWT.NONE);
-        failureTraceTabItem.setText(Messages.TestResultView_failureTraceLabel);
+        failureTraceTabItem.setText(Messages.MakeGoodView_failureTraceLabel);
         failureTraceTabItem.setImage(Activator.getImageDescriptor("icons/failure-trace.gif").createImage()); //$NON-NLS-1$
         failureTrace = createFailureTrace(
             testResultsTabFolder,
@@ -322,20 +322,20 @@ public class ResultView extends ViewPart {
         processTimeAverageLabel.setText(
             TimeFormatter.format(0)
             + "/" + //$NON-NLS-1$
-            Messages.TestResultView_averageTest
+            Messages.MakeGoodView_averageTest
         );
         elapsedTimeLabel.setText(
-            Messages.TestResultView_realTime +
+            Messages.MakeGoodView_realTime +
             ": " +  //$NON-NLS-1$
             TimeFormatter.format(0)
         );
         processTimeLabel.setText(
-            Messages.TestResultView_testTime +
+            Messages.MakeGoodView_testTime +
             ": " +  //$NON-NLS-1$
             TimeFormatter.format(0)
         );
-        endTimeLabel.setText(Messages.TestResultView_endTime + ":");  //$NON-NLS-1$
-        testCountLabel.setText(Messages.TestResultView_testsLabel + ": 0/0"); //$NON-NLS-1$
+        endTimeLabel.setText(Messages.MakeGoodView_endTime + ":");  //$NON-NLS-1$
+        testCountLabel.setText(Messages.MakeGoodView_testsLabel + ": 0/0"); //$NON-NLS-1$
         passCountLabel.clear();
         failureCountLabel.clear();
         errorCountLabel.clear();
@@ -595,12 +595,12 @@ public class ResultView extends ViewPart {
         processTimeAverageLabel.setText(
             TimeFormatter.format(testLifecycle.getProgress().calculateProcessTimeAverage()) +
             "/" + //$NON-NLS-1$
-            Messages.TestResultView_averageTest
+            Messages.MakeGoodView_averageTest
         );
         processTimeAverageLabel.getParent().layout();
 
         processTimeLabel.setText(
-            Messages.TestResultView_testTime +
+            Messages.MakeGoodView_testTime +
             ": " + //$NON-NLS-1$
             TimeFormatter.format(testLifecycle.getProgress().getProcessTime())
         );
@@ -615,7 +615,7 @@ public class ResultView extends ViewPart {
     private void updateElapsedTime() {
         if (testLifecycle == null) return;
         elapsedTimeLabel.setText(
-            Messages.TestResultView_realTime +
+            Messages.MakeGoodView_realTime +
             ": " + //$NON-NLS-1$
             TimeFormatter.format(testLifecycle.getProgress().getElapsedTime())
         );
@@ -624,7 +624,7 @@ public class ResultView extends ViewPart {
     private void updateTestCount() {
         if (testLifecycle == null) return;
         testCountLabel.setText(
-            Messages.TestResultView_testsLabel +
+            Messages.MakeGoodView_testsLabel +
             ": " + //$NON-NLS-1$
             testLifecycle.getProgress().getCurrentTestCount() +
             "/" + //$NON-NLS-1$
@@ -652,7 +652,7 @@ public class ResultView extends ViewPart {
     private void updateEndTime() {
         if (testLifecycle != null && testLifecycle.getProgress().isRunning() == false) {
             endTimeLabel.setText(
-                Messages.TestResultView_endTime +
+                Messages.MakeGoodView_endTime +
                 ": " + //$NON-NLS-1$
                 new SimpleDateFormat("HH:mm:ss z").format(testLifecycle.getEndTime()) //$NON-NLS-1$
             );
@@ -835,7 +835,7 @@ public class ResultView extends ViewPart {
                         nextFailureAction.setEnabled(false);
                     }
                     setForeground(statusArea.getParent().getForeground());
-                    setText(Messages.TestResultView_Status_RunningTest);
+                    setText(Messages.MakeGoodView_Status_RunningTest);
                     return Status.OK_STATUS;
                 }
             }.schedule();
@@ -852,7 +852,7 @@ public class ResultView extends ViewPart {
                         stopTestAction.setEnabled(false);
                     }
                     setForeground(statusArea.getParent().getForeground());
-                    setText(Messages.TestResultView_Status_WaitingForTestRun);
+                    setText(Messages.MakeGoodView_Status_WaitingForTestRun);
                     return Status.OK_STATUS;
                 }
             }.schedule();
@@ -865,35 +865,35 @@ public class ResultView extends ViewPart {
                 additionalInformation.setProject(this.status.getProject());
             }
             if (status == MakeGoodStatus.TestsNotFound) {
-                additionalInformation.setMessage(Messages.TestResultView_Status_TestsNotFound);
+                additionalInformation.setMessage(Messages.MakeGoodView_Status_TestsNotFound);
             } else if (status == MakeGoodStatus.RelatedTestsNotFound) {
-                additionalInformation.setMessage(Messages.TestResultView_Status_RelatedTestsNotFound);
+                additionalInformation.setMessage(Messages.MakeGoodView_Status_RelatedTestsNotFound);
             } else if (status == MakeGoodStatus.TypesNotFound) {
-                additionalInformation.setMessage(Messages.TestResultView_Status_TypesNotFound);
+                additionalInformation.setMessage(Messages.MakeGoodView_Status_TypesNotFound);
             }
             updateAdditionalInformation();
 
             switch (status) {
             case NoProjectSelected:
-                isFailure(Messages.TestResultView_Status_NoProjectSelected);
+                isFailure(Messages.MakeGoodView_Status_NoProjectSelected);
                 break;
             case ProjectNotFound:
-                isFailure(Messages.TestResultView_Status_ProjectNotFound);
+                isFailure(Messages.MakeGoodView_Status_ProjectNotFound);
                 break;
             case NoTestableProjectSelected:
-                isFailure(Messages.TestResultView_Status_NoTestableProjectSelected);
+                isFailure(Messages.MakeGoodView_Status_NoTestableProjectSelected);
                 break;
             case NoPHPExecutablesDefined:
-                isFailure(Messages.TestResultView_Status_NoPHPExecutablesDefined);
+                isFailure(Messages.MakeGoodView_Status_NoPHPExecutablesDefined);
                 break;
             case SAPINotCLI:
-                isFailure(Messages.TestResultView_Status_SAPINotCLI);
+                isFailure(Messages.MakeGoodView_Status_SAPINotCLI);
                 break;
             case MakeGoodNotConfigured:
-                isFailure(Messages.TestResultView_Status_MakeGoodNotConfigured);
+                isFailure(Messages.MakeGoodView_Status_MakeGoodNotConfigured);
                 break;
             case TestingFrameworkNotAvailable:
-                isFailure(status.getReason() + " " + Messages.TestResultView_Status_TestingFrameworkNotAvailable); //$NON-NLS-1$
+                isFailure(status.getReason() + " " + Messages.MakeGoodView_Status_TestingFrameworkNotAvailable); //$NON-NLS-1$
                 break;
             case RunningTest:
                 runningTest();
