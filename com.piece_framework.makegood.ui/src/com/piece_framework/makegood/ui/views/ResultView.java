@@ -174,7 +174,7 @@ public class ResultView extends ViewPart {
         IContextService service = (IContextService) getSite().getService(IContextService.class);
         service.activateContext(CONTEXT_ID);
 
-        parent.setLayout(adjustLayout(new GridLayout(1, false)));
+        parent.setLayout(adjustLayout(new GridLayout()));
 
         // Row1: The Status Area
         statusArea = createStatusArea(parent, SWT.NONE);
@@ -241,7 +241,7 @@ public class ResultView extends ViewPart {
         testResultsTabFolder = new CTabFolder(parent, SWT.NONE);
         testResultsTabFolder.setSimple(false);
         testResultsTabFolder.setLayoutData(createBothFillGridData());
-        testResultsTabFolder.setLayout(adjustLayout(new GridLayout(1, true)));
+        testResultsTabFolder.setLayout(adjustLayout(new GridLayout()));
 
         resultTreeTabItem = new CTabItem(testResultsTabFolder, SWT.NONE);
         resultTreeTabItem.setText(Messages.TestResultView_testResultsLabel);
