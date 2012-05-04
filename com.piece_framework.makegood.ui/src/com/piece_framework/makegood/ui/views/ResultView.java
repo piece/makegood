@@ -237,6 +237,7 @@ public class ResultView extends ViewPart {
         endTimeLabel = new CLabel(counter, SWT.LEFT);
         endTimeLabel.setLayoutData(createHorizontalFillGridData());
 
+        // Row4: The Test Results Tabs
         testResultsTabFolder = new CTabFolder(parent, SWT.NONE);
         testResultsTabFolder.setSimple(false);
         testResultsTabFolder.setLayoutData(createBothFillGridData());
