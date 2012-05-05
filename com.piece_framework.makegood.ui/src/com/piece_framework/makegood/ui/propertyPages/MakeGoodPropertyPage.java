@@ -61,18 +61,12 @@ public class MakeGoodPropertyPage extends PropertyPage {
     private static final int SELECTION_ALLOW_FILE = 1;
     private static final int SELECTION_ALLOW_FOLDER = 2;
     private Text preloadScriptText;
-    private Label phpunitConfigFileLabel;
     private Text phpunitConfigFileText;
-    private Button phpunitConfigFileBrowseButton;
     private Button phpunitButton;
     private Button simpletestButton;
     private Button cakephpButton;
-    private Label cakephpAppPathLabel;
     private Text cakephpAppPathText;
-    private Button cakephpAppPathBrowseButton;
-    private Label cakephpCorePathLabel;
     private Text cakephpCorePathText;
-    private Button cakephpCorePathBrowseButton;
 
     /**
      * @since 1.3.0
@@ -82,32 +76,13 @@ public class MakeGoodPropertyPage extends PropertyPage {
     /**
      * @since 1.3.0
      */
-    private Label ciunitPathLabel;
-
-    /**
-     * @since 1.3.0
-     */
     private Text ciunitPathText;
-
-    /**
-     * @since 1.3.0
-     */
-    private Button ciunitPathBrowseButton;
-
-    /**
-     * @since 1.3.0
-     */
-    private Label ciunitConfigFileLabel;
 
     /**
      * @since 1.3.0
      */
     private Text ciunitConfigFileText;
 
-    /**
-     * @since 1.3.0
-     */
-    private Button ciunitConfigFileBrowseButton;
     private TreeViewer testFolderTreeViewer;
     private Button testFolderRemoveButton;
     private TabFolder contents;
@@ -211,11 +186,11 @@ public class MakeGoodPropertyPage extends PropertyPage {
         Composite cakephpAppPath = new Composite(cakephpTab, SWT.NONE);
         cakephpAppPath.setLayout(new GridLayout(3, false));
         cakephpAppPath.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-        cakephpAppPathLabel = new Label(cakephpAppPath, SWT.NONE);
+        Label cakephpAppPathLabel = new Label(cakephpAppPath, SWT.NONE);
         cakephpAppPathLabel.setText(Messages.MakeGoodPropertyPage_cakephpAppPathLabel);
         cakephpAppPathText = new Text(cakephpAppPath, SWT.SINGLE | SWT.BORDER);
         cakephpAppPathText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-        cakephpAppPathBrowseButton = new Button(cakephpAppPath, SWT.NONE);
+        Button cakephpAppPathBrowseButton = new Button(cakephpAppPath, SWT.NONE);
         cakephpAppPathBrowseButton.setText(Messages.MakeGoodPropertyPage_cakephpAppPathBrowseLabel);
         cakephpAppPathBrowseButton.addSelectionListener(
             new FileSelectionListener(
@@ -229,11 +204,11 @@ public class MakeGoodPropertyPage extends PropertyPage {
         Composite cakephpCorePath = new Composite(cakephpTab, SWT.NONE);
         cakephpCorePath.setLayout(new GridLayout(3, false));
         cakephpCorePath.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-        cakephpCorePathLabel = new Label(cakephpCorePath, SWT.NONE);
+        Label cakephpCorePathLabel = new Label(cakephpCorePath, SWT.NONE);
         cakephpCorePathLabel.setText(Messages.MakeGoodPropertyPage_cakephpCorePathLabel);
         cakephpCorePathText = new Text(cakephpCorePath, SWT.SINGLE | SWT.BORDER);
         cakephpCorePathText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-        cakephpCorePathBrowseButton = new Button(cakephpCorePath, SWT.NONE);
+        Button cakephpCorePathBrowseButton = new Button(cakephpCorePath, SWT.NONE);
         cakephpCorePathBrowseButton.setText(Messages.MakeGoodPropertyPage_cakephpCorePathBrowseLabel);
         cakephpCorePathBrowseButton.addSelectionListener(
             new FileSelectionListener(
@@ -256,11 +231,11 @@ public class MakeGoodPropertyPage extends PropertyPage {
         Composite ciunitPath = new Composite(ciunitTab, SWT.NONE);
         ciunitPath.setLayout(new GridLayout(3, false));
         ciunitPath.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-        ciunitPathLabel = new Label(ciunitPath, SWT.NONE);
+        Label ciunitPathLabel = new Label(ciunitPath, SWT.NONE);
         ciunitPathLabel.setText(Messages.MakeGoodPropertyPage_ciunitPathLabel);
         ciunitPathText = new Text(ciunitPath, SWT.SINGLE | SWT.BORDER);
         ciunitPathText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-        ciunitPathBrowseButton = new Button(ciunitPath, SWT.NONE);
+        Button ciunitPathBrowseButton = new Button(ciunitPath, SWT.NONE);
         ciunitPathBrowseButton.setText(Messages.MakeGoodPropertyPage_ciunitPathBrowseLabel);
         ciunitPathBrowseButton.addSelectionListener(
             new FileSelectionListener(
@@ -274,11 +249,11 @@ public class MakeGoodPropertyPage extends PropertyPage {
         Composite ciunitConfigFile = new Composite(ciunitTab, SWT.NONE);
         ciunitConfigFile.setLayout(new GridLayout(3, false));
         ciunitConfigFile.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-        ciunitConfigFileLabel = new Label(ciunitConfigFile, SWT.NONE);
+        Label ciunitConfigFileLabel = new Label(ciunitConfigFile, SWT.NONE);
         ciunitConfigFileLabel.setText(Messages.MakeGoodPropertyPage_ciunitConfigFileLabel);
         ciunitConfigFileText = new Text(ciunitConfigFile, SWT.SINGLE | SWT.BORDER);
         ciunitConfigFileText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-        ciunitConfigFileBrowseButton = new Button(ciunitConfigFile, SWT.NONE);
+        Button ciunitConfigFileBrowseButton = new Button(ciunitConfigFile, SWT.NONE);
         ciunitConfigFileBrowseButton.setText(Messages.MakeGoodPropertyPage_ciunitConfigFileBrowseLabel);
         ciunitConfigFileBrowseButton.addSelectionListener(
             new FileSelectionListener(
@@ -301,11 +276,11 @@ public class MakeGoodPropertyPage extends PropertyPage {
         Composite phpunitConfigFile = new Composite(phpunitTab, SWT.NONE);
         phpunitConfigFile.setLayout(new GridLayout(3, false));
         phpunitConfigFile.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-        phpunitConfigFileLabel = new Label(phpunitConfigFile, SWT.NONE);
+        Label phpunitConfigFileLabel = new Label(phpunitConfigFile, SWT.NONE);
         phpunitConfigFileLabel.setText(Messages.MakeGoodPropertyPage_phpunitConfigFileLabel);
         phpunitConfigFileText = new Text(phpunitConfigFile, SWT.SINGLE | SWT.BORDER);
         phpunitConfigFileText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-        phpunitConfigFileBrowseButton = new Button(phpunitConfigFile, SWT.NONE);
+        Button phpunitConfigFileBrowseButton = new Button(phpunitConfigFile, SWT.NONE);
         phpunitConfigFileBrowseButton.setText(Messages.MakeGoodPropertyPage_phpunitConfigFileBrowseLabel);
         phpunitConfigFileBrowseButton.addSelectionListener(
             new FileSelectionListener(
