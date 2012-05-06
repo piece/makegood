@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010-2011 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2010-2012 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -41,7 +41,6 @@ public class RuntimeConfiguration {
     }
 
     private RuntimeConfiguration() {
-        MakeGoodPreference.migrate();
         autotestScope = MakeGoodPreference.getAutotestScope();
     }
 

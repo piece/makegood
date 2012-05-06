@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2010 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
- *               2011 KUBO Atsuhiro <kubo@iteman.jp>,
+ *               2011-2012 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -31,7 +31,7 @@ public class MakeGoodPreferencePage extends FieldEditorPreferencePage implements
 
     @Override
     protected void createFieldEditors() {
-        FieldEditor fieldEditor = new AutotestRadioGroupFieldEditor(
+        FieldEditor fieldEditor = new RadioGroupFieldEditor(
             MakeGoodPreference.AUTOTEST_SCOPE,
             Messages.MakeGoodPreferencePage_autotestLabel,
             3,
@@ -48,23 +48,5 @@ public class MakeGoodPreferencePage extends FieldEditorPreferencePage implements
 
     @Override
     public void init(IWorkbench workbench) {
-    }
-
-    private class AutotestRadioGroupFieldEditor extends RadioGroupFieldEditor {
-        public AutotestRadioGroupFieldEditor(
-            String name,
-            String labelText,
-            int numColumns,
-            String[][] labelAndValues,
-            Composite parent,
-            boolean useGroup) {
-            super(name, labelText, numColumns, labelAndValues, parent, useGroup);
-        }
-
-        @Override
-        protected void doLoad() {
-            MakeGoodPreference.migrate();
-            super.doLoad();
-        }
     }
 }

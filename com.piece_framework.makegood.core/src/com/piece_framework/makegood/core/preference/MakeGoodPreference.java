@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2011-2012 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -20,25 +20,7 @@ import com.piece_framework.makegood.core.Activator;
  * @since 1.4.0
  */
 public class MakeGoodPreference {
-    /**
-     * @deprecated
-     */
-    public static final String RUN_ALL_TESTS_WHEN_FILE_IS_SAVED = "RUN_ALL_TESTS_WHEN_FILE_IS_SAVED"; //$NON-NLS-1$
-
     public static final String AUTOTEST_SCOPE = "autotestScope"; //$NON-NLS-1$
-
-    public static void migrate() {
-        IPreferenceStore preferenceStore = Activator.getDefault().getPreferenceStore();
-        if (!preferenceStore.contains(RUN_ALL_TESTS_WHEN_FILE_IS_SAVED)) return;
-
-        if (preferenceStore.getBoolean(RUN_ALL_TESTS_WHEN_FILE_IS_SAVED)) {
-            preferenceStore.setValue(AUTOTEST_SCOPE, AutotestScope.ALL_TESTS.name());
-        } else {
-            preferenceStore.setValue(AUTOTEST_SCOPE, AutotestScope.NONE.name());
-        }
-
-        removePreference(RUN_ALL_TESTS_WHEN_FILE_IS_SAVED);
-    }
 
     public static AutotestScope getAutotestScope() {
         IPreferenceStore preferenceStore = Activator.getDefault().getPreferenceStore();
