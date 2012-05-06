@@ -279,6 +279,7 @@ public class TestTargets {
     }
 
     private IResource getFirstResource() {
+        if (getCount() == 0) return null;
         return getResource(targets.get(0));
     }
 
