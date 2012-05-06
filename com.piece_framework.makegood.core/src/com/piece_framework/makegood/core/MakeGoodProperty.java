@@ -171,6 +171,19 @@ public class MakeGoodProperty {
     }
 
     /**
+     * @since 2.0.0
+     */
+    public void clear() {
+        try {
+            preferences.clear();
+        } catch (BackingStoreException e) {
+            Activator.getDefault().getLog().log(new Status(
+                Status.ERROR, Activator.PLUGIN_ID, e.getMessage(), e
+            ));
+        }
+    }
+
+    /**
      * @since 1.6.0
      */
     private IEclipsePreferences createPreferences(IProject project) {

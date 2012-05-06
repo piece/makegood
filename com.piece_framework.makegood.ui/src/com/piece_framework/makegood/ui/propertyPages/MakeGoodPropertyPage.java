@@ -90,6 +90,11 @@ public class MakeGoodPropertyPage extends PropertyPage {
     /**
      * @since 2.0.0
      */
+    private ArrayList<Button> frameworkButtons = new ArrayList<Button>();
+
+    /**
+     * @since 2.0.0
+     */
     private ArrayList<TabItem> frameworkTabItems = new ArrayList<TabItem>();
 
     @Override
@@ -111,15 +116,19 @@ public class MakeGoodPropertyPage extends PropertyPage {
         cakephpButton = new Button(frameworkGroup, SWT.RADIO);
         cakephpButton.setText(TestingFramework.CakePHP.name());
         cakephpButton.addSelectionListener(new FrameworkSelectionAdapter());
+        frameworkButtons.add(cakephpButton);
         ciunitButton = new Button(frameworkGroup, SWT.RADIO);
         ciunitButton.setText(TestingFramework.CIUnit.name());
         ciunitButton.addSelectionListener(new FrameworkSelectionAdapter());
+        frameworkButtons.add(ciunitButton);
         phpunitButton = new Button(frameworkGroup, SWT.RADIO);
         phpunitButton.setText(TestingFramework.PHPUnit.name());
         phpunitButton.addSelectionListener(new FrameworkSelectionAdapter());
+        frameworkButtons.add(phpunitButton);
         simpletestButton = new Button(frameworkGroup, SWT.RADIO);
         simpletestButton.setText(TestingFramework.SimpleTest.name());
         simpletestButton.addSelectionListener(new FrameworkSelectionAdapter());
+        frameworkButtons.add(simpletestButton);
 
         Group testFolderGroup = new Group(generalTab, SWT.LEFT);
         testFolderGroup.setText(Messages.MakeGoodPropertyPage_testFolderLabel);
@@ -286,6 +295,14 @@ public class MakeGoodPropertyPage extends PropertyPage {
     }
 
     @Override
+    protected void performDefaults() {
+        MakeGoodProperty property = createMakeGoodProperty();
+        property.clear();
+        loadProperties(property);
+        super.performDefaults();
+    }
+
+    @Override
     public boolean performOk() {
         MakeGoodProperty property = createMakeGoodProperty();
         TestingFramework testingFramework = null;
@@ -326,6 +343,10 @@ public class MakeGoodPropertyPage extends PropertyPage {
      */
     private void updateFrameworkSettings(TestingFramework testingFramework)
     {
+        for (Button frameworkButton: frameworkButtons) {
+            frameworkButton.setSelection(testingFramework.name().equals(frameworkButton.getText()));
+        }
+
         for (TabItem frameworkTabItem: frameworkTabItems) {
             Composite frameworkTab = (Composite) frameworkTabItem.getControl();
             for (Control frameworkControl: frameworkTab.getChildren()) {
@@ -351,20 +372,6 @@ public class MakeGoodPropertyPage extends PropertyPage {
      * @since 2.0.0
      */
     private void loadProperties(MakeGoodProperty property) {
-        switch (property.getTestingFramework()) {
-        case CakePHP:
-            cakephpButton.setSelection(true);
-            break;
-        case CIUnit:
-            ciunitButton.setSelection(true);
-            break;
-        case PHPUnit:
-            phpunitButton.setSelection(true);
-            break;
-        case SimpleTest:
-            simpletestButton.setSelection(true);
-            break;
-        }
         updateFrameworkSettings(property.getTestingFramework());
         testFolderTreeViewer.setInput(property.getTestFolders());
         preloadScriptText.setText(property.getPreloadScript());
