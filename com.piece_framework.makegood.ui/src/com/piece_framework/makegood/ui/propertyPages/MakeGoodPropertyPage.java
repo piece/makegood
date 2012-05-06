@@ -279,9 +279,7 @@ public class MakeGoodPropertyPage extends PropertyPage {
         );
         frameworkTabItems.add(phpunitTabItem);
 
-        MakeGoodProperty property = new MakeGoodProperty(getProject());
-        loadProperties(property);
-
+        loadProperties(createMakeGoodProperty());
         contents.setSelection(generalTabItem);
 
         return contents;
@@ -289,7 +287,7 @@ public class MakeGoodPropertyPage extends PropertyPage {
 
     @Override
     public boolean performOk() {
-        MakeGoodProperty property = new MakeGoodProperty(getProject());
+        MakeGoodProperty property = createMakeGoodProperty();
         TestingFramework testingFramework = null;
         if (cakephpButton.getSelection()) {
             testingFramework = TestingFramework.CakePHP;
@@ -375,6 +373,13 @@ public class MakeGoodPropertyPage extends PropertyPage {
         ciunitPathText.setText(property.getCIUnitPath());
         ciunitConfigFileText.setText(property.getCIUnitConfigFile());
         phpunitConfigFileText.setText(property.getPHPUnitConfigFile());
+    }
+
+    /**
+     * @since 2.0.0
+     */
+    private MakeGoodProperty createMakeGoodProperty() {
+        return new MakeGoodProperty(getProject());
     }
 
     private class FileSelectionListener implements SelectionListener {
