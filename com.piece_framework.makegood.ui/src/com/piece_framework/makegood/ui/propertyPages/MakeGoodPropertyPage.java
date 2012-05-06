@@ -280,28 +280,7 @@ public class MakeGoodPropertyPage extends PropertyPage {
         frameworkTabItems.add(phpunitTabItem);
 
         MakeGoodProperty property = new MakeGoodProperty(getProject());
-        switch (property.getTestingFramework()) {
-        case CakePHP:
-            cakephpButton.setSelection(true);
-            break;
-        case CIUnit:
-            ciunitButton.setSelection(true);
-            break;
-        case PHPUnit:
-            phpunitButton.setSelection(true);
-            break;
-        case SimpleTest:
-            simpletestButton.setSelection(true);
-            break;
-        }
-        updateFrameworkSettings(property.getTestingFramework());
-        testFolderTreeViewer.setInput(property.getTestFolders());
-        preloadScriptText.setText(property.getPreloadScript());
-        cakephpAppPathText.setText(property.getCakePHPAppPath());
-        cakephpCorePathText.setText(property.getCakePHPCorePath());
-        ciunitPathText.setText(property.getCIUnitPath());
-        ciunitConfigFileText.setText(property.getCIUnitConfigFile());
-        phpunitConfigFileText.setText(property.getPHPUnitConfigFile());
+        loadProperties(property);
 
         contents.setSelection(generalTabItem);
 
@@ -368,6 +347,34 @@ public class MakeGoodPropertyPage extends PropertyPage {
         } else {
             control.setEnabled(enabled);
         }
+    }
+
+    /**
+     * @since 2.0.0
+     */
+    private void loadProperties(MakeGoodProperty property) {
+        switch (property.getTestingFramework()) {
+        case CakePHP:
+            cakephpButton.setSelection(true);
+            break;
+        case CIUnit:
+            ciunitButton.setSelection(true);
+            break;
+        case PHPUnit:
+            phpunitButton.setSelection(true);
+            break;
+        case SimpleTest:
+            simpletestButton.setSelection(true);
+            break;
+        }
+        updateFrameworkSettings(property.getTestingFramework());
+        testFolderTreeViewer.setInput(property.getTestFolders());
+        preloadScriptText.setText(property.getPreloadScript());
+        cakephpAppPathText.setText(property.getCakePHPAppPath());
+        cakephpCorePathText.setText(property.getCakePHPCorePath());
+        ciunitPathText.setText(property.getCIUnitPath());
+        ciunitConfigFileText.setText(property.getCIUnitConfigFile());
+        phpunitConfigFileText.setText(property.getPHPUnitConfigFile());
     }
 
     private class FileSelectionListener implements SelectionListener {
