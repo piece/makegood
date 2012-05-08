@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2010 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
- *               2011 KUBO Atsuhiro <kubo@iteman.jp>,
+ *               2011-2012 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -16,12 +16,11 @@ import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 
 import com.piece_framework.makegood.core.AutotestScope;
 import com.piece_framework.makegood.core.Activator;
+import com.piece_framework.makegood.core.DefaultConfiguration;
 
 public class MakeGoodPreferenceInitializer extends AbstractPreferenceInitializer {
     @Override
     public void initializeDefaultPreferences() {
-        Activator.getDefault()
-                          .getPreferenceStore()
-                          .setDefault(MakeGoodPreference.AUTOTEST_SCOPE, AutotestScope.ALL_TESTS.name());
+        Activator.getDefault().getPreferenceStore().setDefault(MakeGoodPreference.AUTOTEST_SCOPE, new DefaultConfiguration().getAutotestScope().name());
     }
 }

@@ -21,6 +21,10 @@ import org.eclipse.core.resources.IFolder;
  * @since 2.0.0
  */
 public class DefaultConfiguration {
+    public AutotestScope getAutotestScope() {
+        return AutotestScope.ALL_TESTS;
+    }
+
     public TestingFramework getTestingFramework() {
         return TestingFramework.PHPUnit;
     }

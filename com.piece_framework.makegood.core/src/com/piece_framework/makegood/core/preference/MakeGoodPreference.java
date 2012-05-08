@@ -15,6 +15,7 @@ import org.eclipse.jface.preference.IPreferenceStore;
 
 import com.piece_framework.makegood.core.AutotestScope;
 import com.piece_framework.makegood.core.Activator;
+import com.piece_framework.makegood.core.DefaultConfiguration;
 
 /**
  * @since 1.4.0
@@ -32,7 +33,7 @@ public class MakeGoodPreference {
         } else if (autotestScope.equals(AutotestScope.NONE.name())) {
             return AutotestScope.NONE;
         } else {
-            return AutotestScope.ALL_TESTS;
+            return new DefaultConfiguration().getAutotestScope();
         }
     }
 }
