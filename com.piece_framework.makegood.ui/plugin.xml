@@ -494,7 +494,7 @@
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
-            class="com.piece_framework.makegood.ui.preferencePages.MakeGoodPreferencePage"
+            class="com.piece_framework.makegood.ui.preferences.MakeGoodPreferencePage"
             id="com.piece_framework.makegood.ui.preferencePages.makeGood"
             name="%preferencePages.makeGood.name">
       </page>
