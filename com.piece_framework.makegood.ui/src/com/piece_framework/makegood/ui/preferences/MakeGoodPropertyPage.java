@@ -316,13 +316,13 @@ public class MakeGoodPropertyPage extends PropertyPage {
             testingFramework = TestingFramework.SimpleTest;
         }
         property.setTestingFramework(testingFramework);
-        property.setPHPUnitConfigFile(phpunitConfigFileText.getText());
+        property.setTestFolders((List<IFolder>) testFolderTreeViewer.getInput());
+        property.setPreloadScript(preloadScriptText.getText());
         property.setCakePHPAppPath(cakephpAppPathText.getText());
         property.setCakePHPCorePath(cakephpCorePathText.getText());
         property.setCIUnitPath(ciunitPathText.getText());
         property.setCIUnitConfigFile(ciunitConfigFileText.getText());
-        property.setPreloadScript(preloadScriptText.getText());
-        property.setTestFolders((List<IFolder>) testFolderTreeViewer.getInput());
+        property.setPHPUnitConfigFile(phpunitConfigFileText.getText());
         property.flush();
 
         return true;
