@@ -256,7 +256,7 @@
    <extension
          point="org.eclipse.ui.propertyPages">
       <page
-            class="com.piece_framework.makegood.ui.propertyPages.MakeGoodPropertyPage"
+            class="com.piece_framework.makegood.ui.preferences.MakeGoodPropertyPage"
             icon="icons/MakeGood.gif"
             id="com.piece_framework.makegood.ui.propertyPages.makeGood"
             name="%propertyPages.makeGood.name">
