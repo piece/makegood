@@ -224,6 +224,11 @@ public class TestTargets {
         }
 
         buffer.append(" -R"); //$NON-NLS-1$
+        buffer.append(
+            " --test-file-pattern=\"" + //$NON-NLS-1$
+            (property.getTestFilePattern().equals("") ? property.getTestingFramework().getTestFilePattern() : property.getTestFilePattern()) + //$NON-NLS-1$
+            "\"" //$NON-NLS-1$
+        );
         for (String testFile: testFiles) {
             buffer.append(" \"" + testFile + "\""); //$NON-NLS-1$ //$NON-NLS-2$
         }

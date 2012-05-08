@@ -37,6 +37,12 @@ public class MakeGoodProperty {
     private static String CAKEPHP_CORE_PATH = "cakephp_core_path"; //$NON-NLS-1$
     private static String CIUNIT_PATH = "ciunit_path"; //$NON-NLS-1$
     private static String CIUNIT_CONFIG_FILE = "ciunit_config_file"; //$NON-NLS-1$
+
+    /**
+     * @since 2.0.0
+     */
+    private static String TEST_FILE_PATTERN_KEY = "test_file_pattern"; //$NON-NLS-1$
+
     private IEclipsePreferences preferences;
     private IProject project;
 
@@ -181,6 +187,20 @@ public class MakeGoodProperty {
                 Status.ERROR, Activator.PLUGIN_ID, e.getMessage(), e
             ));
         }
+    }
+
+    /**
+     * @since 2.0.0
+     */
+    public void setTestFilePattern(String testFilePattern) {
+        preferences.put(TEST_FILE_PATTERN_KEY, testFilePattern);
+    }
+
+    /**
+     * @since 2.0.0
+     */
+    public String getTestFilePattern() {
+        return preferences.get(TEST_FILE_PATTERN_KEY, ""); //$NON-NLS-1$
     }
 
     /**

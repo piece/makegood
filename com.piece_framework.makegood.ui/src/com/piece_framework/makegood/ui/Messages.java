@@ -86,6 +86,16 @@ public class Messages extends NLS {
     public static String MakeGoodPropertyPage_generalLabel;
 
     /**
+     * @since 2.0.0
+     */
+    public static String MakeGoodPropertyPage_testFilePatternLabel;
+
+    /**
+     * @since 2.0.0
+     */
+    public static String MakeGoodPropertyPage_defaultTestFilePatternLabel;
+
+    /**
      * @since 1.4.0
      */
     public static String MakeGoodPreferencePage_autotestLabel;

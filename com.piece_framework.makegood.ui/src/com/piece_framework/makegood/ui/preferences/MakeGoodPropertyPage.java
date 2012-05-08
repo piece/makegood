@@ -97,6 +97,16 @@ public class MakeGoodPropertyPage extends PropertyPage {
      */
     private ArrayList<TabItem> frameworkTabItems = new ArrayList<TabItem>();
 
+    /**
+     * @since 2.0.0
+     */
+    private Label testFilePatternLabel;
+
+    /**
+     * @since 2.0.0
+     */
+    private Text testFilePatternText;
+
     @Override
     protected Control createContents(Composite parent) {
         contents = new TabFolder(parent, SWT.NONE);
@@ -173,6 +183,13 @@ public class MakeGoodPropertyPage extends PropertyPage {
                 new FileViewerFilter()
             )
         );
+
+        Composite testFilePattern = new Composite(generalTab, SWT.NONE);
+        testFilePattern.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+        testFilePattern.setLayout(new GridLayout(2, false));
+        testFilePatternLabel = new Label(testFilePattern, SWT.NONE);
+        testFilePatternText = new Text(testFilePattern, SWT.SINGLE | SWT.BORDER);
+        testFilePatternText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
         // CakePHP
         TabItem cakephpTabItem = new TabItem(contents, SWT.NONE);
@@ -318,6 +335,7 @@ public class MakeGoodPropertyPage extends PropertyPage {
         property.setTestingFramework(testingFramework);
         property.setTestFolders((List<IFolder>) testFolderTreeViewer.getInput());
         property.setPreloadScript(preloadScriptText.getText());
+        property.setTestFilePattern(testFilePatternText.getText());
         property.setCakePHPAppPath(cakephpAppPathText.getText());
         property.setCakePHPCorePath(cakephpCorePathText.getText());
         property.setCIUnitPath(ciunitPathText.getText());
@@ -353,6 +371,15 @@ public class MakeGoodPropertyPage extends PropertyPage {
                 changeControlState(frameworkControl, testingFramework.name().equals(frameworkTabItem.getText()));
             }
         }
+
+        testFilePatternLabel.setText(
+            Messages.MakeGoodPropertyPage_testFilePatternLabel +
+            " (" + //$NON-NLS-1$
+            Messages.MakeGoodPropertyPage_defaultTestFilePatternLabel +
+            ": " + //$NON-NLS-1$
+            testingFramework.getTestFilePattern() +
+            "):" //$NON-NLS-1$
+        );
     }
 
     /**
@@ -375,6 +402,7 @@ public class MakeGoodPropertyPage extends PropertyPage {
         updateFrameworkSettings(property.getTestingFramework());
         testFolderTreeViewer.setInput(property.getTestFolders());
         preloadScriptText.setText(property.getPreloadScript());
+        testFilePatternText.setText(property.getTestFilePattern());
         cakephpAppPathText.setText(property.getCakePHPAppPath());
         cakephpCorePathText.setText(property.getCakePHPCorePath());
         ciunitPathText.setText(property.getCIUnitPath());

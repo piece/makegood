@@ -31,6 +31,14 @@ public enum TestingFramework {
         public String[] getRequiredSuperTypes() {
             return getTestClassSuperTypes();
         }
+
+        /**
+         * @since 2.0.0
+         */
+        @Override
+        public String getTestFilePattern() {
+            return "Test(?:Case)?\\.php$"; //$NON-NLS-1$
+        }
     },
     SimpleTest {
         /**
@@ -49,6 +57,14 @@ public enum TestingFramework {
         @Override
         public String[] getRequiredSuperTypes() {
             return getTestClassSuperTypes();
+        }
+
+        /**
+         * @since 2.0.0
+         */
+        @Override
+        public String getTestFilePattern() {
+            return "Test(?:Case)?\\.php$"; //$NON-NLS-1$
         }
     },
     CakePHP {
@@ -74,6 +90,14 @@ public enum TestingFramework {
                 "CakeWebTestCase", //$NON-NLS-1$
             };
         }
+
+        /**
+         * @since 2.0.0
+         */
+        @Override
+        public String getTestFilePattern() {
+            return "\\.test\\.php$"; //$NON-NLS-1$
+        }
     },
     CIUnit {
         /**
@@ -98,6 +122,14 @@ public enum TestingFramework {
                 "CIUnit_TestCase_Selenium", //$NON-NLS-1$
             };
         }
+
+        /**
+         * @since 2.0.0
+         */
+        @Override
+        public String getTestFilePattern() {
+            return "^test.+\\.php$"; //$NON-NLS-1$
+        }
     };
 
     /**
@@ -109,4 +141,9 @@ public enum TestingFramework {
      * @since 1.7.0
      */
     public abstract String[] getRequiredSuperTypes();
+
+    /**
+     * @since 2.0.0
+     */
+    public abstract String getTestFilePattern();
 }
