@@ -53,6 +53,7 @@ import org.eclipse.ui.dialogs.PropertyPage;
 import org.eclipse.ui.model.WorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 
+import com.piece_framework.makegood.core.DefaultConfiguration;
 import com.piece_framework.makegood.core.TestingFramework;
 import com.piece_framework.makegood.core.preference.MakeGoodProperty;
 import com.piece_framework.makegood.ui.Messages;
@@ -313,9 +314,7 @@ public class MakeGoodPropertyPage extends PropertyPage {
 
     @Override
     protected void performDefaults() {
-        MakeGoodProperty property = createMakeGoodProperty();
-        property.clear();
-        loadProperties(property);
+        loadProperties(new DefaultConfiguration());
         super.performDefaults();
     }
 
@@ -408,6 +407,21 @@ public class MakeGoodPropertyPage extends PropertyPage {
         ciunitPathText.setText(property.getCIUnitPath());
         ciunitConfigFileText.setText(property.getCIUnitConfigFile());
         phpunitConfigFileText.setText(property.getPHPUnitConfigFile());
+    }
+
+    /**
+     * @since 2.0.0
+     */
+    private void loadProperties(DefaultConfiguration defaultConfiguration) {
+        updateFrameworkSettings(defaultConfiguration.getTestingFramework());
+        testFolderTreeViewer.setInput(defaultConfiguration.getTestFolders());
+        preloadScriptText.setText(defaultConfiguration.getPreloadScript());
+        testFilePatternText.setText(defaultConfiguration.getTestFilePattern());
+        cakephpAppPathText.setText(defaultConfiguration.getCakePHPAppPath());
+        cakephpCorePathText.setText(defaultConfiguration.getCakePHPCorePath());
+        ciunitPathText.setText(defaultConfiguration.getCIUnitPath());
+        ciunitConfigFileText.setText(defaultConfiguration.getCIUnitConfigFile());
+        phpunitConfigFileText.setText(defaultConfiguration.getPHPUnitConfigFile());
     }
 
     /**
