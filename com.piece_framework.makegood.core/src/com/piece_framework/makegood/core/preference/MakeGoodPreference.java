@@ -35,10 +35,4 @@ public class MakeGoodPreference {
             return AutotestScope.ALL_TESTS;
         }
     }
-
-    private static void removePreference(String name) {
-        IPreferenceStore preferenceStore = Activator.getDefault().getPreferenceStore();
-        preferenceStore.setDefault(name, true);
-        preferenceStore.setToDefault(name);
-    }
 }
