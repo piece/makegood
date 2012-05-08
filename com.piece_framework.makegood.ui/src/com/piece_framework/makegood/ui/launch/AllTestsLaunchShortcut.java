@@ -22,8 +22,8 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
 
-import com.piece_framework.makegood.core.MakeGoodProperty;
 import com.piece_framework.makegood.core.PHPResource;
+import com.piece_framework.makegood.core.preference.MakeGoodProperty;
 import com.piece_framework.makegood.launch.TestTargets;
 
 public class AllTestsLaunchShortcut extends MakeGoodLaunchShortcut {

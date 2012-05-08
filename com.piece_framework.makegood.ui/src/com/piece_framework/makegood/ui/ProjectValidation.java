@@ -20,7 +20,7 @@ import org.eclipse.dltk.core.index2.search.ModelAccess;
 import org.eclipse.dltk.core.search.SearchEngine;
 import org.eclipse.php.internal.debug.core.preferences.PHPexeItem;
 
-import com.piece_framework.makegood.core.MakeGoodProperty;
+import com.piece_framework.makegood.core.preference.MakeGoodProperty;
 import com.piece_framework.makegood.launch.PHPexeItemRepository;
 
 /**

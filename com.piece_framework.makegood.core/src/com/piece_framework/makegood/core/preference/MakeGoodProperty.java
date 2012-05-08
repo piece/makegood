@@ -10,7 +10,7 @@
  * distribution, and is available at http://www.eclipse.org/legal/epl-v10.html
  */
 
-package com.piece_framework.makegood.core;
+package com.piece_framework.makegood.core.preference;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,6 +27,9 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.osgi.service.prefs.BackingStoreException;
+
+import com.piece_framework.makegood.core.Activator;
+import com.piece_framework.makegood.core.TestingFramework;
 
 public class MakeGoodProperty {
     private static String PRELOAD_SCRIPT_KEY = "preload_script"; //$NON-NLS-1$

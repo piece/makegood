@@ -53,8 +53,8 @@ import org.eclipse.ui.dialogs.PropertyPage;
 import org.eclipse.ui.model.WorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 
-import com.piece_framework.makegood.core.MakeGoodProperty;
 import com.piece_framework.makegood.core.TestingFramework;
+import com.piece_framework.makegood.core.preference.MakeGoodProperty;
 import com.piece_framework.makegood.ui.Messages;
 
 public class MakeGoodPropertyPage extends PropertyPage {

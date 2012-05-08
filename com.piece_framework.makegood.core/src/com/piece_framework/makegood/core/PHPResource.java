@@ -24,6 +24,8 @@ import org.eclipse.dltk.core.ITypeHierarchy;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.php.internal.core.typeinference.PHPClassType;
 
+import com.piece_framework.makegood.core.preference.MakeGoodProperty;
+
 public class PHPResource {
     public static String CONTENT_TYPE = "org.eclipse.php.core.phpsource"; //$NON-NLS-1$
 
