@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2009-2010 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
- *               2011 KUBO Atsuhiro <kubo@iteman.jp>,
+ *               2011-2012 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -29,6 +29,7 @@ import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.osgi.service.prefs.BackingStoreException;
 
 import com.piece_framework.makegood.core.Activator;
+import com.piece_framework.makegood.core.DefaultConfiguration;
 import com.piece_framework.makegood.core.TestingFramework;
 
 public class MakeGoodProperty {
@@ -49,6 +50,11 @@ public class MakeGoodProperty {
     private IEclipsePreferences preferences;
     private IProject project;
 
+    /**
+     * @since 2.0.0
+     */
+    private DefaultConfiguration defaultConfiguration = new DefaultConfiguration();
+
     public MakeGoodProperty(IResource resource) {
         Assert.isNotNull(resource, "The given resource should not be null."); //$NON-NLS-1$
         project = resource.getProject();
@@ -68,7 +74,7 @@ public class MakeGoodProperty {
     }
 
     public String getPreloadScript() {
-        return preferences.get(PRELOAD_SCRIPT_KEY, ""); //$NON-NLS-1$
+        return preferences.get(PRELOAD_SCRIPT_KEY, defaultConfiguration.getPreloadScript());
     }
 
     public void setPreloadScript(String preloadScript) {
@@ -84,7 +90,7 @@ public class MakeGoodProperty {
     }
 
     public TestingFramework getTestingFramework() {
-        String testingFramework = preferences.get(TESTING_FRAMEWORK_KEY, ""); //$NON-NLS-1$
+        String testingFramework = preferences.get(TESTING_FRAMEWORK_KEY, defaultConfiguration.getTestingFramework().name());
         if (testingFramework.equals(TestingFramework.PHPUnit.name())) {
             return TestingFramework.PHPUnit;
         } else if (testingFramework.equals(TestingFramework.SimpleTest.name())) {
@@ -94,7 +100,7 @@ public class MakeGoodProperty {
         } else if (testingFramework.equals(TestingFramework.CIUnit.name())) {
             return TestingFramework.CIUnit;
         } else {
-            return TestingFramework.PHPUnit;
+            return defaultConfiguration.getTestingFramework();
         }
     }
 
@@ -128,7 +134,7 @@ public class MakeGoodProperty {
     }
 
     public String getPHPUnitConfigFile() {
-        return preferences.get(PHPUNIT_CONFIG_FILE, ""); //$NON-NLS-1$
+        return preferences.get(PHPUNIT_CONFIG_FILE, defaultConfiguration.getPHPUnitConfigFile());
     }
 
     public void setPHPUnitConfigFile(String phpunitConfigFile) {
@@ -136,7 +142,7 @@ public class MakeGoodProperty {
     }
 
     public String getCakePHPAppPath() {
-        return preferences.get(CAKEPHP_APP_PATH, ""); //$NON-NLS-1$
+        return preferences.get(CAKEPHP_APP_PATH, defaultConfiguration.getCakePHPAppPath());
     }
 
     public void setCakePHPAppPath(String cakephpAppPath) {
@@ -144,7 +150,7 @@ public class MakeGoodProperty {
     }
 
     public String getCakePHPCorePath() {
-        return preferences.get(CAKEPHP_CORE_PATH, ""); //$NON-NLS-1$
+        return preferences.get(CAKEPHP_CORE_PATH, defaultConfiguration.getCakePHPCorePath());
     }
 
     public void setCakePHPCorePath(String cakephpCorePath) {
@@ -155,7 +161,7 @@ public class MakeGoodProperty {
      * @since 1.3.0
      */
     public String getCIUnitPath() {
-        return preferences.get(CIUNIT_PATH, ""); //$NON-NLS-1$
+        return preferences.get(CIUNIT_PATH, defaultConfiguration.getCIUnitPath());
     }
 
     /**
@@ -169,7 +175,7 @@ public class MakeGoodProperty {
      * @since 1.3.0
      */
     public String getCIUnitConfigFile() {
-        return preferences.get(CIUNIT_CONFIG_FILE, ""); //$NON-NLS-1$
+        return preferences.get(CIUNIT_CONFIG_FILE, defaultConfiguration.getCIUnitConfigFile());
     }
 
     /**
@@ -177,19 +183,6 @@ public class MakeGoodProperty {
      */
     public void setCIUnitConfigFile(String ciunitConfigFile) {
         preferences.put(CIUNIT_CONFIG_FILE, ciunitConfigFile);
-    }
-
-    /**
-     * @since 2.0.0
-     */
-    public void clear() {
-        try {
-            preferences.clear();
-        } catch (BackingStoreException e) {
-            Activator.getDefault().getLog().log(new Status(
-                Status.ERROR, Activator.PLUGIN_ID, e.getMessage(), e
-            ));
-        }
     }
 
     /**
@@ -203,7 +196,7 @@ public class MakeGoodProperty {
      * @since 2.0.0
      */
     public String getTestFilePattern() {
-        return preferences.get(TEST_FILE_PATTERN_KEY, ""); //$NON-NLS-1$
+        return preferences.get(TEST_FILE_PATTERN_KEY, defaultConfiguration.getTestFilePattern());
     }
 
     /**
