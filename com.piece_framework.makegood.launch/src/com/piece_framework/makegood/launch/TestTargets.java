@@ -109,12 +109,13 @@ public class TestTargets {
     }
 
     public String generateCommandLine(String junitXMLFile) throws CoreException, MethodNotFoundException {
+        MakeGoodProperty property = new MakeGoodProperty(getFirstResource());
         StringBuilder buffer = new StringBuilder();
 
         buffer.append(" --no-ansi"); //$NON-NLS-1$
-        buffer.append(" " + getTestingFramework().name().toLowerCase()); //$NON-NLS-1$
+        buffer.append(" " + property.getTestingFramework().name().toLowerCase()); //$NON-NLS-1$
 
-        String preloadScript = getPreloadScript();
+        String preloadScript = property.getPreloadScript();
         if (!preloadScript.equals("")) { //$NON-NLS-1$
             IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
             IResource preloadResource = root.findMember(preloadScript);
@@ -133,16 +134,16 @@ public class TestTargets {
             buffer.append(" -s"); //$NON-NLS-1$
         }
 
-        if (getTestingFramework() == TestingFramework.PHPUnit) {
-            String phpunitConfigFile = getPHPUnitConfigFile();
+        if (property.getTestingFramework() == TestingFramework.PHPUnit) {
+            String phpunitConfigFile = property.getPHPUnitConfigFile();
             if (!"".equals(phpunitConfigFile)) { //$NON-NLS-1$
                 IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(phpunitConfigFile);
                 if (resource != null) {
                     buffer.append(" --phpunit-config=\"" + resource.getLocation().toString() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
                 }
             }
-        } else if (getTestingFramework() == TestingFramework.CakePHP) {
-            String cakephpAppPath = getCakePHPAppPath();
+        } else if (property.getTestingFramework() == TestingFramework.CakePHP) {
+            String cakephpAppPath = property.getCakePHPAppPath();
             if ("".equals(cakephpAppPath)) { //$NON-NLS-1$
                 cakephpAppPath = getDefaultCakePHPAppPath();
             }
@@ -153,15 +154,15 @@ public class TestTargets {
                 }
             }
 
-            String cakephpCorePath = getCakePHPCorePath();
+            String cakephpCorePath = property.getCakePHPCorePath();
             if (!"".equals(cakephpCorePath)) { //$NON-NLS-1$
                 IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(cakephpCorePath);
                 if (resource != null) {
                     buffer.append(" --cakephp-core-path=\"" + resource.getLocation().toString() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
                 }
             }
-        } else if (getTestingFramework() == TestingFramework.CIUnit) {
-            String ciunitPath = getCIUnitPath();
+        } else if (property.getTestingFramework() == TestingFramework.CIUnit) {
+            String ciunitPath = property.getCIUnitPath();
             if ("".equals(ciunitPath)) { //$NON-NLS-1$
                 ciunitPath = getDefaultCIUnitPath();
             }
@@ -172,7 +173,7 @@ public class TestTargets {
                 }
             }
 
-            String ciunitConfigFile = getCIUnitConfigFile();
+            String ciunitConfigFile = property.getCIUnitConfigFile();
             if (!"".equals(ciunitConfigFile)) { //$NON-NLS-1$
                 IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(ciunitConfigFile);
                 if (resource != null) {
@@ -232,10 +233,6 @@ public class TestTargets {
         return buffer.toString();
     }
 
-    public TestingFramework getTestingFramework() {
-        return createMakeGoodProperty().getTestingFramework();
-    }
-
     private IFile findDummyFile(IFolder folder) {
         try {
             for (IResource resource: folder.members()) {
@@ -264,10 +261,6 @@ public class TestTargets {
         return null;
     }
 
-    private String getPreloadScript() {
-        return createMakeGoodProperty().getPreloadScript();
-    }
-
     private IResource getResource(Object target) {
         IResource resource = null;
         if (target instanceof IModelElement) {
@@ -283,31 +276,12 @@ public class TestTargets {
         return getResource(targets.get(0));
     }
 
-    private String getPHPUnitConfigFile() {
-        return createMakeGoodProperty().getPHPUnitConfigFile();
-    }
-
-    private String getCakePHPAppPath() {
-        return createMakeGoodProperty().getCakePHPAppPath();
-    }
-
     private String getDefaultCakePHPAppPath() {
         Assert.isNotNull(project, "One or more test targets should be added."); //$NON-NLS-1$
 
         IResource resource = project.findMember("/app"); //$NON-NLS-1$
         if (resource == null) return ""; //$NON-NLS-1$
         return resource.getFullPath().toString();
-    }
-
-    private String getCakePHPCorePath() {
-        return createMakeGoodProperty().getCakePHPCorePath();
-    }
-
-    /**
-     * @since 1.3.0
-     */
-    private String getCIUnitPath() {
-        return createMakeGoodProperty().getCIUnitPath();
     }
 
     /**
@@ -319,17 +293,6 @@ public class TestTargets {
         IResource resource = project.findMember("/system/application/tests"); //$NON-NLS-1$
         if (resource == null) return ""; //$NON-NLS-1$
         return resource.getFullPath().toString();
-    }
-
-    /**
-     * @since 1.3.0
-     */
-    private String getCIUnitConfigFile() {
-        return createMakeGoodProperty().getCIUnitConfigFile();
-    }
-
-    private MakeGoodProperty createMakeGoodProperty() {
-        return new MakeGoodProperty(getFirstResource());
     }
 
     private String getEncoding()
