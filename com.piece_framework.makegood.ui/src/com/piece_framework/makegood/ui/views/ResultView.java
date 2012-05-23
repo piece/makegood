@@ -650,7 +650,7 @@ public class ResultView extends ViewPart {
      * @since 1.9.0
      */
     private void updateEndTime() {
-        if (testLifecycle != null && testLifecycle.getProgress().isRunning() == false) {
+        if (testLifecycle != null && testLifecycle.getProgress().isRunning() == false && testLifecycle.getEndTime() != null) {
             endTimeLabel.setText(
                 Messages.MakeGoodView_endTime +
                 ": " + //$NON-NLS-1$
