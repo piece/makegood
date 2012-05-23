@@ -84,6 +84,11 @@ public class MakeGoodPropertyPage extends PropertyPage {
      */
     private Text ciunitConfigFileText;
 
+    /**
+     * @since 2.0.0
+     */
+    private Button phpspecButton;
+
     private TreeViewer testFolderTreeViewer;
     private Button testFolderRemoveButton;
     private TabFolder contents;
@@ -132,6 +137,10 @@ public class MakeGoodPropertyPage extends PropertyPage {
         ciunitButton.setText(TestingFramework.CIUnit.name());
         ciunitButton.addSelectionListener(new FrameworkSelectionAdapter());
         frameworkButtons.add(ciunitButton);
+        phpspecButton = new Button(frameworkGroup, SWT.RADIO);
+        phpspecButton.setText(TestingFramework.PHPSpec.name());
+        phpspecButton.addSelectionListener(new FrameworkSelectionAdapter());
+        frameworkButtons.add(phpspecButton);
         phpunitButton = new Button(frameworkGroup, SWT.RADIO);
         phpunitButton.setText(TestingFramework.PHPUnit.name());
         phpunitButton.addSelectionListener(new FrameworkSelectionAdapter());
@@ -326,6 +335,8 @@ public class MakeGoodPropertyPage extends PropertyPage {
             testingFramework = TestingFramework.CakePHP;
         } else if (ciunitButton.getSelection()) {
             testingFramework = TestingFramework.CIUnit;
+        } else if (phpspecButton.getSelection()) {
+            testingFramework = TestingFramework.PHPSpec;
         } else if (phpunitButton.getSelection()) {
             testingFramework = TestingFramework.PHPUnit;
         } else if (simpletestButton.getSelection()) {

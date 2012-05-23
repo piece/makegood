@@ -99,6 +99,8 @@ public class MakeGoodProperty {
             return TestingFramework.CakePHP;
         } else if (testingFramework.equals(TestingFramework.CIUnit.name())) {
             return TestingFramework.CIUnit;
+        } else if (testingFramework.equals(TestingFramework.PHPSpec.name())) {
+            return TestingFramework.PHPSpec;
         } else {
             return defaultConfiguration.getTestingFramework();
         }

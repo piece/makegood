@@ -130,6 +130,33 @@ public enum TestingFramework {
         public String getTestFilePattern() {
             return "^test.+\\.php$"; //$NON-NLS-1$
         }
+    },
+    PHPSpec {
+        /**
+         * @since 2.0.0
+         */
+        @Override
+        public String[] getTestClassSuperTypes() {
+            return new String[] {
+                "PHPSpec\\Context", //$NON-NLS-1$
+            };
+        }
+
+        /**
+         * @since 2.0.0
+         */
+        @Override
+        public String[] getRequiredSuperTypes() {
+            return getTestClassSuperTypes();
+        }
+
+        /**
+         * @since 2.0.0
+         */
+        @Override
+        public String getTestFilePattern() {
+            return "Spec\\.php$"; //$NON-NLS-1$
+        }
     };
 
     /**
