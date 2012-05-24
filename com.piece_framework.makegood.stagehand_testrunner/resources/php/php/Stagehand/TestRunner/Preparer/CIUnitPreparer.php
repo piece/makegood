@@ -31,7 +31,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2011-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.0.2
+ * @version    Release: 3.0.3
  * @since      File available since Release 2.16.0
  */
 
@@ -44,7 +44,7 @@ use Stagehand\TestRunner\Util\ErrorReporting;
  * @package    Stagehand_TestRunner
  * @copyright  2011-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.0.2
+ * @version    Release: 3.0.3
  * @since      Class available since Release 2.16.0
  */
 class CIUnitPreparer extends PHPUnitPreparer

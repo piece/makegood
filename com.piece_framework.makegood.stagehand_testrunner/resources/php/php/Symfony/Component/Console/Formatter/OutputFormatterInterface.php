@@ -51,9 +51,9 @@ interface OutputFormatterInterface
     /**
      * Checks if output formatter has style with specified name.
      *
-     * @param   string  $name
+     * @param string $name
      *
-     * @return  Boolean
+     * @return Boolean
      *
      * @api
      */
@@ -62,9 +62,9 @@ interface OutputFormatterInterface
     /**
      * Gets style options from style with specified name.
      *
-     * @param   string  $name
+     * @param string $name
      *
-     * @return  OutputFormatterStyleInterface
+     * @return OutputFormatterStyleInterface
      *
      * @api
      */
@@ -73,7 +73,7 @@ interface OutputFormatterInterface
     /**
      * Formats a message according to the given styles.
      *
-     * @param  string $message The message to style
+     * @param string $message The message to style
      *
      * @return string The styled message
      *

@@ -59,8 +59,8 @@ class Application
     /**
      * Constructor.
      *
-     * @param string  $name    The name of the application
-     * @param string  $version The version of the application
+     * @param string $name    The name of the application
+     * @param string $version The version of the application
      *
      * @api
      */
@@ -503,7 +503,7 @@ class Application
      * Contrary to get, this command tries to find the best
      * match if you give it an abbreviation of a name or alias.
      *
-     * @param  string $name A command name or a command alias
+     * @param string $name A command name or a command alias
      *
      * @return Command A Command instance
      *
@@ -567,7 +567,7 @@ class Application
      *
      * The array keys are the full names and the values the command instances.
      *
-     * @param  string  $namespace A namespace name
+     * @param string $namespace A namespace name
      *
      * @return array An array of Command instances
      *
@@ -711,7 +711,7 @@ class Application
     }
 
     /**
-     * Renders a catched exception.
+     * Renders a caught exception.
      *
      * @param Exception       $e      An exception instance
      * @param OutputInterface $output An OutputInterface instance
@@ -733,13 +733,16 @@ class Application
         do {
             $title = sprintf('  [%s]  ', get_class($e));
             $len = $strlen($title);
+            $width = $this->getTerminalWidth() ? $this->getTerminalWidth() - 1 : PHP_INT_MAX;
             $lines = array();
-            foreach (explode("\n", $e->getMessage()) as $line) {
-                $lines[] = sprintf('  %s  ', $line);
-                $len = max($strlen($line) + 4, $len);
+            foreach (preg_split("{\r?\n}", $e->getMessage()) as $line) {
+                foreach (str_split($line, $width - 4) as $line) {
+                    $lines[] = sprintf('  %s  ', $line);
+                    $len = max($strlen($line) + 4, $len);
+                }
             }
 
-            $messages = array(str_repeat(' ', $len), $title.str_repeat(' ', $len - $strlen($title)));
+            $messages = array(str_repeat(' ', $len), $title.str_repeat(' ', max(0, $len - $strlen($title))));
 
             foreach ($lines as $line) {
                 $messages[] = $line.str_repeat(' ', $len - $strlen($line));
@@ -783,6 +786,38 @@ class Application
             $output->writeln(sprintf('<info>%s</info>', sprintf($this->runningCommand->getSynopsis(), $this->getName())));
             $output->writeln("");
             $output->writeln("");
+        }
+    }
+
+    /**
+     * Tries to figure out the terminal width in which this application runs
+     *
+     * @return int|null
+     */
+    protected function getTerminalWidth()
+    {
+        if (defined('PHP_WINDOWS_VERSION_BUILD') && $ansicon = getenv('ANSICON')) {
+            return preg_replace('{^(\d+)x.*$}', '$1', $ansicon);
+        }
+
+        if (preg_match("{rows.(\d+);.columns.(\d+);}i", exec('stty -a | grep columns'), $match)) {
+            return $match[2];
+        }
+    }
+
+    /**
+     * Tries to figure out the terminal height in which this application runs
+     *
+     * @return int|null
+     */
+    protected function getTerminalHeight()
+    {
+        if (defined('PHP_WINDOWS_VERSION_BUILD') && $ansicon = getenv('ANSICON')) {
+            return preg_replace('{^\d+x\d+ \(\d+x(\d+)\)$}', '$1', trim($ansicon));
+        }
+
+        if (preg_match("{rows.(\d+);.columns.(\d+);}i", exec('stty -a | grep columns'), $match)) {
+            return $match[1];
         }
     }
 

@@ -32,7 +32,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2011-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.0.2
+ * @version    Release: 3.0.3
  * @since      File available since Release 3.0.0
  */
 
@@ -82,10 +82,10 @@ $preload = function () {
 };
 $preload();
 
-if (file_exists(__DIR__ . '/../../../.composer/autoload.php')) {
-    require_once __DIR__ . '/../../../.composer/autoload.php';
-} elseif (file_exists(__DIR__ . '/../vendor/.composer/autoload.php')) {
-    require_once __DIR__ . '/../vendor/.composer/autoload.php';
+if (file_exists(__DIR__ . '/../../../autoload.php')) {
+    require_once __DIR__ . '/../../../autoload.php';
+} elseif (file_exists(__DIR__ . '/../vendor/autoload.php')) {
+    require_once __DIR__ . '/../vendor/autoload.php';
 } else {
     require_once 'Stagehand/TestRunner/Core/Bootstrap.php';
 }

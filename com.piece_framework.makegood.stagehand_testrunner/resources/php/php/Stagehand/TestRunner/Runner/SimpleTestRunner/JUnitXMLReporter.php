@@ -31,7 +31,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2009-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.0.2
+ * @version    Release: 3.0.3
  * @link       http://simpletest.org/
  * @since      File available since Release 2.10.0
  */
@@ -46,7 +46,7 @@ use Stagehand\TestRunner\Util\FailureTrace;
  * @package    Stagehand_TestRunner
  * @copyright  2009-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.0.2
+ * @version    Release: 3.0.3
  * @link       http://simpletest.org/
  * @since      Class available since Release 2.10.0
  */
@@ -248,28 +248,6 @@ class JUnitXMLReporter extends \SimpleReporter
         } else {
             $this->writeError($message);
         }
-    }
-
-    /**
-     * @param array $backtrace
-     */
-    protected function buildFailureTrace(array $backtrace)
-    {
-        $failureTrace = '';
-        for ($i = 0, $count = count($backtrace); $i < $count; ++$i) {
-            if (!array_key_exists('file', $backtrace[$i])) {
-                continue;
-            }
-
-            $failureTrace .=
-                $backtrace[$i]['file'] .
-                ':' .
-                (array_key_exists('line', $backtrace[$i]) ? $backtrace[$i]['line']
-                                                          : '?') .
-                "\n";
-        }
-
-        return $failureTrace;
     }
 
     /**

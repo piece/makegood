@@ -31,7 +31,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2007-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.0.2
+ * @version    Release: 3.0.3
  * @link       http://www.phpunit.de/
  * @since      File available since Release 2.1.0
  */
@@ -55,6 +55,18 @@ use Stagehand\TestRunner\TestSuite\PHPUnitMethodFilterTestSuite;
 class PHPUnitCollector extends Collector
 {
     /**
+     * @var integer
+     * @since Property available since Release 3.0.3
+     */
+    private static $FILTER_CLASS = 1;
+
+    /**
+     * @var integer
+     * @since Property available since Release 3.0.3
+     */
+    private static $FILTER_METHOD = 2;
+
+    /**
      * @var \Stagehand\TestRunner\Core\PHPUnitXMLConfiguration
      * @since Property available since Release 3.0.0
      */
@@ -69,29 +81,21 @@ class PHPUnitCollector extends Collector
         $testClass = new \ReflectionClass($testCase);
         if ($testClass->isAbstract()) return;
 
-        if ($this->testTargets->testsOnlySpecifiedMethods()) {
-            $this->suite->addTestSuite(
-                new PHPUnitMethodFilterTestSuite($testClass, $this->testTargets)
-            );
-        } elseif ($this->testTargets->testsOnlySpecifiedClasses()) {
-            if ($this->testTargets->shouldTreatElementAsTest($testClass->getName())) {
-                $this->suite->addTestSuite($testClass);
-            }
+        $suiteMethod = $this->findSuiteMethod($testClass);
+        if (is_null($suiteMethod)) {
+            $testSuite = new PHPUnitGroupFilterTestSuite($testClass, $this->phpunitXMLConfiguration);
         } else {
-            $suiteMethod = false;
-            if ($testClass->hasMethod(\PHPUnit_Runner_BaseTestRunner::SUITE_METHODNAME)) {
-                $method = $testClass->getMethod(\PHPUnit_Runner_BaseTestRunner::SUITE_METHODNAME);
-                if ($method->isStatic()) {
-                    $this->suite->addTest($method->invoke(null, $testClass->getName()));
-                    $suiteMethod = true;
-                }
-            }
+            $testSuite = $suiteMethod->invoke(null, $testClass->getName());
+        }
 
-            if (!$suiteMethod) {
-                $this->suite->addTest(
-                    new PHPUnitGroupFilterTestSuite($testClass, $this->phpunitXMLConfiguration)
-                );
-            }
+        if ($this->testTargets->testsOnlySpecifiedMethods()) {
+            $this->filterTests($testSuite, self::$FILTER_METHOD);
+        } elseif ($this->testTargets->testsOnlySpecifiedClasses()) {
+            $this->filterTests($testSuite, self::$FILTER_CLASS);
+        }
+
+        if ($testSuite->count() > 0) {
+            $this->suite->addTest($testSuite);
         }
     }
 
@@ -113,6 +117,52 @@ class PHPUnitCollector extends Collector
     protected function createTestSuite($name)
     {
         return new \PHPUnit_Framework_TestSuite($name);
+    }
+
+    /**
+     * @param \ReflectionClass $testClass
+     * @return \ReflectionMethod
+     * @since Method available since Release 3.0.3
+     */
+    protected function findSuiteMethod(\ReflectionClass $testClass)
+    {
+        if ($testClass->hasMethod(\PHPUnit_Runner_BaseTestRunner::SUITE_METHODNAME)) {
+            $method = $testClass->getMethod(\PHPUnit_Runner_BaseTestRunner::SUITE_METHODNAME);
+            if ($method->isStatic()) {
+                return $method;
+            }
+        }
+    }
+
+    /**
+     * @param \PHPUnit_Framework_TestSuite $testSuite
+     * @param integer $filter
+     * @since Method available since Release 3.0.3
+     */
+    protected function filterTests(\PHPUnit_Framework_TestSuite $testSuite, $filter)
+    {
+        $filteredTests = array();
+        foreach ($testSuite as $test) {
+            if ($test instanceof \PHPUnit_Framework_TestCase) {
+                $testClassName = get_class($test);
+                $testMethodName = $test->getName(false);
+                if ($this->testTargets->shouldTreatElementAsTest($testClassName, $filter == self::$FILTER_METHOD ? $testMethodName : null)) {
+                    $filteredTests[] = $test;
+                }
+            } else {
+                $this->filterTests($test, $filter);
+            }
+        }
+
+        $testSuiteClass = new \ReflectionClass($testSuite);
+        $testsProperty = $testSuiteClass->getProperty('tests');
+        $testsProperty->setAccessible(true);
+        $testsProperty->setValue($testSuite, $filteredTests);
+        $testsProperty->setAccessible(false);
+        $numTestsProperty = $testSuiteClass->getProperty('numTests');
+        $numTestsProperty->setAccessible(true);
+        $numTestsProperty->setValue($testSuite, -1);
+        $numTestsProperty->setAccessible(false);
     }
 }
 

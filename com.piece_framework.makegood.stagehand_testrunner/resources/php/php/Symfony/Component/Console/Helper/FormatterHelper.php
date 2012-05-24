@@ -21,9 +21,11 @@ class FormatterHelper extends Helper
     /**
      * Formats a message within a section.
      *
-     * @param string  $section The section name
-     * @param string  $message The message
-     * @param string  $style   The style to apply to the section
+     * @param string $section The section name
+     * @param string $message The message
+     * @param string $style   The style to apply to the section
+     *
+     * @return string The format section
      */
     public function formatSection($section, $message, $style = 'info')
     {
