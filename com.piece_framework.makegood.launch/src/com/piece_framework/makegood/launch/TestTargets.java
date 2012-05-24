@@ -19,7 +19,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.eclipse.core.internal.content.ContentTypeManager;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -29,12 +28,10 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.osgi.framework.debug.Debug;
-import org.eclipse.php.internal.core.documentModel.provisional.contenttype.ContentTypeIdForPHP;
 import org.eclipse.php.internal.core.typeinference.PHPClassType;
 
 import com.piece_framework.makegood.core.PHPFlags;
@@ -298,16 +295,6 @@ public class TestTargets {
         IResource resource = project.findMember("/system/application/tests"); //$NON-NLS-1$
         if (resource == null) return ""; //$NON-NLS-1$
         return resource.getFullPath().toString();
-    }
-
-    private String getEncoding()
-    {
-        // TODO use the encoding of the current contents instead of the default charset.
-        IContentType contentType = ContentTypeManager.getInstance().getContentType(ContentTypeIdForPHP.ContentTypeID_PHP);
-        if (contentType == null) return ResourcesPlugin.getEncoding();
-        String defaultCharset = contentType.getDefaultCharset();
-        if (defaultCharset == null) return ResourcesPlugin.getEncoding();
-        return defaultCharset;
     }
 
     private String urlencode(String subject) throws CoreException
