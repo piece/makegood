@@ -310,10 +310,10 @@ public class TestTargets {
         return defaultCharset;
     }
 
-    private String urlencode(String subject)
+    private String urlencode(String subject) throws CoreException
     {
         try {
-            return URLEncoder.encode(subject, getEncoding());
+            return URLEncoder.encode(subject, getProject().getDefaultCharset());
         } catch (UnsupportedEncodingException e) {
             Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
             return subject;
