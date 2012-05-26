@@ -190,6 +190,11 @@ public class Messages extends NLS {
     public static String TestRunner_TestSessionAlreadyExists_Title;
     public static String TestRunner_TestSessionAlreadyExists_Message;
 
+    /**
+     * @since 2.1.0
+     */
+    public static String ResultSquare_WaitingForTestRun;
+
     static {
         // initialize resource bundle
         NLS.initializeMessages(BUNDLE_NAME, Messages.class);

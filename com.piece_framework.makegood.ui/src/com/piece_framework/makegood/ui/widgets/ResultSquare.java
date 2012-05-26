@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2011-2012 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -37,6 +37,7 @@ import org.eclipse.ui.menus.WorkbenchWindowControlContribution;
 import org.eclipse.ui.progress.UIJob;
 
 import com.piece_framework.makegood.ui.Activator;
+import com.piece_framework.makegood.ui.Messages;
 import com.piece_framework.makegood.ui.views.ResultView;
 import com.piece_framework.makegood.ui.views.ViewOpener;
 
@@ -66,7 +67,7 @@ public class ResultSquare extends WorkbenchWindowControlContribution {
         canvas = new Canvas(parent, SWT.NONE);
         canvas.setLayout(new GridLayout(1, false));
         square = new Label(canvas, SWT.NONE);
-        square.setToolTipText("Waiting for a Test Run"); //$NON-NLS-1$
+        square.setToolTipText(Messages.ResultSquare_WaitingForTestRun);
         square.setImage(Activator.getImageDescriptor(IMAGE_PATH_MAKEGOOD).createImage());
         square.addMouseListener(new MouseListener() {
             @Override
