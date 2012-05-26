@@ -49,6 +49,12 @@ public class ResultSquare extends WorkbenchWindowControlContribution {
     private static final String IMAGE_PATH_PASSED = "icons/square-passed.gif"; //$NON-NLS-1$
     private static final String IMAGE_PATH_FAILED = "icons/square-failed.gif"; //$NON-NLS-1$
     private static final String IMAGE_PATH_STOPPED = "icons/square-stopped.gif"; //$NON-NLS-1$
+
+    /**
+     * @since 2.1.0
+     */
+    private static final String IMAGE_PATH_NOTESTS = "icons/square-notests.gif"; //$NON-NLS-1$
+
     private static final String IMAGE_PATH_PROGRESS = "icons/square-progress.gif"; //$NON-NLS-1$
     private Canvas canvas;
     private Label square;
@@ -138,6 +144,14 @@ public class ResultSquare extends WorkbenchWindowControlContribution {
     public void markAsStopped() {
         square.setImage(Activator.getImageDescriptor(IMAGE_PATH_STOPPED).createImage());
         square.setToolTipText(Messages.ResultSquare_TestStopped);
+    }
+
+    /**
+     * @since 2.1.0
+     */
+    public void markAsNoTests() {
+        square.setImage(Activator.getImageDescriptor(IMAGE_PATH_NOTESTS).createImage());
+        square.setToolTipText(Messages.ResultSquare_NoTests);
     }
 
     private class ImageAnimator implements Runnable {

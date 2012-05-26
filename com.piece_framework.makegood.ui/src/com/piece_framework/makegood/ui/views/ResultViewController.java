@@ -164,7 +164,11 @@ public class ResultViewController implements IDebugEventSetListener {
                 if (testLifecycle.getProgress().hasFailures()) {
                     ResultSquare.getInstance().markAsFailed();
                 } else {
-                    ResultSquare.getInstance().markAsPassed();
+                    if (testLifecycle.getProgress().noTestsFound()) {
+                        ResultSquare.getInstance().markAsNoTests();
+                    } else {
+                        ResultSquare.getInstance().markAsPassed();
+                    }
                 }
 
                 ResultView resultView = (ResultView) ViewOpener.find(ResultView.VIEW_ID);

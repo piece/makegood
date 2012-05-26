@@ -210,6 +210,11 @@ public class Messages extends NLS {
      */
     public static String ResultSquare_TestStopped;
 
+    /**
+     * @since 2.1.0
+     */
+    public static String ResultSquare_NoTests;
+
     static {
         // initialize resource bundle
         NLS.initializeMessages(BUNDLE_NAME, Messages.class);
