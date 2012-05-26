@@ -127,14 +127,17 @@ public class ResultSquare extends WorkbenchWindowControlContribution {
 
     public void markAsPassed() {
         square.setImage(Activator.getImageDescriptor(IMAGE_PATH_PASSED).createImage());
+        square.setToolTipText(Messages.ResultSquare_TestPassed);
     }
 
     public void markAsFailed() {
         square.setImage(Activator.getImageDescriptor(IMAGE_PATH_FAILED).createImage());
+        square.setToolTipText(Messages.ResultSquare_TestFailed);
     }
 
     public void markAsStopped() {
         square.setImage(Activator.getImageDescriptor(IMAGE_PATH_STOPPED).createImage());
+        square.setToolTipText(Messages.ResultSquare_TestStopped);
     }
 
     private class ImageAnimator implements Runnable {

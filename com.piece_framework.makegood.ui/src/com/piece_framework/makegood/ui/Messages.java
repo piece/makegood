@@ -195,6 +195,21 @@ public class Messages extends NLS {
      */
     public static String ResultSquare_WaitingForTestRun;
 
+    /**
+     * @since 2.1.0
+     */
+    public static String ResultSquare_TestPassed;
+
+    /**
+     * @since 2.1.0
+     */
+    public static String ResultSquare_TestFailed;
+
+    /**
+     * @since 2.1.0
+     */
+    public static String ResultSquare_TestStopped;
+
     static {
         // initialize resource bundle
         NLS.initializeMessages(BUNDLE_NAME, Messages.class);
