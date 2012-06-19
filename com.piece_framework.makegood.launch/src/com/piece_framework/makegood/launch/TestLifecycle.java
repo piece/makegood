@@ -161,7 +161,7 @@ public class TestLifecycle {
             return launch != null
                 && launch.getDebugTarget() == null
                 && (launch.getLaunchConfiguration() != null && launch.getLaunchConfiguration().getAttribute(IPHPDebugConstants.RUN_WITH_DEBUG_INFO, true))
-                && DebuggerCommunicationDaemon.ZEND_DEBUGGER_ID.equals(new PHPexeItemRepository().findByProject(TestTargets.getInstance().getProject()).getDebuggerID());
+                && DebuggerCommunicationDaemon.ZEND_DEBUGGER_ID.equals(new PHPexeItemRepository().findByProject(TestTargetRepository.getInstance().getProject()).getDebuggerID());
         } catch (CoreException e) {
             return true;
         }

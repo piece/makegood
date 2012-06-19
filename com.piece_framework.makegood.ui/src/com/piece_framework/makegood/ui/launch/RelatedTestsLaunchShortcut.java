@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2010 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
- *               2010-2011 KUBO Atsuhiro <kubo@iteman.jp>,
+ *               2010-2012 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -37,7 +37,7 @@ import org.eclipse.ui.texteditor.ITextEditor;
 
 import com.piece_framework.makegood.core.PHPFlags;
 import com.piece_framework.makegood.core.PHPResource;
-import com.piece_framework.makegood.launch.TestTargets;
+import com.piece_framework.makegood.launch.TestTargetRepository;
 import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.EditorParser;
 import com.piece_framework.makegood.ui.MakeGoodContext;
@@ -63,7 +63,7 @@ public class RelatedTestsLaunchShortcut extends MakeGoodLaunchShortcut {
 
         collectRelatedTests(types);
 
-        if (TestTargets.getInstance().getCount() == 0) {
+        if (TestTargetRepository.getInstance().getCount() == 0) {
             MakeGoodContext.getInstance().updateStatus(MakeGoodStatus.RelatedTestsNotFound);
             throw new NotLaunchedException();
         }

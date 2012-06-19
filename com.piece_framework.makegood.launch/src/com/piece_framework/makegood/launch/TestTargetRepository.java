@@ -39,8 +39,8 @@ import com.piece_framework.makegood.core.PHPResource;
 import com.piece_framework.makegood.core.TestingFramework;
 import com.piece_framework.makegood.core.preference.MakeGoodProperty;
 
-public class TestTargets {
-    private List<Object> targets = new ArrayList<Object>();
+public class TestTargetRepository {
+    private List<Object> testTargets = new ArrayList<Object>();
 
     /**
      * @since 1.3.0
@@ -50,14 +50,14 @@ public class TestTargets {
     /**
      * @since 1.3.0
      */
-    private static TestTargets soleInstance;
+    private static TestTargetRepository soleInstance;
 
     /**
      * @since 1.3.0
      */
-    public static TestTargets getInstance() {
+    public static TestTargetRepository getInstance() {
         if (soleInstance == null) {
-            soleInstance = new TestTargets();
+            soleInstance = new TestTargetRepository();
         }
         return soleInstance;
     }
@@ -65,12 +65,12 @@ public class TestTargets {
     /**
      * @since 1.3.0
      */
-    private TestTargets() {
+    private TestTargetRepository() {
         super();
     }
 
-    public void add(Object target) throws ResourceNotFoundException, ProjectNotFoundException {
-        targets.add(target);
+    public void add(Object testTarget) throws ResourceNotFoundException, ProjectNotFoundException {
+        testTargets.add(testTarget);
         if (getCount() == 1) {
             IResource resource = getFirstResource();
             if (resource == null) {
@@ -182,21 +182,21 @@ public class TestTargets {
         Set<String> testFiles = new HashSet<String>();
         Set<String> testClasses = new HashSet<String>();
         Set<String> testMethods = new HashSet<String>();
-        for (Object target: targets) {
-            testFiles.add(getResource(target).getLocation().toString());
-            if (target instanceof IType) {
-                int flags = ((IType) target).getFlags();
+        for (Object testTarget: testTargets) {
+            testFiles.add(getResource(testTarget).getLocation().toString());
+            if (testTarget instanceof IType) {
+                int flags = ((IType) testTarget).getFlags();
                 if (PHPFlags.isNamespace(flags)) {
-                    for (IType type: ((IType) target).getTypes()) {
+                    for (IType type: ((IType) testTarget).getTypes()) {
                         testClasses.add(urlencode(PHPClassType.fromIType(type).getTypeName()));
                     }
                 } else if (PHPFlags.isClass(flags)) {
-                    testClasses.add(urlencode(PHPClassType.fromIType((IType) target).getTypeName()));
+                    testClasses.add(urlencode(PHPClassType.fromIType((IType) testTarget).getTypeName()));
                 }
-            } else if (target instanceof IMethod) {
-                IMethod method = findMethod((IMethod) target);
+            } else if (testTarget instanceof IMethod) {
+                IMethod method = findMethod((IMethod) testTarget);
                 if (method == null) {
-                    throw new MethodNotFoundException("An unknown method context [ " + target + " ] has been found."); //$NON-NLS-1$ //$NON-NLS-2$
+                    throw new MethodNotFoundException("An unknown method context [ " + testTarget + " ] has been found."); //$NON-NLS-1$ //$NON-NLS-2$
                 }
                 testMethods.add(
                     urlencode(
@@ -263,19 +263,19 @@ public class TestTargets {
         return null;
     }
 
-    private IResource getResource(Object target) {
+    private IResource getResource(Object testTarget) {
         IResource resource = null;
-        if (target instanceof IModelElement) {
-            resource = ((IModelElement) target).getResource();
-        } else if (target instanceof IResource) {
-            resource = (IResource) target;
+        if (testTarget instanceof IModelElement) {
+            resource = ((IModelElement) testTarget).getResource();
+        } else if (testTarget instanceof IResource) {
+            resource = (IResource) testTarget;
         }
         return resource;
     }
 
     private IResource getFirstResource() {
         if (getCount() == 0) return null;
-        return getResource(targets.get(0));
+        return getResource(testTargets.get(0));
     }
 
     private String getDefaultCakePHPAppPath() {
@@ -312,7 +312,7 @@ public class TestTargets {
      */
     public void clear() {
         project = null;
-        targets.clear();
+        testTargets.clear();
     }
 
     /**
@@ -344,6 +344,6 @@ public class TestTargets {
      * @since 1.3.0
      */
     public int getCount() {
-        return targets.size();
+        return testTargets.size();
     }
 }

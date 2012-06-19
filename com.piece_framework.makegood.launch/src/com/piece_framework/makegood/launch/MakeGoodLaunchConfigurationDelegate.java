@@ -244,7 +244,7 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
             }
         };
 
-        String mainScript = TestTargets.getInstance().getMainScript();
+        String mainScript = TestTargetRepository.getInstance().getMainScript();
         if (mainScript == null) {
             throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "The main script is not found.")); //$NON-NLS-1$
         }
@@ -257,10 +257,10 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
         workingCopy.setAttribute(MAKEGOOD_JUNIT_XML_FILE, junitXMLFile);
         workingCopy.setAttribute(
             IDebugParametersKeys.EXE_CONFIG_PROGRAM_ARGUMENTS,
-            TestTargets.getInstance().generateCommandLine(junitXMLFile)
+            TestTargetRepository.getInstance().generateCommandLine(junitXMLFile)
         );
 
-        IProject project = TestTargets.getInstance().getProject();
+        IProject project = TestTargetRepository.getInstance().getProject();
         if (project != null && project.exists()) {
             workingCopy.setAttribute(IPHPDebugConstants.PHP_Project, project.getName());
             rewriteBasicConfigurationAttributes(workingCopy, project);

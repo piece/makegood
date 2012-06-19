@@ -23,7 +23,7 @@ import org.eclipse.php.internal.debug.ui.launching.PHPExeLaunchShortcut;
 import com.piece_framework.makegood.launch.Activator;
 import com.piece_framework.makegood.launch.ProjectNotFoundException;
 import com.piece_framework.makegood.launch.ResourceNotFoundException;
-import com.piece_framework.makegood.launch.TestTargets;
+import com.piece_framework.makegood.launch.TestTargetRepository;
 
 public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
     @Override
@@ -38,7 +38,7 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
      */
     protected void addTestTarget(Object testTarget) {
         try {
-            TestTargets.getInstance().add(testTarget);
+            TestTargetRepository.getInstance().add(testTarget);
         } catch (ResourceNotFoundException e) {
             Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
             throw new NotLaunchedException();
@@ -58,7 +58,7 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
 
             for (IType type: types) {
                 try {
-                    TestTargets.getInstance().add(type);
+                    TestTargetRepository.getInstance().add(type);
                 } catch (ResourceNotFoundException e) {
                     Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
                     throw new NotLaunchedException();
@@ -74,6 +74,6 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
      * @since 1.3.0
      */
     protected void clearTestTargets() {
-        TestTargets.getInstance().clear();
+        TestTargetRepository.getInstance().clear();
     }
 }

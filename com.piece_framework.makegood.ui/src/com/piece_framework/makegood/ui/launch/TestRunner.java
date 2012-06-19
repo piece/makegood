@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2010 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
- *               2010-2011 KUBO Atsuhiro <kubo@iteman.jp>,
+ *               2010-2012 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -21,7 +21,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import com.piece_framework.makegood.launch.PHPexeItemRepository;
 import com.piece_framework.makegood.launch.RuntimeConfiguration;
 import com.piece_framework.makegood.launch.TestLifecycle;
-import com.piece_framework.makegood.launch.TestTargets;
+import com.piece_framework.makegood.launch.TestTargetRepository;
 import com.piece_framework.makegood.ui.ActivePart;
 import com.piece_framework.makegood.ui.Messages;
 import com.piece_framework.makegood.ui.MakeGoodContext;
@@ -74,7 +74,7 @@ public class TestRunner {
 
     public boolean hasLastTest() {
         if (lastTestTarget == null) return false;
-        IProject lastTestProject = TestTargets.getInstance().getProject();
+        IProject lastTestProject = TestTargetRepository.getInstance().getProject();
         if (lastTestProject == null) return false;
         if (!lastTestProject.equals(MakeGoodContext.getInstance().getActivePart().getProject())) return false;
         return true;
@@ -155,6 +155,6 @@ public class TestRunner {
      * @since 1.4.0
      */
     private boolean hasPHPexeItem() {
-        return phpexeItemRepository.findByProject(TestTargets.getInstance().getProject()) != null;
+        return phpexeItemRepository.findByProject(TestTargetRepository.getInstance().getProject()) != null;
     }
 }
