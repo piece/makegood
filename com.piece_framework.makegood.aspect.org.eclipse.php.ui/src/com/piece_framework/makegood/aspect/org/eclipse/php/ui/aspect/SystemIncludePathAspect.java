@@ -61,9 +61,9 @@ public class SystemIncludePathAspect extends Aspect {
         weavingClass.getDeclaredMethod("getCPListElementText").insertBefore( //$NON-NLS-1$
 "org.eclipse.core.resources.IResource target = cpentry.getResource();" + //$NON-NLS-1$
 "if (target != null) {" + //$NON-NLS-1$
-"    com.piece_framework.makegood.include_path.ConfigurationIncludePath configuration = new com.piece_framework.makegood.include_path.ConfigurationIncludePath(target.getProject());" + //$NON-NLS-1$
+"    com.piece_framework.makegood.includepath.ConfigurationIncludePath configuration = new com.piece_framework.makegood.includepath.ConfigurationIncludePath(target.getProject());" + //$NON-NLS-1$
 "    if (configuration.equalsDummyResource(target)) {" + //$NON-NLS-1$
-"        return com.piece_framework.makegood.include_path.ConfigurationIncludePath.text;" + //$NON-NLS-1$
+"        return com.piece_framework.makegood.includepath.ConfigurationIncludePath.text;" + //$NON-NLS-1$
 "    }" + //$NON-NLS-1$
 "}" //$NON-NLS-1$
         );
@@ -76,9 +76,9 @@ public class SystemIncludePathAspect extends Aspect {
         weavingClass.getDeclaredMethod("getCPListElementBaseImage").insertBefore( //$NON-NLS-1$
 "org.eclipse.core.resources.IResource target = cpentry.getResource();" + //$NON-NLS-1$
 "if (target != null) {" + //$NON-NLS-1$
-"    com.piece_framework.makegood.include_path.ConfigurationIncludePath configuration = new com.piece_framework.makegood.include_path.ConfigurationIncludePath(target.getProject());" + //$NON-NLS-1$
+"    com.piece_framework.makegood.includepath.ConfigurationIncludePath configuration = new com.piece_framework.makegood.includepath.ConfigurationIncludePath(target.getProject());" + //$NON-NLS-1$
 "    if (configuration.equalsDummyResource(target)) {" + //$NON-NLS-1$
-"        return com.piece_framework.makegood.include_path.ConfigurationIncludePath.icon;" + //$NON-NLS-1$
+"        return com.piece_framework.makegood.includepath.ConfigurationIncludePath.icon;" + //$NON-NLS-1$
 "    }" + //$NON-NLS-1$
 "}" //$NON-NLS-1$
         );

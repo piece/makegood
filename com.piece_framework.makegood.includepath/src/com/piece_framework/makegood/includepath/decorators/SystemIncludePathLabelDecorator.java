@@ -9,7 +9,7 @@
  * distribution, and is available at http://www.eclipse.org/legal/epl-v10.html
  */
 
-package com.piece_framework.makegood.include_path.decorators;
+package com.piece_framework.makegood.includepath.decorators;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jface.viewers.ILabelDecorator;
@@ -17,7 +17,7 @@ import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.php.internal.core.includepath.IncludePath;
 import org.eclipse.swt.graphics.Image;
 
-import com.piece_framework.makegood.include_path.ConfigurationIncludePath;
+import com.piece_framework.makegood.includepath.ConfigurationIncludePath;
 
 public class SystemIncludePathLabelDecorator implements ILabelDecorator {
     @Override

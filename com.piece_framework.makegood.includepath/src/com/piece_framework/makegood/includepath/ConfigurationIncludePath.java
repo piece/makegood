@@ -10,7 +10,7 @@
  * distribution, and is available at http://www.eclipse.org/legal/epl-v10.html
  */
 
-package com.piece_framework.makegood.include_path;
+package com.piece_framework.makegood.includepath;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;

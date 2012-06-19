@@ -7,4 +7,4 @@ Bundle-Vendor: %Bundle-Vendor
 Fragment-Host: org.eclipse.php.core;bundle-version="2.2.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: com.piece_framework.makegood.aspect,
- com.piece_framework.makegood.include_path
+ com.piece_framework.makegood.includepath

@@ -24,7 +24,7 @@ public class AspectManifest implements com.piece_framework.makegood.aspect.Aspec
         "org.eclipse.php.core", //$NON-NLS-1$
         "org.eclipse.core.resources", //$NON-NLS-1$
         "org.eclipse.dltk.core", //$NON-NLS-1$
-        "com.piece_framework.makegood.include_path", //$NON-NLS-1$
+        "com.piece_framework.makegood.includepath", //$NON-NLS-1$
     };
 
     @Override

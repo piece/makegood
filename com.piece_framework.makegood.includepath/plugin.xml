@@ -4,8 +4,8 @@
    <extension
          point="org.eclipse.ui.decorators">
       <decorator
-            class="com.piece_framework.makegood.include_path.decorators.SystemIncludePathLabelDecorator"
-            id="com.piece_framework.makegood.include_path.decorators.systemIncludePathDecorator"
+            class="com.piece_framework.makegood.includepath.decorators.SystemIncludePathLabelDecorator"
+            id="com.piece_framework.makegood.includepath.decorators.systemIncludePathDecorator"
             label="System Include Path"
             lightweight="false"
             state="true">

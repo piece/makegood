@@ -42,7 +42,7 @@
 
   <modules>
     <module>com.piece_framework.makegood.core</module>
-    <module>com.piece_framework.makegood.include_path</module>
+    <module>com.piece_framework.makegood.includepath</module>
     <module>com.piece_framework.makegood.launch</module>
     <module>com.piece_framework.makegood.stagehand_testrunner</module>
     <module>com.piece_framework.makegood.ui</module>

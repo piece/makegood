@@ -118,7 +118,7 @@ public class SystemIncludePathAspect extends Aspect {
     private void weaveIntoIncludeStatementStrategy() throws NotFoundException, CannotCompileException {
         CtClass weavingClass = ClassPool.getDefault().get(WEAVINGCLASS_INCLUDESTATEMENTSTRATEGY);
         weavingClass.getDeclaredMethod("visitEntry").insertBefore( //$NON-NLS-1$
-"if (com.piece_framework.makegood.include_path.ConfigurationIncludePath.equalsDummyResource(includePath.getProject(), includePath.getEntry())) {" + //$NON-NLS-1$
+"if (com.piece_framework.makegood.includepath.ConfigurationIncludePath.equalsDummyResource(includePath.getProject(), includePath.getEntry())) {" + //$NON-NLS-1$
 "    return;" + //$NON-NLS-1$
 "}" //$NON-NLS-1$
         );

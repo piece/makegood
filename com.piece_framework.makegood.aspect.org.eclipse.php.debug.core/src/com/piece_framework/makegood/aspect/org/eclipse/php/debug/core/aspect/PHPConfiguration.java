@@ -25,7 +25,7 @@ import java.util.regex.Pattern;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.php.internal.debug.core.PHPDebugPlugin;
 
-import com.piece_framework.makegood.include_path.ConfigurationIncludePath;
+import com.piece_framework.makegood.includepath.ConfigurationIncludePath;
 import com.piece_framework.makegood.stagehand_testrunner.StagehandTestRunner;
 
 public class PHPConfiguration {
