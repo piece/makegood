@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2009-2010 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
- *               2011 KUBO Atsuhiro <kubo@iteman.jp>,
+ *               2011-2012 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -18,9 +18,7 @@ import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
-import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.php.internal.debug.ui.launching.PHPExeLaunchShortcut;
-import org.eclipse.ui.IEditorPart;
 
 import com.piece_framework.makegood.launch.Activator;
 import com.piece_framework.makegood.launch.ProjectNotFoundException;
@@ -28,16 +26,6 @@ import com.piece_framework.makegood.launch.TestTargets;
 import com.piece_framework.makegood.launch.ResourceNotFoundException;
 
 public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
-    @Override
-    public void launch(final ISelection selection, final String mode) {
-        super.launch(selection, mode);
-    }
-
-    @Override
-    public void launch(IEditorPart editor, String mode) {
-        super.launch(editor, mode);
-    }
-
     @Override
     protected ILaunchConfigurationType getPHPExeLaunchConfigType() {
         return DebugPlugin.getDefault()
