@@ -44,7 +44,7 @@
     <module>com.piece_framework.makegood.core</module>
     <module>com.piece_framework.makegood.includepath</module>
     <module>com.piece_framework.makegood.launch</module>
-    <module>com.piece_framework.makegood.stagehand_testrunner</module>
+    <module>com.piece_framework.makegood.stagehandtestrunner</module>
     <module>com.piece_framework.makegood.ui</module>
     <module>com.piece_framework.makegood.aspect</module>
     <module>com.piece_framework.makegood.aspect.org.eclipse.php.core</module>

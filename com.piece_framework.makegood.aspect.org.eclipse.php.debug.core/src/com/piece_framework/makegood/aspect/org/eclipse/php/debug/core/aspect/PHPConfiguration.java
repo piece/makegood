@@ -26,7 +26,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.php.internal.debug.core.PHPDebugPlugin;
 
 import com.piece_framework.makegood.includepath.ConfigurationIncludePath;
-import com.piece_framework.makegood.stagehand_testrunner.StagehandTestRunner;
+import com.piece_framework.makegood.stagehandtestrunner.StagehandTestRunner;
 
 public class PHPConfiguration {
     private static final String INCLUDE_PATH_KEY = "include_path"; //$NON-NLS-1$

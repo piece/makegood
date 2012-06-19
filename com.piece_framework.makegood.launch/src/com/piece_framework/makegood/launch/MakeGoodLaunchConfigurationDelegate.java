@@ -40,7 +40,7 @@ import org.eclipse.php.internal.debug.core.preferences.PHPDebuggersRegistry;
 import org.eclipse.php.internal.debug.core.preferences.PHPProjectPreferences;
 import org.eclipse.php.internal.debug.core.preferences.PHPexeItem;
 
-import com.piece_framework.makegood.stagehand_testrunner.StagehandTestRunner;
+import com.piece_framework.makegood.stagehandtestrunner.StagehandTestRunner;
 
 public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy {
     private static final String MAKEGOOD_JUNIT_XML_FILE = "MAKEGOOD_JUNIT_XML_FILE"; //$NON-NLS-1$

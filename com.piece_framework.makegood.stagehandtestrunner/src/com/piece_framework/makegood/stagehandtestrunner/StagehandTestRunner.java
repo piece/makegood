@@ -9,7 +9,7 @@
  * distribution, and is available at http://www.eclipse.org/legal/epl-v10.html
  */
 
-package com.piece_framework.makegood.stagehand_testrunner;
+package com.piece_framework.makegood.stagehandtestrunner;
 
 import java.io.File;
 import java.io.IOException;

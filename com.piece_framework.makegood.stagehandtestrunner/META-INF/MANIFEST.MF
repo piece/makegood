@@ -1,11 +1,11 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
-Bundle-SymbolicName: com.piece_framework.makegood.stagehand_testrunner;singleton:=true
+Bundle-SymbolicName: com.piece_framework.makegood.stagehandtestrunner;singleton:=true
 Bundle-Version: 2.1.0.qualifier
 Bundle-Vendor: %Bundle-Vendor
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Export-Package: com.piece_framework.makegood.stagehand_testrunner
+Export-Package: com.piece_framework.makegood.stagehandtestrunner
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui
 Bundle-ActivationPolicy: lazy

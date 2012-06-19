@@ -81,7 +81,7 @@
          unpack="false"/>
 
    <plugin
-         id="com.piece_framework.makegood.stagehand_testrunner"
+         id="com.piece_framework.makegood.stagehandtestrunner"
          download-size="0"
          install-size="0"
          version="0.0.0"/>
