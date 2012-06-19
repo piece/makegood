@@ -22,8 +22,8 @@ import org.eclipse.php.internal.debug.ui.launching.PHPExeLaunchShortcut;
 
 import com.piece_framework.makegood.launch.Activator;
 import com.piece_framework.makegood.launch.ProjectNotFoundException;
-import com.piece_framework.makegood.launch.TestTargets;
 import com.piece_framework.makegood.launch.ResourceNotFoundException;
+import com.piece_framework.makegood.launch.TestTargets;
 
 public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
     @Override
