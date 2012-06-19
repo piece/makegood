@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2010 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
- *               2010-2011 KUBO Atsuhiro <kubo@iteman.jp>,
+ *               2010-2012 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -280,6 +280,9 @@ public class ResultReader extends DefaultHandler {
         if (attributes.getIndex("class") != -1) { //$NON-NLS-1$
             testCase.setClassName(attributes.getValue("class")); //$NON-NLS-1$
         }
+        if (attributes.getIndex("method") != -1) { //$NON-NLS-1$
+            testCase.setMethodName(attributes.getValue("method")); //$NON-NLS-1$
+        }
         if (attributes.getIndex("line") != -1) { //$NON-NLS-1$
             testCase.setLine(Integer.parseInt(attributes.getValue("line"))); //$NON-NLS-1$
         }
@@ -303,6 +306,7 @@ public class ResultReader extends DefaultHandler {
         if (currentTestCase == null) {
             testCase = new TestCaseResult("(" + resultType.toString() + ")"); //$NON-NLS-1$ //$NON-NLS-2$
             testCase.setClassName(currentTestSuite.getName());
+            testCase.setMethodName(currentTestCase.getMethodName());
             testCase.setFile(currentTestSuite.getFile());
             testCase.markAsArtificial();
             startTestCase(testCase);

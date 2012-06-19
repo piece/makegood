@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010-2011 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2010-2012 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -64,6 +64,18 @@ public class FailureRepository implements ResultReaderListener {
         }
 
         return null;
+    }
+
+    /**
+     * @since 2.1.0
+     */
+    public List<TestCaseResult> findAll() {
+        List<TestCaseResult> failures = new ArrayList<TestCaseResult>();
+        for (int failureIndex: failureIndexes) {
+            failures.add((TestCaseResult) orderedResults.get(failureIndex));
+        }
+
+        return failures;
     }
 
     /**

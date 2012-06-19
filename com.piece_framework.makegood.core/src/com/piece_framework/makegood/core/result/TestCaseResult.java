@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2009-2010 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
- *               2010-2011 KUBO Atsuhiro <kubo@iteman.jp>,
+ *               2010-2012 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -18,6 +18,12 @@ import java.util.List;
 
 public class TestCaseResult extends Result {
     private String className;
+
+    /**
+     * @since 2.1.0
+     */
+    private String methodName;
+
     private int line = 1;
     private boolean isArtificial = false;
     private String failureType;
@@ -36,6 +42,20 @@ public class TestCaseResult extends Result {
 
     public String getClassName() {
         return className;
+    }
+
+    /**
+     * @since 2.1.0
+     */
+    public void setMethodName(String methodName) {
+        this.methodName = methodName;
+    }
+
+    /**
+     * @since 2.1.0
+     */
+    public String getMethodName() {
+        return methodName;
     }
 
     public int getLine() {

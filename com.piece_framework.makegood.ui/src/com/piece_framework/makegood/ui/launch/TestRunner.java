@@ -93,6 +93,16 @@ public class TestRunner {
         isTestRunByAutotest = false;
     }
 
+    /**
+     * @since 2.1.0
+     */
+    public void rerunOnlyFailedTests() {
+        runTests(
+            lastTestTarget,
+            new FailedTestsLaunchShortcut(TestLifecycle.getInstance().getFailures().findAll(), lastShortcut)
+        );
+    }
+
     public void restoreFocusToLastActivePart() {
         if (lastActivePart != null) {
             ViewOpener.setFocus(lastActivePart);
@@ -113,7 +123,12 @@ public class TestRunner {
 
         if (hasPHPexeItem()) {
             if (!isTestRunByAutotest) {
-                lastShortcut = shortcut;
+                if (shortcut instanceof FailedTestsLaunchShortcut) {
+                    lastShortcut = ((FailedTestsLaunchShortcut) shortcut).getLastShortcut();
+                } else {
+                    lastShortcut = shortcut;
+                }
+
                 lastTestTarget = testTarget;
             }
 
