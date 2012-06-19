@@ -290,7 +290,7 @@ public class TestTargetRepository {
      * @since 1.3.0
      */
     private String getDefaultCIUnitPath() {
-        Assert.isNotNull(project, "One or more testing targets should be added."); //$NON-NLS-1$
+        Assert.isNotNull(project, "One or more test targets should be added."); //$NON-NLS-1$
 
         IResource resource = project.findMember("/system/application/tests"); //$NON-NLS-1$
         if (resource == null) return ""; //$NON-NLS-1$
