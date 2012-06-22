@@ -1,0 +1,40 @@
+h1. A continuous test runner for Eclipse PDT
+
+MakeGood is a continuous test runner to run unit tests on "Eclipse PDT":http://eclipse.org/pdt/.
+
+MakeGood provides fast feedback by automated workflows for running tests, tracking failures and errors and fatal errors. This will help developers to do "Test Driven Development":http://en.wikipedia.org/wiki/Test-driven_development (TDD) and *Continuous Testing*.
+
+!http://piece-framework.com/attachments/325/makegood-view-en-800.png!
+
+h2. Features
+
+* Runs tests when a file is saved. (Autotest)
+* Automatically tracks failures, errors, and fatal errors.
+* Runs all tests.
+* Runs tests from the PHP Explorer, Package Explorer, and Outline, and other views.
+* Runs tests from the PHP Editor.
+* Debugs a test.
+* Reruns the last test.
+* Stops the test run.
+* Stops on the first failure or error.
+* Specifies the test file pattern.
+* Can use the system include path when running tests.
+* Supports multibyte characters.
+* Supports "CakePHP":http://cakephp.org/, "CIUnit":http://www.knollet.com/foostack/, "PHPSpec":http://www.phpspec.net/, "PHPUnit":https://github.com/sebastianbergmann/phpunit, and "SimpleTest":http://simpletest.org/.
+* Supports Zend Debugger and "Xdebug":http://xdebug.org/.
+
+h2. Installation
+
+MakeGood can be installed from "the Eclipse Marketplace Client":http://marketplace.eclipse.org/marketplace-client-intro or our Update Site *eclipse.piece-framework.com*.
+
+h2. Support
+
+Visit our project page at http://piece-framework.com/projects/makegood.
+
+h2. Copyright
+
+Copyright (c) 2009-2011 MATSUFUJI Hideharu <matsufuji2008@gmail.com>, 2009-2012 KUBO Atsuhiro <kubo@iteman.jp>, 2009-2011 KUBO Noriko <noricott@gmail.com>, All rights reserved.
+
+h2. License
+
+"Eclipse Public License":http://www.eclipse.org/legal/epl-v10.html
