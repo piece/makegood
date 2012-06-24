@@ -73,7 +73,7 @@ import com.piece_framework.makegood.core.AutotestScope;
 import com.piece_framework.makegood.core.result.Result;
 import com.piece_framework.makegood.core.result.TestCaseResult;
 import com.piece_framework.makegood.core.result.TestSuiteResult;
-import com.piece_framework.makegood.core.run.Failures;
+import com.piece_framework.makegood.core.run.FailureRepository;
 import com.piece_framework.makegood.launch.MakeGoodLaunch;
 import com.piece_framework.makegood.launch.RuntimeConfiguration;
 import com.piece_framework.makegood.launch.TestLifecycle;
@@ -379,11 +379,11 @@ public class ResultView extends ViewPart {
     }
 
     public void moveToNextFailure() {
-        moveToPreviousOrNextFailure(Failures.FIND_NEXT);
+        moveToPreviousOrNextFailure(FailureRepository.FIND_NEXT);
     }
 
     public void moveToPreviousFailure() {
-        moveToPreviousOrNextFailure(Failures.FIND_PREVIOUS);
+        moveToPreviousOrNextFailure(FailureRepository.FIND_PREVIOUS);
     }
 
     @Override

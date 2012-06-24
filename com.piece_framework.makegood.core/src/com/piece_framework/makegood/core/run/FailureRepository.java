@@ -19,7 +19,7 @@ import com.piece_framework.makegood.core.result.Result;
 import com.piece_framework.makegood.core.result.TestCaseResult;
 import com.piece_framework.makegood.core.result.TestSuiteResult;
 
-public class Failures implements ResultReaderListener {
+public class FailureRepository implements ResultReaderListener {
     public static final int FIND_PREVIOUS = 1;
     public static final int FIND_NEXT = 2;
     private List<Result> orderedResults = new ArrayList<Result>();
