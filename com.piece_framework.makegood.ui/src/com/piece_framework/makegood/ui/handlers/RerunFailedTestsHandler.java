@@ -17,10 +17,10 @@ import org.eclipse.core.commands.ExecutionException;
 /**
  * @since 2.1.0
  */
-public class RerunOnlyFailedTestsHandler extends RunHandler {
+public class RerunFailedTestsHandler extends RunHandler {
     @Override
     public Object execute(ExecutionEvent event) throws ExecutionException {
-        getTestRunner().rerunOnlyFailedTests();
+        getTestRunner().rerunFailedTests();
         return null;
     }
 

@@ -18,8 +18,8 @@ import org.eclipse.ui.IViewPart;
 
 import com.piece_framework.makegood.ui.MakeGoodContext;
 
-public class RerunOnlyFailedTestsAction implements IViewActionDelegate {
-    public static final String ACTION_ID = "com.piece_framework.makegood.ui.viewActions.rerunOnlyFailedTestsAction"; //$NON-NLS-1$
+public class RerunFailedTestsAction implements IViewActionDelegate {
+    public static final String ACTION_ID = "com.piece_framework.makegood.ui.viewActions.rerunFailedTestsAction"; //$NON-NLS-1$
 
     @Override
     public void init(IViewPart view) {
@@ -28,7 +28,7 @@ public class RerunOnlyFailedTestsAction implements IViewActionDelegate {
     @Override
     public void run(IAction action) {
         if (MakeGoodContext.getInstance().getTestRunner().hasLastTest()) {
-            MakeGoodContext.getInstance().getTestRunner().rerunOnlyFailedTests();
+            MakeGoodContext.getInstance().getTestRunner().rerunFailedTests();
         }
     }
 

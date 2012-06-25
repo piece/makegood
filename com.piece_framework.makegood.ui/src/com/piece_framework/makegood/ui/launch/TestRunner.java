@@ -96,7 +96,7 @@ public class TestRunner {
     /**
      * @since 2.1.0
      */
-    public void rerunOnlyFailedTests() {
+    public void rerunFailedTests() {
         runTests(
             lastTestTarget,
             new FailedTestsLaunchShortcut(TestLifecycle.getInstance().getFailures().findAll(), lastShortcut)

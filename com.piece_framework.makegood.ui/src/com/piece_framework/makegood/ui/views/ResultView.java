@@ -85,7 +85,7 @@ import com.piece_framework.makegood.ui.Messages;
 import com.piece_framework.makegood.ui.actions.DebugTestAction;
 import com.piece_framework.makegood.ui.actions.NextFailureAction;
 import com.piece_framework.makegood.ui.actions.PreviousFailureAction;
-import com.piece_framework.makegood.ui.actions.RerunOnlyFailedTestsAction;
+import com.piece_framework.makegood.ui.actions.RerunFailedTestsAction;
 import com.piece_framework.makegood.ui.actions.RerunTestAction;
 import com.piece_framework.makegood.ui.actions.RunAllTestsAction;
 import com.piece_framework.makegood.ui.actions.RunAllTestsWhenFileIsSavedAction;
@@ -121,7 +121,7 @@ public class ResultView extends ViewPart {
     /**
      * @since 2.1.0
      */
-    private IAction rerunOnlyFailedTestsAction;
+    private IAction rerunFailedTestsAction;
 
     private IAction rerunTestAction;
     private IAction runAllTestsAction;
@@ -561,11 +561,11 @@ public class ResultView extends ViewPart {
             rerunTestAction.setEnabled(MakeGoodContext.getInstance().getTestRunner().hasLastTest());
         }
 
-        ActionContributionItem rerunOnlyFailedTestsItem =
-            (ActionContributionItem) manager.find(RerunOnlyFailedTestsAction.ACTION_ID);
-        if (rerunOnlyFailedTestsItem != null) {
-            rerunOnlyFailedTestsAction = rerunOnlyFailedTestsItem.getAction();
-            rerunOnlyFailedTestsAction.setEnabled(MakeGoodContext.getInstance().getTestRunner().hasLastTest());
+        ActionContributionItem rerunFailedTestsItem =
+            (ActionContributionItem) manager.find(RerunFailedTestsAction.ACTION_ID);
+        if (rerunFailedTestsItem != null) {
+            rerunFailedTestsAction = rerunFailedTestsItem.getAction();
+            rerunFailedTestsAction.setEnabled(MakeGoodContext.getInstance().getTestRunner().hasLastTest());
         }
 
         ActionContributionItem runAllTestsItem =
@@ -828,7 +828,7 @@ public class ResultView extends ViewPart {
                     if (actionsInitialized) {
                         runAllTestsAction.setEnabled(false);
                         rerunTestAction.setEnabled(false);
-                        rerunOnlyFailedTestsAction.setEnabled(false);
+                        rerunFailedTestsAction.setEnabled(false);
                     }
                     setForeground(new Color(statusArea.getDisplay(), MakeGoodColor.FAILED));
                     setText(message);
@@ -845,7 +845,7 @@ public class ResultView extends ViewPart {
                     if (actionsInitialized) {
                         runAllTestsAction.setEnabled(false);
                         rerunTestAction.setEnabled(false);
-                        rerunOnlyFailedTestsAction.setEnabled(false);
+                        rerunFailedTestsAction.setEnabled(false);
                         stopTestAction.setEnabled(true);
                         previousFailureAction.setEnabled(false);
                         nextFailureAction.setEnabled(false);
@@ -865,7 +865,7 @@ public class ResultView extends ViewPart {
                     if (actionsInitialized) {
                         runAllTestsAction.setEnabled(MakeGoodContext.getInstance().getActivePart().isAllTestsRunnable());
                         rerunTestAction.setEnabled(MakeGoodContext.getInstance().getTestRunner().hasLastTest());
-                        rerunOnlyFailedTestsAction.setEnabled(MakeGoodContext.getInstance().getTestRunner().hasLastTest());
+                        rerunFailedTestsAction.setEnabled(MakeGoodContext.getInstance().getTestRunner().hasLastTest());
                         stopTestAction.setEnabled(false);
                     }
                     setForeground(statusArea.getParent().getForeground());
