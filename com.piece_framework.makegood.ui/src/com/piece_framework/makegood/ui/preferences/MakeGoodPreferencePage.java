@@ -34,7 +34,7 @@ public class MakeGoodPreferencePage extends FieldEditorPreferencePage implements
         FieldEditor fieldEditor = new RadioGroupFieldEditor(
             MakeGoodPreference.AUTOTEST_SCOPE,
             Messages.MakeGoodPreferencePage_autotestLabel,
-            3,
+            1,
             new String[][] {
                 { Messages.MakeGoodPreferencePage_autotestScopeAllTestsLabel, AutotestScope.ALL_TESTS.name() },
                 { Messages.MakeGoodPreferencePage_autotestScopeLastTestLabel, AutotestScope.LAST_TEST.name() },
