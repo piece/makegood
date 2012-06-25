@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2010 MATSUFUJI Hideharu <matsufuji2008@gmail.com>
- *               2010-2011 KUBO Atsuhiro <kubo@iteman.jp>,
+ *               2010-2012 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -63,6 +63,17 @@ public class Autotest implements IResourceChangeListener {
                     @Override
                     public IStatus runInUIThread(IProgressMonitor monitor) {
                         MakeGoodContext.getInstance().getTestRunner().rerunLastTestByAutotest();
+                        return Status.OK_STATUS;
+                    }
+                };
+                job.schedule();
+            }
+        } else if (autotestScope == AutotestScope.FAILED_TESTS) {
+            if (MakeGoodContext.getInstance().getTestRunner().hasLastTest()) {
+                Job job = new UIJob("MakeGood Run Failed Tests By Autotest") { //$NON-NLS-1$
+                    @Override
+                    public IStatus runInUIThread(IProgressMonitor monitor) {
+                        MakeGoodContext.getInstance().getTestRunner().rerunFailedTestsByAutotest();
                         return Status.OK_STATUS;
                     }
                 };

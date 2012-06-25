@@ -103,6 +103,15 @@ public class TestRunner {
         );
     }
 
+    /**
+     * @since 2.1.0
+     */
+    public void rerunFailedTestsByAutotest() {
+        isTestRunByAutotest = true;
+        rerunFailedTests();
+        isTestRunByAutotest = false;
+    }
+
     public void restoreFocusToLastActivePart() {
         if (lastActivePart != null) {
             ViewOpener.setFocus(lastActivePart);

@@ -30,6 +30,8 @@ public class MakeGoodPreference {
             return AutotestScope.ALL_TESTS;
         } else if (autotestScope.equals(AutotestScope.LAST_TEST.name())) {
             return AutotestScope.LAST_TEST;
+        } else if (autotestScope.equals(AutotestScope.FAILED_TESTS.name())) {
+            return AutotestScope.FAILED_TESTS;
         } else if (autotestScope.equals(AutotestScope.NONE.name())) {
             return AutotestScope.NONE;
         } else {

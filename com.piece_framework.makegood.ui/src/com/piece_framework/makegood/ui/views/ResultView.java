@@ -89,6 +89,7 @@ import com.piece_framework.makegood.ui.actions.RerunFailedTestsAction;
 import com.piece_framework.makegood.ui.actions.RerunTestAction;
 import com.piece_framework.makegood.ui.actions.RunAllTestsAction;
 import com.piece_framework.makegood.ui.actions.RunAllTestsWhenFileIsSavedAction;
+import com.piece_framework.makegood.ui.actions.RunFailedTestsWhenFileIsSavedAction;
 import com.piece_framework.makegood.ui.actions.RunLastTestWhenFileIsSavedAction;
 import com.piece_framework.makegood.ui.actions.ShowOnlyFailuresAction;
 import com.piece_framework.makegood.ui.actions.StopOnFailureAction;
@@ -528,6 +529,14 @@ public class ResultView extends ViewPart {
         if (debugTestItem != null) {
             debugTestItem.getAction().setChecked(
                 RuntimeConfiguration.getInstance().debugsTest
+            );
+        }
+
+        ActionContributionItem runFailedTestsWhenFileIsSavedItem =
+            (ActionContributionItem) manager.find(RunFailedTestsWhenFileIsSavedAction.ACTION_ID);
+        if (runFailedTestsWhenFileIsSavedItem != null) {
+            runFailedTestsWhenFileIsSavedItem.getAction().setChecked(
+                RuntimeConfiguration.getInstance().getAutotestScope() == AutotestScope.FAILED_TESTS
             );
         }
 

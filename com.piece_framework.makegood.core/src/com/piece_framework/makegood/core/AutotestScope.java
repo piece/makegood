@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2011-2012 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -17,5 +17,6 @@ package com.piece_framework.makegood.core;
 public enum AutotestScope {
     ALL_TESTS,
     LAST_TEST,
+    FAILED_TESTS,
     NONE,
 }

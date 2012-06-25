@@ -111,6 +111,11 @@ public class Messages extends NLS {
     public static String MakeGoodPreferencePage_autotestScopeLastTestLabel;
 
     /**
+     * @since 2.1.0
+     */
+    public static String MakeGoodPreferencePage_autotestScopeFailedTestsLabel;
+
+    /**
      * @since 1.4.0
      */
     public static String MakeGoodPreferencePage_autotestScopeNoneLabel;

@@ -37,6 +37,7 @@ public class MakeGoodPreferencePage extends FieldEditorPreferencePage implements
             new String[][] {
                 { Messages.MakeGoodPreferencePage_autotestScopeAllTestsLabel, AutotestScope.ALL_TESTS.name() },
                 { Messages.MakeGoodPreferencePage_autotestScopeLastTestLabel, AutotestScope.LAST_TEST.name() },
+                { Messages.MakeGoodPreferencePage_autotestScopeFailedTestsLabel, AutotestScope.FAILED_TESTS.name() },
                 { Messages.MakeGoodPreferencePage_autotestScopeNoneLabel, AutotestScope.NONE.name() },
             },
             getFieldEditorParent(),

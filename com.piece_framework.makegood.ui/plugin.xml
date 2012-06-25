@@ -230,6 +230,12 @@
       </command>
       <command
             categoryId="com.piece_framework.makegood.ui.commands.runTestCategory"
+            defaultHandler="com.piece_framework.makegood.ui.handlers.RunFailedTestsWhenFileIsSavedHandler"
+            id="com.piece_framework.makegood.ui.commands.runFailedTestsWhenFileIsSavedCommand"
+            name="%commands.runFailedTestsWhenFileIsSavedCommand.name">
+      </command>
+      <command
+            categoryId="com.piece_framework.makegood.ui.commands.runTestCategory"
             defaultHandler="com.piece_framework.makegood.ui.handlers.RunLastTestWhenFileIsSavedHandler"
             id="com.piece_framework.makegood.ui.commands.runLastTestWhenFileIsSavedCommand"
             name="%commands.runLastTestWhenFileIsSavedCommand.name">
@@ -321,6 +327,12 @@
             contextId="org.eclipse.ui.contexts.window"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="M3+M A">
+      </key>
+      <key
+            commandId="com.piece_framework.makegood.ui.commands.runFailedTestsWhenFileIsSavedCommand"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M3+M Y">
       </key>
       <key
             commandId="com.piece_framework.makegood.ui.commands.runLastTestWhenFileIsSavedCommand"
@@ -453,6 +465,16 @@
                style="toggle"
                toolbarPath="properties"
                tooltip="%viewActions.debugTestAction.tooltip">
+         </action>
+         <action
+               class="com.piece_framework.makegood.ui.actions.RunFailedTestsWhenFileIsSavedAction"
+               definitionId="com.piece_framework.makegood.ui.commands.runFailedTestsWhenFileIsSavedCommand"
+               icon="icons/runLastTestWhenFileIsSavedAction.gif"
+               id="com.piece_framework.makegood.ui.viewActions.runFailedTestsWhenFileIsSavedAction"
+               label="%viewActions.runFailedTestsWhenFileIsSavedAction.label"
+               style="toggle"
+               toolbarPath="properties"
+               tooltip="%viewActions.runFailedTestsWhenFileIsSavedAction.tooltip">
          </action>
          <action
                class="com.piece_framework.makegood.ui.actions.RunLastTestWhenFileIsSavedAction"
