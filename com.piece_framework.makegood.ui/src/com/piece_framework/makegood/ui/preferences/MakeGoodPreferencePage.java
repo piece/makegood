@@ -15,12 +15,11 @@ package com.piece_framework.makegood.ui.preferences;
 import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.RadioGroupFieldEditor;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
-import com.piece_framework.makegood.core.AutotestScope;
 import com.piece_framework.makegood.core.Activator;
+import com.piece_framework.makegood.core.AutotestScope;
 import com.piece_framework.makegood.core.preference.MakeGoodPreference;
 import com.piece_framework.makegood.ui.Messages;
 
