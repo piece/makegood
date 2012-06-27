@@ -14,6 +14,7 @@ package com.piece_framework.makegood.ui.launch;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.dltk.core.DLTKCore;
@@ -22,6 +23,7 @@ import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.IEditorPart;
 
 import com.piece_framework.makegood.core.result.TestCaseResult;
@@ -44,7 +46,10 @@ public class FailedTestsLaunchShortcut extends MakeGoodLaunchShortcut {
         clearTestTargets();
         addFailedTestsAsTestTargets();
         if (TestTargetRepository.getInstance().getCount() > 0) {
-            super.launch(selection, mode);
+            IResource mainScriptResource = TestTargetRepository.getInstance().getMainScriptResource();
+            if (mainScriptResource == null) throw new NotLaunchedException();
+
+            super.launch(new StructuredSelection(mainScriptResource), mode);
         } else {
             lastShortcut.launch(selection, mode);
         }
