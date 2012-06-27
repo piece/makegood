@@ -469,7 +469,7 @@
          <action
                class="com.piece_framework.makegood.ui.actions.RunFailedTestsWhenFileIsSavedAction"
                definitionId="com.piece_framework.makegood.ui.commands.runFailedTestsWhenFileIsSavedCommand"
-               icon="icons/runLastTestWhenFileIsSavedAction.gif"
+               icon="icons/runFailedTestsWhenFileIsSaved.gif"
                id="com.piece_framework.makegood.ui.viewActions.runFailedTestsWhenFileIsSavedAction"
                label="%viewActions.runFailedTestsWhenFileIsSavedAction.label"
                style="toggle"
