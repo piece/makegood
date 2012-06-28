@@ -17,8 +17,6 @@ import java.util.Collections;
 import java.util.List;
 
 public class TestCaseResult extends Result {
-    private String className;
-
     /**
      * @since 2.1.0
      */
@@ -38,10 +36,6 @@ public class TestCaseResult extends Result {
 
     public TestCaseResult(String name) {
         super(name);
-    }
-
-    public String getClassName() {
-        return className;
     }
 
     /**
@@ -81,10 +75,6 @@ public class TestCaseResult extends Result {
     public void setTime(long time) {
         super.setTime(time);
         getParent().setTime(time);
-    }
-
-    public void setClassName(String cassName) {
-        this.className = cassName;
     }
 
     public void setLine(int line) {

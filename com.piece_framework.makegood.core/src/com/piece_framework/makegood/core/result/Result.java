@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2009-2010 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
- *               2010 KUBO Atsuhiro <kubo@iteman.jp>,
+ *               2010, 2012 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -16,6 +16,12 @@ import java.util.List;
 
 public abstract class Result {
     private String name;
+
+    /**
+     * @since 2.1.0
+     */
+    private String className;
+
     private long time;
     private String file;
     private Result parent;
@@ -26,6 +32,20 @@ public abstract class Result {
 
     public String getName() {
         return name;
+    }
+
+    /**
+     * @since 2.1.0
+     */
+    public void setClassName(String cassName) {
+        this.className = cassName;
+    }
+
+    /**
+     * @since 2.1.0
+     */
+    public String getClassName() {
+        return className;
     }
 
     public long getTime() {

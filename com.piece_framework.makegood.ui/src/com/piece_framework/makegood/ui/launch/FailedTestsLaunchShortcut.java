@@ -72,19 +72,20 @@ public class FailedTestsLaunchShortcut extends MakeGoodLaunchShortcut {
 
     private void addFailedTestsAsTestTargets() {
         for (TestCaseResult failure: failures) {
-            IFile file = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(new Path(failure.getFile()));
+            IFile file = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(new Path(failure.getParent().getFile()));
             if (file == null) continue;
 
             IModelElement sourceModule = DLTKCore.create(file);
             if (!(sourceModule instanceof ISourceModule)) continue;
 
-            IType type = ((ISourceModule) sourceModule).getType(failure.getClassName());
+            IType type = ((ISourceModule) sourceModule).getType(failure.getParent().getClassName());
             if (type == null) continue;
 
             IMethod method = type.getMethod(failure.getMethodName());
             if (method == null) continue;
 
             addTestTarget(method);
+            addTestTarget(file);
         }
     }
 }

@@ -255,6 +255,9 @@ public class ResultReader extends DefaultHandler {
 
     private TestSuiteResult createTestSuite(Attributes attributes) {
         TestSuiteResult testSuite = new TestSuiteResult(attributes.getValue("name")); //$NON-NLS-1$
+        if (attributes.getIndex("class") != -1) { //$NON-NLS-1$
+            testSuite.setClassName(attributes.getValue("class")); //$NON-NLS-1$
+        }
         if (attributes.getIndex("file") != -1) { //$NON-NLS-1$
             testSuite.setFile(attributes.getValue("file")); //$NON-NLS-1$
         }
