@@ -31,7 +31,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2007-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.0.3
+ * @version    Release: 3.1.0
  * @link       http://www.phpspec.org/
  * @since      File available since Release 2.1.0
  */
@@ -52,7 +52,7 @@ use Stagehand\TestRunner\Runner\PHPSpecRunner\Reporter;
  * @package    Stagehand_TestRunner
  * @copyright  2007-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.0.3
+ * @version    Release: 3.1.0
  * @link       http://www.phpspec.org/
  * @since      Class available since Release 2.1.0
  */

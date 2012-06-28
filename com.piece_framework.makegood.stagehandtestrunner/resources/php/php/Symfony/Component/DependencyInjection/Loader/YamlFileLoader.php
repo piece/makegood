@@ -81,10 +81,8 @@ class YamlFileLoader extends FileLoader
     /**
      * Parses all imports
      *
-     * @param array $content
+     * @param array  $content
      * @param string $file
-     *
-     * @return void
      */
     private function parseImports($content, $file)
     {
@@ -101,10 +99,8 @@ class YamlFileLoader extends FileLoader
     /**
      * Parses definitions
      *
-     * @param array $content
+     * @param array  $content
      * @param string $file
-     *
-     * @return void
      */
     private function parseDefinitions($content, $file)
     {
@@ -121,10 +117,8 @@ class YamlFileLoader extends FileLoader
      * Parses a definition.
      *
      * @param string $id
-     * @param array $service
+     * @param array  $service
      * @param string $file
-     *
-     * @return void
      */
     private function parseDefinition($id, $service, $file)
     {
@@ -245,12 +239,12 @@ class YamlFileLoader extends FileLoader
     /**
      * Validates a YAML file.
      *
-     * @param mixed $content
+     * @param mixed  $content
      * @param string $file
      *
      * @return array
      *
-     * @throws \InvalidArgumentException When service file is not valid
+     * @throws InvalidArgumentException When service file is not valid
      */
     private function validate($content, $file)
     {
@@ -259,7 +253,7 @@ class YamlFileLoader extends FileLoader
         }
 
         if (!is_array($content)) {
-            throw new \InvalidArgumentException(sprintf('The service file "%s" is not valid.', $file));
+            throw new InvalidArgumentException(sprintf('The service file "%s" is not valid.', $file));
         }
 
         foreach (array_keys($content) as $namespace) {
@@ -269,7 +263,7 @@ class YamlFileLoader extends FileLoader
 
             if (!$this->container->hasExtension($namespace)) {
                 $extensionNamespaces = array_filter(array_map(function ($ext) { return $ext->getAlias(); }, $this->container->getExtensions()));
-                throw new \InvalidArgumentException(sprintf(
+                throw new InvalidArgumentException(sprintf(
                     'There is no extension able to load the configuration for "%s" (in %s). Looked for namespace "%s", found %s',
                     $namespace,
                     $file,
@@ -319,8 +313,6 @@ class YamlFileLoader extends FileLoader
      * Loads from Extensions
      *
      * @param array $content
-     *
-     * @return void
      */
     private function loadFromExtensions($content)
     {

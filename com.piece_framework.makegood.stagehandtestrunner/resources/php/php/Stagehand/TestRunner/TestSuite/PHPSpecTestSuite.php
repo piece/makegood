@@ -31,7 +31,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.0.3
+ * @version    Release: 3.1.0
  * @since      File available since Release 3.0.0
  */
 
@@ -46,7 +46,7 @@ use Stagehand\TestRunner\Core\TestTargets;
  * @package    Stagehand_TestRunner
  * @copyright  2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.0.3
+ * @version    Release: 3.1.0
  * @since      Class available since Release 3.0.0
  */
 class PHPSpecTestSuite
@@ -71,9 +71,14 @@ class PHPSpecTestSuite
      */
     protected $examplesByGroup = array();
 
-    public function __construct($name)
+    /**
+     * @param string $name
+     * @param \Stagehand\TestRunner\Core\TestTargets $testTargets
+     */
+    public function __construct($name, TestTargets $testTargets)
     {
         $this->name = $name;
+        $this->testTargets = $testTargets;
     }
 
     /**
@@ -82,14 +87,6 @@ class PHPSpecTestSuite
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * @param \Stagehand\TestRunner\Core\TestTargets $testTargets
-     */
-    public function setTestTargets(TestTargets $testTargets)
-    {
-        $this->testTargets = $testTargets;
     }
 
     /**
@@ -152,7 +149,7 @@ class PHPSpecTestSuite
     {
         $positionOfLastBackslash = strrpos($exampleGroupName, '\\');
         $exampleGroupClass = $positionOfLastBackslash === false
-            ? 'Describe' + $exampleGroupName
+            ? ('Describe' . $exampleGroupName)
             : substr_replace($exampleGroupName, 'Describe', $positionOfLastBackslash + 1, 0);
         if (array_key_exists($exampleGroupClass, $this->examplesByGroup)) {
             return $exampleGroupClass;

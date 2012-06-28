@@ -31,7 +31,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2008-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.0.3
+ * @version    Release: 3.1.0
  * @link       http://www.phpunit.de/
  * @since      File available since Release 1.2.0
  */
@@ -46,7 +46,7 @@ use Stagehand\TestRunner\Util\Coloring;
  * @package    Stagehand_TestRunner
  * @copyright  2008-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.0.3
+ * @version    Release: 3.1.0
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 1.2.0
  */

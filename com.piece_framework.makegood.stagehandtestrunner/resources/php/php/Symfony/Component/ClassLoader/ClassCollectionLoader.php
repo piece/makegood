@@ -55,7 +55,7 @@ class ClassCollectionLoader
         $reload = false;
         if ($autoReload) {
             $metadata = $cacheDir.'/'.$name.$extension.'.meta';
-            if (!file_exists($metadata) || !file_exists($cache)) {
+            if (!is_file($metadata) || !is_file($cache)) {
                 $reload = true;
             } else {
                 $time = filemtime($cache);
@@ -65,7 +65,7 @@ class ClassCollectionLoader
                     $reload = true;
                 } else {
                     foreach ($meta[0] as $resource) {
-                        if (!file_exists($resource) || filemtime($resource) > $time) {
+                        if (!is_file($resource) || filemtime($resource) > $time) {
                             $reload = true;
 
                             break;
@@ -75,7 +75,7 @@ class ClassCollectionLoader
             }
         }
 
-        if (!$reload && file_exists($cache)) {
+        if (!$reload && is_file($cache)) {
             require_once $cache;
 
             return;
@@ -154,6 +154,7 @@ class ClassCollectionLoader
                     $inNamespace = false;
                     --$i;
                 } else {
+                    $output = rtrim($output);
                     $output .= "\n{";
                     $inNamespace = true;
                 }
@@ -181,7 +182,7 @@ class ClassCollectionLoader
     {
         $tmpFile = tempnam(dirname($file), basename($file));
         if (false !== @file_put_contents($tmpFile, $content) && @rename($tmpFile, $file)) {
-            chmod($file, 0644);
+            @chmod($file, 0666 & ~umask());
 
             return;
         }
