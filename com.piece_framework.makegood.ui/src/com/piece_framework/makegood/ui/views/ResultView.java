@@ -228,19 +228,19 @@ public class ResultView extends ViewPart {
             counter,
             SWT.LEFT,
             Messages.MakeGoodView_passesLabel,
-            Activator.getImageDescriptor("icons/pass-gray.gif").createImage() //$NON-NLS-1$
+            Activator.getImageDescriptor("icons/pass_gray.gif").createImage() //$NON-NLS-1$
         );
         failureCountLabel = new CountLabel(
             counter,
             SWT.LEFT,
             Messages.MakeGoodView_failuresLabel,
-            Activator.getImageDescriptor("icons/failure-gray.gif").createImage() //$NON-NLS-1$
+            Activator.getImageDescriptor("icons/failure_gray.gif").createImage() //$NON-NLS-1$
         );
         errorCountLabel = new CountLabel(
             counter,
             SWT.LEFT,
             Messages.MakeGoodView_errorsLabel,
-            Activator.getImageDescriptor("icons/error-gray.gif").createImage() //$NON-NLS-1$
+            Activator.getImageDescriptor("icons/error_gray.gif").createImage() //$NON-NLS-1$
         );
         endTimeLabel = new CLabel(counter, SWT.LEFT);
         endTimeLabel.setLayoutData(createHorizontalFillGridData());
@@ -291,7 +291,7 @@ public class ResultView extends ViewPart {
 
         failureTraceTabItem = new CTabItem(testResultsTabFolder, SWT.NONE);
         failureTraceTabItem.setText(Messages.MakeGoodView_failureTraceLabel);
-        failureTraceTabItem.setImage(Activator.getImageDescriptor("icons/failure-trace.gif").createImage()); //$NON-NLS-1$
+        failureTraceTabItem.setImage(Activator.getImageDescriptor("icons/failure_trace.gif").createImage()); //$NON-NLS-1$
         failureTrace = createFailureTrace(
             testResultsTabFolder,
             SWT.MULTI | SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL
@@ -1080,10 +1080,10 @@ public class ResultView extends ViewPart {
         public ResultTreeLabelProvider() {
             super();
 
-            passIcon = Activator.getImageDescriptor("icons/pass-white.gif").createImage(); //$NON-NLS-1$
-            errorIcon = Activator.getImageDescriptor("icons/error-white.gif").createImage(); //$NON-NLS-1$
-            failureIcon = Activator.getImageDescriptor("icons/failure-white.gif").createImage(); //$NON-NLS-1$
-            inProgressIcon = Activator.getImageDescriptor("icons/inProgress.gif").createImage(); //$NON-NLS-1$
+            passIcon = Activator.getImageDescriptor("icons/pass_white.gif").createImage(); //$NON-NLS-1$
+            errorIcon = Activator.getImageDescriptor("icons/error_white.gif").createImage(); //$NON-NLS-1$
+            failureIcon = Activator.getImageDescriptor("icons/failure_white.gif").createImage(); //$NON-NLS-1$
+            inProgressIcon = Activator.getImageDescriptor("icons/in_progress.gif").createImage(); //$NON-NLS-1$
         }
 
         @Override

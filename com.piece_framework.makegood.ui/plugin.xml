@@ -25,7 +25,7 @@
       <view
             category="com.piece_framework.makegood.ui.views.makeGoodCategory"
             class="com.piece_framework.makegood.ui.views.ResultView"
-            icon="icons/MakeGood.gif"
+            icon="icons/makegood.gif"
             id="com.piece_framework.makegood.ui.views.resultView"
             name="%views.resultView.name"
             restorable="true">
@@ -41,7 +41,7 @@
          </separator>
          <command
                commandId="com.piece_framework.makegood.ui.commands.runTestFromExplorerCommand"
-               icon="icons/MakeGood.gif"
+               icon="icons/makegood.gif"
                label="%commands.runTestFromExplorerCommand.label"
                style="push">
             <visibleWhen
@@ -89,7 +89,7 @@
             </visibleWhen>
          </command>
          <menu
-               icon="icons/MakeGood.gif"
+               icon="icons/makegood.gif"
                label="%menu.runTestsFor.label">
             <visibleWhen
                   checkEnabled="false">
@@ -115,7 +115,7 @@
          </menu>
          <command
                commandId="com.piece_framework.makegood.ui.commands.runRelatedTestFromEditorCommand"
-               icon="icons/MakeGood.gif"
+               icon="icons/makegood.gif"
                label="%commands.runRelatedTestFromEditorCommand.label"
                style="push">
             <visibleWhen
@@ -127,7 +127,7 @@
          </command>
          <command
                commandId="com.piece_framework.makegood.ui.commands.runAllTestsCommand"
-               icon="icons/MakeGood.gif"
+               icon="icons/makegood.gif"
                label="%commands.runAllTestsCommand.label"
                style="push">
          </command>
@@ -607,11 +607,11 @@
          point="org.eclipse.ui.editors.markerAnnotationSpecification">
       <specification
             annotationType="com.piece_framework.makegood.ui.markers.testFailureMarkerAnnotation"
-            icon="icons/failure-gray.gif">
+            icon="icons/failure_gray.gif">
       </specification>
       <specification
             annotationType="com.piece_framework.makegood.ui.markers.testErrorMarkerAnnotation"
-            icon="icons/error-gray.gif">
+            icon="icons/error_gray.gif">
       </specification>
    </extension>
 

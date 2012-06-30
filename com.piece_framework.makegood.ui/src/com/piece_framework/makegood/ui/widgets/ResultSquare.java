@@ -45,17 +45,17 @@ import com.piece_framework.makegood.ui.views.ViewOpener;
  * @since 1.3.0
  */
 public class ResultSquare extends WorkbenchWindowControlContribution {
-    private static final String IMAGE_PATH_MAKEGOOD = "icons/MakeGood.gif"; //$NON-NLS-1$
-    private static final String IMAGE_PATH_PASSED = "icons/square-passed.gif"; //$NON-NLS-1$
-    private static final String IMAGE_PATH_FAILED = "icons/square-failed.gif"; //$NON-NLS-1$
-    private static final String IMAGE_PATH_STOPPED = "icons/square-stopped.gif"; //$NON-NLS-1$
+    private static final String IMAGE_PATH_MAKEGOOD = "icons/makegood.gif"; //$NON-NLS-1$
+    private static final String IMAGE_PATH_PASSED = "icons/square_passed.gif"; //$NON-NLS-1$
+    private static final String IMAGE_PATH_FAILED = "icons/square_failed.gif"; //$NON-NLS-1$
+    private static final String IMAGE_PATH_STOPPED = "icons/square_stopped.gif"; //$NON-NLS-1$
 
     /**
      * @since 2.1.0
      */
-    private static final String IMAGE_PATH_NOTESTS = "icons/square-notests.gif"; //$NON-NLS-1$
+    private static final String IMAGE_PATH_NOTESTS = "icons/square_notests.gif"; //$NON-NLS-1$
 
-    private static final String IMAGE_PATH_PROGRESS = "icons/square-progress.gif"; //$NON-NLS-1$
+    private static final String IMAGE_PATH_PROGRESS = "icons/square_progress.gif"; //$NON-NLS-1$
     private Canvas canvas;
     private Label square;
     private ImageAnimator imageAnimator;
