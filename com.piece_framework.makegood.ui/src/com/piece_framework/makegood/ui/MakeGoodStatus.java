@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2011-2012 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -29,6 +29,7 @@ public enum MakeGoodStatus {
     RelatedTestsNotFound,
     TestsNotFound,
     TypesNotFound,
+    TestTargetNotFound,
     ;
 
     private IProject project;

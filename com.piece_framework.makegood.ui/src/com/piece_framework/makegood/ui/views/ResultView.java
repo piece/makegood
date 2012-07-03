@@ -896,6 +896,8 @@ public class ResultView extends ViewPart {
                 additionalInformation.setMessage(Messages.MakeGoodView_Status_RelatedTestsNotFound);
             } else if (status == MakeGoodStatus.TypesNotFound) {
                 additionalInformation.setMessage(Messages.MakeGoodView_Status_TypesNotFound);
+            } else if (status == MakeGoodStatus.TestTargetNotFound) {
+                additionalInformation.setMessage(Messages.MakeGoodView_Status_TestTargetNotFound);
             }
             updateAdditionalInformation();
 

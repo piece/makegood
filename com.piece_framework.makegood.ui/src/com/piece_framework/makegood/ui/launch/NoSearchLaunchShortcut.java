@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2010 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
- *               2010-2011 KUBO Atsuhiro <kubo@iteman.jp>,
+ *               2010-2012 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -12,12 +12,12 @@
 
 package com.piece_framework.makegood.ui.launch;
 
-import org.eclipse.core.runtime.Status;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.texteditor.ITextEditor;
 
-import com.piece_framework.makegood.ui.Activator;
+import com.piece_framework.makegood.ui.MakeGoodContext;
+import com.piece_framework.makegood.ui.MakeGoodStatus;
 
 public abstract class NoSearchLaunchShortcut extends MakeGoodLaunchShortcut {
     private IModelElement lastTestTarget;
@@ -39,7 +39,7 @@ public abstract class NoSearchLaunchShortcut extends MakeGoodLaunchShortcut {
         }
 
         if (!testTarget.exists()) {
-            Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.PLUGIN_ID, "The given test target is not found")); //$NON-NLS-1$
+            MakeGoodContext.getInstance().updateStatus(MakeGoodStatus.TestTargetNotFound);
             throw new NotLaunchedException();
         }
 

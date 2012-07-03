@@ -183,6 +183,11 @@ public class Messages extends NLS {
     public static String MakeGoodView_Status_TypesNotFound;
 
     /**
+     * @since 2.1.0
+     */
+    public static String MakeGoodView_Status_TestTargetNotFound;
+
+    /**
      * @since 1.9.0
      */
     public static String MakeGoodView_endTime;
