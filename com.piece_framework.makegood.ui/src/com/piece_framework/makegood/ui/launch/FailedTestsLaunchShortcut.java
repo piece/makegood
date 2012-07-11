@@ -28,6 +28,7 @@ import org.eclipse.ui.IEditorPart;
 
 import com.piece_framework.makegood.core.result.TestCaseResult;
 import com.piece_framework.makegood.launch.TestTargetRepository;
+import com.piece_framework.makegood.launch.ClassTestTarget;
 
 /**
  * @since 2.1.0
@@ -80,6 +81,12 @@ public class FailedTestsLaunchShortcut extends MakeGoodLaunchShortcut {
 
             IType type = ((ISourceModule) sourceModule).getType(failure.getParent().getClassName());
             if (type == null) continue;
+
+            if (failure.getClassName() == null) {
+                addTestTarget(new ClassTestTarget(type));
+                addTestTarget(file);
+                continue;
+            }
 
             IMethod method = type.getMethod(failure.getMethodName());
             if (method == null) continue;

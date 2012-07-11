@@ -205,6 +205,8 @@ public class TestTargetRepository {
                         method.getElementName()
                     )
                 );
+            } else if (testTarget instanceof ClassTestTarget) {
+                testClasses.add(urlencode(((ClassTestTarget) testTarget).getClassName()));
             }
         }
 
@@ -269,6 +271,8 @@ public class TestTargetRepository {
             resource = ((IModelElement) testTarget).getResource();
         } else if (testTarget instanceof IResource) {
             resource = (IResource) testTarget;
+        } else if (testTarget instanceof ClassTestTarget) {
+            resource = ((ClassTestTarget) testTarget).getResource();
         }
         return resource;
     }
