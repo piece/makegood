@@ -52,7 +52,7 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
             try {
                 types = ((ISourceModule) testTarget).getAllTypes();
             } catch (ModelException e) {
-                Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
+                Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
                 throw new NotLaunchedException();
             }
 
