@@ -48,7 +48,7 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
         }
 
         if (testTarget instanceof ISourceModule) {
-            IType[] types = null;
+            IType[] types;
             try {
                 types = ((ISourceModule) testTarget).getAllTypes();
             } catch (ModelException e) {
