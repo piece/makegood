@@ -84,7 +84,6 @@ public class FailedTestsLaunchShortcut extends MakeGoodLaunchShortcut {
 
             if (failure.getClassName() == null) {
                 addTestTarget(new ClassTestTarget(type));
-                addTestTarget(file);
                 continue;
             }
 
@@ -92,7 +91,6 @@ public class FailedTestsLaunchShortcut extends MakeGoodLaunchShortcut {
             if (method == null) continue;
 
             addTestTarget(method);
-            addTestTarget(file);
         }
     }
 }
