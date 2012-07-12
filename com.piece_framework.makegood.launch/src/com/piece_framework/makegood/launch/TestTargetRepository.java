@@ -30,7 +30,9 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
+import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.IType;
+import org.eclipse.dltk.core.ModelException;
 import org.eclipse.osgi.framework.debug.Debug;
 import org.eclipse.php.internal.core.typeinference.PHPClassType;
 
@@ -69,8 +71,9 @@ public class TestTargetRepository {
         super();
     }
 
-    public void add(Object testTarget) throws ResourceNotFoundException, ProjectNotFoundException {
+    public void add(Object testTarget) throws ResourceNotFoundException, ProjectNotFoundException, ModelException {
         testTargets.add(testTarget);
+
         if (getCount() == 1) {
             IResource resource = getFirstResource();
             if (resource == null) {
@@ -81,6 +84,12 @@ public class TestTargetRepository {
                 throw new ProjectNotFoundException("The project is not found. The given resource may be the workspace root."); //$NON-NLS-1$
             }
             this.project = project;
+        }
+
+        if (testTarget instanceof ISourceModule) {
+            for (IType type: ((ISourceModule) testTarget).getAllTypes()) {
+                testTargets.add(type);
+            }
         }
     }
 

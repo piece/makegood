@@ -15,8 +15,6 @@ package com.piece_framework.makegood.ui.launch;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfigurationType;
-import org.eclipse.dltk.core.ISourceModule;
-import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.php.internal.debug.ui.launching.PHPExeLaunchShortcut;
 
@@ -45,28 +43,9 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
         } catch (ProjectNotFoundException e) {
             Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
             throw new NotLaunchedException();
-        }
-
-        if (testTarget instanceof ISourceModule) {
-            IType[] types;
-            try {
-                types = ((ISourceModule) testTarget).getAllTypes();
-            } catch (ModelException e) {
-                Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
-                throw new NotLaunchedException();
-            }
-
-            for (IType type: types) {
-                try {
-                    TestTargetRepository.getInstance().add(type);
-                } catch (ResourceNotFoundException e) {
-                    Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
-                    throw new NotLaunchedException();
-                } catch (ProjectNotFoundException e) {
-                    Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
-                    throw new NotLaunchedException();
-                }
-            }
+        } catch (ModelException e) {
+            Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
+            throw new NotLaunchedException();
         }
     }
 
