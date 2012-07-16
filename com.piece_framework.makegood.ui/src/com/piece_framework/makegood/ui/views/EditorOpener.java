@@ -1,5 +1,6 @@
 /**
  * Copyright (c) 2010 KUBO Atsuhiro <kubo@iteman.jp>,
+ *               2012 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -135,6 +136,18 @@ public class EditorOpener {
         } else {
             return open(EFS.getLocalFileSystem().getStore(new Path(fileName)), line);
         }
+    }
+
+    /**
+     * @since 1.x.0
+     */
+    public static IEditorPart open(IFile file, int offset, int length) {
+        IEditorPart editorPart = open(file);
+        if (editorPart == null) return null;
+        if (editorPart instanceof ITextEditor) {
+            ((ITextEditor) editorPart).selectAndReveal(offset, length);
+        }
+        return editorPart;
     }
 
     private static void gotoLine(ITextEditor editor, Integer line) {

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009-2010 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
+ * Copyright (c) 2009-2012 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
  *               2010-2012 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
@@ -254,6 +254,26 @@ public class Messages extends NLS {
      * @since 2.3.0
      */
     public static String MakeGoodView_ConfigureContinuousTestingAction_SelectLastTestAsContinuousTestingScopeAction;
+
+    /**
+     * @since 1.x.0
+     */
+    public static String TestOutlineView_CollapseAll;
+
+    /**
+     * @since 1.x.0
+     */
+    public static String TestOutlineView_Sort;
+
+    /**
+     * @since 1.x.0
+     */
+    public static String TestOutlineView_FlatLook;
+
+    /**
+     * @since 1.x.0
+     */
+    public static String TestOutlineView_HierarchyLook;
 
     static {
         // initialize resource bundle

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009-2010 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
+ * Copyright (c) 2009-2012 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -31,6 +31,14 @@ import org.eclipse.ui.texteditor.ITextEditor;
 
 public class EditorParser {
     private IEditorPart editor;
+
+    /**
+     * @since 1.x.0
+     */
+    public static EditorParser createActiveEditorParser() {
+        if (!ActiveEditor.isPHP()) return null;
+        return new EditorParser(ActiveEditor.get());
+    }
 
     public EditorParser(IEditorPart editor) {
         this.editor = editor;

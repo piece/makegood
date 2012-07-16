@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009-2010 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
+ * Copyright (c) 2009-2012 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
  *               2010-2011 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
@@ -23,6 +23,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.texteditor.AbstractTextEditor;
 
 import com.piece_framework.makegood.ui.views.ResultViewController;
+import com.piece_framework.makegood.ui.views.TestOutlineViewController;
 
 public class MakeGoodPreparer implements IStartup {
     @Override
@@ -35,9 +36,12 @@ public class MakeGoodPreparer implements IStartup {
      */
     private void prepare() {
         MakeGoodContext.getInstance().getStatusMonitor().addPreferenceChangeListener(new InstanceScope());
+        TestOutlineViewController testOutlineViewController = new TestOutlineViewController();
         for (IWorkbenchWindow window: PlatformUI.getWorkbench().getWorkbenchWindows()) {
             for (IWorkbenchPage page: window.getPages()) {
                 page.addPartListener(MakeGoodContext.getInstance().getStatusMonitor());
+                page.addPartListener(testOutlineViewController);
+
                 IWorkbenchPart activePart = page.getActivePart();
                 if (activePart != null) {
                     MakeGoodContext.getInstance().getActivePart().update(activePart);

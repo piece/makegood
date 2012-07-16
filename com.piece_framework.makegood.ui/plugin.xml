@@ -30,6 +30,14 @@
             name="%views.resultView.name"
             restorable="true">
       </view>
+      <view
+            category="com.piece_framework.makegood.ui.views.makeGoodCategory"
+            class="com.piece_framework.makegood.ui.views.TestOutlineView"
+            icon="icons/testOutlineView.gif"
+            id="com.piece_framework.makegood.ui.views.testOutlineView"
+            name="Test Outline"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -569,6 +577,19 @@
             annotationType="com.piece_framework.makegood.ui.markers.testErrorMarkerAnnotation"
             icon="icons/error_gray.gif">
       </specification>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="org.eclipse.php.perspective">
+         <view
+               id="com.piece_framework.makegood.ui.views.testOutlineView"
+               minimized="false"
+               relationship="stack"
+               relative="org.eclipse.ui.views.ContentOutline"
+               visible="true">
+         </view>
+      </perspectiveExtension>
    </extension>
 
 </plugin>
