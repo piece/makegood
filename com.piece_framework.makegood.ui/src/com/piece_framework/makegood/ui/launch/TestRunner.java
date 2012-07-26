@@ -152,7 +152,7 @@ public class TestRunner {
             } else if (testTarget instanceof IEditorPart) {
                 shortcut.launch((IEditorPart) testTarget, launchMode);
             }
-        } catch (NotLaunchedException e) {
+        } catch (TestLaunchException e) {
             TestLifecycle.destroy();
         }
 

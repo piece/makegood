@@ -39,13 +39,13 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
             TestTargetRepository.getInstance().add(testTarget);
         } catch (ResourceNotFoundException e) {
             Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
-            throw new NotLaunchedException();
+            throw new TestLaunchException();
         } catch (ProjectNotFoundException e) {
             Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
-            throw new NotLaunchedException();
+            throw new TestLaunchException();
         } catch (ModelException e) {
             Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
-            throw new NotLaunchedException();
+            throw new TestLaunchException();
         }
     }
 

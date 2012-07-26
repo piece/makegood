@@ -24,14 +24,14 @@ public class ResourceLaunchShortcut extends MakeGoodLaunchShortcut {
     public void launch(ISelection selection, String mode) {
         clearTestTargets();
 
-        if (!(selection instanceof IStructuredSelection)) throw new NotLaunchedException();
+        if (!(selection instanceof IStructuredSelection)) throw new TestLaunchException();
 
         for (Object element: ((IStructuredSelection) selection).toArray()) {
             addTestTarget(element);
         }
 
         IResource mainScriptResource = TestTargetRepository.getInstance().getMainScriptResource();
-        if (mainScriptResource == null) throw new NotLaunchedException();
+        if (mainScriptResource == null) throw new TestLaunchException();
 
         super.launch(new StructuredSelection(mainScriptResource), mode);
     }

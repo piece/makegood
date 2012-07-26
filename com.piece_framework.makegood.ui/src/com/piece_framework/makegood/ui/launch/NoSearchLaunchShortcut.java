@@ -27,8 +27,8 @@ public abstract class NoSearchLaunchShortcut extends MakeGoodLaunchShortcut {
         clearTestTargets();
 
         if (lastTestTarget == null) {
-            if (editor == null) throw new NotLaunchedException();
-            if (!(editor instanceof ITextEditor)) throw new NotLaunchedException();
+            if (editor == null) throw new TestLaunchException();
+            if (!(editor instanceof ITextEditor)) throw new TestLaunchException();
         }
 
         IModelElement testTarget;
@@ -40,7 +40,7 @@ public abstract class NoSearchLaunchShortcut extends MakeGoodLaunchShortcut {
 
         if (!testTarget.exists()) {
             MakeGoodContext.getInstance().updateStatus(MakeGoodStatus.TestTargetNotFound);
-            throw new NotLaunchedException();
+            throw new TestLaunchException();
         }
 
         addTestTarget(testTarget);

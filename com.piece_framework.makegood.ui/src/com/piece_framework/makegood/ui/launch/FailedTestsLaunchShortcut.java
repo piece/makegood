@@ -48,7 +48,7 @@ public class FailedTestsLaunchShortcut extends MakeGoodLaunchShortcut {
         addFailedTestsAsTestTargets();
         if (TestTargetRepository.getInstance().getCount() > 0) {
             IResource mainScriptResource = TestTargetRepository.getInstance().getMainScriptResource();
-            if (mainScriptResource == null) throw new NotLaunchedException();
+            if (mainScriptResource == null) throw new TestLaunchException();
 
             super.launch(new StructuredSelection(mainScriptResource), mode);
         } else {

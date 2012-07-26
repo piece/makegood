@@ -31,7 +31,7 @@ public class AllTestsLaunchShortcut extends MakeGoodLaunchShortcut {
     public void launch(ISelection selection, String mode) {
         clearTestTargets();
 
-        if (!(selection instanceof IStructuredSelection)) throw new NotLaunchedException();
+        if (!(selection instanceof IStructuredSelection)) throw new TestLaunchException();
 
         Object target = ((IStructuredSelection) selection).getFirstElement();
         IResource resource = null;
@@ -40,12 +40,12 @@ public class AllTestsLaunchShortcut extends MakeGoodLaunchShortcut {
         } else if (target instanceof IResource) {
             resource = (IResource) target;
         }
-        if (resource == null) throw new NotLaunchedException();
+        if (resource == null) throw new TestLaunchException();
 
         addTestFoldersAsTestTargets(resource);
 
         IResource mainScriptResource = TestTargetRepository.getInstance().getMainScriptResource();
-        if (mainScriptResource == null) throw new NotLaunchedException();
+        if (mainScriptResource == null) throw new TestLaunchException();
 
         super.launch(new StructuredSelection(mainScriptResource), mode);
     }
@@ -54,7 +54,7 @@ public class AllTestsLaunchShortcut extends MakeGoodLaunchShortcut {
     public void launch(IEditorPart editor, String mode) {
         clearTestTargets();
 
-        if (!(editor.getEditorInput() instanceof IFileEditorInput)) throw new NotLaunchedException();
+        if (!(editor.getEditorInput() instanceof IFileEditorInput)) throw new TestLaunchException();
 
         IFile target = ((IFileEditorInput) editor.getEditorInput()).getFile();
         if (!PHPResource.isPHPSource(target)) {
