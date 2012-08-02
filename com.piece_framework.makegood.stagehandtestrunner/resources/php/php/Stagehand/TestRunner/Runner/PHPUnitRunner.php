@@ -31,7 +31,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2007-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.1.0
+ * @version    Release: 3.2.0
  * @link       http://www.phpunit.de/
  * @since      File available since Release 2.1.0
  */
@@ -54,7 +54,7 @@ use Stagehand\TestRunner\Runner\PHPUnitRunner\TestRunner;
  * @package    Stagehand_TestRunner
  * @copyright  2007-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.1.0
+ * @version    Release: 3.2.0
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.1.0
  */
@@ -80,7 +80,11 @@ class PHPUnitRunner extends Runner
     public function run($suite)
     {
         $testResult = new \PHPUnit_Framework_TestResult();
-        $printer = new ResultPrinter(null, true, $this->terminal->colors());
+        if ($this->printsDetailedProgressReport()) {
+            $printer = new DetailedProgressPrinter(null, false, $this->terminal->colors());
+        } else {
+            $printer = new ProgressPrinter(null, false, $this->terminal->colors());
+        }
         $printer->setRunner($this);
 
         $arguments = array();
@@ -95,11 +99,6 @@ class PHPUnitRunner extends Runner
                     $this->prettifier()
                 )
             );
-        if (!$this->printsDetailedProgressReport()) {
-            $arguments['listeners'][] = new ProgressPrinter(null, false, $this->terminal->colors());
-        } else {
-            $arguments['listeners'][] = new DetailedProgressPrinter(null, false, $this->terminal->colors());
-        }
 
         if ($this->logsResultsInJUnitXML) {
             $arguments['listeners'][] = $this->junitXMLPrinterFactory->create(

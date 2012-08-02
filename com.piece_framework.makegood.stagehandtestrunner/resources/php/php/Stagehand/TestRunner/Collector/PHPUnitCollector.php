@@ -31,7 +31,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2007-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.1.0
+ * @version    Release: 3.2.0
  * @link       http://www.phpunit.de/
  * @since      File available since Release 2.1.0
  */
@@ -48,7 +48,7 @@ use Stagehand\TestRunner\TestSuite\PHPUnitMethodFilterTestSuite;
  * @package    Stagehand_TestRunner
  * @copyright  2007-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.1.0
+ * @version    Release: 3.2.0
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.1.0
  */
@@ -88,10 +88,12 @@ class PHPUnitCollector extends Collector
             $testSuite = $suiteMethod->invoke(null, $testClass->getName());
         }
 
-        if ($this->testTargets->testsOnlySpecifiedMethods()) {
-            $this->filterTests($testSuite, self::$FILTER_METHOD);
-        } elseif ($this->testTargets->testsOnlySpecifiedClasses()) {
-            $this->filterTests($testSuite, self::$FILTER_CLASS);
+        if (!(count($testSuite->tests()) == 1 && $testSuite->testAt(0) instanceof \PHPUnit_Framework_Warning)) {
+            if ($this->testTargets->testsOnlySpecifiedMethods()) {
+                $this->filterTests($testSuite, self::$FILTER_METHOD);
+            } elseif ($this->testTargets->testsOnlySpecifiedClasses()) {
+                $this->filterTests($testSuite, self::$FILTER_CLASS);
+            }
         }
 
         if ($testSuite->count() > 0) {

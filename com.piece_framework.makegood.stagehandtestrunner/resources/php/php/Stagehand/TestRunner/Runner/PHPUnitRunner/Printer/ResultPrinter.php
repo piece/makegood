@@ -31,7 +31,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2007-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.1.0
+ * @version    Release: 3.2.0
  * @link       http://www.phpunit.de/
  * @since      File available since Release 1.2.0
  */
@@ -48,7 +48,7 @@ use Stagehand\TestRunner\Runner\Runner;
  * @package    Stagehand_TestRunner
  * @copyright  2007-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.1.0
+ * @version    Release: 3.2.0
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 1.2.0
  */
@@ -146,14 +146,6 @@ class ResultPrinter extends \PHPUnit_TextUI_ResultPrinter
     public function getNotification()
     {
         return $this->notification;
-    }
-
-    /**
-     * @param string $progress
-     * @since Method available since Release 2.7.0
-     */
-    protected function writeProgress($progress)
-    {
     }
 }
 

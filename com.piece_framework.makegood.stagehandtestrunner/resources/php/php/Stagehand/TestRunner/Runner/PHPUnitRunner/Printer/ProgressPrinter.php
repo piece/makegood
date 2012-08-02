@@ -31,7 +31,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2008-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.1.0
+ * @version    Release: 3.2.0
  * @link       http://www.phpunit.de/
  * @since      File available since Release 1.2.0
  */
@@ -46,11 +46,11 @@ use Stagehand\TestRunner\Util\Coloring;
  * @package    Stagehand_TestRunner
  * @copyright  2008-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.1.0
+ * @version    Release: 3.2.0
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 1.2.0
  */
-class ProgressPrinter extends \PHPUnit_TextUI_ResultPrinter
+class ProgressPrinter extends ResultPrinter
 {
     /**
      * An error occurred.
@@ -132,21 +132,13 @@ class ProgressPrinter extends \PHPUnit_TextUI_ResultPrinter
      */
     public function endTest(\PHPUnit_Framework_Test $test, $time)
     {
-        if (!$this->colors) {
-            parent::endTest($test, $time);
-            return;
-        }
-
-        if (!$this->lastTestFailed) {
+        if ($this->colors && !$this->lastTestFailed) {
             $this->writeProgress(Coloring::green('.'));
+            $this->lastTestFailed = true;
         }
 
-        if ($test instanceof \PHPUnit_Framework_TestCase) {
-            $this->numAssertions += $test->getNumAssertions();
-        }
-
+        parent::endTest($test, $time);
         $this->lastEvent = self::EVENT_TEST_END;
-        $this->lastTestFailed = false;
     }
 }
 

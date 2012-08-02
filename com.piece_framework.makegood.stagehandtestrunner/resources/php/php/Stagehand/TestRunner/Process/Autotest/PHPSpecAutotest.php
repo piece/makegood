@@ -31,7 +31,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.1.0
+ * @version    Release: 3.2.0
  * @since      File available since Release 3.0.0
  */
 
@@ -41,7 +41,7 @@ namespace Stagehand\TestRunner\Process\Autotest;
  * @package    Stagehand_TestRunner
  * @copyright  2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.1.0
+ * @version    Release: 3.2.0
  * @since      Class available since Release 3.0.0
  */
 class PHPSpecAutotest extends Autotest

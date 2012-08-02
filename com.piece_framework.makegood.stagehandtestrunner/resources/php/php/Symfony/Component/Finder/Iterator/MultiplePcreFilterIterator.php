@@ -11,7 +11,6 @@
 
 namespace Symfony\Component\Finder\Iterator;
 
-
 /**
  * MultiplePcreFilterIterator filters files using patterns (regexps, globs or strings).
  *
@@ -58,7 +57,7 @@ abstract class MultiplePcreFilterIterator extends \FilterIterator
             $end = substr($m[1], -1);
 
             if ($start === $end) {
-                return !preg_match('/[[:alnum:] \\\\]/', $start);
+                return !preg_match('/[*?[:alnum:] \\\\]/', $start);
             }
 
             if ($start === '{' && $end === '}') {
