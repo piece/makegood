@@ -4,7 +4,7 @@ MakeGood is a continuous test runner to run unit tests on "Eclipse PDT":http://e
 
 MakeGood provides fast feedback by automated workflows for running tests, tracking failures and errors and fatal errors. This will help developers to do "Test Driven Development":http://en.wikipedia.org/wiki/Test-driven_development (TDD) and *Continuous Testing*.
 
-!http://piece-framework.com/attachments/325/makegood-view-en-800.png!
+!http://piece-framework.com/attachments/333/makegood-view-en-800.png!
 
 h2. Features
 
@@ -15,6 +15,7 @@ h2. Features
 * Runs tests from the PHP Editor.
 * Debugs a test.
 * Reruns the last test.
+* Reruns the failed tests.
 * Stops the test run.
 * Stops on the first failure or error.
 * Specifies the test file pattern.
@@ -33,7 +34,7 @@ Visit our project page at http://piece-framework.com/projects/makegood.
 
 h2. Copyright
 
-Copyright (c) 2009-2011 MATSUFUJI Hideharu <matsufuji2008@gmail.com>, 2009-2012 KUBO Atsuhiro <kubo@iteman.jp>, 2009-2011 KUBO Noriko <noricott@gmail.com>, All rights reserved.
+Copyright (c) 2009-2011 MATSUFUJI Hideharu <matsufuji2008@gmail.com>, 2009-2012 KUBO Atsuhiro <kubo@iteman.jp>, 2009-2012 KUBO Noriko <noricott@gmail.com>, All rights reserved.
 
 h2. License
 
