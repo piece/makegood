@@ -115,6 +115,8 @@ public class TestTargetRepository {
     }
 
     public String generateCommandLine(String junitXMLFile) throws CoreException, MethodNotFoundException {
+        Assert.isNotNull(junitXMLFile, "The JUnit XML file should not be null."); //$NON-NLS-1$
+
         MakeGoodProperty property = new MakeGoodProperty(getFirstResource());
         StringBuilder buffer = new StringBuilder();
 
@@ -130,10 +132,7 @@ public class TestTargetRepository {
             }
         }
 
-        if (junitXMLFile != null) {
-            buffer.append(" --log-junit=\"" + junitXMLFile + "\""); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-
+        buffer.append(" --log-junit=\"" + junitXMLFile + "\""); //$NON-NLS-1$ //$NON-NLS-2$
         buffer.append(" --log-junit-realtime"); //$NON-NLS-1$
 
         if (RuntimeConfiguration.getInstance().stopsOnFailure) {
