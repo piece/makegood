@@ -114,7 +114,7 @@ public class TestTargetRepository {
         return ResourcesPlugin.getWorkspace().getRoot().findMember(mainScript);
     }
 
-    public String generateCommandLine(String junitXMLFile) throws CoreException, MethodNotFoundException {
+    public String generateCommandLine(String junitXMLFile) throws CoreException, MethodNotFoundException, ResourceNotFoundException {
         Assert.isNotNull(junitXMLFile, "The JUnit XML file should not be null."); //$NON-NLS-1$
 
         MakeGoodProperty property = new MakeGoodProperty(getFirstResource());
@@ -127,9 +127,11 @@ public class TestTargetRepository {
         if (!preloadScript.equals("")) { //$NON-NLS-1$
             IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
             IResource preloadResource = root.findMember(preloadScript);
-            if (preloadResource != null) {
-                buffer.append(" -p \"" + preloadResource.getLocation().toString() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
+            if (preloadResource == null) {
+                throw new ResourceNotFoundException("The resource [ " + preloadScript + " ] is not found."); //$NON-NLS-1$ //$NON-NLS-2$
             }
+
+            buffer.append(" -p \"" + preloadResource.getLocation().toString() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         buffer.append(" --log-junit=\"" + junitXMLFile + "\""); //$NON-NLS-1$ //$NON-NLS-2$
@@ -143,9 +145,11 @@ public class TestTargetRepository {
             String phpunitConfigFile = property.getPHPUnitConfigFile();
             if (!"".equals(phpunitConfigFile)) { //$NON-NLS-1$
                 IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(phpunitConfigFile);
-                if (resource != null) {
-                    buffer.append(" --phpunit-config=\"" + resource.getLocation().toString() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
+                if (resource == null) {
+                    throw new ResourceNotFoundException("The resource [ " + phpunitConfigFile + " ] is not found."); //$NON-NLS-1$ //$NON-NLS-2$
                 }
+
+                buffer.append(" --phpunit-config=\"" + resource.getLocation().toString() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
             }
         } else if (property.getTestingFramework() == TestingFramework.CakePHP) {
             String cakephpAppPath = property.getCakePHPAppPath();
@@ -154,17 +158,21 @@ public class TestTargetRepository {
             }
             if (!"".equals(cakephpAppPath)) { //$NON-NLS-1$
                 IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(cakephpAppPath);
-                if (resource != null) {
-                    buffer.append(" --cakephp-app-path=\"" + resource.getLocation().toString() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
+                if (resource == null) {
+                    throw new ResourceNotFoundException("The resource [ " + cakephpAppPath + " ] is not found."); //$NON-NLS-1$ //$NON-NLS-2$
                 }
+
+                buffer.append(" --cakephp-app-path=\"" + resource.getLocation().toString() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
             }
 
             String cakephpCorePath = property.getCakePHPCorePath();
             if (!"".equals(cakephpCorePath)) { //$NON-NLS-1$
                 IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(cakephpCorePath);
-                if (resource != null) {
-                    buffer.append(" --cakephp-core-path=\"" + resource.getLocation().toString() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
+                if (resource == null) {
+                    throw new ResourceNotFoundException("The resource [ " + cakephpCorePath + " ] is not found."); //$NON-NLS-1$ //$NON-NLS-2$
                 }
+
+                buffer.append(" --cakephp-core-path=\"" + resource.getLocation().toString() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
             }
         } else if (property.getTestingFramework() == TestingFramework.CIUnit) {
             String ciunitPath = property.getCIUnitPath();
@@ -173,17 +181,21 @@ public class TestTargetRepository {
             }
             if (!"".equals(ciunitPath)) { //$NON-NLS-1$
                 IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(ciunitPath);
-                if (resource != null) {
-                    buffer.append(" --ciunit-path=\"" + resource.getLocation().toString() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
+                if (resource == null) {
+                    throw new ResourceNotFoundException("The resource [ " + ciunitPath + " ] is not found."); //$NON-NLS-1$ //$NON-NLS-2$
                 }
+
+                buffer.append(" --ciunit-path=\"" + resource.getLocation().toString() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
             }
 
             String ciunitConfigFile = property.getCIUnitConfigFile();
             if (!"".equals(ciunitConfigFile)) { //$NON-NLS-1$
                 IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(ciunitConfigFile);
-                if (resource != null) {
-                    buffer.append(" --phpunit-config=\"" + resource.getLocation().toString() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
+                if (resource == null) {
+                    throw new ResourceNotFoundException("The resource [ " + ciunitConfigFile + " ] is not found."); //$NON-NLS-1$ //$NON-NLS-2$
                 }
+
+                buffer.append(" --phpunit-config=\"" + resource.getLocation().toString() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
             }
         }
 
@@ -191,7 +203,12 @@ public class TestTargetRepository {
         Set<String> testClasses = new HashSet<String>();
         Set<String> testMethods = new HashSet<String>();
         for (Object testTarget: testTargets) {
-            testFiles.add(getResource(testTarget).getLocation().toString());
+            IResource resource = getResource(testTarget);
+            if (resource == null || resource.exists() == false) {
+                throw new ResourceNotFoundException("The resource [ " + testTarget + " ] is not found."); //$NON-NLS-1$ //$NON-NLS-2$
+            }
+
+            testFiles.add(resource.getLocation().toString());
             if (testTarget instanceof IType) {
                 int flags = ((IType) testTarget).getFlags();
                 if (PHPFlags.isNamespace(flags)) {
