@@ -57,7 +57,10 @@ public class ResultViewController implements IDebugEventSetListener {
         int size = events.length;
         for (int i = 0; i < size; ++i) {
             final Object source = events[i].getSource();
-            ILaunch launch = getLaunch(source);
+            ILaunch launch = extractLaunchFromDebugTarget(source);
+            if (launch == null && source instanceof IProcess) {
+                launch = ((IProcess) source).getLaunch();
+            }
             if (launch == null) continue;
             if (!(launch instanceof MakeGoodLaunch)) continue;
 
@@ -222,11 +225,12 @@ public class ResultViewController implements IDebugEventSetListener {
         }
     }
 
-    private ILaunch getLaunch(Object eventSource) {
+    /**
+     * @since 2.2.0
+     */
+    private ILaunch extractLaunchFromDebugTarget(Object eventSource) {
         if (eventSource instanceof IPHPDebugTarget) {
             return ((IPHPDebugTarget) eventSource).getLaunch();
-        } else if (eventSource instanceof IProcess) {
-            return ((IProcess) eventSource).getLaunch();
         } else {
             return null;
         }
