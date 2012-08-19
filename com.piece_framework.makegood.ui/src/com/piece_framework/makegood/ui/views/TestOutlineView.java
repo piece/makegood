@@ -61,7 +61,10 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.texteditor.ITextEditor;
 
+import com.piece_framework.makegood.core.TestingFramework;
+import com.piece_framework.makegood.core.preference.MakeGoodProperty;
 import com.piece_framework.makegood.ui.Activator;
+import com.piece_framework.makegood.ui.ActiveEditor;
 import com.piece_framework.makegood.ui.EditorParser;
 import com.piece_framework.makegood.ui.MakeGoodContext;
 import com.piece_framework.makegood.ui.MakeGoodStatus;
@@ -69,7 +72,6 @@ import com.piece_framework.makegood.ui.MakeGoodStatusChangeListener;
 import com.piece_framework.makegood.ui.Messages;
 import com.piece_framework.makegood.ui.TestClass;
 import com.piece_framework.makegood.ui.TestMethod;
-import com.piece_framework.makegood.ui.ActiveEditor;
 
 /**
  * @since 1.x.0
@@ -184,8 +186,10 @@ public class TestOutlineView extends ViewPart implements MakeGoodStatusChangeLis
                 List<TestClass> testClasses = new ArrayList<TestClass>();
                 try {
                     for (IType type: module.getTypes()) {
-                        if (!TestClass.isTestClass(type)) continue;
-                        TestClass testClass = new TestClass(type);
+                        TestingFramework testingFramework =
+                            new MakeGoodProperty(type.getResource().getProject()).getTestingFramework();
+                        if (!TestClass.isTestClass(type, testingFramework)) continue;
+                        TestClass testClass = new TestClass(type, testingFramework);
                         testClasses.add(testClass);
                     }
                 } catch (ModelException e) {

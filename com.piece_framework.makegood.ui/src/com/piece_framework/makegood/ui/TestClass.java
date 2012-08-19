@@ -40,7 +40,6 @@ import org.eclipse.dltk.core.ITypeHierarchy;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.WorkingCopyOwner;
 
-import com.piece_framework.makegood.core.preference.MakeGoodProperty;
 import com.piece_framework.makegood.core.PHPFlags;
 import com.piece_framework.makegood.core.TestingFramework;
 
@@ -51,12 +50,15 @@ public class TestClass implements IType {
     private IType origin;
     private IType baseType;
     private IModelElement[] children;
+    private TestingFramework testingFramework;
 
-    public TestClass(IType type) {
+    public TestClass(IType type, TestingFramework testingFramework) {
         this.origin = type;
         while (this.origin instanceof TestClass) {
             this.origin = ((TestClass) this.origin).origin;
         }
+
+        this.testingFramework = testingFramework;
     }
 
     @Override
@@ -209,7 +211,7 @@ public class TestClass implements IType {
             }
         } else {
             for (IType type: getTypes()) {
-                if (isTestClass(type)) {
+                if (isTestClass(type, testingFramework)) {
                     children.add(createTestClass(type));
                 }
             }
@@ -262,7 +264,6 @@ public class TestClass implements IType {
     public IMethod[] getMethods() throws ModelException {
         List<IMethod> methods = new ArrayList<IMethod>();
         if (origin.getResource() == null) return methods.toArray(new IMethod[0]);
-        TestingFramework testingFramework = new MakeGoodProperty(origin.getResource()).getTestingFramework();
         for (IMethod method: origin.getMethods()) {
             if (testingFramework.isTestMethod(method)) methods.add(createTestMethod(method));
         }
@@ -399,16 +400,15 @@ public class TestClass implements IType {
         return origin.getNamespace();
     }
 
-    public static boolean isTestClass(IType type) {
+    public static boolean isTestClass(IType type, TestingFramework testingFramework) {
         if (type == null) return false;
         try {
             if (!PHPFlags.isNamespace(type.getFlags())) {
-                return new MakeGoodProperty(type.getResource()).getTestingFramework()
-                    .isTestClass(
-                        (type instanceof TestClass) ? ((TestClass) type).origin : type);
+                return testingFramework.isTestClass(
+                    (type instanceof TestClass) ? ((TestClass) type).origin : type);
             } else {
                 for (IType child: type.getTypes()) {
-                    if (isTestClass(child)) return true;
+                    if (isTestClass(child, testingFramework)) return true;
                 }
             }
         } catch (ModelException e) {}
@@ -439,7 +439,7 @@ public class TestClass implements IType {
 
     private TestClass createTestClass(IType type) {
         if (type == null) return null;
-        TestClass testClass = new TestClass(type);
+        TestClass testClass = new TestClass(type, testingFramework);
         if (baseType != null) testClass.setBaseType(baseType);
         return testClass;
     }
