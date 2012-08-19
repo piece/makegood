@@ -61,6 +61,8 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.texteditor.ITextEditor;
 
+import com.piece_framework.makegood.core.TestClass;
+import com.piece_framework.makegood.core.TestMethod;
 import com.piece_framework.makegood.core.TestingFramework;
 import com.piece_framework.makegood.core.preference.MakeGoodProperty;
 import com.piece_framework.makegood.ui.Activator;
@@ -70,8 +72,6 @@ import com.piece_framework.makegood.ui.MakeGoodContext;
 import com.piece_framework.makegood.ui.MakeGoodStatus;
 import com.piece_framework.makegood.ui.MakeGoodStatusChangeListener;
 import com.piece_framework.makegood.ui.Messages;
-import com.piece_framework.makegood.ui.TestClass;
-import com.piece_framework.makegood.ui.TestMethod;
 
 /**
  * @since 1.x.0

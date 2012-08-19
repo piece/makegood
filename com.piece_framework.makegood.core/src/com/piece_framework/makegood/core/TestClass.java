@@ -10,7 +10,7 @@
  * distribution, and is available at http://www.eclipse.org/legal/epl-v10.html
  */
 
-package com.piece_framework.makegood.ui;
+package com.piece_framework.makegood.core;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -39,9 +39,6 @@ import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ITypeHierarchy;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.WorkingCopyOwner;
-
-import com.piece_framework.makegood.core.PHPFlags;
-import com.piece_framework.makegood.core.TestingFramework;
 
 /**
  * @since 1.x.0
