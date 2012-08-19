@@ -36,8 +36,9 @@ public class EditorParser {
      * @since 1.x.0
      */
     public static EditorParser createActiveEditorParser() {
-        if (!ActiveEditor.isPHP()) return null;
-        return new EditorParser(ActiveEditor.get());
+        ActiveEditor activeEditor = MakeGoodContext.getInstance().getActiveEditor();
+        if (!activeEditor.isPHP()) return null;
+        return new EditorParser(activeEditor.get());
     }
 
     public EditorParser(IEditorPart editor) {

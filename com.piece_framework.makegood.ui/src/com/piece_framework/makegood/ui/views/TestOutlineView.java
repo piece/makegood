@@ -65,6 +65,7 @@ import com.piece_framework.makegood.core.preference.MakeGoodProperty;
 import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.ActiveEditor;
 import com.piece_framework.makegood.ui.EditorParser;
+import com.piece_framework.makegood.ui.MakeGoodContext;
 import com.piece_framework.makegood.ui.Messages;
 
 /**
@@ -153,7 +154,8 @@ public class TestOutlineView extends ViewPart {
 
                 viewer.setInput(null);
 
-                if (!ActiveEditor.isPHP()) return;
+                ActiveEditor activeEditor = MakeGoodContext.getInstance().getActiveEditor();
+                if (!activeEditor.isPHP()) return;
 
                 ISourceModule module = EditorParser.createActiveEditorParser().getSourceModule();
                 List<TestClass> testClasses = new ArrayList<TestClass>();
@@ -239,7 +241,8 @@ public class TestOutlineView extends ViewPart {
             boolean targetIsActivate =
                 EditorParser.createActiveEditorParser().getSourceModule().equals(member.getSourceModule());
             if (targetIsActivate) {
-                ((ITextEditor) ActiveEditor.get()).selectAndReveal(
+                ActiveEditor activeEditor = MakeGoodContext.getInstance().getActiveEditor();
+                ((ITextEditor) activeEditor.get()).selectAndReveal(
                         nameRange.getOffset(),
                         nameRange.getLength());
             } else {

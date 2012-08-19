@@ -31,6 +31,7 @@ public class MakeGoodContext implements IWorkbenchListener {
     private static MakeGoodContext soleInstance;
     private boolean isShuttingDown = false;
     private ActivePart activePart = new ActivePart();
+    private ActiveEditor activeEditor = new ActiveEditor();
     private ProjectValidation projectValidation = new ProjectValidation();
     private TestRunner testRunner = new TestRunner();
     private MakeGoodStatusMonitor statusMonitor = new MakeGoodStatusMonitor();
@@ -63,6 +64,13 @@ public class MakeGoodContext implements IWorkbenchListener {
 
     public ActivePart getActivePart() {
         return activePart;
+    }
+
+    /**
+     * @since 1.x.0
+     */
+    public ActiveEditor getActiveEditor() {
+        return activeEditor;
     }
 
     public ProjectValidation getProjectValidation() {

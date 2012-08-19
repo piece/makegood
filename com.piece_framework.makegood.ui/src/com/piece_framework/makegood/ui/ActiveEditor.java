@@ -27,7 +27,7 @@ public class ActiveEditor {
     /**
      * @since 1.x.0
      */
-    public static boolean isPHP() {
+    public boolean isPHP() {
         IEditorPart editor = get();
         if (editor == null) return false;
         if (!(editor.getEditorInput() instanceof IFileEditorInput)) return false;
@@ -38,7 +38,7 @@ public class ActiveEditor {
     /**
      * @since 1.x.0
      */
-    public static IEditorPart get() {
+    public IEditorPart get() {
         IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
         if (window == null) return null;
         IWorkbenchPage page = window.getActivePage();
