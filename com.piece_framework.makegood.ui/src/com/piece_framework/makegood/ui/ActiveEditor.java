@@ -28,13 +28,7 @@ public class ActiveEditor {
      * @since 1.x.0
      */
     public static boolean isPHP() {
-        return isPHP(get());
-    }
-
-    /**
-     * @since 1.x.0
-     */
-    public static boolean isPHP(IEditorPart editor) {
+        IEditorPart editor = get();
         if (editor == null) return false;
         if (!(editor.getEditorInput() instanceof IFileEditorInput)) return false;
         IFile file = ((IFileEditorInput) editor.getEditorInput()).getFile();
