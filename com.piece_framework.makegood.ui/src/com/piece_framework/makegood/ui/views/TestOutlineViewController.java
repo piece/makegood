@@ -11,13 +11,23 @@
 
 package com.piece_framework.makegood.ui.views;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.dltk.core.ElementChangedEvent;
+import org.eclipse.dltk.core.IElementChangedListener;
 import org.eclipse.ui.IPartListener2;
 import org.eclipse.ui.IWorkbenchPartReference;
+import org.eclipse.ui.progress.UIJob;
+
+import com.piece_framework.makegood.ui.MakeGoodStatus;
+import com.piece_framework.makegood.ui.MakeGoodStatusChangeListener;
 
 /**
  * @since 1.x.0
  */
-public class TestOutlineViewController implements IPartListener2 {
+public class TestOutlineViewController implements IPartListener2, MakeGoodStatusChangeListener, IElementChangedListener {
     @Override
     public void partActivated(IWorkbenchPartReference partRef) {
         updateTestOutline();
@@ -51,10 +61,35 @@ public class TestOutlineViewController implements IPartListener2 {
     public void partInputChanged(IWorkbenchPartReference partRef) {
     }
 
-    private void updateTestOutline() {
+    @Override
+    public void elementChanged(ElementChangedEvent event) {
+        updateTestOutline();
+    }
+
+    @Override
+    public void statusChanged(MakeGoodStatus status) {
         TestOutlineView view = (TestOutlineView) ViewOpener.find(TestOutlineView.ID);
-        if (view != null) {
-            view.updateTestOutline();
+        if (view == null) return;
+
+        if (status == MakeGoodStatus.RunningTest) {
+            view.setRunningTest(true);
+        } else if (status == MakeGoodStatus.WaitingForTestRun && view.runningTest()) {
+            updateTestOutline();
+            view.setRunningTest(false);
         }
+    }
+
+    private void updateTestOutline() {
+        Job job = new UIJob("MakeGood Test Outline View Updated") { //$NON-NLS-1$
+            @Override
+            public IStatus runInUIThread(IProgressMonitor monitor) {
+                TestOutlineView view = (TestOutlineView) ViewOpener.find(TestOutlineView.ID);
+                if (view != null) {
+                    view.updateTestOutline();
+                }
+                return Status.OK_STATUS;
+            }
+        };
+        job.schedule();
     }
 }

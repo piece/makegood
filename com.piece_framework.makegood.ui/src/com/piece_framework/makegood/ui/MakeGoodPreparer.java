@@ -15,6 +15,7 @@ package com.piece_framework.makegood.ui;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.debug.core.DebugPlugin;
+import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.ui.IStartup;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
@@ -51,6 +52,9 @@ public class MakeGoodPreparer implements IStartup {
                 }
             }
         };
+
+        MakeGoodContext.getInstance().addStatusChangeListener(testOutlineViewController);
+        DLTKCore.addElementChangedListener(testOutlineViewController);
 
         DebugPlugin.getDefault().addDebugEventListener(new ResultViewController());
         PlatformUI.getWorkbench().addWorkbenchListener(MakeGoodContext.getInstance());

@@ -22,9 +22,6 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
-import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.ElementChangedEvent;
-import org.eclipse.dltk.core.IElementChangedListener;
 import org.eclipse.dltk.core.IMember;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
@@ -68,15 +65,12 @@ import com.piece_framework.makegood.core.preference.MakeGoodProperty;
 import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.ActiveEditor;
 import com.piece_framework.makegood.ui.EditorParser;
-import com.piece_framework.makegood.ui.MakeGoodContext;
-import com.piece_framework.makegood.ui.MakeGoodStatus;
-import com.piece_framework.makegood.ui.MakeGoodStatusChangeListener;
 import com.piece_framework.makegood.ui.Messages;
 
 /**
  * @since 1.x.0
  */
-public class TestOutlineView extends ViewPart implements MakeGoodStatusChangeListener, IElementChangedListener {
+public class TestOutlineView extends ViewPart {
     public static final String ID = "com.piece_framework.makegood.ui.views.testOutlineView"; //$NON-NLS-1$
 
     private TreeViewer viewer;
@@ -113,10 +107,6 @@ public class TestOutlineView extends ViewPart implements MakeGoodStatusChangeLis
 
         registerActions();
 
-        MakeGoodContext.getInstance().addStatusChangeListener(this);
-
-        DLTKCore.addElementChangedListener(this);
-
         initializeTestOutline();
     }
 
@@ -139,30 +129,13 @@ public class TestOutlineView extends ViewPart implements MakeGoodStatusChangeLis
     @Override
     public void setFocus() {}
 
-    @Override
-    public void dispose() {
-        super.dispose();
-
-        MakeGoodContext.getInstance().removeStatusChangeListener(this);
-
-        DLTKCore.removeElementChangedListener(this);
+    public boolean runningTest() {
+        return runningTest;
     }
 
-    @Override
-    public void statusChanged(MakeGoodStatus status) {
-        if (status == MakeGoodStatus.RunningTest) {
-            runningTest = true;
-        } else if (status == MakeGoodStatus.WaitingForTestRun && runningTest) {
-            updateTestOutline();
-            runningTest = false;
-        }
+    public void setRunningTest(boolean runningTest) {
+        this.runningTest = runningTest;
     }
-
-    @Override
-    public void elementChanged(ElementChangedEvent event) {
-        updateTestOutline();
-    }
-
 
     public void updateTestOutline() {
         if (viewer == null) return;
