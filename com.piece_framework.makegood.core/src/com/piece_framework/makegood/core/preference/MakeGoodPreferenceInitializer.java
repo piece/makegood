@@ -14,7 +14,6 @@ package com.piece_framework.makegood.core.preference;
 
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 
-import com.piece_framework.makegood.core.AutotestScope;
 import com.piece_framework.makegood.core.Activator;
 import com.piece_framework.makegood.core.DefaultConfiguration;
 
