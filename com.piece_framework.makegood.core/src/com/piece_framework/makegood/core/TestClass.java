@@ -197,7 +197,7 @@ public class TestClass implements IType {
         if (this.children != null) return this.children;
 
         List<IModelElement> children = new ArrayList<IModelElement>();
-        if (getFlags() != Modifiers.AccNameSpace) {
+        if ((getFlags() & Modifiers.AccNameSpace) == 0) {
             children.addAll(Arrays.asList(getMethods()));
 
             ITypeHierarchy hierarchy = newSupertypeHierarchy(new NullProgressMonitor());
