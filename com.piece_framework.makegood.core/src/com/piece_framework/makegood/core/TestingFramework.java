@@ -59,8 +59,8 @@ public enum TestingFramework {
          * @since 1.x.0
          */
         @Override
-        protected boolean checkTestMethod(IMethod method) throws ModelException {
-            if (super.checkTestMethod(method)) return true;
+        public boolean isTestMethod(IMethod method) throws ModelException {
+            if (super.isTestMethod(method)) return true;
 
             IType type = (IType) method.getParent();
             IMethod beforeMethod = null;
@@ -286,16 +286,9 @@ public enum TestingFramework {
         if ((flags & Modifiers.AccPublic) == 0) return false;
         if ((flags & Modifiers.AccStatic) != 0) return false;
 
-        if (checkTestMethod(method)) return true;
+        if (method.getElementName().startsWith("test")) return true;
         return false;
     }
-
-    /**
-     * @since 1.x.0
-     */
-    protected boolean checkTestMethod(IMethod method) throws ModelException {
-        return method.getElementName().startsWith("test");
-    };
 
     private boolean hasTests(IType type, String testClassSuperType) throws ModelException {
         // TODO Type Hierarchy by PDT 2.1 does not work with namespaces.
