@@ -28,18 +28,18 @@ public class Resource {
     /**
      * @since 2.2.0
      */
-    private IContentType contentType;
+    private IContentType phpContentType;
 
     /**
      * @since 2.2.0
      */
     public Resource(IResource subject) {
         this.subject = subject;
-        contentType = Platform.getContentTypeManager().getContentType(CONTENT_TYPE);
+        phpContentType = Platform.getContentTypeManager().getContentType(CONTENT_TYPE);
     }
 
     public boolean isPHPSource() {
         if ((subject instanceof IFile) == false) return false;
-        return contentType.isAssociatedWith(subject.getName());
+        return phpContentType.isAssociatedWith(subject.getName());
     }
 }
