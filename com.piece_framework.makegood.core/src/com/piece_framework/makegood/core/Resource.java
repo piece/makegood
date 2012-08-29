@@ -20,10 +20,26 @@ import org.eclipse.core.runtime.content.IContentType;
 public class Resource {
     public static String CONTENT_TYPE = "org.eclipse.php.core.phpsource"; //$NON-NLS-1$
 
-    public static boolean isPHPSource(IResource target) {
-        if (!(target instanceof IFile)) return false;
+    /**
+     * @since 2.2.0
+     */
+    private IResource subject;
 
-        IContentType contentType = Platform.getContentTypeManager().getContentType(CONTENT_TYPE);
-        return contentType.isAssociatedWith(target.getName());
+    /**
+     * @since 2.2.0
+     */
+    private IContentType contentType;
+
+    /**
+     * @since 2.2.0
+     */
+    public Resource(IResource subject) {
+        this.subject = subject;
+        contentType = Platform.getContentTypeManager().getContentType(CONTENT_TYPE);
+    }
+
+    public boolean isPHPSource() {
+        if ((subject instanceof IFile) == false) return false;
+        return contentType.isAssociatedWith(subject.getName());
     }
 }

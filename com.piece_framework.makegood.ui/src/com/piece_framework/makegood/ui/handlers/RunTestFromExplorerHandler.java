@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2009-2010 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
- *               2010-2011 KUBO Atsuhiro <kubo@iteman.jp>,
+ *               2010-2012 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -66,7 +66,7 @@ public class RunTestFromExplorerHandler extends RunHandler {
             }
             if (resource == null) return false;
             if (resource instanceof IFolder) continue;
-            if (!Resource.isPHPSource(resource)) return false;
+            if (new Resource(resource).isPHPSource() == false) return false;
         }
 
         return true;

@@ -265,7 +265,7 @@ public class TestTargetRepository {
     private IFile findDummyFile(IFolder folder) {
         try {
             for (IResource resource: folder.members()) {
-                if (Resource.isPHPSource(resource)) {
+                if (new Resource(resource).isPHPSource()) {
                     return (IFile) resource;
                 }
             }
