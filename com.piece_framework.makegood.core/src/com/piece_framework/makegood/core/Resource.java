@@ -18,8 +18,6 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.content.IContentType;
 
 public class Resource {
-    public static String CONTENT_TYPE = "org.eclipse.php.core.phpsource"; //$NON-NLS-1$
-
     /**
      * @since 2.2.0
      */
@@ -35,11 +33,18 @@ public class Resource {
      */
     public Resource(IResource subject) {
         this.subject = subject;
-        phpContentType = Platform.getContentTypeManager().getContentType(CONTENT_TYPE);
+        phpContentType = Platform.getContentTypeManager().getContentType(phpContentTypeID());
     }
 
     public boolean isPHPSource() {
         if ((subject instanceof IFile) == false) return false;
         return phpContentType.isAssociatedWith(subject.getName());
+    }
+
+    /**
+     * @since 2.2.0
+     */
+    private String phpContentTypeID() {
+        return "org.eclipse.php.core.phpsource"; //$NON-NLS-1$
     }
 }
