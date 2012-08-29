@@ -132,6 +132,7 @@ public class RelatedTestsLaunchShortcut extends MakeGoodLaunchShortcut {
             searchMatches.add(resource);
 
             IModelElement element = DLTKCore.create(resource);
+            if (element == null) return;
             if (!(element instanceof ISourceModule)) return;
             if (new PHPSourceModule((ISourceModule) element).isTest() == false) return;
             addTestTarget(resource);
