@@ -34,7 +34,7 @@ import org.eclipse.php.internal.core.typeinference.PHPClassType;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.texteditor.ITextEditor;
 
-import com.piece_framework.makegood.core.PHPResource;
+import com.piece_framework.makegood.core.PHPSourceModule;
 import com.piece_framework.makegood.core.PHPType;
 import com.piece_framework.makegood.launch.TestTargetRepository;
 import com.piece_framework.makegood.ui.Activator;
@@ -56,8 +56,17 @@ public class RelatedTestsLaunchShortcut extends MakeGoodLaunchShortcut {
         }
 
         ISourceModule source = editorParser.getSourceModule();
-        if (source != null && PHPResource.hasTests(source)) {
-            addTestTarget(source.getResource());
+        if (source != null) {
+            PHPSourceModule phpSourceModule = new PHPSourceModule(source);
+
+            try {
+                if (phpSourceModule.isTest()) {
+                    addTestTarget(source.getResource());
+                }
+            } catch (CoreException e) {
+                Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
+                throw new TestLaunchException();
+            }
         }
 
         collectRelatedTests(types);
@@ -124,7 +133,7 @@ public class RelatedTestsLaunchShortcut extends MakeGoodLaunchShortcut {
 
             IModelElement element = DLTKCore.create(resource);
             if (!(element instanceof ISourceModule)) return;
-            if (!PHPResource.hasTests((ISourceModule) element)) return;
+            if (new PHPSourceModule((ISourceModule) element).isTest() == false) return;
             addTestTarget(resource);
         }
 

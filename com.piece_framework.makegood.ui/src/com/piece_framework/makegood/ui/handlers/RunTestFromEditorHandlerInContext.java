@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2009-2010 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
- *               2010-2011 KUBO Atsuhiro <kubo@iteman.jp>,
+ *               2010-2012 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -14,6 +14,8 @@ package com.piece_framework.makegood.ui.handlers;
 
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPage;
@@ -21,7 +23,8 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-import com.piece_framework.makegood.core.PHPResource;
+import com.piece_framework.makegood.core.PHPSourceModule;
+import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.EditorParser;
 
 public class RunTestFromEditorHandlerInContext extends RunHandler {
@@ -51,7 +54,12 @@ public class RunTestFromEditorHandlerInContext extends RunHandler {
         }
 
         if (lastCheckedSource == null || !lastCheckedSource.equals(sourceModule)) {
-            lastCheckedSource = new LastCheckedSource(sourceModule, PHPResource.hasTests(sourceModule));
+            try {
+                lastCheckedSource = new LastCheckedSource(sourceModule, new PHPSourceModule(sourceModule).isTest());
+            } catch (CoreException e) {
+                Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
+                return false;
+            }
         }
 
         return lastCheckedSource.hasTests();
