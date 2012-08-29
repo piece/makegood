@@ -23,7 +23,6 @@ import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.IType;
-import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.search.IDLTKSearchConstants;
 import org.eclipse.dltk.core.search.SearchEngine;
 import org.eclipse.dltk.core.search.SearchMatch;
@@ -35,8 +34,8 @@ import org.eclipse.php.internal.core.typeinference.PHPClassType;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.texteditor.ITextEditor;
 
-import com.piece_framework.makegood.core.PHPFlags;
 import com.piece_framework.makegood.core.PHPResource;
+import com.piece_framework.makegood.core.PHPType;
 import com.piece_framework.makegood.launch.TestTargetRepository;
 import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.EditorParser;
@@ -74,15 +73,13 @@ public class RelatedTestsLaunchShortcut extends MakeGoodLaunchShortcut {
     private void collectRelatedTests(List<IType> types) {
         SearchPattern pattern = null;
         for (IType type: types) {
-            int flags;
+            PHPType phpType = new PHPType(type);
             try {
-                flags = type.getFlags();
-            } catch (ModelException e) {
+                if (!phpType.isClass()) continue;
+            } catch (CoreException e) {
                 Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
                 continue;
             }
-
-            if (!PHPFlags.isClass(flags)) continue;
 
             SearchPattern patternForType =
                 SearchPattern.createPattern(

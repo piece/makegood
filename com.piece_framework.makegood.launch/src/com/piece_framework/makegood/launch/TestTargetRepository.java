@@ -36,8 +36,8 @@ import org.eclipse.dltk.core.ModelException;
 import org.eclipse.osgi.framework.debug.Debug;
 import org.eclipse.php.internal.core.typeinference.PHPClassType;
 
-import com.piece_framework.makegood.core.PHPFlags;
 import com.piece_framework.makegood.core.PHPResource;
+import com.piece_framework.makegood.core.PHPType;
 import com.piece_framework.makegood.core.TestingFramework;
 import com.piece_framework.makegood.core.preference.MakeGoodProperty;
 
@@ -210,12 +210,12 @@ public class TestTargetRepository {
 
             testFiles.add(resource.getLocation().toString());
             if (testTarget instanceof IType) {
-                int flags = ((IType) testTarget).getFlags();
-                if (PHPFlags.isNamespace(flags)) {
+                PHPType phpType = new PHPType((IType) testTarget);
+                if (phpType.isNamespace()) {
                     for (IType type: ((IType) testTarget).getTypes()) {
                         testClasses.add(urlencode(PHPClassType.fromIType(type).getTypeName()));
                     }
-                } else if (PHPFlags.isClass(flags)) {
+                } else if (phpType.isClass()) {
                     testClasses.add(urlencode(PHPClassType.fromIType((IType) testTarget).getTypeName()));
                 }
             } else if (testTarget instanceof IMethod) {

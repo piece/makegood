@@ -14,15 +14,12 @@ package com.piece_framework.makegood.core;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.IType;
-import org.eclipse.dltk.core.ITypeHierarchy;
-import org.eclipse.dltk.core.ModelException;
-import org.eclipse.php.internal.core.typeinference.PHPClassType;
 
 import com.piece_framework.makegood.core.preference.MakeGoodProperty;
 
@@ -45,34 +42,15 @@ public class PHPResource {
 
         try {
             for (IType type: source.getAllTypes()) {
-                if (!PHPFlags.isClass(type.getFlags())) continue;
-                if (PHPFlags.isAbstract(type.getFlags())) continue;
-                for (String testClassSuperType: testClassSuperTypes) {
-                    if (hasTests(type, testClassSuperType)) {
-                        return true;
-                    }
+                PHPType phpType = new PHPType(type);
+                if (phpType.isTest(testClassSuperTypes)) {
+                    return true;
                 }
             }
-        } catch (ModelException e) {
+        } catch (CoreException e) {
             Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
         }
 
-        return false;
-    }
-
-    /**
-     * @since 1.2.0
-     */
-    private static boolean hasTests(IType type, String testClassSuperType) throws ModelException {
-        ITypeHierarchy hierarchy = type.newSupertypeHierarchy(new NullProgressMonitor());
-        if (hierarchy == null) return false;
-        IType[] supertypes = hierarchy.getAllSuperclasses(type);
-        if (supertypes == null) return false;
-        for (IType supertype: supertypes) {
-            if (PHPClassType.fromIType(supertype).getTypeName().equals(PHPClassType.fromIType(supertype).getNamespace() == null ? testClassSuperType : ("\\" + testClassSuperType))) { //$NON-NLS-1$
-                return true;
-            }
-        }
         return false;
     }
 }
