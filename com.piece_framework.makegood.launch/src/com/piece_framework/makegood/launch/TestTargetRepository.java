@@ -36,7 +36,7 @@ import org.eclipse.dltk.core.ModelException;
 import org.eclipse.osgi.framework.debug.Debug;
 import org.eclipse.php.internal.core.typeinference.PHPClassType;
 
-import com.piece_framework.makegood.core.PHPResource;
+import com.piece_framework.makegood.core.Resource;
 import com.piece_framework.makegood.core.PHPType;
 import com.piece_framework.makegood.core.TestingFramework;
 import com.piece_framework.makegood.core.preference.MakeGoodProperty;
@@ -265,7 +265,7 @@ public class TestTargetRepository {
     private IFile findDummyFile(IFolder folder) {
         try {
             for (IResource resource: folder.members()) {
-                if (PHPResource.isPHPSource(resource)) {
+                if (Resource.isPHPSource(resource)) {
                     return (IFile) resource;
                 }
             }

@@ -24,7 +24,7 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-import com.piece_framework.makegood.core.PHPResource;
+import com.piece_framework.makegood.core.Resource;
 
 public class RunTestFromExplorerHandler extends RunHandler {
     @Override
@@ -66,7 +66,7 @@ public class RunTestFromExplorerHandler extends RunHandler {
             }
             if (resource == null) return false;
             if (resource instanceof IFolder) continue;
-            if (!PHPResource.isPHPSource(resource)) return false;
+            if (!Resource.isPHPSource(resource)) return false;
         }
 
         return true;

@@ -17,7 +17,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.content.IContentType;
 
-public class PHPResource {
+public class Resource {
     public static String CONTENT_TYPE = "org.eclipse.php.core.phpsource"; //$NON-NLS-1$
 
     public static boolean isPHPSource(IResource target) {
