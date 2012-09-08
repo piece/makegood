@@ -238,8 +238,12 @@ public class TestOutlineView extends ViewPart {
             }
             if (nameRange == null) return;
 
+            ISourceModule source = member.getSourceModule();
+            if (member instanceof IMethod) {
+                source = ((IMember) member.getParent()).getSourceModule();
+            }
             boolean targetIsActivate =
-                EditorParser.createActiveEditorParser().getSourceModule().equals(member.getSourceModule());
+                EditorParser.createActiveEditorParser().getSourceModule().equals(source);
             if (targetIsActivate) {
                 ActiveEditor activeEditor = MakeGoodContext.getInstance().getActiveEditor();
                 ((ITextEditor) activeEditor.get()).selectAndReveal(
@@ -248,7 +252,7 @@ public class TestOutlineView extends ViewPart {
             } else {
                 if (showWhenDeactivate) {
                     EditorOpener.open(
-                            (IFile) member.getResource(),
+                            (IFile) source.getResource(),
                             nameRange.getOffset(),
                             nameRange.getLength());
                 }
