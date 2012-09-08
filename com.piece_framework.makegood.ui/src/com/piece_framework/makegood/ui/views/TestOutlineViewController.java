@@ -30,6 +30,7 @@ import com.piece_framework.makegood.ui.MakeGoodStatusChangeListener;
 public class TestOutlineViewController implements IPartListener2, MakeGoodStatusChangeListener, IElementChangedListener {
     @Override
     public void partActivated(IWorkbenchPartReference partRef) {
+        if (partRef.getId().equals(TestOutlineView.ID)) return;
         updateTestOutline();
     }
 
