@@ -17,10 +17,19 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.dltk.core.ElementChangedEvent;
 import org.eclipse.dltk.core.IElementChangedListener;
+import org.eclipse.dltk.core.ISourceModule;
+import org.eclipse.dltk.core.ModelException;
+import org.eclipse.dltk.internal.ui.editor.EditorUtility;
+import org.eclipse.swt.custom.CaretEvent;
+import org.eclipse.swt.custom.CaretListener;
+import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IPartListener2;
 import org.eclipse.ui.IWorkbenchPartReference;
 import org.eclipse.ui.progress.UIJob;
 
+import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.MakeGoodStatus;
 import com.piece_framework.makegood.ui.MakeGoodStatusChangeListener;
 
@@ -32,6 +41,27 @@ public class TestOutlineViewController implements IPartListener2, MakeGoodStatus
     public void partActivated(IWorkbenchPartReference partRef) {
         if (partRef.getId().equals(TestOutlineView.ID)) return;
         updateTestOutline();
+
+        if (!(partRef.getPart(false) instanceof IEditorPart)) return;
+        final IEditorPart editor= (IEditorPart) partRef.getPart(false);
+        if (!(editor.getAdapter(Control.class) instanceof StyledText)) return;
+        StyledText text = (StyledText) editor.getAdapter(Control.class);
+        text.addCaretListener(new CaretListener() {
+            @Override
+            public void caretMoved(CaretEvent event) {
+                ISourceModule source = EditorUtility.getEditorInputModelElement(editor, false);
+                if (source == null) return;
+
+                TestOutlineView view = (TestOutlineView) ViewOpener.find(TestOutlineView.ID);
+                if (view == null) return;
+
+                try {
+                    view.setSelection(source.getElementAt(event.caretOffset));
+                } catch (ModelException e) {
+                    Activator.getDefault().getLog().log(new Status(IStatus.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
+                }
+            }
+        });
     }
 
     @Override

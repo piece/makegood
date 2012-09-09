@@ -53,6 +53,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.Tree;
+import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
@@ -176,6 +178,31 @@ public class TestOutlineView extends ViewPart {
                 collectBaseTestClasses(testClasses);
             }
         });
+    }
+
+    public void setSelection(IModelElement element) {
+        Tree tree = (Tree) viewer.getControl();
+        tree.deselectAll();
+        TreeItem foundItem = findItem(tree.getItems(), element);
+        if (foundItem == null) return;
+        tree.select(foundItem);
+    }
+
+    private TreeItem findItem(TreeItem[] items, IModelElement element) {
+        for (TreeItem item: items) {
+            if (!(item.getData() instanceof IModelElement)) continue;
+            IModelElement target = (IModelElement) item.getData();
+
+            if (target.getElementName().equals(element.getElementName())) {
+                return item;
+            }
+
+            if (item.getItems().length > 0) {
+                TreeItem foundItem = findItem(item.getItems(), element);
+                if (foundItem != null) return foundItem;
+            }
+        }
+        return null;
     }
 
     private void registerActions() {
