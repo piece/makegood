@@ -30,6 +30,8 @@ import org.eclipse.ui.IWorkbenchPartReference;
 import org.eclipse.ui.progress.UIJob;
 
 import com.piece_framework.makegood.ui.Activator;
+import com.piece_framework.makegood.ui.ActiveEditor;
+import com.piece_framework.makegood.ui.MakeGoodContext;
 import com.piece_framework.makegood.ui.MakeGoodStatus;
 import com.piece_framework.makegood.ui.MakeGoodStatusChangeListener;
 
@@ -37,13 +39,21 @@ import com.piece_framework.makegood.ui.MakeGoodStatusChangeListener;
  * @since 1.x.0
  */
 public class TestOutlineViewController implements IPartListener2, MakeGoodStatusChangeListener, IElementChangedListener {
+    private int currentEditorCode = 0;
+
     @Override
     public void partActivated(IWorkbenchPartReference partRef) {
-        if (partRef.getId().equals(TestOutlineView.ID)) return;
-        updateTestOutline();
-
         if (!(partRef.getPart(false) instanceof IEditorPart)) return;
-        final IEditorPart editor= (IEditorPart) partRef.getPart(false);
+
+        ActiveEditor activeEditor = MakeGoodContext.getInstance().getActiveEditor();
+        if (!activeEditor.isPHP()) return;
+        final IEditorPart editor = activeEditor.get();
+
+        if (partRef.hashCode() != currentEditorCode) {
+            updateTestOutline();
+        }
+        currentEditorCode = partRef.hashCode();
+
         if (!(editor.getAdapter(Control.class) instanceof StyledText)) return;
         StyledText text = (StyledText) editor.getAdapter(Control.class);
         text.addCaretListener(new CaretListener() {
