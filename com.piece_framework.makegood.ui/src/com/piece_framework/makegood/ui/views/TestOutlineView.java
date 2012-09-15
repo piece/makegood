@@ -176,14 +176,22 @@ public class TestOutlineView extends ViewPart {
                 viewer.expandAll();
 
                 collectBaseTestClasses(testClasses);
+
+                selectCurrentElement();
             }
         });
     }
 
-    public void setSelection(IModelElement element) {
+    public void selectCurrentElement() {
+        EditorParser parser = EditorParser.createActiveEditorParser();
+        if (parser == null) return;
+
         Tree tree = (Tree) viewer.getControl();
         tree.deselectAll();
-        TreeItem foundItem = findItem(tree.getItems(), element);
+
+        TreeItem foundItem = findItem(
+            tree.getItems(),
+            parser.getModelElementOnSelection());
         if (foundItem == null) return;
         tree.select(foundItem);
     }
