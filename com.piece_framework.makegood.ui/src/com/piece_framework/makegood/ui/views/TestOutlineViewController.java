@@ -42,11 +42,11 @@ public class TestOutlineViewController implements IPartListener2, MakeGoodStatus
         if (partRef.hashCode() == currentEditorCode) return;
         if (!(partRef.getPart(false) instanceof IEditorPart)) return;
 
+        updateTestOutline();
+
         ActiveEditor activeEditor = MakeGoodContext.getInstance().getActiveEditor();
         if (!activeEditor.isPHP()) return;
         final IEditorPart editor = activeEditor.get();
-
-        updateTestOutline();
 
         StyledText text = (StyledText) editor.getAdapter(Control.class);
         text.addCaretListener(new CaretListener() {
