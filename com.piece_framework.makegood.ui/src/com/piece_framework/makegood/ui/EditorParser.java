@@ -21,12 +21,10 @@ import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ITypeHierarchy;
 import org.eclipse.dltk.core.ModelException;
-import org.eclipse.dltk.core.ScriptModelUtil;
 import org.eclipse.dltk.internal.ui.editor.EditorUtility;
-import org.eclipse.jface.text.ITextSelection;
-import org.eclipse.jface.viewers.ISelectionProvider;
+import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.texteditor.ITextEditor;
 
 
 public class EditorParser {
@@ -50,16 +48,16 @@ public class EditorParser {
     }
 
     public IModelElement getModelElementOnSelection() {
-        ITextEditor textEditor = (ITextEditor) editor;
-        ISelectionProvider provider = (ISelectionProvider) textEditor.getSelectionProvider();
-        ITextSelection selection = (ITextSelection) provider.getSelection();
-        int offset = selection.getOffset();
+        if (!(editor.getAdapter(Control.class) instanceof StyledText)) return null;
+        StyledText text = (StyledText) editor.getAdapter(Control.class);
+        if (text == null) return null;
 
         ISourceModule source = getSourceModule();
+        if (source == null) return null;
+
         IModelElement element = null;
         try {
-            ScriptModelUtil.reconcile(source);
-            element = source.getElementAt(offset);
+            element = source.getElementAt(text.getCaretOffset());
         } catch (ModelException e) {
             Activator.getDefault().getLog().log(
                 new Status(
