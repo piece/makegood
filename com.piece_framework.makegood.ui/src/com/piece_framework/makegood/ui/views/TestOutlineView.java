@@ -45,6 +45,7 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerSorter;
+import org.eclipse.osgi.framework.debug.Debug;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -132,6 +133,9 @@ public class TestOutlineView extends ViewPart {
         if (display == null) return;
 
         display.asyncExec(new Runnable() {
+            private static final int RETRY_LIMIT = 5;
+            private int retry = 1;
+
             public void run() {
                 if (viewer.getControl().isDisposed()) return;
 
@@ -141,15 +145,6 @@ public class TestOutlineView extends ViewPart {
                 if (!activeEditor.isPHP()) return;
 
                 ISourceModule module = EditorParser.createActiveEditorParser().getSourceModule();
-                if (!module.getScriptProject().isOpen()) {
-                    // Wait the DLTK indexing...
-                    try {
-                        Thread.sleep(500);
-                        this.run();
-                    } catch (InterruptedException e) {}
-                    return;
-                }
-
                 List<TestClass> testClasses = new ArrayList<TestClass>();
                 try {
                     for (IType type: module.getTypes()) {
@@ -162,6 +157,25 @@ public class TestOutlineView extends ViewPart {
                 } catch (ModelException e) {
                     Activator.getDefault().getLog().log(new Status(IStatus.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
                 }
+
+                // Since there is no method of synchronizing with the DLTK indexing,
+                // the test classes may be uncollectable at the start up Eclipse.
+                // Therefore, in the following cases, it retries after definite period of time.
+                //   1. Not found test classes.
+                //   2. The element name includes "test".
+                //   3. The retry count is below limit.
+                boolean mayBeTest = module.getElementName().toLowerCase().indexOf("test") > 0;
+                if (testClasses.size() == 0
+                    && mayBeTest
+                    && retry < RETRY_LIMIT) {
+                    try {
+                        Thread.sleep(500);
+                        this.run();
+                    } catch (InterruptedException e) {}
+                    ++retry;
+                    return;
+                }
+
                 viewer.setInput(testClasses);
                 viewer.expandAll();
 
