@@ -45,6 +45,7 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerSorter;
+import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -108,6 +109,14 @@ public class TestOutlineView extends ViewPart {
         registerActions();
 
         updateTestOutline();
+
+        // Add the caret listener to the active PHP editor.
+        // (TestOutlineViewController#partActivate() is not invoked into start up Eclipse.)
+        ActiveEditor activeEditor = MakeGoodContext.getInstance().getActiveEditor();
+        if (activeEditor.isPHP()) {
+            StyledText text = (StyledText) activeEditor.get().getAdapter(Control.class);
+            text.addCaretListener(new TestOutlineViewController());
+        }
     }
 
     @Override
