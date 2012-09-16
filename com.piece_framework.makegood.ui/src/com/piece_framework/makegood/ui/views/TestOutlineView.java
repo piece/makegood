@@ -19,9 +19,6 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.IJobChangeEvent;
-import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.dltk.core.IMember;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
@@ -110,22 +107,6 @@ public class TestOutlineView extends ViewPart {
 
         registerActions();
 
-        initializeTestOutline();
-    }
-
-    private void initializeTestOutline() {
-        for (Job job: Job.getJobManager().find(null)) {
-            if (job.getName().startsWith("DLTK indexing")) {
-                job.addJobChangeListener(new JobChangeAdapter() {
-                    @Override
-                    public void done(IJobChangeEvent event) {
-                        updateTestOutline();
-                    }
-                });
-                return;
-            }
-        }
-
         updateTestOutline();
     }
 
@@ -160,6 +141,15 @@ public class TestOutlineView extends ViewPart {
                 if (!activeEditor.isPHP()) return;
 
                 ISourceModule module = EditorParser.createActiveEditorParser().getSourceModule();
+                if (!module.getScriptProject().isOpen()) {
+                    // Wait the DLTK indexing...
+                    try {
+                        Thread.sleep(500);
+                        this.run();
+                    } catch (InterruptedException e) {}
+                    return;
+                }
+
                 List<TestClass> testClasses = new ArrayList<TestClass>();
                 try {
                     for (IType type: module.getTypes()) {
