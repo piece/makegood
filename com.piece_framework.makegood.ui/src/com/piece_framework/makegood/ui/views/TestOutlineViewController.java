@@ -34,7 +34,7 @@ import com.piece_framework.makegood.ui.MakeGoodStatusChangeListener;
 /**
  * @since 1.x.0
  */
-public class TestOutlineViewController implements IPartListener2, MakeGoodStatusChangeListener, IElementChangedListener {
+public class TestOutlineViewController implements IPartListener2, MakeGoodStatusChangeListener, IElementChangedListener, CaretListener {
     private int currentEditorCode = 0;
 
     @Override
@@ -46,16 +46,8 @@ public class TestOutlineViewController implements IPartListener2, MakeGoodStatus
 
         ActiveEditor activeEditor = MakeGoodContext.getInstance().getActiveEditor();
         if (!activeEditor.isPHP()) return;
-        final IEditorPart editor = activeEditor.get();
-
-        StyledText text = (StyledText) editor.getAdapter(Control.class);
-        text.addCaretListener(new CaretListener() {
-            @Override
-            public void caretMoved(CaretEvent event) {
-                TestOutlineView view = (TestOutlineView) ViewOpener.find(TestOutlineView.ID);
-                if (view != null) view.selectCurrentElement();
-            }
-        });
+        StyledText text = (StyledText) activeEditor.get().getAdapter(Control.class);
+        text.addCaretListener(this);
 
         currentEditorCode = partRef.hashCode();
     }
@@ -104,6 +96,12 @@ public class TestOutlineViewController implements IPartListener2, MakeGoodStatus
             updateTestOutline();
             view.setRunningTest(false);
         }
+    }
+
+    @Override
+    public void caretMoved(CaretEvent event) {
+        TestOutlineView view = (TestOutlineView) ViewOpener.find(TestOutlineView.ID);
+        if (view != null) view.selectCurrentElement();
     }
 
     private void updateTestOutline() {
