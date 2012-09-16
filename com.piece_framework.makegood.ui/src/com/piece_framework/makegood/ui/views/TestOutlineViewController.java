@@ -88,14 +88,7 @@ public class TestOutlineViewController implements IPartListener2, MakeGoodStatus
     @Override
     public void statusChanged(MakeGoodStatus status) {
         TestOutlineView view = (TestOutlineView) ViewOpener.find(TestOutlineView.ID);
-        if (view == null) return;
-
-        if (status == MakeGoodStatus.RunningTest) {
-            view.setRunningTest(true);
-        } else if (status == MakeGoodStatus.WaitingForTestRun && view.runningTest()) {
-            updateTestOutline();
-            view.setRunningTest(false);
-        }
+        if (view != null) view.refresh();
     }
 
     @Override

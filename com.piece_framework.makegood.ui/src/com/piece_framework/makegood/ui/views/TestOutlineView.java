@@ -75,7 +75,6 @@ public class TestOutlineView extends ViewPart {
     public static final String ID = "com.piece_framework.makegood.ui.views.testOutlineView"; //$NON-NLS-1$
 
     private TreeViewer viewer;
-    private boolean runningTest;
     private List<IType> baseTestClasses;
 
     public TestOutlineView() {}
@@ -121,14 +120,6 @@ public class TestOutlineView extends ViewPart {
 
     @Override
     public void setFocus() {}
-
-    public boolean runningTest() {
-        return runningTest;
-    }
-
-    public void setRunningTest(boolean runningTest) {
-        this.runningTest = runningTest;
-    }
 
     public void updateTestOutline() {
         if (viewer == null) return;
@@ -179,6 +170,10 @@ public class TestOutlineView extends ViewPart {
                 selectCurrentElement();
             }
         });
+    }
+
+    public void refresh() {
+        viewer.refresh();
     }
 
     public void selectCurrentElement() {
