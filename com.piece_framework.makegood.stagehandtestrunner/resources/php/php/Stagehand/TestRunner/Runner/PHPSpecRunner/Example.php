@@ -31,34 +31,34 @@
  * @package    Stagehand_TestRunner
  * @copyright  2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.2.0
+ * @version    Release: 3.3.1
  * @since      File available since Release 3.0.0
  */
 
 namespace Stagehand\TestRunner\Runner\PHPSpecRunner;
 
-use Stagehand\TestRunner\Core\TestTargets;
+use Stagehand\TestRunner\Core\TestTargetRepository;
 
 /**
  * @package    Stagehand_TestRunner
  * @copyright  2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.2.0
+ * @version    Release: 3.3.1
  * @since      Class available since Release 3.0.0
  */
 class Example extends \PHPSpec\Specification\Example
 {
     /**
-     * @var \Stagehand\TestRunner\Core\TestTargets
+     * @var \Stagehand\TestRunner\Core\TestTargetRepository
      */
-    protected $testTargets;
+    protected $testTargetRepository;
 
     /**
-     * @param \Stagehand\TestRunner\Core\TestTargets $testTargets
+     * @param \Stagehand\TestRunner\Core\TestTargetRepository $testTargetRepository
      */
-    public function setTestTargets(TestTargets $testTargets)
+    public function setTestTargetRepository(TestTargetRepository $testTargetRepository)
     {
-        $this->testTargets = $testTargets;
+        $this->testTargetRepository = $testTargetRepository;
     }
 
     public function run(\PHPSpec\Runner\Reporter $reporter)
@@ -67,8 +67,8 @@ class Example extends \PHPSpec\Specification\Example
             return;
         }
 
-        if ($this->testTargets->testsOnlySpecifiedMethods()
-            && !$this->testTargets->shouldTreatElementAsTest(get_class($this->getExampleGroup()), $this->getMethodName())) {
+        if ($this->testTargetRepository->testsOnlySpecifiedMethods()
+            && !$this->testTargetRepository->shouldTreatElementAsTest(get_class($this->getExampleGroup()), $this->getMethodName())) {
             return;
         }
 

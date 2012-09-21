@@ -31,7 +31,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2011-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.2.0
+ * @version    Release: 3.3.1
  * @since      File available since Release 2.18.0
  */
 
@@ -42,7 +42,7 @@ use Symfony\Component\Process\Process;
 use Stagehand\ComponentFactory\IComponentAwareFactory;
 use Stagehand\TestRunner\CLI\Terminal;
 use Stagehand\TestRunner\Core\ApplicationContext;
-use Stagehand\TestRunner\Core\TestTargets;
+use Stagehand\TestRunner\Core\TestTargetRepository;
 use Stagehand\TestRunner\Notification\Notification;
 use Stagehand\TestRunner\Process\AlterationMonitoring;
 use Stagehand\TestRunner\Process\FatalError;
@@ -54,7 +54,7 @@ use Stagehand\TestRunner\Util\String;
  * @package    Stagehand_TestRunner
  * @copyright  2011-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.2.0
+ * @version    Release: 3.3.1
  * @since      Class available since Release 2.18.0
  */
 abstract class Autotest
@@ -82,16 +82,16 @@ abstract class Autotest
     protected $terminal;
 
     /**
-     * @var \Stagehand\TestRunner\Core\TestTargets
+     * @var \Stagehand\TestRunner\Core\TestTargetRepository
      * @since Property available since Release 3.0.0
      */
-    protected $testTargets;
+    protected $testTargetRepository;
 
     /**
      * @var array
      * @since Property available since Release 3.0.0
      */
-    protected $monitoringDirectories;
+    protected $watchDirs;
 
     /**
      * @var \Stagehand\TestRunner\Preparer\Preparer
@@ -183,7 +183,7 @@ abstract class Autotest
             $streamOutput = $process->getOutput();
         }
 
-        if ($exitStatus != 0 && $this->runnerFactory->create()->usesNotification()) {
+        if ($exitStatus != 0 && $this->runnerFactory->create()->shouldNotify()) {
             $fatalError = new FatalError($streamOutput);
             $this->notifierFactory->create()->notifyResult(
                 new Notification(Notification::RESULT_STOPPED, $fatalError->getFullMessage())
@@ -201,21 +201,21 @@ abstract class Autotest
     }
 
     /**
-     * @param \Stagehand\TestRunner\Core\TestTargets $testTargets
+     * @param \Stagehand\TestRunner\Core\TestTargetRepository $testTargetRepository
      * @since Method available since Release 3.0.0
      */
-    public function setTestTargets(TestTargets $testTargets)
+    public function setTestTargetRepository(TestTargetRepository $testTargetRepository)
     {
-        $this->testTargets = $testTargets;
+        $this->testTargetRepository = $testTargetRepository;
     }
 
     /**
-     * @param array $monitoringDirectories
+     * @param array $watchDirs
      * @since Method available since Release 3.0.0
      */
-    public function setMonitoringDirectories(array $monitoringDirectories)
+    public function setWatchDirs(array $watchDirs)
     {
-        $this->monitoringDirectories = $monitoringDirectories;
+        $this->watchDirs = $watchDirs;
     }
 
     /**
@@ -260,12 +260,8 @@ abstract class Autotest
      */
     protected function getMonitoringDirectories()
     {
-        $monitoringDirectories = array();
-        foreach (
-            array_merge(
-                $this->monitoringDirectories,
-                $this->testTargets->getResources()
-            ) as $directory) {
+        $watchDirs = array();
+        foreach (array_merge($this->watchDirs,$this->testTargetRepository->getResources()) as $directory) {
             if (!$this->legacyProxy->is_dir($directory)) {
                 throw new \UnexpectedValueException(sprintf('A specified path [ %s ] is not found or not a directory.', $directory));
             }
@@ -275,12 +271,12 @@ abstract class Autotest
                 throw new \UnexpectedValueException(sprintf('Cannnot get the absolute path of a specified directory [ %s ]. Make sure all elements of the absolute path have valid permissions.', $directory));
             }
 
-            if (!in_array($directory, $monitoringDirectories)) {
-                $monitoringDirectories[] = $directory;
+            if (!in_array($directory, $watchDirs)) {
+                $watchDirs[] = $directory;
             }
         }
 
-        return $monitoringDirectories;
+        return $watchDirs;
     }
 
     /**
@@ -325,7 +321,7 @@ abstract class Autotest
             $options[] = escapeshellarg($_SERVER['argv'][0]);
         }
 
-        if ($this->terminal->colors()) {
+        if ($this->terminal->shouldColor()) {
             $options[] = '--ansi';
         }
 
@@ -337,25 +333,25 @@ abstract class Autotest
 
         $options[] = '-R';
 
-        if ($this->runnerFactory->create()->usesNotification()) {
+        if ($this->runnerFactory->create()->shouldNotify()) {
             $options[] = '-m';
         }
 
-        if ($this->runnerFactory->create()->stopsOnFailure()) {
+        if ($this->runnerFactory->create()->shouldStopOnFailure()) {
             $options[] = '--stop-on-failure';
         }
 
-        if (!$this->testTargets->isDefaultFilePattern()) {
-            $options[] = '--test-file-pattern=' . escapeshellarg($this->testTargets->getFilePattern());
+        if (!$this->testTargetRepository->isDefaultFilePattern()) {
+            $options[] = '--test-file-pattern=' . escapeshellarg($this->testTargetRepository->getFilePattern());
         }
 
-        if ($this->runnerFactory->create()->printsDetailedProgressReport()) {
+        if ($this->runnerFactory->create()->hasDetailedProgress()) {
             $options[] = '--detailed-progress';
         }
 
         $options = array_merge($options, $this->doBuildRunnerOptions());
 
-        $this->testTargets->walkOnResources(function ($resource, $index, TestTargets $testTargets) use (&$options) {
+        $this->testTargetRepository->walkOnResources(function ($resource, $index, TestTargetRepository $testTargetRepository) use (&$options) {
             $options[] = escapeshellarg($resource);
         });
 

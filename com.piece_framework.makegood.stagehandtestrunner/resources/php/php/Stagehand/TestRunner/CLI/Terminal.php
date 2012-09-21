@@ -4,7 +4,7 @@
 /**
  * PHP version 5.3
  *
- * Copyright (c) 2011 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2011-2012 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,9 +29,9 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_TestRunner
- * @copyright  2011 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2011-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.2.0
+ * @version    Release: 3.3.1
  * @since      File available since Release 3.0.0
  */
 
@@ -42,9 +42,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @package    Stagehand_TestRunner
- * @copyright  2011 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2011-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.2.0
+ * @version    Release: 3.3.1
  * @since      Class available since Release 3.0.0
  */
 class Terminal
@@ -60,17 +60,17 @@ class Terminal
     protected $output;
 
     /**
-     * @param boolean $colors
+     * @param boolean $color
      */
-    public function setColors($colors)
+    public function setColor($color)
     {
-        $this->output->setDecorated($colors);
+        $this->output->setDecorated($color);
     }
 
     /**
      * @return boolean
      */
-    public function colors()
+    public function shouldColor()
     {
         return $this->output->isDecorated();
     }

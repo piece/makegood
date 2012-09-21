@@ -31,14 +31,14 @@
  * @package    Stagehand_TestRunner
  * @copyright  2009-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.2.0
+ * @version    Release: 3.3.1
  * @link       http://www.phpunit.de/
  * @since      File available since Release 2.10.0
  */
 
 namespace Stagehand\TestRunner\Runner\PHPUnitRunner\Printer;
 
-use Stagehand\TestRunner\Core\TestTargets;
+use Stagehand\TestRunner\Core\TestTargetRepository;
 use Stagehand\TestRunner\JUnitXMLWriter\JUnitXMLWriter;
 use Stagehand\TestRunner\Util\FailureTrace;
 
@@ -48,7 +48,7 @@ use Stagehand\TestRunner\Util\FailureTrace;
  * @package    Stagehand_TestRunner
  * @copyright  2009-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.2.0
+ * @version    Release: 3.3.1
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.10.0
  */
@@ -60,10 +60,23 @@ class JUnitXMLPrinter extends \PHPUnit_Util_Printer implements \PHPUnit_Framewor
     protected $testStarted = false;
 
     /**
-     * @var \Stagehand\TestRunner\Core\TestTargets
+     * @var \Stagehand\TestRunner\Core\TestTargetRepository
      * @since Property available since Release 3.0.0
      */
-    protected $testTargets;
+    protected $testTargetRepository;
+
+    /**
+     * @param mixed $out
+     * @param \Stagehand\TestRunner\JUnitXMLWriter\JUnitXMLWriter $junitXMLWriter
+     * @param \Stagehand\TestRunner\Core\TestTargetRepository $testTargetRepository
+     * @since Method available since Release 3.3.0
+     */
+    public function __construct($out, JUnitXMLWriter $junitXMLWriter, TestTargetRepository $testTargetRepository)
+    {
+        parent::__construct($out);
+        $this->junitXMLWriter = $junitXMLWriter;
+        $this->testTargetRepository = $testTargetRepository;
+    }
 
     public function flush()
     {
@@ -165,23 +178,6 @@ class JUnitXMLPrinter extends \PHPUnit_Util_Printer implements \PHPUnit_Framewor
     }
 
     /**
-     * @param \Stagehand\TestRunner\JUnitXMLWriter\JUnitXMLWriter $junitXMLWriter
-     */
-    public function setJUnitXMLWriter(JUnitXMLWriter $junitXMLWriter)
-    {
-        $this->junitXMLWriter = $junitXMLWriter;
-    }
-
-    /**
-     * @param \Stagehand\TestRunner\Core\TestTargets $testTargets
-     * @since Method available since Release 3.0.0
-     */
-    public function setTestTargets(TestTargets $testTargets)
-    {
-        $this->testTargets = $testTargets;
-    }
-
-    /**
      * @param \PHPUnit_Framework_Test $test
      * @param \Exception $e
      * @param float $time
@@ -231,7 +227,7 @@ class JUnitXMLPrinter extends \PHPUnit_Util_Printer implements \PHPUnit_Framewor
             $line = 1;
         } else {
             list($file, $line) = FailureTrace::findFileAndLineOfFailureOrError(
-                $this->testTargets->getRequiredSuperTypes(),
+                $this->testTargetRepository->getRequiredSuperTypes(),
                 $e,
                 new \ReflectionClass($test)
             );

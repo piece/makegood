@@ -31,7 +31,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2011-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.2.0
+ * @version    Release: 3.3.1
  * @since      File available since Release 3.0.0
  */
 
@@ -44,17 +44,17 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 use Stagehand\TestRunner\Core\ApplicationContext;
-use Stagehand\TestRunner\Core\Configuration\GeneralConfiguration;
-use Stagehand\TestRunner\Core\DependencyInjection\Compiler;
-use Stagehand\TestRunner\Core\DependencyInjection\Container;
-use Stagehand\TestRunner\Core\Transformation\Transformation;
+use Stagehand\TestRunner\DependencyInjection\Compiler;
+use Stagehand\TestRunner\DependencyInjection\Configuration\GeneralConfiguration;
+use Stagehand\TestRunner\DependencyInjection\Container;
+use Stagehand\TestRunner\DependencyInjection\Transformation\Transformation;
 use Stagehand\TestRunner\Util\FileSystem;
 
 /**
  * @package    Stagehand_TestRunner
  * @copyright  2011-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.2.0
+ * @version    Release: 3.3.1
  * @since      Class available since Release 3.0.0
  */
 abstract class PluginCommand extends Command
@@ -154,7 +154,7 @@ PHP_EOL .
     /**
      * @param \Symfony\Component\Console\Input\InputInterface $input
      * @param \Symfony\Component\Console\Output\OutputInterface $output
-     * @param \Stagehand\TestRunner\Core\Transformation\Transformation $transformation
+     * @param \Stagehand\TestRunner\DependencyInjection\Transformation\Transformation $transformation
      */
     protected function transformToConfiguration(InputInterface $input, OutputInterface $output, Transformation $transformation)
     {
@@ -265,7 +265,7 @@ PHP_EOL .
     /**
      * @param \Symfony\Component\Console\Input\InputInterface $input
      * @param \Symfony\Component\Console\Output\OutputInterface $output
-     * @param \Stagehand\TestRunner\Core\Transformation\Transformation $transformation
+     * @param \Stagehand\TestRunner\DependencyInjection\Transformation\Transformation $transformation
      */
     abstract protected function doTransformToConfiguration(InputInterface $input, OutputInterface $output, Transformation $transformation);
 
@@ -287,7 +287,7 @@ PHP_EOL .
 
     /**
      * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
-     * @return \Stagehand\TestRunner\Core\Transformation\Transformation
+     * @return \Stagehand\TestRunner\DependencyInjection\Transformation\Transformation
      */
     protected function createTransformation(ContainerInterface $container)
     {

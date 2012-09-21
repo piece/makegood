@@ -31,7 +31,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2011-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.2.0
+ * @version    Release: 3.3.1
  * @since      File available since Release 3.0.0
  */
 
@@ -43,7 +43,7 @@ use Stagehand\ComponentFactory\IComponentAwareFactory;
  * @package    Stagehand_TestRunner
  * @copyright  2011-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.2.0
+ * @version    Release: 3.3.1
  * @since      Class available since Release 3.0.0
  */
 class TestRunner
@@ -51,7 +51,7 @@ class TestRunner
     /**
      * @var boolean
      */
-    protected $enablesAutotest;
+    protected $autotest;
 
     /**
      * @var \Stagehand\ComponentFactory\IComponentAwareFactory
@@ -65,7 +65,7 @@ class TestRunner
 
     public function run()
     {
-        if (!$this->enablesAutotest) {
+        if (!$this->autotest) {
             $this->testRunFactory->create()->run();
         } else {
             $autotest = $this->autotestFactory->create();
@@ -75,11 +75,11 @@ class TestRunner
     }
 
     /**
-     * @param boolean $enablesAutotest
+     * @param boolean $autotest
      */
-    public function setEnablesAutotest($enablesAutotest)
+    public function setAutotest($autotest)
     {
-        $this->enablesAutotest = $enablesAutotest;
+        $this->autotest = $autotest;
     }
 
     /**

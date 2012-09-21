@@ -31,7 +31,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2011-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.2.0
+ * @version    Release: 3.3.1
  * @since      File available since Release 3.0.0
  */
 
@@ -49,7 +49,7 @@ use Stagehand\TestRunner\Core\ApplicationContext;
  * @package    Stagehand_TestRunner
  * @copyright  2011-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.2.0
+ * @version    Release: 3.3.1
  * @since      Class available since Release 3.0.0
  */
 class Application extends \Symfony\Component\Console\Application
@@ -62,7 +62,7 @@ class Application extends \Symfony\Component\Console\Application
     public function __construct()
     {
         $this->commandRepository = new CommandRepository();
-        parent::__construct('Stagehand_TestRunner', '3.2.0');
+        parent::__construct('Stagehand_TestRunner', '3.3.1');
         $this->setAutoExit(false);
 
         // For compatibility with Symfony 2.0
@@ -132,11 +132,7 @@ class Application extends \Symfony\Component\Console\Application
     protected function getCopyright()
     {
         return
-'Copyright (c) 2005-2012 KUBO Atsuhiro <kubo@iteman.jp>,' . PHP_EOL .
-'              2007 Masahiko Sakamoto <msakamoto-sf@users.sourceforge.net>,' . PHP_EOL .
-'              2010 KUMAKURA Yousuke <kumatch@gmail.com>,' . PHP_EOL .
-'              2011 Shigenobu Nishikawa <shishi.s.n@gmail.com>,' . PHP_EOL .
-'              2011 KUBO Noriko <noricott@gmail.com>,' . PHP_EOL .
+'Copyright (c) 2005-2012 KUBO Atsuhiro and contributors,' . PHP_EOL .
 'All rights reserved.';
     }
 }

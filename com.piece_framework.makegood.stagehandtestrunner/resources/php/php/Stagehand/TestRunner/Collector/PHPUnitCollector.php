@@ -5,6 +5,7 @@
  * PHP version 5.3
  *
  * Copyright (c) 2007-2012 KUBO Atsuhiro <kubo@iteman.jp>,
+ *               2012 tsyk goto <ngyuki.ts@gmail.com>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,25 +31,27 @@
  *
  * @package    Stagehand_TestRunner
  * @copyright  2007-2012 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2012 tsyk goto <ngyuki.ts@gmail.com>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.2.0
+ * @version    Release: 3.3.1
  * @link       http://www.phpunit.de/
  * @since      File available since Release 2.1.0
  */
 
 namespace Stagehand\TestRunner\Collector;
 
-use Stagehand\TestRunner\Core\PHPUnitXMLConfiguration;
 use Stagehand\TestRunner\TestSuite\PHPUnitGroupFilterTestSuite;
 use Stagehand\TestRunner\TestSuite\PHPUnitMethodFilterTestSuite;
+use Stagehand\TestRunner\Util\PHPUnitXMLConfiguration;
 
 /**
  * A test collector for PHPUnit.
  *
  * @package    Stagehand_TestRunner
  * @copyright  2007-2012 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2012 tsyk goto <ngyuki.ts@gmail.com>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.2.0
+ * @version    Release: 3.3.1
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.1.0
  */
@@ -67,7 +70,7 @@ class PHPUnitCollector extends Collector
     private static $FILTER_METHOD = 2;
 
     /**
-     * @var \Stagehand\TestRunner\Core\PHPUnitXMLConfiguration
+     * @var \Stagehand\TestRunner\Util\PHPUnitXMLConfiguration
      * @since Property available since Release 3.0.0
      */
     protected $phpunitXMLConfiguration;
@@ -89,9 +92,9 @@ class PHPUnitCollector extends Collector
         }
 
         if (!(count($testSuite->tests()) == 1 && $testSuite->testAt(0) instanceof \PHPUnit_Framework_Warning)) {
-            if ($this->testTargets->testsOnlySpecifiedMethods()) {
+            if ($this->testTargetRepository->testsOnlySpecifiedMethods()) {
                 $this->filterTests($testSuite, self::$FILTER_METHOD);
-            } elseif ($this->testTargets->testsOnlySpecifiedClasses()) {
+            } elseif ($this->testTargetRepository->testsOnlySpecifiedClasses()) {
                 $this->filterTests($testSuite, self::$FILTER_CLASS);
             }
         }
@@ -102,7 +105,7 @@ class PHPUnitCollector extends Collector
     }
 
     /**
-     * @param \Stagehand\TestRunner\Core\PHPUnitXMLConfiguration $phpunitXMLConfiguration
+     * @param \Stagehand\TestRunner\Util\PHPUnitXMLConfiguration $phpunitXMLConfiguration
      * @since Method available since Release 3.0.0
      */
     public function setPHPUnitXMLConfiguration(PHPUnitXMLConfiguration $phpunitXMLConfiguration = null)
@@ -148,7 +151,7 @@ class PHPUnitCollector extends Collector
             if ($test instanceof \PHPUnit_Framework_TestCase) {
                 $testClassName = get_class($test);
                 $testMethodName = $test->getName(false);
-                if ($this->testTargets->shouldTreatElementAsTest($testClassName, $filter == self::$FILTER_METHOD ? $testMethodName : null)) {
+                if ($this->testTargetRepository->shouldTreatElementAsTest($testClassName, $filter == self::$FILTER_METHOD ? $testMethodName : null)) {
                     $filteredTests[] = $test;
                 }
             } else {
@@ -165,6 +168,19 @@ class PHPUnitCollector extends Collector
         $numTestsProperty->setAccessible(true);
         $numTestsProperty->setValue($testSuite, -1);
         $numTestsProperty->setAccessible(false);
+
+        $groupsProperty = $testSuiteClass->getProperty('groups');
+        $groupsProperty->setAccessible(true);
+        $groups = $groupsProperty->getValue($testSuite);
+
+        $groups = array_map(function($tests) use ($filteredTests) {
+            return array_filter($tests, function($test) use ($filteredTests) {
+                return in_array($test, $filteredTests, true);
+            });
+        }, $groups);
+
+        $groupsProperty->setValue($testSuite, $groups);
+        $groupsProperty->setAccessible(false);
     }
 }
 

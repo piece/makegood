@@ -31,7 +31,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2010-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.2.0
+ * @version    Release: 3.3.1
  * @since      File available since Release 2.12.0
  */
 
@@ -40,19 +40,19 @@ namespace Stagehand\TestRunner\Preparer;
 require_once 'PHPUnit/Autoload.php';
 
 use Stagehand\TestRunner\CLI\Terminal;
-use Stagehand\TestRunner\Core\PHPUnitXMLConfiguration;
+use Stagehand\TestRunner\Util\PHPUnitXMLConfiguration;
 
 /**
  * @package    Stagehand_TestRunner
  * @copyright  2010-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.2.0
+ * @version    Release: 3.3.1
  * @since      Class available since Release 2.12.0
  */
 class PHPUnitPreparer extends Preparer
 {
     /**
-     * @var \Stagehand\TestRunner\Core\PHPUnitXMLConfiguration
+     * @var \Stagehand\TestRunner\Util\PHPUnitXMLConfiguration
      * @since Property available since Release 3.0.0
      */
     protected $phpunitXMLConfiguration;
@@ -71,7 +71,7 @@ class PHPUnitPreparer extends Preparer
     }
 
     /**
-     * @param \Stagehand\TestRunner\Core\PHPUnitXMLConfiguration $phpunitXMLConfiguration
+     * @param \Stagehand\TestRunner\Util\PHPUnitXMLConfiguration $phpunitXMLConfiguration
      * @since Method available since Release 3.0.0
      */
     public function setPHPUnitXMLConfiguration(PHPUnitXMLConfiguration $phpunitXMLConfiguration = null)
@@ -124,7 +124,7 @@ class PHPUnitPreparer extends Preparer
         }
 
         if ($this->phpunitXMLConfiguration->hasPHPUnitConfiguration('colors')) {
-            $this->terminal->setColors($this->phpunitXMLConfiguration->getPHPUnitConfiguration('colors'));
+            $this->terminal->setColor($this->phpunitXMLConfiguration->getPHPUnitConfiguration('colors'));
         }
 
         if ($this->phpunitXMLConfiguration->hasSeleniumBrowserConfiguration()) {

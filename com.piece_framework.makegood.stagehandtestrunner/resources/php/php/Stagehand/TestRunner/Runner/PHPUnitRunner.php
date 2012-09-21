@@ -31,15 +31,15 @@
  * @package    Stagehand_TestRunner
  * @copyright  2007-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.2.0
+ * @version    Release: 3.3.1
  * @link       http://www.phpunit.de/
  * @since      File available since Release 2.1.0
  */
 
 namespace Stagehand\TestRunner\Runner;
 
-use Stagehand\TestRunner\Core\PHPUnitXMLConfiguration;
 use Stagehand\TestRunner\Runner\PHPUnitRunner\Printer\DetailedProgressPrinter;
+use Stagehand\TestRunner\Runner\PHPUnitRunner\Printer\JUnitXMLPrinter;
 use Stagehand\TestRunner\Runner\PHPUnitRunner\Printer\JUnitXMLPrinterFactory;
 use Stagehand\TestRunner\Runner\PHPUnitRunner\Printer\ProgressPrinter;
 use Stagehand\TestRunner\Runner\PHPUnitRunner\Printer\ResultPrinter;
@@ -47,6 +47,7 @@ use Stagehand\TestRunner\Runner\PHPUnitRunner\Printer\TestDoxPrinter;
 use Stagehand\TestRunner\Runner\PHPUnitRunner\TestDox\NamePrettifier;
 use Stagehand\TestRunner\Runner\PHPUnitRunner\TestDox\Stream;
 use Stagehand\TestRunner\Runner\PHPUnitRunner\TestRunner;
+use Stagehand\TestRunner\Util\PHPUnitXMLConfiguration;
 
 /**
  * A test runner for PHPUnit.
@@ -54,23 +55,17 @@ use Stagehand\TestRunner\Runner\PHPUnitRunner\TestRunner;
  * @package    Stagehand_TestRunner
  * @copyright  2007-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.2.0
+ * @version    Release: 3.3.1
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.1.0
  */
 class PHPUnitRunner extends Runner
 {
     /**
-     * @var \Stagehand\TestRunner\Core\PHPUnitXMLConfiguration
+     * @var \Stagehand\TestRunner\Util\PHPUnitXMLConfiguration
      * @since Property available since Release 3.0.0
      */
     protected $phpunitXMLConfiguration;
-
-    /**
-     * @var \Stagehand\TestRunner\Runner\PHPUnitRunner\Printer\JUnitXMLPrinterFactory
-     * @since Property available since Release 3.0.0
-     */
-    protected $junitXMLPrinterFactory;
 
     /**
      * Runs tests based on the given \PHPUnit_Framework_TestSuite object.
@@ -79,65 +74,22 @@ class PHPUnitRunner extends Runner
      */
     public function run($suite)
     {
+        $printer = $this->createPrinter();
         $testResult = new \PHPUnit_Framework_TestResult();
-        if ($this->printsDetailedProgressReport()) {
-            $printer = new DetailedProgressPrinter(null, false, $this->terminal->colors());
-        } else {
-            $printer = new ProgressPrinter(null, false, $this->terminal->colors());
-        }
-        $printer->setRunner($this);
-
-        $arguments = array();
-        $arguments['printer'] = $printer;
-
-        Stream::register();
-        $arguments['listeners'] =
-            array(
-                new TestDoxPrinter(
-                    fopen('testdox://' . spl_object_hash($testResult), 'w'),
-                    $this->terminal->colors(),
-                    $this->prettifier()
-                )
-            );
-
-        if ($this->logsResultsInJUnitXML) {
-            $arguments['listeners'][] = $this->junitXMLPrinterFactory->create(
-                $this->createStreamWriter($this->junitXMLFile)
-            );
-        }
-
-        if ($this->stopsOnFailure) {
-            $arguments['stopOnFailure'] = true;
-            $arguments['stopOnError'] = true;
-        }
-
-        if ($this->phpunitXMLConfiguration->isEnabled()) {
-            $arguments['configuration'] = $this->phpunitXMLConfiguration->getFileName();
-        }
-
         $testRunner = new TestRunner();
         $testRunner->setTestResult($testResult);
-        $testRunner->doRun($suite, $arguments);
+        $testRunner->doRun($suite, $this->createArguments($printer, $testResult));
 
         $this->notification = $printer->getNotification();
     }
 
     /**
-     * @param \Stagehand\TestRunner\Core\PHPUnitXMLConfiguration $phpunitXMLConfiguration
+     * @param \Stagehand\TestRunner\Util\PHPUnitXMLConfiguration $phpunitXMLConfiguration
      * @since Method available since Release 3.0.0
      */
     public function setPHPUnitXMLConfiguration(PHPUnitXMLConfiguration $phpunitXMLConfiguration = null)
     {
         $this->phpunitXMLConfiguration = $phpunitXMLConfiguration;
-    }
-
-    /**
-     * @param \Stagehand\TestRunner\Runner\PHPUnitRunner\Printer\JUnitXMLPrinterFactory $junitXMLPrinterFactory
-     * @since Method available since Release 3.0.0
-     */
-    public function setJUnitXMLPrinterFactory(JUnitXMLPrinterFactory $junitXMLPrinterFactory)
-    {
-        $this->junitXMLPrinterFactory = $junitXMLPrinterFactory;
     }
 
     /**
@@ -147,6 +99,63 @@ class PHPUnitRunner extends Runner
     protected function prettifier()
     {
         return new \PHPUnit_Util_TestDox_NamePrettifier();
+    }
+
+    /**
+     * @return \Stagehand\TestRunner\Runner\PHPUnitRunner\Printer\ResultPrinter
+     * @since Method available since Release 3.3.0
+     */
+    protected function createPrinter()
+    {
+        if ($this->hasDetailedProgress()) {
+            $printer = new DetailedProgressPrinter(null, false, $this->terminal->shouldColor());
+        } else {
+            $printer = new ProgressPrinter(null, false, $this->terminal->shouldColor());
+        }
+        $printer->setRunner($this);
+
+        return $printer;
+    }
+
+    /**
+     * @param \Stagehand\TestRunner\Runner\PHPUnitRunner\Printer\ResultPrinter $printer
+     * @param \PHPUnit_Framework_TestResult $testResult
+     * @return array
+     * @since Method available since Release 3.3.0
+     */
+    protected function createArguments(ResultPrinter $printer, \PHPUnit_Framework_TestResult $testResult)
+    {
+        $arguments = array();
+        $arguments['printer'] = $printer;
+
+        Stream::register();
+        $arguments['listeners'] =
+            array(
+                new TestDoxPrinter(
+                    fopen('testdox://' . spl_object_hash($testResult), 'w'),
+                    $this->terminal,
+                    $this->prettifier()
+                )
+            );
+
+        if ($this->hasJUnitXMLFile()) {
+            $arguments['listeners'][] = new JUnitXMLPrinter(
+                null,
+                $this->createJUnitXMLWriter(),
+                $this->testTargetRepository
+            );
+        }
+
+        if ($this->shouldStopOnFailure()) {
+            $arguments['stopOnFailure'] = true;
+            $arguments['stopOnError'] = true;
+        }
+
+        if ($this->phpunitXMLConfiguration->isEnabled()) {
+            $arguments['configuration'] = $this->phpunitXMLConfiguration->getFileName();
+        }
+
+        return $arguments;
     }
 }
 

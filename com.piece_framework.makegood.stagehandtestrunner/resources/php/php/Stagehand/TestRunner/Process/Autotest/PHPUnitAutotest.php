@@ -31,30 +31,30 @@
  * @package    Stagehand_TestRunner
  * @copyright  2011-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.2.0
+ * @version    Release: 3.3.1
  * @since      File available since Release 3.0.0
  */
 
 namespace Stagehand\TestRunner\Process\Autotest;
 
-use Stagehand\TestRunner\Core\PHPUnitXMLConfiguration;
+use Stagehand\TestRunner\Util\PHPUnitXMLConfiguration;
 
 /**
  * @package    Stagehand_TestRunner
  * @copyright  2011-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.2.0
+ * @version    Release: 3.3.1
  * @since      Class available since Release 3.0.0
  */
 class PHPUnitAutotest extends Autotest
 {
     /**
-     * @var \Stagehand\TestRunner\Core\PHPUnitXMLConfiguration
+     * @var \Stagehand\TestRunner\Util\PHPUnitXMLConfiguration
      */
     protected $phpunitXMLConfiguration;
 
     /**
-     * @param \Stagehand\TestRunner\Core\PHPUnitXMLConfiguration $phpunitXMLConfiguration
+     * @param \Stagehand\TestRunner\Util\PHPUnitXMLConfiguration $phpunitXMLConfiguration
      */
     public function setPHPUnitXMLConfiguration(PHPUnitXMLConfiguration $phpunitXMLConfiguration = null)
     {

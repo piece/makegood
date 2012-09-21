@@ -31,30 +31,30 @@
  * @package    Stagehand_TestRunner
  * @copyright  2009-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.2.0
+ * @version    Release: 3.3.1
  * @link       http://simpletest.org/
  * @since      File available since Release 2.10.0
  */
 
 namespace Stagehand\TestRunner\TestSuite;
 
-use Stagehand\TestRunner\Core\TestTargets;
+use Stagehand\TestRunner\Core\TestTargetRepository;
 
 /**
  * @package    Stagehand_TestRunner
  * @copyright  2009-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.2.0
+ * @version    Release: 3.3.1
  * @link       http://simpletest.org/
  * @since      Class available since Release 2.10.0
  */
 class SimpleTestTestSuite extends \TestSuite
 {
     /**
-     * @var \Stagehand\TestRunner\Core\TestTargets
+     * @var \Stagehand\TestRunner\Core\TestTargetRepository
      * @since Property available since Release 3.0.0
      */
-    protected $testTargets;
+    protected $testTargetRepository;
 
     /**
      * @var array
@@ -89,14 +89,14 @@ class SimpleTestTestSuite extends \TestSuite
     {
         $tests = $this->getTestsInTestCase($testCase);
         $testCount = 0;
-        if ($this->testTargets->testsOnlySpecifiedMethods()) {
+        if ($this->testTargetRepository->testsOnlySpecifiedMethods()) {
             foreach ($tests as $method) {
-                if ($this->testTargets->shouldTreatElementAsTest(get_class($testCase), $method)) {
+                if ($this->testTargetRepository->shouldTreatElementAsTest(get_class($testCase), $method)) {
                     ++$testCount;
                 }
             }
-        } elseif ($this->testTargets->testsOnlySpecifiedClasses()) {
-            if ($this->testTargets->shouldTreatElementAsTest(get_class($testCase))) {
+        } elseif ($this->testTargetRepository->testsOnlySpecifiedClasses()) {
+            if ($this->testTargetRepository->shouldTreatElementAsTest(get_class($testCase))) {
                 $testCount = count($tests);
             }
         } else {
@@ -107,12 +107,12 @@ class SimpleTestTestSuite extends \TestSuite
     }
 
     /**
-     * @param \Stagehand\TestRunner\Core\TestTargets $testTargets
+     * @param \Stagehand\TestRunner\Core\TestTargetRepository $testTargetRepository
      * @since Method available since Release 3.0.0
      */
-    public function setTestTargets(TestTargets $testTargets)
+    public function setTestTargetRepository(TestTargetRepository $testTargetRepository)
     {
-        $this->testTargets = $testTargets;
+        $this->testTargetRepository = $testTargetRepository;
     }
 
     /**

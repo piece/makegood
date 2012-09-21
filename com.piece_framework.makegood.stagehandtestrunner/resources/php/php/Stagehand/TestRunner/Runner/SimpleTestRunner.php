@@ -35,7 +35,7 @@
  * @copyright  2007-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @copyright  2010 KUMAKURA Yousuke <kumatch@gmail.com>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.2.0
+ * @version    Release: 3.3.1
  * @link       http://simpletest.org/
  * @since      File available since Release 2.1.0
  */
@@ -56,7 +56,7 @@ use Stagehand\TestRunner\Runner\SimpleTestRunner\TextReporter;
  * @copyright  2007-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @copyright  2010 KUMAKURA Yousuke <kumatch@gmail.com>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.2.0
+ * @version    Release: 3.3.1
  * @link       http://simpletest.org/
  * @since      Class available since Release 2.1.0
  */
@@ -80,9 +80,9 @@ class SimpleTestRunner extends Runner
         $reporter = new \MultipleReporter();
         $reporter->attachReporter($this->decorateReporter($textReporter));
 
-        if ($this->logsResultsInJUnitXML) {
+        if ($this->hasJUnitXMLFile()) {
             $reporter->attachReporter($this->decorateReporter($this->junitXMLReporterFactory->create(
-                $this->createStreamWriter($this->junitXMLFile),
+                $this->createJUnitXMLWriter(),
                 $suite
             )));
         }
@@ -109,17 +109,17 @@ class SimpleTestRunner extends Runner
     {
         $reporters[] = $reporter;
 
-        if ($this->testTargets->testsOnlySpecifiedMethods()) {
+        if ($this->testTargetRepository->testsOnlySpecifiedMethods()) {
             $reporters[] = $this->createMethodFilterReporter($reporters[ count($reporters) - 1 ]);
-            $reporters[ count($reporters) - 1 ]->setTestTargets($this->testTargets);
+            $reporters[ count($reporters) - 1 ]->setTestTargetRepository($this->testTargetRepository);
         }
 
-        if ($this->testTargets->testsOnlySpecifiedClasses()) {
+        if ($this->testTargetRepository->testsOnlySpecifiedClasses()) {
             $reporters[] = new ClassFilterReporter($reporters[ count($reporters) - 1 ]);
-            $reporters[ count($reporters) - 1 ]->setTestTargets($this->testTargets);
+            $reporters[ count($reporters) - 1 ]->setTestTargetRepository($this->testTargetRepository);
         }
 
-        if ($this->stopsOnFailure) {
+        if ($this->shouldStopOnFailure()) {
             $reporters[] = new StopOnFailureReporter($reporters[ count($reporters) - 1 ]);
         }
 

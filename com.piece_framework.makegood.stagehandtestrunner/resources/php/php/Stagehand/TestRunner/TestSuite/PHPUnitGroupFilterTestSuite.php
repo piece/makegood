@@ -31,20 +31,20 @@
  * @package    Stagehand_TestRunner
  * @copyright  2011-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.2.0
+ * @version    Release: 3.3.1
  * @link       http://www.phpunit.de/
  * @since      File available since Release 2.17.0
  */
 
 namespace Stagehand\TestRunner\TestSuite;
 
-use Stagehand\TestRunner\Core\PHPUnitXMLConfiguration;
+use Stagehand\TestRunner\Util\PHPUnitXMLConfiguration;
 
 /**
  * @package    Stagehand_TestRunner
  * @copyright  2011-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.2.0
+ * @version    Release: 3.3.1
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.17.0
  */
@@ -53,14 +53,14 @@ class PHPUnitGroupFilterTestSuite extends \PHPUnit_Framework_TestSuite
     protected $excluded = false;
 
     /**
-     * @var \Stagehand\TestRunner\Core\PHPUnitXMLConfiguration
+     * @var \Stagehand\TestRunner\Util\PHPUnitXMLConfiguration
      * @since Property available since Release 3.0.0
      */
     protected $phpunitXMLConfiguration;
 
     /**
      * @param \ReflectionClass $theClass
-     * @param \Stagehand\TestRunner\Core\PHPUnitXMLConfiguration $phpunitXMLConfiguration
+     * @param \Stagehand\TestRunner\Util\PHPUnitXMLConfiguration $phpunitXMLConfiguration
      */
     public function __construct(\ReflectionClass $theClass, PHPUnitXMLConfiguration $phpunitXMLConfiguration = null)
     {

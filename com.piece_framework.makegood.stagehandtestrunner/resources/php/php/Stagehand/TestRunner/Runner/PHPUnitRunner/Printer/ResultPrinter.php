@@ -31,7 +31,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2007-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.2.0
+ * @version    Release: 3.3.1
  * @link       http://www.phpunit.de/
  * @since      File available since Release 1.2.0
  */
@@ -48,7 +48,7 @@ use Stagehand\TestRunner\Runner\Runner;
  * @package    Stagehand_TestRunner
  * @copyright  2007-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.2.0
+ * @version    Release: 3.3.1
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 1.2.0
  */
@@ -71,7 +71,7 @@ class ResultPrinter extends \PHPUnit_TextUI_ResultPrinter
      */
     public function printResult(\PHPUnit_Framework_TestResult $result)
     {
-        if ($this->runner->usesNotification()) {
+        if ($this->runner->shouldNotify()) {
             ob_start();
         }
 
@@ -82,7 +82,7 @@ class ResultPrinter extends \PHPUnit_TextUI_ResultPrinter
 
         parent::printResult($result);
 
-        if ($this->runner->usesNotification()) {
+        if ($this->runner->shouldNotify()) {
             $output = ob_get_contents();
             ob_end_clean();
 

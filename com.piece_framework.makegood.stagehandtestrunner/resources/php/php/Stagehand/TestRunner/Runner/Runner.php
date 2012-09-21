@@ -31,14 +31,18 @@
  * @package    Stagehand_TestRunner
  * @copyright  2008-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.2.0
+ * @version    Release: 3.3.1
  * @since      File available since Release 2.3.0
  */
 
 namespace Stagehand\TestRunner\Runner;
 
 use Stagehand\TestRunner\CLI\Terminal;
-use Stagehand\TestRunner\Core\TestTargets;
+use Stagehand\TestRunner\Core\TestTargetRepository;
+use Stagehand\TestRunner\JUnitXMLWriter\DOMJUnitXMLWriter;
+use Stagehand\TestRunner\JUnitXMLWriter\NullUTF8Converter;
+use Stagehand\TestRunner\JUnitXMLWriter\StreamJUnitXMLWriter;
+use Stagehand\TestRunner\JUnitXMLWriter\UTF8Converter;
 use Stagehand\TestRunner\Util\FileStreamWriter;
 
 /**
@@ -47,7 +51,7 @@ use Stagehand\TestRunner\Util\FileStreamWriter;
  * @package    Stagehand_TestRunner
  * @copyright  2008-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.2.0
+ * @version    Release: 3.3.1
  * @since      Class available since Release 2.3.0
  */
 abstract class Runner
@@ -71,33 +75,42 @@ abstract class Runner
 
     /**
      * @var boolean
-     * @since Property available since Release 3.0.0
+     * @since Property available since Release 3.3.0
      */
-    protected $logsResultsInJUnitXML;
+    protected $junitXMLRealtime;
 
     /**
      * @var boolean
      * @since Property available since Release 3.0.0
      */
-    protected $stopsOnFailure;
+    protected $stopOnFailure;
 
     /**
      * @var boolean
      * @since Property available since Release 3.0.0
      */
-    protected $usesNotification;
+    protected $notify;
 
     /**
-     * @var \Stagehand\TestRunner\Core\TestTargets
+     * @var \Stagehand\TestRunner\Core\TestTargetRepository
      * @since Property available since Release 3.0.0
      */
-    protected $testTargets;
+    protected $testTargetRepository;
 
     /**
      * @var boolean
      * @since Property available since Release 3.0.0
      */
-    protected $printsDetailedProgressReport;
+    protected $detailedProgress;
+
+    /**
+     * @param boolean $junitXMLRealtime
+     * @since Method available since Release 3.3.0
+     */
+    public function setJUnitXMLRealtime($junitXMLRealtime)
+    {
+        $this->junitXMLRealtime = $junitXMLRealtime;
+    }
 
     /**
      * Runs tests.
@@ -131,75 +144,79 @@ abstract class Runner
      */
     public function setJUnitXMLFile($junitXMLFile)
     {
-        if (is_null($junitXMLFile)) {
-            $this->logsResultsInJUnitXML = false;
-        } else {
-            $this->junitXMLFile = $junitXMLFile;
-            $this->logsResultsInJUnitXML = true;
-        }
+        $this->junitXMLFile = $junitXMLFile;
     }
 
     /**
-     * @param boolean $stopsOnFailure
+     * @return boolean
+     * @since Method available since Release 3.3.0
+     */
+    protected function hasJUnitXMLFile()
+    {
+        return !is_null($this->junitXMLFile);
+    }
+
+    /**
+     * @param boolean $stopOnFailure
      * @since Method available since Release 3.0.0
      */
-    public function setStopsOnFailure($stopsOnFailure)
+    public function setStopOnFailure($stopOnFailure)
     {
-        $this->stopsOnFailure = $stopsOnFailure;
+        $this->stopOnFailure = $stopOnFailure;
     }
 
     /**
      * @return boolean
      * @since Method available since Release 3.0.0
      */
-    public function stopsOnFailure()
+    public function shouldStopOnFailure()
     {
-        return $this->stopsOnFailure;
+        return $this->stopOnFailure;
     }
 
     /**
-     * @param boolean $usesNotification
+     * @param boolean $notify
      * @since Method available since Release 3.0.0
      */
-    public function setUsesNotification($usesNotification)
+    public function setNotify($notify)
     {
-        $this->usesNotification = $usesNotification;
-    }
-
-    /**
-     * @return boolean
-     * @since Method available since Release 3.0.0
-     */
-    public function usesNotification()
-    {
-        return $this->usesNotification;
-    }
-
-    /**
-     * @param \Stagehand\TestRunner\Core\TestTargets $testTargets
-     * @since Method available since Release 3.0.0
-     */
-    public function setTestTargets(TestTargets $testTargets)
-    {
-        $this->testTargets = $testTargets;
-    }
-
-    /**
-     * @param boolean $printsDetailedProgressReport
-     * @since Method available since Release 3.0.0
-     */
-    public function setPrintsDetailedProgressReport($printsDetailedProgressReport)
-    {
-        $this->printsDetailedProgressReport = $printsDetailedProgressReport;
+        $this->notify = $notify;
     }
 
     /**
      * @return boolean
      * @since Method available since Release 3.0.0
      */
-    public function printsDetailedProgressReport()
+    public function shouldNotify()
     {
-        return $this->printsDetailedProgressReport;
+        return $this->notify;
+    }
+
+    /**
+     * @param \Stagehand\TestRunner\Core\TestTargetRepository $testTargetRepository
+     * @since Method available since Release 3.0.0
+     */
+    public function setTestTargetRepository(TestTargetRepository $testTargetRepository)
+    {
+        $this->testTargetRepository = $testTargetRepository;
+    }
+
+    /**
+     * @param boolean $detailedProgress
+     * @since Method available since Release 3.0.0
+     */
+    public function setDetailedProgress($detailedProgress)
+    {
+        $this->detailedProgress = $detailedProgress;
+    }
+
+    /**
+     * @return boolean
+     * @since Method available since Release 3.0.0
+     */
+    public function hasDetailedProgress()
+    {
+        return $this->detailedProgress;
     }
 
     /**
@@ -210,6 +227,17 @@ abstract class Runner
     protected function createStreamWriter($file)
     {
         return new FileStreamWriter($file);
+    }
+
+    /**
+     * @return \Stagehand\TestRunner\JUnitXMLWriter\JUnitXMLWriter
+     * @since Method available since Release 3.3.0
+     */
+    protected function createJUnitXMLWriter()
+    {
+        $streamWriter = $this->createStreamWriter($this->junitXMLFile);
+        $utf8Converter = extension_loaded('mbstring') ? new UTF8Converter() : new NullUTF8Converter();
+        return $this->junitXMLRealtime ? new StreamJUnitXMLWriter($streamWriter, $utf8Converter) : new DOMJUnitXMLWriter($streamWriter, $utf8Converter);
     }
 }
 

@@ -31,7 +31,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.2.0
+ * @version    Release: 3.3.1
  * @since      File available since Release 3.0.0
  */
 
@@ -39,34 +39,35 @@ namespace Stagehand\TestRunner\Runner\PHPSpecRunner;
 
 use PHPSpec\Specification\ExampleGroup;
 
-use Stagehand\TestRunner\Core\TestTargets;
+use Stagehand\TestRunner\Core\TestTargetRepository;
 
 /**
  * @package    Stagehand_TestRunner
  * @copyright  2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.2.0
+ * @version    Release: 3.3.1
  * @since      Class available since Release 3.0.0
  */
 class ExampleFactory extends \PHPSpec\Specification\ExampleFactory
 {
     /**
-     * @var \Stagehand\TestRunner\Core\TestTargets
+     * @var \Stagehand\TestRunner\Core\TestTargetRepository
      */
-    protected $testTargets;
+    protected $testTargetRepository;
 
     /**
-     * @param \Stagehand\TestRunner\Core\TestTargets $testTargets
+     * @param \Stagehand\TestRunner\Core\TestTargetRepository $testTargetRepository
+     * @since Method available since Release 3.3.0
      */
-    public function setTestTargets(TestTargets $testTargets)
+    public function __construct(TestTargetRepository $testTargetRepository)
     {
-        $this->testTargets = $testTargets;
+        $this->testTargetRepository = $testTargetRepository;
     }
 
     public function create(ExampleGroup $exampleGroup, $exampleMethod)
     {
         $example = new Example($exampleGroup, $exampleMethod);
-        $example->setTestTargets($this->testTargets);
+        $example->setTestTargetRepository($this->testTargetRepository);
         return $example;
     }
 }

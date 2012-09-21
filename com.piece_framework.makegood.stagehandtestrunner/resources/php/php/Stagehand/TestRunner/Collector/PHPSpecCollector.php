@@ -31,7 +31,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2007-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.2.0
+ * @version    Release: 3.3.1
  * @link       http://www.phpspec.org/
  * @since      File available since Release 2.1.0
  */
@@ -46,7 +46,7 @@ use Stagehand\TestRunner\TestSuite\PHPSpecTestSuite;
  * @package    Stagehand_TestRunner
  * @copyright  2007-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.2.0
+ * @version    Release: 3.3.1
  * @link       http://www.phpspec.org/
  * @since      Class available since Release 2.1.0
  */
@@ -72,7 +72,7 @@ class PHPSpecCollector extends Collector
      */
     protected function createTestSuite($name)
     {
-        return new PHPSpecTestSuite($name, $this->testTargets);
+        return new PHPSpecTestSuite($name, $this->testTargetRepository);
     }
 }
 
