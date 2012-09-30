@@ -171,9 +171,9 @@ public class TestOutlineView extends ViewPart {
                     && retry < RETRY_LIMIT) {
                     try {
                         Thread.sleep(500);
+                        ++retry;
                         this.run();
                     } catch (InterruptedException e) {}
-                    ++retry;
                     return;
                 }
 
