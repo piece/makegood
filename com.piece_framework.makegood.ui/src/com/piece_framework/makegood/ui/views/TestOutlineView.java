@@ -144,6 +144,8 @@ public class TestOutlineView extends ViewPart {
                 if (!activeEditor.isPHP()) return;
 
                 ISourceModule module = EditorParser.createActiveEditorParser().getSourceModule();
+                if (!new MakeGoodProperty(module.getResource().getProject()).exists()) return;
+
                 List<TestClass> testClasses = new ArrayList<TestClass>();
                 try {
                     for (IType type: module.getTypes()) {
