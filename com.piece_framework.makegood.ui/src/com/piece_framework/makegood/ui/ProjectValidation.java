@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2011-2012 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -41,6 +41,11 @@ public class ProjectValidation {
 
         if (!project.exists()) {
             MakeGoodContext.getInstance().updateStatus(MakeGoodStatus.ProjectNotFound, project);
+            return false;
+        }
+
+        if (!project.isOpen()) {
+            MakeGoodContext.getInstance().updateStatus(MakeGoodStatus.ProjectNotOpen, project);
             return false;
         }
 

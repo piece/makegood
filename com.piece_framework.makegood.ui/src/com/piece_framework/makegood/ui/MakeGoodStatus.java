@@ -19,6 +19,7 @@ import org.eclipse.core.resources.IProject;
 public enum MakeGoodStatus {
     NoProjectSelected,
     ProjectNotFound,
+    ProjectNotOpen,
     NoTestableProjectSelected,
     NoPHPExecutablesDefined,
     MakeGoodNotConfigured,

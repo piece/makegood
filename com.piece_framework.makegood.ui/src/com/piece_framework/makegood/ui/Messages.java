@@ -141,6 +141,11 @@ public class Messages extends NLS {
     public static String MakeGoodView_Status_ProjectNotFound;
 
     /**
+     * @since 2.2.0
+     */
+    public static String MakeGoodView_Status_ProjectNotOpen;
+
+    /**
      * @since 1.6.0
      */
     public static String MakeGoodView_Status_NoTestableProjectSelected;

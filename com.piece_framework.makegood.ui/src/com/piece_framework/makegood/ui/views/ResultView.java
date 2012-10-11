@@ -908,6 +908,9 @@ public class ResultView extends ViewPart {
             case ProjectNotFound:
                 isFailure(Messages.MakeGoodView_Status_ProjectNotFound);
                 break;
+            case ProjectNotOpen:
+                isFailure(Messages.MakeGoodView_Status_ProjectNotOpen);
+                break;
             case NoTestableProjectSelected:
                 isFailure(Messages.MakeGoodView_Status_NoTestableProjectSelected);
                 break;
