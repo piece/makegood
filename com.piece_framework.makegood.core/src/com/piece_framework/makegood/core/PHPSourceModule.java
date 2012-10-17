@@ -26,13 +26,13 @@ import com.piece_framework.makegood.core.preference.MakeGoodProperty;
  */
 public class PHPSourceModule {
     private ISourceModule subject;
-    private String[] testClassSuperTypes;
+    private TestingFramework testingFramework;
 
     public PHPSourceModule(ISourceModule subject) {
         this.subject = subject;
         IResource resource = subject.getResource();
         if (resource != null) {
-            testClassSuperTypes = new MakeGoodProperty(resource).getTestingFramework().getTestClassSuperTypes();
+            testingFramework = new MakeGoodProperty(resource).getTestingFramework();
         }
     }
 
@@ -40,9 +40,13 @@ public class PHPSourceModule {
         return subject.getResource();
     }
 
+    public TestingFramework getTestingFramework() {
+        return testingFramework;
+    }
+
     public boolean isTest() throws CoreException {
         for (PHPType phpType: extractPHPTypes()) {
-            if (phpType.isTest(testClassSuperTypes)) {
+            if (phpType.isTest()) {
                 return true;
             }
         }
@@ -53,7 +57,7 @@ public class PHPSourceModule {
     private List<PHPType> extractPHPTypes() throws CoreException {
         List<PHPType> phpTypes = new ArrayList<PHPType>();
         for (IType type: subject.getAllTypes()) {
-            phpTypes.add(new PHPType(type));
+            phpTypes.add(new PHPType(type, testingFramework));
         }
 
         return phpTypes;

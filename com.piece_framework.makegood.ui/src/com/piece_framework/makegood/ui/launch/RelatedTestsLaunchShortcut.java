@@ -36,6 +36,7 @@ import org.eclipse.ui.texteditor.ITextEditor;
 
 import com.piece_framework.makegood.core.PHPSourceModule;
 import com.piece_framework.makegood.core.PHPType;
+import com.piece_framework.makegood.core.TestingFramework;
 import com.piece_framework.makegood.launch.TestTargetRepository;
 import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.EditorParser;
@@ -67,9 +68,9 @@ public class RelatedTestsLaunchShortcut extends MakeGoodLaunchShortcut {
                 Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
                 throw new TestLaunchException();
             }
-        }
 
-        collectRelatedTests(types);
+            collectRelatedTests(types, phpSourceModule.getTestingFramework());
+        }
 
         if (TestTargetRepository.getInstance().getCount() == 0) {
             MakeGoodContext.getInstance().updateStatus(MakeGoodStatus.RelatedTestsNotFound);
@@ -79,10 +80,10 @@ public class RelatedTestsLaunchShortcut extends MakeGoodLaunchShortcut {
         super.launch(editor, mode);
     }
 
-    private void collectRelatedTests(List<IType> types) {
+    private void collectRelatedTests(List<IType> types, TestingFramework testingFramework) {
         SearchPattern pattern = null;
         for (IType type: types) {
-            PHPType phpType = new PHPType(type);
+            PHPType phpType = new PHPType(type, testingFramework);
             try {
                 if (!phpType.isClass()) continue;
             } catch (CoreException e) {

@@ -24,9 +24,11 @@ import org.eclipse.php.internal.core.typeinference.PHPClassType;
  */
 public class PHPType {
     private IType subject;
+    private TestingFramework testingFramework;
 
-    public PHPType(IType subject) {
+    public PHPType(IType subject, TestingFramework testingFramework) {
         this.subject = subject;
+        this.testingFramework = testingFramework;
     }
 
     public boolean isAbstract() throws CoreException {
@@ -41,7 +43,7 @@ public class PHPType {
         return PHPFlags.isNamespace(subject.getFlags());
     }
 
-    public boolean isTest(String[] testClassSuperTypes) throws CoreException {
+    public boolean isTest() throws CoreException {
         if (isClass() == false) return false;
         if (isAbstract() == true) return false;
         ITypeHierarchy hierarchy = subject.newSupertypeHierarchy(new NullProgressMonitor());
@@ -50,7 +52,7 @@ public class PHPType {
         if (superTypes == null) return false;
 
         for (IType superType: superTypes) {
-            for (String testClassSuperType: testClassSuperTypes) {
+            for (String testClassSuperType: testingFramework.getTestClassSuperTypes()) {
                 if (PHPClassType.fromIType(superType).getNamespace() != null) {
                     testClassSuperType = "\\" + testClassSuperType; //$NON-NLS-1$
                 }

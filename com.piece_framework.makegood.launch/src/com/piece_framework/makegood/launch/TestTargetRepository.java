@@ -210,7 +210,7 @@ public class TestTargetRepository {
 
             testFiles.add(resource.getLocation().toString());
             if (testTarget instanceof IType) {
-                PHPType phpType = new PHPType((IType) testTarget);
+                PHPType phpType = new PHPType((IType) testTarget, property.getTestingFramework());
                 if (phpType.isNamespace()) {
                     for (IType type: ((IType) testTarget).getTypes()) {
                         testClasses.add(urlencode(PHPClassType.fromIType(type).getTypeName()));
