@@ -28,8 +28,6 @@ import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.EditorParser;
 
 public class RunTestFromEditorHandlerInContext extends RunHandler {
-    private LastCheckedSource lastCheckedSource;
-
     @Override
     public Object execute(ExecutionEvent event) throws ExecutionException {
         getTestRunner().runTestsInContext(HandlerUtil.getActiveEditor(event));
@@ -49,40 +47,14 @@ public class RunTestFromEditorHandlerInContext extends RunHandler {
 
         ISourceModule sourceModule = new EditorParser(editor).getSourceModule();
         if (sourceModule == null) {
-            lastCheckedSource = null;
             return false;
         }
 
-        if (lastCheckedSource == null || !lastCheckedSource.equals(sourceModule)) {
-            try {
-                lastCheckedSource = new LastCheckedSource(sourceModule, new PHPSourceModule(sourceModule).isTest());
-            } catch (CoreException e) {
-                Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
-                return false;
-            }
-        }
-
-        return lastCheckedSource.hasTests();
-    }
-
-    /**
-     * @since 1.2.0
-     */
-    private class LastCheckedSource {
-        private ISourceModule sourceModule;
-        private boolean hasTests;
-
-        public LastCheckedSource(ISourceModule sourceModule, boolean hasTests) {
-            this.sourceModule = sourceModule;
-            this.hasTests = hasTests;
-        }
-
-        public boolean equals(ISourceModule sourceModule) {
-            return this.sourceModule.equals(sourceModule);
-        }
-
-        public boolean hasTests() {
-            return hasTests;
+        try {
+            return new PHPSourceModule(sourceModule).isTest();
+        } catch (CoreException e) {
+            Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
+            return false;
         }
     }
 }
