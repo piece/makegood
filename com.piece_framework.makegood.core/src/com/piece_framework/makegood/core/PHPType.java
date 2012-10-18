@@ -50,7 +50,6 @@ public class PHPType {
 
     public boolean isTest() throws CoreException {
         if (isClass() == false) return false;
-        if (isAbstract() == true) return false;
 
         if (testClassAncestors == null) {
             testClassAncestors = collectTestClassAncestors();

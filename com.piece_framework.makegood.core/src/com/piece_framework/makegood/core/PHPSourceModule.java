@@ -46,7 +46,7 @@ public class PHPSourceModule {
 
     public boolean isTest() throws CoreException {
         for (PHPType phpType: extractPHPTypes()) {
-            if (phpType.isTest()) {
+            if (phpType.isTest() && !phpType.isAbstract()) {
                 return true;
             }
         }
