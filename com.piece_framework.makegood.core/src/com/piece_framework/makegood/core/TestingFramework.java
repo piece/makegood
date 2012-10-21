@@ -254,6 +254,8 @@ public enum TestingFramework {
      */
     public boolean isTestClass(IType type) {
         if (type== null) return false;
+        if (!type.getScriptProject().isOpen()) return false;
+
         String[] testClassSuperTypes = getTestClassSuperTypes();
 
         try {
