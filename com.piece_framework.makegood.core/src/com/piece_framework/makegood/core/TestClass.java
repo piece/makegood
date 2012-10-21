@@ -18,6 +18,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -400,7 +401,8 @@ public class TestClass implements IType {
     public static boolean isTestClass(IType type, TestingFramework testingFramework) {
         if (type == null) return false;
         try {
-            if (!PHPFlags.isNamespace(type.getFlags())) {
+            PHPType phpType = new PHPType(type, testingFramework);
+            if (!phpType.isNamespace()) {
                 return testingFramework.isTestClass(
                     (type instanceof TestClass) ? ((TestClass) type).origin : type);
             } else {
@@ -408,7 +410,7 @@ public class TestClass implements IType {
                     if (isTestClass(child, testingFramework)) return true;
                 }
             }
-        } catch (ModelException e) {}
+        } catch (CoreException e) {}
         return false;
     }
 
@@ -428,8 +430,9 @@ public class TestClass implements IType {
 
     public boolean isNamespace() {
         try {
-            return PHPFlags.isNamespace(getFlags());
-        } catch (ModelException e) {
+            PHPType phpType = new PHPType(this, testingFramework);
+            return phpType.isNamespace();
+        } catch (CoreException e) {
             return false;
         }
     }

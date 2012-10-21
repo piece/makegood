@@ -18,7 +18,7 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 
-import com.piece_framework.makegood.core.PHPResource;
+import com.piece_framework.makegood.core.Resource;
 
 /**
  * @since 2.2.0
@@ -32,7 +32,7 @@ public class ActiveEditor {
         if (editor == null) return false;
         if (!(editor.getEditorInput() instanceof IFileEditorInput)) return false;
         IFile file = ((IFileEditorInput) editor.getEditorInput()).getFile();
-        return PHPResource.isPHPSource(file);
+        return new Resource(file).isPHPSource();
     }
 
     /**
