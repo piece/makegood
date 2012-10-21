@@ -256,22 +256,22 @@ public class Messages extends NLS {
     public static String MakeGoodView_ConfigureContinuousTestingAction_SelectLastTestAsContinuousTestingScopeAction;
 
     /**
-     * @since 1.x.0
+     * @since 2.2.0
      */
     public static String TestOutlineView_CollapseAll;
 
     /**
-     * @since 1.x.0
+     * @since 2.2.0
      */
     public static String TestOutlineView_Sort;
 
     /**
-     * @since 1.x.0
+     * @since 2.2.0
      */
     public static String TestOutlineView_FlatLook;
 
     /**
-     * @since 1.x.0
+     * @since 2.2.0
      */
     public static String TestOutlineView_HierarchyLook;
 

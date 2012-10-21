@@ -41,7 +41,7 @@ import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.WorkingCopyOwner;
 
 /**
- * @since 1.x.0
+ * @since 2.2.0
  */
 public class TestClass implements IType {
     private IType origin;

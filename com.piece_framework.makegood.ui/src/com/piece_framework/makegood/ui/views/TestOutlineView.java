@@ -69,7 +69,7 @@ import com.piece_framework.makegood.ui.MakeGoodContext;
 import com.piece_framework.makegood.ui.Messages;
 
 /**
- * @since 1.x.0
+ * @since 2.2.0
  */
 public class TestOutlineView extends ViewPart {
     public static final String ID = "com.piece_framework.makegood.ui.views.testOutlineView"; //$NON-NLS-1$
