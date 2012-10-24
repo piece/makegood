@@ -21,6 +21,13 @@ import org.eclipse.core.resources.IFolder;
  * @since 2.0.0
  */
 public class DefaultConfiguration {
+    /**
+     * @since 2.3.0
+     */
+    public boolean getAutotestEnabled() {
+        return true;
+    }
+
     public AutotestScope getAutotestScope() {
         return AutotestScope.ALL_TESTS;
     }

@@ -21,10 +21,52 @@ import com.piece_framework.makegood.core.DefaultConfiguration;
  * @since 1.4.0
  */
 public class MakeGoodPreference {
+    /**
+     * @since 2.3.0
+     */
+    public static final String AUTOTEST_ENABLED = "autotestEnabled"; //$NON-NLS-1$
+
     public static final String AUTOTEST_SCOPE = "autotestScope"; //$NON-NLS-1$
 
-    public static AutotestScope getAutotestScope() {
-        IPreferenceStore preferenceStore = Activator.getDefault().getPreferenceStore();
+    /**
+     * @since 2.3.0
+     */
+    private IPreferenceStore preferenceStore;
+
+    /**
+     * @since 2.3.0
+     */
+    public MakeGoodPreference() {
+        preferenceStore = Activator.getDefault().getPreferenceStore();
+    }
+
+    /**
+     * @since 2.3.0
+     */
+    public void setAutotestEnabled(boolean autotestEnabled) {
+        preferenceStore.setValue(AUTOTEST_ENABLED, autotestEnabled);
+    }
+
+    /**
+     * @since 2.3.0
+     */
+    public boolean getAutotestEnabled() {
+        String autotestScope = preferenceStore.getString(AUTOTEST_SCOPE);
+        if (autotestScope.equals(AutotestScope.NONE.name())) {
+            return false;
+        }
+
+        return preferenceStore.getBoolean(AUTOTEST_ENABLED);
+    }
+
+    /**
+     * @since 2.3.0
+     */
+    public void setAutotestScope(AutotestScope autotestScope) {
+        preferenceStore.setValue(AUTOTEST_SCOPE, autotestScope.name());
+    }
+
+    public AutotestScope getAutotestScope() {
         String autotestScope = preferenceStore.getString(AUTOTEST_SCOPE);
         if (autotestScope.equals(AutotestScope.ALL_TESTS.name())) {
             return AutotestScope.ALL_TESTS;
@@ -32,8 +74,6 @@ public class MakeGoodPreference {
             return AutotestScope.LAST_TEST;
         } else if (autotestScope.equals(AutotestScope.FAILED_TESTS.name())) {
             return AutotestScope.FAILED_TESTS;
-        } else if (autotestScope.equals(AutotestScope.NONE.name())) {
-            return AutotestScope.NONE;
         } else {
             return new DefaultConfiguration().getAutotestScope();
         }

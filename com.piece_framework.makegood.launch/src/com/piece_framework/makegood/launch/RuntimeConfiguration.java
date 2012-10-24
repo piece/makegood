@@ -41,7 +41,7 @@ public class RuntimeConfiguration {
     }
 
     private RuntimeConfiguration() {
-        autotestScope = MakeGoodPreference.getAutotestScope();
+        autotestScope = new MakeGoodPreference().getAutotestScope();
     }
 
     /**
