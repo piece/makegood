@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grammar xmlns="http://relaxng.org/ns/structure/1.0" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+  <start>
+    <ref name="JUnitXML"/>
+  </start>
+  <define name="JUnitXML">    
+    <element name="testsuites">
+      <ref name="TestSuite"/>
+    </element>
+  </define>
+  <define name="TestSuite">
+    <element name="testsuite">
+      <interleave>
+        <attribute name="name">
+          <data type="string"/>
+        </attribute>
+        <attribute name="tests">
+          <data type="integer">
+            <param name="minInclusive">0</param>
+          </data>
+        </attribute>
+        <attribute name="failures">
+          <data type="integer">
+            <param name="minInclusive">0</param>
+          </data>
+        </attribute>
+        <attribute name="errors">
+          <data type="integer">
+            <param name="minInclusive">0</param>
+          </data>
+        </attribute>
+        <optional>
+          <attribute name="file">
+            <data type="string"/>
+          </attribute>
+        </optional>
+        <attribute name="assertions">
+          <data type="integer">
+            <param name="minInclusive">0</param>
+          </data>
+        </attribute>
+        <attribute name="time">
+          <data type="float">
+            <param name="minInclusive">0.0</param>
+          </data>
+        </attribute>
+      </interleave>
+      <interleave>
+        <zeroOrMore>
+          <ref name="TestSuite"/>
+        </zeroOrMore>
+        <zeroOrMore>
+          <ref name="TestCase"/>
+        </zeroOrMore>
+      </interleave>
+    </element>
+  </define>
+  <define name="TestCase">
+    <element name="testcase">
+      <interleave>
+        <attribute name="name">
+          <data type="string"/>
+        </attribute>
+        <attribute name="class">
+          <data type="string"/>
+        </attribute>
+        <attribute name="file">
+          <data type="string"/>
+        </attribute>
+        <attribute name="line">
+          <data type="integer"/>
+        </attribute>
+        <attribute name="assertions">
+          <data type="integer"/>
+        </attribute>
+        <attribute name="time">
+          <data type="float"/>
+        </attribute>
+      </interleave>
+      <optional>
+        <choice>
+          <ref name="Failure"/>
+          <ref name="Error"/>
+        </choice>
+      </optional>
+    </element>
+  </define>
+  <define name="Failure">
+    <element name="failure">
+      <optional>
+        <attribute name="type">
+          <data type="string"/>
+        </attribute>
+      </optional>
+      <text/>
+    </element>
+  </define>
+  <define name="Error">
+    <element name="error">
+      <optional>
+        <attribute name="type">
+          <data type="string"/>
+        </attribute>
+      </optional>
+      <text/>
+    </element>
+  </define>
+</grammar>

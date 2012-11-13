@@ -32,55 +32,21 @@
  * @package    Stagehand_TestRunner
  * @copyright  2011-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.3.1
+ * @version    Release: 3.4.0
  * @since      File available since Release 3.0.0
  */
 
-// Gets the current directory at startup.
-$GLOBALS['STAGEHAND_TESTRUNNER_workingDirectoryAtStartup'] = getcwd();
-$GLOBALS['STAGEHAND_TESTRUNNER_preloadScript'] = null;
+namespace Stagehand\TestRunner\Core;
 
-// Finds the preload option and preloads a file as a PHP script if it is specified.
-$preload = function () {
-    $preloadScript = null;
-    do {
-        for ($i = 1, $count = count($_SERVER['argv']); $i < $count; ++$i) {
-            $arg = $_SERVER['argv'][$i];
-            if (strlen($arg) <= 1) continue;
+initializeEnvironment();
 
-            if (preg_match('/^--preload-script(?:=(.*))?$/', $arg, $matches)) {
-                if (count($matches) == 1) {
-                    if (array_key_exists($i + 1, $_SERVER['argv'])) {
-                        $preloadScript = $_SERVER['argv'][ $i + 1 ];
-                        break 2;
-                    }
-                } elseif (count($matches) == 2) {
-                    $preloadScript = $matches[1];
-                    break 2;
-                }
-            } elseif (preg_match('/^-[a-oq-zA-OQ-Z]*p(.*)$/', $arg, $matches)) {
-                if (strlen($matches[1]) == 0) {
-                    if (array_key_exists($i + 1, $_SERVER['argv'])) {
-                        $preloadScript = $_SERVER['argv'][ $i + 1 ];
-                        break 2;
-                    }
-                } else {
-                    $preloadScript = $matches[1];
-                    break 2;
-                }
-            }
-        }
-        return;
-    } while (false);
-    if (is_null($preloadScript)) return;
-    $result = include_once $preloadScript;
-    if (!$result) {
-        echo "ERROR: Cannot load [ $preloadScript ]. Make sure the file path and permission are correct.\n";
-        exit(1);
-    }
-    $GLOBALS['STAGEHAND_TESTRUNNER_preloadScript'] = $preloadScript;
-};
-$preload();
+try {
+    $GLOBALS['STAGEHAND_TESTRUNNER_workingDirectoryAtStartup'] = workingDirectoryAtStartup();
+    $GLOBALS['STAGEHAND_TESTRUNNER_preloadScript'] = preloadScript();
+} catch (\Exception $e) {
+    echo $e->getMessage() . PHP_EOL;
+    exit(1);
+}
 
 if (!class_exists('Stagehand\TestRunner\Core\Bootstrap')) {
     require_once 'Stagehand/TestRunner/Core/Bootstrap.php';
@@ -93,6 +59,94 @@ $application = new \Stagehand\TestRunner\CLI\TestRunnerApplication\Application()
 $result = $application->run();
 
 exit($result);
+
+/**
+ * @since Method available since Release 3.4.0
+ */
+function initializeEnvironment()
+{
+    ini_set('display_errors', true);
+    ini_set('log_errors', false);
+    ini_set('html_errors', false);
+    ini_set('implicit_flush', true);
+    ini_set('max_execution_time', 0);
+    ini_set('memory_limit', -1);
+}
+
+/**
+ * Gets the current working directory at startup.
+ *
+ * @throws \UnexpectedValueException
+ * @since Method available since Release 3.4.0
+ */
+function workingDirectoryAtStartup()
+{
+    static $workingDirectoryAtStartup;
+
+    if (is_null($workingDirectoryAtStartup)) {
+        $workingDirectoryAtStartup = getcwd();
+        if ($workingDirectoryAtStartup === false) {
+            throw new \UnexpectedValueException('Cannot get the current working directory. Make sure the current working directory path and permission are correct.');
+        }
+    }
+
+    return $workingDirectoryAtStartup;
+}
+
+/**
+ * Finds the preload option and preloads a file as a PHP script if it is specified.
+ *
+ * @throws \UnexpectedValueException
+ * @since Method available since Release 3.4.0
+ */
+function preloadScript()
+{
+    static $initialized = false;
+    static $preloadScript;
+
+    if (!$initialized) {
+        $initialized = true;
+
+        for ($i = 1, $count = count($_SERVER['argv']); $i < $count; ++$i) {
+            $arg = $_SERVER['argv'][$i];
+            if (strlen($arg) <= 1) continue;
+
+            if (preg_match('/^--preload-script(?:=(.*))?$/', $arg, $matches)) {
+                if (count($matches) == 1) {
+                    if (array_key_exists($i + 1, $_SERVER['argv'])) {
+                        $preloadScript = $_SERVER['argv'][ $i + 1 ];
+                        break;
+                    }
+                } elseif (count($matches) == 2) {
+                    $preloadScript = $matches[1];
+                    break;
+                }
+            } elseif (preg_match('/^-[a-oq-zA-OQ-Z]*p(.*)$/', $arg, $matches)) {
+                if (strlen($matches[1]) == 0) {
+                    if (array_key_exists($i + 1, $_SERVER['argv'])) {
+                        $preloadScript = $_SERVER['argv'][ $i + 1 ];
+                        break;
+                    }
+                } else {
+                    $preloadScript = $matches[1];
+                    break;
+                }
+            }
+        }
+
+        if (!is_null($preloadScript)) {
+            $result = include_once $preloadScript;
+            if (!$result) {
+                throw \UnexpectedValueException(sprintf(
+                    'Cannot load [ %s ]. Make sure the file path and permission are correct.',
+                    $preloadScript
+                ));
+            }
+        }
+    }
+
+    return $preloadScript;
+}
 
 /*
  * Local Variables:

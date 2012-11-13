@@ -5,6 +5,9 @@ namespace Stagehand\TestRunner\DependencyInjection;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\Exception\InactiveScopeException;
+use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
+use Symfony\Component\DependencyInjection\Exception\LogicException;
+use Symfony\Component\DependencyInjection\Exception\RuntimeException;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\Parameter;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
@@ -36,6 +39,7 @@ class CompiledContainer extends Container
     protected function getAlterationMonitoringService()
     {
         $class = $this->getParameter('alteration_monitoring.class');
+
         return $this->services['alteration_monitoring'] = new $class();
     }
 
@@ -63,6 +67,7 @@ class CompiledContainer extends Container
     protected function getCakephp_AutotestService()
     {
         $class = $this->getParameter('cakephp.autotest.class');
+
         $this->services['cakephp.autotest'] = $instance = new $class($this->get('preparer_factory'));
 
         $instance->setAlterationMonitoring($this->get('alteration_monitoring'));
@@ -88,6 +93,7 @@ class CompiledContainer extends Container
     protected function getCakephp_CollectorService()
     {
         $class = $this->getParameter('cakephp.collector.class');
+
         $this->services['cakephp.collector'] = $instance = new $class($this->get('test_target_repository'));
 
         $instance->setCollectingTypeFactory($this->get('collecting_type_factory'));
@@ -107,6 +113,7 @@ class CompiledContainer extends Container
     protected function getCakephp_JunitXmlReporterService()
     {
         $class = $this->getParameter('cakephp.junit_xml_reporter.class');
+
         return $this->services['cakephp.junit_xml_reporter'] = new $class();
     }
 
@@ -121,6 +128,7 @@ class CompiledContainer extends Container
     protected function getCakephp_PreparerService()
     {
         $class = $this->getParameter('cakephp.preparer.class');
+
         $this->services['cakephp.preparer'] = $instance = new $class();
 
         $instance->setCakePHPAppPath($this->getParameter('cakephp.cakephp_app_path'));
@@ -140,6 +148,7 @@ class CompiledContainer extends Container
     protected function getCakephp_RunnerService()
     {
         $class = $this->getParameter('cakephp.runner.class');
+
         $this->services['cakephp.runner'] = $instance = new $class();
 
         $instance->setJUnitXMLFile($this->getParameter('junit_xml_file'));
@@ -165,6 +174,7 @@ class CompiledContainer extends Container
     protected function getCiunit_AutotestService()
     {
         $class = $this->getParameter('ciunit.autotest.class');
+
         $this->services['ciunit.autotest'] = $instance = new $class($this->get('preparer_factory'));
 
         $instance->setAlterationMonitoring($this->get('alteration_monitoring'));
@@ -191,6 +201,7 @@ class CompiledContainer extends Container
     protected function getCiunit_CollectorService()
     {
         $class = $this->getParameter('ciunit.collector.class');
+
         $this->services['ciunit.collector'] = $instance = new $class($this->get('test_target_repository'));
 
         $instance->setCollectingTypeFactory($this->get('collecting_type_factory'));
@@ -211,6 +222,7 @@ class CompiledContainer extends Container
     protected function getCiunit_PreparerService()
     {
         $class = $this->getParameter('ciunit.preparer.class');
+
         $this->services['ciunit.preparer'] = $instance = new $class();
 
         $instance->setPHPUnitXMLConfiguration($this->get('phpunit.phpunit_xml_configuration'));
@@ -231,6 +243,7 @@ class CompiledContainer extends Container
     protected function getCiunit_RunnerService()
     {
         $class = $this->getParameter('ciunit.runner.class');
+
         $this->services['ciunit.runner'] = $instance = new $class();
 
         $instance->setJUnitXMLFile($this->getParameter('junit_xml_file'));
@@ -253,6 +266,7 @@ class CompiledContainer extends Container
     protected function getCollectingTypeService()
     {
         $class = $this->getParameter('collecting_type.class');
+
         $instance = new $class();
 
         $instance->setLegacyProxy($this->get('legacy_proxy'));
@@ -297,6 +311,7 @@ class CompiledContainer extends Container
     protected function getComponentAwareFactoryFactoryService()
     {
         $class = $this->getParameter('component_aware_factory_factory.class');
+
         $this->services['component_aware_factory_factory'] = $instance = new $class();
 
         $instance->setFactoryClass($this->getParameter('component_aware_factory.class'));
@@ -311,11 +326,11 @@ class CompiledContainer extends Container
      * This service is shared.
      * This method always returns the same instance of the service.
      *
-     * @throws \RuntimeException always since this service is expected to be injected dynamically
+     * @throws RuntimeException always since this service is expected to be injected dynamically
      */
     protected function getComponentFactoryService()
     {
-        throw new \RuntimeException('You have requested a synthetic service ("component_factory"). The DIC does not know how to construct this service.');
+        throw new RuntimeException('You have requested a synthetic service ("component_factory"). The DIC does not know how to construct this service.');
     }
 
     /**
@@ -324,11 +339,11 @@ class CompiledContainer extends Container
      * This service is shared.
      * This method always returns the same instance of the service.
      *
-     * @throws \RuntimeException always since this service is expected to be injected dynamically
+     * @throws RuntimeException always since this service is expected to be injected dynamically
      */
     protected function getInputService()
     {
-        throw new \RuntimeException('You have requested a synthetic service ("input"). The DIC does not know how to construct this service.');
+        throw new RuntimeException('You have requested a synthetic service ("input"). The DIC does not know how to construct this service.');
     }
 
     /**
@@ -342,6 +357,7 @@ class CompiledContainer extends Container
     protected function getLegacyProxyService()
     {
         $class = $this->getParameter('legacy_proxy.class');
+
         return $this->services['legacy_proxy'] = new $class();
     }
 
@@ -356,6 +372,7 @@ class CompiledContainer extends Container
     protected function getNotifierService()
     {
         $class = $this->getParameter('notifier.class');
+
         $this->services['notifier'] = $instance = new $class();
 
         $instance->setLegacyProxy($this->get('legacy_proxy'));
@@ -388,6 +405,7 @@ class CompiledContainer extends Container
     protected function getOsService()
     {
         $class = $this->getParameter('os.class');
+
         $this->services['os'] = $instance = new $class();
 
         $instance->setLegacyProxy($this->get('legacy_proxy'));
@@ -401,11 +419,11 @@ class CompiledContainer extends Container
      * This service is shared.
      * This method always returns the same instance of the service.
      *
-     * @throws \RuntimeException always since this service is expected to be injected dynamically
+     * @throws RuntimeException always since this service is expected to be injected dynamically
      */
     protected function getOutputService()
     {
-        throw new \RuntimeException('You have requested a synthetic service ("output"). The DIC does not know how to construct this service.');
+        throw new RuntimeException('You have requested a synthetic service ("output"). The DIC does not know how to construct this service.');
     }
 
     /**
@@ -419,6 +437,7 @@ class CompiledContainer extends Container
     protected function getOutputBufferingService()
     {
         $class = $this->getParameter('output_buffering.class');
+
         $this->services['output_buffering'] = $instance = new $class();
 
         $instance->setLegacyProxy($this->get('legacy_proxy'));
@@ -437,6 +456,7 @@ class CompiledContainer extends Container
     protected function getPhpspec_AutotestService()
     {
         $class = $this->getParameter('phpspec.autotest.class');
+
         $this->services['phpspec.autotest'] = $instance = new $class($this->get('preparer_factory'));
 
         $instance->setAlterationMonitoring($this->get('alteration_monitoring'));
@@ -462,6 +482,7 @@ class CompiledContainer extends Container
     protected function getPhpspec_CollectorService()
     {
         $class = $this->getParameter('phpspec.collector.class');
+
         $this->services['phpspec.collector'] = $instance = new $class($this->get('test_target_repository'));
 
         $instance->setCollectingTypeFactory($this->get('collecting_type_factory'));
@@ -481,6 +502,7 @@ class CompiledContainer extends Container
     protected function getPhpspec_PreparerService()
     {
         $class = $this->getParameter('phpspec.preparer.class');
+
         return $this->services['phpspec.preparer'] = new $class();
     }
 
@@ -495,6 +517,7 @@ class CompiledContainer extends Container
     protected function getPhpspec_RunnerService()
     {
         $class = $this->getParameter('phpspec.runner.class');
+
         $this->services['phpspec.runner'] = $instance = new $class();
 
         $instance->setJUnitXMLFile($this->getParameter('junit_xml_file'));
@@ -519,6 +542,7 @@ class CompiledContainer extends Container
     protected function getPhpunit_AutotestService()
     {
         $class = $this->getParameter('phpunit.autotest.class');
+
         $this->services['phpunit.autotest'] = $instance = new $class($this->get('preparer_factory'));
 
         $instance->setAlterationMonitoring($this->get('alteration_monitoring'));
@@ -545,6 +569,7 @@ class CompiledContainer extends Container
     protected function getPhpunit_CollectorService()
     {
         $class = $this->getParameter('phpunit.collector.class');
+
         $this->services['phpunit.collector'] = $instance = new $class($this->get('test_target_repository'));
 
         $instance->setCollectingTypeFactory($this->get('collecting_type_factory'));
@@ -565,6 +590,7 @@ class CompiledContainer extends Container
     protected function getPhpunit_PhpunitXmlConfigurationService()
     {
         $class = $this->getParameter('phpunit.phpunit_xml_configuration.class');
+
         $this->services['phpunit.phpunit_xml_configuration'] = $instance = new $class();
 
         $instance->setFileName($this->getParameter('phpunit.phpunit_config_file'));
@@ -583,6 +609,7 @@ class CompiledContainer extends Container
     protected function getPhpunit_PreparerService()
     {
         $class = $this->getParameter('phpunit.preparer.class');
+
         $this->services['phpunit.preparer'] = $instance = new $class();
 
         $instance->setPHPUnitXMLConfiguration($this->get('phpunit.phpunit_xml_configuration'));
@@ -602,6 +629,7 @@ class CompiledContainer extends Container
     protected function getPhpunit_RunnerService()
     {
         $class = $this->getParameter('phpunit.runner.class');
+
         $this->services['phpunit.runner'] = $instance = new $class();
 
         $instance->setJUnitXMLFile($this->getParameter('junit_xml_file'));
@@ -653,6 +681,7 @@ class CompiledContainer extends Container
     protected function getSimpletest_AutotestService()
     {
         $class = $this->getParameter('simpletest.autotest.class');
+
         $this->services['simpletest.autotest'] = $instance = new $class($this->get('preparer_factory'));
 
         $instance->setAlterationMonitoring($this->get('alteration_monitoring'));
@@ -678,6 +707,7 @@ class CompiledContainer extends Container
     protected function getSimpletest_CollectorService()
     {
         $class = $this->getParameter('simpletest.collector.class');
+
         $this->services['simpletest.collector'] = $instance = new $class($this->get('test_target_repository'));
 
         $instance->setCollectingTypeFactory($this->get('collecting_type_factory'));
@@ -694,6 +724,7 @@ class CompiledContainer extends Container
     protected function getSimpletest_JunitXmlReporterService()
     {
         $class = $this->getParameter('simpletest.junit_xml_reporter.class');
+
         return new $class();
     }
 
@@ -721,6 +752,7 @@ class CompiledContainer extends Container
     protected function getSimpletest_PreparerService()
     {
         $class = $this->getParameter('simpletest.preparer.class');
+
         return $this->services['simpletest.preparer'] = new $class();
     }
 
@@ -735,6 +767,7 @@ class CompiledContainer extends Container
     protected function getSimpletest_RunnerService()
     {
         $class = $this->getParameter('simpletest.runner.class');
+
         $this->services['simpletest.runner'] = $instance = new $class();
 
         $instance->setJUnitXMLFile($this->getParameter('junit_xml_file'));
@@ -760,6 +793,7 @@ class CompiledContainer extends Container
     protected function getTerminalService()
     {
         $class = $this->getParameter('terminal.class');
+
         $this->services['terminal'] = $instance = new $class();
 
         $instance->setInput($this->get('input'));
@@ -779,6 +813,7 @@ class CompiledContainer extends Container
     protected function getTestRunService()
     {
         $class = $this->getParameter('test_run.class');
+
         $this->services['test_run'] = $instance = new $class();
 
         $instance->setCollectorFactory($this->get('collector_factory'));
@@ -814,6 +849,7 @@ class CompiledContainer extends Container
     protected function getTestRunnerService()
     {
         $class = $this->getParameter('test_runner.class');
+
         $this->services['test_runner'] = $instance = new $class();
 
         $instance->setAutotestFactory($this->get('autotest_factory'));
@@ -834,6 +870,7 @@ class CompiledContainer extends Container
     protected function getTestTargetRepositoryService()
     {
         $class = $this->getParameter('test_target_repository.class');
+
         $this->services['test_target_repository'] = $instance = new $class();
 
         $instance->setClasses($this->getParameter('test_classes'));

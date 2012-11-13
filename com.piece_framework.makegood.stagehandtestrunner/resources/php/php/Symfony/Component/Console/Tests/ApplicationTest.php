@@ -30,6 +30,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         require_once self::$fixturesPath.'/Foo1Command.php';
         require_once self::$fixturesPath.'/Foo2Command.php';
         require_once self::$fixturesPath.'/Foo3Command.php';
+        require_once self::$fixturesPath.'/Foo4Command.php';
     }
 
     protected function normalizeLineBreaks($text)
@@ -259,6 +260,19 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
             $this->assertInstanceOf('\InvalidArgumentException', $e, '->find() throws an \InvalidArgumentException if command does not exist, with alternatives');
             $this->assertRegExp('/Did you mean one of these/', $e->getMessage(), '->find() throws an \InvalidArgumentException if command does not exist, with alternatives');
         }
+
+        $application->add(new \Foo3Command());
+        $application->add(new \Foo4Command());
+
+        // Subnamespace + plural
+        try {
+            $a = $application->find('foo3:');
+            $this->fail('->find() should throw an \InvalidArgumentException if a command is ambiguous because of a subnamespace, with alternatives');
+        } catch (\Exception $e) {
+            $this->assertInstanceOf('\InvalidArgumentException', $e);
+            $this->assertRegExp('/foo3:bar/', $e->getMessage());
+            $this->assertRegExp('/foo3:bar:toh/', $e->getMessage());
+        }
     }
 
     public function testFindAlternativeCommands()
@@ -392,13 +406,6 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $tester = new ApplicationTester($application);
         $tester->run(array('command' => 'foo3:bar'), array('decorated' => false));
         $this->assertStringEqualsFile(self::$fixturesPath.'/application_renderexception3.txt', $this->normalizeLineBreaks($tester->getDisplay()), '->renderException() renders a pretty exceptions with previous exceptions');
-
-        $application = $this->getMock('Symfony\Component\Console\Application', array('getTerminalWidth'));
-        $application->setAutoExit(false);
-        $application->expects($this->any())
-            ->method('getTerminalWidth')
-            ->will($this->returnValue(32));
-        $tester = new ApplicationTester($application);
 
         $application = $this->getMock('Symfony\Component\Console\Application', array('getTerminalWidth'));
         $application->setAutoExit(false);

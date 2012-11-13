@@ -33,7 +33,7 @@
  * @copyright  2007-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @copyright  2012 tsyk goto <ngyuki.ts@gmail.com>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.3.1
+ * @version    Release: 3.4.0
  * @link       http://www.phpunit.de/
  * @since      File available since Release 2.1.0
  */
@@ -51,7 +51,7 @@ use Stagehand\TestRunner\Util\PHPUnitXMLConfiguration;
  * @copyright  2007-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @copyright  2012 tsyk goto <ngyuki.ts@gmail.com>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.3.1
+ * @version    Release: 3.4.0
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.1.0
  */
@@ -99,7 +99,7 @@ class PHPUnitCollector extends Collector
             }
         }
 
-        if ($testSuite->count() > 0) {
+        if (count($testSuite) > 0) {
             $this->suite->addTest($testSuite);
         }
     }
@@ -147,7 +147,7 @@ class PHPUnitCollector extends Collector
     protected function filterTests(\PHPUnit_Framework_TestSuite $testSuite, $filter)
     {
         $filteredTests = array();
-        foreach ($testSuite as $test) {
+        foreach ($testSuite->tests() as $test) {
             if ($test instanceof \PHPUnit_Framework_TestCase) {
                 $testClassName = get_class($test);
                 $testMethodName = $test->getName(false);
@@ -156,6 +156,9 @@ class PHPUnitCollector extends Collector
                 }
             } else {
                 $this->filterTests($test, $filter);
+                if (count($test) > 0) {
+                    $filteredTests[] = $test;
+                }
             }
         }
 

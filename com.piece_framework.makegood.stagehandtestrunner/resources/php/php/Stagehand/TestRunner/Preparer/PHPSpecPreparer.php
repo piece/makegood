@@ -31,13 +31,16 @@
  * @package    Stagehand_TestRunner
  * @copyright  2010-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.3.1
+ * @version    Release: 3.4.0
  * @since      File available since Release 2.12.0
  */
 
 namespace Stagehand\TestRunner\Preparer;
 
-require_once 'PHPSpec/Loader/UniversalClassLoader.php';
+if (!class_exists('PHPSpec\Loader\UniversalClassLoader')) {
+    require_once 'PHPSpec/Loader/UniversalClassLoader.php';
+}
+
 use PHPSpec\Loader\UniversalClassLoader;
 
 use Stagehand\TestRunner\Core\ApplicationContext;
@@ -46,7 +49,7 @@ use Stagehand\TestRunner\Core\ApplicationContext;
  * @package    Stagehand_TestRunner
  * @copyright  2010-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.3.1
+ * @version    Release: 3.4.0
  * @since      Class available since Release 2.12.0
  */
 class PHPSpecPreparer extends Preparer

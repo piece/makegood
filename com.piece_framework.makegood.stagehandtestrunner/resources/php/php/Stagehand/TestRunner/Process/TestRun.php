@@ -33,7 +33,7 @@
  * @copyright  2010-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @copyright  2011 Shigenobu Nishikawa <shishi.s.n@gmail.com>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.3.1
+ * @version    Release: 3.4.0
  * @since      File available since Release 2.14.0
  */
 
@@ -48,7 +48,7 @@ use Stagehand\TestRunner\Util\OutputBuffering;
  * @copyright  2010-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @copyright  2011 Shigenobu Nishikawa <shishi.s.n@gmail.com>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.3.1
+ * @version    Release: 3.4.0
  * @since      Class available since Release 2.14.0
  */
 class TestRun

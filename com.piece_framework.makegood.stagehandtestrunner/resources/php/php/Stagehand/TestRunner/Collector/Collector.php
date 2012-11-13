@@ -31,7 +31,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2007-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.3.1
+ * @version    Release: 3.4.0
  * @since      File available since Release 2.1.0
  */
 
@@ -49,7 +49,7 @@ use Stagehand\TestRunner\Core\TestTargetRepository;
  * @package    Stagehand_TestRunner
  * @copyright  2007-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.3.1
+ * @version    Release: 3.4.0
  * @since      Class available since Release 2.1.0
  */
 abstract class Collector
