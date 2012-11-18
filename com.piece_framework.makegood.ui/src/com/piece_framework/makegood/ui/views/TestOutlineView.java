@@ -206,6 +206,7 @@ public class TestOutlineView extends ViewPart {
     }
 
     private TreeItem findItem(TreeItem[] items, IModelElement element) {
+        if (element == null) return null;
         for (TreeItem item: items) {
             if (!(item.getData() instanceof IModelElement)) continue;
             IModelElement target = (IModelElement) item.getData();
