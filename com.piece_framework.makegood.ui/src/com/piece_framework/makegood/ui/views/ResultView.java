@@ -711,15 +711,15 @@ public class ResultView extends ViewPart {
         }
 
         public void schedule() {
-            if (!elapsedTimeLabel.isDisposed()) {
-                elapsedTimeLabel.getDisplay().timerExec(delay, this);
-            }
+            elapsedTimeLabel.getDisplay().timerExec(delay, this);
         }
 
         @Override
         public void run() {
-            updateElapsedTime();
-            schedule();
+            if (!elapsedTimeLabel.isDisposed()) {
+                updateElapsedTime();
+                schedule();
+            }
         }
     }
 
