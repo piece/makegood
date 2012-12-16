@@ -74,6 +74,8 @@ import com.piece_framework.makegood.ui.Messages;
 public class TestOutlineView extends ViewPart {
     public static final String ID = "com.piece_framework.makegood.ui.views.testOutlineView"; //$NON-NLS-1$
 
+    private static boolean isOutlineSelecting = false;
+
     private TreeViewer viewer;
     private List<IType> baseTestClasses;
 
@@ -192,6 +194,7 @@ public class TestOutlineView extends ViewPart {
     }
 
     public void selectCurrentElement() {
+        if (isOutlineSelecting) return;
         EditorParser parser = EditorParser.createActiveEditorParser();
         if (parser == null) return;
 
@@ -252,11 +255,14 @@ public class TestOutlineView extends ViewPart {
     private class TreeEventListener implements ISelectionChangedListener, IDoubleClickListener {
         @Override
         public void doubleClick(DoubleClickEvent event) {
+            isOutlineSelecting = true;
             showEditor(event.getSelection(), true);
+            isOutlineSelecting = false;
         }
 
         @Override
         public void selectionChanged(SelectionChangedEvent event) {
+            isOutlineSelecting = true;
             showEditor(event.getSelection(), false);
 
             StructuredSelection structuredSelection = (StructuredSelection) event.getSelection();
@@ -264,6 +270,7 @@ public class TestOutlineView extends ViewPart {
                 setBaseTestClassToTestMethod(
                     (TestMethod) structuredSelection.getFirstElement());
             }
+            isOutlineSelecting = false;
         }
 
         private void showEditor(ISelection selection, Boolean showWhenDeactivate) {
