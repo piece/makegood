@@ -17,6 +17,7 @@ import java.util.List;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.IType;
@@ -74,6 +75,9 @@ public class EditorParser {
         IModelElement element = null;
         try {
             element = source.getElementAt(caret);
+            while (!(element instanceof IType) && !(element instanceof IMethod)) {
+                element = element.getParent();
+            }
         } catch (ModelException e) {
             Activator.getDefault().getLog().log(
                 new Status(
