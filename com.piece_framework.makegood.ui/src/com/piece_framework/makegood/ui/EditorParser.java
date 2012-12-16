@@ -14,6 +14,7 @@ package com.piece_framework.makegood.ui;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.dltk.core.IModelElement;
@@ -22,9 +23,11 @@ import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ITypeHierarchy;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.internal.ui.editor.EditorUtility;
+import org.eclipse.jface.text.ITextViewerExtension5;
+import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.swt.custom.StyledText;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IEditorPart;
+import org.eclipse.wst.sse.ui.StructuredTextEditor;
 
 
 public class EditorParser {
@@ -48,16 +51,29 @@ public class EditorParser {
     }
 
     public IModelElement getModelElementOnSelection() {
-        if (!(editor.getAdapter(Control.class) instanceof StyledText)) return null;
-        StyledText text = (StyledText) editor.getAdapter(Control.class);
-        if (text == null) return null;
+        Assert.isTrue(editor instanceof StructuredTextEditor);
+        ISourceViewer sourceViewer = ((StructuredTextEditor) editor).getTextViewer();
+        if (sourceViewer == null) return null;
+
+        StyledText styledText = sourceViewer.getTextWidget();
+        if (styledText == null) return null;
+
+        int caret = 0;
+        if (sourceViewer instanceof ITextViewerExtension5) {
+            ITextViewerExtension5 extension = (ITextViewerExtension5) sourceViewer;
+            caret = extension.widgetOffset2ModelOffset(styledText
+                    .getCaretOffset());
+        } else {
+            int offset = sourceViewer.getVisibleRegion().getOffset();
+            caret = offset + styledText.getCaretOffset();
+        }
 
         ISourceModule source = getSourceModule();
         if (source == null) return null;
 
         IModelElement element = null;
         try {
-            element = source.getElementAt(text.getCaretOffset());
+            element = source.getElementAt(caret);
         } catch (ModelException e) {
             Activator.getDefault().getLog().log(
                 new Status(
