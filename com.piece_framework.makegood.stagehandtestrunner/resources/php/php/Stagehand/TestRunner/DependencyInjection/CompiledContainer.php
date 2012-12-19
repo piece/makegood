@@ -185,7 +185,7 @@ class CompiledContainer extends Container
         $instance->setRunnerFactory($this->get('runner_factory'));
         $instance->setTerminal($this->get('terminal'));
         $instance->setTestTargetRepository($this->get('test_target_repository'));
-        $instance->setPHPUnitXMLConfiguration($this->get('phpunit.phpunit_xml_configuration'));
+        $instance->setPHPUnitConfiguration($this->get('phpunit.phpunit_configuration'));
 
         return $instance;
     }
@@ -206,7 +206,7 @@ class CompiledContainer extends Container
 
         $instance->setCollectingTypeFactory($this->get('collecting_type_factory'));
         $instance->setRecursive($this->getParameter('recursive'));
-        $instance->setPHPUnitXMLConfiguration($this->get('phpunit.phpunit_xml_configuration'));
+        $instance->setPHPUnitConfiguration($this->get('phpunit.phpunit_configuration'));
 
         return $instance;
     }
@@ -225,7 +225,7 @@ class CompiledContainer extends Container
 
         $this->services['ciunit.preparer'] = $instance = new $class();
 
-        $instance->setPHPUnitXMLConfiguration($this->get('phpunit.phpunit_xml_configuration'));
+        $instance->setPHPUnitConfiguration($this->get('phpunit.phpunit_configuration'));
         $instance->setTerminal($this->get('terminal'));
         $instance->setCIUnitPath($this->getParameter('ciunit.ciunit_path'));
 
@@ -253,7 +253,7 @@ class CompiledContainer extends Container
         $instance->setTerminal($this->get('terminal'));
         $instance->setTestTargetRepository($this->get('test_target_repository'));
         $instance->setNotify($this->getParameter('notify'));
-        $instance->setPHPUnitXMLConfiguration($this->get('phpunit.phpunit_xml_configuration'));
+        $instance->setPHPUnitConfiguration($this->get('phpunit.phpunit_configuration'));
 
         return $instance;
     }
@@ -553,7 +553,7 @@ class CompiledContainer extends Container
         $instance->setRunnerFactory($this->get('runner_factory'));
         $instance->setTerminal($this->get('terminal'));
         $instance->setTestTargetRepository($this->get('test_target_repository'));
-        $instance->setPHPUnitXMLConfiguration($this->get('phpunit.phpunit_xml_configuration'));
+        $instance->setPHPUnitConfiguration($this->get('phpunit.phpunit_configuration'));
 
         return $instance;
     }
@@ -574,28 +574,37 @@ class CompiledContainer extends Container
 
         $instance->setCollectingTypeFactory($this->get('collecting_type_factory'));
         $instance->setRecursive($this->getParameter('recursive'));
-        $instance->setPHPUnitXMLConfiguration($this->get('phpunit.phpunit_xml_configuration'));
+        $instance->setPHPUnitConfiguration($this->get('phpunit.phpunit_configuration'));
 
         return $instance;
     }
 
     /**
-     * Gets the 'phpunit.phpunit_xml_configuration' service.
+     * Gets the 'phpunit.phpunit_configuration' service.
      *
      * This service is shared.
      * This method always returns the same instance of the service.
      *
-     * @return Object A %phpunit.phpunit_xml_configuration.class% instance.
+     * @return Object A %phpunit.phpunit_configuration.class% instance.
      */
-    protected function getPhpunit_PhpunitXmlConfigurationService()
+    protected function getPhpunit_PhpunitConfigurationService()
     {
-        $class = $this->getParameter('phpunit.phpunit_xml_configuration.class');
+        return $this->services['phpunit.phpunit_configuration'] = $this->get('phpunit.phpunit_configuration_factory')->create($this->getParameter('phpunit.phpunit_config_file'));
+    }
 
-        $this->services['phpunit.phpunit_xml_configuration'] = $instance = new $class();
+    /**
+     * Gets the 'phpunit.phpunit_configuration_factory' service.
+     *
+     * This service is shared.
+     * This method always returns the same instance of the service.
+     *
+     * @return Object A %phpunit.phpunit_configuration_factory.class% instance.
+     */
+    protected function getPhpunit_PhpunitConfigurationFactoryService()
+    {
+        $class = $this->getParameter('phpunit.phpunit_configuration_factory.class');
 
-        $instance->setFileName($this->getParameter('phpunit.phpunit_config_file'));
-
-        return $instance;
+        return $this->services['phpunit.phpunit_configuration_factory'] = new $class();
     }
 
     /**
@@ -612,7 +621,7 @@ class CompiledContainer extends Container
 
         $this->services['phpunit.preparer'] = $instance = new $class();
 
-        $instance->setPHPUnitXMLConfiguration($this->get('phpunit.phpunit_xml_configuration'));
+        $instance->setPHPUnitConfiguration($this->get('phpunit.phpunit_configuration'));
         $instance->setTerminal($this->get('terminal'));
 
         return $instance;
@@ -639,7 +648,7 @@ class CompiledContainer extends Container
         $instance->setTerminal($this->get('terminal'));
         $instance->setTestTargetRepository($this->get('test_target_repository'));
         $instance->setNotify($this->getParameter('notify'));
-        $instance->setPHPUnitXMLConfiguration($this->get('phpunit.phpunit_xml_configuration'));
+        $instance->setPHPUnitConfiguration($this->get('phpunit.phpunit_configuration'));
 
         return $instance;
     }
@@ -947,9 +956,9 @@ class CompiledContainer extends Container
             'phpspec.runner.class' => 'Stagehand\\TestRunner\\Runner\\PHPSpecRunner',
             'phpunit.autotest.class' => 'Stagehand\\TestRunner\\Process\\Autotest\\PHPUnitAutotest',
             'phpunit.collector.class' => 'Stagehand\\TestRunner\\Collector\\PHPUnitCollector',
-            'phpunit.phpunit_xml_configuration.class' => 'Stagehand\\TestRunner\\Util\\PHPUnitXMLConfiguration',
             'phpunit.preparer.class' => 'Stagehand\\TestRunner\\Preparer\\PHPUnitPreparer',
             'phpunit.runner.class' => 'Stagehand\\TestRunner\\Runner\\PHPUnitRunner',
+            'phpunit.phpunit_configuration_factory.class' => 'Stagehand\\TestRunner\\DependencyInjection\\PHPUnitConfigurationFactory',
             'phpunit.phpunit_config_file' => NULL,
             'simpletest.autotest.class' => 'Stagehand\\TestRunner\\Process\\Autotest\\SimpleTestAutotest',
             'simpletest.collector.class' => 'Stagehand\\TestRunner\\Collector\\SimpleTestCollector',

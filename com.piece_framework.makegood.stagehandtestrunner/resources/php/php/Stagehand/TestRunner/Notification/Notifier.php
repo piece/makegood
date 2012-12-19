@@ -33,7 +33,7 @@
  * @copyright  2011-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @copyright  2011 Shigenobu Nishikawa <shishi.s.n@gmail.com>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.4.0
+ * @version    Release: 3.5.0
  * @since      File available since Release 2.18.0
  */
 
@@ -42,16 +42,16 @@ namespace Stagehand\TestRunner\Notification;
 use Stagehand\TestRunner\Util\LegacyProxy;
 use Stagehand\TestRunner\Util\OS;
 
-Notifier::$ICON_PASSED = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'passed.png';
-Notifier::$ICON_FAILED = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'failed.png';
-Notifier::$ICON_STOPPED = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'stopped.png';
+Notifier::$ICON_PASSED = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Resources' . DIRECTORY_SEPARATOR . 'icons' . DIRECTORY_SEPARATOR . 'passed.png';
+Notifier::$ICON_FAILED = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Resources' . DIRECTORY_SEPARATOR . 'icons' . DIRECTORY_SEPARATOR . 'failed.png';
+Notifier::$ICON_STOPPED = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Resources' . DIRECTORY_SEPARATOR . 'icons' . DIRECTORY_SEPARATOR . 'stopped.png';
 
 /**
  * @package    Stagehand_TestRunner
  * @copyright  2011-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @copyright  2011 Shigenobu Nishikawa <shishi.s.n@gmail.com>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.4.0
+ * @version    Release: 3.5.0
  * @since      Class available since Release 2.18.0
  */
 class Notifier

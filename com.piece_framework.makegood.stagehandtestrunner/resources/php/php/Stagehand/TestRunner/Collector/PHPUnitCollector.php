@@ -33,7 +33,7 @@
  * @copyright  2007-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @copyright  2012 tsyk goto <ngyuki.ts@gmail.com>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.4.0
+ * @version    Release: 3.5.0
  * @link       http://www.phpunit.de/
  * @since      File available since Release 2.1.0
  */
@@ -42,7 +42,6 @@ namespace Stagehand\TestRunner\Collector;
 
 use Stagehand\TestRunner\TestSuite\PHPUnitGroupFilterTestSuite;
 use Stagehand\TestRunner\TestSuite\PHPUnitMethodFilterTestSuite;
-use Stagehand\TestRunner\Util\PHPUnitXMLConfiguration;
 
 /**
  * A test collector for PHPUnit.
@@ -51,7 +50,7 @@ use Stagehand\TestRunner\Util\PHPUnitXMLConfiguration;
  * @copyright  2007-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @copyright  2012 tsyk goto <ngyuki.ts@gmail.com>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.4.0
+ * @version    Release: 3.5.0
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.1.0
  */
@@ -70,10 +69,10 @@ class PHPUnitCollector extends Collector
     private static $FILTER_METHOD = 2;
 
     /**
-     * @var \Stagehand\TestRunner\Util\PHPUnitXMLConfiguration
-     * @since Property available since Release 3.0.0
+     * @var \PHPUnit_Util_Configuration $phpunitConfiguration
+     * @since Property available since Release 3.5.0
      */
-    protected $phpunitXMLConfiguration;
+    protected $phpunitConfiguration;
 
     /**
      * @param string $testCase
@@ -86,7 +85,7 @@ class PHPUnitCollector extends Collector
 
         $suiteMethod = $this->findSuiteMethod($testClass);
         if (is_null($suiteMethod)) {
-            $testSuite = new PHPUnitGroupFilterTestSuite($testClass, $this->phpunitXMLConfiguration);
+            $testSuite = new PHPUnitGroupFilterTestSuite($testClass, $this->phpunitConfiguration);
         } else {
             $testSuite = $suiteMethod->invoke(null, $testClass->getName());
         }
@@ -105,12 +104,12 @@ class PHPUnitCollector extends Collector
     }
 
     /**
-     * @param \Stagehand\TestRunner\Util\PHPUnitXMLConfiguration $phpunitXMLConfiguration
-     * @since Method available since Release 3.0.0
+     * @param \PHPUnit_Util_Configuration $phpunitConfiguration
+     * @since Method available since Release 3.5.0
      */
-    public function setPHPUnitXMLConfiguration(PHPUnitXMLConfiguration $phpunitXMLConfiguration = null)
+    public function setPHPUnitConfiguration(\PHPUnit_Util_Configuration $phpunitConfiguration = null)
     {
-        $this->phpunitXMLConfiguration = $phpunitXMLConfiguration;
+        $this->phpunitConfiguration = $phpunitConfiguration;
     }
 
     /**
@@ -151,6 +150,11 @@ class PHPUnitCollector extends Collector
             if ($test instanceof \PHPUnit_Framework_TestCase) {
                 $testClassName = get_class($test);
                 $testMethodName = $test->getName(false);
+                if ($this->testTargetRepository->shouldTreatElementAsTest($testClassName, $filter == self::$FILTER_METHOD ? $testMethodName : null)) {
+                    $filteredTests[] = $test;
+                }
+            } elseif ($test instanceof \PHPUnit_Framework_TestSuite_DataProvider) {
+                list($testClassName, $testMethodName) = explode('::', $test->getName());
                 if ($this->testTargetRepository->shouldTreatElementAsTest($testClassName, $filter == self::$FILTER_METHOD ? $testMethodName : null)) {
                     $filteredTests[] = $test;
                 }

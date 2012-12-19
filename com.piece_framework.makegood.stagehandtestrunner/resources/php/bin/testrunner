@@ -1,4 +1,4 @@
-#!/usr/bin/env php
+#!/usr/bin/php
 <?php
 /* vim: set expandtab tabstop=4 shiftwidth=4: */
 
@@ -32,7 +32,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2011-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.4.0
+ * @version    Release: 3.5.0
  * @since      File available since Release 3.0.0
  */
 
@@ -137,7 +137,7 @@ function preloadScript()
         if (!is_null($preloadScript)) {
             $result = include_once $preloadScript;
             if (!$result) {
-                throw \UnexpectedValueException(sprintf(
+                throw new \UnexpectedValueException(sprintf(
                     'Cannot load [ %s ]. Make sure the file path and permission are correct.',
                     $preloadScript
                 ));

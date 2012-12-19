@@ -26,9 +26,11 @@ parameters:
   # Domain Components
   phpunit.autotest.class: "Stagehand\\TestRunner\\Process\\Autotest\\PHPUnitAutotest"
   phpunit.collector.class: "Stagehand\\TestRunner\\Collector\\PHPUnitCollector"
-  phpunit.phpunit_xml_configuration.class: "Stagehand\\TestRunner\\Util\\PHPUnitXMLConfiguration"
   phpunit.preparer.class: "Stagehand\\TestRunner\\Preparer\\PHPUnitPreparer"
   phpunit.runner.class: "Stagehand\\TestRunner\\Runner\\PHPUnitRunner"
+
+  # PHPUnit
+  phpunit.phpunit_configuration_factory.class: "Stagehand\\TestRunner\\DependencyInjection\\PHPUnitConfigurationFactory"
 
   # Configuration Parameters
   phpunit.phpunit_config_file: null
@@ -39,20 +41,14 @@ services:
     parent: collector
     class: "%phpunit.collector.class%"
     calls:
-      - [ setPHPUnitXMLConfiguration, [ "@phpunit.phpunit_xml_configuration" ] ]
-
-  # Core
-  phpunit.phpunit_xml_configuration:
-    class: "%phpunit.phpunit_xml_configuration.class%"
-    calls:
-      - [ setFileName, [ "%phpunit.phpunit_config_file%" ] ]
+      - [ setPHPUnitConfiguration, [ "@?phpunit.phpunit_configuration" ] ]
 
   # Preparer
   phpunit.preparer:
     parent: preparer
     class: "%phpunit.preparer.class%"
     calls:
-      - [ setPHPUnitXMLConfiguration, [ "@phpunit.phpunit_xml_configuration" ] ]
+      - [ setPHPUnitConfiguration, [ "@?phpunit.phpunit_configuration" ] ]
       - [ setTerminal, [ "@terminal" ] ]
 
   # Process
@@ -60,14 +56,23 @@ services:
     parent: autotest
     class: "%phpunit.autotest.class%"
     calls:
-      - [ setPHPUnitXMLConfiguration, [ "@phpunit.phpunit_xml_configuration" ] ]
+      - [ setPHPUnitConfiguration, [ "@?phpunit.phpunit_configuration" ] ]
 
   # Runner
   phpunit.runner:
     parent: runner
     class: "%phpunit.runner.class%"
     calls:
-      - [ setPHPUnitXMLConfiguration, [ "@phpunit.phpunit_xml_configuration" ] ]
+      - [ setPHPUnitConfiguration, [ "@?phpunit.phpunit_configuration" ] ]
+
+  # PHPUnit
+  phpunit.phpunit_configuration:
+    class: "%phpunit.phpunit_configuration.class%"
+    factory_service: phpunit.phpunit_configuration_factory
+    factory_method: create
+    arguments: [ "%phpunit.phpunit_config_file%" ]
+  phpunit.phpunit_configuration_factory:
+    class: "%phpunit.phpunit_configuration_factory.class%"
 
 # Local Variables:
 # mode: conf

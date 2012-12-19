@@ -31,7 +31,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2011-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.4.0
+ * @version    Release: 3.5.0
  * @since      File available since Release 3.0.0
  */
 
@@ -45,7 +45,7 @@ use Stagehand\ComponentFactory\ComponentFactory;
  * @package    Stagehand_TestRunner
  * @copyright  2011-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.4.0
+ * @version    Release: 3.5.0
  * @since      Class available since Release 3.0.0
  */
 class Bootstrap
@@ -90,8 +90,8 @@ class Bootstrap
     protected function configureApplicationContext()
     {
         $environment = new Environment();
-        $environment->setWorkingDirectoryAtStartup(workingDirectoryAtStartup());
-        $environment->setPreloadScript(preloadScript());
+        $environment->setWorkingDirectoryAtStartup(function_exists('Stagehand\TestRunner\Core\workingDirectoryAtStartup') ? workingDirectoryAtStartup() : $GLOBALS['STAGEHAND_TESTRUNNER_workingDirectoryAtStartup']);
+        $environment->setPreloadScript(function_exists('Stagehand\TestRunner\Core\preloadScript') ? preloadScript() : $GLOBALS['STAGEHAND_TESTRUNNER_preloadScript']);
 
         $applicationContext = new ApplicationContext();
         $applicationContext->setComponentFactory(new ComponentFactory());

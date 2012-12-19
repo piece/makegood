@@ -31,7 +31,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2007-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.4.0
+ * @version    Release: 3.5.0
  * @link       http://www.phpunit.de/
  * @since      File available since Release 1.2.0
  */
@@ -48,7 +48,7 @@ use Stagehand\TestRunner\Runner\Runner;
  * @package    Stagehand_TestRunner
  * @copyright  2007-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.4.0
+ * @version    Release: 3.5.0
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 1.2.0
  */
@@ -97,9 +97,11 @@ class ResultPrinter extends \PHPUnit_TextUI_ResultPrinter
             if (preg_match('/^(?:\x1b\[30;42m\x1b\[2K)?(OK .+)/m', $output, $matches)) {
                 $notificationMessage = $matches[1];
             } elseif (preg_match('/^(?:\x1b\[37;41m\x1b\[2K)?(FAILURES!)\s^(?:\x1b\[0m\x1b\[37;41m\x1b\[2K)?(.+)/m', $output, $matches)) {
-                $notificationMessage = $matches[1] . "\n" . $matches[2];
+                $notificationMessage = $matches[1] . PHP_EOL . $matches[2];
             } elseif (preg_match('/^(?:\x1b\[30;43m\x1b\[2K)?(OK, but incomplete or skipped tests!)\s^(?:\x1b\[0m\x1b\[30;43m\x1b\[2K)?(.+)/m', $output, $matches)) {
-                $notificationMessage = $matches[1] . "\n" . $matches[2];
+                $notificationMessage = $matches[1] . PHP_EOL . $matches[2];
+            } elseif (preg_match('/^(?:\x1b\[30;43m\x1b\[2K)?(No tests executed!)/m', $output, $matches)) {
+                $notificationMessage = $matches[1];
             }
 
             $this->notification = new Notification($notificationResult, $notificationMessage);

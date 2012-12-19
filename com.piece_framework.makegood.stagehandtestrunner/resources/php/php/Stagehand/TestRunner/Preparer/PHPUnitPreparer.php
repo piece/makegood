@@ -31,7 +31,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2010-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.4.0
+ * @version    Release: 3.5.0
  * @since      File available since Release 2.12.0
  */
 
@@ -40,22 +40,21 @@ namespace Stagehand\TestRunner\Preparer;
 require_once 'PHPUnit/Autoload.php';
 
 use Stagehand\TestRunner\CLI\Terminal;
-use Stagehand\TestRunner\Util\PHPUnitXMLConfiguration;
 
 /**
  * @package    Stagehand_TestRunner
  * @copyright  2010-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.4.0
+ * @version    Release: 3.5.0
  * @since      Class available since Release 2.12.0
  */
 class PHPUnitPreparer extends Preparer
 {
     /**
-     * @var \Stagehand\TestRunner\Util\PHPUnitXMLConfiguration
-     * @since Property available since Release 3.0.0
+     * @var \PHPUnit_Util_Configuration $phpunitConfiguration
+     * @since Property available since Release 3.5.0
      */
-    protected $phpunitXMLConfiguration;
+    protected $phpunitConfiguration;
 
     /**
      * @var \Stagehand\TestRunner\CLI\Terminal
@@ -65,18 +64,18 @@ class PHPUnitPreparer extends Preparer
 
     public function prepare()
     {
-        if ($this->phpunitXMLConfiguration->isEnabled()) {
+        if (!is_null($this->phpunitConfiguration)) {
             $this->earlyConfigure();
         }
     }
 
     /**
-     * @param \Stagehand\TestRunner\Util\PHPUnitXMLConfiguration $phpunitXMLConfiguration
-     * @since Method available since Release 3.0.0
+     * @param \PHPUnit_Util_Configuration $phpunitConfiguration
+     * @since Method available since Release 3.5.0
      */
-    public function setPHPUnitXMLConfiguration(PHPUnitXMLConfiguration $phpunitXMLConfiguration = null)
+    public function setPHPUnitConfiguration(\PHPUnit_Util_Configuration $phpunitConfiguration = null)
     {
-        $this->phpunitXMLConfiguration = $phpunitXMLConfiguration;
+        $this->phpunitConfiguration = $phpunitConfiguration;
     }
 
     /**
@@ -110,26 +109,24 @@ class PHPUnitPreparer extends Preparer
      */
     protected function earlyConfigure()
     {
-        $this->phpunitXMLConfiguration->handlePHPConfiguration();
+        $this->phpunitConfiguration->handlePHPConfiguration();
 
-        if ($this->phpunitXMLConfiguration->hasPHPUnitConfiguration('bootstrap')) {
-            if ($this->phpunitXMLConfiguration->hasPHPUnitConfiguration('syntaxCheck')) {
-                $this->handleBootstrap(
-                    $this->phpunitXMLConfiguration->getPHPUnitConfiguration('bootstrap'),
-                    $this->phpunitXMLConfiguration->getPHPUnitConfiguration('syntaxCheck')
-                );
+        $phpunitConfiguration = $this->phpunitConfiguration->getPHPUnitConfiguration();
+        if (array_key_exists('bootstrap', $phpunitConfiguration)) {
+            if (array_key_exists('syntaxCheck', $phpunitConfiguration)) {
+                $this->handleBootstrap($phpunitConfiguration['bootstrap'], $phpunitConfiguration['syntaxCheck']);
             } else {
-                $this->handleBootstrap($this->phpunitXMLConfiguration->getPHPUnitConfiguration('bootstrap'));
+                $this->handleBootstrap($phpunitConfiguration['bootstrap']);
             }
         }
 
-        if ($this->phpunitXMLConfiguration->hasPHPUnitConfiguration('colors')) {
-            $this->terminal->setColor($this->phpunitXMLConfiguration->getPHPUnitConfiguration('colors'));
+        if (array_key_exists('colors', $phpunitConfiguration)) {
+            $this->terminal->setColor($phpunitConfiguration['colors']);
         }
 
-        if ($this->phpunitXMLConfiguration->hasSeleniumBrowserConfiguration()) {
-            \PHPUnit_Extensions_SeleniumTestCase::$browsers =
-                $this->phpunitXMLConfiguration->getSeleniumBrowserConfiguration();
+        $seleniumBrowserConfiguration = $this->phpunitConfiguration->getSeleniumBrowserConfiguration();
+        if (count($seleniumBrowserConfiguration) > 0) {
+            \PHPUnit_Extensions_SeleniumTestCase::$browsers = $seleniumBrowserConfiguration;
         }
     }
 }
