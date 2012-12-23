@@ -205,7 +205,7 @@ public class TestTargetRepository {
         for (Object testTarget: testTargets) {
             IResource resource = getResource(testTarget);
             if (resource == null || resource.exists() == false) {
-                throw new ResourceNotFoundException("The resource [ " + testTarget + " ] is not found."); //$NON-NLS-1$ //$NON-NLS-2$
+                throw new ResourceNotFoundException("The resource for the test target [ " + testTarget + " ] is not found."); //$NON-NLS-1$ //$NON-NLS-2$
             }
 
             testFiles.add(resource.getLocation().toString());
