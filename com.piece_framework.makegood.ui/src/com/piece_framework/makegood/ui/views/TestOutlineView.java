@@ -17,8 +17,12 @@ import java.util.List;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.IJobChangeEvent;
+import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.dltk.core.IMember;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
@@ -49,13 +53,13 @@ import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
+import org.eclipse.ui.progress.UIJob;
 import org.eclipse.ui.texteditor.ITextEditor;
 
 import com.piece_framework.makegood.core.TestClass;
@@ -127,66 +131,59 @@ public class TestOutlineView extends ViewPart {
         if (viewer == null) return;
         if (viewer.getContentProvider() == null) return;
 
-        Control control = viewer.getControl();
-        if (control == null || control.isDisposed()) return;
+        if (viewer.getControl().isDisposed()) return;
 
-        Display display = control.getDisplay();
-        if (display == null) return;
+        viewer.setInput(null);
 
-        display.asyncExec(new Runnable() {
-            private static final int RETRY_LIMIT = 5;
-            private int retry = 1;
+        ActiveEditor activeEditor = MakeGoodContext.getInstance().getActiveEditor();
+        if (!activeEditor.isPHP()) return;
 
-            public void run() {
-                if (viewer.getControl().isDisposed()) return;
+        ISourceModule module = EditorParser.createActiveEditorParser().getSourceModule();
+        if (!new MakeGoodProperty(module.getResource().getProject()).exists()) return;
 
-                viewer.setInput(null);
+        List<TestClass> testClasses = new ArrayList<TestClass>();
+        try {
+            for (IType type: module.getTypes()) {
+                TestingFramework testingFramework =
+                        new MakeGoodProperty(type.getResource().getProject()).getTestingFramework();
+                if (!TestClass.isTestClass(type, testingFramework)) continue;
+                TestClass testClass = new TestClass(type, testingFramework);
+                testClasses.add(testClass);
+            }
+        } catch (ModelException e) {
+            Activator.getDefault().getLog().log(new Status(IStatus.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
+        }
 
-                ActiveEditor activeEditor = MakeGoodContext.getInstance().getActiveEditor();
-                if (!activeEditor.isPHP()) return;
-
-                ISourceModule module = EditorParser.createActiveEditorParser().getSourceModule();
-                if (!new MakeGoodProperty(module.getResource().getProject()).exists()) return;
-
-                List<TestClass> testClasses = new ArrayList<TestClass>();
-                try {
-                    for (IType type: module.getTypes()) {
-                        TestingFramework testingFramework =
-                            new MakeGoodProperty(type.getResource().getProject()).getTestingFramework();
-                        if (!TestClass.isTestClass(type, testingFramework)) continue;
-                        TestClass testClass = new TestClass(type, testingFramework);
-                        testClasses.add(testClass);
-                    }
-                } catch (ModelException e) {
-                    Activator.getDefault().getLog().log(new Status(IStatus.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
-                }
-
-                // Since there is no method of synchronizing with the DLTK indexing,
-                // the test classes may be uncollectable at the start up Eclipse.
-                // Therefore, in the following cases, it retries after definite period of time.
-                //   1. Not found test classes.
-                //   2. The element name includes "test".
-                //   3. The retry count is below limit.
-                boolean mayBeTest = module.getElementName().toLowerCase().indexOf("test") > 0;
-                if (testClasses.size() == 0
-                    && mayBeTest
-                    && retry < RETRY_LIMIT) {
-                    try {
-                        Thread.sleep(500);
-                        ++retry;
-                        this.run();
-                    } catch (InterruptedException e) {}
+        // If the name includes "test" but test class is not found,
+        // add the retry listener to the DLTK job.
+        boolean mayBeTest = module.getElementName().toLowerCase().indexOf("test") > 0;
+        if (testClasses.size() == 0 && mayBeTest) {
+            for (Job job: UIJob.getJobManager().find(null)) {
+                if (job.getName().indexOf("DLTK") != -1) {
+                    job.addJobChangeListener(new JobChangeAdapter() {
+                        @Override
+                        public void done(IJobChangeEvent event) {
+                            Job job = new UIJob("MakeGood Test Outline View Updated") {
+                                @Override
+                                public IStatus runInUIThread(IProgressMonitor monitor) {
+                                    TestOutlineView.this.updateTestOutline();
+                                    return Status.OK_STATUS;
+                                }
+                            };
+                            job.schedule();
+                        }
+                    });
                     return;
                 }
-
-                viewer.setInput(testClasses);
-                viewer.expandAll();
-
-                collectBaseTestClasses(testClasses);
-
-                selectCurrentElement();
             }
-        });
+        }
+
+        viewer.setInput(testClasses);
+        viewer.expandAll();
+
+        collectBaseTestClasses(testClasses);
+
+        selectCurrentElement();
     }
 
     public void refresh() {
