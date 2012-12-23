@@ -20,6 +20,11 @@ import org.eclipse.dltk.core.IType;
 public class ClassTestTarget {
     private IType type;
 
+    @Override
+    public String toString() {
+        return getClassName();
+    }
+
     public ClassTestTarget(IType type) {
         this.type = type;
     }
