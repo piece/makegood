@@ -75,7 +75,7 @@ public class EditorParser {
         IModelElement element = null;
         try {
             element = source.getElementAt(caret);
-            while (!(element instanceof IType) && !(element instanceof IMethod)) {
+            while (element != null && !(element instanceof IType) && !(element instanceof IMethod)) {
                 element = element.getParent();
             }
         } catch (ModelException e) {
