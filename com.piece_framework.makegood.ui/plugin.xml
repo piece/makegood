@@ -230,24 +230,6 @@
       </command>
       <command
             categoryId="com.piece_framework.makegood.ui.commands.runTestCategory"
-            defaultHandler="com.piece_framework.makegood.ui.handlers.RunFailedTestsWhenFileIsSavedHandler"
-            id="com.piece_framework.makegood.ui.commands.runFailedTestsWhenFileIsSavedCommand"
-            name="%commands.runFailedTestsWhenFileIsSavedCommand.name">
-      </command>
-      <command
-            categoryId="com.piece_framework.makegood.ui.commands.runTestCategory"
-            defaultHandler="com.piece_framework.makegood.ui.handlers.RunLastTestWhenFileIsSavedHandler"
-            id="com.piece_framework.makegood.ui.commands.runLastTestWhenFileIsSavedCommand"
-            name="%commands.runLastTestWhenFileIsSavedCommand.name">
-      </command>
-      <command
-            categoryId="com.piece_framework.makegood.ui.commands.runTestCategory"
-            defaultHandler="com.piece_framework.makegood.ui.handlers.RunAllTestsWhenFileIsSavedHandler"
-            id="com.piece_framework.makegood.ui.commands.runAllTestsWhenFileIsSavedCommand"
-            name="%commands.runAllTestsWhenFileIsSavedCommand.name">
-      </command>
-      <command
-            categoryId="com.piece_framework.makegood.ui.commands.runTestCategory"
             defaultHandler="com.piece_framework.makegood.ui.handlers.StopTestHandler"
             id="com.piece_framework.makegood.ui.commands.stopTestCommand"
             name="%commands.stopTestCommand.name">
@@ -263,6 +245,12 @@
             defaultHandler="com.piece_framework.makegood.ui.handlers.RerunTestHandler"
             id="com.piece_framework.makegood.ui.commands.rerunTestCommand"
             name="%commands.rerunTestCommand.name">
+      </command>
+      <command
+            categoryId="com.piece_framework.makegood.ui.commands.resultViewCategory"
+            defaultHandler="com.piece_framework.makegood.ui.handlers.ToggleContinuousTestingHandler"
+            id="com.piece_framework.makegood.ui.commands.toggleContinuousTestingCommand"
+            name="%commands.toggleContinuousTestingCommand.name">
       </command>
    </extension>
    <extension
@@ -329,24 +317,6 @@
             sequence="M3+M A">
       </key>
       <key
-            commandId="com.piece_framework.makegood.ui.commands.runFailedTestsWhenFileIsSavedCommand"
-            contextId="org.eclipse.ui.contexts.window"
-            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="M3+M Y">
-      </key>
-      <key
-            commandId="com.piece_framework.makegood.ui.commands.runLastTestWhenFileIsSavedCommand"
-            contextId="org.eclipse.ui.contexts.window"
-            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="M3+M I">
-      </key>
-      <key
-            commandId="com.piece_framework.makegood.ui.commands.runAllTestsWhenFileIsSavedCommand"
-            contextId="org.eclipse.ui.contexts.window"
-            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="M3+M U">
-      </key>
-      <key
             commandId="com.piece_framework.makegood.ui.commands.runTestFromExplorerCommand"
             contextId="org.eclipse.ui.contexts.window"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
@@ -400,12 +370,28 @@
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="M3+M G">
       </key>
+      <key
+            commandId="com.piece_framework.makegood.ui.commands.toggleContinuousTestingCommand"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M3+M @">
+      </key>
    </extension>
    <extension
          point="org.eclipse.ui.viewActions">
       <viewContribution
             id="com.piece_framework.makegood.ui.viewActions.resultView"
             targetID="com.piece_framework.makegood.ui.views.resultView">
+         <action
+               class="com.piece_framework.makegood.ui.actions.ConfigureContinuousTestingAction"
+               definitionId="com.piece_framework.makegood.ui.commands.toggleContinuousTestingCommand"
+               icon="icons/configure_continuous_testing_enabled.gif"
+               id="com.piece_framework.makegood.ui.viewActions.configureContinuousTestingAction"
+               label="%viewActions.configureContinuousTestingAction.label"
+               style="pulldown"
+               toolbarPath="continuoustesting"
+               tooltip="%viewActions.configureContinuousTestingAction.tooltip">
+         </action>
          <action
                class="com.piece_framework.makegood.ui.actions.StopTestAction"
                definitionId="com.piece_framework.makegood.ui.commands.stopTestCommand"
@@ -465,36 +451,6 @@
                style="toggle"
                toolbarPath="properties"
                tooltip="%viewActions.debugTestAction.tooltip">
-         </action>
-         <action
-               class="com.piece_framework.makegood.ui.actions.RunFailedTestsWhenFileIsSavedAction"
-               definitionId="com.piece_framework.makegood.ui.commands.runFailedTestsWhenFileIsSavedCommand"
-               icon="icons/runFailedTestsWhenFileIsSaved.gif"
-               id="com.piece_framework.makegood.ui.viewActions.runFailedTestsWhenFileIsSavedAction"
-               label="%viewActions.runFailedTestsWhenFileIsSavedAction.label"
-               style="toggle"
-               toolbarPath="properties"
-               tooltip="%viewActions.runFailedTestsWhenFileIsSavedAction.tooltip">
-         </action>
-         <action
-               class="com.piece_framework.makegood.ui.actions.RunLastTestWhenFileIsSavedAction"
-               definitionId="com.piece_framework.makegood.ui.commands.runLastTestWhenFileIsSavedCommand"
-               icon="icons/runLastTestWhenFileIsSavedAction.gif"
-               id="com.piece_framework.makegood.ui.viewActions.runLastTestWhenFileIsSavedAction"
-               label="%viewActions.runLastTestWhenFileIsSavedAction.label"
-               style="toggle"
-               toolbarPath="properties"
-               tooltip="%viewActions.runLastTestWhenFileIsSavedAction.tooltip">
-         </action>
-         <action
-               class="com.piece_framework.makegood.ui.actions.RunAllTestsWhenFileIsSavedAction"
-               definitionId="com.piece_framework.makegood.ui.commands.runAllTestsWhenFileIsSavedCommand"
-               icon="icons/runAllTestsWhenFileIsSavedAction.gif"
-               id="com.piece_framework.makegood.ui.viewActions.runAllTestsWhenFileIsSavedAction"
-               label="%viewActions.runAllTestsWhenFileIsSavedAction.label"
-               style="toggle"
-               toolbarPath="properties"
-               tooltip="%viewActions.runAllTestsWhenFileIsSavedAction.tooltip">
          </action>
          <action
                class="com.piece_framework.makegood.ui.actions.ShowOnlyFailuresAction"

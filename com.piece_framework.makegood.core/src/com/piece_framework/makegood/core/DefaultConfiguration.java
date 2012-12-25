@@ -17,6 +17,8 @@ import java.util.List;
 
 import org.eclipse.core.resources.IFolder;
 
+import com.piece_framework.makegood.core.continuoustesting.Scope;
+
 /**
  * @since 2.0.0
  */
@@ -28,8 +30,8 @@ public class DefaultConfiguration {
         return true;
     }
 
-    public AutotestScope getAutotestScope() {
-        return AutotestScope.ALL_TESTS;
+    public Scope getAutotestScope() {
+        return Scope.ALL_TESTS;
     }
 
     public TestingFramework getTestingFramework() {

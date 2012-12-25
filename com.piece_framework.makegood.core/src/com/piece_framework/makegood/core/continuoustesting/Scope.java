@@ -9,14 +9,13 @@
  * distribution, and is available at http://www.eclipse.org/legal/epl-v10.html
  */
 
-package com.piece_framework.makegood.core;
+package com.piece_framework.makegood.core.continuoustesting;
 
 /**
- * @since 1.4.0
+ * @since 2.3.0
  */
-public enum AutotestScope {
+public enum Scope {
     ALL_TESTS,
     LAST_TEST,
     FAILED_TESTS,
-    NONE,
 }

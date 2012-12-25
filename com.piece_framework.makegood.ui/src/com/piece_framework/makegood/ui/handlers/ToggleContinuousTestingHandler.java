@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2012 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -11,11 +11,11 @@
 
 package com.piece_framework.makegood.ui.handlers;
 
-import com.piece_framework.makegood.ui.actions.RunLastTestWhenFileIsSavedAction;
+import com.piece_framework.makegood.ui.actions.ConfigureContinuousTestingAction;
 
-public class RunLastTestWhenFileIsSavedHandler extends ToggleHandler {
+public class ToggleContinuousTestingHandler extends ToggleHandler {
     @Override
     protected String getActionId() {
-        return RunLastTestWhenFileIsSavedAction.ACTION_ID;
+        return ConfigureContinuousTestingAction.ACTION_ID;
     }
 }

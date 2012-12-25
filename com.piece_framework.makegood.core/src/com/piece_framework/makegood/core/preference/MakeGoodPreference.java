@@ -13,9 +13,9 @@ package com.piece_framework.makegood.core.preference;
 
 import org.eclipse.jface.preference.IPreferenceStore;
 
-import com.piece_framework.makegood.core.AutotestScope;
 import com.piece_framework.makegood.core.Activator;
 import com.piece_framework.makegood.core.DefaultConfiguration;
+import com.piece_framework.makegood.core.continuoustesting.Scope;
 
 /**
  * @since 1.4.0
@@ -51,29 +51,24 @@ public class MakeGoodPreference {
      * @since 2.3.0
      */
     public boolean getAutotestEnabled() {
-        String autotestScope = preferenceStore.getString(AUTOTEST_SCOPE);
-        if (autotestScope.equals(AutotestScope.NONE.name())) {
-            return false;
-        }
-
         return preferenceStore.getBoolean(AUTOTEST_ENABLED);
     }
 
     /**
      * @since 2.3.0
      */
-    public void setAutotestScope(AutotestScope autotestScope) {
+    public void setAutotestScope(Scope autotestScope) {
         preferenceStore.setValue(AUTOTEST_SCOPE, autotestScope.name());
     }
 
-    public AutotestScope getAutotestScope() {
+    public Scope getAutotestScope() {
         String autotestScope = preferenceStore.getString(AUTOTEST_SCOPE);
-        if (autotestScope.equals(AutotestScope.ALL_TESTS.name())) {
-            return AutotestScope.ALL_TESTS;
-        } else if (autotestScope.equals(AutotestScope.LAST_TEST.name())) {
-            return AutotestScope.LAST_TEST;
-        } else if (autotestScope.equals(AutotestScope.FAILED_TESTS.name())) {
-            return AutotestScope.FAILED_TESTS;
+        if (autotestScope.equals(Scope.ALL_TESTS.name())) {
+            return Scope.ALL_TESTS;
+        } else if (autotestScope.equals(Scope.LAST_TEST.name())) {
+            return Scope.LAST_TEST;
+        } else if (autotestScope.equals(Scope.FAILED_TESTS.name())) {
+            return Scope.FAILED_TESTS;
         } else {
             return new DefaultConfiguration().getAutotestScope();
         }

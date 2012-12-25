@@ -235,6 +235,31 @@ public class Messages extends NLS {
      */
     public static String ResultSquare_NoTests;
 
+    /**
+     * @since 2.3.0
+     */
+    public static String MakeGoodView_ConfigureContinuousTestingAction_DisableContinuousTestingAction;
+
+    /**
+     * @since 2.3.0
+     */
+    public static String MakeGoodView_ConfigureContinuousTestingAction_EnableContinuousTestingAction;
+
+    /**
+     * @since 2.3.0
+     */
+    public static String MakeGoodView_ConfigureContinuousTestingAction_SelectAllTestsAsContinuousTestingScopeAction;
+
+    /**
+     * @since 2.3.0
+     */
+    public static String MakeGoodView_ConfigureContinuousTestingAction_SelectFailedTestsAsContinuousTestingScopeAction;
+
+    /**
+     * @since 2.3.0
+     */
+    public static String MakeGoodView_ConfigureContinuousTestingAction_SelectLastTestAsContinuousTestingScopeAction;
+
     static {
         // initialize resource bundle
         NLS.initializeMessages(BUNDLE_NAME, Messages.class);

@@ -13,7 +13,7 @@ package com.piece_framework.makegood.launch;
 
 import org.eclipse.debug.core.ILaunchManager;
 
-import com.piece_framework.makegood.core.AutotestScope;
+import com.piece_framework.makegood.core.continuoustesting.ContinuousTesting;
 import com.piece_framework.makegood.core.preference.MakeGoodPreference;
 
 public class RuntimeConfiguration {
@@ -22,9 +22,9 @@ public class RuntimeConfiguration {
     public boolean showsOnlyFailures = false;
 
     /**
-     * @since 1.4.0
+     * @since 2.3.0
      */
-    private AutotestScope autotestScope;
+    private ContinuousTesting continuousTesting;
 
     private static RuntimeConfiguration soleInstance;
 
@@ -41,27 +41,21 @@ public class RuntimeConfiguration {
     }
 
     private RuntimeConfiguration() {
-        autotestScope = new MakeGoodPreference().getAutotestScope();
+        MakeGoodPreference preference = new MakeGoodPreference();
+        continuousTesting = new ContinuousTesting(preference.getAutotestEnabled(), preference.getAutotestScope());
     }
 
     /**
-     * @since 1.4.0
+     * @since 2.3.0
      */
-    public boolean enablesAutotest() {
-        return AutotestScope.NONE != autotestScope;
+    public void setContinuousTesting(ContinuousTesting continuousTesting) {
+        this.continuousTesting = continuousTesting;
     }
 
     /**
-     * @since 1.4.0
+     * @since 2.3.0
      */
-    public AutotestScope getAutotestScope() {
-        return autotestScope;
-    }
-
-    /**
-     * @since 1.4.0
-     */
-    public void setAutotestScope(AutotestScope autotestScope) {
-        this.autotestScope = autotestScope;
+    public ContinuousTesting getContinuousTesting() {
+        return continuousTesting;
     }
 }

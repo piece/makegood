@@ -24,14 +24,14 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.progress.UIJob;
 
-import com.piece_framework.makegood.core.AutotestScope;
+import com.piece_framework.makegood.core.continuoustesting.Scope;
 import com.piece_framework.makegood.launch.RuntimeConfiguration;
 
 public class Autotest implements IResourceChangeListener {
     @Override
     public void resourceChanged(IResourceChangeEvent event) {
         if (MakeGoodContext.getInstance().isShuttingDown()) return;
-        if (!RuntimeConfiguration.getInstance().enablesAutotest()) return;
+        if (!RuntimeConfiguration.getInstance().getContinuousTesting().isEnabled()) return;
         IResourceDelta delta = event.getDelta();
         if (delta == null) return;
         IResourceDelta[] deltas = delta.getAffectedChildren();
@@ -44,8 +44,7 @@ public class Autotest implements IResourceChangeListener {
         }
         if (!shouldRunTests(deltas)) return;
 
-        AutotestScope autotestScope = RuntimeConfiguration.getInstance().getAutotestScope();
-        if (autotestScope == AutotestScope.ALL_TESTS) {
+        if (RuntimeConfiguration.getInstance().getContinuousTesting().getScope() == Scope.ALL_TESTS) {
             final ISelection selection = new StructuredSelection(deltas[0].getResource());
             if (ActivePart.isAllTestsRunnable(selection)) {
                 Job job = new UIJob("MakeGood Run All Tests By Autotest") { //$NON-NLS-1$
@@ -57,7 +56,7 @@ public class Autotest implements IResourceChangeListener {
                 };
                 job.schedule();
             }
-        } else if (autotestScope == AutotestScope.LAST_TEST) {
+        } else if (RuntimeConfiguration.getInstance().getContinuousTesting().getScope() == Scope.LAST_TEST) {
             if (MakeGoodContext.getInstance().getTestRunner().hasLastTest()) {
                 Job job = new UIJob("MakeGood Run Last Test By Autotest") { //$NON-NLS-1$
                     @Override
@@ -68,7 +67,7 @@ public class Autotest implements IResourceChangeListener {
                 };
                 job.schedule();
             }
-        } else if (autotestScope == AutotestScope.FAILED_TESTS) {
+        } else if (RuntimeConfiguration.getInstance().getContinuousTesting().getScope() == Scope.FAILED_TESTS) {
             if (MakeGoodContext.getInstance().getTestRunner().hasLastTest()) {
                 Job job = new UIJob("MakeGood Run Failed Tests By Autotest") { //$NON-NLS-1$
                     @Override

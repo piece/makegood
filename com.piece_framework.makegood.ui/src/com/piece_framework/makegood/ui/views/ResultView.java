@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2009-2010 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
- *               2010-2012 KUBO Atsuhiro <kubo@iteman.jp>,
+ *               2010-2013 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -69,7 +69,6 @@ import org.eclipse.ui.dialogs.PreferencesUtil;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.progress.UIJob;
 
-import com.piece_framework.makegood.core.AutotestScope;
 import com.piece_framework.makegood.core.result.Result;
 import com.piece_framework.makegood.core.result.TestCaseResult;
 import com.piece_framework.makegood.core.result.TestSuiteResult;
@@ -82,15 +81,13 @@ import com.piece_framework.makegood.ui.MakeGoodContext;
 import com.piece_framework.makegood.ui.MakeGoodStatus;
 import com.piece_framework.makegood.ui.MakeGoodStatusChangeListener;
 import com.piece_framework.makegood.ui.Messages;
+import com.piece_framework.makegood.ui.actions.ConfigureContinuousTestingAction;
 import com.piece_framework.makegood.ui.actions.DebugTestAction;
 import com.piece_framework.makegood.ui.actions.NextFailureAction;
 import com.piece_framework.makegood.ui.actions.PreviousFailureAction;
 import com.piece_framework.makegood.ui.actions.RerunFailedTestsAction;
 import com.piece_framework.makegood.ui.actions.RerunTestAction;
 import com.piece_framework.makegood.ui.actions.RunAllTestsAction;
-import com.piece_framework.makegood.ui.actions.RunAllTestsWhenFileIsSavedAction;
-import com.piece_framework.makegood.ui.actions.RunFailedTestsWhenFileIsSavedAction;
-import com.piece_framework.makegood.ui.actions.RunLastTestWhenFileIsSavedAction;
 import com.piece_framework.makegood.ui.actions.ShowOnlyFailuresAction;
 import com.piece_framework.makegood.ui.actions.StopOnFailureAction;
 import com.piece_framework.makegood.ui.actions.StopTestAction;
@@ -532,30 +529,6 @@ public class ResultView extends ViewPart {
             );
         }
 
-        ActionContributionItem runFailedTestsWhenFileIsSavedItem =
-            (ActionContributionItem) manager.find(RunFailedTestsWhenFileIsSavedAction.ACTION_ID);
-        if (runFailedTestsWhenFileIsSavedItem != null) {
-            runFailedTestsWhenFileIsSavedItem.getAction().setChecked(
-                RuntimeConfiguration.getInstance().getAutotestScope() == AutotestScope.FAILED_TESTS
-            );
-        }
-
-        ActionContributionItem runLastTestWhenFileIsSavedItem =
-            (ActionContributionItem) manager.find(RunLastTestWhenFileIsSavedAction.ACTION_ID);
-        if (runLastTestWhenFileIsSavedItem != null) {
-            runLastTestWhenFileIsSavedItem.getAction().setChecked(
-                RuntimeConfiguration.getInstance().getAutotestScope() == AutotestScope.LAST_TEST
-            );
-        }
-
-        ActionContributionItem runAllTestsWhenFileIsSavedItem =
-            (ActionContributionItem) manager.find(RunAllTestsWhenFileIsSavedAction.ACTION_ID);
-        if (runAllTestsWhenFileIsSavedItem != null) {
-            runAllTestsWhenFileIsSavedItem.getAction().setChecked(
-                RuntimeConfiguration.getInstance().getAutotestScope() == AutotestScope.ALL_TESTS
-            );
-        }
-
         ActionContributionItem stopTestItem =
             (ActionContributionItem) manager.find(StopTestAction.ACTION_ID);
         if (stopTestItem != null) {
@@ -582,6 +555,17 @@ public class ResultView extends ViewPart {
         if (runAllTestsItem != null) {
             runAllTestsAction = runAllTestsItem.getAction();
             runAllTestsAction.setEnabled(MakeGoodContext.getInstance().getActivePart().isAllTestsRunnable());
+        }
+
+        ActionContributionItem configureContinuousTestingItem =
+            (ActionContributionItem) manager.find(ConfigureContinuousTestingAction.ACTION_ID);
+        if (configureContinuousTestingItem != null) {
+            IAction configureContinuousTestingAction = configureContinuousTestingItem.getAction();
+            configureContinuousTestingAction.setImageDescriptor(
+                RuntimeConfiguration.getInstance().getContinuousTesting().isEnabled() ?
+                    ConfigureContinuousTestingAction.IMAGE_DESCRIPTOR_ENABLED :
+                    ConfigureContinuousTestingAction.IMAGE_DESCRIPTOR_DISABLED
+            );
         }
     }
 
