@@ -88,11 +88,13 @@ public class ProgressBar extends Composite implements PaintListener, ControlList
             new Runnable() {
                 @Override
                 public void run() {
-                    Point size = bar.getSize();
-                    size.x = barWidth;
-                    bar.setSize(size);
-                    redraw();
-                    bar.redraw();
+                    if (!bar.isDisposed()) {
+                        Point size = bar.getSize();
+                        size.x = barWidth;
+                        bar.setSize(size);
+                        redraw();
+                        bar.redraw();
+                    }
                 }
             }
         );
