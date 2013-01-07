@@ -62,7 +62,7 @@ public class TestRunner {
         runTests(selection, new ResourceLaunchShortcut());
     }
 
-    public void runAllTestsByAutotest(ISelection selection) {
+    public void runAllTestsByContinuousTestRunner(ISelection selection) {
         isTestRunByContinuousTestRunner = true;
         runTests(selection, new AllTestsLaunchShortcut());
         isTestRunByContinuousTestRunner = false;

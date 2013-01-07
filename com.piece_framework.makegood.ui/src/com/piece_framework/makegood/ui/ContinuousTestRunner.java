@@ -50,7 +50,7 @@ public class ContinuousTestRunner implements IResourceChangeListener {
                 Job job = new UIJob("MakeGood Run All Tests By Continuous Test Runner") { //$NON-NLS-1$
                     @Override
                     public IStatus runInUIThread(IProgressMonitor monitor) {
-                        MakeGoodContext.getInstance().getTestRunner().runAllTestsByAutotest(selection);
+                        MakeGoodContext.getInstance().getTestRunner().runAllTestsByContinuousTestRunner(selection);
                         return Status.OK_STATUS;
                     }
                 };
