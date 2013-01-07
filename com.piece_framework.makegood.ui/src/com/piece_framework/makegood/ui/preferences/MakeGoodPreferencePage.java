@@ -98,7 +98,7 @@ public class MakeGoodPreferencePage extends PreferencePage implements IWorkbench
     public boolean performOk() {
         MakeGoodPreference preference = new MakeGoodPreference();
 
-        preference.setAutotestEnabled(autotestEnabledButton.getSelection());
+        preference.setContinuousTestingEnabled(autotestEnabledButton.getSelection());
 
         if (autotestScopeAllTestsButton.getSelection()) {
             preference.setAutotestScope(Scope.ALL_TESTS);
@@ -152,7 +152,7 @@ public class MakeGoodPreferencePage extends PreferencePage implements IWorkbench
     private Button createAutotestEnabledButton(Composite parent) {
         Button button = new Button(parent, SWT.CHECK);
         button.setText(Messages.MakeGoodPreferencePage_autotestLabel);
-        button.setSelection(new MakeGoodPreference().getAutotestEnabled());
+        button.setSelection(new MakeGoodPreference().getContinuousTestingEnabled());
 
         return button;
     }

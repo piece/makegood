@@ -43,14 +43,14 @@ public class MakeGoodPreference {
     /**
      * @since 2.3.0
      */
-    public void setAutotestEnabled(boolean autotestEnabled) {
-        preferenceStore.setValue(CONTINUOUS_TESTING_ENABLED, autotestEnabled);
+    public void setContinuousTestingEnabled(boolean continuousTestingEnabled) {
+        preferenceStore.setValue(CONTINUOUS_TESTING_ENABLED, continuousTestingEnabled);
     }
 
     /**
      * @since 2.3.0
      */
-    public boolean getAutotestEnabled() {
+    public boolean getContinuousTestingEnabled() {
         return preferenceStore.getBoolean(CONTINUOUS_TESTING_ENABLED);
     }
 
