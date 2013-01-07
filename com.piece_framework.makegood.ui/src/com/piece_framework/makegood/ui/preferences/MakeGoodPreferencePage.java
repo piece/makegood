@@ -101,11 +101,11 @@ public class MakeGoodPreferencePage extends PreferencePage implements IWorkbench
         preference.setContinuousTestingEnabled(autotestEnabledButton.getSelection());
 
         if (autotestScopeAllTestsButton.getSelection()) {
-            preference.setAutotestScope(Scope.ALL_TESTS);
+            preference.setContinuousTestingScope(Scope.ALL_TESTS);
         } else if (autotestScopeLastTestButton.getSelection()) {
-            preference.setAutotestScope(Scope.LAST_TEST);
+            preference.setContinuousTestingScope(Scope.LAST_TEST);
         } else if (autotestScopeFailedTestsButton.getSelection()) {
-            preference.setAutotestScope(Scope.FAILED_TESTS);
+            preference.setContinuousTestingScope(Scope.FAILED_TESTS);
         }
 
         return true;
@@ -163,7 +163,7 @@ public class MakeGoodPreferencePage extends PreferencePage implements IWorkbench
     private Button createAutotestScopeAlltestsButton(Composite parent) {
         Button button = new Button(parent, SWT.RADIO);
         button.setText(Messages.MakeGoodPreferencePage_autotestScopeAllTestsLabel);
-        button.setSelection(new MakeGoodPreference().getAutotestScope() == Scope.ALL_TESTS);
+        button.setSelection(new MakeGoodPreference().getContinuousTestingScope() == Scope.ALL_TESTS);
 
         return button;
     }
@@ -174,7 +174,7 @@ public class MakeGoodPreferencePage extends PreferencePage implements IWorkbench
     private Button createAutotestScopeLastTestButton(Composite parent) {
         Button button = new Button(parent, SWT.RADIO);
         button.setText(Messages.MakeGoodPreferencePage_autotestScopeLastTestLabel);
-        button.setSelection(new MakeGoodPreference().getAutotestScope() == Scope.LAST_TEST);
+        button.setSelection(new MakeGoodPreference().getContinuousTestingScope() == Scope.LAST_TEST);
 
         return button;
     }
@@ -185,7 +185,7 @@ public class MakeGoodPreferencePage extends PreferencePage implements IWorkbench
     private Button createAutotestScopeFailedTestsButton(Composite parent) {
         Button button = new Button(parent, SWT.RADIO);
         button.setText(Messages.MakeGoodPreferencePage_autotestScopeFailedTestsLabel);
-        button.setSelection(new MakeGoodPreference().getAutotestScope() == Scope.FAILED_TESTS);
+        button.setSelection(new MakeGoodPreference().getContinuousTestingScope() == Scope.FAILED_TESTS);
 
         return button;
     }

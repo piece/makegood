@@ -42,7 +42,7 @@ public class RuntimeConfiguration {
 
     private RuntimeConfiguration() {
         MakeGoodPreference preference = new MakeGoodPreference();
-        continuousTesting = new ContinuousTesting(preference.getContinuousTestingEnabled(), preference.getAutotestScope());
+        continuousTesting = new ContinuousTesting(preference.getContinuousTestingEnabled(), preference.getContinuousTestingScope());
     }
 
     /**

@@ -57,11 +57,11 @@ public class MakeGoodPreference {
     /**
      * @since 2.3.0
      */
-    public void setAutotestScope(Scope autotestScope) {
-        preferenceStore.setValue(CONTINUOUS_TESTING_SCOPE, autotestScope.name());
+    public void setContinuousTestingScope(Scope continuousTestingScope) {
+        preferenceStore.setValue(CONTINUOUS_TESTING_SCOPE, continuousTestingScope.name());
     }
 
-    public Scope getAutotestScope() {
+    public Scope getContinuousTestingScope() {
         String autotestScope = preferenceStore.getString(CONTINUOUS_TESTING_SCOPE);
         if (autotestScope.equals(Scope.ALL_TESTS.name())) {
             return Scope.ALL_TESTS;
