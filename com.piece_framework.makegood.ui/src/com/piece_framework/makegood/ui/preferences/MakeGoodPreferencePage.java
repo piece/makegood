@@ -134,7 +134,7 @@ public class MakeGoodPreferencePage extends PreferencePage implements IWorkbench
         autotestGroup.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL));
         autotestGroup.setText(Messages.MakeGoodPreferencePage_autotestGroupLabel);
 
-        continuousTestingEnabledButton = createAutotestEnabledButton(autotestGroup);
+        continuousTestingEnabledButton = createContinuousTestingEnabledButton(autotestGroup);
 
         continuousTestingScopeAllTestsButton = createAutotestScopeAlltestsButton(autotestGroup);
         continuousTestingScopeAllTestsButton.setLayoutData(createIndentedLayoutData());
@@ -149,7 +149,7 @@ public class MakeGoodPreferencePage extends PreferencePage implements IWorkbench
     /**
      * @since 2.3.0
      */
-    private Button createAutotestEnabledButton(Composite parent) {
+    private Button createContinuousTestingEnabledButton(Composite parent) {
         Button button = new Button(parent, SWT.CHECK);
         button.setText(Messages.MakeGoodPreferencePage_autotestLabel);
         button.setSelection(new MakeGoodPreference().getContinuousTestingEnabled());
