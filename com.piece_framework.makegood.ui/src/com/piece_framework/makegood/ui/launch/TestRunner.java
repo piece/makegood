@@ -35,7 +35,7 @@ public class TestRunner {
     /**
      * @since 1.4.0
      */
-    private boolean isTestRunByAutotest = false;
+    private boolean isTestRunByContinuousTestRunner = false;
 
     /**
      * @since 1.6.0
@@ -63,9 +63,9 @@ public class TestRunner {
     }
 
     public void runAllTestsByAutotest(ISelection selection) {
-        isTestRunByAutotest = true;
+        isTestRunByContinuousTestRunner = true;
         runTests(selection, new AllTestsLaunchShortcut());
-        isTestRunByAutotest = false;
+        isTestRunByContinuousTestRunner = false;
     }
 
     public void runAllTests() {
@@ -88,9 +88,9 @@ public class TestRunner {
      * @since 1.4.0
      */
     public void rerunLastTestByAutotest() {
-        isTestRunByAutotest = true;
+        isTestRunByContinuousTestRunner = true;
         rerunLastTest();
-        isTestRunByAutotest = false;
+        isTestRunByContinuousTestRunner = false;
     }
 
     /**
@@ -107,9 +107,9 @@ public class TestRunner {
      * @since 2.1.0
      */
     public void rerunFailedTestsByAutotest() {
-        isTestRunByAutotest = true;
+        isTestRunByContinuousTestRunner = true;
         rerunFailedTests();
-        isTestRunByAutotest = false;
+        isTestRunByContinuousTestRunner = false;
     }
 
     public void restoreFocusToLastActivePart() {
@@ -121,7 +121,7 @@ public class TestRunner {
     private void runTests(Object testTarget, MakeGoodLaunchShortcut shortcut) {
         synchronized (TestRunner.class) {
             if (TestLifecycle.isRunning()) {
-                if (!isTestRunByAutotest) {
+                if (!isTestRunByContinuousTestRunner) {
                     raiseTestSessionAlreadyExistsError();
                 }
 
@@ -131,7 +131,7 @@ public class TestRunner {
         }
 
         if (hasPHPexeItem()) {
-            if (!isTestRunByAutotest) {
+            if (!isTestRunByContinuousTestRunner) {
                 if (shortcut instanceof FailedTestsLaunchShortcut) {
                     lastShortcut = ((FailedTestsLaunchShortcut) shortcut).getLastShortcut();
                 } else {
