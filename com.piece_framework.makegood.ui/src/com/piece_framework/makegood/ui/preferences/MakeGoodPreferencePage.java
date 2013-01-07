@@ -140,7 +140,7 @@ public class MakeGoodPreferencePage extends PreferencePage implements IWorkbench
         continuousTestingScopeAllTestsButton.setLayoutData(createIndentedLayoutData());
         continuousTestingScopeLastTestButton = createContinuousTestingScopeLastTestButton(autotestGroup);
         continuousTestingScopeLastTestButton.setLayoutData(createIndentedLayoutData());
-        continuousTestingFailedTestsButton = createAutotestScopeFailedTestsButton(autotestGroup);
+        continuousTestingFailedTestsButton = createContinuousTestingScopeFailedTestsButton(autotestGroup);
         continuousTestingFailedTestsButton.setLayoutData(createIndentedLayoutData());
 
         return autotestGroup;
@@ -182,7 +182,7 @@ public class MakeGoodPreferencePage extends PreferencePage implements IWorkbench
     /**
      * @since 2.3.0
      */
-    private Button createAutotestScopeFailedTestsButton(Composite parent) {
+    private Button createContinuousTestingScopeFailedTestsButton(Composite parent) {
         Button button = new Button(parent, SWT.RADIO);
         button.setText(Messages.MakeGoodPreferencePage_autotestScopeFailedTestsLabel);
         button.setSelection(new MakeGoodPreference().getContinuousTestingScope() == Scope.FAILED_TESTS);
