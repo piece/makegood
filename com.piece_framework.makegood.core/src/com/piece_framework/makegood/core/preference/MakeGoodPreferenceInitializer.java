@@ -20,6 +20,6 @@ import com.piece_framework.makegood.core.DefaultConfiguration;
 public class MakeGoodPreferenceInitializer extends AbstractPreferenceInitializer {
     @Override
     public void initializeDefaultPreferences() {
-        Activator.getDefault().getPreferenceStore().setDefault(MakeGoodPreference.AUTOTEST_SCOPE, new DefaultConfiguration().getAutotestScope().name());
+        Activator.getDefault().getPreferenceStore().setDefault(MakeGoodPreference.CONTINUOUS_TESTING_SCOPE, new DefaultConfiguration().getAutotestScope().name());
     }
 }

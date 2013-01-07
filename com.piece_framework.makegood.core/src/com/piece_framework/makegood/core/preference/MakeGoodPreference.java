@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2012 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2011-2013 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -24,9 +24,9 @@ public class MakeGoodPreference {
     /**
      * @since 2.3.0
      */
-    public static final String AUTOTEST_ENABLED = "autotestEnabled"; //$NON-NLS-1$
+    public static final String CONTINUOUS_TESTING_ENABLED = "autotestEnabled"; //$NON-NLS-1$
 
-    public static final String AUTOTEST_SCOPE = "autotestScope"; //$NON-NLS-1$
+    public static final String CONTINUOUS_TESTING_SCOPE = "autotestScope"; //$NON-NLS-1$
 
     /**
      * @since 2.3.0
@@ -44,25 +44,25 @@ public class MakeGoodPreference {
      * @since 2.3.0
      */
     public void setAutotestEnabled(boolean autotestEnabled) {
-        preferenceStore.setValue(AUTOTEST_ENABLED, autotestEnabled);
+        preferenceStore.setValue(CONTINUOUS_TESTING_ENABLED, autotestEnabled);
     }
 
     /**
      * @since 2.3.0
      */
     public boolean getAutotestEnabled() {
-        return preferenceStore.getBoolean(AUTOTEST_ENABLED);
+        return preferenceStore.getBoolean(CONTINUOUS_TESTING_ENABLED);
     }
 
     /**
      * @since 2.3.0
      */
     public void setAutotestScope(Scope autotestScope) {
-        preferenceStore.setValue(AUTOTEST_SCOPE, autotestScope.name());
+        preferenceStore.setValue(CONTINUOUS_TESTING_SCOPE, autotestScope.name());
     }
 
     public Scope getAutotestScope() {
-        String autotestScope = preferenceStore.getString(AUTOTEST_SCOPE);
+        String autotestScope = preferenceStore.getString(CONTINUOUS_TESTING_SCOPE);
         if (autotestScope.equals(Scope.ALL_TESTS.name())) {
             return Scope.ALL_TESTS;
         } else if (autotestScope.equals(Scope.LAST_TEST.name())) {
