@@ -62,7 +62,7 @@ public class MakeGoodPreferencePage extends PreferencePage implements IWorkbench
     @Override
     protected Control createContents(Composite parent) {
         Composite contents = createComposite(parent);
-        createAutotestGroup(contents);
+        createContinuousTestingGroup(contents);
 
         return contents;
     }
@@ -128,7 +128,7 @@ public class MakeGoodPreferencePage extends PreferencePage implements IWorkbench
     /**
      * @since 2.3.0
      */
-    private Group createAutotestGroup(Composite parent) {
+    private Group createContinuousTestingGroup(Composite parent) {
         Group autotestGroup = new Group(parent, SWT.LEFT);
         autotestGroup.setLayout(new GridLayout());
         autotestGroup.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL));
