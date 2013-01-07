@@ -47,7 +47,7 @@ public class ContinuousTestRunner implements IResourceChangeListener {
         if (RuntimeConfiguration.getInstance().getContinuousTesting().getScope() == Scope.ALL_TESTS) {
             final ISelection selection = new StructuredSelection(deltas[0].getResource());
             if (ActivePart.isAllTestsRunnable(selection)) {
-                Job job = new UIJob("MakeGood Run All Tests By Autotest") { //$NON-NLS-1$
+                Job job = new UIJob("MakeGood Run All Tests By Continuous Test Runner") { //$NON-NLS-1$
                     @Override
                     public IStatus runInUIThread(IProgressMonitor monitor) {
                         MakeGoodContext.getInstance().getTestRunner().runAllTestsByAutotest(selection);
@@ -58,7 +58,7 @@ public class ContinuousTestRunner implements IResourceChangeListener {
             }
         } else if (RuntimeConfiguration.getInstance().getContinuousTesting().getScope() == Scope.LAST_TEST) {
             if (MakeGoodContext.getInstance().getTestRunner().hasLastTest()) {
-                Job job = new UIJob("MakeGood Run Last Test By Autotest") { //$NON-NLS-1$
+                Job job = new UIJob("MakeGood Run Last Test By Continuous Test Runner") { //$NON-NLS-1$
                     @Override
                     public IStatus runInUIThread(IProgressMonitor monitor) {
                         MakeGoodContext.getInstance().getTestRunner().rerunLastTestByAutotest();
@@ -69,7 +69,7 @@ public class ContinuousTestRunner implements IResourceChangeListener {
             }
         } else if (RuntimeConfiguration.getInstance().getContinuousTesting().getScope() == Scope.FAILED_TESTS) {
             if (MakeGoodContext.getInstance().getTestRunner().hasLastTest()) {
-                Job job = new UIJob("MakeGood Run Failed Tests By Autotest") { //$NON-NLS-1$
+                Job job = new UIJob("MakeGood Run Failed Tests By Continuous Test Runner") { //$NON-NLS-1$
                     @Override
                     public IStatus runInUIThread(IProgressMonitor monitor) {
                         MakeGoodContext.getInstance().getTestRunner().rerunFailedTestsByAutotest();
