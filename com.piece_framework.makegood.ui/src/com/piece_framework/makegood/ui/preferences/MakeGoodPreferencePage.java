@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2010 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
- *               2011-2012 KUBO Atsuhiro <kubo@iteman.jp>,
+ *               2011-2013 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -26,6 +26,7 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 
 import com.piece_framework.makegood.core.Activator;
 import com.piece_framework.makegood.core.DefaultConfiguration;
+import com.piece_framework.makegood.core.continuoustesting.ContinuousTesting;
 import com.piece_framework.makegood.core.continuoustesting.Scope;
 import com.piece_framework.makegood.core.preference.MakeGoodPreference;
 import com.piece_framework.makegood.ui.Messages;
@@ -79,13 +80,13 @@ public class MakeGoodPreferencePage extends PreferencePage implements IWorkbench
      */
     @Override
     protected void performDefaults() {
-        DefaultConfiguration defaultConfiguration = new DefaultConfiguration();
+        ContinuousTesting continuousTesting = new DefaultConfiguration().getContinuousTesting();
 
-        autotestEnabledButton.setSelection(defaultConfiguration.getAutotestEnabled());
+        autotestEnabledButton.setSelection(continuousTesting.isEnabled());
 
-        autotestScopeAllTestsButton.setSelection(defaultConfiguration.getAutotestScope() == Scope.ALL_TESTS);
-        autotestScopeLastTestButton.setSelection(defaultConfiguration.getAutotestScope() == Scope.LAST_TEST);
-        autotestScopeFailedTestsButton.setSelection(defaultConfiguration.getAutotestScope() == Scope.FAILED_TESTS);
+        autotestScopeAllTestsButton.setSelection(continuousTesting.getScope() == Scope.ALL_TESTS);
+        autotestScopeLastTestButton.setSelection(continuousTesting.getScope() == Scope.LAST_TEST);
+        autotestScopeFailedTestsButton.setSelection(continuousTesting.getScope() == Scope.FAILED_TESTS);
 
         super.performDefaults();
     }

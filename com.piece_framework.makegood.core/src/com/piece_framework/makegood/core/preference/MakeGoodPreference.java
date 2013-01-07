@@ -70,7 +70,7 @@ public class MakeGoodPreference {
         } else if (autotestScope.equals(Scope.FAILED_TESTS.name())) {
             return Scope.FAILED_TESTS;
         } else {
-            return new DefaultConfiguration().getAutotestScope();
+            return new DefaultConfiguration().getContinuousTesting().getScope();
         }
     }
 }

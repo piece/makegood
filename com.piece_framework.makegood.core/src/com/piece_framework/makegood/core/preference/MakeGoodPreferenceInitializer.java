@@ -16,11 +16,13 @@ import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 
 import com.piece_framework.makegood.core.Activator;
 import com.piece_framework.makegood.core.DefaultConfiguration;
+import com.piece_framework.makegood.core.continuoustesting.ContinuousTesting;
 
 public class MakeGoodPreferenceInitializer extends AbstractPreferenceInitializer {
     @Override
     public void initializeDefaultPreferences() {
-        Activator.getDefault().getPreferenceStore().setDefault(MakeGoodPreference.CONTINUOUS_TESTING_ENABLED, new DefaultConfiguration().getAutotestEnabled());
-        Activator.getDefault().getPreferenceStore().setDefault(MakeGoodPreference.CONTINUOUS_TESTING_SCOPE, new DefaultConfiguration().getAutotestScope().name());
+        ContinuousTesting continuousTesting = new DefaultConfiguration().getContinuousTesting();
+        Activator.getDefault().getPreferenceStore().setDefault(MakeGoodPreference.CONTINUOUS_TESTING_ENABLED, continuousTesting.isEnabled());
+        Activator.getDefault().getPreferenceStore().setDefault(MakeGoodPreference.CONTINUOUS_TESTING_SCOPE, continuousTesting.getScope().name());
     }
 }

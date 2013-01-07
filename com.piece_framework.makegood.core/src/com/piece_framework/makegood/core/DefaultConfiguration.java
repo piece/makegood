@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2012-2013 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -17,6 +17,7 @@ import java.util.List;
 
 import org.eclipse.core.resources.IFolder;
 
+import com.piece_framework.makegood.core.continuoustesting.ContinuousTesting;
 import com.piece_framework.makegood.core.continuoustesting.Scope;
 
 /**
@@ -26,12 +27,20 @@ public class DefaultConfiguration {
     /**
      * @since 2.3.0
      */
-    public boolean getAutotestEnabled() {
-        return true;
+    private ContinuousTesting continuousTesting;
+
+    /**
+     * @since 2.3.0
+     */
+    public DefaultConfiguration() {
+        continuousTesting = new ContinuousTesting(true, Scope.ALL_TESTS);
     }
 
-    public Scope getAutotestScope() {
-        return Scope.ALL_TESTS;
+    /**
+     * @since 2.3.0
+     */
+    public ContinuousTesting getContinuousTesting() {
+        return continuousTesting;
     }
 
     public TestingFramework getTestingFramework() {
