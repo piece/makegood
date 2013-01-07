@@ -106,7 +106,7 @@ public class TestRunner {
     /**
      * @since 2.1.0
      */
-    public void rerunFailedTestsByAutotest() {
+    public void rerunFailedTestsByContinuousTestRunner() {
         isTestRunByContinuousTestRunner = true;
         rerunFailedTests();
         isTestRunByContinuousTestRunner = false;
