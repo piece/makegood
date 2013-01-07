@@ -87,7 +87,7 @@ public class TestRunner {
     /**
      * @since 1.4.0
      */
-    public void rerunLastTestByAutotest() {
+    public void rerunLastTestByContinuousTestRunner() {
         isTestRunByContinuousTestRunner = true;
         rerunLastTest();
         isTestRunByContinuousTestRunner = false;
