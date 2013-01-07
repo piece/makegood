@@ -35,7 +35,7 @@ public class MakeGoodPreferencePage extends PreferencePage implements IWorkbench
     /**
      * @since 2.3.0
      */
-    private Button autotestEnabledButton;
+    private Button continuousTestingEnabledButton;
 
     /**
      * @since 2.3.0
@@ -82,7 +82,7 @@ public class MakeGoodPreferencePage extends PreferencePage implements IWorkbench
     protected void performDefaults() {
         ContinuousTesting continuousTesting = new DefaultConfiguration().getContinuousTesting();
 
-        autotestEnabledButton.setSelection(continuousTesting.isEnabled());
+        continuousTestingEnabledButton.setSelection(continuousTesting.isEnabled());
 
         autotestScopeAllTestsButton.setSelection(continuousTesting.getScope() == Scope.ALL_TESTS);
         autotestScopeLastTestButton.setSelection(continuousTesting.getScope() == Scope.LAST_TEST);
@@ -98,7 +98,7 @@ public class MakeGoodPreferencePage extends PreferencePage implements IWorkbench
     public boolean performOk() {
         MakeGoodPreference preference = new MakeGoodPreference();
 
-        preference.setContinuousTestingEnabled(autotestEnabledButton.getSelection());
+        preference.setContinuousTestingEnabled(continuousTestingEnabledButton.getSelection());
 
         if (autotestScopeAllTestsButton.getSelection()) {
             preference.setContinuousTestingScope(Scope.ALL_TESTS);
@@ -134,7 +134,7 @@ public class MakeGoodPreferencePage extends PreferencePage implements IWorkbench
         autotestGroup.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL));
         autotestGroup.setText(Messages.MakeGoodPreferencePage_autotestGroupLabel);
 
-        autotestEnabledButton = createAutotestEnabledButton(autotestGroup);
+        continuousTestingEnabledButton = createAutotestEnabledButton(autotestGroup);
 
         autotestScopeAllTestsButton = createAutotestScopeAlltestsButton(autotestGroup);
         autotestScopeAllTestsButton.setLayoutData(createIndentedLayoutData());
