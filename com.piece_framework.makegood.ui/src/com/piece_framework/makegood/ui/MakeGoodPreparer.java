@@ -50,6 +50,6 @@ public class MakeGoodPreparer implements IStartup {
 
         DebugPlugin.getDefault().addDebugEventListener(new ResultViewController());
         PlatformUI.getWorkbench().addWorkbenchListener(MakeGoodContext.getInstance());
-        ResourcesPlugin.getWorkspace().addResourceChangeListener(new Autotest());
+        ResourcesPlugin.getWorkspace().addResourceChangeListener(new ContinuousTestRunner());
     }
 }
