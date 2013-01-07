@@ -62,12 +62,12 @@ public class MakeGoodPreference {
     }
 
     public Scope getContinuousTestingScope() {
-        String autotestScope = preferenceStore.getString(CONTINUOUS_TESTING_SCOPE);
-        if (autotestScope.equals(Scope.ALL_TESTS.name())) {
+        String continuousTestingScope = preferenceStore.getString(CONTINUOUS_TESTING_SCOPE);
+        if (continuousTestingScope.equals(Scope.ALL_TESTS.name())) {
             return Scope.ALL_TESTS;
-        } else if (autotestScope.equals(Scope.LAST_TEST.name())) {
+        } else if (continuousTestingScope.equals(Scope.LAST_TEST.name())) {
             return Scope.LAST_TEST;
-        } else if (autotestScope.equals(Scope.FAILED_TESTS.name())) {
+        } else if (continuousTestingScope.equals(Scope.FAILED_TESTS.name())) {
             return Scope.FAILED_TESTS;
         } else {
             return new DefaultConfiguration().getContinuousTesting().getScope();

@@ -129,21 +129,21 @@ public class MakeGoodPreferencePage extends PreferencePage implements IWorkbench
      * @since 2.3.0
      */
     private Group createContinuousTestingGroup(Composite parent) {
-        Group autotestGroup = new Group(parent, SWT.LEFT);
-        autotestGroup.setLayout(new GridLayout());
-        autotestGroup.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL));
-        autotestGroup.setText(Messages.MakeGoodPreferencePage_autotestGroupLabel);
+        Group continuousTestingGroup = new Group(parent, SWT.LEFT);
+        continuousTestingGroup.setLayout(new GridLayout());
+        continuousTestingGroup.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL));
+        continuousTestingGroup.setText(Messages.MakeGoodPreferencePage_autotestGroupLabel);
 
-        continuousTestingEnabledButton = createContinuousTestingEnabledButton(autotestGroup);
+        continuousTestingEnabledButton = createContinuousTestingEnabledButton(continuousTestingGroup);
 
-        continuousTestingScopeAllTestsButton = createContinuousTestingScopeAlltestsButton(autotestGroup);
+        continuousTestingScopeAllTestsButton = createContinuousTestingScopeAlltestsButton(continuousTestingGroup);
         continuousTestingScopeAllTestsButton.setLayoutData(createIndentedLayoutData());
-        continuousTestingScopeLastTestButton = createContinuousTestingScopeLastTestButton(autotestGroup);
+        continuousTestingScopeLastTestButton = createContinuousTestingScopeLastTestButton(continuousTestingGroup);
         continuousTestingScopeLastTestButton.setLayoutData(createIndentedLayoutData());
-        continuousTestingFailedTestsButton = createContinuousTestingScopeFailedTestsButton(autotestGroup);
+        continuousTestingFailedTestsButton = createContinuousTestingScopeFailedTestsButton(continuousTestingGroup);
         continuousTestingFailedTestsButton.setLayoutData(createIndentedLayoutData());
 
-        return autotestGroup;
+        return continuousTestingGroup;
     }
 
     /**
