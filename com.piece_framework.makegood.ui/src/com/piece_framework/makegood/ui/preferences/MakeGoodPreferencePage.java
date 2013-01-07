@@ -45,7 +45,7 @@ public class MakeGoodPreferencePage extends PreferencePage implements IWorkbench
     /**
      * @since 2.3.0
      */
-    private Button autotestScopeLastTestButton;
+    private Button continuousTestingScopeLastTestButton;
 
     /**
      * @since 2.3.0
@@ -85,7 +85,7 @@ public class MakeGoodPreferencePage extends PreferencePage implements IWorkbench
         continuousTestingEnabledButton.setSelection(continuousTesting.isEnabled());
 
         continuousTestingScopeAllTestsButton.setSelection(continuousTesting.getScope() == Scope.ALL_TESTS);
-        autotestScopeLastTestButton.setSelection(continuousTesting.getScope() == Scope.LAST_TEST);
+        continuousTestingScopeLastTestButton.setSelection(continuousTesting.getScope() == Scope.LAST_TEST);
         autotestScopeFailedTestsButton.setSelection(continuousTesting.getScope() == Scope.FAILED_TESTS);
 
         super.performDefaults();
@@ -102,7 +102,7 @@ public class MakeGoodPreferencePage extends PreferencePage implements IWorkbench
 
         if (continuousTestingScopeAllTestsButton.getSelection()) {
             preference.setContinuousTestingScope(Scope.ALL_TESTS);
-        } else if (autotestScopeLastTestButton.getSelection()) {
+        } else if (continuousTestingScopeLastTestButton.getSelection()) {
             preference.setContinuousTestingScope(Scope.LAST_TEST);
         } else if (autotestScopeFailedTestsButton.getSelection()) {
             preference.setContinuousTestingScope(Scope.FAILED_TESTS);
@@ -138,8 +138,8 @@ public class MakeGoodPreferencePage extends PreferencePage implements IWorkbench
 
         continuousTestingScopeAllTestsButton = createAutotestScopeAlltestsButton(autotestGroup);
         continuousTestingScopeAllTestsButton.setLayoutData(createIndentedLayoutData());
-        autotestScopeLastTestButton = createAutotestScopeLastTestButton(autotestGroup);
-        autotestScopeLastTestButton.setLayoutData(createIndentedLayoutData());
+        continuousTestingScopeLastTestButton = createAutotestScopeLastTestButton(autotestGroup);
+        continuousTestingScopeLastTestButton.setLayoutData(createIndentedLayoutData());
         autotestScopeFailedTestsButton = createAutotestScopeFailedTestsButton(autotestGroup);
         autotestScopeFailedTestsButton.setLayoutData(createIndentedLayoutData());
 
