@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2010 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
- *               2011-2012 KUBO Atsuhiro <kubo@iteman.jp>,
+ *               2011-2013 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -20,6 +20,7 @@ import com.piece_framework.makegood.core.DefaultConfiguration;
 public class MakeGoodPreferenceInitializer extends AbstractPreferenceInitializer {
     @Override
     public void initializeDefaultPreferences() {
+        Activator.getDefault().getPreferenceStore().setDefault(MakeGoodPreference.CONTINUOUS_TESTING_ENABLED, new DefaultConfiguration().getAutotestEnabled());
         Activator.getDefault().getPreferenceStore().setDefault(MakeGoodPreference.CONTINUOUS_TESTING_SCOPE, new DefaultConfiguration().getAutotestScope().name());
     }
 }
