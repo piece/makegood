@@ -98,27 +98,27 @@ public class Messages extends NLS {
     /**
      * @since 2.3.0
      */
-    public static String MakeGoodPreferencePage_autotestGroupLabel;
+    public static String MakeGoodPreferencePage_continuousTestingGroupLabel;
 
     /**
      * @since 1.4.0
      */
-    public static String MakeGoodPreferencePage_autotestLabel;
+    public static String MakeGoodPreferencePage_continuousTestingEnabledLabel;
 
     /**
      * @since 1.4.0
      */
-    public static String MakeGoodPreferencePage_autotestScopeAllTestsLabel;
+    public static String MakeGoodPreferencePage_continuousTestingScopeAllTestsLabel;
 
     /**
      * @since 1.4.0
      */
-    public static String MakeGoodPreferencePage_autotestScopeLastTestLabel;
+    public static String MakeGoodPreferencePage_continuousTestingScopeLastTestLabel;
 
     /**
      * @since 2.1.0
      */
-    public static String MakeGoodPreferencePage_autotestScopeFailedTestsLabel;
+    public static String MakeGoodPreferencePage_continuousTestingScopeFailedTestsLabel;
 
     /**
      * @since 1.4.0
