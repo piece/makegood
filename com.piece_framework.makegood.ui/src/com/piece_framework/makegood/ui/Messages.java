@@ -120,11 +120,6 @@ public class Messages extends NLS {
      */
     public static String MakeGoodPreferencePage_continuousTestingScopeFailedTestsLabel;
 
-    /**
-     * @since 1.4.0
-     */
-    public static String MakeGoodPreferencePage_autotestScopeNoneLabel;
-
     public static String MakeGoodView_errorsLabel;
     public static String MakeGoodView_failuresLabel;
     public static String MakeGoodView_failureTraceLabel;
