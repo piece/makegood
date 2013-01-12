@@ -356,6 +356,7 @@ public class TestOutlineView extends ViewPart {
 
         @Override
         public boolean hasChildren(Object element) {
+            if (element instanceof IMethod) return false;
             try {
                 if (element instanceof IMember) return ((IMember) element).hasChildren();
             } catch (ModelException e) {
