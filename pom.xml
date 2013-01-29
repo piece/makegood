@@ -36,7 +36,7 @@
 
   <properties>
     <tycho-version>0.10.0</tycho-version>
-    <platform-version-name>helios</platform-version-name>
+    <platform-version-name>indigo</platform-version-name>
     <eclipse-site>http://download.eclipse.org/releases/${platform-version-name}</eclipse-site>
   </properties>
 
@@ -56,7 +56,7 @@
 
   <repositories>
     <repository>
-      <id>helios</id>
+      <id>indigo</id>
       <layout>p2</layout>
       <url>${eclipse-site}</url>
     </repository>
