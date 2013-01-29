@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009-2012 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
+ * Copyright (c) 2009-2013 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
  *               2010-2012 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *

@@ -1,5 +1,6 @@
 /**
  * Copyright (c) 2011 KUBO Atsuhiro <kubo@iteman.jp>,
+ *               2012 MATSUFUJI Hideharu <matsufuji2008@gmail.com>
  * All rights reserved.
  *
  * This file is part of MakeGood.

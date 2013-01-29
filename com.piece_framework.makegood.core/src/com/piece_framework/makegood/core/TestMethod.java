@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
+ * Copyright (c) 2012-2013 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
  *
  * All rights reserved.
  *
