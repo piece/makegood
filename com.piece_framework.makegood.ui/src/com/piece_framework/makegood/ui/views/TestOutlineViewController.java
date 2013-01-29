@@ -32,7 +32,7 @@ import com.piece_framework.makegood.ui.MakeGoodStatus;
 import com.piece_framework.makegood.ui.MakeGoodStatusChangeListener;
 
 /**
- * @since 2.2.0
+ * @since 2.3.0
  */
 public class TestOutlineViewController implements IPartListener2, MakeGoodStatusChangeListener, IElementChangedListener, CaretListener {
     private int currentEditorCode = 0;

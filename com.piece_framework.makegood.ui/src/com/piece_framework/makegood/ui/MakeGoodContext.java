@@ -68,7 +68,7 @@ public class MakeGoodContext implements IWorkbenchListener {
     }
 
     /**
-     * @since 2.2.0
+     * @since 2.3.0
      */
     public ActiveEditor getActiveEditor() {
         return activeEditor;

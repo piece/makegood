@@ -35,7 +35,7 @@ public class EditorParser {
     private IEditorPart editor;
 
     /**
-     * @since 2.2.0
+     * @since 2.3.0
      */
     public static EditorParser createActiveEditorParser() {
         ActiveEditor activeEditor = MakeGoodContext.getInstance().getActiveEditor();

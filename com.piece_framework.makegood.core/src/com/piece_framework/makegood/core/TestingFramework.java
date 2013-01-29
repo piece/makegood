@@ -56,7 +56,7 @@ public enum TestingFramework {
         }
 
         /**
-         * @since 2.2.0
+         * @since 2.3.0
          */
         @Override
         public boolean isTestMethod(IMethod method) throws ModelException {
@@ -111,7 +111,7 @@ public enum TestingFramework {
         }
 
         /**
-         * @since 2.2.0
+         * @since 2.3.0
          */
         @Override
         public boolean isTestMethod(IMethod method) throws ModelException {
@@ -231,7 +231,7 @@ public enum TestingFramework {
     public abstract String getTestFilePattern();
 
     /**
-     * @since 2.2.0
+     * @since 2.3.0
      */
     public static boolean isTestClassSuperType(IType type) {
         if (superTypesOfAllTestingFrameworks == null) {
@@ -250,7 +250,7 @@ public enum TestingFramework {
     }
 
     /**
-     * @since 2.2.0
+     * @since 2.3.0
      */
     public boolean isTestClass(IType type) {
         if (type== null) return false;
@@ -277,7 +277,7 @@ public enum TestingFramework {
     }
 
     /**
-     * @since 2.2.0
+     * @since 2.3.0
      */
     public boolean isTestMethod(IMethod method) throws ModelException {
         if (method == null) return false;
