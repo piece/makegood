@@ -227,8 +227,7 @@ public class TestOutlineView extends ViewPart {
         IToolBarManager manager = getViewSite().getActionBars().getToolBarManager();
         manager.add(new CollapseTreeAction());
         manager.add(new SortAction());
-        manager.add(new FlatLookAction(false));
-        manager.add(new HierarchyLookAction(true));
+        manager.add(new LookAction(Messages.TestOutlineView_Look, LookAction.HIERARCHY));
     }
 
     private void collectBaseTestClasses(List<TestClass> testClasses) {
@@ -437,53 +436,36 @@ public class TestOutlineView extends ViewPart {
         }
     }
 
-    private abstract class LookAction extends Action {
-        private boolean checked;
+    private class LookAction extends Action {
+        public static final int FLAT = 1;
+        public static final int HIERARCHY = 2;
 
-        public LookAction(String text, boolean checked) {
+        private IContentProvider hierarchyContentProvider = new HierarchyContentProvider();
+        private IContentProvider flatContentProvider = new FlatContentProvider();
+        private int look;
+
+        public LookAction(String text, int look) {
             super(text, AS_RADIO_BUTTON);
+            this.look = look;
             setToolTipText(getText());
+            setImageDescriptor(Activator.getImageDescriptor("icons/look.gif")); //$NON-NLS-1$
 
-            this.checked = checked;
-            setChecked(this.checked);
+            setChecked(look == HIERARCHY);
         }
 
         @Override
         public void run() {
-            checked = !checked;
-            setChecked(checked);
-            viewer.setContentProvider(getContentProvider());
+            if (look == HIERARCHY) look = FLAT;
+            else if (look == FLAT) look = HIERARCHY;
+
+            setChecked(look == HIERARCHY);
+
+            if (look == HIERARCHY)
+                viewer.setContentProvider(hierarchyContentProvider);
+            else if (look == FLAT)
+                viewer.setContentProvider(flatContentProvider);
+
             viewer.expandAll();
-        }
-
-        abstract IContentProvider getContentProvider();
-    }
-
-    private class FlatLookAction extends LookAction {
-        private IContentProvider flatContentProvider = new FlatContentProvider();
-
-        public FlatLookAction(boolean checked) {
-            super(Messages.TestOutlineView_FlatLook, checked);
-            setImageDescriptor(Activator.getImageDescriptor("icons/flat-look.gif")); //$NON-NLS-1$
-        }
-
-        @Override
-        IContentProvider getContentProvider() {
-            return flatContentProvider;
-        }
-    }
-
-    private class HierarchyLookAction extends LookAction {
-        private IContentProvider hierarchyContentProvider = new HierarchyContentProvider();
-
-        public HierarchyLookAction(boolean checked) {
-            super(Messages.TestOutlineView_HierarchyLook, checked);
-            setImageDescriptor(Activator.getImageDescriptor("icons/hierarchy-look.gif")); //$NON-NLS-1$
-        }
-
-        @Override
-        IContentProvider getContentProvider() {
-            return hierarchyContentProvider;
         }
     }
 }
