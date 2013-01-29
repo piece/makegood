@@ -8,11 +8,12 @@ MakeGood provides fast feedback by automated workflows for running tests, tracki
 
 h2. Features
 
-* Runs tests when a file is saved. (Autotest)
+* Runs tests when a file is saved. (*Continuous Testing*)
 * Automatically tracks failures, errors, and fatal errors.
 * Runs all tests.
 * Runs tests from the PHP Explorer, Package Explorer, and Outline, and other views.
 * Runs tests from the PHP Editor.
+* Runs inherited tests from the Test Outline view.
 * Debugs a test.
 * Reruns the last test.
 * Reruns the failed tests.
