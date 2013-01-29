@@ -40,6 +40,7 @@ public class TestOutlineViewController implements IPartListener2, MakeGoodStatus
     @Override
     public void partActivated(IWorkbenchPartReference partRef) {
         if (partRef.hashCode() == currentEditorCode) return;
+        currentEditorCode = partRef.hashCode();
         if (!(partRef.getPart(false) instanceof IEditorPart)) return;
 
         updateTestOutline();
@@ -48,8 +49,6 @@ public class TestOutlineViewController implements IPartListener2, MakeGoodStatus
         if (!activeEditor.isPHP()) return;
         StyledText text = (StyledText) activeEditor.get().getAdapter(Control.class);
         text.addCaretListener(this);
-
-        currentEditorCode = partRef.hashCode();
     }
 
     @Override
