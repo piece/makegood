@@ -1,5 +1,6 @@
 /**
  * Copyright (c) 2012-2013 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
+ *               2013 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -16,6 +17,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -139,7 +141,9 @@ public class TestOutlineView extends ViewPart {
         if (!activeEditor.isPHP()) return;
 
         ISourceModule module = EditorParser.createActiveEditorParser().getSourceModule();
-        if (!new MakeGoodProperty(module.getResource().getProject()).exists()) return;
+        IResource activeResource = module.getResource();
+        if (activeResource == null) return;
+        if (!new MakeGoodProperty(activeResource.getProject()).exists()) return;
 
         List<TestClass> testClasses = new ArrayList<TestClass>();
         try {
@@ -290,20 +294,21 @@ public class TestOutlineView extends ViewPart {
             if (member instanceof IMethod) {
                 source = ((IMember) member.getParent()).getSourceModule();
             }
-            boolean targetIsActivate =
-                EditorParser.createActiveEditorParser().getSourceModule().equals(source);
-            if (targetIsActivate) {
-                ActiveEditor activeEditor = MakeGoodContext.getInstance().getActiveEditor();
-                ((ITextEditor) activeEditor.get()).selectAndReveal(
-                        nameRange.getOffset(),
-                        nameRange.getLength());
-            } else {
-                if (showWhenDeactivate) {
-                    EditorOpener.open(
-                            (IFile) source.getResource(),
-                            nameRange.getOffset(),
-                            nameRange.getLength());
+
+            EditorParser activeEditorParser = EditorParser.createActiveEditorParser();
+            if (activeEditorParser != null) {
+                ISourceModule activeSourceModule = activeEditorParser.getSourceModule();
+                if (activeSourceModule != null) {
+                    if (activeSourceModule.equals(source)) {
+                        ActiveEditor activeEditor = MakeGoodContext.getInstance().getActiveEditor();
+                        ((ITextEditor) activeEditor.get()).selectAndReveal(nameRange.getOffset(), nameRange.getLength());
+                        return;
+                    }
                 }
+            }
+
+            if (showWhenDeactivate) {
+                EditorOpener.open((IFile) source.getResource(), nameRange.getOffset(), nameRange.getLength());
             }
         }
 
