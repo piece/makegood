@@ -442,8 +442,8 @@ public class TestOutlineView extends ViewPart {
     }
 
     private class ToggleShowHierarchyAction extends Action {
-        public static final int LAYOUT_FLAT = 1;
-        public static final int LAYOUT_HIERARCHICAL = 2;
+        private static final int LAYOUT_FLAT = 1;
+        private static final int LAYOUT_HIERARCHICAL = 2;
 
         private IContentProvider hierarchyContentProvider = new HierarchyContentProvider();
         private IContentProvider flatContentProvider = new FlatContentProvider();
