@@ -231,7 +231,7 @@ public class TestOutlineView extends ViewPart {
         IToolBarManager manager = getViewSite().getActionBars().getToolBarManager();
         manager.add(new CollapseTreeAction());
         manager.add(new SortAction());
-        manager.add(new LookAction(Messages.TestOutlineView_Look, LookAction.HIERARCHY));
+        manager.add(new ToggleShowHierarchyAction(Messages.TestOutlineView_ToggleShowHierarchyAction, ToggleShowHierarchyAction.HIERARCHY));
     }
 
     private void collectBaseTestClasses(List<TestClass> testClasses) {
@@ -441,7 +441,7 @@ public class TestOutlineView extends ViewPart {
         }
     }
 
-    private class LookAction extends Action {
+    private class ToggleShowHierarchyAction extends Action {
         public static final int FLAT = 1;
         public static final int HIERARCHY = 2;
 
@@ -449,7 +449,7 @@ public class TestOutlineView extends ViewPart {
         private IContentProvider flatContentProvider = new FlatContentProvider();
         private int look;
 
-        public LookAction(String text, int look) {
+        public ToggleShowHierarchyAction(String text, int look) {
             super(text, AS_RADIO_BUTTON);
             this.look = look;
             setToolTipText(getText());

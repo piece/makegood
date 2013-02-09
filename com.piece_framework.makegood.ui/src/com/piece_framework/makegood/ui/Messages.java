@@ -268,7 +268,7 @@ public class Messages extends NLS {
     /**
      * @since 2.3.0
      */
-    public static String TestOutlineView_Look;
+    public static String TestOutlineView_ToggleShowHierarchyAction;
 
     static {
         // initialize resource bundle
