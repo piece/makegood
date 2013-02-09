@@ -447,27 +447,27 @@ public class TestOutlineView extends ViewPart {
 
         private IContentProvider hierarchyContentProvider = new HierarchyContentProvider();
         private IContentProvider flatContentProvider = new FlatContentProvider();
-        private int look;
+        private int layout;
 
-        public ToggleShowHierarchyAction(String text, int look) {
+        public ToggleShowHierarchyAction(String text, int layout) {
             super(text, AS_RADIO_BUTTON);
-            this.look = look;
+            this.layout = layout;
             setToolTipText(getText());
             setImageDescriptor(Activator.getImageDescriptor("icons/look.gif")); //$NON-NLS-1$
 
-            setChecked(look == LAYOUT_HIERARCHICAL);
+            setChecked(layout == LAYOUT_HIERARCHICAL);
         }
 
         @Override
         public void run() {
-            if (look == LAYOUT_HIERARCHICAL) look = LAYOUT_FLAT;
-            else if (look == LAYOUT_FLAT) look = LAYOUT_HIERARCHICAL;
+            if (layout == LAYOUT_HIERARCHICAL) layout = LAYOUT_FLAT;
+            else if (layout == LAYOUT_FLAT) layout = LAYOUT_HIERARCHICAL;
 
-            setChecked(look == LAYOUT_HIERARCHICAL);
+            setChecked(layout == LAYOUT_HIERARCHICAL);
 
-            if (look == LAYOUT_HIERARCHICAL)
+            if (layout == LAYOUT_HIERARCHICAL)
                 viewer.setContentProvider(hierarchyContentProvider);
-            else if (look == LAYOUT_FLAT)
+            else if (layout == LAYOUT_FLAT)
                 viewer.setContentProvider(flatContentProvider);
 
             viewer.expandAll();
