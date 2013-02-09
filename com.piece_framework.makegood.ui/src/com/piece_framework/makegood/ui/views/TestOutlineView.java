@@ -442,7 +442,7 @@ public class TestOutlineView extends ViewPart {
     }
 
     private class ToggleShowHierarchyAction extends Action {
-        public static final int FLAT = 1;
+        public static final int LAYOUT_FLAT = 1;
         public static final int HIERARCHY = 2;
 
         private IContentProvider hierarchyContentProvider = new HierarchyContentProvider();
@@ -460,14 +460,14 @@ public class TestOutlineView extends ViewPart {
 
         @Override
         public void run() {
-            if (look == HIERARCHY) look = FLAT;
-            else if (look == FLAT) look = HIERARCHY;
+            if (look == HIERARCHY) look = LAYOUT_FLAT;
+            else if (look == LAYOUT_FLAT) look = HIERARCHY;
 
             setChecked(look == HIERARCHY);
 
             if (look == HIERARCHY)
                 viewer.setContentProvider(hierarchyContentProvider);
-            else if (look == FLAT)
+            else if (look == LAYOUT_FLAT)
                 viewer.setContentProvider(flatContentProvider);
 
             viewer.expandAll();
