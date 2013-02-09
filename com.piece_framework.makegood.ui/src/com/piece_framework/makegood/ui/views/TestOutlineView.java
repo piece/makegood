@@ -453,7 +453,7 @@ public class TestOutlineView extends ViewPart {
             super(text, AS_RADIO_BUTTON);
             this.layout = layout;
             setToolTipText(getText());
-            setImageDescriptor(Activator.getImageDescriptor("icons/look.gif")); //$NON-NLS-1$
+            setImageDescriptor(Activator.getImageDescriptor("icons/toggle_show_hierarchy.gif")); //$NON-NLS-1$
 
             setChecked(layout == LAYOUT_HIERARCHICAL);
         }
