@@ -231,7 +231,7 @@ public class TestOutlineView extends ViewPart {
         IToolBarManager manager = getViewSite().getActionBars().getToolBarManager();
         manager.add(new CollapseTreeAction());
         manager.add(new SortAction());
-        manager.add(new ToggleShowHierarchyAction(Messages.TestOutlineView_ToggleShowHierarchyAction, ToggleShowHierarchyAction.HIERARCHY));
+        manager.add(new ToggleShowHierarchyAction(Messages.TestOutlineView_ToggleShowHierarchyAction, ToggleShowHierarchyAction.LAYOUT_HIERARCHICAL));
     }
 
     private void collectBaseTestClasses(List<TestClass> testClasses) {
@@ -443,7 +443,7 @@ public class TestOutlineView extends ViewPart {
 
     private class ToggleShowHierarchyAction extends Action {
         public static final int LAYOUT_FLAT = 1;
-        public static final int HIERARCHY = 2;
+        public static final int LAYOUT_HIERARCHICAL = 2;
 
         private IContentProvider hierarchyContentProvider = new HierarchyContentProvider();
         private IContentProvider flatContentProvider = new FlatContentProvider();
@@ -455,17 +455,17 @@ public class TestOutlineView extends ViewPart {
             setToolTipText(getText());
             setImageDescriptor(Activator.getImageDescriptor("icons/look.gif")); //$NON-NLS-1$
 
-            setChecked(look == HIERARCHY);
+            setChecked(look == LAYOUT_HIERARCHICAL);
         }
 
         @Override
         public void run() {
-            if (look == HIERARCHY) look = LAYOUT_FLAT;
-            else if (look == LAYOUT_FLAT) look = HIERARCHY;
+            if (look == LAYOUT_HIERARCHICAL) look = LAYOUT_FLAT;
+            else if (look == LAYOUT_FLAT) look = LAYOUT_HIERARCHICAL;
 
-            setChecked(look == HIERARCHY);
+            setChecked(look == LAYOUT_HIERARCHICAL);
 
-            if (look == HIERARCHY)
+            if (look == LAYOUT_HIERARCHICAL)
                 viewer.setContentProvider(hierarchyContentProvider);
             else if (look == LAYOUT_FLAT)
                 viewer.setContentProvider(flatContentProvider);
