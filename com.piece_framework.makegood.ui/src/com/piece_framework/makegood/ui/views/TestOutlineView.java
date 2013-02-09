@@ -229,7 +229,7 @@ public class TestOutlineView extends ViewPart {
 
     private void registerActions() {
         IToolBarManager manager = getViewSite().getActionBars().getToolBarManager();
-        manager.add(new CollapseTreeAction());
+        manager.add(new CollapseAllAction());
         manager.add(new SortAction());
         manager.add(new ToggleShowHierarchyAction(Messages.TestOutlineView_ToggleShowHierarchyAction, ToggleShowHierarchyAction.LAYOUT_HIERARCHICAL));
     }
@@ -409,8 +409,8 @@ public class TestOutlineView extends ViewPart {
         }
     }
 
-    private class CollapseTreeAction extends Action {
-        public CollapseTreeAction() {
+    private class CollapseAllAction extends Action {
+        public CollapseAllAction() {
             super(Messages.TestOutlineView_CollapseAll, AS_PUSH_BUTTON);
             setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(ISharedImages.IMG_ELCL_COLLAPSEALL));
             setDisabledImageDescriptor(PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(ISharedImages.IMG_ELCL_COLLAPSEALL_DISABLED));
