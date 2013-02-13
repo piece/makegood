@@ -443,7 +443,7 @@
          <action
                class="com.piece_framework.makegood.ui.actions.ToggleStopOnFailureAction"
                definitionId="com.piece_framework.makegood.ui.commands.stopOnFailureCommand"
-               icon="icons/stopOnFailureAction.gif"
+               icon="icons/toggle_stop_on_failure.gif"
                id="com.piece_framework.makegood.ui.viewActions.toggleStopOnFailureAction"
                label="%viewActions.toggleStopOnFailureAction.label"
                style="toggle"
