@@ -208,7 +208,7 @@
       </command>
       <command
             categoryId="com.piece_framework.makegood.ui.commands.resultViewCategory"
-            defaultHandler="com.piece_framework.makegood.ui.handlers.PreviousFailureHandler"
+            defaultHandler="com.piece_framework.makegood.ui.handlers.MoveToPreviousFailureHandler"
             id="com.piece_framework.makegood.ui.commands.previousFailureCommand"
             name="%commands.previousFailureCommand.name">
       </command>
