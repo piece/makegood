@@ -226,7 +226,7 @@
       </command>
       <command
             categoryId="com.piece_framework.makegood.ui.commands.runTestCategory"
-            defaultHandler="com.piece_framework.makegood.ui.handlers.StopOnFailureHandler"
+            defaultHandler="com.piece_framework.makegood.ui.handlers.ToggleStopOnFailureHandler"
             id="com.piece_framework.makegood.ui.commands.stopOnFailureCommand"
             name="%commands.stopOnFailureCommand.name">
       </command>
