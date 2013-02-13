@@ -13,7 +13,7 @@ package com.piece_framework.makegood.ui.handlers;
 
 import com.piece_framework.makegood.ui.views.ResultView;
 
-public class PreviousFailureHandler extends FailureHandler {
+public class PreviousFailureHandler extends MoveToFailureHandler {
     /**
      * @since 1.8.0
      */

@@ -21,7 +21,7 @@ import com.piece_framework.makegood.ui.views.ViewOpener;
 /**
  * @since 1.8.0
  */
-public abstract class FailureHandler extends AbstractHandler {
+public abstract class MoveToFailureHandler extends AbstractHandler {
     @Override
     public Object execute(ExecutionEvent event) throws ExecutionException {
         TestLifecycle testLifecycle = TestLifecycle.getInstance();
