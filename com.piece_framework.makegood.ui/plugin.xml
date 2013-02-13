@@ -202,7 +202,7 @@
       </category>
       <command
             categoryId="com.piece_framework.makegood.ui.commands.resultViewCategory"
-            defaultHandler="com.piece_framework.makegood.ui.handlers.NextFailureHandler"
+            defaultHandler="com.piece_framework.makegood.ui.handlers.MoveToNextFailureHandler"
             id="com.piece_framework.makegood.ui.commands.nextFailureCommand"
             name="%commands.nextFailureCommand.name">
       </command>
