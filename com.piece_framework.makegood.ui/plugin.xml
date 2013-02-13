@@ -214,7 +214,7 @@
       </command>
       <command
             categoryId="com.piece_framework.makegood.ui.commands.resultViewCategory"
-            defaultHandler="com.piece_framework.makegood.ui.handlers.ShowOnlyFailuresHandler"
+            defaultHandler="com.piece_framework.makegood.ui.handlers.ToggleShowOnlyFailuresHandler"
             id="com.piece_framework.makegood.ui.commands.showOnlyFailuresCommand"
             name="%commands.showOnlyFailuresCommand.name">
       </command>
