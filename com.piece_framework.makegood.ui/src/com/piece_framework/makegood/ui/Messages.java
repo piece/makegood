@@ -263,7 +263,7 @@ public class Messages extends NLS {
     /**
      * @since 2.3.0
      */
-    public static String TestOutlineView_Sort;
+    public static String TestOutlineView_ToggleSort;
 
     /**
      * @since 2.3.0

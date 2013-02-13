@@ -230,7 +230,7 @@ public class TestOutlineView extends ViewPart {
     private void registerActions() {
         IToolBarManager manager = getViewSite().getActionBars().getToolBarManager();
         manager.add(new CollapseAllAction());
-        manager.add(new SortAction());
+        manager.add(new ToggleSortAction());
         manager.add(new ToggleShowHierarchyAction(Messages.TestOutlineView_ToggleShowHierarchyAction, ToggleShowHierarchyAction.LAYOUT_HIERARCHICAL));
     }
 
@@ -422,12 +422,12 @@ public class TestOutlineView extends ViewPart {
         }
     }
 
-    private class SortAction extends Action {
+    private class ToggleSortAction extends Action {
         private ViewerSorter sorter = new ViewerSorter();
         private boolean checked = false;
 
-        public SortAction() {
-            super(Messages.TestOutlineView_Sort, AS_CHECK_BOX);
+        public ToggleSortAction() {
+            super(Messages.TestOutlineView_ToggleSort, AS_CHECK_BOX);
             setImageDescriptor(Activator.getImageDescriptor("icons/sort.gif")); //$NON-NLS-1$
             setToolTipText(getText());
         }
