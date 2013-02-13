@@ -232,7 +232,7 @@
       </command>
       <command
             categoryId="com.piece_framework.makegood.ui.commands.runTestCategory"
-            defaultHandler="com.piece_framework.makegood.ui.handlers.DebugTestHandler"
+            defaultHandler="com.piece_framework.makegood.ui.handlers.ToggleDebugTestHandler"
             id="com.piece_framework.makegood.ui.commands.debugTestCommand"
             name="%commands.debugTestCommand.name">
       </command>
