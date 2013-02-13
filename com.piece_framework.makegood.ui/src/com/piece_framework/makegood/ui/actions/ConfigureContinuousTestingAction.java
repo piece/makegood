@@ -85,7 +85,7 @@ public class ConfigureContinuousTestingAction implements IViewActionDelegate {
             addAction(createDisableContinuousTestingAction());
             addSeparator();
             addAction(new SetContinuousTestingScopeToAllTestsAction(Messages.MakeGoodView_ConfigureContinuousTestingAction_SetContinuousTestingScopeToAllTestsAction));
-            addAction(new SetContinuousTestingScopeToLastTestAction(Messages.MakeGoodView_ConfigureContinuousTestingAction_SelectLastTestAsContinuousTestingScopeAction));
+            addAction(new SetContinuousTestingScopeToLastTestAction(Messages.MakeGoodView_ConfigureContinuousTestingAction_SetContinuousTestingScopeToLastTestAction));
             addAction(new SetContinuousTestingScopeToFailedTestsAction(Messages.MakeGoodView_ConfigureContinuousTestingAction_SelectFailedTestsAsContinuousTestingScopeAction));
 
             return menu;

@@ -253,7 +253,7 @@ public class Messages extends NLS {
     /**
      * @since 2.3.0
      */
-    public static String MakeGoodView_ConfigureContinuousTestingAction_SelectLastTestAsContinuousTestingScopeAction;
+    public static String MakeGoodView_ConfigureContinuousTestingAction_SetContinuousTestingScopeToLastTestAction;
 
     /**
      * @since 2.3.0
