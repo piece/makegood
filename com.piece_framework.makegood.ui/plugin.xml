@@ -481,14 +481,14 @@
                tooltip="%viewActions.previousFailureAction.tooltip">
          </action>
          <action
-               class="com.piece_framework.makegood.ui.actions.NextFailureAction"
+               class="com.piece_framework.makegood.ui.actions.MoveToNextFailureAction"
                definitionId="com.piece_framework.makegood.ui.commands.nextFailureCommand"
                icon="icons/nextFailureAction.gif"
-               id="com.piece_framework.makegood.ui.viewActions.nextFailureAction"
-               label="%viewActions.nextFailureAction.label"
+               id="com.piece_framework.makegood.ui.viewActions.moveToNextFailureAction"
+               label="%viewActions.moveToNextFailureAction.label"
                style="push"
                toolbarPath="results"
-               tooltip="%viewActions.nextFailureAction.tooltip">
+               tooltip="%viewActions.moveToNextFailureAction.tooltip">
          </action>
       </viewContribution>
    </extension>

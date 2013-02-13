@@ -82,7 +82,7 @@ import com.piece_framework.makegood.ui.MakeGoodStatus;
 import com.piece_framework.makegood.ui.MakeGoodStatusChangeListener;
 import com.piece_framework.makegood.ui.Messages;
 import com.piece_framework.makegood.ui.actions.ConfigureContinuousTestingAction;
-import com.piece_framework.makegood.ui.actions.NextFailureAction;
+import com.piece_framework.makegood.ui.actions.MoveToNextFailureAction;
 import com.piece_framework.makegood.ui.actions.PreviousFailureAction;
 import com.piece_framework.makegood.ui.actions.RerunFailedTestsAction;
 import com.piece_framework.makegood.ui.actions.RerunTestAction;
@@ -113,7 +113,7 @@ public class ResultView extends ViewPart {
     private CLabel processTimeAverageLabel;
     private ElapsedTimer elapsedTimer;
     private IAction previousFailureAction;
-    private IAction nextFailureAction;
+    private IAction moveToNextFailureAction;
     private IAction stopTestAction;
 
     /**
@@ -482,8 +482,8 @@ public class ResultView extends ViewPart {
         if (previousFailureAction != null) {
             previousFailureAction.setEnabled(true);
         }
-        if (nextFailureAction != null) {
-            nextFailureAction.setEnabled(true);
+        if (moveToNextFailureAction != null) {
+            moveToNextFailureAction.setEnabled(true);
         }
     }
 
@@ -507,10 +507,10 @@ public class ResultView extends ViewPart {
         }
 
         ActionContributionItem nextFailureItem =
-            (ActionContributionItem) manager.find(NextFailureAction.ACTION_ID);
+            (ActionContributionItem) manager.find(MoveToNextFailureAction.ACTION_ID);
         if (nextFailureItem != null) {
-            nextFailureAction = nextFailureItem.getAction();
-            nextFailureAction.setEnabled(hasFailures());
+            moveToNextFailureAction = nextFailureItem.getAction();
+            moveToNextFailureAction.setEnabled(hasFailures());
         }
 
         ActionContributionItem stopOnFailureItem =
@@ -841,7 +841,7 @@ public class ResultView extends ViewPart {
                         rerunFailedTestsAction.setEnabled(false);
                         stopTestAction.setEnabled(true);
                         previousFailureAction.setEnabled(false);
-                        nextFailureAction.setEnabled(false);
+                        moveToNextFailureAction.setEnabled(false);
                     }
                     setForeground(statusArea.getParent().getForeground());
                     setText(Messages.MakeGoodView_Status_RunningTest);
