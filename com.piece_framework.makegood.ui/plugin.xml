@@ -463,7 +463,7 @@
          <action
                class="com.piece_framework.makegood.ui.actions.ToggleShowOnlyFailuresAction"
                definitionId="com.piece_framework.makegood.ui.commands.showOnlyFailuresCommand"
-               icon="icons/showOnlyFailuresAction.gif"
+               icon="icons/toggle_show_only_failures.gif"
                id="com.piece_framework.makegood.ui.viewActions.toggleShowOnlyFailuresAction"
                label="%viewActions.toggleShowOnlyFailuresAction.label"
                style="toggle"
