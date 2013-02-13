@@ -14,7 +14,7 @@ package com.piece_framework.makegood.ui.actions;
 
 import com.piece_framework.makegood.ui.views.ResultView;
 
-public class NextFailureAction extends FailureAction {
+public class NextFailureAction extends MoveToFailureAction {
     public static final String ACTION_ID = "com.piece_framework.makegood.ui.viewActions.nextFailureAction"; //$NON-NLS-1$
 
     /**

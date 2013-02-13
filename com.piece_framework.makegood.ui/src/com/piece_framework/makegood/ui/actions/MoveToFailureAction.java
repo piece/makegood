@@ -23,7 +23,7 @@ import com.piece_framework.makegood.ui.views.ViewOpener;
 /**
  * @since 1.8.0
  */
-public abstract class FailureAction implements IViewActionDelegate {
+public abstract class MoveToFailureAction implements IViewActionDelegate {
     @Override
     public void init(IViewPart view) {
     }
