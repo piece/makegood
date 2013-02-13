@@ -428,7 +428,7 @@ public class TestOutlineView extends ViewPart {
 
         public ToggleSortAction() {
             super(Messages.TestOutlineView_ToggleSort, AS_CHECK_BOX);
-            setImageDescriptor(Activator.getImageDescriptor("icons/sort.gif")); //$NON-NLS-1$
+            setImageDescriptor(Activator.getImageDescriptor("icons/toggle_sort.gif")); //$NON-NLS-1$
             setToolTipText(getText());
         }
 
