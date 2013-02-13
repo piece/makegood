@@ -483,7 +483,7 @@
          <action
                class="com.piece_framework.makegood.ui.actions.MoveToNextFailureAction"
                definitionId="com.piece_framework.makegood.ui.commands.nextFailureCommand"
-               icon="icons/nextFailureAction.gif"
+               icon="icons/move_to_next_failure.gif"
                id="com.piece_framework.makegood.ui.viewActions.moveToNextFailureAction"
                label="%viewActions.moveToNextFailureAction.label"
                style="push"
