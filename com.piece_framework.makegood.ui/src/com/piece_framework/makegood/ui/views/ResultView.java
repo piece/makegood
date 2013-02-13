@@ -89,8 +89,8 @@ import com.piece_framework.makegood.ui.actions.RerunFailedTestsAction;
 import com.piece_framework.makegood.ui.actions.RerunTestAction;
 import com.piece_framework.makegood.ui.actions.RunAllTestsAction;
 import com.piece_framework.makegood.ui.actions.ShowOnlyFailuresAction;
-import com.piece_framework.makegood.ui.actions.StopOnFailureAction;
 import com.piece_framework.makegood.ui.actions.StopTestAction;
+import com.piece_framework.makegood.ui.actions.ToggleStopOnFailureAction;
 import com.piece_framework.makegood.ui.widgets.ActiveText;
 import com.piece_framework.makegood.ui.widgets.ActiveTextListener;
 import com.piece_framework.makegood.ui.widgets.ExternalFileWithLineRange;
@@ -514,7 +514,7 @@ public class ResultView extends ViewPart {
         }
 
         ActionContributionItem stopOnFailureItem =
-            (ActionContributionItem) manager.find(StopOnFailureAction.ACTION_ID);
+            (ActionContributionItem) manager.find(ToggleStopOnFailureAction.ACTION_ID);
         if (stopOnFailureItem != null) {
             stopOnFailureItem.getAction().setChecked(
                 RuntimeConfiguration.getInstance().stopsOnFailure

@@ -441,14 +441,14 @@
                tooltip="%viewActions.runAllTestsAction.tooltip">
          </action>
          <action
-               class="com.piece_framework.makegood.ui.actions.StopOnFailureAction"
+               class="com.piece_framework.makegood.ui.actions.ToggleStopOnFailureAction"
                definitionId="com.piece_framework.makegood.ui.commands.stopOnFailureCommand"
                icon="icons/stopOnFailureAction.gif"
-               id="com.piece_framework.makegood.ui.viewActions.stopOnFailureAction"
-               label="%viewActions.stopOnFailureAction.label"
+               id="com.piece_framework.makegood.ui.viewActions.toggleStopOnFailureAction"
+               label="%viewActions.toggleStopOnFailureAction.label"
                style="toggle"
                toolbarPath="properties"
-               tooltip="%viewActions.stopOnFailureAction.tooltip">
+               tooltip="%viewActions.toggleStopOnFailureAction.tooltip">
          </action>
          <action
                class="com.piece_framework.makegood.ui.actions.DebugTestAction"

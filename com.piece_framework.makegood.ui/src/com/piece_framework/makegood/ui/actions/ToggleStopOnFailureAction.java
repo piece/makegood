@@ -18,8 +18,8 @@ import org.eclipse.ui.IViewPart;
 
 import com.piece_framework.makegood.launch.RuntimeConfiguration;
 
-public class StopOnFailureAction implements IViewActionDelegate {
-    public static final String ACTION_ID = "com.piece_framework.makegood.ui.viewActions.stopOnFailureAction"; //$NON-NLS-1$
+public class ToggleStopOnFailureAction implements IViewActionDelegate {
+    public static final String ACTION_ID = "com.piece_framework.makegood.ui.viewActions.toggleStopOnFailureAction"; //$NON-NLS-1$
 
     @Override
     public void init(IViewPart view) {}

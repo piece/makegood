@@ -11,11 +11,11 @@
 
 package com.piece_framework.makegood.ui.handlers;
 
-import com.piece_framework.makegood.ui.actions.StopOnFailureAction;
+import com.piece_framework.makegood.ui.actions.ToggleStopOnFailureAction;
 
 public class ToggleStopOnFailureHandler extends ToggleHandler {
     @Override
     protected String getActionId() {
-        return StopOnFailureAction.ACTION_ID;
+        return ToggleStopOnFailureAction.ACTION_ID;
     }
 }
