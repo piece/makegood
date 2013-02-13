@@ -473,7 +473,7 @@
          <action
                class="com.piece_framework.makegood.ui.actions.MoveToPreviousFailureAction"
                definitionId="com.piece_framework.makegood.ui.commands.previousFailureCommand"
-               icon="icons/previousFailureAction.gif"
+               icon="icons/move_to_previous_failure.gif"
                id="com.piece_framework.makegood.ui.viewActions.moveToPreviousFailureAction"
                label="%viewActions.moveToPreviousFailureAction.label"
                style="push"
