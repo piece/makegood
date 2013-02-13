@@ -471,14 +471,14 @@
                tooltip="%viewActions.toggleShowOnlyFailuresAction.tooltip">
          </action>
          <action
-               class="com.piece_framework.makegood.ui.actions.PreviousFailureAction"
+               class="com.piece_framework.makegood.ui.actions.MoveToPreviousFailureAction"
                definitionId="com.piece_framework.makegood.ui.commands.previousFailureCommand"
                icon="icons/previousFailureAction.gif"
-               id="com.piece_framework.makegood.ui.viewActions.previousFailureAction"
-               label="%viewActions.previousFailureAction.label"
+               id="com.piece_framework.makegood.ui.viewActions.moveToPreviousFailureAction"
+               label="%viewActions.moveToPreviousFailureAction.label"
                style="push"
                toolbarPath="results"
-               tooltip="%viewActions.previousFailureAction.tooltip">
+               tooltip="%viewActions.moveToPreviousFailureAction.tooltip">
          </action>
          <action
                class="com.piece_framework.makegood.ui.actions.MoveToNextFailureAction"

@@ -83,7 +83,7 @@ import com.piece_framework.makegood.ui.MakeGoodStatusChangeListener;
 import com.piece_framework.makegood.ui.Messages;
 import com.piece_framework.makegood.ui.actions.ConfigureContinuousTestingAction;
 import com.piece_framework.makegood.ui.actions.MoveToNextFailureAction;
-import com.piece_framework.makegood.ui.actions.PreviousFailureAction;
+import com.piece_framework.makegood.ui.actions.MoveToPreviousFailureAction;
 import com.piece_framework.makegood.ui.actions.RerunFailedTestsAction;
 import com.piece_framework.makegood.ui.actions.RerunTestAction;
 import com.piece_framework.makegood.ui.actions.RunAllTestsAction;
@@ -112,7 +112,7 @@ public class ResultView extends ViewPart {
     private TreeViewer resultTreeViewer;
     private CLabel processTimeAverageLabel;
     private ElapsedTimer elapsedTimer;
-    private IAction previousFailureAction;
+    private IAction moveToPreviousFailureAction;
     private IAction moveToNextFailureAction;
     private IAction stopTestAction;
 
@@ -479,8 +479,8 @@ public class ResultView extends ViewPart {
     private void markAsFailed() {
         progressBar.markAsFailed();
 
-        if (previousFailureAction != null) {
-            previousFailureAction.setEnabled(true);
+        if (moveToPreviousFailureAction != null) {
+            moveToPreviousFailureAction.setEnabled(true);
         }
         if (moveToNextFailureAction != null) {
             moveToNextFailureAction.setEnabled(true);
@@ -500,10 +500,10 @@ public class ResultView extends ViewPart {
         }
 
         ActionContributionItem previousFailureItem =
-            (ActionContributionItem) manager.find(PreviousFailureAction.ACTION_ID);
+            (ActionContributionItem) manager.find(MoveToPreviousFailureAction.ACTION_ID);
         if (previousFailureItem != null) {
-            previousFailureAction = previousFailureItem.getAction();
-            previousFailureAction.setEnabled(hasFailures());
+            moveToPreviousFailureAction = previousFailureItem.getAction();
+            moveToPreviousFailureAction.setEnabled(hasFailures());
         }
 
         ActionContributionItem nextFailureItem =
@@ -840,7 +840,7 @@ public class ResultView extends ViewPart {
                         rerunTestAction.setEnabled(false);
                         rerunFailedTestsAction.setEnabled(false);
                         stopTestAction.setEnabled(true);
-                        previousFailureAction.setEnabled(false);
+                        moveToPreviousFailureAction.setEnabled(false);
                         moveToNextFailureAction.setEnabled(false);
                     }
                     setForeground(statusArea.getParent().getForeground());
