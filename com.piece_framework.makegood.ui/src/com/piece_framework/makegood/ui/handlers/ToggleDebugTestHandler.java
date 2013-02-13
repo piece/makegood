@@ -11,11 +11,11 @@
 
 package com.piece_framework.makegood.ui.handlers;
 
-import com.piece_framework.makegood.ui.actions.DebugTestAction;
+import com.piece_framework.makegood.ui.actions.ToggleDebugTestAction;
 
 public class ToggleDebugTestHandler extends ToggleHandler {
     @Override
     protected String getActionId() {
-        return DebugTestAction.ACTION_ID;
+        return ToggleDebugTestAction.ACTION_ID;
     }
 }

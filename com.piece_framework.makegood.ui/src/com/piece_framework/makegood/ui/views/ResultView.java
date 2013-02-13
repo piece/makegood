@@ -82,7 +82,6 @@ import com.piece_framework.makegood.ui.MakeGoodStatus;
 import com.piece_framework.makegood.ui.MakeGoodStatusChangeListener;
 import com.piece_framework.makegood.ui.Messages;
 import com.piece_framework.makegood.ui.actions.ConfigureContinuousTestingAction;
-import com.piece_framework.makegood.ui.actions.DebugTestAction;
 import com.piece_framework.makegood.ui.actions.NextFailureAction;
 import com.piece_framework.makegood.ui.actions.PreviousFailureAction;
 import com.piece_framework.makegood.ui.actions.RerunFailedTestsAction;
@@ -90,6 +89,7 @@ import com.piece_framework.makegood.ui.actions.RerunTestAction;
 import com.piece_framework.makegood.ui.actions.RunAllTestsAction;
 import com.piece_framework.makegood.ui.actions.ShowOnlyFailuresAction;
 import com.piece_framework.makegood.ui.actions.StopTestAction;
+import com.piece_framework.makegood.ui.actions.ToggleDebugTestAction;
 import com.piece_framework.makegood.ui.actions.ToggleStopOnFailureAction;
 import com.piece_framework.makegood.ui.widgets.ActiveText;
 import com.piece_framework.makegood.ui.widgets.ActiveTextListener;
@@ -522,7 +522,7 @@ public class ResultView extends ViewPart {
         }
 
         ActionContributionItem debugTestItem =
-            (ActionContributionItem) manager.find(DebugTestAction.ACTION_ID);
+            (ActionContributionItem) manager.find(ToggleDebugTestAction.ACTION_ID);
         if (debugTestItem != null) {
             debugTestItem.getAction().setChecked(
                 RuntimeConfiguration.getInstance().debugsTest

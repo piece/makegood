@@ -18,8 +18,8 @@ import org.eclipse.ui.IViewPart;
 
 import com.piece_framework.makegood.launch.RuntimeConfiguration;
 
-public class DebugTestAction implements IViewActionDelegate {
-    public static final String ACTION_ID = "com.piece_framework.makegood.ui.viewActions.debugTestAction"; //$NON-NLS-1$
+public class ToggleDebugTestAction implements IViewActionDelegate {
+    public static final String ACTION_ID = "com.piece_framework.makegood.ui.viewActions.toggleDebugTestAction"; //$NON-NLS-1$
 
     @Override
     public void init(IViewPart view) {}
