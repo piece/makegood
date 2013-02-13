@@ -453,7 +453,7 @@
          <action
                class="com.piece_framework.makegood.ui.actions.ToggleDebugTestAction"
                definitionId="com.piece_framework.makegood.ui.commands.debugTestCommand"
-               icon="icons/debugTestAction.gif"
+               icon="icons/toggle_debug_test.gif"
                id="com.piece_framework.makegood.ui.viewActions.toggleDebugTestAction"
                label="%viewActions.toggleDebugTestAction.label"
                style="toggle"
