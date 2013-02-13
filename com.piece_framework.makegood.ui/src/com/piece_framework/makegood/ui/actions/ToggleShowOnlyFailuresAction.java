@@ -21,8 +21,8 @@ import com.piece_framework.makegood.launch.RuntimeConfiguration;
 import com.piece_framework.makegood.ui.views.ResultView;
 import com.piece_framework.makegood.ui.views.ViewOpener;
 
-public class ShowOnlyFailuresAction implements IViewActionDelegate {
-    public static final String ACTION_ID = "com.piece_framework.makegood.ui.viewActions.showOnlyFailuresAction"; //$NON-NLS-1$
+public class ToggleShowOnlyFailuresAction implements IViewActionDelegate {
+    public static final String ACTION_ID = "com.piece_framework.makegood.ui.viewActions.toggleShowOnlyFailuresAction"; //$NON-NLS-1$
 
     @Override
     public void init(IViewPart view) {

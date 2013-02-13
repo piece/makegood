@@ -87,9 +87,9 @@ import com.piece_framework.makegood.ui.actions.PreviousFailureAction;
 import com.piece_framework.makegood.ui.actions.RerunFailedTestsAction;
 import com.piece_framework.makegood.ui.actions.RerunTestAction;
 import com.piece_framework.makegood.ui.actions.RunAllTestsAction;
-import com.piece_framework.makegood.ui.actions.ShowOnlyFailuresAction;
 import com.piece_framework.makegood.ui.actions.StopTestAction;
 import com.piece_framework.makegood.ui.actions.ToggleDebugTestAction;
+import com.piece_framework.makegood.ui.actions.ToggleShowOnlyFailuresAction;
 import com.piece_framework.makegood.ui.actions.ToggleStopOnFailureAction;
 import com.piece_framework.makegood.ui.widgets.ActiveText;
 import com.piece_framework.makegood.ui.widgets.ActiveTextListener;
@@ -491,7 +491,7 @@ public class ResultView extends ViewPart {
         IToolBarManager manager = site.getActionBars().getToolBarManager();
 
         ActionContributionItem showOnlyFailuresItem =
-            (ActionContributionItem) manager.find(ShowOnlyFailuresAction.ACTION_ID);
+            (ActionContributionItem) manager.find(ToggleShowOnlyFailuresAction.ACTION_ID);
         if (showOnlyFailuresItem != null) {
             showOnlyFailuresItem.getAction().setChecked(
                 RuntimeConfiguration.getInstance().showsOnlyFailures

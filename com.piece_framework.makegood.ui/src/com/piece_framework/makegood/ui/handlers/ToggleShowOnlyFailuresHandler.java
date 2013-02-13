@@ -11,11 +11,11 @@
 
 package com.piece_framework.makegood.ui.handlers;
 
-import com.piece_framework.makegood.ui.actions.ShowOnlyFailuresAction;
+import com.piece_framework.makegood.ui.actions.ToggleShowOnlyFailuresAction;
 
 public class ToggleShowOnlyFailuresHandler extends ToggleHandler {
     @Override
     protected String getActionId() {
-        return ShowOnlyFailuresAction.ACTION_ID;
+        return ToggleShowOnlyFailuresAction.ACTION_ID;
     }
 }

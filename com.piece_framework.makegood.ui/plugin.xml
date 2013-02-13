@@ -461,14 +461,14 @@
                tooltip="%viewActions.toggleDebugTestAction.tooltip">
          </action>
          <action
-               class="com.piece_framework.makegood.ui.actions.ShowOnlyFailuresAction"
+               class="com.piece_framework.makegood.ui.actions.ToggleShowOnlyFailuresAction"
                definitionId="com.piece_framework.makegood.ui.commands.showOnlyFailuresCommand"
                icon="icons/showOnlyFailuresAction.gif"
-               id="com.piece_framework.makegood.ui.viewActions.showOnlyFailuresAction"
-               label="%viewActions.showOnlyFailuresAction.label"
+               id="com.piece_framework.makegood.ui.viewActions.toggleShowOnlyFailuresAction"
+               label="%viewActions.toggleShowOnlyFailuresAction.label"
                style="toggle"
                toolbarPath="results"
-               tooltip="%viewActions.showOnlyFailuresAction.tooltip">
+               tooltip="%viewActions.toggleShowOnlyFailuresAction.tooltip">
          </action>
          <action
                class="com.piece_framework.makegood.ui.actions.PreviousFailureAction"
