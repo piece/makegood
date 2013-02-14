@@ -92,7 +92,7 @@ public class TestOutlineView extends ViewPart {
         parent.setLayout(new FillLayout());
 
         viewer = new TreeViewer(parent);
-        viewer.setContentProvider(new HierarchyContentProvider());
+        viewer.setContentProvider(new HierarchicalLayoutContentProvider());
         viewer.setLabelProvider(
             new DecoratingModelLabelProvider(
                 new AppearanceAwareLabelProvider(
@@ -327,7 +327,7 @@ public class TestOutlineView extends ViewPart {
         }
     }
 
-    private class HierarchyContentProvider implements ITreeContentProvider {
+    private class HierarchicalLayoutContentProvider implements ITreeContentProvider {
         @Override
         public Object[] getElements(Object inputElement) {
             return getChildren(inputElement);
@@ -378,7 +378,7 @@ public class TestOutlineView extends ViewPart {
                                  Object newInput) {}
     }
 
-    private class FlatContentProvider extends HierarchyContentProvider {
+    private class FlatContentProvider extends HierarchicalLayoutContentProvider {
         @Override
         public Object[] getChildren(Object parentElement) {
             boolean isNotTestClass =
@@ -445,7 +445,7 @@ public class TestOutlineView extends ViewPart {
         private static final int LAYOUT_FLAT = 1;
         private static final int LAYOUT_HIERARCHICAL = 2;
 
-        private IContentProvider hierarchyContentProvider = new HierarchyContentProvider();
+        private IContentProvider hierarchicalLayoutContentProvider = new HierarchicalLayoutContentProvider();
         private IContentProvider flatContentProvider = new FlatContentProvider();
         private int layout;
 
@@ -466,7 +466,7 @@ public class TestOutlineView extends ViewPart {
             setChecked(layout == LAYOUT_HIERARCHICAL);
 
             if (layout == LAYOUT_HIERARCHICAL)
-                viewer.setContentProvider(hierarchyContentProvider);
+                viewer.setContentProvider(hierarchicalLayoutContentProvider);
             else if (layout == LAYOUT_FLAT)
                 viewer.setContentProvider(flatContentProvider);
 
