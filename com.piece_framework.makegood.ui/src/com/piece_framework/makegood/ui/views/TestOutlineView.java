@@ -378,7 +378,7 @@ public class TestOutlineView extends ViewPart {
                                  Object newInput) {}
     }
 
-    private class FlatContentProvider extends HierarchicalLayoutContentProvider {
+    private class FlatLayoutContentProvider extends HierarchicalLayoutContentProvider {
         @Override
         public Object[] getChildren(Object parentElement) {
             boolean isNotTestClass =
@@ -446,7 +446,7 @@ public class TestOutlineView extends ViewPart {
         private static final int LAYOUT_HIERARCHICAL = 2;
 
         private IContentProvider hierarchicalLayoutContentProvider = new HierarchicalLayoutContentProvider();
-        private IContentProvider flatContentProvider = new FlatContentProvider();
+        private IContentProvider flatLayoutContentProvider = new FlatLayoutContentProvider();
         private int layout;
 
         public ToggleShowHierarchyAction(String text, int layout) {
@@ -468,7 +468,7 @@ public class TestOutlineView extends ViewPart {
             if (layout == LAYOUT_HIERARCHICAL)
                 viewer.setContentProvider(hierarchicalLayoutContentProvider);
             else if (layout == LAYOUT_FLAT)
-                viewer.setContentProvider(flatContentProvider);
+                viewer.setContentProvider(flatLayoutContentProvider);
 
             viewer.expandAll();
         }
