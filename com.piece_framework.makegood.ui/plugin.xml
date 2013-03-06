@@ -413,7 +413,7 @@
          <action
                class="com.piece_framework.makegood.ui.actions.RerunFailedTestsAction"
                definitionId="com.piece_framework.makegood.ui.commands.rerunFailedTestsCommand"
-               icon="icons/rerunFailedTests.gif"
+               icon="icons/rerun_failed_tests.gif"
                id="com.piece_framework.makegood.ui.viewActions.rerunFailedTestsAction"
                label="%viewActions.rerunFailedTestsAction.label"
                style="push"
