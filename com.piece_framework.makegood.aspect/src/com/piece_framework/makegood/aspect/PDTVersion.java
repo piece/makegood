@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2011, 2013 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -68,5 +68,12 @@ public class PDTVersion {
      */
     public boolean hasError() {
         return status != null;
+    }
+
+    /**
+     * @since 2.4.0
+     */
+    public Version getVersion() {
+        return version;
     }
 }

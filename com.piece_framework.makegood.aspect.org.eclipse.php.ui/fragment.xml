@@ -7,4 +7,42 @@
             class="com.piece_framework.makegood.aspect.org.eclipse.php.ui.AspectManifest">
       </manifest>
    </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="org.eclipse.php.internal.ui.actions.PHPToggleLineCommentHandler"
+            commandId="org.eclipse.wst.sse.ui.toggle.comment">
+         <activeWhen>
+            <and>
+               <and>
+                  <with variable="com.piece_framework.makegood.aspect.pdtVersionMajor">
+                     <equals value="3"/>
+                  </with>
+                  <or>
+                     <with variable="com.piece_framework.makegood.aspect.pdtVersionMinor">
+                        <equals value="1"/>
+                     </with>
+                     <with variable="com.piece_framework.makegood.aspect.pdtVersionMinor">
+                        <equals value="0"/>
+                     </with>
+                  </or>
+               </and>
+               <or>
+                  <reference definitionId="org.eclipse.php.ui.phpContentType.definition"/>
+                  <with variable="activePartId">
+                     <equals value="org.eclipse.php.editor"/>
+                  </with>
+                  <with variable="activeEditorId">
+                     <iterate operator="or">
+                        <equals value="org.eclipse.php.editor"/>
+                     </iterate>
+                  </with>
+               </or>
+            </and>
+         </activeWhen>
+         <enabledWhen>
+            <reference definitionId="org.eclipse.php.ui.phpContentType.definition"/>
+         </enabledWhen>
+      </handler>
+   </extension>
 </fragment>

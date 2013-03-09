@@ -29,4 +29,27 @@
             contentTypeId="org.eclipse.php.core.phpsource">
       </participant>
    </extension>
+   <extension
+         point="org.eclipse.ui.services">
+      <sourceProvider
+            provider="com.piece_framework.makegood.aspect.PDTVersionSourceProvider">
+         <variable
+               name="com.piece_framework.makegood.aspect.pdtVersionMajor"
+               priorityLevel="workbench">
+         </variable>
+         <variable
+               name="com.piece_framework.makegood.aspect.pdtVersionMinor"
+               priorityLevel="workbench">
+         </variable>
+         <variable
+               name="com.piece_framework.makegood.aspect.pdtVersionMicro"
+               priorityLevel="workbench">
+         </variable>
+         <variable
+               name="com.piece_framework.makegood.aspect.pdtVersionQualifier"
+               priorityLevel="workbench">
+         </variable>
+      </sourceProvider>
+   </extension>
+
 </plugin>
