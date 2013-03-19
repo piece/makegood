@@ -31,7 +31,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2011-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.5.0
+ * @version    Release: 3.6.0
  * @since      File available since Release 3.0.0
  */
 
@@ -43,7 +43,7 @@ use Symfony\Component\Finder\Finder;
  * @package    Stagehand_TestRunner
  * @copyright  2011-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.5.0
+ * @version    Release: 3.6.0
  * @since      Class available since Release 3.0.0
  */
 class PluginRepository
@@ -67,7 +67,7 @@ class PluginRepository
 
     /**
      * @param string $pluginID
-     * @return \Stagehand\TestRunner\Core\Plugin\IPlugin
+     * @return \Stagehand\TestRunner\Core\Plugin\PluginInterface
      */
     public static function findByPluginID($pluginID)
     {
@@ -75,7 +75,7 @@ class PluginRepository
             self::loadAllPlugins();
         }
 
-        foreach (self::$plugins as $plugin) { /* @var $plugin \Stagehand\TestRunner\Core\Plugin\IPlugin */
+        foreach (self::$plugins as $plugin) { /* @var $plugin \Stagehand\TestRunner\Core\Plugin\PluginInterface */
             if (strtolower($plugin->getPluginID()) == strtolower($pluginID)) {
                 return $plugin;
             }
@@ -88,7 +88,7 @@ class PluginRepository
             $pluginClass = new \ReflectionClass(__NAMESPACE__ . '\\' . $file->getBasename('.php'));
             if (!$pluginClass->isInterface()
                 && !$pluginClass->isAbstract()
-                && $pluginClass->isSubclassOf('Stagehand\TestRunner\Core\Plugin\IPlugin')) {
+                && $pluginClass->isSubclassOf('Stagehand\TestRunner\Core\Plugin\PluginInterface')) {
                 self::$plugins[] = $pluginClass->newInstance();
             }
         }

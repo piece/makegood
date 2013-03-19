@@ -31,27 +31,27 @@
  * @package    Stagehand_TestRunner
  * @copyright  2009-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.5.0
+ * @version    Release: 3.6.0
  * @since      File available since Release 2.10.0
  */
 
 namespace Stagehand\TestRunner\JUnitXMLWriter;
 
-use Stagehand\TestRunner\Util\StreamWriter;
+use Stagehand\TestRunner\Util\StreamWriterInterface;
 
 /**
  * @package    Stagehand_TestRunner
  * @copyright  2009-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.5.0
+ * @version    Release: 3.6.0
  * @since      Class available since Release 2.10.0
  */
-class DOMJUnitXMLWriter implements JUnitXMLWriter
+class DOMJUnitXMLWriter implements JUnitXMLWriterInterface
 {
     protected $xmlWriter;
 
     /**
-     * @param \Stagehand\TestRunner\Util\StreamWriter
+     * @param \Stagehand\TestRunner\Util\StreamWriterInterface
      */
     protected $streamWriter;
 
@@ -63,10 +63,10 @@ class DOMJUnitXMLWriter implements JUnitXMLWriter
     protected $utf8Converter;
 
     /**
-     * @param \Stagehand\TestRunner\Util\StreamWriter $streamWriter
+     * @param \Stagehand\TestRunner\Util\StreamWriterInterface $streamWriter
      * @param \Stagehand\TestRunner\JUnitXMLWriter\UTF8Converter $utf8Converter
      */
-    public function __construct(StreamWriter $streamWriter, UTF8Converter $utf8Converter)
+    public function __construct(StreamWriterInterface $streamWriter, UTF8Converter $utf8Converter)
     {
         $this->xmlWriter = new \DOMDocument('1.0', 'UTF-8');
         $this->utf8Converter = $utf8Converter;

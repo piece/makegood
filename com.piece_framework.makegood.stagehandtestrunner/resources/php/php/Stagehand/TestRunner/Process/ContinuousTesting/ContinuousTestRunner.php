@@ -4,7 +4,7 @@
 /**
  * PHP version 5.3
  *
- * Copyright (c) 2011-2012 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2011-2013 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,57 +29,41 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_TestRunner
- * @copyright  2011-2012 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2011-2013 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.5.0
+ * @version    Release: 3.6.0
  * @since      File available since Release 2.18.0
  */
 
-namespace Stagehand\TestRunner\Process\Autotest;
+namespace Stagehand\TestRunner\Process\ContinuousTesting;
 
 use Symfony\Component\Process\Process;
 
-use Stagehand\ComponentFactory\IComponentAwareFactory;
-use Stagehand\TestRunner\CLI\Terminal;
-use Stagehand\TestRunner\Core\ApplicationContext;
 use Stagehand\TestRunner\Core\TestTargetRepository;
 use Stagehand\TestRunner\Notification\Notification;
-use Stagehand\TestRunner\Process\AlterationMonitoring;
-use Stagehand\TestRunner\Process\FatalError;
+use Stagehand\TestRunner\Notification\Notifier;
+use Stagehand\TestRunner\Preparer\Preparer;
+use Stagehand\TestRunner\Process\ContinuousTesting\AlterationMonitoring;
+use Stagehand\TestRunner\Process\TestRunnerInterface;
+use Stagehand\TestRunner\Runner\Runner;
 use Stagehand\TestRunner\Util\LegacyProxy;
 use Stagehand\TestRunner\Util\OS;
 use Stagehand\TestRunner\Util\String;
 
 /**
  * @package    Stagehand_TestRunner
- * @copyright  2011-2012 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2011-2013 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.5.0
+ * @version    Release: 3.6.0
  * @since      Class available since Release 2.18.0
  */
-abstract class Autotest
+class ContinuousTestRunner implements TestRunnerInterface
 {
     /**
      * @var \Stagehand\TestRunner\Util\OS
      * @since Property available since Release 3.0.1
      */
     protected $os;
-
-    /**
-     * @var string
-     */
-    protected $runnerCommand;
-
-    /**
-     * @var array
-     */
-    protected $runnerOptions;
-
-    /**
-     * @var \Stagehand\TestRunner\CLI\Terminal
-     * @since Property available since Release 3.0.0
-     */
-    protected $terminal;
 
     /**
      * @var \Stagehand\TestRunner\Core\TestTargetRepository
@@ -100,16 +84,16 @@ abstract class Autotest
     protected $preparer;
 
     /**
-     * @var \Stagehand\ComponentFactory\IComponentAwareFactory
-     * @since Property available since Release 3.0.0
+     * @var \Stagehand\TestRunner\Runner\Runner
+     * @since Property available since Release 3.6.0
      */
-    protected $runnerFactory;
+    protected $runner;
 
     /**
-     * @var \Stagehand\ComponentFactory\IComponentAwareFactory
-     * @since Method available since Release 3.0.0
+     * @var \Stagehand\TestRunner\Notification\Notifier
+     * @since Method available since Release 3.6.0
      */
-    protected $notifierFactory;
+    protected $notifier;
 
     /**
      * @var \Stagehand\TestRunner\Util\LegacyProxy
@@ -118,18 +102,35 @@ abstract class Autotest
     protected $legacyProxy;
 
     /**
-     * @var \Stagehand\TestRunner\Process\AlterationMonitoring
+     * @var \Stagehand\TestRunner\Process\ContinuousTesting\AlterationMonitoring
      */
     protected $alterationMonitoring;
 
     /**
-     * @param \Stagehand\ComponentFactory\IComponentAwareFactory $preparerFactory
+     * @var \Stagehand\TestRunner\Process\ContinuousTesting\CommandLineBuilder
+     */
+    protected $commandLineBuilder;
+
+    /**
+     * @param \Stagehand\TestRunner\Preparer\Preparer $preparer
+     * @param \Stagehand\TestRunner\Process\ContinuousTesting\CommandLineBuilder $commandLineBuilder
      * @since Method available since Release 3.0.1
      */
-    public function __construct(IComponentAwareFactory $preparerFactory)
+    public function __construct(Preparer $preparer, CommandLineBuilder $commandLineBuilder)
     {
-        $this->preparer = $preparerFactory->create();
+        $this->preparer = $preparer;
+        $this->commandLineBuilder = $commandLineBuilder;
+    }
+
+    /**
+     * @since Method available since Release 3.6.0
+     */
+    public function run()
+    {
         $this->preparer->prepare();
+        $commandLine = $this->commandLineBuilder->build();
+        $this->runTests($commandLine);
+        $this->monitorAlteration($commandLine);
     }
 
     /**
@@ -145,25 +146,23 @@ abstract class Autotest
      * Monitors for changes in one or more target directories and runs tests in
      * the test directory recursively when changes are detected. And also the test
      * directory is always added to the directories to be monitored.
+     *
+     * @param string $commandLine
      */
-    public function monitorAlteration()
+    public function monitorAlteration($commandLine)
     {
-        if (is_null($this->runnerCommand)) {
-            $this->initializeRunnerCommandAndOptions();
-        }
-
-        $this->alterationMonitoring->monitor($this->getMonitoringDirectories(), array($this, 'runTests'));
+        $self = $this;
+        $this->alterationMonitoring->monitor($this->getMonitoringDirectories(), function (array $resourceChangeEvents) use ($self, $commandLine) {
+            $self->runTests($commandLine);
+        });
     }
 
     /**
+     * @param string $commandLine
      * @since Method available since Release 2.18.0
      */
-    public function runTests()
+    public function runTests($commandLine)
     {
-        if (is_null($this->runnerCommand)) {
-            $this->initializeRunnerCommandAndOptions();
-        }
-
         $streamOutput = '';
         if ($this->os->isWin()) {
             // TODO: Remove Windows specific code if the bug #60120 and #51800 are really fixed.
@@ -172,10 +171,10 @@ abstract class Autotest
                 return $buffer;
             }, 2
             );
-            passthru($this->runnerCommand . ' ' . implode(' ', $this->runnerOptions), $exitStatus);
+            passthru($commandLine, $exitStatus);
             ob_end_flush();
         } else {
-            $process = new Process($this->runnerCommand . ' ' . implode(' ', $this->runnerOptions));
+            $process = new Process($commandLine);
             $process->setTimeout(1);
             $exitStatus = $process->run(function ($type, $data) {
                 echo $data;
@@ -183,21 +182,12 @@ abstract class Autotest
             $streamOutput = $process->getOutput();
         }
 
-        if ($exitStatus != 0 && $this->runnerFactory->create()->shouldNotify()) {
+        if ($exitStatus != 0 && $this->runner->shouldNotify()) {
             $fatalError = new FatalError($streamOutput);
-            $this->notifierFactory->create()->notifyResult(
+            $this->notifier->notifyResult(
                 new Notification(Notification::RESULT_STOPPED, $fatalError->getFullMessage())
             );
         }
-    }
-
-    /**
-     * @param \Stagehand\TestRunner\CLI\Terminal $terminal
-     * @since Method available since Release 3.0.0
-     */
-    public function setTerminal(Terminal $terminal)
-    {
-        $this->terminal = $terminal;
     }
 
     /**
@@ -228,7 +218,7 @@ abstract class Autotest
     }
 
     /**
-     * @param \Stagehand\TestRunner\Process\AlterationMonitoring $alterationMonitoring
+     * @param \Stagehand\TestRunner\Process\ContinuousTesting\AlterationMonitoring $alterationMonitoring
      * @since Method available since Release 3.0.0
      */
     public function setAlterationMonitoring(AlterationMonitoring $alterationMonitoring)
@@ -237,21 +227,21 @@ abstract class Autotest
     }
 
     /**
-     * @param \Stagehand\ComponentFactory\IComponentAwareFactory $runnerFactory
-     * @since Method available since Release 3.0.0
+     * @param \Stagehand\TestRunner\Runner\Runner $runner
+     * @since Method available since Release 3.6.0
      */
-    public function setRunnerFactory(IComponentAwareFactory $runnerFactory)
+    public function setRunner(Runner $runner)
     {
-        $this->runnerFactory = $runnerFactory;
+        $this->runner = $runner;
     }
 
     /**
-     * @param \Stagehand\ComponentFactory\IComponentAwareFactory $notifierFactory
-     * @since Method available since Release 3.0.0
+     * @param \Stagehand\TestRunner\Notification\Notifier $notifier
+     * @since Method available since Release 3.6.0
      */
-    public function setNotifierFactory(IComponentAwareFactory $notifierFactory)
+    public function setNotifier(Notifier $notifier)
     {
-        $this->notifierFactory = $notifierFactory;
+        $this->notifier = $notifier;
     }
 
     /**
@@ -280,103 +270,6 @@ abstract class Autotest
     }
 
     /**
-     * @return array
-     */
-    protected function buildRunnerCommand()
-    {
-        if (array_key_exists('_', $_SERVER)) {
-            $command = $_SERVER['_'];
-        } elseif (array_key_exists('PHP_COMMAND', $_SERVER)) {
-            $command = $_SERVER['PHP_COMMAND'];
-        } else {
-            $command = $_SERVER['argv'][0];
-        }
-
-        if (preg_match('!^/cygdrive/([a-z])/(.+)!', $command, $matches)) {
-            $command = $matches[1] . ':\\' . str_replace('/', '\\', $matches[2]);
-        }
-
-        if ($this->os->isWin()) {
-            putenv(sprintf('ENVPATH="%s"', $command));
-            return '%ENVPATH%';
-        } else {
-            return escapeshellarg($command);
-        }
-    }
-
-    /**
-     * @return array
-     */
-    protected function buildRunnerOptions()
-    {
-        $options = array();
-
-        if (basename(trim($this->runnerCommand, '\'"')) != 'testrunner') {
-            $configFile = $this->getPHPConfigDir();
-            if ($configFile !== false) {
-                $options[] = '-c';
-                $options[] = escapeshellarg($configFile);
-            }
-
-            $options[] = escapeshellarg($_SERVER['argv'][0]);
-        }
-
-        if ($this->terminal->shouldColor()) {
-            $options[] = '--ansi';
-        }
-
-        $options[] = escapeshellarg(strtolower(ApplicationContext::getInstance()->getPlugin()->getPluginID()));
-
-        if (!is_null(ApplicationContext::getInstance()->getEnvironment()->getPreloadScript())) {
-            $options[] = '-p ' . escapeshellarg(ApplicationContext::getInstance()->getEnvironment()->getPreloadScript());
-        }
-
-        $options[] = '-R';
-
-        if ($this->runnerFactory->create()->shouldNotify()) {
-            $options[] = '-m';
-        }
-
-        if ($this->runnerFactory->create()->shouldStopOnFailure()) {
-            $options[] = '--stop-on-failure';
-        }
-
-        if (!$this->testTargetRepository->isDefaultFilePattern()) {
-            $options[] = '--test-file-pattern=' . escapeshellarg($this->testTargetRepository->getFilePattern());
-        }
-
-        if ($this->runnerFactory->create()->hasDetailedProgress()) {
-            $options[] = '--detailed-progress';
-        }
-
-        $options = array_merge($options, $this->doBuildRunnerOptions());
-
-        $this->testTargetRepository->walkOnResources(function ($resource, $index, TestTargetRepository $testTargetRepository) use (&$options) {
-            $options[] = escapeshellarg($resource);
-        });
-
-        return $options;
-    }
-
-    /**
-     * @return string
-     * @since Method available since Release 2.18.1
-     */
-    protected function getPHPConfigDir()
-    {
-        return $this->legacyProxy->get_cfg_var('cfg_file_path');
-    }
-
-    /**
-     * @since Method available since Release 2.18.1
-     */
-    protected function initializeRunnerCommandAndOptions()
-    {
-        $this->runnerCommand = $this->buildRunnerCommand();
-        $this->runnerOptions = $this->buildRunnerOptions();
-    }
-
-    /**
      * @param string $runnerCommand
      * @return integer
      * @since Method available since Release 2.20.0
@@ -385,12 +278,6 @@ abstract class Autotest
     {
         return $this->legacyProxy->passthru($runnerCommand);
     }
-
-    /**
-     * @return array
-     * @since Method available since Release 3.0.0
-     */
-    abstract protected function doBuildRunnerOptions();
 }
 
 /*

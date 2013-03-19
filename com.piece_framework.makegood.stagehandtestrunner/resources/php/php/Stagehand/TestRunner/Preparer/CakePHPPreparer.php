@@ -4,7 +4,7 @@
 /**
  * PHP version 5.3
  *
- * Copyright (c) 2010-2012 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2010-2013 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,23 +29,23 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_TestRunner
- * @copyright  2010-2012 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2010-2013 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.5.0
+ * @version    Release: 3.6.0
  * @since      File available since Release 2.14.0
  */
 
 namespace Stagehand\TestRunner\Preparer;
 
-use Stagehand\TestRunner\Core\ApplicationContext;
+use Stagehand\TestRunner\Core\Environment;
 use Stagehand\TestRunner\Preparer\CakePHPPreparer\TestRunnerShellDispatcher;
 use Stagehand\TestRunner\Util\ErrorReporting;
 
 /**
  * @package    Stagehand_TestRunner
- * @copyright  2010-2012 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2010-2013 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.5.0
+ * @version    Release: 3.6.0
  * @since      Class available since Release 2.14.0
  */
 class CakePHPPreparer extends Preparer
@@ -62,6 +62,21 @@ class CakePHPPreparer extends Preparer
      */
     protected $cakephpCorePath;
 
+    /**
+     * @var \Stagehand\TestRunner\Core\Environment
+     * @since Property available since Release 3.6.0
+     */
+    protected $environment;
+
+    /**
+     * @param \Stagehand\TestRunner\Core\Environment $environment
+     * @since Method available since Release 3.6.0
+     */
+    public function setEnvironment(Environment $environment)
+    {
+        $this->environment = $environment;
+    }
+
     public function prepare()
     {
         if (defined('STAGEHAND_TESTRUNNER_PREPARER_CAKEPREPARER_PREPARECALLEDMARKER')) {
@@ -75,7 +90,7 @@ class CakePHPPreparer extends Preparer
         }
 
         if (is_null($this->getCakePHPAppPath())) {
-            $cakephpAppPath = ApplicationContext::getInstance()->getEnvironment()->getWorkingDirectoryAtStartup();
+            $cakephpAppPath = $this->environment->getWorkingDirectoryAtStartup();
         } else {
             $cakephpAppPath = $this->getCakePHPAppPath();
         }

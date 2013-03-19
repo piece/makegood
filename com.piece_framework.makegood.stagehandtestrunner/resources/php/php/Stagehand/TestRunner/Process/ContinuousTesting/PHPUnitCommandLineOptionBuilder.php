@@ -4,7 +4,7 @@
 /**
  * PHP version 5.3
  *
- * Copyright (c) 2011-2012 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2013 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,34 +29,49 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_TestRunner
- * @copyright  2011-2012 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2013 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.5.0
- * @since      File available since Release 3.0.0
+ * @version    Release: 3.6.0
+ * @since      File available since Release 3.6.0
  */
 
-namespace Stagehand\TestRunner\Core\Plugin;
+namespace Stagehand\TestRunner\Process\ContinuousTesting;
 
-use Stagehand\ComponentFactory\ComponentAwareFactory;
-
-use Stagehand\TestRunner\Core\ApplicationContext;
+use Stagehand\TestRunner\DependencyInjection\PHPUnitConfigurationFactory;
 
 /**
  * @package    Stagehand_TestRunner
- * @copyright  2011-2012 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2013 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.5.0
- * @since      Class available since Release 3.0.0
+ * @version    Release: 3.6.0
+ * @since      Class available since Release 3.6.0
  */
-class PluginAwareFactory extends ComponentAwareFactory
+class PHPUnitCommandLineOptionBuilder implements CommandLineOptionBuilderInterface
 {
     /**
-     * @param string $componentID
-     * @return string
+     * @var \Stagehand\TestRunner\DependencyInjection\PHPUnitConfigurationFactory
      */
-    protected function resolveComponentID($componentID)
+    protected $phpunitConfigurationFactory;
+
+    /**
+     * @param \Stagehand\TestRunner\DependencyInjection\PHPUnitConfigurationFactory $phpunitConfigurationFactory
+     */
+    public function __construct(PHPUnitConfigurationFactory $phpunitConfigurationFactory)
     {
-        return ApplicationContext::getInstance()->getPlugin()->getPluginID() . '.' . $componentID;
+        $this->phpunitConfigurationFactory = $phpunitConfigurationFactory;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function build(array $options)
+    {
+        $phpunitConfiguration = $this->phpunitConfigurationFactory->create();
+        if (!is_null($phpunitConfiguration)) {
+            $options[] = '--phpunit-config=' . escapeshellarg($phpunitConfiguration->getFilename());
+        }
+
+        return $options;
     }
 }
 

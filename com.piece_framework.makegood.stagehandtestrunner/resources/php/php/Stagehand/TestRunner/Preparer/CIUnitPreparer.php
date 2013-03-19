@@ -4,7 +4,7 @@
 /**
  * PHP version 5.3
  *
- * Copyright (c) 2011-2012 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2011-2013 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,22 +29,22 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_TestRunner
- * @copyright  2011-2012 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2011-2013 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.5.0
+ * @version    Release: 3.6.0
  * @since      File available since Release 2.16.0
  */
 
 namespace Stagehand\TestRunner\Preparer;
 
-use Stagehand\TestRunner\Core\ApplicationContext;
+use Stagehand\TestRunner\Core\Environment;
 use Stagehand\TestRunner\Util\ErrorReporting;
 
 /**
  * @package    Stagehand_TestRunner
- * @copyright  2011-2012 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2011-2013 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.5.0
+ * @version    Release: 3.6.0
  * @since      Class available since Release 2.16.0
  */
 class CIUnitPreparer extends PHPUnitPreparer
@@ -72,12 +72,27 @@ class CIUnitPreparer extends PHPUnitPreparer
      */
     protected $ciunitPath;
 
+    /**
+     * @var \Stagehand\TestRunner\Core\Environment
+     * @since Property available since Release 3.6.0
+     */
+    protected $environment;
+
+    /**
+     * @param \Stagehand\TestRunner\Core\Environment $environment
+     * @since Method available since Release 3.6.0
+     */
+    public function setEnvironment(Environment $environment)
+    {
+        $this->environment = $environment;
+    }
+
     public function prepare()
     {
         parent::prepare();
 
         if (is_null($this->getCIUnitPath())) {
-            $ciunitPath = ApplicationContext::getInstance()->getEnvironment()->getWorkingDirectoryAtStartup();
+            $ciunitPath = $this->environment->getWorkingDirectoryAtStartup();
         } else {
             $ciunitPath = $this->getCIUnitPath();
         }

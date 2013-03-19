@@ -4,7 +4,7 @@
 /**
  * PHP version 5.3
  *
- * Copyright (c) 2011-2012 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2012-2013 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,34 +29,43 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_TestRunner
- * @copyright  2011-2012 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2012-2013 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.5.0
+ * @version    Release: 3.6.0
  * @since      File available since Release 3.0.0
  */
 
-namespace Stagehand\TestRunner\Process;
-
-use Stagehand\AlterationMonitor\AlterationMonitor;
+namespace Stagehand\TestRunner\Core\Plugin;
 
 /**
  * @package    Stagehand_TestRunner
- * @copyright  2011-2012 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2012-2013 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.5.0
+ * @version    Release: 3.6.0
  * @since      Class available since Release 3.0.0
  */
-class AlterationMonitoring
+interface PluginInterface
 {
     /**
-     * @param array $monitoringDirectories
-     * @param callback $callback
+     * @return string
      */
-    public function monitor(array $monitoringDirectories, $callback)
-    {
-        $monitor = new AlterationMonitor($monitoringDirectories, 100000, $callback);
-        $monitor->monitor();
-    }
+    public static function getPluginID();
+
+    /**
+     * @param string $featureID
+     * @return boolean
+     */
+    public function hasFeature($featureID);
+
+    /**
+     * @return string
+     */
+    public function getTestFilePattern();
+
+    /**
+     * @return array
+     */
+    public function getTestClassSuperTypes();
 }
 
 /*

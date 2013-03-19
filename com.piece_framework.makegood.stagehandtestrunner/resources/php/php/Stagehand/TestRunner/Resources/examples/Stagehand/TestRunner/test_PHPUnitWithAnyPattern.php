@@ -31,7 +31,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.5.0
+ * @version    Release: 3.6.0
  * @since      File available since Release 2.16.0
  */
 
@@ -41,7 +41,7 @@ if (!class_exists('PHPUnit_Framework_TestCase')) return;
  * @package    Stagehand_TestRunner
  * @copyright  2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.5.0
+ * @version    Release: 3.6.0
  * @since      Class available since Release 2.16.0
  */
 class Stagehand_TestRunner_PHPUnitWithAnyPatternTest extends PHPUnit_Framework_TestCase

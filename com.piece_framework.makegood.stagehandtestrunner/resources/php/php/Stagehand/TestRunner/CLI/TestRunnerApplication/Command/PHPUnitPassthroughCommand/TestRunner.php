@@ -4,7 +4,7 @@
 /**
  * PHP version 5.3
  *
- * Copyright (c) 2011-2012 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2013 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,35 +29,58 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_TestRunner
- * @copyright  2011-2012 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2013 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.5.0
- * @since      File available since Release 3.0.0
+ * @version    Release: 3.6.0
+ * @since      File available since Release 3.6.0
  */
 
-namespace Stagehand\TestRunner\Process\Autotest;
+namespace Stagehand\TestRunner\CLI\TestRunnerApplication\Command\PHPUnitPassthroughCommand;
+
+use Stagehand\TestRunner\Collector\Collector;
+use Stagehand\TestRunner\Core\TestTargetRepository;
 
 /**
  * @package    Stagehand_TestRunner
- * @copyright  2011-2012 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2013 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.5.0
- * @since      Class available since Release 3.0.0
+ * @version    Release: 3.6.0
+ * @since      Class available since Release 3.6.0
  */
-class CIUnitAutotest extends PHPUnitAutotest
+class TestRunner extends \PHPUnit_TextUI_TestRunner
 {
     /**
-     * @return array
+     * @var \Stagehand\TestRunner\Collector\Collector
      */
-    protected function doBuildRunnerOptions()
+    protected $collector;
+
+    /**
+     * @var \Stagehand\TestRunner\Core\TestTargetRepository
+     */
+    protected $testTargetRepository;
+
+    /**
+     * @param \Stagehand\TestRunner\Core\TestTargetRepository $testTargetRepository
+     */
+    public function setTestTargetRepository(TestTargetRepository $testTargetRepository)
     {
-        $options = parent::doBuildRunnerOptions();
+        $this->testTargetRepository = $testTargetRepository;
+    }
 
-        if (!is_null($this->preparer->getCIUnitPath())) {
-            $options[] = '--ciunit-path=' . escapeshellarg($this->preparer->getCIUnitPath());
-        }
+    /**
+     * @param \Stagehand\TestRunner\Collector\Collector $collector
+     */
+    public function setCollector(Collector $collector)
+    {
+        $this->collector = $collector;
+    }
 
-        return $options;
+    /**
+     * {@inheritDoc}
+     */
+    public function getTest($suiteClassName, $suiteClassFile = '', $suffixes = '')
+    {
+        return $this->collector->collect();
     }
 }
 

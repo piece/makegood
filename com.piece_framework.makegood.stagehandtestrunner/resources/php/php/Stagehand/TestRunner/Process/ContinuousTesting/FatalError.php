@@ -31,48 +31,91 @@
  * @package    Stagehand_TestRunner
  * @copyright  2011-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.5.0
+ * @version    Release: 3.6.0
  * @since      File available since Release 3.0.0
  */
 
-namespace Stagehand\TestRunner\Process\Autotest;
+namespace Stagehand\TestRunner\Process\ContinuousTesting;
+
+use Stagehand\TestRunner\Util\String;
 
 /**
  * @package    Stagehand_TestRunner
  * @copyright  2011-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.5.0
+ * @version    Release: 3.6.0
  * @since      Class available since Release 3.0.0
  */
-class PHPUnitAutotest extends Autotest
+class FatalError
 {
-    /**
-     * @var \PHPUnit_Util_Configuration $phpunitConfiguration
-     * @since Property available since Release 3.5.0
-     */
-    protected $phpunitConfiguration;
+    const MESSAGE_PATTERN = "/^((?:Parse|Fatal) error: .+) in (.+?)(?:\((\d+)\) : eval\(\)'d code(?:\(\d+\) : eval\(\)'d code)*)? on line (\d+)$/m";
 
     /**
-     * @param \PHPUnit_Util_Configuration $phpunitConfiguration
-     * @since Method available since Release 3.5.0
+     * @var string
      */
-    public function setPHPUnitConfiguration(\PHPUnit_Util_Configuration $phpunitConfiguration = null)
+    protected $fullMessage;
+
+    /**
+     * @var string
+     */
+    protected $message;
+
+    /**
+     * @var string
+     */
+    protected $file;
+
+    /**
+     * @var integer
+     */
+    protected $line;
+
+    public function __construct($output)
     {
-        $this->phpunitConfiguration = $phpunitConfiguration;
+        if (preg_match(self::MESSAGE_PATTERN, ltrim(String::normalizeNewlines($output, String::NEWLINE_UNIX)), $matches)) {
+            $this->fullMessage = $matches[0];
+            $this->message = $matches[1];
+            $this->file = $matches[2];
+            if (strlen($matches[3]) > 0) {
+                $this->line = (integer) $matches[3];
+            } else {
+                $this->line = (integer) $matches[4];
+            }
+        } else {
+            $this->fullMessage = $output;
+        }
     }
 
     /**
-     * @return array
+     * @return string
      */
-    protected function doBuildRunnerOptions()
+    public function getFullMessage()
     {
-        $options = array();
+        return $this->fullMessage;
+    }
 
-        if (!is_null($this->phpunitConfiguration)) {
-            $options[] = '--phpunit-config=' . escapeshellarg($this->phpunitConfiguration->getFilename());
-        }
+    /**
+     * @return string
+     */
+    public function getMessage()
+    {
+        return $this->message;
+    }
 
-        return $options;
+    /**
+     * @return string
+     */
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getLine()
+    {
+        return $this->line;
     }
 }
 

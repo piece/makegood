@@ -31,7 +31,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2010-2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.5.0
+ * @version    Release: 3.6.0
  * @since      File available since Release 2.15.0
  */
 
@@ -41,7 +41,7 @@ namespace Stagehand\TestRunner;
  * @package    Stagehand_TestRunner
  * @copyright  2010-2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.5.0
+ * @version    Release: 3.6.0
  * @since      Class available since Release 2.15.0
  */
 class SimpleTestMultipleClassesWithNamespaceTest {}
@@ -50,7 +50,7 @@ class SimpleTestMultipleClassesWithNamespaceTest {}
  * @package    Stagehand_TestRunner
  * @copyright  2010-2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.5.0
+ * @version    Release: 3.6.0
  * @since      Class available since Release 2.15.0
  */
 class SimpleTestMultipleClassesWithNamespace1Test extends \UnitTestCase
@@ -70,7 +70,7 @@ class SimpleTestMultipleClassesWithNamespace1Test extends \UnitTestCase
  * @package    Stagehand_TestRunner
  * @copyright  2010-2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.5.0
+ * @version    Release: 3.6.0
  * @since      Class available since Release 2.15.0
  */
 class SimpleTestMultipleClassesWithNamespace2Test extends \UnitTestCase

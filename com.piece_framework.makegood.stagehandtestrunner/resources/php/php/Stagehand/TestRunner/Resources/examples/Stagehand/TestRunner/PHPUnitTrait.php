@@ -4,7 +4,7 @@
 /**
  * PHP version 5.3
  *
- * Copyright (c) 2011-2012 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2013 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,73 +29,37 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_TestRunner
- * @copyright  2011-2012 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2013 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.5.0
- * @since      File available since Release 3.0.0
+ * @version    Release: 3.6.0
+ * @since      File available since Release 3.6.0
  */
 
-namespace Stagehand\TestRunner\CLI;
-
-use Stagehand\ComponentFactory\IComponentAwareFactory;
+namespace Stagehand\TestRunner;
 
 /**
  * @package    Stagehand_TestRunner
- * @copyright  2011-2012 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2013 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.5.0
- * @since      Class available since Release 3.0.0
+ * @version    Release: 3.6.0
+ * @since      Class available since Release 3.6.0
  */
-class TestRunner
+trait PHPUnitTrait
 {
     /**
-     * @var boolean
+     * @test
      */
-    protected $autotest;
-
-    /**
-     * @var \Stagehand\ComponentFactory\IComponentAwareFactory
-     */
-    protected $testRunFactory;
-
-    /**
-     * @var \Stagehand\ComponentFactory\IComponentAwareFactory
-     */
-    protected $autotestFactory;
-
-    public function run()
+    public function passes()
     {
-        if (!$this->autotest) {
-            $this->testRunFactory->create()->run();
-        } else {
-            $autotest = $this->autotestFactory->create();
-            $autotest->runTests();
-            $autotest->monitorAlteration();
-        }
+        $this->assertThat(true, $this->isTrue());
     }
 
     /**
-     * @param boolean $autotest
+     * @test
      */
-    public function setAutotest($autotest)
+    public function fails()
     {
-        $this->autotest = $autotest;
-    }
-
-    /**
-     * @param \Stagehand\ComponentFactory\IComponentAwareFactory $testRunFactory
-     */
-    public function setTestRunFactory(IComponentAwareFactory $testRunFactory)
-    {
-        $this->testRunFactory = $testRunFactory;
-    }
-
-    /**
-     * @param \Stagehand\ComponentFactory\IComponentAwareFactory $autotestFactory
-     */
-    public function setAutotestFactory(IComponentAwareFactory $autotestFactory)
-    {
-        $this->autotestFactory = $autotestFactory;
+        $this->assertThat(false, $this->isTrue());
     }
 }
 

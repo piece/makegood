@@ -4,7 +4,7 @@
 /**
  * PHP version 5.3
  *
- * Copyright (c) 2011-2012 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2013 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,96 +29,28 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_TestRunner
- * @copyright  2011-2012 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2013 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.5.0
- * @since      File available since Release 3.0.0
+ * @version    Release: 3.6.0
+ * @since      File available since Release 3.6.0
  */
 
-namespace Stagehand\TestRunner\Process;
-
-use Stagehand\TestRunner\Util\String;
+namespace Stagehand\TestRunner;
 
 /**
+ * TestCase for the PHPUnit runner.
+ *
  * @package    Stagehand_TestRunner
- * @copyright  2011-2012 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2013 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.5.0
- * @since      Class available since Release 3.0.0
+ * @version    Release: 3.6.0
+ * @since      Class available since Release 3.6.0
  */
-class FatalError
+class PHPUnitTraitTest extends \PHPUnit_Framework_TestCase
 {
-    const MESSAGE_PATTERN = "/^((?:Parse|Fatal) error: .+) in (.+?)(?:\((\d+)\) : eval\(\)'d code(?:\(\d+\) : eval\(\)'d code)*)? on line (\d+)$/m";
+    use PHPUnitTrait;
 
-    /**
-     * @var string
-     */
-    protected $fullMessage;
-
-    /**
-     * @var string
-     */
-    protected $message;
-
-    /**
-     * @var string
-     */
-    protected $file;
-
-    /**
-     * @var integer
-     */
-    protected $line;
-
-    public function __construct($output)
-    {
-        if (preg_match(self::MESSAGE_PATTERN, ltrim(String::normalizeNewlines($output, String::NEWLINE_UNIX)), $matches)) {
-            $this->fullMessage = $matches[0];
-            $this->message = $matches[1];
-            $this->file = $matches[2];
-            if (strlen($matches[3]) > 0) {
-                $this->line = (integer) $matches[3];
-            } else {
-                $this->line = (integer) $matches[4];
-            }
-        } else {
-            $this->fullMessage = $output;
-        }
-    }
-
-    /**
-     * @return string
-     */
-    public function getFullMessage()
-    {
-        return $this->fullMessage;
-    }
-
-    /**
-     * @return string
-     */
-    public function getMessage()
-    {
-        return $this->message;
-    }
-
-    /**
-     * @return string
-     */
-    public function getFile()
-    {
-        return $this->file;
-    }
-
-    /**
-     * @return integer
-     */
-    public function getLine()
-    {
-        return $this->line;
-    }
 }
-
 /*
  * Local Variables:
  * mode: php

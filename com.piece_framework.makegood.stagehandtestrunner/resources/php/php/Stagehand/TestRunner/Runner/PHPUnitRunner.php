@@ -4,7 +4,7 @@
 /**
  * PHP version 5.3
  *
- * Copyright (c) 2007-2012 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2007-2013 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,15 +29,16 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_TestRunner
- * @copyright  2007-2012 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2007-2013 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.5.0
+ * @version    Release: 3.6.0
  * @link       http://www.phpunit.de/
  * @since      File available since Release 2.1.0
  */
 
 namespace Stagehand\TestRunner\Runner;
 
+use Stagehand\TestRunner\DependencyInjection\PHPUnitConfigurationFactory;
 use Stagehand\TestRunner\Runner\PHPUnitRunner\Printer\DetailedProgressPrinter;
 use Stagehand\TestRunner\Runner\PHPUnitRunner\Printer\JUnitXMLPrinter;
 use Stagehand\TestRunner\Runner\PHPUnitRunner\Printer\JUnitXMLPrinterFactory;
@@ -52,19 +53,19 @@ use Stagehand\TestRunner\Runner\PHPUnitRunner\TestRunner;
  * A test runner for PHPUnit.
  *
  * @package    Stagehand_TestRunner
- * @copyright  2007-2012 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2007-2013 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.5.0
+ * @version    Release: 3.6.0
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.1.0
  */
 class PHPUnitRunner extends Runner
 {
     /**
-     * @var \PHPUnit_Util_Configuration $phpunitConfiguration
-     * @since Property available since Release 3.5.0
+     * @var \Stagehand\TestRunner\DependencyInjection\PHPUnitConfigurationFactory
+     * @since Property available since Release 3.6.0
      */
-    protected $phpunitConfiguration;
+    protected $phpunitConfigurationFactory;
 
     /**
      * Runs tests based on the given \PHPUnit_Framework_TestSuite object.
@@ -83,12 +84,12 @@ class PHPUnitRunner extends Runner
     }
 
     /**
-     * @param \PHPUnit_Util_Configuration $phpunitConfiguration
-     * @since Method available since Release 3.5.0
+     * @param \Stagehand\TestRunner\DependencyInjection\PHPUnitConfigurationFactory $phpunitConfigurationFactory
+     * @since Method available since Release 3.6.0
      */
-    public function setPHPUnitConfiguration(\PHPUnit_Util_Configuration $phpunitConfiguration = null)
+    public function setPHPUnitConfigurationFactory(PHPUnitConfigurationFactory $phpunitConfigurationFactory)
     {
-        $this->phpunitConfiguration = $phpunitConfiguration;
+        $this->phpunitConfigurationFactory = $phpunitConfigurationFactory;
     }
 
     /**
@@ -150,8 +151,9 @@ class PHPUnitRunner extends Runner
             $arguments['stopOnError'] = true;
         }
 
-        if (!is_null($this->phpunitConfiguration)) {
-            $arguments['configuration'] = $this->phpunitConfiguration->getFileName();
+        $phpunitConfiguration = $this->phpunitConfigurationFactory->create();
+        if (!is_null($phpunitConfiguration)) {
+            $arguments['configuration'] = $phpunitConfiguration->getFileName();
         }
 
         return $arguments;

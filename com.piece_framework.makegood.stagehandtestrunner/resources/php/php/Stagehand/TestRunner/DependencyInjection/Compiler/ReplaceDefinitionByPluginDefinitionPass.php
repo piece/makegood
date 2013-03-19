@@ -4,7 +4,7 @@
 /**
  * PHP version 5.3
  *
- * Copyright (c) 2011 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2013 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,29 +29,54 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_TestRunner
- * @copyright  2011 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2013 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.5.0
- * @since      File available since Release 3.0.0
+ * @version    Release: 3.6.0
+ * @since      File available since Release 3.6.0
  */
 
-namespace Stagehand\TestRunner\Util;
+namespace Stagehand\TestRunner\DependencyInjection\Compiler;
+
+use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+
+use Stagehand\TestRunner\Core\Plugin\PluginInterface;
 
 /**
  * @package    Stagehand_TestRunner
- * @copyright  2011 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2013 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.5.0
- * @since      Class available since Release 3.0.0
+ * @version    Release: 3.6.0
+ * @since      Class available since Release 3.6.0
  */
-interface StreamWriter
+class ReplaceDefinitionByPluginDefinitionPass implements CompilerPassInterface
 {
     /**
-     * @param string $buffer
+     * @var \Stagehand\TestRunner\Core\Plugin\PluginInterface
      */
-    public function write($buffer);
+    protected $plugin;
 
-    public function close();
+    /**
+     * @param \Stagehand\TestRunner\Core\Plugin\PluginInterface $plugin
+     */
+    public function __construct(PluginInterface $plugin)
+    {
+        $this->plugin = $plugin;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function process(ContainerBuilder $container)
+    {
+        $container->setAlias('preparer', $this->plugin->getPluginID() . '.preparer');
+        $container->setAlias('collector', $this->plugin->getPluginID() . '.collector');
+        $container->setAlias('runner', $this->plugin->getPluginID() . '.runner');
+
+        if ($container->hasDefinition($this->plugin->getPluginID() . '.command_line_option_builder')) {
+            $container->setAlias('command_line_option_builder', $this->plugin->getPluginID() . '.command_line_option_builder');
+        }
+    }
 }
 
 /*

@@ -35,7 +35,7 @@
  * @copyright  2007-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @copyright  2010 KUMAKURA Yousuke <kumatch@gmail.com>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.5.0
+ * @version    Release: 3.6.0
  * @link       http://simpletest.org/
  * @since      File available since Release 2.1.0
  */
@@ -56,7 +56,7 @@ use Stagehand\TestRunner\Runner\SimpleTestRunner\TextReporter;
  * @copyright  2007-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @copyright  2010 KUMAKURA Yousuke <kumatch@gmail.com>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.5.0
+ * @version    Release: 3.6.0
  * @link       http://simpletest.org/
  * @since      Class available since Release 2.1.0
  */

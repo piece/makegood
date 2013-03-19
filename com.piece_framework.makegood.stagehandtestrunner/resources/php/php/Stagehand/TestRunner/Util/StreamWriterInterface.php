@@ -4,7 +4,7 @@
 /**
  * PHP version 5.3
  *
- * Copyright (c) 2012 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2011, 2013 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,48 +29,29 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_TestRunner
- * @copyright  2012 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2011, 2013 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.5.0
+ * @version    Release: 3.6.0
  * @since      File available since Release 3.0.0
  */
 
-namespace Stagehand\TestRunner\DependencyInjection\Extension;
-
-use Stagehand\TestRunner\Core\Plugin\PluginRepository;
+namespace Stagehand\TestRunner\Util;
 
 /**
  * @package    Stagehand_TestRunner
- * @copyright  2012 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2011, 2013 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.5.0
+ * @version    Release: 3.6.0
  * @since      Class available since Release 3.0.0
  */
-class ExtensionRepository
+interface StreamWriterInterface
 {
     /**
-     * @return array
-     * @throws \Stagehand\TestRunner\DependencyInjection\Extension\FrameworkUnavailableException
+     * @param string $buffer
      */
-    public static function findAll()
-    {
-        $plugins = PluginRepository::findAll();
-        if (count($plugins) == 0) {
-            throw new FrameworkUnavailableException('Stagehand_TestRunner is unavailable since no plugins are found in this installation.');
-        }
+    public function write($buffer);
 
-        $extensions = array(new GeneralExtension());
-        foreach ($plugins as $plugin) { /* @var $plugin \Stagehand\TestRunner\Core\Plugin\IPlugin */
-            $extensionClass = new \ReflectionClass(__NAMESPACE__ . '\\' . $plugin->getPluginID() . 'Extension');
-            if (!$extensionClass->isInterface()
-                && !$extensionClass->isAbstract()
-                && $extensionClass->isSubclassOf('Symfony\Component\DependencyInjection\Extension\ExtensionInterface')) {
-                $extensions[] = $extensionClass->newInstance();
-            }
-        }
-
-        return $extensions;
-    }
+    public function close();
 }
 
 /*

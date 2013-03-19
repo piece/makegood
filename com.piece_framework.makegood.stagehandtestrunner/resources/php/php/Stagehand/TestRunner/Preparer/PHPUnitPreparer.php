@@ -4,7 +4,7 @@
 /**
  * PHP version 5.3
  *
- * Copyright (c) 2010-2012 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2010-2013 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,9 +29,9 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_TestRunner
- * @copyright  2010-2012 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2010-2013 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.5.0
+ * @version    Release: 3.6.0
  * @since      File available since Release 2.12.0
  */
 
@@ -40,21 +40,22 @@ namespace Stagehand\TestRunner\Preparer;
 require_once 'PHPUnit/Autoload.php';
 
 use Stagehand\TestRunner\CLI\Terminal;
+use Stagehand\TestRunner\DependencyInjection\PHPUnitConfigurationFactory;
 
 /**
  * @package    Stagehand_TestRunner
- * @copyright  2010-2012 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2010-2013 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.5.0
+ * @version    Release: 3.6.0
  * @since      Class available since Release 2.12.0
  */
 class PHPUnitPreparer extends Preparer
 {
     /**
-     * @var \PHPUnit_Util_Configuration $phpunitConfiguration
-     * @since Property available since Release 3.5.0
+     * @var \Stagehand\TestRunner\DependencyInjection\PHPUnitConfigurationFactory
+     * @since Property available since Release 3.6.0
      */
-    protected $phpunitConfiguration;
+    protected $phpunitConfigurationFactory;
 
     /**
      * @var \Stagehand\TestRunner\CLI\Terminal
@@ -64,18 +65,19 @@ class PHPUnitPreparer extends Preparer
 
     public function prepare()
     {
-        if (!is_null($this->phpunitConfiguration)) {
-            $this->earlyConfigure();
+        $phpunitConfiguration = $this->phpunitConfigurationFactory->create();
+        if (!is_null($phpunitConfiguration)) {
+            $this->earlyConfigure($phpunitConfiguration);
         }
     }
 
     /**
-     * @param \PHPUnit_Util_Configuration $phpunitConfiguration
-     * @since Method available since Release 3.5.0
+     * @param \Stagehand\TestRunner\DependencyInjection\PHPUnitConfigurationFactory $phpunitConfigurationFactory
+     * @since Method available since Release 3.6.0
      */
-    public function setPHPUnitConfiguration(\PHPUnit_Util_Configuration $phpunitConfiguration = null)
+    public function setPHPUnitConfigurationFactory(PHPUnitConfigurationFactory $phpunitConfigurationFactory)
     {
-        $this->phpunitConfiguration = $phpunitConfiguration;
+        $this->phpunitConfigurationFactory = $phpunitConfigurationFactory;
     }
 
     /**
@@ -105,13 +107,14 @@ class PHPUnitPreparer extends Preparer
     }
 
     /**
+     * @param \PHPUnit_Util_Configuration $configuration $configuration
      * @since Method available since Release 2.16.0
      */
-    protected function earlyConfigure()
+    protected function earlyConfigure(\PHPUnit_Util_Configuration $configuration)
     {
-        $this->phpunitConfiguration->handlePHPConfiguration();
+        $configuration->handlePHPConfiguration();
 
-        $phpunitConfiguration = $this->phpunitConfiguration->getPHPUnitConfiguration();
+        $phpunitConfiguration = $configuration->getPHPUnitConfiguration();
         if (array_key_exists('bootstrap', $phpunitConfiguration)) {
             if (array_key_exists('syntaxCheck', $phpunitConfiguration)) {
                 $this->handleBootstrap($phpunitConfiguration['bootstrap'], $phpunitConfiguration['syntaxCheck']);
@@ -124,7 +127,7 @@ class PHPUnitPreparer extends Preparer
             $this->terminal->setColor($phpunitConfiguration['colors']);
         }
 
-        $seleniumBrowserConfiguration = $this->phpunitConfiguration->getSeleniumBrowserConfiguration();
+        $seleniumBrowserConfiguration = $configuration->getSeleniumBrowserConfiguration();
         if (count($seleniumBrowserConfiguration) > 0) {
             \PHPUnit_Extensions_SeleniumTestCase::$browsers = $seleniumBrowserConfiguration;
         }

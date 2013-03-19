@@ -33,7 +33,7 @@
  * @copyright  2011-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @copyright  2012 tsyk goto <ngyuki.ts@gmail.com>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.5.0
+ * @version    Release: 3.6.0
  * @link       http://www.phpunit.de/
  * @since      File available since Release 2.17.0
  */
@@ -45,7 +45,7 @@ namespace Stagehand\TestRunner\TestSuite;
  * @copyright  2011-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @copyright  2012 tsyk goto <ngyuki.ts@gmail.com>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.5.0
+ * @version    Release: 3.6.0
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.17.0
  */

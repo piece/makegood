@@ -4,7 +4,7 @@
 /**
  * PHP version 5.3
  *
- * Copyright (c) 2011 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2013 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,29 +29,57 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_TestRunner
- * @copyright  2011 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2013 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.5.0
- * @since      File available since Release 3.0.0
+ * @version    Release: 3.6.0
+ * @since      File available since Release 3.6.0
  */
 
-namespace Stagehand\TestRunner\DependencyInjection\Configuration;
+namespace Stagehand\TestRunner\Process\ContinuousTesting;
 
-use Symfony\Component\Config\Definition\ConfigurationInterface;
+use Stagehand\TestRunner\DependencyInjection\PHPUnitConfigurationFactory;
+use Stagehand\TestRunner\Preparer\CIUnitPreparer;
 
 /**
  * @package    Stagehand_TestRunner
- * @copyright  2011 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2013 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.5.0
- * @since      Class available since Release 3.0.0
+ * @version    Release: 3.6.0
+ * @since      Class available since Release 3.6.0
  */
-interface IConfiguration extends ConfigurationInterface
+class CIUnitCommandLineOptionBuilder extends PHPUnitCommandLineOptionBuilder
 {
     /**
-     * @return string
+     * @var \Stagehand\TestRunner\Preparer\CIUnitPreparer
      */
-    public static function getConfigurationID();
+    protected $preparer;
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param \Stagehand\TestRunner\DependencyInjection\PHPUnitConfigurationFactory $phpunitConfigurationFactory
+     * @param \Stagehand\TestRunner\Preparer\CIUnitPreparer $preparer
+     */
+    public function __construct(PHPUnitConfigurationFactory $phpunitConfigurationFactory, CIUnitPreparer $preparer)
+    {
+        parent::__construct($phpunitConfigurationFactory);
+
+        $this->preparer = $preparer;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function build(array $options)
+    {
+        $options = parent::build($options);
+
+        if (!is_null($this->preparer->getCIUnitPath())) {
+            $options[] = '--ciunit-path=' . escapeshellarg($this->preparer->getCIUnitPath());
+        }
+
+        return $options;
+    }
 }
 
 /*

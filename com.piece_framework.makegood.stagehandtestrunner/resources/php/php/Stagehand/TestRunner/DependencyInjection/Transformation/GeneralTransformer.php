@@ -4,7 +4,7 @@
 /**
  * PHP version 5.3
  *
- * Copyright (c) 2012 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2012-2013 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,9 +29,9 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_TestRunner
- * @copyright  2012 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2012-2013 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.5.0
+ * @version    Release: 3.6.0
  * @since      File available since Release 3.0.0
  */
 
@@ -41,9 +41,9 @@ use Stagehand\TestRunner\DependencyInjection\Configuration\GeneralConfiguration;
 
 /**
  * @package    Stagehand_TestRunner
- * @copyright  2012 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2012-2013 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.5.0
+ * @version    Release: 3.6.0
  * @since      Class available since Release 3.0.0
  */
 class GeneralTransformer extends Transformer
@@ -56,8 +56,8 @@ class GeneralTransformer extends Transformer
         $this->setParameter('test_classes', $this->configurationPart['test_targets']['classes']);
         $this->setParameter('test_file_pattern', $this->configurationPart['test_targets']['file_pattern']);
 
-        $this->setParameter('autotest', $this->configurationPart['autotest']['enabled']);
-        $this->setParameter('autotest_watch_dirs', $this->configurationPart['autotest']['watch_dirs']);
+        $this->setParameter('continuous_testing', $this->configurationPart['autotest']['enabled']);
+        $this->setParameter('continuous_testing_watch_dirs', $this->configurationPart['autotest']['watch_dirs']);
 
         $this->setParameter('notify', $this->configurationPart['notify']);
 

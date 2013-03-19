@@ -31,7 +31,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.5.0
+ * @version    Release: 3.6.0
  * @since      File available since Release 3.0.0
  */
 
@@ -41,7 +41,7 @@ use PHPSpec\Runner\Formatter\Progress;
 use PHPSpec\Runner\ReporterEvent;
 
 use Stagehand\TestRunner\Core\TestTargetRepository;
-use Stagehand\TestRunner\JUnitXMLWriter\JUnitXMLWriter;
+use Stagehand\TestRunner\JUnitXMLWriter\JUnitXMLWriterInterface;
 use Stagehand\TestRunner\TestSuite\PHPSpecTestSuite;
 use Stagehand\TestRunner\Util\FailureTrace;
 
@@ -49,7 +49,7 @@ use Stagehand\TestRunner\Util\FailureTrace;
  * @package    Stagehand_TestRunner
  * @copyright  2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.5.0
+ * @version    Release: 3.6.0
  * @since      Class available since Release 3.0.0
  */
 class JUnitXMLFormatter extends Progress
@@ -75,7 +75,7 @@ class JUnitXMLFormatter extends Progress
     private static $STATUS_PENDING = '*';
 
     /**
-     * @var \Stagehand\TestRunner\JUnitXMLWriter\JUnitXMLWriter
+     * @var \Stagehand\TestRunner\JUnitXMLWriter\JUnitXMLWriterInterface
      */
     protected $junitXMLWriter;
 
@@ -105,9 +105,9 @@ class JUnitXMLFormatter extends Progress
     protected $assertionCount;
 
     /**
-     * @param \Stagehand\TestRunner\JUnitXMLWriter\JUnitXMLWriter $junitXMLWriter
+     * @param \Stagehand\TestRunner\JUnitXMLWriter\JUnitXMLWriterInterface $junitXMLWriter
      */
-    public function setJUnitXMLWriter(JUnitXMLWriter $junitXMLWriter)
+    public function setJUnitXMLWriter(JUnitXMLWriterInterface $junitXMLWriter)
     {
         $this->junitXMLWriter = $junitXMLWriter;
     }

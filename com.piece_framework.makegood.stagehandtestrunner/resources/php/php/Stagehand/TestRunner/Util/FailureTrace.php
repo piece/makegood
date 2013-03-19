@@ -5,6 +5,7 @@
  * PHP version 5.3
  *
  * Copyright (c) 2012 KUBO Atsuhiro <kubo@iteman.jp>,
+ *               2013 tsyk goto <ngyuki.ts@gmail.com>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,8 +31,9 @@
  *
  * @package    Stagehand_TestRunner
  * @copyright  2012 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2013 tsyk goto <ngyuki.ts@gmail.com>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.5.0
+ * @version    Release: 3.6.0
  * @since      File available since Release 3.0.0
  */
 
@@ -40,8 +42,9 @@ namespace Stagehand\TestRunner\Util;
 /**
  * @package    Stagehand_TestRunner
  * @copyright  2012 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2013 tsyk goto <ngyuki.ts@gmail.com>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.5.0
+ * @version    Release: 3.6.0
  * @since      Class available since Release 3.0.0
  */
 class FailureTrace
@@ -58,11 +61,22 @@ class FailureTrace
         if ($e->getFile() == $class->getFileName()) {
             return array($e->getFile(), $e->getLine());
         }
+
         foreach ($e->getTrace() as $trace) {
             if (array_key_exists('file', $trace) && $trace['file'] == $class->getFileName()) {
                 return array($trace['file'], $trace['line']);
             }
         }
+
+        if (method_exists($class, 'getTraits')) {
+            foreach ($class->getTraits() as $trait) {
+                $ret = self::findFileAndLineOfFailureOrError($testClassSuperTypes, $e, $trait);
+                if (!is_null($ret)) {
+                    return $ret;
+                }
+            }
+        }
+
         return self::findFileAndLineOfFailureOrError($testClassSuperTypes, $e, $class->getParentClass());
     }
 

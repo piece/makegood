@@ -4,7 +4,7 @@
 /**
  * PHP version 5.3
  *
- * Copyright (c) 2012 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2011, 2013 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,34 +29,27 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_TestRunner
- * @copyright  2012 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2011, 2013 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.5.0
+ * @version    Release: 3.6.0
  * @since      File available since Release 3.0.0
  */
 
-namespace Stagehand\TestRunner\DependencyInjection;
+namespace Stagehand\TestRunner\DependencyInjection\Configuration;
 
 /**
  * @package    Stagehand_TestRunner
- * @copyright  2012 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2011, 2013 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.5.0
+ * @version    Release: 3.6.0
  * @since      Class available since Release 3.0.0
  */
-class Container extends CompiledContainer
+interface ConfigurationInterface extends \Symfony\Component\Config\Definition\ConfigurationInterface
 {
     /**
-     * @throws \UnexpectedValueException
+     * @return string
      */
-    public function setParameter($name, $value)
-    {
-        if (!$this->hasParameter($name)) {
-            throw new \UnexpectedValueException(sprintf('The parameter [ %s ] is not found in the container.', $name));
-        }
-
-        parent::setParameter($name, $value);
-    }
+    public static function getConfigurationID();
 }
 
 /*

@@ -31,37 +31,31 @@
  * @package    Stagehand_TestRunner
  * @copyright  2011-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.5.0
+ * @version    Release: 3.6.0
  * @since      File available since Release 3.0.0
  */
 
-namespace Stagehand\TestRunner\Process\Autotest;
+namespace Stagehand\TestRunner\Process\ContinuousTesting;
+
+use Stagehand\AlterationMonitor\AlterationMonitor;
 
 /**
  * @package    Stagehand_TestRunner
  * @copyright  2011-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.5.0
+ * @version    Release: 3.6.0
  * @since      Class available since Release 3.0.0
  */
-class CakePHPAutotest extends SimpleTestAutotest
+class AlterationMonitoring
 {
     /**
-     * @return array
+     * @param array $monitoringDirectories
+     * @param callback $callback
      */
-    protected function doBuildRunnerOptions()
+    public function monitor(array $monitoringDirectories, $callback)
     {
-        $options = parent::doBuildRunnerOptions();
-
-        if (!is_null($this->preparer->getCakePHPAppPath())) {
-            $options[] = '--cakephp-app-path=' . escapeshellarg($this->preparer->getCakePHPAppPath());
-        }
-
-        if (!is_null($this->preparer->getCakePHPCorePath())) {
-            $options[] = '--cakephp-core-path=' . escapeshellarg($this->preparer->getCakePHPCorePath());
-        }
-
-        return $options;
+        $monitor = new AlterationMonitor($monitoringDirectories, 100000, $callback);
+        $monitor->monitor();
     }
 }
 

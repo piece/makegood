@@ -4,7 +4,7 @@
 /**
  * PHP version 5.3
  *
- * Copyright (c) 2011 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2009-2013 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,30 +29,65 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_TestRunner
- * @copyright  2011 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2009-2013 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.5.0
- * @since      File available since Release 3.0.0
+ * @version    Release: 3.6.0
+ * @since      File available since Release 2.10.0
  */
 
-namespace Stagehand\TestRunner\Process\Autotest;
+namespace Stagehand\TestRunner\JUnitXMLWriter;
 
 /**
  * @package    Stagehand_TestRunner
- * @copyright  2011 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2009-2013 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.5.0
- * @since      Class available since Release 3.0.0
+ * @version    Release: 3.6.0
+ * @since      Class available since Release 2.10.0
  */
-class SimpleTestAutotest extends Autotest
+interface JUnitXMLWriterInterface
 {
+    public function startTestSuites();
+
     /**
-     * @return array
+     * @param string  $name
+     * @param integer $testCount
      */
-    protected function doBuildRunnerOptions()
-    {
-        return array();
-    }
+    public function startTestSuite($name, $testCount = null);
+
+    /**
+     * @param string $name
+     * @param mixed  $test
+     * @param string $methodName
+     */
+    public function startTestCase($name, $test, $methodName = null);
+
+    /**
+     * @param string $text
+     * @param string $type
+     * @param string $file
+     * @param string $line
+     * @param string $message
+     */
+    public function writeError($text, $type = null, $file = null, $line = null, $message = null);
+
+    /**
+     * @param string $text
+     * @param string $type
+     * @param string $file
+     * @param string $line
+     * @param string $message
+     */
+    public function writeFailure($text, $type = null, $file = null, $line = null, $message = null);
+
+    /**
+     * @param float   $time
+     * @param integer $assertionCount
+     */
+    public function endTestCase($time, $assertionCount = null);
+
+    public function endTestSuite();
+
+    public function endTestSuites();
 }
 
 /*

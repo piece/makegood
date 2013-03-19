@@ -4,7 +4,7 @@
 /**
  * PHP version 5.3
  *
- * Copyright (c) 2012 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2012-2013 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,61 +29,64 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_TestRunner
- * @copyright  2012 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2012-2013 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.5.0
+ * @version    Release: 3.6.0
  * @since      File available since Release 3.0.0
  */
 
-namespace Stagehand\TestRunner\DependencyInjection;
+namespace Stagehand\TestRunner\DependencyInjection\Compiler;
 
 use Stagehand\ComponentFactory\UnfreezableContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\ResolveParameterPlaceHoldersPass;
 
-use Stagehand\TestRunner\DependencyInjection\Extension\ExtensionRepository;
+use Stagehand\TestRunner\Core\Plugin\PluginRepository;
+use Stagehand\TestRunner\DependencyInjection\Compiler\ReplaceDefinitionByPluginDefinitionPass;
+use Stagehand\TestRunner\DependencyInjection\Extension\GeneralExtension;
 
 /**
  * @package    Stagehand_TestRunner
- * @copyright  2012 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2012-2013 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.5.0
+ * @version    Release: 3.6.0
  * @since      Class available since Release 3.0.0
  */
 class Compiler
 {
     const COMPILED_CONTAINER_NAMESPACE = 'Stagehand\TestRunner\DependencyInjection';
-    const COMPILED_CONTAINER_CLASS = 'CompiledContainer';
 
     public function compile()
     {
-        $containerBuilder = new UnfreezableContainerBuilder();
+        foreach (PluginRepository::findAll() as $plugin) {
+            $containerBuilder = new UnfreezableContainerBuilder();
+            $containerBuilder->registerExtension(new GeneralExtension());
 
-        foreach (ExtensionRepository::findAll() as $extension) {
-            $containerBuilder->registerExtension($extension);
+            $extensionClass = new \ReflectionClass('Stagehand\TestRunner\DependencyInjection\Extension\\' . $plugin->getPluginID() . 'Extension');
+            if (!$extensionClass->isInterface()
+                && !$extensionClass->isAbstract()
+                && $extensionClass->isSubclassOf('Symfony\Component\DependencyInjection\Extension\ExtensionInterface')) {
+                $containerBuilder->registerExtension($extensionClass->newInstance());
+            }
+
+            foreach ($containerBuilder->getExtensions() as $extension) { /* @var $extension \Symfony\Component\DependencyInjection\Extension\ExtensionInterface */
+                $containerBuilder->loadFromExtension($extension->getAlias(), array());
+            }
+
+            $containerBuilder->addCompilerPass(new ReplaceDefinitionByPluginDefinitionPass($plugin));
+            $containerBuilder->getCompilerPassConfig()->setOptimizationPasses(
+                array_filter(
+                    $containerBuilder->getCompilerPassConfig()->getOptimizationPasses(),
+                    function (CompilerPassInterface $compilerPass) {
+                        return !($compilerPass instanceof ResolveParameterPlaceHoldersPass);
+                    }
+            ));
+
+            $containerClass = $plugin->getPluginID() . 'Container';
+            $compiler = new \Stagehand\ComponentFactory\Compiler($containerBuilder, $containerClass, self::COMPILED_CONTAINER_NAMESPACE);
+            $containerSource = $compiler->compile();
+            file_put_contents(__DIR__ . '/../' . $containerClass . '.php', $containerSource);
         }
-
-        foreach ($containerBuilder->getExtensions() as $extension) { /* @var $extension \Symfony\Component\DependencyInjection\Extension\ExtensionInterface */
-            $containerBuilder->loadFromExtension($extension->getAlias(), array());
-        }
-
-        $containerBuilder->getCompilerPassConfig()->setOptimizationPasses(
-            array_filter(
-                $containerBuilder->getCompilerPassConfig()->getOptimizationPasses(),
-                function (CompilerPassInterface $compilerPass) {
-                    return !($compilerPass instanceof ResolveParameterPlaceHoldersPass);
-                }
-        ));
-
-        $compiler = new \Stagehand\ComponentFactory\Compiler(
-            $containerBuilder,
-            self::COMPILED_CONTAINER_CLASS,
-            self::COMPILED_CONTAINER_NAMESPACE
-        );
-        file_put_contents(
-            __DIR__ . '/' . self::COMPILED_CONTAINER_CLASS . '.php',
-            $compiler->compile()
-        );
     }
 }
 

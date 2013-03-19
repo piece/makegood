@@ -31,7 +31,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2008-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.5.0
+ * @version    Release: 3.6.0
  * @since      File available since Release 2.3.0
  */
 
@@ -51,7 +51,7 @@ use Stagehand\TestRunner\Util\FileStreamWriter;
  * @package    Stagehand_TestRunner
  * @copyright  2008-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.5.0
+ * @version    Release: 3.6.0
  * @since      Class available since Release 2.3.0
  */
 abstract class Runner
@@ -221,7 +221,7 @@ abstract class Runner
 
     /**
      * @param string $file
-     * @return \Stagehand\TestRunner\Util\StreamWriter
+     * @return \Stagehand\TestRunner\Util\StreamWriterInterface
      * @since Method available since Release 3.0.0
      */
     protected function createStreamWriter($file)

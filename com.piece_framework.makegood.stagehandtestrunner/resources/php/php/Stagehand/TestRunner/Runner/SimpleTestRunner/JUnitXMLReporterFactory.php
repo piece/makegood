@@ -4,7 +4,7 @@
 /**
  * PHP version 5.3
  *
- * Copyright (c) 2011-2012 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2011-2013 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,35 +29,35 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_TestRunner
- * @copyright  2011-2012 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2011-2013 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.5.0
+ * @version    Release: 3.6.0
  * @link       http://simpletest.org/
  * @since      File available since Release 3.0.0
  */
 
 namespace Stagehand\TestRunner\Runner\SimpleTestRunner;
 
-use Stagehand\TestRunner\Core\Plugin\PluginAwareFactory;
-use Stagehand\TestRunner\JUnitXMLWriter\JUnitXMLWriter;
+use Stagehand\ComponentFactory\ComponentAwareFactory;
+use Stagehand\TestRunner\JUnitXMLWriter\JUnitXMLWriterInterface;
 use Stagehand\TestRunner\TestSuite\SimpleTestTestSuite;
 
 /**
  * @package    Stagehand_TestRunner
- * @copyright  2011-2012 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2011-2013 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.5.0
+ * @version    Release: 3.6.0
  * @link       http://simpletest.org/
  * @since      Class available since Release 3.0.0
  */
-class JUnitXMLReporterFactory extends PluginAwareFactory
+class JUnitXMLReporterFactory extends ComponentAwareFactory
 {
     /**
-     * @param \Stagehand\TestRunner\JUnitXMLWriter\JUnitXMLWriter $junitXMLWriter
+     * @param \Stagehand\TestRunner\JUnitXMLWriter\JUnitXMLWriterInterface $junitXMLWriter
      * @param \Stagehand\TestRunner\TestSuite\SimpleTestTestSuite $suite
      * @return \Stagehand\TestRunner\Runner\SimpleTestRunner\JUnitXMLReporter
      */
-    public function create(JUnitXMLWriter $junitXMLWriter = null, SimpleTestTestSuite $suite = null)
+    public function create(JUnitXMLWriterInterface $junitXMLWriter = null, SimpleTestTestSuite $suite = null)
     {
         $junitXMLReporter = parent::create();
         $junitXMLReporter->setJUnitXMLWriter($junitXMLWriter);

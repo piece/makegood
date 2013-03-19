@@ -4,7 +4,7 @@
 /**
  * PHP version 5.3
  *
- * Copyright (c) 2007-2012 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2007-2013 KUBO Atsuhiro <kubo@iteman.jp>,
  *               2012 tsyk goto <ngyuki.ts@gmail.com>,
  * All rights reserved.
  *
@@ -30,16 +30,17 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_TestRunner
- * @copyright  2007-2012 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2007-2013 KUBO Atsuhiro <kubo@iteman.jp>
  * @copyright  2012 tsyk goto <ngyuki.ts@gmail.com>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.5.0
+ * @version    Release: 3.6.0
  * @link       http://www.phpunit.de/
  * @since      File available since Release 2.1.0
  */
 
 namespace Stagehand\TestRunner\Collector;
 
+use Stagehand\TestRunner\DependencyInjection\PHPUnitConfigurationFactory;
 use Stagehand\TestRunner\TestSuite\PHPUnitGroupFilterTestSuite;
 use Stagehand\TestRunner\TestSuite\PHPUnitMethodFilterTestSuite;
 
@@ -47,10 +48,10 @@ use Stagehand\TestRunner\TestSuite\PHPUnitMethodFilterTestSuite;
  * A test collector for PHPUnit.
  *
  * @package    Stagehand_TestRunner
- * @copyright  2007-2012 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2007-2013 KUBO Atsuhiro <kubo@iteman.jp>
  * @copyright  2012 tsyk goto <ngyuki.ts@gmail.com>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.5.0
+ * @version    Release: 3.6.0
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.1.0
  */
@@ -69,10 +70,10 @@ class PHPUnitCollector extends Collector
     private static $FILTER_METHOD = 2;
 
     /**
-     * @var \PHPUnit_Util_Configuration $phpunitConfiguration
-     * @since Property available since Release 3.5.0
+     * @var \Stagehand\TestRunner\DependencyInjection\PHPUnitConfigurationFactory
+     * @since Property available since Release 3.6.0
      */
-    protected $phpunitConfiguration;
+    protected $phpunitConfigurationFactory;
 
     /**
      * @param string $testCase
@@ -85,7 +86,7 @@ class PHPUnitCollector extends Collector
 
         $suiteMethod = $this->findSuiteMethod($testClass);
         if (is_null($suiteMethod)) {
-            $testSuite = new PHPUnitGroupFilterTestSuite($testClass, $this->phpunitConfiguration);
+            $testSuite = new PHPUnitGroupFilterTestSuite($testClass, $this->phpunitConfigurationFactory->create());
         } else {
             $testSuite = $suiteMethod->invoke(null, $testClass->getName());
         }
@@ -104,12 +105,12 @@ class PHPUnitCollector extends Collector
     }
 
     /**
-     * @param \PHPUnit_Util_Configuration $phpunitConfiguration
-     * @since Method available since Release 3.5.0
+     * @param \Stagehand\TestRunner\DependencyInjection\PHPUnitConfigurationFactory $phpunitConfigurationFactory
+     * @since Method available since Release 3.6.0
      */
-    public function setPHPUnitConfiguration(\PHPUnit_Util_Configuration $phpunitConfiguration = null)
+    public function setPHPUnitConfigurationFactory(PHPUnitConfigurationFactory $phpunitConfigurationFactory)
     {
-        $this->phpunitConfiguration = $phpunitConfiguration;
+        $this->phpunitConfigurationFactory = $phpunitConfigurationFactory;
     }
 
     /**

@@ -4,7 +4,7 @@
 /**
  * PHP version 5.3
  *
- * Copyright (c) 2007-2012 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2007-2013 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,9 +29,9 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_TestRunner
- * @copyright  2007-2012 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2007-2013 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.5.0
+ * @version    Release: 3.6.0
  * @since      File available since Release 2.1.0
  */
 
@@ -40,16 +40,17 @@ namespace Stagehand\TestRunner\Collector;
 use Symfony\Component\Finder\Finder;
 
 use Stagehand\TestRunner\Collector\CollectingTypeFactory;
-use Stagehand\TestRunner\Core\ApplicationContext;
+use Stagehand\TestRunner\Core\Environment;
 use Stagehand\TestRunner\Core\TestTargetRepository;
+use Stagehand\TestRunner\Util\FileSystem;
 
 /**
  * The base class for test collectors.
  *
  * @package    Stagehand_TestRunner
- * @copyright  2007-2012 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2007-2013 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.5.0
+ * @version    Release: 3.6.0
  * @since      Class available since Release 2.1.0
  */
 abstract class Collector
@@ -73,6 +74,12 @@ abstract class Collector
      * @since Property available since Release 3.0.0
      */
     protected $collectingTypeFactory;
+
+    /**
+     * @var \Stagehand\TestRunner\Core\Environment
+     * @since Property available since Release 3.6.0
+     */
+    protected $environment;
 
     /**
      * Initializes some properties of an instance.
@@ -103,10 +110,11 @@ abstract class Collector
     public function collect()
     {
         $self = $this;
-        $this->testTargetRepository->walkOnResources(function ($resource, $index, TestTargetRepository $testTargetRepository) use ($self) {
-            $absoluteTargetPath = realpath($resource);
-            if ($absoluteTargetPath === false) {
-                throw new \UnexpectedValueException(sprintf('The directory or file [ %s ] is not found', $resource));
+        $fileSystem = new FileSystem();
+        $this->testTargetRepository->walkOnResources(function ($resource, $index, TestTargetRepository $testTargetRepository) use ($self, $fileSystem) {
+            $absoluteTargetPath = $fileSystem->getAbsolutePath($resource, $this->environment->getWorkingDirectoryAtStartup());
+            if (!file_exists($absoluteTargetPath)) {
+                throw new \UnexpectedValueException(sprintf('The directory or file [ %s ] is not found', $absoluteTargetPath));
             }
 
             if (is_dir($absoluteTargetPath)) {
@@ -142,6 +150,15 @@ abstract class Collector
     }
 
     /**
+     * @param \Stagehand\TestRunner\Core\Environment $environment
+     * @since Method available since Release 3.6.0
+     */
+    public function setEnvironment(Environment $environment)
+    {
+        $this->environment = $environment;
+    }
+
+    /**
      * Creates the test suite object.
      *
      * @param string $name
@@ -159,11 +176,11 @@ abstract class Collector
         if (!$this->testTargetRepository->shouldTreatFileAsTest($file)) return;
 
         foreach ($this->findNewClasses($file) as $newClass) {
-            $collectingTypeFactory = $this->collectingTypeFactory->create(
+            $collectingType = $this->collectingTypeFactory->create(
                 $newClass,
                 $this->testTargetRepository->getRequiredSuperTypes()
             );
-            if ($collectingTypeFactory->isTest()) {
+            if ($collectingType->isTest()) {
                 $this->collectTestCase($newClass);
             }
         }

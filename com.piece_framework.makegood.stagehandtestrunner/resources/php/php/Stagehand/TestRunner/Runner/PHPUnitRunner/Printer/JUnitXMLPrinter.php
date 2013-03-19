@@ -31,7 +31,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2009-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.5.0
+ * @version    Release: 3.6.0
  * @link       http://www.phpunit.de/
  * @since      File available since Release 2.10.0
  */
@@ -39,7 +39,7 @@
 namespace Stagehand\TestRunner\Runner\PHPUnitRunner\Printer;
 
 use Stagehand\TestRunner\Core\TestTargetRepository;
-use Stagehand\TestRunner\JUnitXMLWriter\JUnitXMLWriter;
+use Stagehand\TestRunner\JUnitXMLWriter\JUnitXMLWriterInterface;
 use Stagehand\TestRunner\Util\FailureTrace;
 
 /**
@@ -48,7 +48,7 @@ use Stagehand\TestRunner\Util\FailureTrace;
  * @package    Stagehand_TestRunner
  * @copyright  2009-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.5.0
+ * @version    Release: 3.6.0
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.10.0
  */
@@ -67,11 +67,11 @@ class JUnitXMLPrinter extends \PHPUnit_Util_Printer implements \PHPUnit_Framewor
 
     /**
      * @param mixed $out
-     * @param \Stagehand\TestRunner\JUnitXMLWriter\JUnitXMLWriter $junitXMLWriter
+     * @param \Stagehand\TestRunner\JUnitXMLWriter\JUnitXMLWriterInterface $junitXMLWriter
      * @param \Stagehand\TestRunner\Core\TestTargetRepository $testTargetRepository
      * @since Method available since Release 3.3.0
      */
-    public function __construct($out, JUnitXMLWriter $junitXMLWriter, TestTargetRepository $testTargetRepository)
+    public function __construct($out, JUnitXMLWriterInterface $junitXMLWriter, TestTargetRepository $testTargetRepository)
     {
         parent::__construct($out);
         $this->junitXMLWriter = $junitXMLWriter;

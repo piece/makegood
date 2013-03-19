@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2012 KUBO Atsuhiro <kubo@iteman.jp>,
+# Copyright (c) 2011-2013 KUBO Atsuhiro <kubo@iteman.jp>,
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -26,31 +26,25 @@ parameters:
   # Component Factory
   component_aware_factory.class: "Stagehand\\ComponentFactory\\ComponentAwareFactory"
   component_aware_factory_factory.class: "Stagehand\\ComponentFactory\\ComponentAwareFactoryFactory"
-  plugin_aware_factory.class: "Stagehand\\TestRunner\\Core\\Plugin\\PluginAwareFactory"
 
   # Domain Components
-  alteration_monitoring.class: "Stagehand\\TestRunner\\Process\\AlterationMonitoring"
-  autotest_factory.class: "Stagehand\\TestRunner\\Process\\Autotest\\Autotest"
+  alteration_monitoring.class: "Stagehand\\TestRunner\\Process\\ContinuousTesting\\AlterationMonitoring"
   collecting_type.class: "Stagehand\\TestRunner\\Collector\\CollectingType"
   collecting_type_factory.class: "Stagehand\\TestRunner\\Collector\\CollectingTypeFactory"
-  collector_factory.class: "Stagehand\\TestRunner\\Collector\\Collector"
+  command_line_builder.class: "Stagehand\\TestRunner\\Process\\ContinuousTesting\\CommandLineBuilder"
+  continuous_test_runner.class: "Stagehand\\TestRunner\\Process\\ContinuousTesting\\ContinuousTestRunner"
   legacy_proxy.class: "Stagehand\\TestRunner\\Util\\LegacyProxy"
   notifier.class: "Stagehand\\TestRunner\\Notification\\Notifier"
-  notifier_factory.class: "Stagehand\\TestRunner\\Notification\\Notifier"
   os.class: "Stagehand\\TestRunner\\Util\\OS"
   output_buffering.class: "Stagehand\\TestRunner\\Util\\OutputBuffering"
-  preparer_factory.class: "Stagehand\\TestRunner\\Preparer\\Preparer"
-  runner_factory.class: "Stagehand\\TestRunner\\Runner\\Runner"
   terminal.class: "Stagehand\\TestRunner\\CLI\\Terminal"
-  test_run.class: "Stagehand\\TestRunner\\Process\\TestRun"
-  test_run_factory.class: "Stagehand\\TestRunner\\Process\\TestRun"
-  test_runner.class: "Stagehand\\TestRunner\\CLI\\TestRunner"
+  test_runner.class: "Stagehand\\TestRunner\\Process\\TestRunner"
   test_target_repository.class: "Stagehand\\TestRunner\\Core\\TestTargetRepository"
 
   # Configuration Parameters
   recursive: false
-  autotest: false
-  autotest_watch_dirs: []
+  continuous_testing: false
+  continuous_testing_watch_dirs: []
   notify: false
   test_methods: []
   test_classes: []
@@ -93,12 +87,6 @@ services:
     calls:
       - [ setInput, [ "@input" ] ]
       - [ setOutput, [ "@output" ] ]
-  test_runner:
-    class: "%test_runner.class%"
-    calls:
-      - [ setAutotestFactory, [ "@autotest_factory" ] ]
-      - [ setAutotest, [ "%autotest%" ] ]
-      - [ setTestRunFactory, [ "@test_run_factory" ] ]
 
   # Collector
   collecting_type:
@@ -111,21 +99,15 @@ services:
     factory_service: component_aware_factory_factory
     factory_method: create
     arguments: [ "collecting_type", "%collecting_type_factory.class%" ]
-  collector:
-    abstract: true
-    arguments: [ "@test_target_repository" ]
-    calls:
-      - [ setCollectingTypeFactory, [ "@collecting_type_factory" ] ]
-      - [ setRecursive, [ "%recursive%" ] ]
-  collector_factory:
-    class: "%collector_factory.class%"
-    factory_service: component_aware_factory_factory
-    factory_method: create
-    arguments: [ "collector", "%plugin_aware_factory.class%" ]
 
   # Core
+  environment:
+    synthetic: true
+  plugin:
+    synthetic: true
   test_target_repository:
     class: "%test_target_repository.class%"
+    arguments: [ "@plugin" ]
     calls:
       - [ setClasses, [ "%test_classes%" ] ]
       - [ setFilePattern, [ "%test_file_pattern%" ] ]
@@ -138,71 +120,41 @@ services:
     calls:
       - [ setLegacyProxy, [ "@legacy_proxy" ] ]
       - [ setOS, [ "@os" ] ]
-  notifier_factory:
-    class: "%notifier_factory.class%"
-    factory_service: component_aware_factory_factory
-    factory_method: create
-    arguments: [ "notifier" ]
-
-  # Preparer
-  preparer:
-    abstract: true
-  preparer_factory:
-    class: "%preparer_factory.class%"
-    factory_service: component_aware_factory_factory
-    factory_method: create
-    arguments: [ "preparer", "%plugin_aware_factory.class%" ]
 
   # Process
   alteration_monitoring:
     class: "%alteration_monitoring.class%"
-  autotest:
-    abstract: true
-    arguments: [ "@preparer_factory" ]
+  command_line_builder:
+    class: "%command_line_builder.class%"
+    arguments:
+      - "@environment"
+      - "@legacy_proxy"
+      - "@os"
+      - "@plugin"
+      - "@runner"
+      - "@terminal"
+      - "@test_target_repository"
+      - "@?command_line_option_builder"
+  continuous_test_runner:
+    class: "%continuous_test_runner.class%"
+    arguments: [ "@preparer", "@command_line_builder" ]
     calls:
       - [ setAlterationMonitoring, [ "@alteration_monitoring" ] ]
       - [ setLegacyProxy, [ "@legacy_proxy" ] ]
-      - [ setWatchDirs, [ "%autotest_watch_dirs%" ] ]
-      - [ setNotifierFactory, [ "@notifier_factory" ] ]
+      - [ setNotifier, [ "@notifier" ] ]
       - [ setOS, [ "@os" ] ]
-      - [ setRunnerFactory, [ "@runner_factory" ] ]
-      - [ setTerminal, [ "@terminal" ] ]
+      - [ setRunner, [ "@runner" ] ]
       - [ setTestTargetRepository, [ "@test_target_repository" ] ]
-  autotest_factory:
-    class: "%autotest_factory.class%"
-    factory_service: component_aware_factory_factory
-    factory_method: create
-    arguments: [ "autotest", "%plugin_aware_factory.class%" ]
-  test_run:
-    class: "%test_run.class%"
-    calls:
-      - [ setCollectorFactory, [ "@collector_factory" ] ]
-      - [ setNotifierFactory, [ "@notifier_factory" ] ]
-      - [ setPreparerFactory, [ "@preparer_factory" ] ]
-      - [ setRunnerFactory, [ "@runner_factory" ] ]
-      - [ setOutputBuffering, [ "@output_buffering" ] ]
-  test_run_factory:
-    class: "%test_run_factory.class%"
-    factory_service: component_aware_factory_factory
-    factory_method: create
-    arguments: [ "test_run" ]
+      - [ setWatchDirs, [ "%continuous_testing_watch_dirs%" ] ]
 
-  # Runner
-  runner:
-    abstract: true
+  test_runner:
+    class: "%test_runner.class%"
+    arguments: [ "@preparer" ]
     calls:
-      - [ setJUnitXMLFile, [ "%junit_xml_file%" ] ]
-      - [ setJUnitXMLRealtime, [ "%junit_xml_realtime%" ] ]
-      - [ setDetailedProgress, [ "%detailed_progress%" ] ]
-      - [ setStopOnFailure, [ "%stop_on_failure%" ] ]
-      - [ setTerminal, [ "@terminal" ] ]
-      - [ setTestTargetRepository, [ "@test_target_repository" ] ]
-      - [ setNotify, [ "%notify%" ] ]
-  runner_factory:
-    class: "%runner_factory.class%"
-    factory_service: component_aware_factory_factory
-    factory_method: create
-    arguments: [ "runner", "%plugin_aware_factory.class%" ]
+      - [ setCollector, [ "@collector" ] ]
+      - [ setNotifier, [ "@notifier" ] ]
+      - [ setRunner, [ "@runner" ] ]
+      - [ setOutputBuffering, [ "@output_buffering" ] ]
 
 # Local Variables:
 # mode: conf

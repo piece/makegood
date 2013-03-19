@@ -4,7 +4,7 @@
 /**
  * PHP version 5.3
  *
- * Copyright (c) 2009-2012 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2013 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,67 +29,53 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_TestRunner
- * @copyright  2009-2012 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2013 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.5.0
- * @since      File available since Release 2.10.0
+ * @version    Release: 3.6.0
+ * @since      File available since Release 3.6.0
  */
 
-namespace Stagehand\TestRunner\JUnitXMLWriter;
+namespace Stagehand\TestRunner\Process\ContinuousTesting;
 
-use Stagehand\TestRunner\Util\StreamWriter;
+use Stagehand\TestRunner\Preparer\CakePHPPreparer;
 
 /**
  * @package    Stagehand_TestRunner
- * @copyright  2009-2012 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2013 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.5.0
- * @since      Class available since Release 2.10.0
+ * @version    Release: 3.6.0
+ * @since      Class available since Release 3.6.0
  */
-interface JUnitXMLWriter
+class CakePHPCommandLineOptionBuilder implements CommandLineOptionBuilderInterface
 {
-    public function startTestSuites();
+    /**
+     * @var \Stagehand\TestRunner\Preparer\CakePHPPreparer
+     */
+    protected $preparer;
 
     /**
-     * @param string  $name
-     * @param integer $testCount
+     * @param \Stagehand\TestRunner\Preparer\CakePHPPreparer $preparer
      */
-    public function startTestSuite($name, $testCount = null);
+    public function __construct(CakePHPPreparer $preparer)
+    {
+        $this->preparer = $preparer;
+    }
 
     /**
-     * @param string $name
-     * @param mixed  $test
-     * @param string $methodName
+     * {@inheritDoc}
      */
-    public function startTestCase($name, $test, $methodName = null);
+    public function build(array $options)
+    {
+        if (!is_null($this->preparer->getCakePHPAppPath())) {
+            $options[] = '--cakephp-app-path=' . escapeshellarg($this->preparer->getCakePHPAppPath());
+        }
 
-    /**
-     * @param string $text
-     * @param string $type
-     * @param string $file
-     * @param string $line
-     * @param string $message
-     */
-    public function writeError($text, $type = null, $file = null, $line = null, $message = null);
+        if (!is_null($this->preparer->getCakePHPCorePath())) {
+            $options[] = '--cakephp-core-path=' . escapeshellarg($this->preparer->getCakePHPCorePath());
+        }
 
-    /**
-     * @param string $text
-     * @param string $type
-     * @param string $file
-     * @param string $line
-     * @param string $message
-     */
-    public function writeFailure($text, $type = null, $file = null, $line = null, $message = null);
-
-    /**
-     * @param float   $time
-     * @param integer $assertionCount
-     */
-    public function endTestCase($time, $assertionCount = null);
-
-    public function endTestSuite();
-
-    public function endTestSuites();
+        return $options;
+    }
 }
 
 /*

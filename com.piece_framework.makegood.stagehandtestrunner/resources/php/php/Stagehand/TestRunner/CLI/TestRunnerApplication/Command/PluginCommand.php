@@ -4,7 +4,7 @@
 /**
  * PHP version 5.3
  *
- * Copyright (c) 2011-2012 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2011-2013 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,9 +29,9 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_TestRunner
- * @copyright  2011-2012 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2011-2013 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.5.0
+ * @version    Release: 3.6.0
  * @since      File available since Release 3.0.0
  */
 
@@ -44,17 +44,16 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 use Stagehand\TestRunner\Core\ApplicationContext;
-use Stagehand\TestRunner\DependencyInjection\Compiler;
+use Stagehand\TestRunner\DependencyInjection\Compiler\Compiler;
 use Stagehand\TestRunner\DependencyInjection\Configuration\GeneralConfiguration;
-use Stagehand\TestRunner\DependencyInjection\Container;
 use Stagehand\TestRunner\DependencyInjection\Transformation\Transformation;
 use Stagehand\TestRunner\Util\FileSystem;
 
 /**
  * @package    Stagehand_TestRunner
- * @copyright  2011-2012 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2011-2013 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.5.0
+ * @version    Release: 3.6.0
  * @since      Class available since Release 3.0.0
  */
 abstract class PluginCommand extends Command
@@ -86,7 +85,7 @@ PHP_EOL .
         $this->addOption('config', 'c', InputOption::VALUE_REQUIRED, 'The YAML-based configuration file for Stagehand_TestRunner');
         $this->addOption('recursive', 'R', InputOption::VALUE_NONE, 'Recursively runs tests in the specified directories.');
 
-        if ($this->getPlugin()->hasFeature('autotest')) {
+        if ($this->getPlugin()->hasFeature('continuous_testing')) {
             $this->addOption('autotest', 'a', InputOption::VALUE_NONE, 'Monitors for changes in the specified directories and run tests when changes are detected.');
             $this->addOption('watch-dir', 'w', InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'The directory to be monitored for changes <comment>(default: The directories specified by the arguments)</comment>');
         }
@@ -125,7 +124,8 @@ PHP_EOL .
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        if (!class_exists(Compiler::COMPILED_CONTAINER_NAMESPACE . '\\' . Compiler::COMPILED_CONTAINER_CLASS)) {
+        $containerClass = Compiler::COMPILED_CONTAINER_NAMESPACE . '\\' . $this->getPlugin()->getPluginID() . 'Container';
+        if (!class_exists($containerClass)) {
             $output->writeln(
 '<error>Please run the following command before running the ' . $this->getName() . ' command:</error>' . PHP_EOL .
 PHP_EOL .
@@ -134,20 +134,25 @@ PHP_EOL .
             return 1;
         }
 
-        $container = $this->createContainer();
+        $container = $this->createContainer($containerClass);
         ApplicationContext::getInstance()->getComponentFactory()->setContainer($container);
-        ApplicationContext::getInstance()->setPlugin($this->getPlugin());
+
+        ApplicationContext::getInstance()->setComponent('environment', ApplicationContext::getInstance()->getEnvironment());
         ApplicationContext::getInstance()->setComponent('input', $input);
         ApplicationContext::getInstance()->setComponent('output', $output);
+        ApplicationContext::getInstance()->setComponent('plugin', $this->getPlugin());
+
         $transformation = $this->createTransformation($container);
         $this->transformToConfiguration($input, $output, $transformation);
         $transformation->transformToContainerParameters();
-        $this->createTestRunner()->run();
+
+        $this->createTestRunner($container->getParameter('continuous_testing'))->run();
+
         return 0;
     }
 
     /**
-     * @return \Stagehand\TestRunner\Core\Plugin\IPlugin
+     * @return \Stagehand\TestRunner\Core\Plugin\PluginInterface
      */
     abstract protected function getPlugin();
 
@@ -202,7 +207,7 @@ PHP_EOL .
             );
         }
 
-        if ($this->getPlugin()->hasFeature('autotest')) {
+        if ($this->getPlugin()->hasFeature('continuous_testing')) {
             if ($input->getOption('autotest')) {
                 $transformation->setConfigurationPart(
                     GeneralConfiguration::getConfigurationID(),
@@ -270,19 +275,25 @@ PHP_EOL .
     abstract protected function doTransformToConfiguration(InputInterface $input, OutputInterface $output, Transformation $transformation);
 
     /**
+     * @param string $containerClass
      * @return \Symfony\Component\DependencyInjection\ContainerInterface
      */
-    protected function createContainer()
+    protected function createContainer($containerClass)
     {
-        return new Container();
+        return new $containerClass();
     }
 
     /**
-     * @return \Stagehand\TestRunner\CLI\TestRunner
+     * @param boolean $continuousTesting
+     * @return \Stagehand\TestRunner\Process\TestRunnerInterface
      */
-    protected function createTestRunner()
+    protected function createTestRunner($continuousTesting)
     {
-        return ApplicationContext::getInstance()->createComponent('test_runner');
+        if ($continuousTesting) {
+            return ApplicationContext::getInstance()->createComponent('continuous_test_runner');
+        } else {
+            return ApplicationContext::getInstance()->createComponent('test_runner');
+        }
     }
 
     /**
@@ -291,7 +302,7 @@ PHP_EOL .
      */
     protected function createTransformation(ContainerInterface $container)
     {
-        return new Transformation($container);
+        return new Transformation($container, $this->getPlugin());
     }
 }
 
