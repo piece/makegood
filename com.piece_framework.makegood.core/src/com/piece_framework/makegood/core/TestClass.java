@@ -40,6 +40,12 @@ import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ITypeHierarchy;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.WorkingCopyOwner;
+import org.eclipse.dltk.core.index2.search.ISearchEngine.MatchRule;
+import org.eclipse.php.core.compiler.IPHPModifiers;
+import org.eclipse.php.internal.core.documentModel.dom.PHPModelNotifier;
+import org.eclipse.php.internal.core.model.PhpModelAccess;
+import org.eclipse.php.internal.core.typeinference.TraitUtils;
+import org.eclipse.php.internal.core.typeinference.UseTrait;
 
 /**
  * @since 2.3.0
@@ -210,6 +216,16 @@ public class TestClass implements IType {
             for (IType supertype: hierarchy.getSupertypes(origin)) {
                 if (!TestingFramework.isTestClassSuperType(supertype)) {
                     children.add(createTestClass(supertype));
+                }
+            }
+
+            UseTrait useTrait = TraitUtils.parse(origin);
+            for (String trait: useTrait.getTraits()) {
+                IType[] traitTypes = PhpModelAccess.getDefault().findTraits(trait,
+                        MatchRule.EXACT, 0, 0, TraitUtils.createSearchScope(origin), null);
+                for (IType type: traitTypes) {
+                    System.out.println(type.getFlags() & IPHPModifiers.AccTrait);
+                    children.add(createTestClass(type));
                 }
             }
         } else {
