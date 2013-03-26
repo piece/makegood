@@ -31,7 +31,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2011-2013 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.6.0
+ * @version    Release: 3.6.1
  * @since      File available since Release 3.0.0
  */
 
@@ -47,7 +47,7 @@ use Stagehand\TestRunner\Core\Plugin\PHPUnitPlugin;
  * @package    Stagehand_TestRunner
  * @copyright  2011-2013 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.6.0
+ * @version    Release: 3.6.1
  * @since      Class available since Release 3.0.0
  */
 class PHPUnitExtension extends Extension

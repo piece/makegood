@@ -33,7 +33,7 @@
  * @copyright  2007-2013 KUBO Atsuhiro <kubo@iteman.jp>
  * @copyright  2012 tsyk goto <ngyuki.ts@gmail.com>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.6.0
+ * @version    Release: 3.6.1
  * @link       http://www.phpunit.de/
  * @since      File available since Release 2.1.0
  */
@@ -51,7 +51,7 @@ use Stagehand\TestRunner\TestSuite\PHPUnitMethodFilterTestSuite;
  * @copyright  2007-2013 KUBO Atsuhiro <kubo@iteman.jp>
  * @copyright  2012 tsyk goto <ngyuki.ts@gmail.com>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.6.0
+ * @version    Release: 3.6.1
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.1.0
  */

@@ -31,7 +31,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2009-2013 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.6.0
+ * @version    Release: 3.6.1
  * @since      File available since Release 2.10.0
  */
 
@@ -41,7 +41,7 @@ namespace Stagehand\TestRunner\JUnitXMLWriter;
  * @package    Stagehand_TestRunner
  * @copyright  2009-2013 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.6.0
+ * @version    Release: 3.6.1
  * @since      Class available since Release 2.10.0
  */
 interface JUnitXMLWriterInterface

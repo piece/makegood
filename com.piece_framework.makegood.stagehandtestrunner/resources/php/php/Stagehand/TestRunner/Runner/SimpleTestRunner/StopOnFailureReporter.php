@@ -33,7 +33,7 @@
  * @copyright  2010 KUMAKURA Yousuke <kumatch@gmail.com>
  * @copyright  2010-2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.6.0
+ * @version    Release: 3.6.1
  * @link       http://simpletest.org/
  * @since      File available since Release 2.11.0
  */
@@ -45,7 +45,7 @@ namespace Stagehand\TestRunner\Runner\SimpleTestRunner;
  * @copyright  2010 KUMAKURA Yousuke <kumatch@gmail.com>
  * @copyright  2010-2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.6.0
+ * @version    Release: 3.6.1
  * @link       http://simpletest.org/
  * @since      Class available since Release 2.11.0
  */

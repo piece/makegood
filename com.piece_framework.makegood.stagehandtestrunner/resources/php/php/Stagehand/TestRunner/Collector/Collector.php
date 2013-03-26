@@ -31,7 +31,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2007-2013 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.6.0
+ * @version    Release: 3.6.1
  * @since      File available since Release 2.1.0
  */
 
@@ -50,7 +50,7 @@ use Stagehand\TestRunner\Util\FileSystem;
  * @package    Stagehand_TestRunner
  * @copyright  2007-2013 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.6.0
+ * @version    Release: 3.6.1
  * @since      Class available since Release 2.1.0
  */
 abstract class Collector
@@ -111,8 +111,9 @@ abstract class Collector
     {
         $self = $this;
         $fileSystem = new FileSystem();
-        $this->testTargetRepository->walkOnResources(function ($resource, $index, TestTargetRepository $testTargetRepository) use ($self, $fileSystem) {
-            $absoluteTargetPath = $fileSystem->getAbsolutePath($resource, $this->environment->getWorkingDirectoryAtStartup());
+        $environment = $this->environment;
+        $this->testTargetRepository->walkOnResources(function ($resource, $index, TestTargetRepository $testTargetRepository) use ($self, $fileSystem, $environment) {
+            $absoluteTargetPath = $fileSystem->getAbsolutePath($resource, $environment->getWorkingDirectoryAtStartup());
             if (!file_exists($absoluteTargetPath)) {
                 throw new \UnexpectedValueException(sprintf('The directory or file [ %s ] is not found', $absoluteTargetPath));
             }

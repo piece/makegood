@@ -31,7 +31,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2010-2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.6.0
+ * @version    Release: 3.6.1
  * @since      File available since Release 2.15.0
  */
 
@@ -43,7 +43,7 @@ if (!class_exists('\PHPUnit_Framework_TestCase')) return;
  * @package    Stagehand_TestRunner
  * @copyright  2010-2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.6.0
+ * @version    Release: 3.6.1
  * @since      Class available since Release 2.15.0
  */
 class PHPUnitMultipleClassesWithNamespaceTest {}
@@ -52,7 +52,7 @@ class PHPUnitMultipleClassesWithNamespaceTest {}
  * @package    Stagehand_TestRunner
  * @copyright  2010-2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.6.0
+ * @version    Release: 3.6.1
  * @since      Class available since Release 2.15.0
  */
 class PHPUnitMultipleClassesWithNamespace1Test extends \PHPUnit_Framework_TestCase
@@ -78,7 +78,7 @@ class PHPUnitMultipleClassesWithNamespace1Test extends \PHPUnit_Framework_TestCa
  * @package    Stagehand_TestRunner
  * @copyright  2010-2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.6.0
+ * @version    Release: 3.6.1
  * @since      Class available since Release 2.15.0
  */
 class PHPUnitMultipleClassesWithNamespace2Test extends \PHPUnit_Framework_TestCase

@@ -31,7 +31,7 @@
  * @package    Stagehand_TestRunner
  * @copyright  2010-2013 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.6.0
+ * @version    Release: 3.6.1
  * @since      File available since Release 2.12.0
  */
 
@@ -46,7 +46,7 @@ use Stagehand\TestRunner\DependencyInjection\PHPUnitConfigurationFactory;
  * @package    Stagehand_TestRunner
  * @copyright  2010-2013 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.6.0
+ * @version    Release: 3.6.1
  * @since      Class available since Release 2.12.0
  */
 class PHPUnitPreparer extends Preparer

@@ -61,7 +61,11 @@ use Symfony\Component\DependencyInjection\ParameterBag\FrozenParameterBag;
  */
 class Container implements IntrospectableContainerInterface
 {
+    /**
+     * @var ParameterBagInterface
+     */
     protected $parameterBag;
+
     protected $services;
     protected $scopes;
     protected $scopeChildren;
@@ -180,22 +184,22 @@ class Container implements IntrospectableContainerInterface
      * @param object $service The service instance
      * @param string $scope   The scope of the service
      *
-     * @throws \RuntimeException When trying to set a service in an inactive scope
-     * @throws \InvalidArgumentException When trying to set a service in the prototype scope
+     * @throws RuntimeException When trying to set a service in an inactive scope
+     * @throws InvalidArgumentException When trying to set a service in the prototype scope
      *
      * @api
      */
     public function set($id, $service, $scope = self::SCOPE_CONTAINER)
     {
         if (self::SCOPE_PROTOTYPE === $scope) {
-            throw new InvalidArgumentException('You cannot set services of scope "prototype".');
+            throw new InvalidArgumentException(sprintf('You cannot set service "%s" of scope "prototype".', $id));
         }
 
         $id = strtolower($id);
 
         if (self::SCOPE_CONTAINER !== $scope) {
             if (!isset($this->scopedServices[$scope])) {
-                throw new RuntimeException('You cannot set services of inactive scopes.');
+                throw new RuntimeException(sprintf('You cannot set service "%s" of inactive scope.', $id));
             }
 
             $this->scopedServices[$scope][$id] = $service;
@@ -334,8 +338,10 @@ class Container implements IntrospectableContainerInterface
             unset($this->scopedServices[$name]);
 
             foreach ($this->scopeChildren[$name] as $child) {
-                $services[$child] = $this->scopedServices[$child];
-                unset($this->scopedServices[$child]);
+                if (isset($this->scopedServices[$child])) {
+                    $services[$child] = $this->scopedServices[$child];
+                    unset($this->scopedServices[$child]);
+                }
             }
 
             // update global map
@@ -397,7 +403,7 @@ class Container implements IntrospectableContainerInterface
      *
      * @param ScopeInterface $scope
      *
-     * @throws \InvalidArgumentException When the scope is invalid
+     * @throws InvalidArgumentException
      *
      * @api
      */

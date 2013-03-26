@@ -22,12 +22,14 @@ abstract class RealIteratorTestCase extends IteratorTestCase
             $tmpDir.'/.git/',
             $tmpDir.'/.foo/',
             $tmpDir.'/.foo/.bar',
+            $tmpDir.'/.foo/bar',
             $tmpDir.'/.bar',
             $tmpDir.'/test.py',
             $tmpDir.'/foo/',
             $tmpDir.'/foo/bar.tmp',
             $tmpDir.'/test.php',
-            $tmpDir.'/toto/'
+            $tmpDir.'/toto/',
+            $tmpDir.'/foo bar',
         );
 
         if (is_dir($tmpDir)) {

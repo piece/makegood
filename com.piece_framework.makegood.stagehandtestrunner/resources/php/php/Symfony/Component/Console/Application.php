@@ -26,6 +26,7 @@ use Symfony\Component\Console\Command\ListCommand;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Helper\FormatterHelper;
 use Symfony\Component\Console\Helper\DialogHelper;
+use Symfony\Component\Console\Helper\ProgressHelper;
 
 /**
  * An Application is the container for a collection of commands.
@@ -220,6 +221,18 @@ class Application
     }
 
     /**
+     * Set an input definition set to be used with this application
+     *
+     * @param InputDefinition $definition The input definition
+     *
+     * @api
+     */
+    public function setDefinition(InputDefinition $definition)
+    {
+        $this->definition = $definition;
+    }
+
+    /**
      * Gets the InputDefinition related to this Application.
      *
      * @return InputDefinition The InputDefinition instance
@@ -240,7 +253,8 @@ class Application
             $this->getLongVersion(),
             '',
             '<comment>Usage:</comment>',
-            sprintf("  [options] command [arguments]\n"),
+            '  [options] command [arguments]',
+            '',
             '<comment>Options:</comment>',
         );
 
@@ -606,7 +620,7 @@ class Application
      *
      * @param string $namespace A namespace name
      *
-     * @return array An array of Command instances
+     * @return Command[] An array of Command instances
      *
      * @api
      */
@@ -784,7 +798,7 @@ class Application
             $len = $strlen($title);
             $width = $this->getTerminalWidth() ? $this->getTerminalWidth() - 1 : PHP_INT_MAX;
             $lines = array();
-            foreach (preg_split("{\r?\n}", $e->getMessage()) as $line) {
+            foreach (preg_split('/\r?\n/', $e->getMessage()) as $line) {
                 foreach (str_split($line, $width - 4) as $line) {
                     $lines[] = sprintf('  %s  ', $line);
                     $len = max($strlen($line) + 4, $len);
@@ -848,19 +862,9 @@ class Application
      */
     protected function getTerminalWidth()
     {
-        if (defined('PHP_WINDOWS_VERSION_BUILD')) {
-            if ($ansicon = getenv('ANSICON')) {
-                return preg_replace('{^(\d+)x.*$}', '$1', $ansicon);
-            }
+        $dimensions = $this->getTerminalDimensions();
 
-            if (preg_match('{columns:\s*(\d+)}i', $this->getConsoleMode(), $matches)) {
-                return $matches[1];
-            }
-        }
-
-        if (preg_match("{rows.(\d+);.columns.(\d+);}i", $this->getSttyColumns(), $match)) {
-            return $match[2];
-        }
+        return $dimensions[0];
     }
 
     /**
@@ -870,19 +874,41 @@ class Application
      */
     protected function getTerminalHeight()
     {
+        $dimensions = $this->getTerminalDimensions();
+
+        return $dimensions[1];
+    }
+
+    /**
+     * Tries to figure out the terminal dimensions based on the current environment
+     *
+     * @return array Array containing width and height
+     */
+    public function getTerminalDimensions()
+    {
         if (defined('PHP_WINDOWS_VERSION_BUILD')) {
-            if ($ansicon = getenv('ANSICON')) {
-                return preg_replace('{^\d+x\d+ \(\d+x(\d+)\)$}', '$1', trim($ansicon));
+            // extract [w, H] from "wxh (WxH)"
+            if (preg_match('/^(\d+)x\d+ \(\d+x(\d+)\)$/', trim(getenv('ANSICON')), $matches)) {
+                return array((int) $matches[1], (int) $matches[2]);
             }
-
-            if (preg_match('{lines:\s*(\d+)}i', $this->getConsoleMode(), $matches)) {
-                return $matches[1];
+            // extract [w, h] from "wxh"
+            if (preg_match('/^(\d+)x(\d+)$/', $this->getConsoleMode(), $matches)) {
+                return array((int) $matches[1], (int) $matches[2]);
             }
         }
 
-        if (preg_match("{rows.(\d+);.columns.(\d+);}i", $this->getSttyColumns(), $match)) {
-            return $match[1];
+        if ($sttyString = $this->getSttyColumns()) {
+            // extract [w, h] from "rows h; columns w;"
+            if (preg_match('/rows.(\d+);.columns.(\d+);/i', $sttyString, $matches)) {
+                return array((int) $matches[2], (int) $matches[1]);
+            }
+            // extract [w, h] from "; h rows; w columns"
+            if (preg_match('/;.(\d+).rows;.(\d+).columns/i', $sttyString, $matches)) {
+                return array((int) $matches[2], (int) $matches[1]);
+            }
         }
+
+        return array(null, null);
     }
 
     /**
@@ -920,7 +946,7 @@ class Application
     /**
      * Gets the default commands that should always be available.
      *
-     * @return array An array of default Command instances
+     * @return Command[] An array of default Command instances
      */
     protected function getDefaultCommands()
     {
@@ -937,6 +963,7 @@ class Application
         return new HelperSet(array(
             new FormatterHelper(),
             new DialogHelper(),
+            new ProgressHelper(),
         ));
     }
 
@@ -966,7 +993,7 @@ class Application
     /**
      * Runs and parses mode CON if it's available, suppressing any error output
      *
-     * @return string
+     * @return string <width>x<height> or null if it could not be parsed
      */
     private function getConsoleMode()
     {
@@ -982,7 +1009,9 @@ class Application
             fclose($pipes[2]);
             proc_close($process);
 
-            return $info;
+            if (preg_match('/--------+\r?\n.+?(\d+)\r?\n.+?(\d+)\r?\n/', $info, $matches)) {
+                return $matches[2].'x'.$matches[1];
+            }
         }
     }
 
