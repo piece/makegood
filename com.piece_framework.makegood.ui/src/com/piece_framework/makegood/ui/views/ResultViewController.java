@@ -41,7 +41,7 @@ import com.piece_framework.makegood.launch.TestTargetRepository;
 import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.MakeGoodContext;
 import com.piece_framework.makegood.ui.MakeGoodStatus;
-import com.piece_framework.makegood.ui.actions.StopTestAction;
+import com.piece_framework.makegood.ui.actions.StopTestRunAction;
 import com.piece_framework.makegood.ui.markers.FatalErrorMarkerFactory;
 import com.piece_framework.makegood.ui.markers.TestMarkerFactory;
 import com.piece_framework.makegood.ui.markers.UnknownFatalErrorMessageException;
@@ -188,7 +188,7 @@ public class ResultViewController implements IDebugEventSetListener {
                             resultView.markAsStopped();
                             resultView.expandResultTreeToResult(testLifecycle.getProgress().getResult().getLast());
                         }
-                        if (!StopTestAction.isStoppedByAction(launch)) {
+                        if (!StopTestRunAction.isStoppedByAction(launch)) {
                             FatalErrorMarkerFactory markerFactory = new FatalErrorMarkerFactory();
                             try {
                                 IMarker marker = markerFactory.create(launch.getStreamOutput());

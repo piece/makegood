@@ -20,7 +20,7 @@ import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.ui.IViewPart;
 
 import com.piece_framework.makegood.launch.TestLifecycle;
-import com.piece_framework.makegood.ui.actions.StopTestAction;
+import com.piece_framework.makegood.ui.actions.StopTestRunAction;
 import com.piece_framework.makegood.ui.views.ResultView;
 import com.piece_framework.makegood.ui.views.ViewOpener;
 
@@ -46,7 +46,7 @@ public class StopTestRunHandler extends AbstractHandler {
         if (view == null) return null;
         IToolBarManager manager = view.getViewSite().getActionBars().getToolBarManager();
         if (manager == null) return null;
-        ActionContributionItem item = (ActionContributionItem) manager.find(StopTestAction.ACTION_ID);
+        ActionContributionItem item = (ActionContributionItem) manager.find(StopTestRunAction.ACTION_ID);
         if (item == null) return null;
         return item.getAction();
     }

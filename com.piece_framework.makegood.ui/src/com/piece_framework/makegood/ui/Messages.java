@@ -223,7 +223,7 @@ public class Messages extends NLS {
     /**
      * @since 2.1.0
      */
-    public static String ResultSquare_TestStopped;
+    public static String ResultSquare_TestRunStopped;
 
     /**
      * @since 2.1.0

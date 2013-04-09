@@ -143,7 +143,7 @@ public class ResultSquare extends WorkbenchWindowControlContribution {
 
     public void markAsStopped() {
         square.setImage(Activator.getImageDescriptor(IMAGE_PATH_STOPPED).createImage());
-        square.setToolTipText(Messages.ResultSquare_TestStopped);
+        square.setToolTipText(Messages.ResultSquare_TestRunStopped);
     }
 
     /**

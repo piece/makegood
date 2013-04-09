@@ -239,8 +239,8 @@
       <command
             categoryId="com.piece_framework.makegood.ui.commands.runTestCategory"
             defaultHandler="com.piece_framework.makegood.ui.handlers.StopTestRunHandler"
-            id="com.piece_framework.makegood.ui.commands.stopTestCommand"
-            name="%commands.stopTestCommand.name">
+            id="com.piece_framework.makegood.ui.commands.stopTestRunCommand"
+            name="%commands.stopTestRunCommand.name">
       </command>
       <command
             categoryId="com.piece_framework.makegood.ui.commands.runTestCategory"
@@ -355,7 +355,7 @@
             sequence="M3+M E">
       </key>
       <key
-            commandId="com.piece_framework.makegood.ui.commands.stopTestCommand"
+            commandId="com.piece_framework.makegood.ui.commands.stopTestRunCommand"
             contextId="org.eclipse.ui.contexts.window"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="M3+M S">
@@ -401,14 +401,14 @@
                tooltip="%viewActions.configureContinuousTestingAction.tooltip">
          </action>
          <action
-               class="com.piece_framework.makegood.ui.actions.StopTestAction"
-               definitionId="com.piece_framework.makegood.ui.commands.stopTestCommand"
+               class="com.piece_framework.makegood.ui.actions.StopTestRunAction"
+               definitionId="com.piece_framework.makegood.ui.commands.stopTestRunCommand"
                icon="icons/stopTestAction.gif"
-               id="com.piece_framework.makegood.ui.viewActions.stopTestAction"
-               label="%viewActions.stopTestAction.label"
+               id="com.piece_framework.makegood.ui.viewActions.stopTestRunAction"
+               label="%viewActions.stopTestRunAction.label"
                style="push"
                toolbarPath="runs"
-               tooltip="%viewActions.stopTestAction.tooltip">
+               tooltip="%viewActions.stopTestRunAction.tooltip">
          </action>
          <action
                class="com.piece_framework.makegood.ui.actions.RerunFailedTestsAction"

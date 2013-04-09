@@ -25,8 +25,8 @@ import org.eclipse.ui.IViewPart;
 import com.piece_framework.makegood.launch.MakeGoodLaunch;
 import com.piece_framework.makegood.ui.Activator;
 
-public class StopTestAction implements IViewActionDelegate {
-    public static final String ACTION_ID = "com.piece_framework.makegood.ui.viewActions.stopTestAction"; //$NON-NLS-1$
+public class StopTestRunAction implements IViewActionDelegate {
+    public static final String ACTION_ID = "com.piece_framework.makegood.ui.viewActions.stopTestRunAction"; //$NON-NLS-1$
     private static final String MAKEGOOD_IS_STOPPED_BY_ACTION_MARKER = "MAKEGOOD_IS_STOPPED_BY_ACTION_MARKER"; //$NON-NLS-1$
 
     @Override
