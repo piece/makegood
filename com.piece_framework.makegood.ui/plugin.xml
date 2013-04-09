@@ -423,7 +423,7 @@
          <action
                class="com.piece_framework.makegood.ui.actions.RerunTestAction"
                definitionId="com.piece_framework.makegood.ui.commands.rerunTestCommand"
-               icon="icons/rerunTestAction.gif"
+               icon="icons/rerun_test.gif"
                id="com.piece_framework.makegood.ui.viewActions.rerunTestAction"
                label="%viewActions.rerunTestAction.label"
                style="push"
