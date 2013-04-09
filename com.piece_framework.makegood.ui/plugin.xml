@@ -403,7 +403,7 @@
          <action
                class="com.piece_framework.makegood.ui.actions.StopTestRunAction"
                definitionId="com.piece_framework.makegood.ui.commands.stopTestRunCommand"
-               icon="icons/stopTestAction.gif"
+               icon="icons/stop_test_run.gif"
                id="com.piece_framework.makegood.ui.viewActions.stopTestRunAction"
                label="%viewActions.stopTestRunAction.label"
                style="push"
