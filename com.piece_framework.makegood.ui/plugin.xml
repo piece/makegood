@@ -238,7 +238,7 @@
       </command>
       <command
             categoryId="com.piece_framework.makegood.ui.commands.runTestCategory"
-            defaultHandler="com.piece_framework.makegood.ui.handlers.StopTestHandler"
+            defaultHandler="com.piece_framework.makegood.ui.handlers.StopTestRunHandler"
             id="com.piece_framework.makegood.ui.commands.stopTestCommand"
             name="%commands.stopTestCommand.name">
       </command>
