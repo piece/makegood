@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2009-2010 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
- *               2010-2012 KUBO Atsuhiro <kubo@iteman.jp>,
+ *               2010-2013 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -19,6 +19,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.debug.core.DebugEvent;
+import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.IDebugEventSetListener;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.model.IProcess;
@@ -179,30 +180,34 @@ public class ResultViewController implements IDebugEventSetListener {
                     resultView.endTest();
                 }
 
-                if (testLifecycle.hasErrors()) {
-                    ResultSquare.getInstance().markAsStopped();
-                    if (resultView != null) {
-                        testLifecycle.getProgress().markAsStopped();
-                        resultView.markAsStopped();
-                        resultView.expandResultTreeToResult(testLifecycle.getProgress().getResult().getLast());
-                    }
-                    if (!StopTestAction.isStoppedByAction(launch)) {
-                        FatalErrorMarkerFactory markerFactory = new FatalErrorMarkerFactory();
-                        try {
-                            IMarker marker = markerFactory.create(launch.getStreamOutput());
-                            if (marker != null) {
-                                EditorOpener.open(marker);
-                            } else {
+                try {
+                    if (testLifecycle.hasErrors()) {
+                        ResultSquare.getInstance().markAsStopped();
+                        if (resultView != null) {
+                            testLifecycle.getProgress().markAsStopped();
+                            resultView.markAsStopped();
+                            resultView.expandResultTreeToResult(testLifecycle.getProgress().getResult().getLast());
+                        }
+                        if (!StopTestAction.isStoppedByAction(launch)) {
+                            FatalErrorMarkerFactory markerFactory = new FatalErrorMarkerFactory();
+                            try {
+                                IMarker marker = markerFactory.create(launch.getStreamOutput());
+                                if (marker != null) {
+                                    EditorOpener.open(marker);
+                                } else {
+                                    ViewOpener.open(IConsoleConstants.ID_CONSOLE_VIEW);
+                                    EditorOpener.open(markerFactory.getFile(), markerFactory.getLine());
+                                }
+                            } catch (CoreException e) {
+                                Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
+                            } catch (UnknownFatalErrorMessageException e) {
+                                Activator.getDefault().getLog().log(new Status(IStatus.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
                                 ViewOpener.open(IConsoleConstants.ID_CONSOLE_VIEW);
-                                EditorOpener.open(markerFactory.getFile(), markerFactory.getLine());
                             }
-                        } catch (CoreException e) {
-                            Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
-                        } catch (UnknownFatalErrorMessageException e) {
-                            Activator.getDefault().getLog().log(new Status(IStatus.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
-                            ViewOpener.open(IConsoleConstants.ID_CONSOLE_VIEW);
                         }
                     }
+                } catch (DebugException e) {
+                    Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
                 }
 
                 TestLifecycle.destroy();

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2012 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2011-2013 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -92,24 +92,16 @@ public class TestLifecycle {
         return progress;
     }
 
-    public boolean hasErrors() {
+    public boolean hasErrors() throws DebugException {
+        boolean hasErrors = false;
         for (IProcess process: launch.getProcesses()) {
-            int exitValue = 0;
-            try {
-                if (!process.isTerminated()) continue;
-                exitValue = process.getExitValue();
-            } catch (DebugException e) {
-                Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
+            if (process.getExitValue() != 0) {
+                hasErrors = true;
+                break;
             }
-
-            if (exitValue != 0) {
-                return true;
-            }
-
-            break;
         }
 
-        return false;
+        return hasErrors;
     }
 
     public FailureRepository getFailures() {
