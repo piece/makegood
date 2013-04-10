@@ -33,7 +33,7 @@
       <view
             category="com.piece_framework.makegood.ui.views.makeGoodCategory"
             class="com.piece_framework.makegood.ui.views.TestOutlineView"
-            icon="icons/testOutlineView.gif"
+            icon="icons/makegood.gif"
             id="com.piece_framework.makegood.ui.views.testOutlineView"
             name="Test Outline"
             restorable="true">
