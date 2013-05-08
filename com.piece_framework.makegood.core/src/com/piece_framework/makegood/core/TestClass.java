@@ -224,7 +224,6 @@ public class TestClass implements IType {
                 IType[] traitTypes = PhpModelAccess.getDefault().findTraits(trait,
                         MatchRule.EXACT, 0, 0, TraitUtils.createSearchScope(origin), null);
                 for (IType type: traitTypes) {
-                    System.out.println(type.getFlags() & IPHPModifiers.AccTrait);
                     children.add(createTestClass(type));
                 }
             }
