@@ -34,12 +34,14 @@ import org.eclipse.dltk.core.ISourceRange;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
+import org.eclipse.dltk.ui.ScriptElementImageProvider;
 import org.eclipse.dltk.ui.ScriptElementLabels;
 import org.eclipse.dltk.ui.viewsupport.AppearanceAwareLabelProvider;
 import org.eclipse.dltk.ui.viewsupport.DecoratingModelLabelProvider;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IContentProvider;
 import org.eclipse.jface.viewers.IDoubleClickListener;
@@ -51,7 +53,11 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerSorter;
+import org.eclipse.php.core.compiler.IPHPModifiers;
+import org.eclipse.php.internal.ui.preferences.PHPAppearancePreferencePage;
+import org.eclipse.php.internal.ui.util.PHPPluginImages;
 import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -93,14 +99,10 @@ public class TestOutlineView extends ViewPart {
 
         viewer = new TreeViewer(parent);
         viewer.setContentProvider(new HierarchicalLayoutContentProvider());
+
         viewer.setLabelProvider(
             new DecoratingModelLabelProvider(
-                new AppearanceAwareLabelProvider(
-                    AppearanceAwareLabelProvider.DEFAULT_TEXTFLAGS
-                    | ScriptElementLabels.F_APP_TYPE_SIGNATURE
-                    | ScriptElementLabels.ALL_CATEGORY,
-                    AppearanceAwareLabelProvider.DEFAULT_IMAGEFLAGS,
-                    DLTKUIPlugin.getDefault().getPreferenceStore())));
+                new TestOutlineAppearanceAwareLabelProvider()));
         TreeEventListener eventListener = new TreeEventListener();
         viewer.addSelectionChangedListener(eventListener);
         viewer.addDoubleClickListener(eventListener);
@@ -249,6 +251,36 @@ public class TestOutlineView extends ViewPart {
             }
         } catch (ModelException e) {
             Activator.getDefault().getLog().log(new Status(IStatus.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
+        }
+    }
+
+    private class TestOutlineAppearanceAwareLabelProvider extends AppearanceAwareLabelProvider {
+        public TestOutlineAppearanceAwareLabelProvider() {
+            super(
+                AppearanceAwareLabelProvider.DEFAULT_TEXTFLAGS
+                | ScriptElementLabels.F_APP_TYPE_SIGNATURE
+                | ScriptElementLabels.ALL_CATEGORY,
+                AppearanceAwareLabelProvider.DEFAULT_IMAGEFLAGS,
+                DLTKUIPlugin.getDefault().getPreferenceStore());
+
+            fImageLabelProvider = new ScriptElementImageProvider() {
+                @Override
+                public ImageDescriptor getBaseImageDescriptor(
+                        IModelElement element,
+                        int renderFlags) {
+
+                    if (element instanceof TestClass) {
+                        TestClass type = (TestClass) element;
+                        try {
+                            if ((type.getFlags() & IPHPModifiers.AccTrait) != 0) {
+                                return PHPPluginImages.DESC_OBJS_TRAIT;
+                            }
+                        } catch (ModelException e) {}
+                    }
+
+                    return super.getBaseImageDescriptor(element, renderFlags);
+                }
+            };
         }
     }
 
