@@ -445,6 +445,12 @@ public class TestClass implements IType {
                 return true;
             }
         }
+
+        String targetName = targetSuperType.getFullyQualifiedName("\\");
+        for (String trait: TraitUtils.parse(origin).getTraits()) {
+            if (trait.equals(targetName)) return true;
+        }
+
         return false;
     }
 
