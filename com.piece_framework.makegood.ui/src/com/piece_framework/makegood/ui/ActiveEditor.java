@@ -32,7 +32,7 @@ public class ActiveEditor {
         if (editor == null) return false;
         if (!(editor.getEditorInput() instanceof IFileEditorInput)) return false;
         IFile file = ((IFileEditorInput) editor.getEditorInput()).getFile();
-        return new Resource(file).isPHPSource();
+        return new Resource(file).isPHPFile();
     }
 
     /**

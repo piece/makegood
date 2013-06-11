@@ -66,7 +66,7 @@ public class RunTestFromExplorerHandler extends RunHandler {
             }
             if (resource == null) return false;
             if (resource instanceof IFolder) continue;
-            if (new Resource(resource).isPHPSource() == false) return false;
+            if (new Resource(resource).isPHPFile() == false) return false;
         }
 
         return true;
