@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2012-2013 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
- *
+ *               2013 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -122,6 +122,11 @@ public class TestClass implements IType {
     @Override
     public IModelElement getAncestor(int ancestorType) {
         return origin.getAncestor(ancestorType);
+    }
+
+    @Override
+    public <E extends IModelElement> E getAncestor(Class<E> clazz) {
+        return origin.getAncestor(clazz);
     }
 
     @Override

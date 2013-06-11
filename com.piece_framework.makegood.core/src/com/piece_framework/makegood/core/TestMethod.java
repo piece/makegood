@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2012-2013 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
- *
+ *               2013 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -104,6 +104,11 @@ public class TestMethod implements IMethod {
     @Override
     public IModelElement getAncestor(int ancestorType) {
         return method.getAncestor(ancestorType);
+    }
+
+    @Override
+    public <E extends IModelElement> E getAncestor(Class<E> clazz) {
+        return method.getAncestor(clazz);
     }
 
     @Override
