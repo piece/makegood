@@ -21,7 +21,7 @@ public class Resource {
     /**
      * @since 2.2.0
      */
-    private IResource subject;
+    private IResource resource;
 
     /**
      * @since 2.2.0
@@ -31,14 +31,13 @@ public class Resource {
     /**
      * @since 2.2.0
      */
-    public Resource(IResource subject) {
-        this.subject = subject;
+    public Resource(IResource resource) {
+        this.resource = resource;
         phpContentType = Platform.getContentTypeManager().getContentType(phpContentTypeID());
     }
 
     public boolean isPHPFile() {
-        if ((subject instanceof IFile) == false) return false;
-        return phpContentType.isAssociatedWith(subject.getName());
+        return (resource instanceof IFile) && phpContentType.isAssociatedWith(resource.getName());
     }
 
     /**
