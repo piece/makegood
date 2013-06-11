@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2012-2013 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -26,53 +26,57 @@ import org.eclipse.php.internal.core.typeinference.PHPClassType;
 /**
  * @since 2.2.0
  */
+@SuppressWarnings("restriction")
 public class PHPType {
-    private IType subject;
+    private IType type;
     private TestingFramework testingFramework;
     private List<IType> testClassAncestors;
 
-    public PHPType(IType subject, TestingFramework testingFramework) {
-        this.subject = subject;
+    public PHPType(IType type, TestingFramework testingFramework) {
+        this.type = type;
         this.testingFramework = testingFramework;
     }
 
     public boolean isAbstract() throws CoreException {
-        return Flags.isAbstract(subject.getFlags());
+        return Flags.isAbstract(type.getFlags());
     }
 
     public boolean isClass() throws CoreException {
-        return PHPFlags.isClass(subject.getFlags());
+        return PHPFlags.isClass(type.getFlags());
     }
 
     public boolean isNamespace() throws CoreException {
-        return PHPFlags.isNamespace(subject.getFlags());
+        return PHPFlags.isNamespace(type.getFlags());
     }
 
     public boolean isTest() throws CoreException {
-        if (isClass() == false) return false;
+        if (isClass()) {
+            if (testClassAncestors == null) {
+                testClassAncestors = collectTestClassAncestors();
+            }
 
-        if (testClassAncestors == null) {
-            testClassAncestors = collectTestClassAncestors();
+            return testClassAncestors.size() > 0;
+        } else {
+            return false;
         }
-
-        return testClassAncestors.size() > 0;
     }
 
     private List<IType> collectTestClassAncestors() throws ModelException {
         List<IType> testClassAncestors = new ArrayList<IType>();
 
-        ITypeHierarchy hierarchy = subject.newSupertypeHierarchy(new NullProgressMonitor());
+        ITypeHierarchy hierarchy = type.newSupertypeHierarchy(new NullProgressMonitor());
         if (hierarchy == null) return testClassAncestors;
-        IType[] superTypes = hierarchy.getAllSuperclasses(subject);
+        IType[] superTypes = hierarchy.getAllSuperclasses(type);
         if (superTypes == null) return testClassAncestors;
 
         for (IType superType: superTypes) {
             for (String testClassSuperType: testingFramework.getTestClassSuperTypes()) {
-                if (PHPClassType.fromIType(superType).getNamespace() != null) {
+                PHPClassType superTypeClassType = PHPClassType.fromIType(superType);
+                if (superTypeClassType.getNamespace() != null) {
                     testClassSuperType = "\\" + testClassSuperType; //$NON-NLS-1$
                 }
 
-                if (PHPClassType.fromIType(superType).getTypeName().equals(testClassSuperType)) {
+                if (superTypeClassType.getTypeName().equals(testClassSuperType)) {
                     testClassAncestors.add(superType);
                 }
             }
