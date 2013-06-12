@@ -61,7 +61,7 @@ public class RelatedTestsLaunchShortcut extends MakeGoodLaunchShortcut {
             PHPSourceModule phpSourceModule = new PHPSourceModule(source);
 
             try {
-                if (phpSourceModule.isTest()) {
+                if (phpSourceModule.hasRunnableTestTypes()) {
                     addTestTarget(source.getResource());
                 }
             } catch (CoreException e) {
@@ -135,7 +135,7 @@ public class RelatedTestsLaunchShortcut extends MakeGoodLaunchShortcut {
             IModelElement element = DLTKCore.create(resource);
             if (element == null) return;
             if (!(element instanceof ISourceModule)) return;
-            if (new PHPSourceModule((ISourceModule) element).isTest() == false) return;
+            if (new PHPSourceModule((ISourceModule) element).hasRunnableTestTypes() == false) return;
             addTestTarget(resource);
         }
 

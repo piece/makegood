@@ -51,7 +51,7 @@ public class RunTestFromEditorHandlerInContext extends RunHandler {
         }
 
         try {
-            return new PHPSourceModule(sourceModule).isTest();
+            return new PHPSourceModule(sourceModule).hasRunnableTestTypes();
         } catch (CoreException e) {
             Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
             return false;
