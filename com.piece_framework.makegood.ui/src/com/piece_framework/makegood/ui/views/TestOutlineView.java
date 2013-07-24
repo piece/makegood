@@ -50,14 +50,13 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.php.core.compiler.IPHPModifiers;
-import org.eclipse.php.internal.ui.preferences.PHPAppearancePreferencePage;
 import org.eclipse.php.internal.ui.util.PHPPluginImages;
 import org.eclipse.swt.custom.StyledText;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -97,7 +96,72 @@ public class TestOutlineView extends ViewPart {
     public void createPartControl(Composite parent) {
         parent.setLayout(new FillLayout());
 
-        viewer = new TreeViewer(parent);
+        viewer = new TreeViewer(parent) {
+            @Override
+            public ISelection getSelection() {
+                final TreeSelection origin = (TreeSelection) super.getSelection();
+                return new TreeSelection(origin.getPaths(), getComparer()) {
+
+                    @Override
+                    public Object[] toArray() {
+                        List<Object> results = new ArrayList<Object>();
+                        for (Object element: super.toArray()) {
+                            Assert.isTrue(
+                                element instanceof TestMethod
+                                || element instanceof TestClass);
+
+                            if (element instanceof TestMethod) {
+                                setBaseTestClassToTestMethod((TestMethod) element);
+                                results.add(element);
+                                continue;
+                            }
+
+                            TestClass testClass = (TestClass) element;
+                            if (testClass.isNamespace()) {
+                                results.addAll(baseTestClasses);
+                                break;
+                            }
+
+                            boolean isBaseTestClass = false;
+                            for (IType baseTestClass: baseTestClasses) {
+                                isBaseTestClass |= baseTestClass.getElementName().equals(testClass.getElementName());
+                            }
+                            if (isBaseTestClass) {
+                                results.add(element);
+                                continue;
+                            }
+
+                            try {
+                                for (IMethod method: testClass.getMethods()) {
+                                    setBaseTestClassToTestMethod((TestMethod) method);
+                                    results.add(method);
+                                }
+                            } catch (ModelException e) {
+                                Activator.getDefault().getLog().log(new Status(IStatus.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
+                            }
+                        }
+
+                        return results.toArray();
+                    }
+
+                    private void setBaseTestClassToTestMethod(TestMethod method) {
+                        IType type = (IType) method.getParent();
+                        try {
+                            for (IType baseTestClass: baseTestClasses) {
+                                Assert.isTrue(baseTestClass instanceof TestClass);
+                                if (((TestClass) baseTestClass).isSubtype(type)) {
+                                    method.setBaseType(baseTestClass);
+                                    break;
+                                }
+                            }
+                        } catch (ModelException e) {
+                            Activator.getDefault().getLog().log(new Status(IStatus.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
+                        }
+                    }
+                };
+            }
+        };
+
         viewer.setContentProvider(new HierarchicalLayoutContentProvider());
 
         viewer.setLabelProvider(
