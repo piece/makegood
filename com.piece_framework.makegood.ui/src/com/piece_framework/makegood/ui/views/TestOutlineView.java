@@ -360,12 +360,6 @@ public class TestOutlineView extends ViewPart {
         public void selectionChanged(SelectionChangedEvent event) {
             isOutlineSelecting = true;
             showEditor(event.getSelection(), false);
-
-            StructuredSelection structuredSelection = (StructuredSelection) event.getSelection();
-            if (structuredSelection.getFirstElement() instanceof TestMethod) {
-                setBaseTestClassToTestMethod(
-                    (TestMethod) structuredSelection.getFirstElement());
-            }
             isOutlineSelecting = false;
         }
 
@@ -405,20 +399,6 @@ public class TestOutlineView extends ViewPart {
 
             if (showWhenDeactivate) {
                 EditorOpener.open((IFile) source.getResource(), nameRange.getOffset(), nameRange.getLength());
-            }
-        }
-
-        private void setBaseTestClassToTestMethod(TestMethod method) {
-            IType type = (IType) method.getParent();
-            try {
-                for (IType baseTestClass: baseTestClasses) {
-                    Assert.isTrue(baseTestClass instanceof TestClass);
-                    if (((TestClass) baseTestClass).isSubtype(type)) {
-                        method.setBaseType(baseTestClass);
-                    }
-                }
-            } catch (ModelException e) {
-                Activator.getDefault().getLog().log(new Status(IStatus.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
             }
         }
     }
