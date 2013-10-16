@@ -78,4 +78,11 @@ public class DefaultConfiguration {
     public String getPHPUnitConfigFile() {
         return ""; //$NON-NLS-1$
     }
+
+    /**
+     * @since 2.5.0
+     */
+    public TestResultsLayout getTestResultsLayout() {
+        return TestResultsLayout.TAB;
+    }
 }

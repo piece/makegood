@@ -120,6 +120,21 @@ public class Messages extends NLS {
      */
     public static String MakeGoodPreferencePage_continuousTestingScopeFailedTestsLabel;
 
+    /**
+     * @since 2.5.0
+     */
+    public static String MakeGoodPreferencePage_testResultsLayoutGroupLabel;
+
+    /**
+     * @since 2.5.0
+     */
+    public static String MakeGoodPreferencePage_testResultsLayoutTabLabel;
+
+    /**
+     * @since 2.5.0
+     */
+    public static String MakeGoodPreferencePage_testResultsLayoutHorizontalLabel;
+
     public static String MakeGoodView_errorsLabel;
     public static String MakeGoodView_failuresLabel;
     public static String MakeGoodView_failureTraceLabel;
@@ -269,6 +284,16 @@ public class Messages extends NLS {
      * @since 2.3.0
      */
     public static String TestOutlineView_ToggleShowHierarchyAction;
+
+    /**
+     * @since 2.5.0
+     */
+    public static String MakeGoodView_SelectTestResultsLayoutAction_SetTestResultsLayoutToTabAction;
+
+    /**
+     * @since 2.5.0
+     */
+    public static String MakeGoodView_SelectTestResultsLayoutAction_SetTestResultsLayoutToHorizontalAction;
 
     static {
         // initialize resource bundle

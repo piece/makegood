@@ -15,6 +15,7 @@ import org.eclipse.jface.preference.IPreferenceStore;
 
 import com.piece_framework.makegood.core.Activator;
 import com.piece_framework.makegood.core.DefaultConfiguration;
+import com.piece_framework.makegood.core.TestResultsLayout;
 import com.piece_framework.makegood.core.continuoustesting.Scope;
 
 /**
@@ -27,6 +28,11 @@ public class MakeGoodPreference {
     public static final String CONTINUOUS_TESTING_ENABLED = "autotestEnabled"; //$NON-NLS-1$
 
     public static final String CONTINUOUS_TESTING_SCOPE = "autotestScope"; //$NON-NLS-1$
+
+    /**
+     * @since 2.5.0
+     */
+    private static final String TEST_RESULTS_LAYOUT = "testResultsLayout"; //$NON-NLS-1$
 
     /**
      * @since 2.3.0
@@ -71,6 +77,27 @@ public class MakeGoodPreference {
             return Scope.FAILED_TESTS;
         } else {
             return new DefaultConfiguration().getContinuousTesting().getScope();
+        }
+    }
+
+    /**
+     * @since 2.5.0
+     */
+    public void setTestResultsLayout(TestResultsLayout testResultsLayout) {
+        preferenceStore.setValue(TEST_RESULTS_LAYOUT, testResultsLayout.name());
+    }
+
+    /**
+     * @since 2.5.0
+     */
+    public TestResultsLayout getTestResultsLayout() {
+        String testResultsLayout = preferenceStore.getString(TEST_RESULTS_LAYOUT);
+        if (testResultsLayout.equals(TestResultsLayout.TAB.name())) {
+            return TestResultsLayout.TAB;
+        } else if (testResultsLayout.equals(TestResultsLayout.HORIZONTAL.name())) {
+            return TestResultsLayout.HORIZONTAL;
+        } else {
+            return new DefaultConfiguration().getTestResultsLayout();
         }
     }
 }

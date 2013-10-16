@@ -412,7 +412,6 @@
          </action>
          <action
                class="com.piece_framework.makegood.ui.actions.RerunFailedTestsAction"
-               definitionId="com.piece_framework.makegood.ui.commands.rerunFailedTestsCommand"
                icon="icons/rerun_failed_tests.gif"
                id="com.piece_framework.makegood.ui.viewActions.rerunFailedTestsAction"
                label="%viewActions.rerunFailedTestsAction.label"
@@ -459,6 +458,15 @@
                style="toggle"
                toolbarPath="properties"
                tooltip="%viewActions.toggleDebugTestAction.tooltip">
+         </action>
+         <action
+               class="com.piece_framework.makegood.ui.actions.SelectTestResultsLayoutAction"
+               icon="icons/toggle_show_hierarchy.gif"
+               id="com.piece_framework.makegood.ui.viewActions.selectTestResultsLayoutAction"
+               label="%viewActions.selectTestResultsLayoutAction.label"
+               style="pulldown"
+               toolbarPath="results"
+               tooltip="%viewActions.selectTestResultsLayoutAction.tooltip">
          </action>
          <action
                class="com.piece_framework.makegood.ui.actions.ToggleShowOnlyFailuresAction"

@@ -26,7 +26,7 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 
 import com.piece_framework.makegood.core.Activator;
 import com.piece_framework.makegood.core.DefaultConfiguration;
-import com.piece_framework.makegood.core.continuoustesting.ContinuousTesting;
+import com.piece_framework.makegood.core.TestResultsLayout;
 import com.piece_framework.makegood.core.continuoustesting.Scope;
 import com.piece_framework.makegood.core.preference.MakeGoodPreference;
 import com.piece_framework.makegood.ui.Messages;
@@ -52,6 +52,16 @@ public class MakeGoodPreferencePage extends PreferencePage implements IWorkbench
      */
     private Button continuousTestingFailedTestsButton;
 
+    /**
+     * @since 2.5.0
+     */
+    private Button testResultsLayoutTabButton;
+
+    /**
+     * @since 2.3.0
+     */
+    private Button testResultsLayoutHorizontalButton;
+
     @Override
     public void init(IWorkbench workbench) {
     }
@@ -63,6 +73,7 @@ public class MakeGoodPreferencePage extends PreferencePage implements IWorkbench
     protected Control createContents(Composite parent) {
         Composite contents = createComposite(parent);
         createContinuousTestingGroup(contents);
+        createTestResultsLayoutGroup(contents);
 
         return contents;
     }
@@ -80,13 +91,16 @@ public class MakeGoodPreferencePage extends PreferencePage implements IWorkbench
      */
     @Override
     protected void performDefaults() {
-        ContinuousTesting continuousTesting = new DefaultConfiguration().getContinuousTesting();
+        DefaultConfiguration defaultConfiguration = new DefaultConfiguration();
 
-        continuousTestingEnabledButton.setSelection(continuousTesting.isEnabled());
+        continuousTestingEnabledButton.setSelection(defaultConfiguration.getContinuousTesting().isEnabled());
 
-        continuousTestingScopeAllTestsButton.setSelection(continuousTesting.getScope() == Scope.ALL_TESTS);
-        continuousTestingScopeLastTestButton.setSelection(continuousTesting.getScope() == Scope.LAST_TEST);
-        continuousTestingFailedTestsButton.setSelection(continuousTesting.getScope() == Scope.FAILED_TESTS);
+        continuousTestingScopeAllTestsButton.setSelection(defaultConfiguration.getContinuousTesting().getScope() == Scope.ALL_TESTS);
+        continuousTestingScopeLastTestButton.setSelection(defaultConfiguration.getContinuousTesting().getScope() == Scope.LAST_TEST);
+        continuousTestingFailedTestsButton.setSelection(defaultConfiguration.getContinuousTesting().getScope() == Scope.FAILED_TESTS);
+
+        testResultsLayoutTabButton.setSelection(defaultConfiguration.getTestResultsLayout() == TestResultsLayout.TAB);
+        testResultsLayoutHorizontalButton.setSelection(defaultConfiguration.getTestResultsLayout() == TestResultsLayout.HORIZONTAL);
 
         super.performDefaults();
     }
@@ -106,6 +120,12 @@ public class MakeGoodPreferencePage extends PreferencePage implements IWorkbench
             preference.setContinuousTestingScope(Scope.LAST_TEST);
         } else if (continuousTestingFailedTestsButton.getSelection()) {
             preference.setContinuousTestingScope(Scope.FAILED_TESTS);
+        }
+
+        if (testResultsLayoutTabButton.getSelection()) {
+            preference.setTestResultsLayout(TestResultsLayout.TAB);
+        } else if (testResultsLayoutHorizontalButton.getSelection()) {
+            preference.setTestResultsLayout(TestResultsLayout.HORIZONTAL);
         }
 
         return true;
@@ -198,5 +218,42 @@ public class MakeGoodPreferencePage extends PreferencePage implements IWorkbench
         layoutData.horizontalIndent = 20;
 
         return layoutData;
+    }
+
+    /**
+     * @since 2.5.0
+     */
+    private Group createTestResultsLayoutGroup(Composite parent) {
+        Group testResultsLayoutGroup = new Group(parent, SWT.LEFT);
+        testResultsLayoutGroup.setLayout(new GridLayout());
+        testResultsLayoutGroup.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL));
+        testResultsLayoutGroup.setText(Messages.MakeGoodPreferencePage_testResultsLayoutGroupLabel);
+
+        testResultsLayoutTabButton = createTestResultsLayoutTabButton(testResultsLayoutGroup);
+        testResultsLayoutHorizontalButton = createTestResultsLayoutHorizontalButton(testResultsLayoutGroup);
+
+        return testResultsLayoutGroup;
+    }
+
+    /**
+     * @since 2.5.0
+     */
+    private Button createTestResultsLayoutTabButton(Composite parent) {
+        Button button = new Button(parent, SWT.RADIO);
+        button.setText(Messages.MakeGoodPreferencePage_testResultsLayoutTabLabel);
+        button.setSelection(new MakeGoodPreference().getTestResultsLayout() == TestResultsLayout.TAB);
+
+        return button;
+    }
+
+    /**
+     * @since 2.5.0
+     */
+    private Button createTestResultsLayoutHorizontalButton(Composite parent) {
+        Button button = new Button(parent, SWT.RADIO);
+        button.setText(Messages.MakeGoodPreferencePage_testResultsLayoutHorizontalLabel);
+        button.setSelection(new MakeGoodPreference().getTestResultsLayout() == TestResultsLayout.HORIZONTAL);
+
+        return button;
     }
 }

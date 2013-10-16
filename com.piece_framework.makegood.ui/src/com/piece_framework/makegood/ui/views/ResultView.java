@@ -47,6 +47,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
+import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Color;
@@ -69,6 +70,7 @@ import org.eclipse.ui.dialogs.PreferencesUtil;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.progress.UIJob;
 
+import com.piece_framework.makegood.core.TestResultsLayout;
 import com.piece_framework.makegood.core.result.Result;
 import com.piece_framework.makegood.core.result.TestCaseResult;
 import com.piece_framework.makegood.core.result.TestSuiteResult;
@@ -81,6 +83,7 @@ import com.piece_framework.makegood.ui.MakeGoodContext;
 import com.piece_framework.makegood.ui.MakeGoodStatus;
 import com.piece_framework.makegood.ui.MakeGoodStatusChangeListener;
 import com.piece_framework.makegood.ui.Messages;
+import com.piece_framework.makegood.ui.TestResultsLayoutChangeListener;
 import com.piece_framework.makegood.ui.actions.ConfigureContinuousTestingAction;
 import com.piece_framework.makegood.ui.actions.MoveToNextFailureAction;
 import com.piece_framework.makegood.ui.actions.MoveToPreviousFailureAction;
@@ -99,7 +102,7 @@ import com.piece_framework.makegood.ui.widgets.InternalFileWithLineRange;
 import com.piece_framework.makegood.ui.widgets.MakeGoodColor;
 import com.piece_framework.makegood.ui.widgets.ProgressBar;
 
-public class ResultView extends ViewPart {
+public class ResultView extends ViewPart implements TestResultsLayoutChangeListener {
     public static final String VIEW_ID = "com.piece_framework.makegood.ui.views.resultView"; //$NON-NLS-1$
     private static final String CONTEXT_ID = "com.piece_framework.makegood.ui.contexts.resultView"; //$NON-NLS-1$
 
@@ -160,19 +163,9 @@ public class ResultView extends ViewPart {
     private CLabel endTimeLabel;
 
     /**
-     * @since 2.0.0
+     * @since 2.5.0
      */
-    private CTabFolder testResultsTabFolder;
-
-    /**
-     * @since 2.0.0
-     */
-    private CTabItem resultTreeTabItem;
-
-    /**
-     * @since 2.0.0
-     */
-    private CTabItem failureTraceTabItem;
+    private Composite testResultsComposite;
 
     @Override
     public void createPartControl(final Composite parent) {
@@ -242,65 +235,14 @@ public class ResultView extends ViewPart {
         endTimeLabel = new CLabel(counter, SWT.LEFT);
         endTimeLabel.setLayoutData(createHorizontalFillGridData());
 
-        // Row4: The Test Results Tabs
-        testResultsTabFolder = new CTabFolder(parent, SWT.NONE);
-        testResultsTabFolder.setSimple(false);
-        testResultsTabFolder.setLayoutData(createBothFillGridData());
-        testResultsTabFolder.setLayout(adjustLayout(new GridLayout()));
-
-        resultTreeTabItem = new CTabItem(testResultsTabFolder, SWT.NONE);
-        resultTreeTabItem.setText(Messages.MakeGoodView_testResultsLabel);
-
-        Tree resultTree = new Tree(testResultsTabFolder, SWT.BORDER);
-        resultTree.setLayoutData(createBothFillGridData());
-        resultTreeViewer = new TreeViewer(resultTree);
-        resultTreeViewer.setContentProvider(new ResultTreeContentProvider());
-        resultTreeViewer.setLabelProvider(new ResultTreeLabelProvider());
-        resultTreeViewer.addSelectionChangedListener(new ISelectionChangedListener() {
-            @Override
-            public void selectionChanged(SelectionChangedEvent event) {
-                failureTrace.clearText();
-                if (!(event.getSelection() instanceof IStructuredSelection)) return;
-                IStructuredSelection selection = (IStructuredSelection) event.getSelection();
-                Object element = selection.getFirstElement();
-                if (!(element instanceof TestCaseResult)) return;
-                TestCaseResult testCase = (TestCaseResult) element;
-                if (!testCase.isFixed()) return;
-                if (!testCase.hasFailures() && !testCase.hasErrors()) return;
-                failureTrace.setText(testCase.getFailureTrace());
-            }
-        });
-        resultTreeViewer.addDoubleClickListener(new IDoubleClickListener() {
-            @Override
-            public void doubleClick(DoubleClickEvent event) {
-                Object element = ((IStructuredSelection) event.getSelection()).getFirstElement();
-                if (element == null) return;
-                if (element instanceof Result) {
-                    try {
-                        editorOpener.open((Result) element);
-                    } catch (PartInitException e) {
-                        Activator.getDefault().getLog().log(new Status(IStatus.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
-                    }
-                }
-            }
-        });
-        resultTreeTabItem.setControl(resultTree);
-
-        failureTraceTabItem = new CTabItem(testResultsTabFolder, SWT.NONE);
-        failureTraceTabItem.setText(Messages.MakeGoodView_failureTraceLabel);
-        failureTraceTabItem.setImage(Activator.getImageDescriptor("icons/failure_trace.gif").createImage()); //$NON-NLS-1$
-        failureTrace = createFailureTrace(
-            testResultsTabFolder,
-            SWT.MULTI | SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL
-        );
-        failureTraceTabItem.setControl(failureTrace);
-
-        testResultsTabFolder.setSelection(resultTreeTabItem);
+        // Row4: The Test Results
+        testResultsComposite = createTestResultsComposite(parent, SWT.NONE, MakeGoodContext.getInstance().getTestResultsLayout());
 
         IViewSite site = getViewSite();
         site.getPage().addPartListener(partListener);
 
         MakeGoodContext.getInstance().addStatusChangeListener(statusArea);
+        MakeGoodContext.getInstance().addTestResultsLayoutChangeListener(this);
 
         clear();
 
@@ -393,12 +335,13 @@ public class ResultView extends ViewPart {
 
     @Override
     public void dispose() {
-        MakeGoodContext.getInstance().removeStatusChangeListener(statusArea);
-
         IViewSite site = getViewSite();
         if (site != null) {
             site.getPage().removePartListener(partListener);
         }
+
+        MakeGoodContext.getInstance().removeTestResultsLayoutChangeListener(this);
+        MakeGoodContext.getInstance().removeStatusChangeListener(statusArea);
 
         super.dispose();
     }
@@ -423,10 +366,8 @@ public class ResultView extends ViewPart {
      * @since 2.0.0
      */
     public void switchToUnselectedTestResultsTab() {
-        if (testResultsTabFolder.getSelection() == resultTreeTabItem) {
-            testResultsTabFolder.setSelection(failureTraceTabItem);
-        } else if (testResultsTabFolder.getSelection() == failureTraceTabItem) {
-            testResultsTabFolder.setSelection(resultTreeTabItem);
+        if (testResultsComposite instanceof TabTestResultsComposite) {
+            ((TabTestResultsComposite) testResultsComposite).switchToUnselectedTab();
         }
     }
 
@@ -663,6 +604,100 @@ public class ResultView extends ViewPart {
                 ": " + //$NON-NLS-1$
                 new SimpleDateFormat("HH:mm:ss z").format(testLifecycle.getEndTime()) //$NON-NLS-1$
             );
+        }
+    }
+
+    /**
+     * @since 2.5.0
+     */
+    private Composite createTestResultsComposite(Composite parent, int style, TestResultsLayout testResultsLayout) {
+        if (TestResultsLayout.TAB.equals(testResultsLayout)) {
+            return createTabTestResultsComposite(parent, style);
+        } else if (TestResultsLayout.HORIZONTAL.equals(testResultsLayout)) {
+            return createHorizontalTestResultsComposite(parent, style);
+        } else {
+            return createTabTestResultsComposite(parent, style);
+        }
+    }
+
+    /**
+     * @since 2.5.0
+     */
+    private Composite createTabTestResultsComposite(Composite parent, int style) {
+        CTabFolder testResultsComposite = new TabTestResultsComposite(parent, style);
+        testResultsComposite.setSimple(false);
+        testResultsComposite.setLayoutData(createBothFillGridData());
+        testResultsComposite.setLayout(adjustLayout(new GridLayout()));
+
+        return testResultsComposite;
+    }
+
+    /**
+     * @since 2.5.0
+     */
+    private Composite createHorizontalTestResultsComposite(Composite parent, int style) {
+        SashForm testResultsComposite = new HorizontalResultsComposite(parent, style);
+        testResultsComposite.setLayoutData(createBothFillGridData());
+        testResultsComposite.setLayout(adjustLayout(new GridLayout(2, true)));
+
+        return testResultsComposite;
+    }
+
+    /**
+     * @since 2.5.0
+     */
+    private TreeViewer createTestResultsTreeViewer(Tree resultTree) {
+        TreeViewer treeViewer = new TreeViewer(resultTree);
+        treeViewer.setContentProvider(new ResultTreeContentProvider());
+        treeViewer.setLabelProvider(new ResultTreeLabelProvider());
+        treeViewer.addSelectionChangedListener(new ISelectionChangedListener() {
+            @Override
+            public void selectionChanged(SelectionChangedEvent event) {
+                failureTrace.clearText();
+                if (!(event.getSelection() instanceof IStructuredSelection)) return;
+                IStructuredSelection selection = (IStructuredSelection) event.getSelection();
+                Object element = selection.getFirstElement();
+                if (!(element instanceof TestCaseResult)) return;
+                TestCaseResult testCase = (TestCaseResult) element;
+                if (!testCase.isFixed()) return;
+                if (!testCase.hasFailures() && !testCase.hasErrors()) return;
+                failureTrace.setText(testCase.getFailureTrace());
+            }
+        });
+        treeViewer.addDoubleClickListener(new IDoubleClickListener() {
+            @Override
+            public void doubleClick(DoubleClickEvent event) {
+                Object element = ((IStructuredSelection) event.getSelection()).getFirstElement();
+                if (element == null) return;
+                if (element instanceof Result) {
+                    try {
+                        editorOpener.open((Result) element);
+                    } catch (PartInitException e) {
+                        Activator.getDefault().getLog().log(new Status(IStatus.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
+                    }
+                }
+            }
+        });
+
+        return treeViewer;
+    }
+
+    /**
+     * @since 2.5.0
+     */
+    @Override
+    public void layoutChanged(TestResultsLayout testResultsLayout) {
+        Composite parent = testResultsComposite.getParent();
+        if (!testResultsComposite.isDisposed()) {
+            testResultsComposite.dispose();
+        }
+
+        testResultsComposite = createTestResultsComposite(parent, SWT.NONE, testResultsLayout);
+        testResultsComposite.getParent().layout();
+
+        testLifecycle = TestLifecycle.getInstance();
+        if (testLifecycle != null) {
+            setTreeInput(testLifecycle.getProgress().getResult());
         }
     }
 
@@ -1215,6 +1250,62 @@ public class ResultView extends ViewPart {
             }
 
             return information.toString();
+        }
+    }
+
+    /**
+     * @since 2.5.0
+     */
+    private class TabTestResultsComposite extends CTabFolder {
+        private CTabItem testResultsTreeTabItem;
+        private CTabItem failureTraceTabItem;
+
+        public TabTestResultsComposite(Composite parent, int style) {
+            super(parent, style);
+
+            testResultsTreeTabItem = new CTabItem(this, SWT.NONE);
+            testResultsTreeTabItem.setText(Messages.MakeGoodView_testResultsLabel);
+            setSelection(testResultsTreeTabItem);
+            Tree testResultsTree = new Tree(this, SWT.BORDER);
+            testResultsTree.setLayoutData(createBothFillGridData());
+            testResultsTreeTabItem.setControl(testResultsTree);
+            resultTreeViewer = createTestResultsTreeViewer(testResultsTree);
+
+            failureTraceTabItem = new CTabItem(this, SWT.NONE);
+            failureTraceTabItem.setText(Messages.MakeGoodView_failureTraceLabel);
+            failureTraceTabItem.setImage(Activator.getImageDescriptor("icons/failure_trace.gif").createImage()); //$NON-NLS-1$
+            failureTrace = createFailureTrace(this, SWT.MULTI | SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
+            failureTraceTabItem.setControl(failureTrace);
+        }
+
+        public void switchToUnselectedTab() {
+            if (getSelection() == testResultsTreeTabItem) {
+                setSelection(failureTraceTabItem);
+            } else if (getSelection() == failureTraceTabItem) {
+                setSelection(testResultsTreeTabItem);
+            }
+        }
+    }
+
+    /**
+     * @since 2.5.0
+     */
+    private class HorizontalResultsComposite extends SashForm {
+        public HorizontalResultsComposite(Composite parent, int style) {
+            super(parent, style);
+
+            Composite testResultsTreeComposite = new Composite(this, SWT.NONE);
+            testResultsTreeComposite.setLayoutData(createHorizontalFillGridData());
+            testResultsTreeComposite.setLayout(adjustLayout(new GridLayout(1, true)));
+            Tree testResultsTree = new Tree(testResultsTreeComposite, SWT.BORDER);
+            testResultsTree.setLayoutData(createBothFillGridData());
+            resultTreeViewer = createTestResultsTreeViewer(testResultsTree);
+            testResultsTree.setLayoutData(createBothFillGridData());
+
+            Composite failureTraceComposite = new Composite(this, SWT.NONE);
+            failureTraceComposite.setLayoutData(createHorizontalFillGridData());
+            failureTraceComposite.setLayout(adjustLayout(new GridLayout(1, true)));
+            failureTrace = createFailureTrace(failureTraceComposite, SWT.MULTI | SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
         }
     }
 }

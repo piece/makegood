@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2011, 2013 KUBO Atsuhiro <kubo@iteman.jp>,
  *               2012 MATSUFUJI Hideharu <matsufuji2008@gmail.com>
  * All rights reserved.
  *
@@ -22,6 +22,8 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchListener;
 
+import com.piece_framework.makegood.core.TestResultsLayout;
+import com.piece_framework.makegood.core.preference.MakeGoodPreference;
 import com.piece_framework.makegood.launch.TestLifecycle;
 import com.piece_framework.makegood.ui.launch.TestRunner;
 
@@ -39,7 +41,18 @@ public class MakeGoodContext implements IWorkbenchListener {
     private MakeGoodStatus status;
     private List<MakeGoodStatusChangeListener> statusChangeListeners = new ArrayList<MakeGoodStatusChangeListener>();
 
+    /**
+     * @since 2.5.0
+     */
+    private TestResultsLayout testResultsLayout;
+
+    /**
+     * @since 2.5.0
+     */
+    private List<TestResultsLayoutChangeListener> testResultsLayoutChangeListeners = new ArrayList<TestResultsLayoutChangeListener>();
+
     private MakeGoodContext() {
+        testResultsLayout = new MakeGoodPreference().getTestResultsLayout();
     }
 
     public static MakeGoodContext getInstance() {
@@ -48,6 +61,24 @@ public class MakeGoodContext implements IWorkbenchListener {
         }
 
         return soleInstance;
+    }
+
+    /**
+     * @since 2.5.0
+     */
+    public void setTestResultsLayout(TestResultsLayout testResultsLayout) {
+        this.testResultsLayout = testResultsLayout;
+
+        for (TestResultsLayoutChangeListener listener: testResultsLayoutChangeListeners) {
+            listener.layoutChanged(this.testResultsLayout);
+        }
+    }
+
+    /**
+     * @since 2.5.0
+     */
+    public TestResultsLayout getTestResultsLayout() {
+        return testResultsLayout;
     }
 
     @Override
@@ -119,5 +150,21 @@ public class MakeGoodContext implements IWorkbenchListener {
 
     public void removeStatusChangeListener(MakeGoodStatusChangeListener listener) {
         statusChangeListeners.remove(listener);
+    }
+
+    /**
+     * @since 2.5.0
+     */
+    public void addTestResultsLayoutChangeListener(TestResultsLayoutChangeListener listener) {
+        if (!testResultsLayoutChangeListeners.contains(listener)) {
+            testResultsLayoutChangeListeners.add(listener);
+        }
+    }
+
+    /**
+     * @since 2.5.0
+     */
+    public void removeTestResultsLayoutChangeListener(TestResultsLayoutChangeListener listener) {
+        testResultsLayoutChangeListeners.remove(listener);
     }
 }
