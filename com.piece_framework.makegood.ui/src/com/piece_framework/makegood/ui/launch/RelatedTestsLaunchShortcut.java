@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2010 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
- *               2010-2012 KUBO Atsuhiro <kubo@iteman.jp>,
+ *               2010-2013 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -37,6 +37,7 @@ import org.eclipse.ui.texteditor.ITextEditor;
 import com.piece_framework.makegood.core.PHPSourceModule;
 import com.piece_framework.makegood.core.PHPType;
 import com.piece_framework.makegood.core.TestingFramework;
+import com.piece_framework.makegood.core.preference.MakeGoodProperty;
 import com.piece_framework.makegood.launch.TestTargetRepository;
 import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.EditorParser;
@@ -58,7 +59,13 @@ public class RelatedTestsLaunchShortcut extends MakeGoodLaunchShortcut {
 
         ISourceModule source = editorParser.getSourceModule();
         if (source != null) {
-            PHPSourceModule phpSourceModule = new PHPSourceModule(source);
+            IResource resource = source.getResource();
+            if (resource == null) {
+                Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.PLUGIN_ID, "The resource is not found. The given target may be invalid.")); //$NON-NLS-1$
+                throw new TestLaunchException();
+            }
+
+            PHPSourceModule phpSourceModule = new PHPSourceModule(source, new MakeGoodProperty(resource).getTestingFramework());
 
             try {
                 if (phpSourceModule.hasRunnableTestTypes()) {
@@ -129,13 +136,14 @@ public class RelatedTestsLaunchShortcut extends MakeGoodLaunchShortcut {
         @Override
         public void acceptSearchMatch(SearchMatch match) throws CoreException {
             IResource resource = match.getResource();
+            if (resource == null) return;
             if (searchMatches.contains(resource)) return;
             searchMatches.add(resource);
 
             IModelElement element = DLTKCore.create(resource);
             if (element == null) return;
             if (!(element instanceof ISourceModule)) return;
-            if (new PHPSourceModule((ISourceModule) element).hasRunnableTestTypes() == false) return;
+            if (new PHPSourceModule((ISourceModule) element, new MakeGoodProperty(resource).getTestingFramework()).hasRunnableTestTypes() == false) return;
             addTestTarget(resource);
         }
 

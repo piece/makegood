@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2012-2013 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -19,8 +19,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.IType;
 
-import com.piece_framework.makegood.core.preference.MakeGoodProperty;
-
 /**
  * @since 2.2.0
  */
@@ -28,12 +26,9 @@ public class PHPSourceModule {
     private ISourceModule subject;
     private TestingFramework testingFramework;
 
-    public PHPSourceModule(ISourceModule subject) {
+    public PHPSourceModule(ISourceModule subject, TestingFramework testingFramework) {
         this.subject = subject;
-        IResource resource = subject.getResource();
-        if (resource != null) {
-            testingFramework = new MakeGoodProperty(resource).getTestingFramework();
-        }
+        this.testingFramework = testingFramework;
     }
 
     public IResource getResource() {
