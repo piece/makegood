@@ -1305,6 +1305,9 @@ public class ResultView extends ViewPart implements TestResultsLayoutChangeListe
             Composite failureTraceComposite = new Composite(this, SWT.NONE);
             failureTraceComposite.setLayoutData(createHorizontalFillGridData());
             failureTraceComposite.setLayout(adjustLayout(new GridLayout(1, true)));
+            CLabel failureTraceLabel = new CLabel(failureTraceComposite, SWT.LEFT);
+            failureTraceLabel.setText(Messages.MakeGoodView_failureTraceLabel);
+            failureTraceLabel.setImage(Activator.getImageDescriptor("icons/failure_trace.gif").createImage()); //$NON-NLS-1$
             failureTrace = createFailureTrace(failureTraceComposite, SWT.MULTI | SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
         }
     }
