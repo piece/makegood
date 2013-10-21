@@ -48,13 +48,6 @@ public class RuntimeConfiguration {
     /**
      * @since 2.3.0
      */
-    public void setContinuousTesting(ContinuousTesting continuousTesting) {
-        this.continuousTesting = continuousTesting;
-    }
-
-    /**
-     * @since 2.3.0
-     */
     public ContinuousTesting getContinuousTesting() {
         return continuousTesting;
     }
