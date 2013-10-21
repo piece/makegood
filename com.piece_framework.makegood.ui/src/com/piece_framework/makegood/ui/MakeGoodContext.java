@@ -46,12 +46,14 @@ public class MakeGoodContext implements IWorkbenchListener {
         if (soleInstance == null) {
             soleInstance = new MakeGoodContext();
         }
+
         return soleInstance;
     }
 
     @Override
     public boolean preShutdown(IWorkbench workbench, boolean forced) {
         isShuttingDown = true;
+
         return true;
     }
 
@@ -94,7 +96,6 @@ public class MakeGoodContext implements IWorkbenchListener {
             }
         } catch (CoreException e) {
             Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
-            return;
         }
     }
 
