@@ -25,13 +25,12 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.progress.UIJob;
 
 import com.piece_framework.makegood.core.continuoustesting.Scope;
-import com.piece_framework.makegood.launch.RuntimeConfiguration;
 
 public class ContinuousTestRunner implements IResourceChangeListener {
     @Override
     public void resourceChanged(IResourceChangeEvent event) {
         if (MakeGoodContext.getInstance().isShuttingDown()) return;
-        if (!RuntimeConfiguration.getInstance().getContinuousTesting().isEnabled()) return;
+        if (!MakeGoodContext.getInstance().getContinuousTesting().isEnabled()) return;
         IResourceDelta delta = event.getDelta();
         if (delta == null) return;
         IResourceDelta[] deltas = delta.getAffectedChildren();
@@ -44,7 +43,7 @@ public class ContinuousTestRunner implements IResourceChangeListener {
         }
         if (!shouldRunTests(deltas)) return;
 
-        if (RuntimeConfiguration.getInstance().getContinuousTesting().getScope() == Scope.ALL_TESTS) {
+        if (MakeGoodContext.getInstance().getContinuousTesting().getScope() == Scope.ALL_TESTS) {
             final ISelection selection = new StructuredSelection(deltas[0].getResource());
             if (ActivePart.isAllTestsRunnable(selection)) {
                 Job job = new UIJob("MakeGood Run All Tests By Continuous Test Runner") { //$NON-NLS-1$
@@ -56,7 +55,7 @@ public class ContinuousTestRunner implements IResourceChangeListener {
                 };
                 job.schedule();
             }
-        } else if (RuntimeConfiguration.getInstance().getContinuousTesting().getScope() == Scope.LAST_TEST) {
+        } else if (MakeGoodContext.getInstance().getContinuousTesting().getScope() == Scope.LAST_TEST) {
             if (MakeGoodContext.getInstance().getTestRunner().hasLastTest()) {
                 Job job = new UIJob("MakeGood Run Last Test By Continuous Test Runner") { //$NON-NLS-1$
                     @Override
@@ -67,7 +66,7 @@ public class ContinuousTestRunner implements IResourceChangeListener {
                 };
                 job.schedule();
             }
-        } else if (RuntimeConfiguration.getInstance().getContinuousTesting().getScope() == Scope.FAILED_TESTS) {
+        } else if (MakeGoodContext.getInstance().getContinuousTesting().getScope() == Scope.FAILED_TESTS) {
             if (MakeGoodContext.getInstance().getTestRunner().hasLastTest()) {
                 Job job = new UIJob("MakeGood Run Failed Tests By Continuous Test Runner") { //$NON-NLS-1$
                     @Override

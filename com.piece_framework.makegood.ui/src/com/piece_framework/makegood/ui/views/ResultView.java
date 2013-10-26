@@ -503,7 +503,7 @@ public class ResultView extends ViewPart implements TestResultsLayoutChangeListe
         if (configureContinuousTestingItem != null) {
             IAction configureContinuousTestingAction = configureContinuousTestingItem.getAction();
             configureContinuousTestingAction.setImageDescriptor(
-                RuntimeConfiguration.getInstance().getContinuousTesting().isEnabled() ?
+                MakeGoodContext.getInstance().getContinuousTesting().isEnabled() ?
                     ConfigureContinuousTestingAction.IMAGE_DESCRIPTOR_ENABLED :
                     ConfigureContinuousTestingAction.IMAGE_DESCRIPTOR_DISABLED
             );

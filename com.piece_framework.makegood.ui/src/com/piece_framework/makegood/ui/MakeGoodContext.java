@@ -23,6 +23,7 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchListener;
 
 import com.piece_framework.makegood.core.TestResultsLayout;
+import com.piece_framework.makegood.core.continuoustesting.ContinuousTesting;
 import com.piece_framework.makegood.core.preference.MakeGoodPreference;
 import com.piece_framework.makegood.launch.TestLifecycle;
 import com.piece_framework.makegood.ui.launch.TestRunner;
@@ -51,8 +52,15 @@ public class MakeGoodContext implements IWorkbenchListener {
      */
     private List<TestResultsLayoutChangeListener> testResultsLayoutChangeListeners = new ArrayList<TestResultsLayoutChangeListener>();
 
+    /**
+     * @since 2.5.0
+     */
+    private ContinuousTesting continuousTesting;
+
     private MakeGoodContext() {
-        testResultsLayout = new MakeGoodPreference().getTestResultsLayout();
+        MakeGoodPreference preference = new MakeGoodPreference();
+        continuousTesting = new ContinuousTesting(preference.getContinuousTestingEnabled(), preference.getContinuousTestingScope());
+        testResultsLayout = preference.getTestResultsLayout();
     }
 
     public static MakeGoodContext getInstance() {
@@ -166,5 +174,12 @@ public class MakeGoodContext implements IWorkbenchListener {
      */
     public void removeTestResultsLayoutChangeListener(TestResultsLayoutChangeListener listener) {
         testResultsLayoutChangeListeners.remove(listener);
+    }
+
+    /**
+     * @since 2.5.0
+     */
+    public ContinuousTesting getContinuousTesting() {
+        return continuousTesting;
     }
 }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2012-2013 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -24,8 +24,8 @@ import org.eclipse.ui.IViewActionDelegate;
 import org.eclipse.ui.IViewPart;
 
 import com.piece_framework.makegood.core.continuoustesting.Scope;
-import com.piece_framework.makegood.launch.RuntimeConfiguration;
 import com.piece_framework.makegood.ui.Activator;
+import com.piece_framework.makegood.ui.MakeGoodContext;
 import com.piece_framework.makegood.ui.Messages;
 
 /**
@@ -39,7 +39,7 @@ public class ConfigureContinuousTestingAction implements IViewActionDelegate {
 
     @Override
     public void run(IAction action) {
-        (RuntimeConfiguration.getInstance().getContinuousTesting().isEnabled() ? createDisableContinuousTestingAction() : createEnableContinuousTestingAction()).run();
+        (MakeGoodContext.getInstance().getContinuousTesting().isEnabled() ? createDisableContinuousTestingAction() : createEnableContinuousTestingAction()).run();
     }
 
     @Override
@@ -109,12 +109,12 @@ public class ConfigureContinuousTestingAction implements IViewActionDelegate {
         public EnableContinuousTestingAction(String text) {
             super(text);
             setToolTipText(text);
-            setChecked(RuntimeConfiguration.getInstance().getContinuousTesting().isEnabled());
+            setChecked(MakeGoodContext.getInstance().getContinuousTesting().isEnabled());
         }
 
         @Override
         public void run() {
-            RuntimeConfiguration.getInstance().getContinuousTesting().setEnabled(true);
+            MakeGoodContext.getInstance().getContinuousTesting().setEnabled(true);
             setChecked(true);
             lastSelectedAction.setImageDescriptor(IMAGE_DESCRIPTOR_ENABLED);
         }
@@ -124,12 +124,12 @@ public class ConfigureContinuousTestingAction implements IViewActionDelegate {
         public DisableContinuousTestingAction(String text) {
             super(text);
             setToolTipText(text);
-            setChecked(!RuntimeConfiguration.getInstance().getContinuousTesting().isEnabled());
+            setChecked(!MakeGoodContext.getInstance().getContinuousTesting().isEnabled());
         }
 
         @Override
         public void run() {
-            RuntimeConfiguration.getInstance().getContinuousTesting().setEnabled(false);
+            MakeGoodContext.getInstance().getContinuousTesting().setEnabled(false);
             setChecked(true);
             lastSelectedAction.setImageDescriptor(IMAGE_DESCRIPTOR_DISABLED);
         }
@@ -139,12 +139,12 @@ public class ConfigureContinuousTestingAction implements IViewActionDelegate {
         public SetContinuousTestingScopeToAllTestsAction(String text) {
             super(text);
             setToolTipText(text);
-            setChecked(Scope.ALL_TESTS.equals(RuntimeConfiguration.getInstance().getContinuousTesting().getScope()));
+            setChecked(Scope.ALL_TESTS.equals(MakeGoodContext.getInstance().getContinuousTesting().getScope()));
         }
 
         @Override
         public void run() {
-            RuntimeConfiguration.getInstance().getContinuousTesting().setScope(Scope.ALL_TESTS);
+            MakeGoodContext.getInstance().getContinuousTesting().setScope(Scope.ALL_TESTS);
             setChecked(true);
         }
     }
@@ -153,12 +153,12 @@ public class ConfigureContinuousTestingAction implements IViewActionDelegate {
         public SetContinuousTestingScopeToLastTestAction(String text) {
             super(text);
             setToolTipText(text);
-            setChecked(Scope.LAST_TEST.equals(RuntimeConfiguration.getInstance().getContinuousTesting().getScope()));
+            setChecked(Scope.LAST_TEST.equals(MakeGoodContext.getInstance().getContinuousTesting().getScope()));
         }
 
         @Override
         public void run() {
-            RuntimeConfiguration.getInstance().getContinuousTesting().setScope(Scope.LAST_TEST);
+            MakeGoodContext.getInstance().getContinuousTesting().setScope(Scope.LAST_TEST);
             setChecked(true);
         }
     }
@@ -167,12 +167,12 @@ public class ConfigureContinuousTestingAction implements IViewActionDelegate {
         public SetContinuousTestingScopeToFailedTestsAction(String text) {
             super(text);
             setToolTipText(text);
-            setChecked(Scope.FAILED_TESTS.equals(RuntimeConfiguration.getInstance().getContinuousTesting().getScope()));
+            setChecked(Scope.FAILED_TESTS.equals(MakeGoodContext.getInstance().getContinuousTesting().getScope()));
         }
 
         @Override
         public void run() {
-            RuntimeConfiguration.getInstance().getContinuousTesting().setScope(Scope.FAILED_TESTS);
+            MakeGoodContext.getInstance().getContinuousTesting().setScope(Scope.FAILED_TESTS);
             setChecked(true);
         }
     }

@@ -13,18 +13,10 @@ package com.piece_framework.makegood.launch;
 
 import org.eclipse.debug.core.ILaunchManager;
 
-import com.piece_framework.makegood.core.continuoustesting.ContinuousTesting;
-import com.piece_framework.makegood.core.preference.MakeGoodPreference;
-
 public class RuntimeConfiguration {
     public boolean debugsTest = false;
     public boolean stopsOnFailure = false;
     public boolean showsOnlyFailures = false;
-
-    /**
-     * @since 2.3.0
-     */
-    private ContinuousTesting continuousTesting;
 
     private static RuntimeConfiguration soleInstance;
 
@@ -38,17 +30,5 @@ public class RuntimeConfiguration {
 
     public String getLaunchMode() {
         return debugsTest ? ILaunchManager.DEBUG_MODE : ILaunchManager.RUN_MODE;
-    }
-
-    private RuntimeConfiguration() {
-        MakeGoodPreference preference = new MakeGoodPreference();
-        continuousTesting = new ContinuousTesting(preference.getContinuousTestingEnabled(), preference.getContinuousTestingScope());
-    }
-
-    /**
-     * @since 2.3.0
-     */
-    public ContinuousTesting getContinuousTesting() {
-        return continuousTesting;
     }
 }
