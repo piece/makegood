@@ -57,6 +57,11 @@ public class MakeGoodContext implements IWorkbenchListener {
      */
     private ContinuousTesting continuousTesting;
 
+    /**
+     * @since 2.5.0
+     */
+    private boolean debug = false;
+
     private MakeGoodContext() {
         MakeGoodPreference preference = new MakeGoodPreference();
         continuousTesting = new ContinuousTesting(preference.getContinuousTestingEnabled(), preference.getContinuousTestingScope());
@@ -181,5 +186,19 @@ public class MakeGoodContext implements IWorkbenchListener {
      */
     public ContinuousTesting getContinuousTesting() {
         return continuousTesting;
+    }
+
+    /**
+     * @since 2.5.0
+     */
+    public void setDebug(boolean debug) {
+        this.debug = debug;
+    }
+
+    /**
+     * @since 2.5.0
+     */
+    public boolean isDebug() {
+        return debug;
     }
 }

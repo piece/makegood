@@ -13,18 +13,19 @@
 package com.piece_framework.makegood.ui.launch;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPart;
+
 import com.piece_framework.makegood.launch.PHPexeItemRepository;
-import com.piece_framework.makegood.launch.RuntimeConfiguration;
 import com.piece_framework.makegood.launch.TestLifecycle;
 import com.piece_framework.makegood.launch.TestTargetRepository;
 import com.piece_framework.makegood.ui.ActivePart;
-import com.piece_framework.makegood.ui.Messages;
 import com.piece_framework.makegood.ui.MakeGoodContext;
+import com.piece_framework.makegood.ui.Messages;
 import com.piece_framework.makegood.ui.views.ViewOpener;
 
 public class TestRunner {
@@ -144,7 +145,7 @@ public class TestRunner {
             lastActivePart = ActivePart.getActivePart();
         }
 
-        String launchMode = RuntimeConfiguration.getInstance().getLaunchMode();
+        String launchMode = MakeGoodContext.getInstance().isDebug() ? ILaunchManager.DEBUG_MODE : ILaunchManager.RUN_MODE;
 
         try {
             if (testTarget instanceof ISelection) {

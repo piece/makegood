@@ -465,9 +465,7 @@ public class ResultView extends ViewPart implements TestResultsLayoutChangeListe
         ActionContributionItem debugTestItem =
             (ActionContributionItem) manager.find(ToggleDebugTestAction.ACTION_ID);
         if (debugTestItem != null) {
-            debugTestItem.getAction().setChecked(
-                RuntimeConfiguration.getInstance().debugsTest
-            );
+            debugTestItem.getAction().setChecked(MakeGoodContext.getInstance().isDebug());
         }
 
         ActionContributionItem stopTestItem =

@@ -11,10 +11,7 @@
 
 package com.piece_framework.makegood.launch;
 
-import org.eclipse.debug.core.ILaunchManager;
-
 public class RuntimeConfiguration {
-    public boolean debugsTest = false;
     public boolean stopsOnFailure = false;
     public boolean showsOnlyFailures = false;
 
@@ -26,9 +23,5 @@ public class RuntimeConfiguration {
         }
 
         return soleInstance;
-    }
-
-    public String getLaunchMode() {
-        return debugsTest ? ILaunchManager.DEBUG_MODE : ILaunchManager.RUN_MODE;
     }
 }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2010, 2013 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -16,7 +16,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IViewActionDelegate;
 import org.eclipse.ui.IViewPart;
 
-import com.piece_framework.makegood.launch.RuntimeConfiguration;
+import com.piece_framework.makegood.ui.MakeGoodContext;
 
 public class ToggleDebugTestAction implements IViewActionDelegate {
     public static final String ACTION_ID = "com.piece_framework.makegood.ui.viewActions.toggleDebugTestAction"; //$NON-NLS-1$
@@ -26,7 +26,7 @@ public class ToggleDebugTestAction implements IViewActionDelegate {
 
     @Override
     public void run(IAction action) {
-        RuntimeConfiguration.getInstance().debugsTest = action.isChecked();
+        MakeGoodContext.getInstance().setDebug(action.isChecked());
     }
 
     @Override
