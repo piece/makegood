@@ -37,6 +37,8 @@ import com.piece_framework.makegood.core.preference.MakeGoodProperty;
  */
 @SuppressWarnings("restriction")
 public class CommandLineBuilder {
+    public static boolean stopOnFailure = false;
+
     private String junitXMLFile;
 
     public CommandLineBuilder(String junitXMLFile) {
@@ -64,7 +66,7 @@ public class CommandLineBuilder {
         buffer.append(" --log-junit=\"" + junitXMLFile + "\""); //$NON-NLS-1$ //$NON-NLS-2$
         buffer.append(" --log-junit-realtime"); //$NON-NLS-1$
 
-        if (RuntimeConfiguration.getInstance().stopsOnFailure) {
+        if (stopOnFailure) {
             buffer.append(" -s"); //$NON-NLS-1$
         }
 

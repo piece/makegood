@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2009 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
- *               2010 KUBO Atsuhiro <kubo@iteman.jp>,
+ *               2010, 2013 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -17,7 +17,6 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IViewActionDelegate;
 import org.eclipse.ui.IViewPart;
 
-import com.piece_framework.makegood.launch.RuntimeConfiguration;
 import com.piece_framework.makegood.ui.views.ResultView;
 import com.piece_framework.makegood.ui.views.ViewOpener;
 
@@ -30,10 +29,10 @@ public class ToggleShowOnlyFailuresAction implements IViewActionDelegate {
 
     @Override
     public void run(IAction action) {
-        RuntimeConfiguration.getInstance().showsOnlyFailures = action.isChecked();
+        ResultView.showOnlyFailures = action.isChecked();
         ResultView view = (ResultView) ViewOpener.find(ResultView.VIEW_ID);
         if (view != null) {
-            view.filterResults(RuntimeConfiguration.getInstance().showsOnlyFailures);
+            view.filterResults();
         }
     }
 

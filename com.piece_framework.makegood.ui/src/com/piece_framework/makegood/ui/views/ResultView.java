@@ -75,8 +75,8 @@ import com.piece_framework.makegood.core.result.Result;
 import com.piece_framework.makegood.core.result.TestCaseResult;
 import com.piece_framework.makegood.core.result.TestSuiteResult;
 import com.piece_framework.makegood.core.run.Failures;
+import com.piece_framework.makegood.launch.CommandLineBuilder;
 import com.piece_framework.makegood.launch.MakeGoodLaunch;
-import com.piece_framework.makegood.launch.RuntimeConfiguration;
 import com.piece_framework.makegood.launch.TestLifecycle;
 import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.MakeGoodContext;
@@ -104,6 +104,12 @@ import com.piece_framework.makegood.ui.widgets.ProgressBar;
 
 public class ResultView extends ViewPart implements TestResultsLayoutChangeListener {
     public static final String VIEW_ID = "com.piece_framework.makegood.ui.views.resultView"; //$NON-NLS-1$
+
+    /**
+     * @since 2.5.0
+     */
+    public static boolean showOnlyFailures = false;
+
     private static final String CONTEXT_ID = "com.piece_framework.makegood.ui.contexts.resultView"; //$NON-NLS-1$
 
     private ProgressBar progressBar;
@@ -346,8 +352,8 @@ public class ResultView extends ViewPart implements TestResultsLayoutChangeListe
         super.dispose();
     }
 
-    public void filterResults(boolean showsFailuresOnly) {
-        if (showsFailuresOnly) {
+    public void filterResults() {
+        if (showOnlyFailures) {
             resultTreeViewer.addFilter(failureViewFilter);
         } else {
             resultTreeViewer.removeFilter(failureViewFilter);
@@ -434,9 +440,7 @@ public class ResultView extends ViewPart implements TestResultsLayoutChangeListe
         ActionContributionItem showOnlyFailuresItem =
             (ActionContributionItem) manager.find(ToggleShowOnlyFailuresAction.ACTION_ID);
         if (showOnlyFailuresItem != null) {
-            showOnlyFailuresItem.getAction().setChecked(
-                RuntimeConfiguration.getInstance().showsOnlyFailures
-            );
+            showOnlyFailuresItem.getAction().setChecked(showOnlyFailures);
             actionsInitialized = true;
         }
 
@@ -457,9 +461,7 @@ public class ResultView extends ViewPart implements TestResultsLayoutChangeListe
         ActionContributionItem stopOnFailureItem =
             (ActionContributionItem) manager.find(ToggleStopOnFailureAction.ACTION_ID);
         if (stopOnFailureItem != null) {
-            stopOnFailureItem.getAction().setChecked(
-                RuntimeConfiguration.getInstance().stopsOnFailure
-            );
+            stopOnFailureItem.getAction().setChecked(CommandLineBuilder.stopOnFailure);
         }
 
         ActionContributionItem debugTestItem =
