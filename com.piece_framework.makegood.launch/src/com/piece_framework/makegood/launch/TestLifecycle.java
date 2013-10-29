@@ -26,7 +26,7 @@ import org.eclipse.php.internal.debug.core.IPHPDebugConstants;
 import org.eclipse.php.internal.debug.core.zend.communication.DebuggerCommunicationDaemon;
 import org.xml.sax.SAXException;
 
-import com.piece_framework.makegood.core.run.FailureRepository;
+import com.piece_framework.makegood.core.run.Failures;
 import com.piece_framework.makegood.core.run.Progress;
 import com.piece_framework.makegood.core.run.ResultReader;
 import com.piece_framework.makegood.core.run.ResultReaderListener;
@@ -36,7 +36,7 @@ import com.piece_framework.makegood.core.run.ResultReaderListener;
  */
 public class TestLifecycle {
     private Progress progress = new Progress();
-    private FailureRepository failures = new FailureRepository();
+    private Failures failures = new Failures();
     private MakeGoodLaunch launch;
 
     private ResultReader resultReader;
@@ -104,7 +104,7 @@ public class TestLifecycle {
         return hasErrors;
     }
 
-    public FailureRepository getFailures() {
+    public Failures getFailures() {
         return failures;
     }
 

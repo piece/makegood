@@ -74,7 +74,7 @@ import com.piece_framework.makegood.core.TestResultsLayout;
 import com.piece_framework.makegood.core.result.Result;
 import com.piece_framework.makegood.core.result.TestCaseResult;
 import com.piece_framework.makegood.core.result.TestSuiteResult;
-import com.piece_framework.makegood.core.run.FailureRepository;
+import com.piece_framework.makegood.core.run.Failures;
 import com.piece_framework.makegood.launch.MakeGoodLaunch;
 import com.piece_framework.makegood.launch.RuntimeConfiguration;
 import com.piece_framework.makegood.launch.TestLifecycle;
@@ -326,11 +326,11 @@ public class ResultView extends ViewPart implements TestResultsLayoutChangeListe
     }
 
     public void moveToNextFailure() {
-        moveToPreviousOrNextFailure(FailureRepository.FIND_NEXT);
+        moveToPreviousOrNextFailure(Failures.FIND_NEXT);
     }
 
     public void moveToPreviousFailure() {
-        moveToPreviousOrNextFailure(FailureRepository.FIND_PREVIOUS);
+        moveToPreviousOrNextFailure(Failures.FIND_PREVIOUS);
     }
 
     @Override
