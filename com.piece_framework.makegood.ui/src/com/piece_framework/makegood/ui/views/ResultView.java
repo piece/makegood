@@ -951,6 +951,8 @@ public class ResultView extends ViewPart implements TestResultsLayoutChangeListe
             case WaitingForTestRun:
                 waitingForTestRun();
                 break;
+            default:
+                break;
             }
         }
 
@@ -1000,6 +1002,8 @@ public class ResultView extends ViewPart implements TestResultsLayoutChangeListe
                     null,
                     null
                 ).open();
+                break;
+            default:
                 break;
             }
         }
