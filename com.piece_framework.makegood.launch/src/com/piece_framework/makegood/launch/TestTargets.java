@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2009-2010 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
- *               2010-2012 KUBO Atsuhiro <kubo@iteman.jp>,
+ *               2010-2013 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -41,7 +41,7 @@ import com.piece_framework.makegood.core.PHPType;
 import com.piece_framework.makegood.core.TestingFramework;
 import com.piece_framework.makegood.core.preference.MakeGoodProperty;
 
-public class TestTargetRepository {
+public class TestTargets {
     private List<Object> testTargets = new ArrayList<Object>();
 
     /**
@@ -52,14 +52,14 @@ public class TestTargetRepository {
     /**
      * @since 1.3.0
      */
-    private static TestTargetRepository soleInstance;
+    private static TestTargets soleInstance;
 
     /**
      * @since 1.3.0
      */
-    public static TestTargetRepository getInstance() {
+    public static TestTargets getInstance() {
         if (soleInstance == null) {
-            soleInstance = new TestTargetRepository();
+            soleInstance = new TestTargets();
         }
         return soleInstance;
     }
@@ -67,7 +67,7 @@ public class TestTargetRepository {
     /**
      * @since 1.3.0
      */
-    private TestTargetRepository() {
+    private TestTargets() {
         super();
     }
 

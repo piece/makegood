@@ -38,7 +38,7 @@ import com.piece_framework.makegood.core.PHPSourceModule;
 import com.piece_framework.makegood.core.PHPType;
 import com.piece_framework.makegood.core.TestingFramework;
 import com.piece_framework.makegood.core.preference.MakeGoodProperty;
-import com.piece_framework.makegood.launch.TestTargetRepository;
+import com.piece_framework.makegood.launch.TestTargets;
 import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.EditorParser;
 import com.piece_framework.makegood.ui.MakeGoodContext;
@@ -79,7 +79,7 @@ public class RelatedTestsLaunchShortcut extends MakeGoodLaunchShortcut {
             collectRelatedTests(types, phpSourceModule.getTestingFramework());
         }
 
-        if (TestTargetRepository.getInstance().getCount() == 0) {
+        if (TestTargets.getInstance().getCount() == 0) {
             MakeGoodContext.getInstance().updateStatus(MakeGoodStatus.RelatedTestsNotFound);
             throw new TestLaunchException();
         }

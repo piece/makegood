@@ -27,7 +27,7 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.IEditorPart;
 
 import com.piece_framework.makegood.core.result.TestCaseResult;
-import com.piece_framework.makegood.launch.TestTargetRepository;
+import com.piece_framework.makegood.launch.TestTargets;
 import com.piece_framework.makegood.launch.ClassTestTarget;
 
 /**
@@ -46,8 +46,8 @@ public class FailedTestsLaunchShortcut extends MakeGoodLaunchShortcut {
     public void launch(ISelection selection, String mode) {
         clearTestTargets();
         addFailedTestsAsTestTargets();
-        if (TestTargetRepository.getInstance().getCount() > 0) {
-            IResource mainScriptResource = TestTargetRepository.getInstance().getMainScriptResource();
+        if (TestTargets.getInstance().getCount() > 0) {
+            IResource mainScriptResource = TestTargets.getInstance().getMainScriptResource();
             if (mainScriptResource == null) throw new TestLaunchException();
 
             super.launch(new StructuredSelection(mainScriptResource), mode);
@@ -60,7 +60,7 @@ public class FailedTestsLaunchShortcut extends MakeGoodLaunchShortcut {
     public void launch(IEditorPart editor, String mode) {
         clearTestTargets();
         addFailedTestsAsTestTargets();
-        if (TestTargetRepository.getInstance().getCount() > 0) {
+        if (TestTargets.getInstance().getCount() > 0) {
             super.launch(editor, mode);
         } else {
             lastShortcut.launch(editor, mode);

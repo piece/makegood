@@ -17,7 +17,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 
-import com.piece_framework.makegood.launch.TestTargetRepository;
+import com.piece_framework.makegood.launch.TestTargets;
 
 public class ResourceLaunchShortcut extends MakeGoodLaunchShortcut {
     @Override
@@ -30,7 +30,7 @@ public class ResourceLaunchShortcut extends MakeGoodLaunchShortcut {
             addTestTarget(element);
         }
 
-        IResource mainScriptResource = TestTargetRepository.getInstance().getMainScriptResource();
+        IResource mainScriptResource = TestTargets.getInstance().getMainScriptResource();
         if (mainScriptResource == null) throw new TestLaunchException();
 
         super.launch(new StructuredSelection(mainScriptResource), mode);
