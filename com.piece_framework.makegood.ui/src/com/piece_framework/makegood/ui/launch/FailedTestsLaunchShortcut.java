@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2012-2013 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -27,8 +27,8 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.IEditorPart;
 
 import com.piece_framework.makegood.core.result.TestCaseResult;
-import com.piece_framework.makegood.launch.TestTargets;
 import com.piece_framework.makegood.launch.ClassTestTarget;
+import com.piece_framework.makegood.launch.TestLifecycle;
 
 /**
  * @since 2.1.0
@@ -44,10 +44,9 @@ public class FailedTestsLaunchShortcut extends MakeGoodLaunchShortcut {
 
     @Override
     public void launch(ISelection selection, String mode) {
-        clearTestTargets();
         addFailedTestsAsTestTargets();
-        if (TestTargets.getInstance().getCount() > 0) {
-            IResource mainScriptResource = TestTargets.getInstance().getMainScriptResource();
+        if (TestLifecycle.getInstance().getTestTargets().getCount() > 0) {
+            IResource mainScriptResource = TestLifecycle.getInstance().getTestTargets().getMainScriptResource();
             if (mainScriptResource == null) throw new TestLaunchException();
 
             super.launch(new StructuredSelection(mainScriptResource), mode);
@@ -58,9 +57,8 @@ public class FailedTestsLaunchShortcut extends MakeGoodLaunchShortcut {
 
     @Override
     public void launch(IEditorPart editor, String mode) {
-        clearTestTargets();
         addFailedTestsAsTestTargets();
-        if (TestTargets.getInstance().getCount() > 0) {
+        if (TestLifecycle.getInstance().getTestTargets().getCount() > 0) {
             super.launch(editor, mode);
         } else {
             lastShortcut.launch(editor, mode);

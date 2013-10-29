@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2010 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
- *               2010-2012 KUBO Atsuhiro <kubo@iteman.jp>,
+ *               2010-2013 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -24,13 +24,12 @@ import org.eclipse.ui.IFileEditorInput;
 
 import com.piece_framework.makegood.core.Resource;
 import com.piece_framework.makegood.core.preference.MakeGoodProperty;
-import com.piece_framework.makegood.launch.TestTargets;
+import com.piece_framework.makegood.launch.TestLifecycle;
 
+@SuppressWarnings("restriction")
 public class AllTestsLaunchShortcut extends MakeGoodLaunchShortcut {
     @Override
     public void launch(ISelection selection, String mode) {
-        clearTestTargets();
-
         if (!(selection instanceof IStructuredSelection)) throw new TestLaunchException();
 
         Object target = ((IStructuredSelection) selection).getFirstElement();
@@ -44,7 +43,7 @@ public class AllTestsLaunchShortcut extends MakeGoodLaunchShortcut {
 
         addTestFoldersAsTestTargets(resource);
 
-        IResource mainScriptResource = TestTargets.getInstance().getMainScriptResource();
+        IResource mainScriptResource = TestLifecycle.getInstance().getTestTargets().getMainScriptResource();
         if (mainScriptResource == null) throw new TestLaunchException();
 
         super.launch(new StructuredSelection(mainScriptResource), mode);
@@ -52,8 +51,6 @@ public class AllTestsLaunchShortcut extends MakeGoodLaunchShortcut {
 
     @Override
     public void launch(IEditorPart editor, String mode) {
-        clearTestTargets();
-
         if (!(editor.getEditorInput() instanceof IFileEditorInput)) throw new TestLaunchException();
 
         IFile target = ((IFileEditorInput) editor.getEditorInput()).getFile();

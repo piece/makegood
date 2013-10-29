@@ -22,7 +22,6 @@ import org.eclipse.ui.IWorkbenchPart;
 
 import com.piece_framework.makegood.launch.PHPexeItemRepository;
 import com.piece_framework.makegood.launch.TestLifecycle;
-import com.piece_framework.makegood.launch.TestTargets;
 import com.piece_framework.makegood.ui.ActivePart;
 import com.piece_framework.makegood.ui.MakeGoodContext;
 import com.piece_framework.makegood.ui.Messages;
@@ -75,7 +74,9 @@ public class TestRunner {
 
     public boolean hasLastTest() {
         if (lastTestTarget == null) return false;
-        IProject lastTestProject = TestTargets.getInstance().getProject();
+        TestLifecycle lastTestLifecycle = TestLifecycle.getInstance();
+        if (lastTestLifecycle == null) return false;
+        IProject lastTestProject = lastTestLifecycle.getTestTargets().getProject();
         if (lastTestProject == null) return false;
         if (!lastTestProject.equals(MakeGoodContext.getInstance().getActivePart().getProject())) return false;
         return true;
@@ -180,6 +181,6 @@ public class TestRunner {
      * @since 1.4.0
      */
     private boolean hasPHPexeItem() {
-        return phpexeItemRepository.findByProject(TestTargets.getInstance().getProject()) != null;
+        return phpexeItemRepository.findByProject(TestLifecycle.getInstance().getTestTargets().getProject()) != null;
     }
 }

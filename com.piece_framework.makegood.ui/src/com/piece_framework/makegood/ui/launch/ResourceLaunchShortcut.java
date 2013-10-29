@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2010 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
- *               2010-2012 KUBO Atsuhiro <kubo@iteman.jp>,
+ *               2010-2013 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -17,20 +17,18 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 
-import com.piece_framework.makegood.launch.TestTargets;
+import com.piece_framework.makegood.launch.TestLifecycle;
 
 public class ResourceLaunchShortcut extends MakeGoodLaunchShortcut {
     @Override
     public void launch(ISelection selection, String mode) {
-        clearTestTargets();
-
         if (!(selection instanceof IStructuredSelection)) throw new TestLaunchException();
 
         for (Object element: ((IStructuredSelection) selection).toArray()) {
             addTestTarget(element);
         }
 
-        IResource mainScriptResource = TestTargets.getInstance().getMainScriptResource();
+        IResource mainScriptResource = TestLifecycle.getInstance().getTestTargets().getMainScriptResource();
         if (mainScriptResource == null) throw new TestLaunchException();
 
         super.launch(new StructuredSelection(mainScriptResource), mode);

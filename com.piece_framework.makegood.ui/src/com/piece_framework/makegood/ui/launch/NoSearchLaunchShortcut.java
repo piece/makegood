@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2010 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
- *               2010-2012 KUBO Atsuhiro <kubo@iteman.jp>,
+ *               2010-2013 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -24,8 +24,6 @@ public abstract class NoSearchLaunchShortcut extends MakeGoodLaunchShortcut {
 
     @Override
     public void launch(IEditorPart editor, String mode) {
-        clearTestTargets();
-
         if (lastTestTarget == null) {
             if (editor == null) throw new TestLaunchException();
             if (!(editor instanceof ITextEditor)) throw new TestLaunchException();

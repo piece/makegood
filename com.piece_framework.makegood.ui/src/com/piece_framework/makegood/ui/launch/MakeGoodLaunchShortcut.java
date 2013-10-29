@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2009-2010 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
- *               2011-2012 KUBO Atsuhiro <kubo@iteman.jp>,
+ *               2011-2013 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -21,7 +21,7 @@ import org.eclipse.php.internal.debug.ui.launching.PHPExeLaunchShortcut;
 import com.piece_framework.makegood.launch.Activator;
 import com.piece_framework.makegood.launch.ProjectNotFoundException;
 import com.piece_framework.makegood.launch.ResourceNotFoundException;
-import com.piece_framework.makegood.launch.TestTargets;
+import com.piece_framework.makegood.launch.TestLifecycle;
 
 public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
     @Override
@@ -36,7 +36,7 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
      */
     protected void addTestTarget(Object testTarget) {
         try {
-            TestTargets.getInstance().add(testTarget);
+            TestLifecycle.getInstance().getTestTargets().add(testTarget);
         } catch (ResourceNotFoundException e) {
             Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
             throw new TestLaunchException();
@@ -47,12 +47,5 @@ public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
             Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
             throw new TestLaunchException();
         }
-    }
-
-    /**
-     * @since 1.3.0
-     */
-    protected void clearTestTargets() {
-        TestTargets.getInstance().clear();
     }
 }

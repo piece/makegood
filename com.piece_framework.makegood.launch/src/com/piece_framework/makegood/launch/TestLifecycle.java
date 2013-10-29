@@ -52,6 +52,11 @@ public class TestLifecycle {
      */
     private Date endTime;
 
+    /**
+     * @since 2.5.0
+     */
+    private TestTargets testTargets = new TestTargets();
+
     private static TestLifecycle currentTestLifecycle;
 
     private TestLifecycle() {
@@ -146,6 +151,13 @@ public class TestLifecycle {
     }
 
     /**
+     * @since 2.5.0
+     */
+    public TestTargets getTestTargets() {
+        return testTargets;
+    }
+
+    /**
      * @since 1.4.0
      */
     private boolean isAborted() {
@@ -153,7 +165,7 @@ public class TestLifecycle {
             return launch != null
                 && launch.getDebugTarget() == null
                 && (launch.getLaunchConfiguration() != null && launch.getLaunchConfiguration().getAttribute(IPHPDebugConstants.RUN_WITH_DEBUG_INFO, true))
-                && DebuggerCommunicationDaemon.ZEND_DEBUGGER_ID.equals(new PHPexeItemRepository().findByProject(TestTargets.getInstance().getProject()).getDebuggerID());
+                && DebuggerCommunicationDaemon.ZEND_DEBUGGER_ID.equals(new PHPexeItemRepository().findByProject(testTargets.getProject()).getDebuggerID());
         } catch (CoreException e) {
             return true;
         }

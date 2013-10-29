@@ -49,28 +49,6 @@ public class TestTargets {
      */
     private IProject project;
 
-    /**
-     * @since 1.3.0
-     */
-    private static TestTargets soleInstance;
-
-    /**
-     * @since 1.3.0
-     */
-    public static TestTargets getInstance() {
-        if (soleInstance == null) {
-            soleInstance = new TestTargets();
-        }
-        return soleInstance;
-    }
-
-    /**
-     * @since 1.3.0
-     */
-    private TestTargets() {
-        super();
-    }
-
     public void add(Object testTarget) throws ResourceNotFoundException, ProjectNotFoundException, ModelException {
         testTargets.add(testTarget);
 
@@ -334,14 +312,6 @@ public class TestTargets {
             Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
             return subject;
         }
-    }
-
-    /**
-     * @since 1.3.0
-     */
-    public void clear() {
-        project = null;
-        testTargets.clear();
     }
 
     /**

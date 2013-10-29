@@ -38,7 +38,7 @@ import com.piece_framework.makegood.core.PHPSourceModule;
 import com.piece_framework.makegood.core.PHPType;
 import com.piece_framework.makegood.core.TestingFramework;
 import com.piece_framework.makegood.core.preference.MakeGoodProperty;
-import com.piece_framework.makegood.launch.TestTargets;
+import com.piece_framework.makegood.launch.TestLifecycle;
 import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.EditorParser;
 import com.piece_framework.makegood.ui.MakeGoodContext;
@@ -47,7 +47,6 @@ import com.piece_framework.makegood.ui.MakeGoodStatus;
 public class RelatedTestsLaunchShortcut extends MakeGoodLaunchShortcut {
     @Override
     public void launch(IEditorPart editor, String mode) {
-        clearTestTargets();
         if (!(editor instanceof ITextEditor)) throw new TestLaunchException();
 
         EditorParser editorParser = new EditorParser(editor);
@@ -79,7 +78,7 @@ public class RelatedTestsLaunchShortcut extends MakeGoodLaunchShortcut {
             collectRelatedTests(types, phpSourceModule.getTestingFramework());
         }
 
-        if (TestTargets.getInstance().getCount() == 0) {
+        if (TestLifecycle.getInstance().getTestTargets().getCount() == 0) {
             MakeGoodContext.getInstance().updateStatus(MakeGoodStatus.RelatedTestsNotFound);
             throw new TestLaunchException();
         }

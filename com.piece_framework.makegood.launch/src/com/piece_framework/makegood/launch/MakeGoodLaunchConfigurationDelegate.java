@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2009-2010 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
- *               2010-2012 KUBO Atsuhiro <kubo@iteman.jp>,
+ *               2010-2013 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -244,7 +244,7 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
             }
         };
 
-        String mainScript = TestTargets.getInstance().getMainScript();
+        String mainScript = TestLifecycle.getInstance().getTestTargets().getMainScript();
         if (mainScript == null) {
             throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "The main script is not found.")); //$NON-NLS-1$
         }
@@ -257,10 +257,10 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
         workingCopy.setAttribute(MAKEGOOD_JUNIT_XML_FILE, junitXMLFile);
         workingCopy.setAttribute(
             IDebugParametersKeys.EXE_CONFIG_PROGRAM_ARGUMENTS,
-            TestTargets.getInstance().generateCommandLine(junitXMLFile)
+            TestLifecycle.getInstance().getTestTargets().generateCommandLine(junitXMLFile)
         );
 
-        IProject project = TestTargets.getInstance().getProject();
+        IProject project = TestLifecycle.getInstance().getTestTargets().getProject();
         if (project != null && project.exists()) {
             workingCopy.setAttribute(IPHPDebugConstants.PHP_Project, project.getName());
             rewriteBasicConfigurationAttributes(workingCopy, project);
