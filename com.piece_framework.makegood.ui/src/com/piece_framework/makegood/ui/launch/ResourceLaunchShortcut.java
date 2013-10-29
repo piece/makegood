@@ -20,6 +20,7 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import com.piece_framework.makegood.launch.TestLifecycle;
 
 public class ResourceLaunchShortcut extends MakeGoodLaunchShortcut {
+    @SuppressWarnings("restriction")
     @Override
     public void launch(ISelection selection, String mode) {
         if (!(selection instanceof IStructuredSelection)) throw new TestLaunchException();

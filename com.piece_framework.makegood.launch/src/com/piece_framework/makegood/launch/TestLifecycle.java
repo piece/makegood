@@ -34,6 +34,7 @@ import com.piece_framework.makegood.core.run.ResultReaderListener;
 /**
  * @since 1.2.0
  */
+@SuppressWarnings("restriction")
 public class TestLifecycle {
     private Progress progress = new Progress();
     private Failures failures = new Failures();

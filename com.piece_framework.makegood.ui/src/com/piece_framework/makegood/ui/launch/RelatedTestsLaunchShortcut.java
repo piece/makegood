@@ -44,6 +44,7 @@ import com.piece_framework.makegood.ui.EditorParser;
 import com.piece_framework.makegood.ui.MakeGoodContext;
 import com.piece_framework.makegood.ui.MakeGoodStatus;
 
+@SuppressWarnings("restriction")
 public class RelatedTestsLaunchShortcut extends MakeGoodLaunchShortcut {
     @Override
     public void launch(IEditorPart editor, String mode) {

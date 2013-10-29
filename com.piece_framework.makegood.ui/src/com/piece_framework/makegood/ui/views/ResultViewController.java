@@ -46,6 +46,7 @@ import com.piece_framework.makegood.ui.markers.TestMarkerFactory;
 import com.piece_framework.makegood.ui.markers.UnknownFatalErrorMessageException;
 import com.piece_framework.makegood.ui.widgets.ResultSquare;
 
+@SuppressWarnings("restriction")
 public class ResultViewController implements IDebugEventSetListener {
     private static final String MAKEGOOD_RESULTVIEWCONTROLLER_MARKER_CREATE = "MAKEGOOD_RESULTVIEWCONTROLLER_MARKER_CREATE"; //$NON-NLS-1$
     private static final String MAKEGOOD_RESULTVIEWCONTROLLER_MARKER_TERMINATE = "MAKEGOOD_RESULTVIEWCONTROLLER_MARKER_TERMINATE"; //$NON-NLS-1$

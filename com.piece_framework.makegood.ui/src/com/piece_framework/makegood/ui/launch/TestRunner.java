@@ -120,6 +120,7 @@ public class TestRunner {
         }
     }
 
+    @SuppressWarnings("restriction")
     private void runTests(Object testTarget, MakeGoodLaunchShortcut shortcut) {
         synchronized (TestRunner.class) {
             if (TestLifecycle.isRunning()) {

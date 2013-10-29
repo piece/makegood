@@ -23,6 +23,7 @@ import com.piece_framework.makegood.launch.ProjectNotFoundException;
 import com.piece_framework.makegood.launch.ResourceNotFoundException;
 import com.piece_framework.makegood.launch.TestLifecycle;
 
+@SuppressWarnings("restriction")
 public class MakeGoodLaunchShortcut extends PHPExeLaunchShortcut {
     @Override
     protected ILaunchConfigurationType getPHPExeLaunchConfigType() {

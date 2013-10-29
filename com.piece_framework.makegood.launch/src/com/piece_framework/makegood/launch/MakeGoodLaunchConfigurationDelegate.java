@@ -42,6 +42,7 @@ import org.eclipse.php.internal.debug.core.preferences.PHPexeItem;
 
 import com.piece_framework.makegood.stagehandtestrunner.StagehandTestRunner;
 
+@SuppressWarnings("restriction")
 public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy {
     private static final String MAKEGOOD_JUNIT_XML_FILE = "MAKEGOOD_JUNIT_XML_FILE"; //$NON-NLS-1$
     private String delegateClass;

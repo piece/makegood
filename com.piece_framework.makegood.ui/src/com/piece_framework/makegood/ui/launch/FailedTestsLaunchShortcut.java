@@ -42,6 +42,7 @@ public class FailedTestsLaunchShortcut extends MakeGoodLaunchShortcut {
         this.lastShortcut = lastShortcut;
     }
 
+    @SuppressWarnings("restriction")
     @Override
     public void launch(ISelection selection, String mode) {
         addFailedTestsAsTestTargets();
@@ -55,6 +56,7 @@ public class FailedTestsLaunchShortcut extends MakeGoodLaunchShortcut {
         }
     }
 
+    @SuppressWarnings("restriction")
     @Override
     public void launch(IEditorPart editor, String mode) {
         addFailedTestsAsTestTargets();
