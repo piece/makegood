@@ -93,6 +93,11 @@ public class TestOutlineView extends ViewPart {
      */
     private static int layout = ToggleShowHierarchyAction.LAYOUT_HIERARCHICAL;
 
+    /**
+     * @since 2.5.0
+     */
+    private static int sortingOrder = ToggleSortAction.ORDER_DEFINITION;
+
     private TreeViewer viewer;
     private List<IType> baseTestClasses;
 
@@ -100,6 +105,11 @@ public class TestOutlineView extends ViewPart {
      * @since 2.5.0
      */
     private IAction toggleShowHierarchyAction;
+
+    /**
+     * @since 2.5.0
+     */
+    private IAction toggleSortAction;
 
     public TestOutlineView() {}
 
@@ -123,6 +133,7 @@ public class TestOutlineView extends ViewPart {
         getSite().registerContextMenu(contextMenuManager, viewer);
         getSite().setSelectionProvider(viewer);
 
+        toggleSortAction = new ToggleSortAction(sortingOrder);
         toggleShowHierarchyAction = new ToggleShowHierarchyAction(Messages.TestOutlineView_ToggleShowHierarchyAction, layout);
         registerActions();
         viewer.setContentProvider(((ToggleShowHierarchyAction) toggleShowHierarchyAction).getContentProvider(layout));
@@ -242,7 +253,7 @@ public class TestOutlineView extends ViewPart {
     private void registerActions() {
         IToolBarManager manager = getViewSite().getActionBars().getToolBarManager();
         manager.add(new CollapseAllAction());
-        manager.add(new ToggleSortAction());
+        manager.add(toggleSortAction);
         manager.add(toggleShowHierarchyAction);
     }
 
@@ -514,22 +525,31 @@ public class TestOutlineView extends ViewPart {
         }
     }
 
-    private class ToggleSortAction extends Action {
-        private ViewerSorter sorter = new ViewerSorter();
-        private boolean checked = false;
+    public class ToggleSortAction extends Action {
+        private static final int ORDER_DEFINITION = 1;
+        private static final int ORDER_ALPHABETICAL = 2;
 
-        public ToggleSortAction() {
+        private ViewerSorter sorter = new ViewerSorter();
+
+        public ToggleSortAction(int sortingOrder) {
             super(Messages.TestOutlineView_ToggleSort, AS_CHECK_BOX);
             setImageDescriptor(Activator.getImageDescriptor("icons/toggle_sort.gif")); //$NON-NLS-1$
             setToolTipText(getText());
+
+            setChecked(sortingOrder == ORDER_ALPHABETICAL);
         }
 
         @Override
         public void run() {
-            checked = !checked;
-            viewer.setSorter(checked ? sorter : null);
+            if (sortingOrder == ORDER_DEFINITION) {
+                sortingOrder = ORDER_ALPHABETICAL;
+            } else if (sortingOrder == ORDER_ALPHABETICAL) {
+                sortingOrder = ORDER_DEFINITION;
+            }
+
+            viewer.setSorter(sortingOrder == ORDER_ALPHABETICAL ? sorter : null);
             viewer.expandAll();
-            setChecked(checked);
+            setChecked(sortingOrder == ORDER_ALPHABETICAL);
         }
     }
 
