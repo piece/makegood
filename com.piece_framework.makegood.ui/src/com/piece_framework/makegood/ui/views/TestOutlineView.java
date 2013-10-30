@@ -39,6 +39,7 @@ import org.eclipse.dltk.ui.ScriptElementLabels;
 import org.eclipse.dltk.ui.viewsupport.AppearanceAwareLabelProvider;
 import org.eclipse.dltk.ui.viewsupport.DecoratingModelLabelProvider;
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -87,8 +88,18 @@ public class TestOutlineView extends ViewPart {
 
     private static boolean isOutlineSelecting = false;
 
+    /**
+     * @since 2.5.0
+     */
+    private static int layout = ToggleShowHierarchyAction.LAYOUT_HIERARCHICAL;
+
     private TreeViewer viewer;
     private List<IType> baseTestClasses;
+
+    /**
+     * @since 2.5.0
+     */
+    private IAction toggleShowHierarchyAction;
 
     public TestOutlineView() {}
 
@@ -97,7 +108,6 @@ public class TestOutlineView extends ViewPart {
         parent.setLayout(new FillLayout());
 
         viewer = new TestOutlineTreeViewer(parent);
-        viewer.setContentProvider(new HierarchicalLayoutContentProvider());
         viewer.setLabelProvider(
             new DecoratingModelLabelProvider(
                 new TestOutlineAppearanceAwareLabelProvider()));
@@ -113,7 +123,9 @@ public class TestOutlineView extends ViewPart {
         getSite().registerContextMenu(contextMenuManager, viewer);
         getSite().setSelectionProvider(viewer);
 
+        toggleShowHierarchyAction = new ToggleShowHierarchyAction(Messages.TestOutlineView_ToggleShowHierarchyAction, layout);
         registerActions();
+        viewer.setContentProvider(((ToggleShowHierarchyAction) toggleShowHierarchyAction).getContentProvider(layout));
 
         updateTestOutline();
 
@@ -231,7 +243,7 @@ public class TestOutlineView extends ViewPart {
         IToolBarManager manager = getViewSite().getActionBars().getToolBarManager();
         manager.add(new CollapseAllAction());
         manager.add(new ToggleSortAction());
-        manager.add(new ToggleShowHierarchyAction(Messages.TestOutlineView_ToggleShowHierarchyAction, ToggleShowHierarchyAction.LAYOUT_HIERARCHICAL));
+        manager.add(toggleShowHierarchyAction);
     }
 
     private void collectBaseTestClasses(List<TestClass> testClasses) {
@@ -527,11 +539,9 @@ public class TestOutlineView extends ViewPart {
 
         private IContentProvider hierarchicalLayoutContentProvider = new HierarchicalLayoutContentProvider();
         private IContentProvider flatLayoutContentProvider = new FlatLayoutContentProvider();
-        private int layout;
 
         public ToggleShowHierarchyAction(String text, int layout) {
             super(text, AS_RADIO_BUTTON);
-            this.layout = layout;
             setToolTipText(getText());
             setImageDescriptor(Activator.getImageDescriptor("icons/toggle_show_hierarchy.gif")); //$NON-NLS-1$
 
@@ -544,13 +554,21 @@ public class TestOutlineView extends ViewPart {
             else if (layout == LAYOUT_FLAT) layout = LAYOUT_HIERARCHICAL;
 
             setChecked(layout == LAYOUT_HIERARCHICAL);
-
-            if (layout == LAYOUT_HIERARCHICAL)
-                viewer.setContentProvider(hierarchicalLayoutContentProvider);
-            else if (layout == LAYOUT_FLAT)
-                viewer.setContentProvider(flatLayoutContentProvider);
-
+            viewer.setContentProvider(getContentProvider(layout));
             viewer.expandAll();
+        }
+
+        /**
+         * @since 2.5.0
+         */
+        public IContentProvider getContentProvider(int layout) {
+            if (layout == ToggleShowHierarchyAction.LAYOUT_HIERARCHICAL) {
+                return hierarchicalLayoutContentProvider;
+            } else if (layout == ToggleShowHierarchyAction.LAYOUT_FLAT) {
+                return flatLayoutContentProvider;
+            } else {
+                return hierarchicalLayoutContentProvider;
+            }
         }
     }
 }
