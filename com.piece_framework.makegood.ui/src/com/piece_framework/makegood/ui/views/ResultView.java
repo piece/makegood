@@ -261,6 +261,7 @@ public class ResultView extends ViewPart implements TestResultsLayoutChangeListe
             }
 
             setTreeInput(testLifecycle.getProgress().getResult());
+            filterResults();
         }
 
         elapsedTimer = new ElapsedTimer(200);
