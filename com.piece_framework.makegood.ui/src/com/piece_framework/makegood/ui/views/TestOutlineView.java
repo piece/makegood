@@ -83,6 +83,7 @@ import com.piece_framework.makegood.ui.Messages;
 /**
  * @since 2.3.0
  */
+@SuppressWarnings("restriction")
 public class TestOutlineView extends ViewPart {
     public static final String ID = "com.piece_framework.makegood.ui.views.testOutlineView"; //$NON-NLS-1$
 
