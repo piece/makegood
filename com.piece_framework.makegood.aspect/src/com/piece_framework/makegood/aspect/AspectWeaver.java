@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2011, 2013 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -23,8 +23,11 @@ import javassist.NotFoundException;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
+import org.eclipse.core.runtime.IExtensionPoint;
+import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.RegistryFactory;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.IStartup;
 
@@ -65,16 +68,33 @@ public class AspectWeaver implements IStartup {
     private static List<AspectManifest> getManifests() {
         List<AspectManifest> manifests = new ArrayList<AspectManifest>();
 
-        for (IExtension extension: Platform.getExtensionRegistry().getExtensionPoint(EXTENSION_POINT_ID).getExtensions()) {
+        IExtensionRegistry extensionRegistry = RegistryFactory.getRegistry();
+        if (extensionRegistry == null) {
+            Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Unable to get the default extension registry. The registry provider has not been set or the registry has not been created.")); //$NON-NLS-1$
+
+            return manifests;
+        }
+
+        IExtensionPoint extensionPoint = extensionRegistry.getExtensionPoint(EXTENSION_POINT_ID);
+        if (extensionPoint == null) {
+            Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Unable to get the extension point \"" + EXTENSION_POINT_ID + "\".")); //$NON-NLS-1$  //$NON-NLS-2$
+
+            return manifests;
+        }
+
+        for (IExtension extension: extensionPoint.getExtensions()) {
             for (IConfigurationElement configurationElement: extension.getConfigurationElements()) {
                 if ("manifest".equals(configurationElement.getName())) { //$NON-NLS-1$
+                    Object executableExtension;
                     try {
-                        Object executableExtension = configurationElement.createExecutableExtension("class"); //$NON-NLS-1$
-                        if (executableExtension instanceof AspectManifest) {
-                            manifests.add((AspectManifest) executableExtension);
-                        }
+                        executableExtension = configurationElement.createExecutableExtension("class"); //$NON-NLS-1$
                     } catch (CoreException e) {
-                        Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
+                        Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0, e.getMessage(), e));
+                        continue;
+                    }
+
+                    if (executableExtension instanceof AspectManifest) {
+                        manifests.add((AspectManifest) executableExtension);
                     }
                 }
             }
