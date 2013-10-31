@@ -40,9 +40,6 @@ public class AspectWeaver implements IStartup {
     private static final Object processLock = new Object();
     private static boolean isFinished = false;
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.IStartup#earlyStartup()
-     */
     @Override
     public void earlyStartup() {
         weave();
