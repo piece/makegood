@@ -1270,6 +1270,7 @@ public class ResultView extends ViewPart implements TestResultsLayoutChangeListe
 
             testResultsTreeTabItem = new CTabItem(this, SWT.NONE);
             testResultsTreeTabItem.setText(Messages.MakeGoodView_testResultsLabel);
+            testResultsTreeTabItem.setImage(Activator.getImageDescriptor("icons/test_results.gif").createImage()); //$NON-NLS-1$
             setSelection(testResultsTreeTabItem);
             Tree testResultsTree = new Tree(this, SWT.BORDER);
             testResultsTree.setLayoutData(createBothFillGridData());
