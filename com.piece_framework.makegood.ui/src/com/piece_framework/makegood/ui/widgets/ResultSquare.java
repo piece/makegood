@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2012 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2011-2013 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -113,10 +113,12 @@ public class ResultSquare extends WorkbenchWindowControlContribution {
     }
 
     public void startTest() {
-        square.setVisible(false);
-        canvas.addPaintListener(imageAnimator.getPaintListener());
-        imageAnimatorThread = new Thread(imageAnimator);
-        imageAnimatorThread.start();
+        if (!canvas.isDisposed() && !square.isDisposed()) {
+            square.setVisible(false);
+            canvas.addPaintListener(imageAnimator.getPaintListener());
+            imageAnimatorThread = new Thread(imageAnimator);
+            imageAnimatorThread.start();
+        }
     }
 
     public void endTest() {
@@ -127,31 +129,45 @@ public class ResultSquare extends WorkbenchWindowControlContribution {
             } catch (InterruptedException e) {
             }
         }
-        canvas.removePaintListener(imageAnimator.getPaintListener());
-        square.setVisible(true);
+
+        if (!canvas.isDisposed()) {
+            canvas.removePaintListener(imageAnimator.getPaintListener());
+        }
+
+        if (!square.isDisposed()) {
+            square.setVisible(true);
+        }
     }
 
     public void markAsPassed() {
-        square.setImage(Activator.getImageDescriptor(IMAGE_PATH_PASSED).createImage());
-        square.setToolTipText(Messages.ResultSquare_TestPassed);
+        if (!square.isDisposed()) {
+            square.setImage(Activator.getImageDescriptor(IMAGE_PATH_PASSED).createImage());
+            square.setToolTipText(Messages.ResultSquare_TestPassed);
+        }
     }
 
     public void markAsFailed() {
-        square.setImage(Activator.getImageDescriptor(IMAGE_PATH_FAILED).createImage());
-        square.setToolTipText(Messages.ResultSquare_TestFailed);
+        if (!square.isDisposed()) {
+            square.setImage(Activator.getImageDescriptor(IMAGE_PATH_FAILED).createImage());
+            square.setToolTipText(Messages.ResultSquare_TestFailed);
+        }
     }
 
     public void markAsStopped() {
-        square.setImage(Activator.getImageDescriptor(IMAGE_PATH_STOPPED).createImage());
-        square.setToolTipText(Messages.ResultSquare_TestRunStopped);
+        if (!square.isDisposed()) {
+            square.setImage(Activator.getImageDescriptor(IMAGE_PATH_STOPPED).createImage());
+            square.setToolTipText(Messages.ResultSquare_TestRunStopped);
+        }
     }
 
     /**
      * @since 2.1.0
      */
     public void markAsNoTests() {
-        square.setImage(Activator.getImageDescriptor(IMAGE_PATH_NOTESTS).createImage());
-        square.setToolTipText(Messages.ResultSquare_NoTests);
+        if (!square.isDisposed()) {
+            square.setImage(Activator.getImageDescriptor(IMAGE_PATH_NOTESTS).createImage());
+            square.setToolTipText(Messages.ResultSquare_NoTests);
+        }
     }
 
     private class ImageAnimator implements Runnable {
