@@ -603,7 +603,7 @@ public class ResultView extends ViewPart implements TestResultsLayoutChangeListe
             endTimeLabel.setText(
                 Messages.MakeGoodView_endTime +
                 ": " + //$NON-NLS-1$
-                new SimpleDateFormat("HH:mm:ss z").format(testLifecycle.getEndTime()) //$NON-NLS-1$
+                new SimpleDateFormat("HH:mm:ss").format(testLifecycle.getEndTime()) //$NON-NLS-1$
             );
         }
     }
