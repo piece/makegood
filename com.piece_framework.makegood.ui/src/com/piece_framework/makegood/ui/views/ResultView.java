@@ -269,6 +269,7 @@ public class ResultView extends ViewPart implements TestResultsLayoutChangeListe
 
     @Override
     public void setFocus() {
+        resultTreeViewer.getTree().setFocus();
     }
 
     private void clear() {

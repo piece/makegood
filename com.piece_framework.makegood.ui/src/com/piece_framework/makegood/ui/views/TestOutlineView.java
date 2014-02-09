@@ -151,7 +151,9 @@ public class TestOutlineView extends ViewPart {
     }
 
     @Override
-    public void setFocus() {}
+    public void setFocus() {
+        viewer.getTree().setFocus();
+    }
 
     public void updateTestOutline() {
         if (viewer == null) return;
