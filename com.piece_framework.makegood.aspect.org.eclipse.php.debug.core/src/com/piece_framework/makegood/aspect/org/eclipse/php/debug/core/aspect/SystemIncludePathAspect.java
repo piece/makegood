@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2009-2010 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
- *               2010-2011 KUBO Atsuhiro <kubo@iteman.jp>,
+ *               2010-2011, 2014 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -22,7 +22,6 @@ import javassist.expr.Instanceof;
 import javassist.expr.MethodCall;
 
 import com.piece_framework.makegood.aspect.Aspect;
-import com.piece_framework.makegood.aspect.PDTVersion;
 
 public class SystemIncludePathAspect extends Aspect {
     private static final String JOINPOINT_CAST_ICONTAINER =
@@ -124,18 +123,12 @@ public class SystemIncludePathAspect extends Aspect {
 
     @Override
     protected String[] joinPoints() {
-        return PDTVersion.getInstance().compareTo("2.2.1.v20101001") < 0 ? //$NON-NLS-1$
-            new String[] {
-                JOINPOINT_CAST_ICONTAINER,
-                JOINPOINT_CALL_GETLOCATION,
-                JOINPOINT_CALL_MODIFYINCLUDEPATH
-            } :
-            new String[] {
-                JOINPOINT_CAST_ICONTAINER,
-                JOINPOINT_INSTANCEOF_ICONTAINER,
-                JOINPOINT_CALL_GETLOCATION,
-                JOINPOINT_CALL_MODIFYINCLUDEPATH
-            };
+        return new String[] {
+            JOINPOINT_CAST_ICONTAINER,
+            JOINPOINT_INSTANCEOF_ICONTAINER,
+            JOINPOINT_CALL_GETLOCATION,
+            JOINPOINT_CALL_MODIFYINCLUDEPATH
+        };
     }
 
     @Override

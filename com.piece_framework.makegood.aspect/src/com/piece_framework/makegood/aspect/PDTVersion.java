@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011, 2013 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2011, 2013-2014 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -24,7 +24,7 @@ public class PDTVersion {
     /**
      * @since 1.6.0
      */
-    private static final String REQUIRED_VERSION = "2.2.0"; //$NON-NLS-1$
+    private static final String REQUIRED_VERSION = "3.2.0"; //$NON-NLS-1$
 
     private static PDTVersion soleInstance;
     private Version version;

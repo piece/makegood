@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010-2011 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2010-2011, 2014 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -21,7 +21,6 @@ public class AspectManifest implements com.piece_framework.makegood.aspect.Aspec
     private static final String[] DEPENDENCIES = {
         "org.eclipse.php.ui", //$NON-NLS-1$
         "org.eclipse.dltk.ui", //$NON-NLS-1$
-        "com.piece_framework.makegood.includepath", //$NON-NLS-1$
         "org.eclipse.jface", //$NON-NLS-1$
         Fragment.PLUGIN_ID
     };

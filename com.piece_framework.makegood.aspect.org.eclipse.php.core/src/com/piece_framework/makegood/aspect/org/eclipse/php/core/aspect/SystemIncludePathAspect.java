@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2009-2010 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
- *               2010-2013 KUBO Atsuhiro <kubo@iteman.jp>,
+ *               2010-2014 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -67,23 +67,13 @@ public class SystemIncludePathAspect extends Aspect {
      */
     private void weaveIntoPHPSearchEngine() throws NotFoundException, CannotCompileException {
         CtClass weavingClass = ClassPool.getDefault().get(WEAVINGCLASS_PHPSEARCHENGINE);
-        CtMethod weavingMethod;
-        try {
-            weavingMethod = weavingClass.getDeclaredMethod("internalFind", new CtClass[] { //$NON-NLS-1$
-                ClassPool.getDefault().get("java.lang.String"), //$NON-NLS-1$
-                ClassPool.getDefault().get("java.lang.String"), //$NON-NLS-1$
-                ClassPool.getDefault().get("java.lang.String"), //$NON-NLS-1$
-                ClassPool.getDefault().get("org.eclipse.core.resources.IProject"), //$NON-NLS-1$
-                ClassPool.getDefault().get("java.util.Set") //$NON-NLS-1$
-            });
-        } catch (NotFoundException e) {
-            weavingMethod = weavingClass.getDeclaredMethod("internalFind", new CtClass[] { //$NON-NLS-1$
-                ClassPool.getDefault().get("java.lang.String"), //$NON-NLS-1$
-                ClassPool.getDefault().get("java.lang.String"), //$NON-NLS-1$
-                ClassPool.getDefault().get("java.lang.String"), //$NON-NLS-1$
-                ClassPool.getDefault().get("org.eclipse.core.resources.IProject") //$NON-NLS-1$
-            });
-        }
+        CtMethod weavingMethod = weavingClass.getDeclaredMethod("internalFind", new CtClass[] { //$NON-NLS-1$
+            ClassPool.getDefault().get("java.lang.String"), //$NON-NLS-1$
+            ClassPool.getDefault().get("java.lang.String"), //$NON-NLS-1$
+            ClassPool.getDefault().get("java.lang.String"), //$NON-NLS-1$
+            ClassPool.getDefault().get("org.eclipse.core.resources.IProject"), //$NON-NLS-1$
+            ClassPool.getDefault().get("java.util.Set") //$NON-NLS-1$
+        });
 
         weavingMethod.instrument(
             new ExprEditor() {
