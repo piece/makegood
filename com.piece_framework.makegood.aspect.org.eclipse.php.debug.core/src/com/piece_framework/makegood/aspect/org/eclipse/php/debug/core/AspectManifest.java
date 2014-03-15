@@ -36,6 +36,7 @@ public class AspectManifest implements com.piece_framework.makegood.aspect.Aspec
             "org.eclipse.equinox.common", //$NON-NLS-1$
             "org.eclipse.php.debug.core", //$NON-NLS-1$
             "com.piece_framework.makegood.launch", //$NON-NLS-1$
+            "org.eclipse.debug.core", //$NON-NLS-1$
         };
     }
 }
