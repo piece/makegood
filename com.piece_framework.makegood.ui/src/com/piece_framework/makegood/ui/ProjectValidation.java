@@ -20,7 +20,7 @@ import org.eclipse.dltk.core.index2.search.ModelAccess;
 import org.eclipse.dltk.core.search.SearchEngine;
 import org.eclipse.php.internal.debug.core.preferences.PHPexeItem;
 
-import com.piece_framework.makegood.core.preference.MakeGoodProperty;
+import com.piece_framework.makegood.core.preference.MakeGoodProperties;
 import com.piece_framework.makegood.launch.PHPexeItemRepository;
 
 /**
@@ -65,7 +65,7 @@ public class ProjectValidation {
             return false;
         }
 
-        MakeGoodProperty property = new MakeGoodProperty(project);
+        MakeGoodProperties property = new MakeGoodProperties(project);
         if (!property.exists()) {
             MakeGoodContext.getInstance().updateStatus(MakeGoodStatus.MakeGoodNotConfigured, project);
             return false;

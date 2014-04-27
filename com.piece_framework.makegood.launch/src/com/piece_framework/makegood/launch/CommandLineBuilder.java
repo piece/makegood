@@ -30,7 +30,7 @@ import org.eclipse.php.internal.core.typeinference.PHPClassType;
 
 import com.piece_framework.makegood.core.PHPType;
 import com.piece_framework.makegood.core.TestingFramework;
-import com.piece_framework.makegood.core.preference.MakeGoodProperty;
+import com.piece_framework.makegood.core.preference.MakeGoodProperties;
 
 /**
  * @since 2.5.0
@@ -46,7 +46,7 @@ public class CommandLineBuilder {
     }
 
     public String build() throws CoreException, MethodNotFoundException, ResourceNotFoundException {
-        MakeGoodProperty property = new MakeGoodProperty(TestLifecycle.getInstance().getTestTargets().getFirstResource());
+        MakeGoodProperties property = new MakeGoodProperties(TestLifecycle.getInstance().getTestTargets().getFirstResource());
         StringBuilder buffer = new StringBuilder();
 
         buffer.append(" --no-ansi"); //$NON-NLS-1$

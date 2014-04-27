@@ -25,7 +25,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import com.piece_framework.makegood.core.PHPSourceModule;
-import com.piece_framework.makegood.core.preference.MakeGoodProperty;
+import com.piece_framework.makegood.core.preference.MakeGoodProperties;
 import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.EditorParser;
 
@@ -52,7 +52,7 @@ public class RunTestFromEditorHandlerInContext extends RunHandler {
         if (resource == null) return false;
 
         try {
-            return new PHPSourceModule(sourceModule, new MakeGoodProperty(resource).getTestingFramework()).hasRunnableTestTypes();
+            return new PHPSourceModule(sourceModule, new MakeGoodProperties(resource).getTestingFramework()).hasRunnableTestTypes();
         } catch (CoreException e) {
             Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
             return false;

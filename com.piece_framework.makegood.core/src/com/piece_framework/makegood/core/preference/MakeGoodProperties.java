@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2009-2010 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
- *               2011-2012 KUBO Atsuhiro <kubo@iteman.jp>,
+ *               2011-2012, 2014 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -32,7 +32,7 @@ import com.piece_framework.makegood.core.Activator;
 import com.piece_framework.makegood.core.DefaultConfiguration;
 import com.piece_framework.makegood.core.TestingFramework;
 
-public class MakeGoodProperty {
+public class MakeGoodProperties {
     private static String PRELOAD_SCRIPT_KEY = "preload_script"; //$NON-NLS-1$
     private static String TESTING_FRAMEWORK_KEY = "testing_framework"; //$NON-NLS-1$
     private static String TEST_FOLDERS = "test_folders"; //$NON-NLS-1$
@@ -55,20 +55,20 @@ public class MakeGoodProperty {
      */
     private DefaultConfiguration defaultConfiguration = new DefaultConfiguration();
 
-    public MakeGoodProperty(IResource resource) {
+    public MakeGoodProperties(IResource resource) {
         Assert.isNotNull(resource, "The given resource should not be null."); //$NON-NLS-1$
         project = resource.getProject();
         preferences = createPreferences(project);
     }
 
-    public MakeGoodProperty(String path) {
+    public MakeGoodProperties(String path) {
         this(ResourcesPlugin.getWorkspace().getRoot());
     }
 
     /**
      * @since 1.6.0
      */
-    public MakeGoodProperty(IProject project) {
+    public MakeGoodProperties(IProject project) {
         this.project = project;
         preferences = createPreferences(project);
     }

@@ -23,7 +23,7 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
 
 import com.piece_framework.makegood.core.Resource;
-import com.piece_framework.makegood.core.preference.MakeGoodProperty;
+import com.piece_framework.makegood.core.preference.MakeGoodProperties;
 import com.piece_framework.makegood.launch.TestLifecycle;
 
 @SuppressWarnings("restriction")
@@ -66,7 +66,7 @@ public class AllTestsLaunchShortcut extends MakeGoodLaunchShortcut {
     }
 
     private void addTestFoldersAsTestTargets(IResource resource) {
-        for (IFolder testFolder: new MakeGoodProperty(resource).getTestFolders()) {
+        for (IFolder testFolder: new MakeGoodProperties(resource).getTestFolders()) {
             addTestTarget(testFolder);
         }
     }

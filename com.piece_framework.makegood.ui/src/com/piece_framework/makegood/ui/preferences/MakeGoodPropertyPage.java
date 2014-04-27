@@ -55,7 +55,7 @@ import org.eclipse.ui.model.WorkbenchLabelProvider;
 
 import com.piece_framework.makegood.core.DefaultConfiguration;
 import com.piece_framework.makegood.core.TestingFramework;
-import com.piece_framework.makegood.core.preference.MakeGoodProperty;
+import com.piece_framework.makegood.core.preference.MakeGoodProperties;
 import com.piece_framework.makegood.ui.Messages;
 
 public class MakeGoodPropertyPage extends PropertyPage {
@@ -329,7 +329,7 @@ public class MakeGoodPropertyPage extends PropertyPage {
 
     @Override
     public boolean performOk() {
-        MakeGoodProperty property = createMakeGoodProperty();
+        MakeGoodProperties property = createMakeGoodProperty();
         TestingFramework testingFramework = null;
         if (cakephpButton.getSelection()) {
             testingFramework = TestingFramework.CakePHP;
@@ -408,7 +408,7 @@ public class MakeGoodPropertyPage extends PropertyPage {
     /**
      * @since 2.0.0
      */
-    private void loadProperties(MakeGoodProperty property) {
+    private void loadProperties(MakeGoodProperties property) {
         updateFrameworkSettings(property.getTestingFramework());
         testFolderTreeViewer.setInput(property.getTestFolders());
         preloadScriptText.setText(property.getPreloadScript());
@@ -438,8 +438,8 @@ public class MakeGoodPropertyPage extends PropertyPage {
     /**
      * @since 2.0.0
      */
-    private MakeGoodProperty createMakeGoodProperty() {
-        return new MakeGoodProperty(getProject());
+    private MakeGoodProperties createMakeGoodProperty() {
+        return new MakeGoodProperties(getProject());
     }
 
     private class FileSelectionListener implements SelectionListener {

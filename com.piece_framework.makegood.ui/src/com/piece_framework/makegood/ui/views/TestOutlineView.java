@@ -73,7 +73,7 @@ import org.eclipse.ui.texteditor.ITextEditor;
 import com.piece_framework.makegood.core.TestClass;
 import com.piece_framework.makegood.core.TestMethod;
 import com.piece_framework.makegood.core.TestingFramework;
-import com.piece_framework.makegood.core.preference.MakeGoodProperty;
+import com.piece_framework.makegood.core.preference.MakeGoodProperties;
 import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.ActiveEditor;
 import com.piece_framework.makegood.ui.EditorParser;
@@ -169,13 +169,13 @@ public class TestOutlineView extends ViewPart {
         ISourceModule module = EditorParser.createActiveEditorParser().getSourceModule();
         IResource activeResource = module.getResource();
         if (activeResource == null) return;
-        if (!new MakeGoodProperty(activeResource.getProject()).exists()) return;
+        if (!new MakeGoodProperties(activeResource.getProject()).exists()) return;
 
         List<TestClass> testClasses = new ArrayList<TestClass>();
         try {
             for (IType type: module.getTypes()) {
                 TestingFramework testingFramework =
-                        new MakeGoodProperty(type.getResource().getProject()).getTestingFramework();
+                        new MakeGoodProperties(type.getResource().getProject()).getTestingFramework();
                 if (!TestClass.isTestClass(type, testingFramework)) continue;
                 TestClass testClass = new TestClass(type, testingFramework);
                 testClasses.add(testClass);

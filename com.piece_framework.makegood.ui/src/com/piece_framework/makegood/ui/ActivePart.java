@@ -30,7 +30,7 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.console.IConsoleConstants;
 
-import com.piece_framework.makegood.core.preference.MakeGoodProperty;
+import com.piece_framework.makegood.core.preference.MakeGoodProperties;
 import com.piece_framework.makegood.ui.views.ResultView;
 
 public class ActivePart {
@@ -85,7 +85,7 @@ public class ActivePart {
         IResource resource = getResource(target);
         if (resource == null) return false;
         if (!resource.getProject().exists()) return false;
-        if (new MakeGoodProperty(resource).getTestFolders().size() == 0) return false;
+        if (new MakeGoodProperties(resource).getTestFolders().size() == 0) return false;
 
         return true;
     }

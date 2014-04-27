@@ -37,7 +37,7 @@ import org.eclipse.ui.texteditor.ITextEditor;
 import com.piece_framework.makegood.core.PHPSourceModule;
 import com.piece_framework.makegood.core.PHPType;
 import com.piece_framework.makegood.core.TestingFramework;
-import com.piece_framework.makegood.core.preference.MakeGoodProperty;
+import com.piece_framework.makegood.core.preference.MakeGoodProperties;
 import com.piece_framework.makegood.launch.TestLifecycle;
 import com.piece_framework.makegood.ui.Activator;
 import com.piece_framework.makegood.ui.EditorParser;
@@ -65,7 +65,7 @@ public class RelatedTestsLaunchShortcut extends MakeGoodLaunchShortcut {
                 throw new TestLaunchException();
             }
 
-            PHPSourceModule phpSourceModule = new PHPSourceModule(source, new MakeGoodProperty(resource).getTestingFramework());
+            PHPSourceModule phpSourceModule = new PHPSourceModule(source, new MakeGoodProperties(resource).getTestingFramework());
 
             try {
                 if (phpSourceModule.hasRunnableTestTypes()) {
@@ -143,7 +143,7 @@ public class RelatedTestsLaunchShortcut extends MakeGoodLaunchShortcut {
             IModelElement element = DLTKCore.create(resource);
             if (element == null) return;
             if (!(element instanceof ISourceModule)) return;
-            if (new PHPSourceModule((ISourceModule) element, new MakeGoodProperty(resource).getTestingFramework()).hasRunnableTestTypes() == false) return;
+            if (new PHPSourceModule((ISourceModule) element, new MakeGoodProperties(resource).getTestingFramework()).hasRunnableTestTypes() == false) return;
             addTestTarget(resource);
         }
 
