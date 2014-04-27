@@ -269,14 +269,15 @@
             name="%propertyPages.makeGood.name">
          <enabledWhen>
             <or>
-               <instanceof
-                     value="org.eclipse.core.resources.IProject">
-               </instanceof>
-               <instanceof
-                     value="org.eclipse.dltk.core.IScriptProject">
-               </instanceof>
+               <adapt
+                     type="org.eclipse.dltk.core.IScriptProject">
+               </adapt>
+               <adapt
+                     type="org.eclipse.core.resources.IProject">
+               </adapt>
             </or>
          </enabledWhen>
+         <filter name="nature" value="org.eclipse.php.core.PHPNature"/>
       </page>
    </extension>
    <extension
