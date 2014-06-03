@@ -1,11 +1,11 @@
-#!/usr/bin/php
+#!/usr/bin/env php
 <?php
 /* vim: set expandtab tabstop=4 shiftwidth=4: */
 
 /**
  * PHP version 5.3
  *
- * Copyright (c) 2011-2012 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2011-2012, 2014 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,26 +30,22 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_TestRunner
- * @copyright  2011-2012 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2011-2012, 2014 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    Release: 3.6.1
+ * @version    Release: @package_version@
  * @since      File available since Release 3.0.0
  */
 
 namespace Stagehand\TestRunner\Core;
 
-initializeEnvironment();
-
 try {
-    $GLOBALS['STAGEHAND_TESTRUNNER_workingDirectoryAtStartup'] = workingDirectoryAtStartup();
-    $GLOBALS['STAGEHAND_TESTRUNNER_preloadScript'] = preloadScript();
+    loadAutoloader();
+    initializeEnvironment();
+    workingDirectoryAtStartup();
+    preloadScript();
 } catch (\Exception $e) {
     echo $e->getMessage() . PHP_EOL;
     exit(1);
-}
-
-if (!class_exists('Stagehand\TestRunner\Core\Bootstrap')) {
-    require_once 'Stagehand/TestRunner/Core/Bootstrap.php';
 }
 
 $bootstrap = new \Stagehand\TestRunner\Core\Bootstrap();
@@ -59,6 +55,26 @@ $application = new \Stagehand\TestRunner\CLI\TestRunnerApplication\Application()
 $result = $application->run();
 
 exit($result);
+
+/**
+ * @since Method available since Release 4.0.0
+ * @throws \RuntimeException
+ */
+function loadAutoloader()
+{
+    $autoloadFileForProject = dirname(dirname(dirname(__DIR__))) . '/autoload.php';
+    $autoloadFileForStagehandTestRunner = dirname(__DIR__) . '/vendor/autoload.php';
+
+    foreach (array($autoloadFileForProject, $autoloadFileForStagehandTestRunner) as $autoloadFile) {
+        if (file_exists($autoloadFile)) {
+            require $autoloadFile;
+
+            return;
+        }
+    }
+
+    throw new \RuntimeException(sprintf('The autoload file "%s" is not found. Check your Composer environment.', $autoloadFileForProject));
+}
 
 /**
  * @since Method available since Release 3.4.0

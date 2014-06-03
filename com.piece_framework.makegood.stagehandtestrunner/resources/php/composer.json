@@ -1,0 +1,11 @@
+{
+    "require": {
+        "php": ">=5.3.3",
+        "piece/stagehand-testrunner": "4.0.0"
+    },
+    "scripts": {
+        "post-autoload-dump": [
+            "Stagehand\\TestRunner\\Composer\\Script::compile"
+        ]
+    }
+}
