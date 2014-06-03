@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2009 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
- *               2010 KUBO Atsuhiro <kubo@iteman.jp>,
+ *               2010, 2014 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -26,7 +26,6 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.php.internal.debug.core.PHPDebugPlugin;
 
 import com.piece_framework.makegood.includepath.ConfigurationIncludePath;
-import com.piece_framework.makegood.stagehandtestrunner.StagehandTestRunner;
 
 public class PHPConfiguration {
     private static final String INCLUDE_PATH_KEY = "include_path"; //$NON-NLS-1$
@@ -48,8 +47,6 @@ public class PHPConfiguration {
                 newIncludePaths.add(includePath);
             }
         }
-
-        newIncludePaths.add(StagehandTestRunner.getBundleIncludePath());
 
         return newIncludePaths.toArray(new String[newIncludePaths.size()]);
     }

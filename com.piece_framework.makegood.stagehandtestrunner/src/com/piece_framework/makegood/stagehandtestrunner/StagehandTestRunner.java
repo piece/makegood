@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010-2012 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2010-2012, 2014 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -24,20 +24,7 @@ import org.osgi.framework.Bundle;
 
 public class StagehandTestRunner {
     private static final String PEAR_PATH = "/resources/php"; //$NON-NLS-1$
-    private static final String PHP_DIR = PEAR_PATH + "/php"; //$NON-NLS-1$
     private static final String LAUNCHER_SCRIPT = PEAR_PATH + "/bin/testrunner.php"; //$NON-NLS-1$
-
-    public static String getBundleIncludePath() {
-        URL url;
-        try {
-            url = FileLocator.resolve(Platform.getBundle(Activator.PLUGIN_ID).getEntry(PHP_DIR));
-        } catch (IOException e) {
-            Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
-            return null;
-        }
-
-        return new File(url.getPath()).getAbsolutePath();
-    }
 
     public static String getCommandPath() throws CoreException {
         Bundle bundle = Platform.getBundle(Activator.PLUGIN_ID);
