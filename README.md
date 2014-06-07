@@ -24,7 +24,7 @@ Click [here](https://github.com/piece/makegood/wiki/images/makegood_view.png) to
 * Specifies the test file pattern.
 * Can use the system include path when running tests.
 * Supports multibyte characters.
-* Supports [CIUnit](http://www.knollet.com/foostack/), [PHPSpec](http://www.phpspec.net/), [PHPUnit](https://github.com/sebastianbergmann/phpunit).
+* Supports [PHPSpec](http://www.phpspec.net/), [PHPUnit](https://github.com/sebastianbergmann/phpunit).
 * Supports Zend Debugger and [Xdebug](http://xdebug.org/).
 
 ## Installation

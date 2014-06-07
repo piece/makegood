@@ -59,14 +59,6 @@ public class DefaultConfiguration {
         return ""; //$NON-NLS-1$
     }
 
-    public String getCIUnitPath() {
-        return ""; //$NON-NLS-1$
-    }
-
-    public String getCIUnitConfigFile() {
-        return ""; //$NON-NLS-1$
-    }
-
     public String getPHPUnitConfigFile() {
         return ""; //$NON-NLS-1$
     }

@@ -37,8 +37,6 @@ public class MakeGoodProperties {
     private static String TESTING_FRAMEWORK_KEY = "testing_framework"; //$NON-NLS-1$
     private static String TEST_FOLDERS = "test_folders"; //$NON-NLS-1$
     private static String PHPUNIT_CONFIG_FILE = "phpunit_config_file"; //$NON-NLS-1$
-    private static String CIUNIT_PATH = "ciunit_path"; //$NON-NLS-1$
-    private static String CIUNIT_CONFIG_FILE = "ciunit_config_file"; //$NON-NLS-1$
 
     /**
      * @since 2.0.0
@@ -91,8 +89,6 @@ public class MakeGoodProperties {
         String testingFramework = preferences.get(TESTING_FRAMEWORK_KEY, defaultConfiguration.getTestingFramework().name());
         if (testingFramework.equals(TestingFramework.PHPUnit.name())) {
             return TestingFramework.PHPUnit;
-        } else if (testingFramework.equals(TestingFramework.CIUnit.name())) {
-            return TestingFramework.CIUnit;
         } else if (testingFramework.equals(TestingFramework.PHPSpec.name())) {
             return TestingFramework.PHPSpec;
         } else {
@@ -135,34 +131,6 @@ public class MakeGoodProperties {
 
     public void setPHPUnitConfigFile(String phpunitConfigFile) {
         preferences.put(PHPUNIT_CONFIG_FILE, phpunitConfigFile);
-    }
-
-    /**
-     * @since 1.3.0
-     */
-    public String getCIUnitPath() {
-        return preferences.get(CIUNIT_PATH, defaultConfiguration.getCIUnitPath());
-    }
-
-    /**
-     * @since 1.3.0
-     */
-    public void setCIUnitPath(String ciunitPath) {
-        preferences.put(CIUNIT_PATH, ciunitPath);
-    }
-
-    /**
-     * @since 1.3.0
-     */
-    public String getCIUnitConfigFile() {
-        return preferences.get(CIUNIT_CONFIG_FILE, defaultConfiguration.getCIUnitConfigFile());
-    }
-
-    /**
-     * @since 1.3.0
-     */
-    public void setCIUnitConfigFile(String ciunitConfigFile) {
-        preferences.put(CIUNIT_CONFIG_FILE, ciunitConfigFile);
     }
 
     /**

@@ -83,38 +83,6 @@ public enum TestingFramework {
             return false;
         }
     },
-    CIUnit {
-        /**
-         * @since 1.6.0
-         */
-        @Override
-        public String[] getTestClassSuperTypes() {
-            return new String[] {
-                "CIUnit_TestCase", //$NON-NLS-1$
-                "CIUnit_TestCase_Selenium", //$NON-NLS-1$
-            };
-        }
-
-        /**
-         * @since 1.7.0
-         */
-        @Override
-        public String[] getRequiredSuperTypes() {
-            return new String[] {
-                "PHPUnit_Framework_TestCase", //$NON-NLS-1$
-                "CIUnit_TestCase", //$NON-NLS-1$
-                "CIUnit_TestCase_Selenium", //$NON-NLS-1$
-            };
-        }
-
-        /**
-         * @since 2.0.0
-         */
-        @Override
-        public String getTestFilePattern() {
-            return "^test.+\\.php$"; //$NON-NLS-1$
-        }
-    },
     PHPSpec {
         /**
          * @since 2.0.0

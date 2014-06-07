@@ -19,7 +19,6 @@ import java.util.Set;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.dltk.core.IMethod;
@@ -76,29 +75,6 @@ public class CommandLineBuilder {
                 IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(phpunitConfigFile);
                 if (resource == null) {
                     throw new ResourceNotFoundException("The resource [ " + phpunitConfigFile + " ] is not found."); //$NON-NLS-1$ //$NON-NLS-2$
-                }
-
-                buffer.append(" --phpunit-config=\"" + resource.getLocation().toString() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
-            }
-        } else if (property.getTestingFramework() == TestingFramework.CIUnit) {
-            String ciunitPath = property.getCIUnitPath();
-            if ("".equals(ciunitPath)) { //$NON-NLS-1$
-                ciunitPath = getDefaultCIUnitPath();
-            }
-            if (!"".equals(ciunitPath)) { //$NON-NLS-1$
-                IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(ciunitPath);
-                if (resource == null) {
-                    throw new ResourceNotFoundException("The resource [ " + ciunitPath + " ] is not found."); //$NON-NLS-1$ //$NON-NLS-2$
-                }
-
-                buffer.append(" --ciunit-path=\"" + resource.getLocation().toString() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
-            }
-
-            String ciunitConfigFile = property.getCIUnitConfigFile();
-            if (!"".equals(ciunitConfigFile)) { //$NON-NLS-1$
-                IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(ciunitConfigFile);
-                if (resource == null) {
-                    throw new ResourceNotFoundException("The resource [ " + ciunitConfigFile + " ] is not found."); //$NON-NLS-1$ //$NON-NLS-2$
                 }
 
                 buffer.append(" --phpunit-config=\"" + resource.getLocation().toString() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
@@ -183,15 +159,6 @@ public class CommandLineBuilder {
             parent = parent.getParent();
             if (parent == null) return null;
         }
-    }
-
-    private String getDefaultCIUnitPath() {
-        Assert.isNotNull(TestLifecycle.getInstance().getTestTargets().getProject(), "One or more test targets should be added."); //$NON-NLS-1$
-
-        IResource resource = TestLifecycle.getInstance().getTestTargets().getProject().findMember("/system/application/tests"); //$NON-NLS-1$
-        if (resource == null) return ""; //$NON-NLS-1$
-
-        return resource.getFullPath().toString();
     }
 
     private String urlencode(String subject) throws CoreException

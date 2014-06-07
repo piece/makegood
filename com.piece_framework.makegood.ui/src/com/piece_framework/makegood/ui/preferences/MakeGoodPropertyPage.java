@@ -66,21 +66,6 @@ public class MakeGoodPropertyPage extends PropertyPage {
     private Button phpunitButton;
 
     /**
-     * @since 1.3.0
-     */
-    private Button ciunitButton;
-
-    /**
-     * @since 1.3.0
-     */
-    private Text ciunitPathText;
-
-    /**
-     * @since 1.3.0
-     */
-    private Text ciunitConfigFileText;
-
-    /**
      * @since 2.0.0
      */
     private Button phpspecButton;
@@ -125,10 +110,6 @@ public class MakeGoodPropertyPage extends PropertyPage {
         frameworkGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
         frameworkGroup.setLayout(new GridLayout());
 
-        ciunitButton = new Button(frameworkGroup, SWT.RADIO);
-        ciunitButton.setText(TestingFramework.CIUnit.name());
-        ciunitButton.addSelectionListener(new FrameworkSelectionAdapter());
-        frameworkButtons.add(ciunitButton);
         phpspecButton = new Button(frameworkGroup, SWT.RADIO);
         phpspecButton.setText(TestingFramework.PHPSpec.name());
         phpspecButton.addSelectionListener(new FrameworkSelectionAdapter());
@@ -189,50 +170,6 @@ public class MakeGoodPropertyPage extends PropertyPage {
         testFilePatternText = new Text(testFilePattern, SWT.SINGLE | SWT.BORDER);
         testFilePatternText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-        // CIUnit
-        TabItem ciunitTabItem = new TabItem(contents, SWT.NONE);
-        ciunitTabItem.setText(TestingFramework.CIUnit.name());
-        Composite ciunitTab = new Composite(contents, SWT.NONE);
-        ciunitTab.setLayout(new GridLayout());
-        ciunitTabItem.setControl(ciunitTab);
-        Composite ciunitPath = new Composite(ciunitTab, SWT.NONE);
-        ciunitPath.setLayout(new GridLayout(3, false));
-        ciunitPath.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-        Label ciunitPathLabel = new Label(ciunitPath, SWT.NONE);
-        ciunitPathLabel.setText(Messages.MakeGoodPropertyPage_ciunitPathLabel);
-        ciunitPathText = new Text(ciunitPath, SWT.SINGLE | SWT.BORDER);
-        ciunitPathText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-        Button ciunitPathBrowseButton = new Button(ciunitPath, SWT.NONE);
-        ciunitPathBrowseButton.setText(Messages.MakeGoodPropertyPage_ciunitPathBrowseLabel);
-        ciunitPathBrowseButton.addSelectionListener(
-            new FileSelectionListener(
-                ciunitPathText,
-                Messages.MakeGoodPropertyPage_ciunitPathDialogTitle,
-                Messages.MakeGoodPropertyPage_ciunitPathDialogMessage,
-                SELECTION_ALLOW_FOLDER,
-                new FileViewerFilter()
-            )
-        );
-        Composite ciunitConfigFile = new Composite(ciunitTab, SWT.NONE);
-        ciunitConfigFile.setLayout(new GridLayout(3, false));
-        ciunitConfigFile.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-        Label ciunitConfigFileLabel = new Label(ciunitConfigFile, SWT.NONE);
-        ciunitConfigFileLabel.setText(Messages.MakeGoodPropertyPage_ciunitConfigFileLabel);
-        ciunitConfigFileText = new Text(ciunitConfigFile, SWT.SINGLE | SWT.BORDER);
-        ciunitConfigFileText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-        Button ciunitConfigFileBrowseButton = new Button(ciunitConfigFile, SWT.NONE);
-        ciunitConfigFileBrowseButton.setText(Messages.MakeGoodPropertyPage_ciunitConfigFileBrowseLabel);
-        ciunitConfigFileBrowseButton.addSelectionListener(
-            new FileSelectionListener(
-                ciunitConfigFileText,
-                Messages.MakeGoodPropertyPage_ciunitConfigFileDialogTitle,
-                Messages.MakeGoodPropertyPage_ciunitConfigFileDialogMessage,
-                SELECTION_ALLOW_FILE,
-                new FileViewerFilter()
-            )
-        );
-        frameworkTabItems.add(ciunitTabItem);
-
         // PHPUnit
         TabItem phpunitTabItem = new TabItem(contents, SWT.NONE);
         phpunitTabItem.setText(TestingFramework.PHPUnit.name());
@@ -275,9 +212,7 @@ public class MakeGoodPropertyPage extends PropertyPage {
     public boolean performOk() {
         MakeGoodProperties property = createMakeGoodProperty();
         TestingFramework testingFramework = null;
-        if (ciunitButton.getSelection()) {
-            testingFramework = TestingFramework.CIUnit;
-        } else if (phpspecButton.getSelection()) {
+        if (phpspecButton.getSelection()) {
             testingFramework = TestingFramework.PHPSpec;
         } else if (phpunitButton.getSelection()) {
             testingFramework = TestingFramework.PHPUnit;
@@ -286,8 +221,6 @@ public class MakeGoodPropertyPage extends PropertyPage {
         property.setTestFolders((List<IFolder>) testFolderTreeViewer.getInput());
         property.setPreloadScript(preloadScriptText.getText());
         property.setTestFilePattern(testFilePatternText.getText());
-        property.setCIUnitPath(ciunitPathText.getText());
-        property.setCIUnitConfigFile(ciunitConfigFileText.getText());
         property.setPHPUnitConfigFile(phpunitConfigFileText.getText());
         property.flush();
 
@@ -351,8 +284,6 @@ public class MakeGoodPropertyPage extends PropertyPage {
         testFolderTreeViewer.setInput(property.getTestFolders());
         preloadScriptText.setText(property.getPreloadScript());
         testFilePatternText.setText(property.getTestFilePattern());
-        ciunitPathText.setText(property.getCIUnitPath());
-        ciunitConfigFileText.setText(property.getCIUnitConfigFile());
         phpunitConfigFileText.setText(property.getPHPUnitConfigFile());
     }
 
@@ -364,8 +295,6 @@ public class MakeGoodPropertyPage extends PropertyPage {
         testFolderTreeViewer.setInput(defaultConfiguration.getTestFolders());
         preloadScriptText.setText(defaultConfiguration.getPreloadScript());
         testFilePatternText.setText(defaultConfiguration.getTestFilePattern());
-        ciunitPathText.setText(defaultConfiguration.getCIUnitPath());
-        ciunitConfigFileText.setText(defaultConfiguration.getCIUnitConfigFile());
         phpunitConfigFileText.setText(defaultConfiguration.getPHPUnitConfigFile());
     }
 

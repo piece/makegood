@@ -33,46 +33,6 @@ public class Messages extends NLS {
     public static String MakeGoodPropertyPage_testFolderRemoveLabel;
 
     /**
-     * @since 1.3.0
-     */
-    public static String MakeGoodPropertyPage_ciunitPathDialogTitle;
-
-    /**
-     * @since 1.3.0
-     */
-    public static String MakeGoodPropertyPage_ciunitPathDialogMessage;
-
-    /**
-     * @since 1.3.0
-     */
-    public static String MakeGoodPropertyPage_ciunitPathLabel;
-
-    /**
-     * @since 1.3.0
-     */
-    public static String MakeGoodPropertyPage_ciunitPathBrowseLabel;
-
-    /**
-     * @since 1.3.0
-     */
-    public static String MakeGoodPropertyPage_ciunitConfigFileDialogTitle;
-
-    /**
-     * @since 1.3.0
-     */
-    public static String MakeGoodPropertyPage_ciunitConfigFileDialogMessage;
-
-    /**
-     * @since 1.3.0
-     */
-    public static String MakeGoodPropertyPage_ciunitConfigFileLabel;
-
-    /**
-     * @since 1.3.0
-     */
-    public static String MakeGoodPropertyPage_ciunitConfigFileBrowseLabel;
-
-    /**
      * @since 2.0.0
      */
     public static String MakeGoodPropertyPage_generalLabel;
