@@ -64,7 +64,6 @@ public class MakeGoodPropertyPage extends PropertyPage {
     private Text preloadScriptText;
     private Text phpunitConfigFileText;
     private Button phpunitButton;
-    private Button simpletestButton;
 
     /**
      * @since 1.3.0
@@ -138,10 +137,6 @@ public class MakeGoodPropertyPage extends PropertyPage {
         phpunitButton.setText(TestingFramework.PHPUnit.name());
         phpunitButton.addSelectionListener(new FrameworkSelectionAdapter());
         frameworkButtons.add(phpunitButton);
-        simpletestButton = new Button(frameworkGroup, SWT.RADIO);
-        simpletestButton.setText(TestingFramework.SimpleTest.name());
-        simpletestButton.addSelectionListener(new FrameworkSelectionAdapter());
-        frameworkButtons.add(simpletestButton);
 
         Group testFolderGroup = new Group(generalTab, SWT.LEFT);
         testFolderGroup.setText(Messages.MakeGoodPropertyPage_testFolderLabel);
@@ -286,8 +281,6 @@ public class MakeGoodPropertyPage extends PropertyPage {
             testingFramework = TestingFramework.PHPSpec;
         } else if (phpunitButton.getSelection()) {
             testingFramework = TestingFramework.PHPUnit;
-        } else if (simpletestButton.getSelection()) {
-            testingFramework = TestingFramework.SimpleTest;
         }
         property.setTestingFramework(testingFramework);
         property.setTestFolders((List<IFolder>) testFolderTreeViewer.getInput());

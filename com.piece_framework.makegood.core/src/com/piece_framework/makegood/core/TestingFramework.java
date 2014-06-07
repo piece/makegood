@@ -83,44 +83,6 @@ public enum TestingFramework {
             return false;
         }
     },
-    SimpleTest {
-        /**
-         * @since 1.6.0
-         */
-        @Override
-        public String[] getTestClassSuperTypes() {
-            return new String[] {
-                "SimpleTestCase", //$NON-NLS-1$
-            };
-        }
-
-        /**
-         * @since 1.7.0
-         */
-        @Override
-        public String[] getRequiredSuperTypes() {
-            return getTestClassSuperTypes();
-        }
-
-        /**
-         * @since 2.0.0
-         */
-        @Override
-        public String getTestFilePattern() {
-            return "Test(?:Case)?\\.php$"; //$NON-NLS-1$
-        }
-
-        /**
-         * @since 2.3.0
-         */
-        @Override
-        public boolean isTestMethod(IMethod method) throws ModelException {
-            if (!super.isTestMethod(method)) return false;
-
-            if (method.getElementName().startsWith("test")) return true;
-            return false;
-        }
-    },
     CIUnit {
         /**
          * @since 1.6.0
