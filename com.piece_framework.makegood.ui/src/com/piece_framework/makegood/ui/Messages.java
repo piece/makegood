@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2009-2013 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
- *               2010-2012 KUBO Atsuhiro <kubo@iteman.jp>,
+ *               2010-2012, 2014 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -31,14 +31,6 @@ public class Messages extends NLS {
     public static String MakeGoodPropertyPage_phpunitConfigFileLabel;
     public static String MakeGoodPropertyPage_phpunitConfigFileBrowseLabel;
     public static String MakeGoodPropertyPage_testFolderRemoveLabel;
-    public static String MakeGoodPropertyPage_cakephpAppPathDialogTitle;
-    public static String MakeGoodPropertyPage_cakephpAppPathDialogMessage;
-    public static String MakeGoodPropertyPage_cakephpAppPathLabel;
-    public static String MakeGoodPropertyPage_cakephpAppPathBrowseLabel;
-    public static String MakeGoodPropertyPage_cakephpCorePathDialogTitle;
-    public static String MakeGoodPropertyPage_cakephpCorePathDialogMessage;
-    public static String MakeGoodPropertyPage_cakephpCorePathLabel;
-    public static String MakeGoodPropertyPage_cakephpCorePathBrowseLabel;
 
     /**
      * @since 1.3.0

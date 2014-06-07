@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2012-2013 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
- *               2011-2012 KUBO Atsuhiro <kubo@iteman.jp>,
+ *               2011-2012, 2014 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -119,38 +119,6 @@ public enum TestingFramework {
 
             if (method.getElementName().startsWith("test")) return true;
             return false;
-        }
-    },
-    CakePHP {
-        /**
-         * @since 1.6.0
-         */
-        @Override
-        public String[] getTestClassSuperTypes() {
-            return new String[] {
-                "CakeTestCase", //$NON-NLS-1$
-                "CakeWebTestCase", //$NON-NLS-1$
-            };
-        }
-
-        /**
-         * @since 1.7.0
-         */
-        @Override
-        public String[] getRequiredSuperTypes() {
-            return new String[] {
-                "SimpleTestCase", //$NON-NLS-1$
-                "CakeTestCase", //$NON-NLS-1$
-                "CakeWebTestCase", //$NON-NLS-1$
-            };
-        }
-
-        /**
-         * @since 2.0.0
-         */
-        @Override
-        public String getTestFilePattern() {
-            return "\\.test\\.php$"; //$NON-NLS-1$
         }
     },
     CIUnit {

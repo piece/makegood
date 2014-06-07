@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2009-2010 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
- *               2010-2012 KUBO Atsuhiro <kubo@iteman.jp>,
+ *               2010-2012, 2014 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -65,9 +65,6 @@ public class MakeGoodPropertyPage extends PropertyPage {
     private Text phpunitConfigFileText;
     private Button phpunitButton;
     private Button simpletestButton;
-    private Button cakephpButton;
-    private Text cakephpAppPathText;
-    private Text cakephpCorePathText;
 
     /**
      * @since 1.3.0
@@ -129,10 +126,6 @@ public class MakeGoodPropertyPage extends PropertyPage {
         frameworkGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
         frameworkGroup.setLayout(new GridLayout());
 
-        cakephpButton = new Button(frameworkGroup, SWT.RADIO);
-        cakephpButton.setText(TestingFramework.CakePHP.name());
-        cakephpButton.addSelectionListener(new FrameworkSelectionAdapter());
-        frameworkButtons.add(cakephpButton);
         ciunitButton = new Button(frameworkGroup, SWT.RADIO);
         ciunitButton.setText(TestingFramework.CIUnit.name());
         ciunitButton.addSelectionListener(new FrameworkSelectionAdapter());
@@ -200,50 +193,6 @@ public class MakeGoodPropertyPage extends PropertyPage {
         testFilePatternLabel = new Label(testFilePattern, SWT.NONE);
         testFilePatternText = new Text(testFilePattern, SWT.SINGLE | SWT.BORDER);
         testFilePatternText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-
-        // CakePHP
-        TabItem cakephpTabItem = new TabItem(contents, SWT.NONE);
-        cakephpTabItem.setText(TestingFramework.CakePHP.name());
-        Composite cakephpTab = new Composite(contents, SWT.NONE);
-        cakephpTab.setLayout(new GridLayout());
-        cakephpTabItem.setControl(cakephpTab);
-        Composite cakephpAppPath = new Composite(cakephpTab, SWT.NONE);
-        cakephpAppPath.setLayout(new GridLayout(3, false));
-        cakephpAppPath.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-        Label cakephpAppPathLabel = new Label(cakephpAppPath, SWT.NONE);
-        cakephpAppPathLabel.setText(Messages.MakeGoodPropertyPage_cakephpAppPathLabel);
-        cakephpAppPathText = new Text(cakephpAppPath, SWT.SINGLE | SWT.BORDER);
-        cakephpAppPathText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-        Button cakephpAppPathBrowseButton = new Button(cakephpAppPath, SWT.NONE);
-        cakephpAppPathBrowseButton.setText(Messages.MakeGoodPropertyPage_cakephpAppPathBrowseLabel);
-        cakephpAppPathBrowseButton.addSelectionListener(
-            new FileSelectionListener(
-                cakephpAppPathText,
-                Messages.MakeGoodPropertyPage_cakephpAppPathDialogTitle,
-                Messages.MakeGoodPropertyPage_cakephpAppPathDialogMessage,
-                SELECTION_ALLOW_FOLDER,
-                new FileViewerFilter()
-            )
-        );
-        Composite cakephpCorePath = new Composite(cakephpTab, SWT.NONE);
-        cakephpCorePath.setLayout(new GridLayout(3, false));
-        cakephpCorePath.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-        Label cakephpCorePathLabel = new Label(cakephpCorePath, SWT.NONE);
-        cakephpCorePathLabel.setText(Messages.MakeGoodPropertyPage_cakephpCorePathLabel);
-        cakephpCorePathText = new Text(cakephpCorePath, SWT.SINGLE | SWT.BORDER);
-        cakephpCorePathText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-        Button cakephpCorePathBrowseButton = new Button(cakephpCorePath, SWT.NONE);
-        cakephpCorePathBrowseButton.setText(Messages.MakeGoodPropertyPage_cakephpCorePathBrowseLabel);
-        cakephpCorePathBrowseButton.addSelectionListener(
-            new FileSelectionListener(
-                cakephpCorePathText,
-                Messages.MakeGoodPropertyPage_cakephpCorePathDialogTitle,
-                Messages.MakeGoodPropertyPage_cakephpCorePathDialogMessage,
-                SELECTION_ALLOW_FOLDER,
-                new FileViewerFilter()
-            )
-        );
-        frameworkTabItems.add(cakephpTabItem);
 
         // CIUnit
         TabItem ciunitTabItem = new TabItem(contents, SWT.NONE);
@@ -331,9 +280,7 @@ public class MakeGoodPropertyPage extends PropertyPage {
     public boolean performOk() {
         MakeGoodProperties property = createMakeGoodProperty();
         TestingFramework testingFramework = null;
-        if (cakephpButton.getSelection()) {
-            testingFramework = TestingFramework.CakePHP;
-        } else if (ciunitButton.getSelection()) {
+        if (ciunitButton.getSelection()) {
             testingFramework = TestingFramework.CIUnit;
         } else if (phpspecButton.getSelection()) {
             testingFramework = TestingFramework.PHPSpec;
@@ -346,8 +293,6 @@ public class MakeGoodPropertyPage extends PropertyPage {
         property.setTestFolders((List<IFolder>) testFolderTreeViewer.getInput());
         property.setPreloadScript(preloadScriptText.getText());
         property.setTestFilePattern(testFilePatternText.getText());
-        property.setCakePHPAppPath(cakephpAppPathText.getText());
-        property.setCakePHPCorePath(cakephpCorePathText.getText());
         property.setCIUnitPath(ciunitPathText.getText());
         property.setCIUnitConfigFile(ciunitConfigFileText.getText());
         property.setPHPUnitConfigFile(phpunitConfigFileText.getText());
@@ -413,8 +358,6 @@ public class MakeGoodPropertyPage extends PropertyPage {
         testFolderTreeViewer.setInput(property.getTestFolders());
         preloadScriptText.setText(property.getPreloadScript());
         testFilePatternText.setText(property.getTestFilePattern());
-        cakephpAppPathText.setText(property.getCakePHPAppPath());
-        cakephpCorePathText.setText(property.getCakePHPCorePath());
         ciunitPathText.setText(property.getCIUnitPath());
         ciunitConfigFileText.setText(property.getCIUnitConfigFile());
         phpunitConfigFileText.setText(property.getPHPUnitConfigFile());
@@ -428,8 +371,6 @@ public class MakeGoodPropertyPage extends PropertyPage {
         testFolderTreeViewer.setInput(defaultConfiguration.getTestFolders());
         preloadScriptText.setText(defaultConfiguration.getPreloadScript());
         testFilePatternText.setText(defaultConfiguration.getTestFilePattern());
-        cakephpAppPathText.setText(defaultConfiguration.getCakePHPAppPath());
-        cakephpCorePathText.setText(defaultConfiguration.getCakePHPCorePath());
         ciunitPathText.setText(defaultConfiguration.getCIUnitPath());
         ciunitConfigFileText.setText(defaultConfiguration.getCIUnitConfigFile());
         phpunitConfigFileText.setText(defaultConfiguration.getPHPUnitConfigFile());

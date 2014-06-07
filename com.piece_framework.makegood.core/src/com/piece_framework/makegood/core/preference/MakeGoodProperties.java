@@ -37,8 +37,6 @@ public class MakeGoodProperties {
     private static String TESTING_FRAMEWORK_KEY = "testing_framework"; //$NON-NLS-1$
     private static String TEST_FOLDERS = "test_folders"; //$NON-NLS-1$
     private static String PHPUNIT_CONFIG_FILE = "phpunit_config_file"; //$NON-NLS-1$
-    private static String CAKEPHP_APP_PATH = "cakephp_app_path"; //$NON-NLS-1$
-    private static String CAKEPHP_CORE_PATH = "cakephp_core_path"; //$NON-NLS-1$
     private static String CIUNIT_PATH = "ciunit_path"; //$NON-NLS-1$
     private static String CIUNIT_CONFIG_FILE = "ciunit_config_file"; //$NON-NLS-1$
 
@@ -95,8 +93,6 @@ public class MakeGoodProperties {
             return TestingFramework.PHPUnit;
         } else if (testingFramework.equals(TestingFramework.SimpleTest.name())) {
             return TestingFramework.SimpleTest;
-        } else if (testingFramework.equals(TestingFramework.CakePHP.name())) {
-            return TestingFramework.CakePHP;
         } else if (testingFramework.equals(TestingFramework.CIUnit.name())) {
             return TestingFramework.CIUnit;
         } else if (testingFramework.equals(TestingFramework.PHPSpec.name())) {
@@ -141,22 +137,6 @@ public class MakeGoodProperties {
 
     public void setPHPUnitConfigFile(String phpunitConfigFile) {
         preferences.put(PHPUNIT_CONFIG_FILE, phpunitConfigFile);
-    }
-
-    public String getCakePHPAppPath() {
-        return preferences.get(CAKEPHP_APP_PATH, defaultConfiguration.getCakePHPAppPath());
-    }
-
-    public void setCakePHPAppPath(String cakephpAppPath) {
-        preferences.put(CAKEPHP_APP_PATH, cakephpAppPath);
-    }
-
-    public String getCakePHPCorePath() {
-        return preferences.get(CAKEPHP_CORE_PATH, defaultConfiguration.getCakePHPCorePath());
-    }
-
-    public void setCakePHPCorePath(String cakephpCorePath) {
-        preferences.put(CAKEPHP_CORE_PATH, cakephpCorePath);
     }
 
     /**

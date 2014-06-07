@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2013 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2013-2014 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -79,29 +79,6 @@ public class CommandLineBuilder {
                 }
 
                 buffer.append(" --phpunit-config=\"" + resource.getLocation().toString() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
-            }
-        } else if (property.getTestingFramework() == TestingFramework.CakePHP) {
-            String cakephpAppPath = property.getCakePHPAppPath();
-            if ("".equals(cakephpAppPath)) { //$NON-NLS-1$
-                cakephpAppPath = getDefaultCakePHPAppPath();
-            }
-            if (!"".equals(cakephpAppPath)) { //$NON-NLS-1$
-                IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(cakephpAppPath);
-                if (resource == null) {
-                    throw new ResourceNotFoundException("The resource [ " + cakephpAppPath + " ] is not found."); //$NON-NLS-1$ //$NON-NLS-2$
-                }
-
-                buffer.append(" --cakephp-app-path=\"" + resource.getLocation().toString() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
-            }
-
-            String cakephpCorePath = property.getCakePHPCorePath();
-            if (!"".equals(cakephpCorePath)) { //$NON-NLS-1$
-                IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(cakephpCorePath);
-                if (resource == null) {
-                    throw new ResourceNotFoundException("The resource [ " + cakephpCorePath + " ] is not found."); //$NON-NLS-1$ //$NON-NLS-2$
-                }
-
-                buffer.append(" --cakephp-core-path=\"" + resource.getLocation().toString() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
             }
         } else if (property.getTestingFramework() == TestingFramework.CIUnit) {
             String ciunitPath = property.getCIUnitPath();
@@ -206,15 +183,6 @@ public class CommandLineBuilder {
             parent = parent.getParent();
             if (parent == null) return null;
         }
-    }
-
-    private String getDefaultCakePHPAppPath() {
-        Assert.isNotNull(TestLifecycle.getInstance().getTestTargets().getProject(), "One or more test targets should be added."); //$NON-NLS-1$
-
-        IResource resource = TestLifecycle.getInstance().getTestTargets().getProject().findMember("/app"); //$NON-NLS-1$
-        if (resource == null) return ""; //$NON-NLS-1$
-
-        return resource.getFullPath().toString();
     }
 
     private String getDefaultCIUnitPath() {

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2013 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2012-2014 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -56,14 +56,6 @@ public class DefaultConfiguration {
     }
 
     public String getTestFilePattern() {
-        return ""; //$NON-NLS-1$
-    }
-
-    public String getCakePHPAppPath() {
-        return ""; //$NON-NLS-1$
-    }
-
-    public String getCakePHPCorePath() {
         return ""; //$NON-NLS-1$
     }
 
