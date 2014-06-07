@@ -65,11 +65,6 @@ public class MakeGoodPropertyPage extends PropertyPage {
     private Text phpunitConfigFileText;
     private Button phpunitButton;
 
-    /**
-     * @since 2.0.0
-     */
-    private Button phpspecButton;
-
     private TreeViewer testFolderTreeViewer;
     private Button testFolderRemoveButton;
     private TabFolder contents;
@@ -110,10 +105,6 @@ public class MakeGoodPropertyPage extends PropertyPage {
         frameworkGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
         frameworkGroup.setLayout(new GridLayout());
 
-        phpspecButton = new Button(frameworkGroup, SWT.RADIO);
-        phpspecButton.setText(TestingFramework.PHPSpec.name());
-        phpspecButton.addSelectionListener(new FrameworkSelectionAdapter());
-        frameworkButtons.add(phpspecButton);
         phpunitButton = new Button(frameworkGroup, SWT.RADIO);
         phpunitButton.setText(TestingFramework.PHPUnit.name());
         phpunitButton.addSelectionListener(new FrameworkSelectionAdapter());
@@ -212,9 +203,7 @@ public class MakeGoodPropertyPage extends PropertyPage {
     public boolean performOk() {
         MakeGoodProperties property = createMakeGoodProperty();
         TestingFramework testingFramework = null;
-        if (phpspecButton.getSelection()) {
-            testingFramework = TestingFramework.PHPSpec;
-        } else if (phpunitButton.getSelection()) {
+        if (phpunitButton.getSelection()) {
             testingFramework = TestingFramework.PHPUnit;
         }
         property.setTestingFramework(testingFramework);

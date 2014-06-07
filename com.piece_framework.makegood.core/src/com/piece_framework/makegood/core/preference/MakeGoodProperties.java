@@ -89,8 +89,6 @@ public class MakeGoodProperties {
         String testingFramework = preferences.get(TESTING_FRAMEWORK_KEY, defaultConfiguration.getTestingFramework().name());
         if (testingFramework.equals(TestingFramework.PHPUnit.name())) {
             return TestingFramework.PHPUnit;
-        } else if (testingFramework.equals(TestingFramework.PHPSpec.name())) {
-            return TestingFramework.PHPSpec;
         } else {
             return defaultConfiguration.getTestingFramework();
         }

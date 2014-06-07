@@ -82,33 +82,6 @@ public enum TestingFramework {
             }
             return false;
         }
-    },
-    PHPSpec {
-        /**
-         * @since 2.0.0
-         */
-        @Override
-        public String[] getTestClassSuperTypes() {
-            return new String[] {
-                "PHPSpec\\Context", //$NON-NLS-1$
-            };
-        }
-
-        /**
-         * @since 2.0.0
-         */
-        @Override
-        public String[] getRequiredSuperTypes() {
-            return getTestClassSuperTypes();
-        }
-
-        /**
-         * @since 2.0.0
-         */
-        @Override
-        public String getTestFilePattern() {
-            return "Spec\\.php$"; //$NON-NLS-1$
-        }
     };
 
     private static List<String> superTypesOfAllTestingFrameworks;
