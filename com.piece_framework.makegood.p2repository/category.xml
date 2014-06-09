@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+  <description url="http://eclipse.piece-framework.com/">
+    Piece Project Remote Site
+  </description>
+  <feature url="features/com.piece_framework.makegood_feature_3.0.0.qualifier.jar" id="com.piece_framework.makegood_feature" version="3.0.0.qualifier">
+    <category name="makegood"/>
+    <category name="piece_framework"/>
+    <category name="testing"/>
+  </feature>
+  <category-def name="makegood" label="MakeGood"/>
+  <category-def name="piece_framework" label="Piece Framework"/>
+  <category-def name="testing" label="Testing"/>
+</site>

@@ -31,6 +31,7 @@
     <module>com.piece_framework.makegood.core</module>
     <module>com.piece_framework.makegood.includepath</module>
     <module>com.piece_framework.makegood.launch</module>
+    <module>com.piece_framework.makegood.p2repository</module>
     <module>com.piece_framework.makegood.stagehandtestrunner</module>
     <module>com.piece_framework.makegood.ui</module>
     <module>com.piece_framework.makegood_feature</module>
