@@ -24,7 +24,7 @@
    </url>
 
    <requires>
-      <import plugin="org.eclipse.php.core" version="2.2.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.php.core" version="3.2.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.ui"/>
       <import plugin="org.eclipse.core.runtime"/>
       <import plugin="org.eclipse.debug.core"/>
@@ -32,15 +32,15 @@
       <import plugin="org.eclipse.core.resources"/>
       <import plugin="org.eclipse.jface"/>
       <import plugin="org.eclipse.debug.ui"/>
-      <import plugin="org.eclipse.php.debug.core" version="2.2.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.php.debug.core" version="3.2.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.filesystem"/>
-      <import plugin="org.eclipse.php.debug.ui" version="2.2.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.php.debug.ui" version="3.2.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.dltk.ui"/>
       <import plugin="org.eclipse.ui.workbench.texteditor"/>
       <import plugin="org.eclipse.jface.text"/>
       <import plugin="org.eclipse.ui.ide"/>
       <import plugin="org.eclipse.ui.console"/>
-      <import plugin="org.eclipse.php.ui" version="2.2.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.php.ui" version="3.2.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.filebuffers"/>
       <import plugin="org.eclipse.wst.sse.core"/>
       <import plugin="org.eclipse.wst.sse.ui"/>
@@ -86,7 +86,8 @@
          id="com.piece_framework.makegood.stagehandtestrunner"
          download-size="0"
          install-size="0"
-         version="0.0.0"/>
+         version="0.0.0"
+         unpack="true"/>
 
    <plugin
          id="com.piece_framework.makegood.aspect.org.eclipse.php.debug.core"
