@@ -39,7 +39,7 @@ If you find a bug or have a question, or want to request a feature, create an is
 
 ## Copyright
 
-Copyright (c) 2009-2013 MATSUFUJI Hideharu \<matsufuji2008@gmail.com\>, 2009-2013 KUBO Atsuhiro \<kubo@iteman.jp\>, 2009-2013 KUBO Noriko \<noricott@gmail.com\>, All rights reserved.
+Copyright (c) 2009-2013 MATSUFUJI Hideharu \<matsufuji2008@gmail.com\>, 2009-2014 KUBO Atsuhiro \<kubo@iteman.jp\>, 2009-2013 KUBO Noriko \<noricott@gmail.com\>, All rights reserved.
 
 ## License
 
