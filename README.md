@@ -2,7 +2,7 @@
 
 A continuous test runner for Eclipse PDT
 
-[![Build Status](https://travis-ci.org/piece/makegood.svg?branch=master)](https://travis-ci.org/piece/makegood)
+[![Build Status](https://travis-ci.org/piece/makegood.svg?branch=3.0)](https://travis-ci.org/piece/makegood)
 
 MakeGood is a continuous test runner to run unit tests on [Eclipse PDT](http://projects.eclipse.org/projects/tools.pdt).
 
