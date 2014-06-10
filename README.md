@@ -28,7 +28,7 @@ Click [here](https://github.com/piece/makegood/wiki/images/makegood_view.png) to
 * Specifies the test file pattern.
 * Can use the system include path when running tests.
 * Supports multibyte characters.
-* Supports [PHPUnit](https://github.com/sebastianbergmann/phpunit).
+* Supports [PHPUnit](http://phpunit.de/).
 * Supports Zend Debugger and [Xdebug](http://xdebug.org/).
 
 ## Installation
