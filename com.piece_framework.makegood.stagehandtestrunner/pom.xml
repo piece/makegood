@@ -99,8 +99,9 @@
               <goal>exec</goal>
             </goals>
             <configuration>
-              <executable>php</executable>
+              <executable>/usr/bin/env</executable>
               <arguments>
+                <argument>php</argument>
                 <argument>installer</argument>
               </arguments>
               <workingDirectory>${project.basedir}/resources/php</workingDirectory>
