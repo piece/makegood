@@ -1,4 +1,6 @@
-# MakeGood - A continuous test runner for Eclipse PDT
+# MakeGood
+
+A continuous test runner for Eclipse PDT
 
 MakeGood is a continuous test runner to run unit tests on [Eclipse PDT](http://projects.eclipse.org/projects/tools.pdt).
 
