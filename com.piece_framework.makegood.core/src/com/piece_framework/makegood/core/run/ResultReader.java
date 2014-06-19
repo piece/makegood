@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2010 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
- *               2010-2012 KUBO Atsuhiro <kubo@iteman.jp>,
+ *               2010-2012, 2014 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -338,7 +338,6 @@ public class ResultReader extends DefaultHandler {
         private static final int READ_NO_PARAM = 1;
         private static final int READ_ARRAY = 2;
         private static final int READ_OFFSET = 3;
-        boolean closed = false;
 
         public SynchronizedFileInputStream(File file) throws FileNotFoundException {
             super(file);
@@ -360,12 +359,6 @@ public class ResultReader extends DefaultHandler {
         @Override
         public int read(byte[] bytes) throws IOException {
             return read(READ_ARRAY, bytes, 0, 0);
-        }
-
-        @Override
-        public void close() throws IOException {
-            closed = true;
-            super.close();
         }
 
         private int read(int readType,
