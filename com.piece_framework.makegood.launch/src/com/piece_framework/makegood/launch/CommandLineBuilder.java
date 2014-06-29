@@ -24,7 +24,6 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IType;
-import org.eclipse.osgi.framework.debug.Debug;
 import org.eclipse.php.internal.core.typeinference.PHPClassType;
 
 import com.piece_framework.makegood.core.PHPType;
@@ -138,8 +137,6 @@ public class CommandLineBuilder {
         for (String testFile: testFiles) {
             buffer.append(" \"" + testFile + "\""); //$NON-NLS-1$ //$NON-NLS-2$
         }
-
-        Debug.println(buffer.toString());
 
         return buffer.toString();
     }
