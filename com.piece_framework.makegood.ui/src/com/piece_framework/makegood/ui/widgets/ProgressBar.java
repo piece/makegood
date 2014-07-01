@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010-2011, 2013 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2010-2011, 2013-2014 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -105,7 +105,7 @@ public class ProgressBar extends Composite implements PaintListener, ControlList
     /**
      * @since 1.7.0
      */
-    private void markAsPassed() {
+    public void markAsPassed() {
         setColor(passedColor);
     }
 
@@ -126,6 +126,5 @@ public class ProgressBar extends Composite implements PaintListener, ControlList
 
     public void clear() {
         update(0);
-        markAsPassed();
     }
 }
