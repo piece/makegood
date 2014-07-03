@@ -1,5 +1,6 @@
 /**
  * Copyright (c) 2009 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
+ *               2014 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -55,8 +56,8 @@ public class BundleLoader {
                                      bundleLocation;
                 }
                 if (new File(bundleLocation).isDirectory()) {
-                    if (new File(bundleLocation + "bin").exists()) { //$NON-NLS-1$
-                        bundleLocation += "bin"; //$NON-NLS-1$
+                    if (new File(bundleLocation + "target/classes").exists()) { //$NON-NLS-1$
+                        bundleLocation += "target/classes"; //$NON-NLS-1$
                     }
                 }
 
