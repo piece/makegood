@@ -27,6 +27,11 @@ import org.osgi.framework.Bundle;
 public class BundleLoader {
     private String[] bundles;
 
+    /**
+     * @since 3.1.0
+     */
+    private static final String OUTPUT_DIRECTORY = "target/classes"; //$NON-NLS-1$
+
     public BundleLoader(String[] bundles) {
         this.bundles = bundles;
     }
@@ -56,8 +61,8 @@ public class BundleLoader {
                                      bundleLocation;
                 }
                 if (new File(bundleLocation).isDirectory()) {
-                    if (new File(bundleLocation + "target/classes").exists()) { //$NON-NLS-1$
-                        bundleLocation += "target/classes"; //$NON-NLS-1$
+                    if (new File(bundleLocation + OUTPUT_DIRECTORY).exists()) {
+                        bundleLocation += OUTPUT_DIRECTORY;
                     }
                 }
 
