@@ -84,12 +84,12 @@ public class ProgressBar extends Composite implements PaintListener, ControlList
         }
         final int barWidth = width;
 
-        getDisplay().asyncExec(
-            new Runnable() {
-                @Override
-                public void run() {
-                    if (!bar.isDisposed()) {
-                        Point size = bar.getSize();
+        getDisplay().asyncExec(new Runnable() {
+            @Override
+            public void run() {
+                if (!bar.isDisposed()) {
+                    Point size = bar.getSize();
+                    if (size.x != barWidth) {
                         size.x = barWidth;
                         bar.setSize(size);
                         redraw();
@@ -97,7 +97,7 @@ public class ProgressBar extends Composite implements PaintListener, ControlList
                     }
                 }
             }
-        );
+        });
 
         this.rate = rate;
     }
