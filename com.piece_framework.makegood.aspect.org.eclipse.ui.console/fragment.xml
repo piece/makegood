@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<fragment>
+   <extension
+         point="com.piece_framework.makegood.aspect.manifests">
+      <manifest
+            class="com.piece_framework.makegood.aspect.org.eclipse.ui.console.AspectManifest">
+      </manifest>
+   </extension>
+</fragment>

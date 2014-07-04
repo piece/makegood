@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2009-2010 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
- *               2010-2013 KUBO Atsuhiro <kubo@iteman.jp>,
+ *               2010-2014 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -23,13 +23,8 @@ import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.IDebugEventSetListener;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.model.IProcess;
-import org.eclipse.debug.internal.ui.views.console.ProcessConsole;
-import org.eclipse.debug.ui.IDebugUIConstants;
 import org.eclipse.php.internal.debug.core.model.IPHPDebugTarget;
-import org.eclipse.ui.console.ConsolePlugin;
-import org.eclipse.ui.console.IConsole;
 import org.eclipse.ui.console.IConsoleConstants;
-import org.eclipse.ui.console.IOConsoleOutputStream;
 import org.eclipse.ui.progress.UIJob;
 
 import com.piece_framework.makegood.core.result.TestCaseResult;
@@ -101,8 +96,6 @@ public class ResultViewController implements IDebugEventSetListener {
             Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.PLUGIN_ID, e.getMessage(), e));
             return;
         }
-
-        preventConsoleViewFocusing();
 
         Job job = new UIJob("MakeGood Test Start") { //$NON-NLS-1$
             @Override
@@ -216,18 +209,6 @@ public class ResultViewController implements IDebugEventSetListener {
             }
         };
         job.schedule();
-    }
-
-    private void preventConsoleViewFocusing() {
-        for (IConsole console: ConsolePlugin.getDefault().getConsoleManager().getConsoles()) {
-            if (!(console instanceof ProcessConsole)) continue;
-            IOConsoleOutputStream stdoutStream = ((ProcessConsole) console).getStream(IDebugUIConstants.ID_STANDARD_OUTPUT_STREAM);
-            if (stdoutStream == null) continue;
-            stdoutStream.setActivateOnWrite(false);
-            IOConsoleOutputStream stderrStream = ((ProcessConsole) console).getStream(IDebugUIConstants.ID_STANDARD_ERROR_STREAM);
-            if (stderrStream == null) continue;
-            stderrStream.setActivateOnWrite(false);
-        }
     }
 
     /**
