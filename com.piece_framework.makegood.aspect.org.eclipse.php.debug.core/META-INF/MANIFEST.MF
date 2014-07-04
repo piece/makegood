@@ -4,7 +4,7 @@ Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: com.piece_framework.makegood.aspect.org.eclipse.php.debug.core;singleton:=true
 Bundle-Version: 3.1.0.qualifier
 Bundle-Vendor: %Bundle-Vendor
-Fragment-Host: org.eclipse.php.debug.core;bundle-version="2.2.0"
+Fragment-Host: org.eclipse.php.debug.core
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: com.piece_framework.makegood.aspect,
  com.piece_framework.makegood.launch,
