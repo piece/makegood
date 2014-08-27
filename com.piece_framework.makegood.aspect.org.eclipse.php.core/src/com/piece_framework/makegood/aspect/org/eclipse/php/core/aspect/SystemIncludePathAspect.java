@@ -26,11 +26,11 @@ import com.piece_framework.makegood.aspect.Aspect;
 public class SystemIncludePathAspect extends Aspect {
     private static final String JOINPOINT_CAST_ICONTAINER = "PHPSearchEngine#find [cast IContainer]"; //$NON-NLS-1$
     private static final String JOINPOINT_CALL_FINDMEMBER = "PHPSearchEngine#find [call findMember()]"; //$NON-NLS-1$
-    private static final String JOINPOINT_VISITENTRY_INSERTBEFORE = "IncludeStatementStrategy#visitEntry [insert before]"; //$NON-NLS-1$
+    private static final String JOINPOINT_CALL_VISITENTRY = "IncludeStatementStrategy#apply [call visitEntry()]"; //$NON-NLS-1$
     private static final String[] JOINPOINTS = {
         JOINPOINT_CAST_ICONTAINER,
         JOINPOINT_CALL_FINDMEMBER,
-        JOINPOINT_VISITENTRY_INSERTBEFORE,
+        JOINPOINT_CALL_VISITENTRY,
     };
     private static final String WEAVINGCLASS_PHPSEARCHENGINE =
         "org.eclipse.php.internal.core.util.PHPSearchEngine"; //$NON-NLS-1$
@@ -125,12 +125,24 @@ public class SystemIncludePathAspect extends Aspect {
      */
     private void weaveIntoIncludeStatementStrategy() throws NotFoundException, CannotCompileException {
         CtClass weavingClass = ClassPool.getDefault().get(WEAVINGCLASS_INCLUDESTATEMENTSTRATEGY);
-        weavingClass.getDeclaredMethod("visitEntry").insertBefore( //$NON-NLS-1$
+        CtMethod weavingMethod = weavingClass.getDeclaredMethod("apply"); //$NON-NLS-1$
+        weavingMethod.instrument(new ExprEditor() {
+            public void edit(MethodCall methodCall) throws CannotCompileException {
+                if (methodCall.getClassName().equals(WEAVINGCLASS_INCLUDESTATEMENTSTRATEGY)
+                    && methodCall.getMethodName().equals("visitEntry")) { //$NON-NLS-1$
+                            methodCall.replace(
 "if (com.piece_framework.makegood.includepath.ConfigurationIncludePath.equalsDummyResource(includePath.getProject(), includePath.getEntry())) {" + //$NON-NLS-1$
-"    return;" + //$NON-NLS-1$
+"    $_ = null;" + //$NON-NLS-1$
+"} else {" + //$NON-NLS-1$
+"    $_ = $proceed($$);" + //$NON-NLS-1$
 "}" //$NON-NLS-1$
+                            );
+
+                            markJoinPointAsPassed(JOINPOINT_CALL_VISITENTRY);
+                        }
+                    }
+                }
         );
-        markJoinPointAsPassed(JOINPOINT_VISITENTRY_INSERTBEFORE);
         markClassAsWoven(weavingClass);
     }
 }
