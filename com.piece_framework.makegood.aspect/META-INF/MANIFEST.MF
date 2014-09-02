@@ -5,26 +5,11 @@ Bundle-SymbolicName: com.piece_framework.makegood.aspect;singleton:=true
 Bundle-Version: 3.2.0.qualifier
 Bundle-Vendor: %Bundle-Vendor
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Bundle-ClassPath: lib/javassist-3.11.0/javassist.jar,
+Bundle-ClassPath: lib/javassist.jar,
  .
 Export-Package: com.piece_framework.makegood.aspect,
  javassist,
- javassist.bytecode,
- javassist.bytecode.analysis,
- javassist.bytecode.annotation,
- javassist.bytecode.stackmap,
- javassist.compiler,
- javassist.compiler.ast,
- javassist.convert,
- javassist.expr,
- javassist.runtime,
- javassist.scopedpool,
- javassist.tools,
- javassist.tools.reflect,
- javassist.tools.rmi,
- javassist.tools.web,
- javassist.util,
- javassist.util.proxy
+ javassist.expr
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.filebuffers,
  org.eclipse.jface.text,
