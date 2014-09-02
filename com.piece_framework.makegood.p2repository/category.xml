@@ -3,7 +3,7 @@
   <description url="http://eclipse.piece-framework.com/">
     Piece Project Remote Site
   </description>
-  <feature url="features/com.piece_framework.makegood_feature_3.1.1.qualifier.jar" id="com.piece_framework.makegood_feature" version="3.1.1.qualifier">
+  <feature url="features/com.piece_framework.makegood_feature_3.1.2.qualifier.jar" id="com.piece_framework.makegood_feature" version="3.1.2.qualifier">
     <category name="makegood"/>
     <category name="piece_framework"/>
     <category name="testing"/>
