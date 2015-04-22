@@ -19,6 +19,9 @@ import org.eclipse.swt.graphics.Image;
 
 import com.piece_framework.makegood.includepath.ConfigurationIncludePath;
 
+/**
+ * @deprecated Deprecated since version 3.2, to be removed in 4.0.
+ */
 public class SystemIncludePathLabelDecorator implements ILabelDecorator {
     @Override
     public String decorateText(String text, Object element) {

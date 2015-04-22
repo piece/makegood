@@ -23,6 +23,9 @@ import javassist.expr.MethodCall;
 
 import com.piece_framework.makegood.aspect.Aspect;
 
+/**
+ * @deprecated Deprecated since version 3.2, to be removed in 4.0.
+ */
 public class SystemIncludePathAspect extends Aspect {
     private static final String JOINPOINT_CAST_ICONTAINER = "PHPSearchEngine#find [cast IContainer]"; //$NON-NLS-1$
     private static final String JOINPOINT_CALL_FINDMEMBER = "PHPSearchEngine#find [call findMember()]"; //$NON-NLS-1$

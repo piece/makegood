@@ -21,6 +21,9 @@ import javassist.expr.NewExpr;
 
 import com.piece_framework.makegood.aspect.Aspect;
 
+/**
+ * @deprecated Deprecated since version 3.2, to be removed in 4.0.
+ */
 public class SystemIncludePathAspect extends Aspect {
     private static final String JOINPOINT_GETCPLISTELEMENTTEXT_INSERTBEFORE =
         "PHPIPListLabelProvider#getCPListElementText() [insert before]"; //$NON-NLS-1$
