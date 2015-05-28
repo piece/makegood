@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2009-2010 MATSUFUJI Hideharu <matsufuji2008@gmail.com>,
- *               2010-2013 KUBO Atsuhiro <kubo@iteman.jp>,
+ *               2010-2013, 2015 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -34,6 +34,7 @@ import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.php.debug.core.debugger.parameters.IDebugParametersKeys;
 import org.eclipse.php.internal.debug.core.IPHPDebugConstants;
 import org.eclipse.php.internal.debug.core.PHPDebugPlugin;
+import org.eclipse.php.internal.debug.core.debugger.IDebuggerConfiguration;
 import org.eclipse.php.internal.debug.core.launching.PHPLaunchDelegateProxy;
 import org.eclipse.php.internal.debug.core.preferences.PHPDebugCorePreferenceNames;
 import org.eclipse.php.internal.debug.core.preferences.PHPDebuggersRegistry;
@@ -283,7 +284,7 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
         if (phpexeItem == null) return;
 
         workingCopy.setAttribute(PHPDebugCorePreferenceNames.PHP_DEBUGGER_ID, phpexeItem.getDebuggerID());
-        workingCopy.setAttribute(PHPDebugCorePreferenceNames.CONFIGURATION_DELEGATE_CLASS, PHPDebuggersRegistry.getDebuggerConfiguration(phpexeItem.getDebuggerID()).getScriptLaunchDelegateClass());
+        workingCopy.setAttribute(PHPDebugCorePreferenceNames.CONFIGURATION_DELEGATE_CLASS, getDebuggerConfiguration(phpexeItem.getDebuggerID()).getScriptLaunchDelegateClass());
         workingCopy.setAttribute(IPHPDebugConstants.ATTR_EXECUTABLE_LOCATION, phpexeItem.getExecutable().getAbsolutePath().toString());
         workingCopy.setAttribute(IPHPDebugConstants.ATTR_INI_LOCATION, phpexeItem.getINILocation() != null ? phpexeItem.getINILocation().toString() : null);
         workingCopy.setAttribute(IPHPDebugConstants.RUN_WITH_DEBUG_INFO, PHPDebugPlugin.getDebugInfoOption());
@@ -297,5 +298,18 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
     private void cancelLaunch(IProgressMonitor monitor) {
         monitor.setCanceled(true);
         cancelLaunch();
+    }
+
+    /**
+     * @since 3.2.0
+     */
+    private static IDebuggerConfiguration getDebuggerConfiguration(String debuggerId) {
+        for (IDebuggerConfiguration debuggerConfiguration: PHPDebuggersRegistry.getDebuggersConfigurations()) {
+            if (debuggerId.equals(debuggerConfiguration.getDebuggerId())) {
+                return debuggerConfiguration;
+            }
+        }
+
+        return null;
     }
 }
