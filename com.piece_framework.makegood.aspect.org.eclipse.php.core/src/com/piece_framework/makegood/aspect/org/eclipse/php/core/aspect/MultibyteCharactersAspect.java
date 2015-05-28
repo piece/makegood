@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010-2012, 2014 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2010-2012, 2014-2015 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of MakeGood.
@@ -38,7 +38,6 @@ public class MultibyteCharactersAspect extends Aspect {
 
     private static final String JOINPOINT_PHPASTLEXER_ACCESS_CMAP_PHP53 = "PhpAstLexer#next_token [access CMAP php53]"; //$NON-NLS-1$
     private static final String JOINPOINT_PHPASTLEXER_ACCESS_CMAP_PHP5 = "PhpAstLexer#next_token [access CMAP php5]"; //$NON-NLS-1$
-    private static final String JOINPOINT_PHPASTLEXER_ACCESS_CMAP_PHP4 = "PhpAstLexer#next_token [access CMAP php4]"; //$NON-NLS-1$
 
     /**
      * @since 3.0.0
@@ -51,18 +50,15 @@ public class MultibyteCharactersAspect extends Aspect {
     private static final String JOINPOINT_PHPLEXER_ACCESS_CMAP_PHP54 = "PhpLexer#yylex [access CMAP php54]"; //$NON-NLS-1$
     private static final String JOINPOINT_PHPLEXER_ACCESS_CMAP_PHP53 = "PhpLexer#yylex [access CMAP php53]"; //$NON-NLS-1$
     private static final String JOINPOINT_PHPLEXER_ACCESS_CMAP_PHP5 = "PhpLexer#yylex [access CMAP php5]"; //$NON-NLS-1$
-    private static final String JOINPOINT_PHPLEXER_ACCESS_CMAP_PHP4 = "PhpLexer#yylex [access CMAP php4]"; //$NON-NLS-1$
     private static final String[] JOINPOINTS = {
         JOINPOINT_PHPASTLEXER_ACCESS_CMAP_PHP55,
         JOINPOINT_PHPASTLEXER_ACCESS_CMAP_PHP54,
         JOINPOINT_PHPASTLEXER_ACCESS_CMAP_PHP53,
         JOINPOINT_PHPASTLEXER_ACCESS_CMAP_PHP5,
-        JOINPOINT_PHPASTLEXER_ACCESS_CMAP_PHP4,
         JOINPOINT_PHPLEXER_ACCESS_CMAP_PHP55,
         JOINPOINT_PHPLEXER_ACCESS_CMAP_PHP54,
         JOINPOINT_PHPLEXER_ACCESS_CMAP_PHP53,
         JOINPOINT_PHPLEXER_ACCESS_CMAP_PHP5,
-        JOINPOINT_PHPLEXER_ACCESS_CMAP_PHP4
     };
 
     /**
@@ -80,8 +76,6 @@ public class MultibyteCharactersAspect extends Aspect {
         "org.eclipse.php.internal.core.ast.scanner.php53.PhpAstLexer"; //$NON-NLS-1$
     private static final String WEAVINGCLASS_PHPASTLEXER_PHP5 =
         "org.eclipse.php.internal.core.ast.scanner.php5.PhpAstLexer"; //$NON-NLS-1$
-    private static final String WEAVINGCLASS_PHPASTLEXER_PHP4 =
-        "org.eclipse.php.internal.core.ast.scanner.php4.PhpAstLexer"; //$NON-NLS-1$
 
     /**
      * @since 3.0.0
@@ -98,19 +92,15 @@ public class MultibyteCharactersAspect extends Aspect {
         "org.eclipse.php.internal.core.documentModel.parser.php53.PhpLexer"; //$NON-NLS-1$
     private static final String WEAVINGCLASS_PHPLEXER_PHP5 =
         "org.eclipse.php.internal.core.documentModel.parser.php5.PhpLexer"; //$NON-NLS-1$
-    private static final String WEAVINGCLASS_PHPLEXER_PHP4 =
-        "org.eclipse.php.internal.core.documentModel.parser.php4.PhpLexer"; //$NON-NLS-1$
     private static final String[] WEAVINGCLASSES = {
         WEAVINGCLASS_PHPASTLEXER_PHP55,
         WEAVINGCLASS_PHPASTLEXER_PHP54,
         WEAVINGCLASS_PHPASTLEXER_PHP53,
         WEAVINGCLASS_PHPASTLEXER_PHP5,
-        WEAVINGCLASS_PHPASTLEXER_PHP4,
         WEAVINGCLASS_PHPLEXER_PHP55,
         WEAVINGCLASS_PHPLEXER_PHP54,
         WEAVINGCLASS_PHPLEXER_PHP53,
         WEAVINGCLASS_PHPLEXER_PHP5,
-        WEAVINGCLASS_PHPLEXER_PHP4
     };
 
     /**
@@ -201,16 +191,6 @@ public class MultibyteCharactersAspect extends Aspect {
     private static final String PHPLEXER_METHOD_UNPACKCMAP_PHP5 = generateZZUnpackCMapMethod(188);
     private static final String PHPLEXER_FIELD_CMAP_PHP5 =
 "private static final char [] ZZ_CMAP_MULTIBYTECHARACTERS = zzUnpackCMapMultibyteCharacters(ZZ_CMAP_PACKED_MULTIBYTECHARACTERS);"; //$NON-NLS-1$
-    private static final String PHPASTLEXER_FIELD_CMAP_PACKED_PHP4 =
-"private static final String ZZ_CMAP_PACKED_MULTIBYTECHARACTERS = \"\\\11\\\0\\\1\\\12\\\1\\\14\\\2\\\0\\\1\\\11\\\22\\\0\\\1\\\12\\\1\\\52\\\1\\\75\\\1\\\13\\\1\\\67\\\1\\\56\\\1\\\57\\\1\\\76\\\1\\\42\\\1\\\44\\\1\\\54\\\1\\\4\\\1\\\63\\\1\\\36\\\1\\\2\\\1\\\55\\\1\\\5\\\7\\\101\\\2\\\1\\\1\\\40\\\1\\\62\\\1\\\53\\\1\\\51\\\1\\\37\\\1\\\70\\\1\\\71\\\1\\\33\\\1\\\7\\\1\\\26\\\1\\\17\\\1\\\3\\\1\\\23\\\1\\\43\\\1\\\32\\\1\\\15\\\1\\\46\\\1\\\34\\\1\\\21\\\1\\\50\\\1\\\25\\\1\\\20\\\1\\\35\\\1\\\47\\\1\\\30\\\1\\\27\\\1\\\16\\\1\\\24\\\1\\\41\\\1\\\31\\\1\\\6\\\1\\\45\\\1\\\10\\\1\\\64\\\1\\\77\\\1\\\65\\\1\\\61\\\1\\\22\\\1\\\100\\\1\\\33\\\1\\\7\\\1\\\26\\\1\\\17\\\1\\\3\\\1\\\23\\\1\\\43\\\1\\\32\\\1\\\15\\\1\\\46\\\1\\\34\\\1\\\21\\\1\\\50\\\1\\\25\\\1\\\20\\\1\\\35\\\1\\\47\\\1\\\30\\\1\\\74\\\1\\\16\\\1\\\24\\\1\\\41\\\1\\\31\\\1\\\6\\\1\\\45\\\1\\\10\\\1\\\72\\\1\\\60\\\1\\\73\\\1\\\66\\\uff81\\\10\";"; //$NON-NLS-1$
-    private static final String PHPASTLEXER_METHOD_UNPACKCMAP_PHP4 = generateZZUnpackCMapMethod(190);
-    private static final String PHPASTLEXER_FIELD_CMAP_PHP4 =
-"private static final char [] ZZ_CMAP_MULTIBYTECHARACTERS = zzUnpackCMapMultibyteCharacters(ZZ_CMAP_PACKED_MULTIBYTECHARACTERS);"; //$NON-NLS-1$
-    private static final String PHPLEXER_FIELD_CMAP_PACKED_PHP4 =
-"private static final String ZZ_CMAP_PACKED_MULTIBYTECHARACTERS = \"\\\11\\\0\\\1\\\12\\\1\\\20\\\2\\\0\\\1\\\11\\\22\\\0\\\1\\\12\\\1\\\24\\\1\\\73\\\1\\\70\\\1\\\67\\\1\\\30\\\1\\\31\\\1\\\17\\\1\\\57\\\1\\\61\\\1\\\26\\\1\\\23\\\1\\\13\\\1\\\4\\\1\\\2\\\1\\\27\\\1\\\5\\\7\\\76\\\2\\\1\\\1\\\55\\\1\\\14\\\1\\\25\\\1\\\21\\\1\\\22\\\1\\\71\\\1\\\72\\\1\\\36\\\1\\\7\\\1\\\45\\\1\\\40\\\1\\\3\\\1\\\43\\\1\\\60\\\1\\\52\\\1\\\41\\\1\\\63\\\1\\\53\\\1\\\46\\\1\\\65\\\1\\\37\\\1\\\34\\\1\\\54\\\1\\\64\\\1\\\35\\\1\\\50\\\1\\\42\\\1\\\44\\\1\\\56\\\1\\\51\\\1\\\6\\\1\\\62\\\1\\\10\\\1\\\16\\\1\\\74\\\1\\\16\\\1\\\33\\\1\\\47\\\1\\\75\\\1\\\36\\\1\\\7\\\1\\\45\\\1\\\40\\\1\\\3\\\1\\\43\\\1\\\60\\\1\\\52\\\1\\\41\\\1\\\63\\\1\\\53\\\1\\\46\\\1\\\65\\\1\\\37\\\1\\\34\\\1\\\54\\\1\\\64\\\1\\\35\\\1\\\50\\\1\\\42\\\1\\\44\\\1\\\56\\\1\\\51\\\1\\\6\\\1\\\62\\\1\\\10\\\1\\\66\\\1\\\32\\\1\\\15\\\1\\\13\\\uff81\\\10\";"; //$NON-NLS-1$
-    private static final String PHPLEXER_METHOD_UNPACKCMAP_PHP4 = generateZZUnpackCMapMethod(190);
-    private static final String PHPLEXER_FIELD_CMAP_PHP4 =
-"private static final char [] ZZ_CMAP_MULTIBYTECHARACTERS = zzUnpackCMapMultibyteCharacters(ZZ_CMAP_PACKED_MULTIBYTECHARACTERS);"; //$NON-NLS-1$
 
     public MultibyteCharactersAspect() {
         super();
@@ -222,7 +202,6 @@ public class MultibyteCharactersAspect extends Aspect {
         doWeavePHP54();
         doWeavePHP53();
         doWeavePHP5();
-        doWeavePHP4();
     }
 
     @Override
@@ -370,40 +349,6 @@ public class MultibyteCharactersAspect extends Aspect {
                     if ("ZZ_CMAP".equals(fieldAccess.getFieldName())) { //$NON-NLS-1$
                         fieldAccess.replace("$_ = ZZ_CMAP_MULTIBYTECHARACTERS;"); //$NON-NLS-1$
                         markJoinPointAsPassed(JOINPOINT_PHPLEXER_ACCESS_CMAP_PHP5);
-                    }
-                }
-            }
-        );
-        markClassAsWoven(phpLexerClass);
-    }
-
-    private void doWeavePHP4() throws NotFoundException, CannotCompileException {
-        CtClass phpAstLexerClass = ClassPool.getDefault().get(WEAVINGCLASS_PHPASTLEXER_PHP4);
-        phpAstLexerClass.addField(CtField.make(PHPASTLEXER_FIELD_CMAP_PACKED_PHP4, phpAstLexerClass));
-        phpAstLexerClass.addMethod(CtNewMethod.make(PHPASTLEXER_METHOD_UNPACKCMAP_PHP4, phpAstLexerClass));
-        phpAstLexerClass.addField(CtField.make(PHPASTLEXER_FIELD_CMAP_PHP4, phpAstLexerClass));
-        phpAstLexerClass.getDeclaredMethod("next_token").instrument( //$NON-NLS-1$
-            new ExprEditor() {
-                public void edit(FieldAccess fieldAccess) throws CannotCompileException {
-                    if ("ZZ_CMAP".equals(fieldAccess.getFieldName())) { //$NON-NLS-1$
-                        fieldAccess.replace("$_ = ZZ_CMAP_MULTIBYTECHARACTERS;"); //$NON-NLS-1$
-                        markJoinPointAsPassed(JOINPOINT_PHPASTLEXER_ACCESS_CMAP_PHP4);
-                    }
-                }
-            }
-        );
-        markClassAsWoven(phpAstLexerClass);
-
-        CtClass phpLexerClass = ClassPool.getDefault().get(WEAVINGCLASS_PHPLEXER_PHP4);
-        phpLexerClass.addField(CtField.make(PHPLEXER_FIELD_CMAP_PACKED_PHP4, phpLexerClass));
-        phpLexerClass.addMethod(CtNewMethod.make(PHPLEXER_METHOD_UNPACKCMAP_PHP4, phpLexerClass));
-        phpLexerClass.addField(CtField.make(PHPLEXER_FIELD_CMAP_PHP4, phpLexerClass));
-        phpLexerClass.getDeclaredMethod("yylex").instrument( //$NON-NLS-1$
-            new ExprEditor() {
-                public void edit(FieldAccess fieldAccess) throws CannotCompileException {
-                    if ("ZZ_CMAP".equals(fieldAccess.getFieldName())) { //$NON-NLS-1$
-                        fieldAccess.replace("$_ = ZZ_CMAP_MULTIBYTECHARACTERS;"); //$NON-NLS-1$
-                        markJoinPointAsPassed(JOINPOINT_PHPLEXER_ACCESS_CMAP_PHP4);
                     }
                 }
             }
