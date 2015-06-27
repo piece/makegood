@@ -147,7 +147,6 @@
                 <argument>composer.phar</argument>
                 <argument>install</argument>
                 <argument>--no-interaction</argument>
-                <argument>--prefer-source</argument>
                 <argument>--no-dev</argument>
               </arguments>
               <workingDirectory>${project.basedir}/resources/php</workingDirectory>
