@@ -1,7 +1,7 @@
 {
     "require": {
         "php": ">=5.3.3",
-        "piece/stagehand-testrunner": "4.0.0"
+        "piece/stagehand-testrunner": "~4.1@dev"
     },
     "scripts": {
         "post-autoload-dump": [
