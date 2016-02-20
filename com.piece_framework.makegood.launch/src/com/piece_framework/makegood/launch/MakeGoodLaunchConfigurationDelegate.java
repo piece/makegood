@@ -16,6 +16,8 @@ import java.io.File;
 import java.util.HashSet;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -41,6 +43,7 @@ import org.eclipse.php.internal.debug.core.preferences.PHPDebuggersRegistry;
 import org.eclipse.php.internal.debug.core.preferences.PHPProjectPreferences;
 import org.eclipse.php.internal.debug.core.preferences.PHPexeItem;
 
+import com.piece_framework.makegood.core.preference.MakeGoodProperties;
 import com.piece_framework.makegood.stagehandtestrunner.StagehandTestRunner;
 
 @SuppressWarnings("restriction")
@@ -259,7 +262,7 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
         workingCopy.setAttribute(MAKEGOOD_JUNIT_XML_FILE, junitXMLFile);
         workingCopy.setAttribute(
             IDebugParametersKeys.EXE_CONFIG_PROGRAM_ARGUMENTS,
-            new CommandLineBuilder(junitXMLFile).build()
+            getCommandArguments(junitXMLFile)
         );
 
         IProject project = TestLifecycle.getInstance().getTestTargets().getProject();
@@ -270,9 +273,32 @@ public class MakeGoodLaunchConfigurationDelegate extends PHPLaunchDelegateProxy 
 
         return workingCopy;
     }
+    
+    public static String getCommandArguments(String junitXMLFile) throws CoreException, MethodNotFoundException, ResourceNotFoundException {
+    	MakeGoodProperties property = new MakeGoodProperties(TestLifecycle.getInstance().getTestTargets().getFirstResource());
+    	String pharFile = property.getPHPUnitPharFile().trim();
+    	if("".equals(pharFile)) {
+    		String args = new CommandLineBuilder(junitXMLFile, false).build();
+    		return args;
+    	} else {
+    		String args = new CommandLineBuilder(junitXMLFile, true).build();
+    		return args;
+    	}
+    }
 
-    public static String getCommandPath() throws CoreException {
-        return StagehandTestRunner.getCommandPath();
+    public static String getCommandPath() throws CoreException, ResourceNotFoundException {
+    	MakeGoodProperties property = new MakeGoodProperties(TestLifecycle.getInstance().getTestTargets().getFirstResource());
+    	String pharFile = property.getPHPUnitPharFile().trim();
+    	if("".equals(pharFile)) 
+    		return StagehandTestRunner.getCommandPath();
+    	else {
+    		IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(pharFile);
+            if (resource == null) {
+                throw new ResourceNotFoundException("The resource [ " + pharFile + " ] is not found."); //$NON-NLS-1$ //$NON-NLS-2$
+            }
+
+            return resource.getLocation().toString(); //$NON-NLS-1$ //$NON-NLS-2$
+    	}
     }
 
     public static String getJUnitXMLFile(ILaunch launch) throws CoreException {
