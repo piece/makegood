@@ -63,6 +63,7 @@ public class MakeGoodPropertyPage extends PropertyPage {
     private static final int SELECTION_ALLOW_FOLDER = 2;
     private Text preloadScriptText;
     private Text phpunitConfigFileText;
+    private Text phpunitPharFileText;
     private Button phpunitButton;
 
     private TreeViewer testFolderTreeViewer;
@@ -185,6 +186,23 @@ public class MakeGoodPropertyPage extends PropertyPage {
                 new FileViewerFilter()
             )
         );
+        
+        Label phpunitPharFileLabel = new Label(phpunitConfigFile, SWT.NONE);
+        phpunitPharFileLabel.setText(Messages.MakeGoodPropertyPage_phpunitPharFileLabel);
+        phpunitPharFileText = new Text(phpunitConfigFile, SWT.SINGLE | SWT.BORDER);
+        phpunitPharFileText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+        Button phpunitPharFileBrowseButton = new Button(phpunitConfigFile, SWT.NONE);
+        phpunitPharFileBrowseButton.setText(Messages.MakeGoodPropertyPage_phpunitPharFileBrowseLabel);
+        phpunitPharFileBrowseButton.addSelectionListener(
+            new FileSelectionListener(
+                phpunitPharFileText,
+                Messages.MakeGoodPropertyPage_phpunitPharFileDialogTitle,
+                Messages.MakeGoodPropertyPage_phpunitPharFileDialogMessage,
+                SELECTION_ALLOW_FILE,
+                new FileViewerFilter()
+            )
+        );
+        
         frameworkTabItems.add(phpunitTabItem);
 
         loadProperties(createMakeGoodProperty());
@@ -211,6 +229,7 @@ public class MakeGoodPropertyPage extends PropertyPage {
         property.setPreloadScript(preloadScriptText.getText());
         property.setTestFilePattern(testFilePatternText.getText());
         property.setPHPUnitConfigFile(phpunitConfigFileText.getText());
+        property.setPHPUnitPharFile(phpunitPharFileText.getText());
         property.flush();
 
         return true;
@@ -274,6 +293,7 @@ public class MakeGoodPropertyPage extends PropertyPage {
         preloadScriptText.setText(property.getPreloadScript());
         testFilePatternText.setText(property.getTestFilePattern());
         phpunitConfigFileText.setText(property.getPHPUnitConfigFile());
+        phpunitPharFileText.setText(property.getPHPUnitPharFile());
     }
 
     /**
@@ -285,6 +305,7 @@ public class MakeGoodPropertyPage extends PropertyPage {
         preloadScriptText.setText(defaultConfiguration.getPreloadScript());
         testFilePatternText.setText(defaultConfiguration.getTestFilePattern());
         phpunitConfigFileText.setText(defaultConfiguration.getPHPUnitConfigFile());
+        phpunitPharFileText.setText(defaultConfiguration.getPHPUnitPharFile());
     }
 
     /**

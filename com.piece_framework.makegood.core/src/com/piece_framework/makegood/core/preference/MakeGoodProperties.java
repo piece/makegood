@@ -37,6 +37,7 @@ public class MakeGoodProperties {
     private static String TESTING_FRAMEWORK_KEY = "testing_framework"; //$NON-NLS-1$
     private static String TEST_FOLDERS = "test_folders"; //$NON-NLS-1$
     private static String PHPUNIT_CONFIG_FILE = "phpunit_config_file"; //$NON-NLS-1$
+    private static String PHPUNIT_PHAR_FILE = "phpunit_phar_file"; //$NON-NLS-1$
 
     /**
      * @since 2.0.0
@@ -129,6 +130,14 @@ public class MakeGoodProperties {
 
     public void setPHPUnitConfigFile(String phpunitConfigFile) {
         preferences.put(PHPUNIT_CONFIG_FILE, phpunitConfigFile);
+    }
+    
+    public String getPHPUnitPharFile() {
+    	return preferences.get(PHPUNIT_PHAR_FILE, defaultConfiguration.getPHPUnitConfigFile());
+    }
+    
+    public void setPHPUnitPharFile(String phpunitPharFile) {
+    	preferences.put(PHPUNIT_PHAR_FILE, phpunitPharFile);
     }
 
     /**
