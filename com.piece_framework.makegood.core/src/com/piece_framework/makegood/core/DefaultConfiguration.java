@@ -62,6 +62,10 @@ public class DefaultConfiguration {
     public String getPHPUnitConfigFile() {
         return ""; //$NON-NLS-1$
     }
+    
+    public String getPHPUnitPharFile() {
+    	return ""; //$NON-NLS-1"
+    }
 
     /**
      * @since 2.5.0

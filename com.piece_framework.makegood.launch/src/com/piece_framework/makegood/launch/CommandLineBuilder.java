@@ -38,35 +38,51 @@ public class CommandLineBuilder {
     public static boolean stopOnFailure = false;
 
     private String junitXMLFile;
+    // Flag indicating whether these command arguments should be compatible with a phpunit phar launch
+    private boolean isPharLaunch;
 
-    public CommandLineBuilder(String junitXMLFile) {
+    public CommandLineBuilder(String junitXMLFile, boolean isPharLaunch) {
         this.junitXMLFile = junitXMLFile;
+        this.isPharLaunch = isPharLaunch;
     }
 
     public String build() throws CoreException, MethodNotFoundException, ResourceNotFoundException {
         MakeGoodProperties property = new MakeGoodProperties(TestLifecycle.getInstance().getTestTargets().getFirstResource());
         StringBuilder buffer = new StringBuilder();
 
-        buffer.append(" --no-ansi"); //$NON-NLS-1$
-        buffer.append(" " + property.getTestingFramework().name().toLowerCase()); //$NON-NLS-1$
+        if(!isPharLaunch) {
+        	buffer.append(" --no-ansi"); //$NON-NLS-1$
+        	buffer.append(" " + property.getTestingFramework().name().toLowerCase()); //$NON-NLS-1$
+        
 
-        String preloadScript = property.getPreloadScript();
-        if (!preloadScript.equals("")) { //$NON-NLS-1$
-            IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-            IResource preloadResource = root.findMember(preloadScript);
-            if (preloadResource == null) {
-                throw new ResourceNotFoundException("The resource [ " + preloadScript + " ] is not found."); //$NON-NLS-1$ //$NON-NLS-2$
-            }
-
-            buffer.append(" -p \"" + preloadResource.getLocation().toString() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
+	        String preloadScript = property.getPreloadScript();
+	        if (!preloadScript.equals("")) { //$NON-NLS-1$
+	            IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+	            IResource preloadResource = root.findMember(preloadScript);
+	            if (preloadResource == null) {
+	                throw new ResourceNotFoundException("The resource [ " + preloadScript + " ] is not found."); //$NON-NLS-1$ //$NON-NLS-2$
+	            }
+	
+	            if(isPharLaunch) {
+	            	buffer.append(" --bootstrap \"" + preloadResource.getLocation().toString() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
+	            } else {
+	            	buffer.append(" -p \"" + preloadResource.getLocation().toString() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
+	            }
+	        }
         }
-
-        buffer.append(" --log-junit=\"" + junitXMLFile + "\""); //$NON-NLS-1$ //$NON-NLS-2$
-        buffer.append(" --log-junit-realtime"); //$NON-NLS-1$
-
-        if (stopOnFailure) {
-            buffer.append(" -s"); //$NON-NLS-1$
-        }
+	
+	    buffer.append(" --log-junit=\"" + junitXMLFile + "\""); //$NON-NLS-1$ //$NON-NLS-2$
+	    if(isPharLaunch) {
+	    	if (stopOnFailure) {
+	    		buffer.append(" --stop-on-failure"); //$NON-NLS-1$
+	    	}
+	    } else {
+	    	buffer.append(" --log-junit-realtime"); //$NON-NLS-1$
+	        
+	        if (stopOnFailure) {
+	            buffer.append(" -s"); //$NON-NLS-1$
+	        }
+	    }
 
         if (property.getTestingFramework() == TestingFramework.PHPUnit) {
             String phpunitConfigFile = property.getPHPUnitConfigFile();
@@ -76,7 +92,11 @@ public class CommandLineBuilder {
                     throw new ResourceNotFoundException("The resource [ " + phpunitConfigFile + " ] is not found."); //$NON-NLS-1$ //$NON-NLS-2$
                 }
 
-                buffer.append(" --phpunit-config=\"" + resource.getLocation().toString() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
+                if(isPharLaunch) {
+                	buffer.append(" -c \""+ resource.getLocation().toString() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
+                } else {
+                	buffer.append(" --phpunit-config=\"" + resource.getLocation().toString() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
+                }
             }
         }
 
@@ -116,26 +136,28 @@ public class CommandLineBuilder {
             }
         }
 
-        if (testClasses.size() > 0) {
-            for (String testClass: testClasses) {
-                buffer.append(" --test-class=\"" + testClass.toString() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
-            }
-        }
+        if(!isPharLaunch) {
+	        if (testClasses.size() > 0) {
+	            for (String testClass: testClasses) {
+	                buffer.append(" --test-class=\"" + testClass.toString() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
+	            }
+	        }
+	
+	        if (testMethods.size() > 0) {
+	            for (String testMethod: testMethods) {
+	                buffer.append(" --test-method=\"" + testMethod.toString() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
+	            }
+	        }
 
-        if (testMethods.size() > 0) {
-            for (String testMethod: testMethods) {
-                buffer.append(" --test-method=\"" + testMethod.toString() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
-            }
-        }
-
-        buffer.append(" -R"); //$NON-NLS-1$
-        buffer.append(
-            " --test-file-pattern=\"" + //$NON-NLS-1$
-            (property.getTestFilePattern().equals("") ? property.getTestingFramework().getTestFilePattern() : property.getTestFilePattern()) + //$NON-NLS-1$
-            "\"" //$NON-NLS-1$
-        );
-        for (String testFile: testFiles) {
-            buffer.append(" \"" + testFile + "\""); //$NON-NLS-1$ //$NON-NLS-2$
+	        buffer.append(" -R"); //$NON-NLS-1$
+	        buffer.append(
+	            " --test-file-pattern=\"" + //$NON-NLS-1$
+	            (property.getTestFilePattern().equals("") ? property.getTestingFramework().getTestFilePattern() : property.getTestFilePattern()) + //$NON-NLS-1$
+	            "\"" //$NON-NLS-1$
+	        );
+	        for (String testFile: testFiles) {
+	            buffer.append(" \"" + testFile + "\""); //$NON-NLS-1$ //$NON-NLS-2$
+	        }
         }
 
         return buffer.toString();

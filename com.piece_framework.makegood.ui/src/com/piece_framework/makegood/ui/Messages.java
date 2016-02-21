@@ -28,8 +28,12 @@ public class Messages extends NLS {
     public static String MakeGoodPropertyPage_preloadScriptLabel;
     public static String MakeGoodPropertyPage_phpunitConfigFileDialogTitle;
     public static String MakeGoodPropertyPage_phpunitConfigFileDialogMessage;
+    public static String MakeGoodPropertyPage_phpunitPharFileDialogTitle;
+    public static String MakeGoodPropertyPage_phpunitPharFileDialogMessage;
     public static String MakeGoodPropertyPage_phpunitConfigFileLabel;
     public static String MakeGoodPropertyPage_phpunitConfigFileBrowseLabel;
+    public static String MakeGoodPropertyPage_phpunitPharFileLabel;
+    public static String MakeGoodPropertyPage_phpunitPharFileBrowseLabel;
     public static String MakeGoodPropertyPage_testFolderRemoveLabel;
 
     /**
