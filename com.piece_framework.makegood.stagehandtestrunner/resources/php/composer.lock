@@ -1,10 +1,9 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "hash": "43cd2c320928b5b55cca704f31a5f020",
     "content-hash": "6f9a2f8a6ffaf0ce81730778baa90908",
     "packages": [
         {
@@ -45,7 +44,7 @@
             "keywords": [
                 "alteration monitoring"
             ],
-            "time": "2012-04-11 03:13:40"
+            "time": "2012-04-11T03:13:40+00:00"
         },
         {
             "name": "piece/stagehand-componentfactory",
@@ -92,20 +91,20 @@
             "keywords": [
                 "dependency injection"
             ],
-            "time": "2012-05-03 08:23:21"
+            "time": "2012-05-03T08:23:21+00:00"
         },
         {
             "name": "piece/stagehand-testrunner",
-            "version": "dev-master",
+            "version": "4.2.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/piece/stagehand-testrunner.git",
-                "reference": "1c7fce241d61e2c6293374c5149f91f9700657c0"
+                "reference": "1d685ea1140a71a37b20b60ab4cfed0656bf1020"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/piece/stagehand-testrunner/zipball/1c7fce241d61e2c6293374c5149f91f9700657c0",
-                "reference": "1c7fce241d61e2c6293374c5149f91f9700657c0",
+                "url": "https://api.github.com/repos/piece/stagehand-testrunner/zipball/1d685ea1140a71a37b20b60ab4cfed0656bf1020",
+                "reference": "1d685ea1140a71a37b20b60ab4cfed0656bf1020",
                 "shasum": ""
             },
             "require": {
@@ -126,7 +125,7 @@
             },
             "require-dev": {
                 "phake/phake": "1.0.*",
-                "phpunit/phpunit": ">=3.7.0,<5.0.0"
+                "phpunit/phpunit": ">=3.7.0"
             },
             "suggest": {
                 "phpunit/phpunit": "For using PHPUnit"
@@ -161,7 +160,7 @@
                 "cli",
                 "testing"
             ],
-            "time": "2016-01-17 08:35:45"
+            "time": "2016-04-05T05:23:31+00:00"
         },
         {
             "name": "sebastian/version",
@@ -196,7 +195,7 @@
             ],
             "description": "Library that helps with managing the version number of Git-hosted PHP projects",
             "homepage": "https://github.com/sebastianbergmann/version",
-            "time": "2015-06-21 13:59:46"
+            "time": "2015-06-21T13:59:46+00:00"
         },
         {
             "name": "symfony/config",
@@ -204,12 +203,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/config.git",
-                "reference": "41ee6c70758f40fa1dbf90d019ae0a66c4a09e74"
+                "reference": "ee4cdda66aff834c8125e8f2c15932461667c521"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/config/zipball/41ee6c70758f40fa1dbf90d019ae0a66c4a09e74",
-                "reference": "41ee6c70758f40fa1dbf90d019ae0a66c4a09e74",
+                "url": "https://api.github.com/repos/symfony/config/zipball/ee4cdda66aff834c8125e8f2c15932461667c521",
+                "reference": "ee4cdda66aff834c8125e8f2c15932461667c521",
                 "shasum": ""
             },
             "require": {
@@ -246,7 +245,7 @@
             ],
             "description": "Symfony Config Component",
             "homepage": "https://symfony.com",
-            "time": "2016-01-03 15:33:41"
+            "time": "2016-01-03T15:33:41+00:00"
         },
         {
             "name": "symfony/console",
@@ -306,20 +305,20 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2016-01-14 08:33:16"
+            "time": "2016-01-14T08:33:16+00:00"
         },
         {
             "name": "symfony/dependency-injection",
-            "version": "v2.8.2",
+            "version": "v2.8.52",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/dependency-injection.git",
-                "reference": "ba94a914e244e0d05f0aaef460d5558d5541d2b1"
+                "reference": "c306198fee8f872a8f5f031e6e4f6f83086992d8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/ba94a914e244e0d05f0aaef460d5558d5541d2b1",
-                "reference": "ba94a914e244e0d05f0aaef460d5558d5541d2b1",
+                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/c306198fee8f872a8f5f031e6e4f6f83086992d8",
+                "reference": "c306198fee8f872a8f5f031e6e4f6f83086992d8",
                 "shasum": ""
             },
             "require": {
@@ -331,10 +330,11 @@
             "require-dev": {
                 "symfony/config": "~2.2|~3.0.0",
                 "symfony/expression-language": "~2.6|~3.0.0",
-                "symfony/yaml": "~2.1|~3.0.0"
+                "symfony/yaml": "~2.3.42|~2.7.14|~2.8.7|~3.0.7"
             },
             "suggest": {
                 "symfony/config": "",
+                "symfony/expression-language": "For using expressions in service container configuration",
                 "symfony/proxy-manager-bridge": "Generate service proxies to lazy load them",
                 "symfony/yaml": ""
             },
@@ -368,7 +368,7 @@
             ],
             "description": "Symfony DependencyInjection Component",
             "homepage": "https://symfony.com",
-            "time": "2016-01-12 17:46:01"
+            "time": "2019-04-16T11:33:46+00:00"
         },
         {
             "name": "symfony/filesystem",
@@ -417,7 +417,7 @@
             ],
             "description": "Symfony Filesystem Component",
             "homepage": "https://symfony.com",
-            "time": "2015-12-22 10:39:06"
+            "time": "2015-12-22T10:39:06+00:00"
         },
         {
             "name": "symfony/finder",
@@ -466,7 +466,7 @@
             ],
             "description": "Symfony Finder Component",
             "homepage": "https://symfony.com",
-            "time": "2016-01-14 08:26:52"
+            "time": "2016-01-14T08:26:52+00:00"
         },
         {
             "name": "symfony/polyfill-mbstring",
@@ -525,7 +525,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2015-11-20 09:19:13"
+            "time": "2015-11-20T09:19:13+00:00"
         },
         {
             "name": "symfony/process",
@@ -533,12 +533,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/process.git",
-                "reference": "6f1979c3b0f4c22c77a8a8971afaa7dd07f082ac"
+                "reference": "d9d21cfcc3e202ee34777d6da38897695d4d208d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/process/zipball/6f1979c3b0f4c22c77a8a8971afaa7dd07f082ac",
-                "reference": "6f1979c3b0f4c22c77a8a8971afaa7dd07f082ac",
+                "url": "https://api.github.com/repos/symfony/process/zipball/d9d21cfcc3e202ee34777d6da38897695d4d208d",
+                "reference": "d9d21cfcc3e202ee34777d6da38897695d4d208d",
                 "shasum": ""
             },
             "require": {
@@ -574,7 +574,7 @@
             ],
             "description": "Symfony Process Component",
             "homepage": "https://symfony.com",
-            "time": "2016-01-06 09:59:23"
+            "time": "2016-01-14T08:33:14+00:00"
         },
         {
             "name": "symfony/yaml",
@@ -623,7 +623,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-            "time": "2016-01-13 10:28:07"
+            "time": "2016-01-13T10:28:07+00:00"
         }
     ],
     "packages-dev": [],
